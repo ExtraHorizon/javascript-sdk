@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "target": "es2018",
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "rootDir": "./src",
+    "baseUrl": "./",
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": false,
+    "removeComments": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "types/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+  ]
+}
