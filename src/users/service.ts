@@ -1,4 +1,4 @@
-import { UserData } from './models';
+import { UserData } from "../models";
 
 /**
  * Retrieve the current logged in user.
