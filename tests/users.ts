@@ -1,8 +1,9 @@
-import * as sdk from '../build';
+import { assert } from 'console';
+import * as sdk from '../src/index';
 
-describe('Get Pokemon By Id', () => {
-  it('should contain an id', async () => {
-    const test = sdk.getPokemonById(8);
-    console.log(test);
+describe('Get Me', () => {
+  it('should return current user', async () => {
+    const user = await sdk.users.getMe();
+    assert(user.firstName);
   });
 });

@@ -14,12 +14,14 @@
   },
   "dependencies": {
     "@qompium/oauth1-api-client": "^1.0.1",
-    "dotenv-safe": "^8.2.0"
+    "dotenv-safe": "^8.2.0",
+    "humps": "^2.0.1"
   },
   "devDependencies": {
     "@qompium/eslint-config-q-node": "^1.2.9",
     "@qompium/license-checker": "^1.0.3",
     "@types/dotenv-safe": "^8.1.1",
+    "@types/humps": "^2.0.0",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.25",
     "eslint": "^7.19.0",
