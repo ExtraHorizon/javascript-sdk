@@ -59,3 +59,16 @@ interface GroupRole {
 export interface UserDataList extends listResponse {
   data: Array<UserData>
 }
+
+export interface RegisterUserData {
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  phoneNumber: string,
+  birthday: string,
+  gender: number,
+  country: string,
+  language: string,
+  timeZone?: string,
+}
