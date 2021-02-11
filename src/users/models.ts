@@ -67,8 +67,15 @@ export interface RegisterUserData {
   password: string,
   phoneNumber: string,
   birthday: string,
-  gender: number,
+  gender: Gender,
   country: string,
   language: string,
   timeZone?: string,
+}
+
+export enum Gender {
+  Unknown = 0,
+  Male = 1,
+  Female = 2,
+  NotApplicable = 9,
 }

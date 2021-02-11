@@ -13,9 +13,11 @@
     "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
-    "@qompium/oauth1-api-client": "^1.0.1",
+    "@qompium/q-errors": "^1.2.1",
+    "axios": "^0.21.1",
     "dotenv-safe": "^8.2.0",
-    "humps": "^2.0.1"
+    "humps": "^2.0.1",
+    "oauth-1.0a": "^2.2.6"
   },
   "devDependencies": {
     "@qompium/eslint-config-q-node": "^1.2.9",

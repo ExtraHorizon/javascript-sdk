@@ -1,6 +1,6 @@
-import { ApiClient } from '@qompium/oauth1-api-client';
-import { camelizeKeys, decamelizeKeys } from 'humps';
+import { ApiClient } from '../oauth1-api';
 import { RegisterUserData, UserData, UserDataList } from './models';
+import { recordsAffectedResponse } from '../models';
 
 const userServiceClient = new ApiClient('users', 'v1');
 /**
@@ -8,10 +8,8 @@ const userServiceClient = new ApiClient('users', 'v1');
  * @permission Everyone can use this endpoint
  * @returns {UserData} UserData
  */
-export async function getMe(): Promise<UserData> {
-  const response = await userServiceClient.get('me');
-  const user: UserData = camelizeKeys(response) as any;
-  return user;
+export async function getCurrent(): Promise<UserData> {
+  return await userServiceClient.get('me') as UserData;
 }
 
 /**
@@ -22,10 +20,8 @@ export async function getMe(): Promise<UserData> {
  * @params {string} rql Add filters to the requested list (optional)
  * @returns {UserDataList} UserDataList
  */
-export async function getUsers(rql = ''):Promise<UserDataList> {
-  const response = await userServiceClient.get(rql);
-  const userList: UserDataList = camelizeKeys(response) as any;
-  return userList;
+export async function getList(rql = ''):Promise<UserDataList> {
+  return await userServiceClient.get(rql) as UserDataList;
 }
 
 /**
@@ -36,9 +32,7 @@ export async function getUsers(rql = ''):Promise<UserDataList> {
  * @returns {UserDataList} UserDataList
  */
 export async function getPatients(rql = ''):Promise<UserDataList> {
-  const response = await userServiceClient.get(`patients/${rql}`);
-  const patientsList: UserDataList = camelizeKeys(response) as any;
-  return patientsList;
+  return await userServiceClient.get(`patients/${rql}`) as UserDataList;
 }
 
 /**
@@ -49,9 +43,7 @@ export async function getPatients(rql = ''):Promise<UserDataList> {
  * @returns {UserDataList} UserDataList
  */
 export async function getStaff(rql = ''):Promise<UserDataList> {
-  const response = await userServiceClient.get(`staff/${rql}`);
-  const staffList: UserDataList = camelizeKeys(response) as any;
-  return staffList;
+  return await userServiceClient.get(`staff/${rql}`) as UserDataList;
 }
 
 /**
@@ -64,10 +56,8 @@ export async function getStaff(rql = ''):Promise<UserDataList> {
  * @params {string} userId Id of the targeted user (required)
  * @returns {UserData} UserData
  */
-export async function getUserById(userId:string): Promise<UserData> {
-  const response = await userServiceClient.get(userId);
-  const user: UserData = camelizeKeys(response) as any;
-  return user;
+export async function getById(userId:string): Promise<UserData> {
+  return await userServiceClient.get(userId) as UserData;
 }
 
 /**
@@ -78,10 +68,8 @@ export async function getUserById(userId:string): Promise<UserData> {
  * @params {any} data Fields to update
  * @returns {UserData} UserData
  */
-export async function updateUser(userId:string, data:any): Promise<UserData> {
-  const response = await userServiceClient.put(userId, data);
-  const user: UserData = camelizeKeys(response) as any;
-  return user;
+export async function update(userId:string, data:any): Promise<UserData> {
+  return await userServiceClient.put(userId, data) as UserData;
 }
 
 /**
@@ -91,9 +79,9 @@ export async function updateUser(userId:string, data:any): Promise<UserData> {
  * @params {string} userId Id of the targeted user (required)
  * @returns {boolean} success
  */
-export async function deleteUser(userId:string): Promise<boolean> {
-  const response = await userServiceClient.delete(userId);
-  return response.records_affected === 1;
+export async function remove(userId:string): Promise<boolean> {
+  const response: recordsAffectedResponse = await userServiceClient.delete(userId);
+  return response.recordsAffected === 1;
 }
 
 /**
@@ -105,10 +93,8 @@ export async function deleteUser(userId:string): Promise<boolean> {
  * @params {string} email
  * @returns {UserData} UserData
  */
-export async function updateUserEmail(userId:string, email:string): Promise<UserData> {
-  const response = await userServiceClient.put(`${userId}/email`, { email });
-  const user: UserData = camelizeKeys(response) as any;
-  return user;
+export async function updateEmail(userId:string, email:string): Promise<UserData> {
+  return await userServiceClient.put(`${userId}/email`, { email }) as UserData;
 }
 
 /**
@@ -119,8 +105,8 @@ export async function updateUserEmail(userId:string, email:string): Promise<User
  * @returns {boolean} success
  */
 export async function addPatientEnlistment(userId:string, groupId:string): Promise<boolean> {
-  const response = await userServiceClient.post(`${userId}/patient_enlistments`, { group_id: groupId });
-  return response.records_affected === 1;
+  const response: recordsAffectedResponse = await userServiceClient.post(`${userId}/patient_enlistments`, { groupId });
+  return response.recordsAffected === 1;
 }
 
 /**
@@ -133,18 +119,16 @@ export async function addPatientEnlistment(userId:string, groupId:string): Promi
  * @returns {boolean} success
  */
 export async function deletePatientEnlistment(userId:string, groupId:string): Promise<boolean> {
-  const response = await userServiceClient.delete(`${userId}/patient_enlistments/${groupId}`);
-  return response.records_affected === 1;
+  const response: recordsAffectedResponse = await userServiceClient.delete(`${userId}/patient_enlistments/${groupId}`);
+  return response.recordsAffected === 1;
 }
 
 /**
  * Create an account.
  * @permission Everyone can use this endpoint
- * @params {any} registerData Data necessary to register (required)
- * @returns {RegisterUserData} UserData
+ * @params {RegisterUserData} registerData Data necessary to register (required)
+ * @returns {UserData} UserData
  */
-export async function registerUser(data:RegisterUserData) {
-  const response = await userServiceClient.post('register', decamelizeKeys(data));
-  const user: UserData = camelizeKeys(response) as any;
-  return user;
+export async function register(data:RegisterUserData): Promise<UserData> {
+  return await userServiceClient.post('register', data) as UserData;
 }
