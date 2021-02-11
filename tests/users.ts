@@ -82,3 +82,49 @@ describe('register user', () => {
     expect(user.email).toBe(registerData.email);
   });
 });
+
+describe('register user', () => {
+  it('should register user', async () => {
+    const registerData: RegisterUserData = {
+      firstName: 'Test',
+      lastName: 'Tester',
+      email: 'peter.pieters@qompium.com',
+      password: 'Test12345',
+      phoneNumber: '12345',
+      birthday: '1969-06-20',
+      gender: Gender.NotApplicable,
+      country: 'BE',
+      language: 'NL',
+    };
+    const user = await sdk.users.register(registerData);
+    expect(user.email).toBe(registerData.email);
+  });
+});
+
+describe('request activation email', () => {
+  it('should send activation mail user', async () => {
+    const user = await sdk.users.requestActivationMail('peter.pieters@qompium.com');
+    expect(user).toBe('peter.pieters@qompium.com');
+  });
+});
+
+describe('complete activation email', () => {
+  it('should complete activation mail', async () => {
+    const user = await sdk.users.completeActivationMail('251c08c2267b436ebd1c8005c2be0ee4505e541d');
+    expect(user).toBe('peter.pieters@qompium.com');
+  });
+});
+
+describe('request forgot password', () => {
+  it('should send forgot password mail', async () => {
+    const result = await sdk.users.requestPasswordReset('peter.pieters@qompium.com');
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('check email available', () => {
+  it('should check if email is available', async () => {
+    const result = await sdk.users.emailAvailable('peter.pieters@qompium.com');
+    expect(result).toBeTruthy();
+  });
+});

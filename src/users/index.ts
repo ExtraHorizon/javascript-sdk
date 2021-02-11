@@ -1,8 +1,19 @@
 import { ApiClient } from '../oauth1-api';
 import { RegisterUserData, UserData, UserDataList } from './models';
-import { recordsAffectedResponse } from '../models';
+import { recordsAffectedResponse, resultResponse, Results } from '../models';
 
 const userServiceClient = new ApiClient('users', 'v1');
+
+/**
+ * Perform a health check
+ * @permission Everyone can use this endpoint
+ * @returns {boolean} success
+ */
+
+export async function getHealth():Promise<boolean> {
+  const result:resultResponse = await userServiceClient.get('health');
+  return result.status === Results.Success;
+}
 /**
  * Retrieve the current logged in user.
  * @permission Everyone can use this endpoint
@@ -53,7 +64,7 @@ export async function getStaff(rql = ''):Promise<UserDataList> {
  * @permission VIEW_PATIENTS | scope:global | See a subset of fields for any user with a patient enlistment
  * @permission VIEW_STAFF | scope:global | See a subset of fields for any user with a staff enlistment
  * @permission VIEW_USER | scope:global | See any user object
- * @params {string} userId Id of the targeted user (required)
+ * @params {string} userId of the targeted user (required)
  * @returns {UserData} UserData
  */
 export async function getById(userId:string): Promise<UserData> {
@@ -64,7 +75,7 @@ export async function getById(userId:string): Promise<UserData> {
  * Update a specific user.
  * @permission Update your own data
  * @permission UPDATE_USER | scope:global | Update any user
- * @params {string} userId Id of the targeted user (required)
+ * @params {string} userId of the targeted user (required)
  * @params {any} data Fields to update
  * @returns {UserData} UserData
  */
@@ -76,7 +87,7 @@ export async function update(userId:string, data:any): Promise<UserData> {
  * Delete a specific user
  * @permission Delete your own user object
  * @permission DELETE_USER | scope:global | Delete any user
- * @params {string} userId Id of the targeted user (required)
+ * @params {string} userId of the targeted user (required)
  * @returns {boolean} success
  */
 export async function remove(userId:string): Promise<boolean> {
@@ -89,7 +100,7 @@ export async function remove(userId:string): Promise<boolean> {
  * An email is send to validate and activate the new address.
  * @permission Update your own data
  * @permission UPDATE_USER_EMAIL | scope:global | Update any user
- * @params {string} userId Id of the targeted user (required)
+ * @params {string} userId of the targeted user (required)
  * @params {string} email
  * @returns {UserData} UserData
  */
@@ -100,8 +111,8 @@ export async function updateEmail(userId:string, email:string): Promise<UserData
 /**
  * Add a patient enlistment to a user.
  * @permission ADD_PATIENT | scope:global | Add any patient enlistment
- * @params {string} userId Id of the targeted user (required)
- * @params {string} groupId Id of the targeted group (required)
+ * @params {string} userId of the targeted user (required)
+ * @params {string} groupId of the targeted group (required)
  * @returns {boolean} success
  */
 export async function addPatientEnlistment(userId:string, groupId:string): Promise<boolean> {
@@ -114,8 +125,8 @@ export async function addPatientEnlistment(userId:string, groupId:string): Promi
  * @permission Remove a patient enlistment from yourself
  * @permission REMOVE_PATIENT | scope:group | Remove a patient enlistment for the group
  * @permission REMOVE_PATIENT | scope:global | Remove any patient enlistment
- * @params {string} userId Id of the targeted user (required)
- * @params {string} groupId Id of the targeted group (required)
+ * @params {string} userId of the targeted user (required)
+ * @params {string} groupId of the targeted group (required)
  * @returns {boolean} success
  */
 export async function deletePatientEnlistment(userId:string, groupId:string): Promise<boolean> {
@@ -131,4 +142,94 @@ export async function deletePatientEnlistment(userId:string, groupId:string): Pr
  */
 export async function register(data:RegisterUserData): Promise<UserData> {
   return await userServiceClient.post('register', data) as UserData;
+}
+
+/**
+ * Change your password..
+ * @permission Everyone can use this endpoint
+ * @params {string} Old password (required)
+ * @params {string} New password (required)
+ * @returns {boolean} success
+ */
+export async function updatePassword(oldPassword:string, newPassword:string):Promise<boolean> {
+  const result:resultResponse = await userServiceClient.put('password', { oldPassword, newPassword });
+  return result.status === Results.Success;
+}
+
+/**
+ * Authenticate a user.
+ * @permission Everyone can use this endpoint
+ * @params {string} email (required)
+ * @params {string} password (required)
+ * @returns {UserData} UserData
+ */
+export async function authenticate(email:string, password:string): Promise<UserData> {
+  return await userServiceClient.post('authenticate', { email, password }) as UserData;
+}
+
+/**
+ * Request an email activation.
+ * @permission Everyone can use this endpoint
+ * @params {string} email (required)
+ * @returns {boolean} success
+ */
+export async function requestActivationMail(email:string):Promise<boolean> {
+  const result:resultResponse = await userServiceClient.get(`activation?email=${email}`);
+  return result.status === Results.Success;
+}
+
+/**
+ * Complete an email activation
+ * @permission Everyone can use this endpoint
+ * @params {string} hash (required)
+ * @returns {boolean} success
+ */
+export async function completeActivationMail(hash:string):Promise<boolean> {
+  const result:resultResponse = await userServiceClient.post('activation', { hash });
+  return result.status === Results.Success;
+}
+
+/**
+ * Request a password reset.
+ * @permission Everyone can use this endpoint
+ * @params {string} email (required)
+ * @returns {boolean} success
+ */
+export async function requestPasswordReset(email:string):Promise<boolean> {
+  const result:resultResponse = await userServiceClient.get(`forgot_password?email=${email}`);
+  return result.status === Results.Success;
+}
+
+/**
+ * Complete a password reset..
+ * @permission Everyone can use this endpoint
+ * @params {string} email (required)
+ * @params {string} new password (required)
+ * @returns {boolean} success
+ */
+export async function completePasswordReset(hash:string, newPassword:string):Promise<boolean> {
+  const result:resultResponse = await userServiceClient.post('forgot_password', { hash, newPassword });
+  return result.status === Results.Success;
+}
+
+/**
+ * Confirm the password for the user making the request
+ * @permission Everyone can use this endpoint
+ * @params {string} password (required)
+ * @returns {boolean} success
+ */
+export async function confirmPassword(password:string):Promise<boolean> {
+  const result:resultResponse = await userServiceClient.post('confirm_password', { password });
+  return result.status === Results.Success;
+}
+
+/**
+ * Check if an email address is still available.
+ * @permission Everyone can use this endpoint
+ * @params {string} email (required)
+ * @returns {boolean} success
+ */
+export async function emailAvailable(email:string):Promise<boolean> {
+  const result = await userServiceClient.get(`email_available?email=${email}`);
+  return result.emailAvailable;
 }

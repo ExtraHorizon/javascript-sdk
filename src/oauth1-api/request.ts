@@ -37,7 +37,10 @@ export async function apiRequest(options: ApiRequestOptions) {
 
     requestLogger.end(response.status);
 
-    return camelizeKeys(response.data) as any;
+    if (response.data) {
+      return camelizeKeys(response.data) as any;
+    }
+    return { status: response.status };
   } catch (error) {
     const status = error && error.response && error.response.status;
     requestLogger.end(status);

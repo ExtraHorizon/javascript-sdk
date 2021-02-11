@@ -6,3 +6,11 @@ export interface listResponse {
 export interface recordsAffectedResponse {
  recordsAffected: number;
 }
+
+export interface resultResponse {
+  status: number;
+}
+
+export enum Results {
+  Success = 200
+}
