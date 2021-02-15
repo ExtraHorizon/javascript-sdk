@@ -26,7 +26,7 @@ interface PatientEnlistment {
   creationTimestamp: number;
 }
 
-interface Role {
+export interface Role {
   id: string,
   name: string,
   description: string,
@@ -71,6 +71,14 @@ export interface RegisterUserData {
   country: string,
   language: string,
   timeZone?: string,
+}
+
+export interface PermissionDataList extends listResponse {
+  data: Array<Permission>
+}
+
+export interface RolesDataList extends listResponse {
+  data: Array<Role>
 }
 
 export enum Gender {

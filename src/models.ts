@@ -1,10 +1,14 @@
 export interface listResponse {
   query: string;
-  page: { total: number, offset: number, limit: number},
+  page: { total: number, offset: number, limit: number },
 }
 
 export interface recordsAffectedResponse {
- recordsAffected: number;
+  recordsAffected: number;
+}
+
+export interface recordsAffectedResponseSnake {
+  records_affected: number;
 }
 
 export interface resultResponse {

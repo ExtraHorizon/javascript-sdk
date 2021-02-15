@@ -1,6 +1,6 @@
 import { ApiClient } from '../oauth1-api';
-import { RegisterUserData, UserData, UserDataList } from './models';
-import { recordsAffectedResponse, resultResponse, Results } from '../models';
+import { RegisterUserData, UserData, UserDataList, PermissionDataList, RolesDataList, Role } from './models';
+import { recordsAffectedResponse, resultResponse, Results, recordsAffectedResponseSnake } from '../models';
 
 const userServiceClient = new ApiClient('users', 'v1');
 
@@ -13,6 +13,7 @@ export async function getHealth(): Promise<boolean> {
   const result: resultResponse = await userServiceClient.get('health');
   return result.status === Results.Success;
 }
+
 /**
  * Retrieve the current logged in user.
  * @permission Everyone can use this endpoint
@@ -256,3 +257,104 @@ export async function emailAvailable(email: string): Promise<boolean> {
   const result = await userServiceClient.get(`email_available?email=${email}`);
   return result.emailAvailable;
 }
+
+/**
+ * Retrieve a list of global permissions.
+ * @permission Everyone can use this endpoint
+ * @returns {PermissionDataList} PermissionDataList
+ */
+export async function getGlobalPermissions(): Promise<PermissionDataList> {
+  return await userServiceClient.get('permissions') as PermissionDataList;
+}
+
+/**
+ * Retrieve a list of global roles.
+ * @permission Everyone can use this endpoint
+ * @returns {RolesDataList} RolesDataList
+ */
+export async function getGlobalRoles(rql = ''): Promise<RolesDataList> {
+  return await userServiceClient.get(`roles${rql}`) as RolesDataList;
+}
+
+/**
+ * Create a global role.
+ * @permission CREATE_ROLE | scope:global | Create all roles
+ * @params {RegisterUserData} registerData Data necessary to register (required)
+ * @returns {Role} Role
+ */
+export async function createGlobalRole(rql = ''): Promise<Role> {
+  return await userServiceClient.post(`roles/${rql}`) as Role;
+}
+
+/**
+ * Delete a global role.
+ * @permission Delete your own user object
+ * @permission DELETE_ROLE | scope:global | Delete any user
+ * @params {string} userId of the targeted user (required)
+ * @throws 404 {ResourceUnknownException}
+ * @returns {boolean} success
+ */
+export async function removeGlobalRole(rql = ''): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.delete(`roles/${rql}`);
+  return response.records_affected === 1;
+}
+
+/**
+ * Add a role.
+ * @permission Update roles
+ * @permission UPDATE_ROLE | scope:global | Update any role
+ * @returns {Role} Role
+ */
+export async function updateGlobalRole(roleId: string): Promise<Role> {
+  return await userServiceClient.put(`roles/${roleId}`) as Role;
+}
+
+/**
+ * Add global roles from permission.
+ * @permission Add your own roles
+ * @permission ADD_ROLE_PERMISSIONS | scope:global | Add permission to a role
+ * @params {string} roleId (required)
+ * @throws 404 {ResourceUnknownException}
+ * @returns {Role} Role
+ */
+export async function addPermissionToGlobalRoles(): Promise<Role> {
+  return await userServiceClient.post(`roles/add_permissions`) as Role;
+}
+
+/**
+ * Add global roles from permission.
+ * @permission Remove your own roles
+ * @permission REMOVE_ROLE_PERMISSIONS | scope:global | Remove permission from role
+ * @params {string} roleId (required)
+ * @throws 404 {ResourceUnknownException}
+ * @returns {Role} Role
+ */
+export async function removePermissionFromGlobalRoles(rql = ''): Promise<Role> {
+  return await userServiceClient.post(`roles/remove_permissions/${rql}`) as Role;
+}
+
+/**
+ * Add global roles.
+ * @permission Add your own roles
+ * @permission ADD_ROLE_PERMISSIONS | scope:global | Add any global role to the user
+ * @params {string} roleId (required)
+ * @returns {Role} Role
+ */
+export async function addPermissionGlobalPermissions(rql = ''): Promise<Role> {
+  return await userServiceClient.post(`roles/add_roles/${rql}`) as Role;
+}
+
+/**
+ * Remove global roles.
+ * @permission Remove your own roles
+ * @permission REMOVE_ROLE_FROM_USER | scope:global | Remove any global role from user
+ * @params {string} roleId (required)
+ * @returns {Role} Role
+ */
+export async function removePermissionGlobalPermissions(rql = ''): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`roles/remove_roles/${rql}`) as Role;
+  return response.records_affected === 1;
+}
+
+
+
