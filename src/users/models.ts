@@ -1,15 +1,15 @@
 import { listResponse } from '../models';
 
 export interface UserData {
-  id:string,
+  id: string,
   firstName: string,
   lastName: string,
   language: string,
   timeZone: string,
   email: string,
-  phoneNumber:string,
+  phoneNumber: string,
   activation: boolean,
-  patientEnlistments: Array <PatientEnlistment>,
+  patientEnlistments: Array<PatientEnlistment>,
   roles: Array<Role>,
   staffEnlistments: Array<StaffEnlistment>,
   lastFailedTimestamp: number,
@@ -42,7 +42,7 @@ interface Permission {
 
 interface StaffEnlistment {
   groupId: string;
-  roles: Array <GroupRole>;
+  roles: Array<GroupRole>;
   creationTimestamp: number;
   updateTimestamp: number;
 }
@@ -78,4 +78,88 @@ export enum Gender {
   Male = 1,
   Female = 2,
   NotApplicable = 9,
+}
+
+interface Error {
+  code: number;
+  name: string;
+  message: string;
+}
+
+export const ResourceUnknownException: Error = {
+  code: 16,
+  name: "RESOURCE_UNKNOWN_EXCEPTION",
+  message: "Requested resource is unknown",
+}
+
+export const AuthenticationException: Error = {
+  code: 106,
+  name: "AUTHENTICATION_EXCEPTION",
+  message: "This password email combination is unknown"
+}
+
+export const EmailUnknownException: Error = {
+  code: 202,
+  name: "EMAIL_UNKNOWN_EXCEPTION",
+  message: "This email is not known"
+}
+
+export const EmailUsedException: Error = {
+  code: 203,
+  name: "EMAIL_USED_EXCEPTION",
+  message: "This email address is already in use"
+}
+
+export const ResourceAlreadyExistsException: Error = {
+  code: 203,
+  name: "RESOURCE_ALREADY_EXISTS_EXCEPTION",
+  message: "This resource already exists"
+}
+
+export const NotActivatedException: Error = {
+  code: 204,
+  name: "NOT_ACTIVATED_EXCEPTION",
+  message: "This account needs to be activated before this action can be performed"
+}
+
+export const ActivationUnknownException: Error = {
+  code: 205,
+  name: "ACTIVATION_UNKNOWN_EXCEPTION",
+  message: "This activation does not exist"
+}
+
+export const AlreadyActivatedException: Error = {
+  code: 206,
+  name: "ALREADY_ACTIVATED_EXCEPTION",
+  message: "This user is already activated"
+}
+
+export const NewPasswordHashUnknownException: Error = {
+  code: 207,
+  name: "NEW_PASSWORD_HASH_UNKNOWN_EXCEPTION",
+  message: "This new password hash does not exist"
+}
+
+export const PasswordException: Error = {
+  code: 208,
+  name: "PASSWORD_EXCEPTION",
+  message: "The provided password is not correct"
+}
+
+export const LoginTimeoutException: Error = {
+  code: 211,
+  name: "LOGIN_TIMEOUT_EXCEPTION",
+  message: "Login attempt too fast"
+}
+
+export const LoginFreezeException: Error = {
+  code: 212,
+  name: "LOGIN_FREEZE_EXCEPTION",
+  message: "Login timeout in progress, too many failed login attempts"
+}
+
+export const TooManyFailedAttemptsException: Error = {
+  code: 213,
+  name: "TOO_MANY_FAILED_ATTEMPTS_EXCEPTION",
+  message: "Account is locked due to too many failed login attempts"
 }

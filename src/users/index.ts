@@ -64,12 +64,7 @@ export async function getStaff(rql = ''): Promise<UserDataList> {
  * @permission VIEW_STAFF | scope:global | See a subset of fields for any user with a staff enlistment
  * @permission VIEW_USER | scope:global | See any user object
  * @params {string} userId of the targeted user (required)
- * @throws 404: 
- * {
-    "code": 16,
-    "name": "RESOURCE_UNKNOWN_EXCEPTION",
-    "message": "Requested resource is unknown"
-  }
+ * @throws 404 {ResourceUnknownException}
  * @returns {UserData} UserData
  */
 export async function getById(userId: string): Promise<UserData> {
@@ -82,12 +77,7 @@ export async function getById(userId: string): Promise<UserData> {
  * @permission UPDATE_USER | scope:global | Update any user
  * @params {string} userId of the targeted user (required)
  * @params {any} data Fields to update
- * @throws 404:
- * {
-    "code": 16,
-    "name": "RESOURCE_UNKNOWN_EXCEPTION",
-    "message": "Requested resource is unknown"
-  }
+ * @throws 404 {ResourceUnknownException}
  * @returns {UserData} UserData
  */
 export async function update(userId: string, data: any): Promise<UserData> {
@@ -99,12 +89,7 @@ export async function update(userId: string, data: any): Promise<UserData> {
  * @permission Delete your own user object
  * @permission DELETE_USER | scope:global | Delete any user
  * @params {string} userId of the targeted user (required)
- * @throws 404:
- * {
-    "code": 16,
-    "name": "RESOURCE_UNKNOWN_EXCEPTION",
-    "message": "Requested resource is unknown"
-  }
+ * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
 export async function remove(userId: string): Promise<boolean> {
@@ -119,18 +104,8 @@ export async function remove(userId: string): Promise<boolean> {
  * @permission UPDATE_USER_EMAIL | scope:global | Update any user
  * @params {string} userId of the targeted user (required)
  * @params {string} email
- * @throws 400:
- * {
-    "code": 203,
-    "name": "EMAIL_USED_EXCEPTION",
-    "message": "This email address is already in use"
-  }
- * @throws 404:
- * {
-    "code": 16,
-    "name": "RESOURCE_UNKNOWN_EXCEPTION",
-    "message": "Requested resource is unknown"
-  }
+ * @throws 400 {EmailUsedException}
+ * @throws 404 {ResourceUnknownException}
  * @returns {UserData} UserData
  */
 export async function updateEmail(userId: string, email: string): Promise<UserData> {
@@ -142,12 +117,7 @@ export async function updateEmail(userId: string, email: string): Promise<UserDa
  * @permission ADD_PATIENT | scope:global | Add any patient enlistment
  * @params {string} userId of the targeted user (required)
  * @params {string} groupId of the targeted group (required)
- * @throws 400:
- * {
-    "code": 203,
-    "name": "RESOURCE_ALREADY_EXISTS_EXCEPTION",
-    "message": "This resource already exists"
-  }
+ * @throws 400 {ResourceAlreadyExistsException}
  * @returns {boolean} success
  */
 export async function addPatientEnlistment(userId: string, groupId: string): Promise<boolean> {
@@ -162,12 +132,7 @@ export async function addPatientEnlistment(userId: string, groupId: string): Pro
  * @permission REMOVE_PATIENT | scope:global | Remove any patient enlistment
  * @params {string} userId of the targeted user (required)
  * @params {string} groupId of the targeted group (required)
- * @throws 404:
- * {
-    "code": 16,
-    "name": "RESOURCE_UNKNOWN_EXCEPTION",
-    "message": "Requested resource is unknown"
-  }
+ * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
 export async function deletePatientEnlistment(userId: string, groupId: string): Promise<boolean> {
@@ -180,11 +145,7 @@ export async function deletePatientEnlistment(userId: string, groupId: string): 
  * @permission Everyone can use this endpoint
  * @params {RegisterUserData} registerData Data necessary to register (required)
  * @returns {UserData} UserData
- * @throws 400: {
-    "code": 203,
-    "name": "EMAIL_USED_EXCEPTION",
-    "message": "This email address is already in use"
-  }
+ * @throws 400 {EmailUsedException}
  */
 export async function register(data: RegisterUserData): Promise<UserData> {
   return await userServiceClient.post('register', data) as UserData;
@@ -195,11 +156,7 @@ export async function register(data: RegisterUserData): Promise<UserData> {
  * @permission Everyone can use this endpoint
  * @params {string} Old password (required)
  * @params {string} New password (required)
- * @throws 400: {
-    "code": 208,
-    "name": "PASSWORD_EXCEPTION",
-    "message": "The provided password is not correct"
-  }
+ * @throws 400 {PasswordException}
  * @returns {boolean} success
  */
 export async function updatePassword(oldPassword: string, newPassword: string): Promise<boolean> {
@@ -212,26 +169,10 @@ export async function updatePassword(oldPassword: string, newPassword: string): 
  * @permission Everyone can use this endpoint
  * @params {string} email (required)
  * @params {string} password (required)
- * @throws 401: {
-    "code": 106,
-    "name": "AUTHENTICATION_EXCEPTION",
-    "message": "This password email combination is unknown"
-  }
- * @throws 401: {
-    "code": 211,
-    "name": "LOGIN_TIMEOUT_EXCEPTION",
-    "message": "Login attempt too fast"
-  }
- * @throws 401: {
-    "code": 212,
-    "name": "LOGIN_FREEZE_EXCEPTION",
-    "message": "Login timeout in progress, too many failed login attempts"
-  }
- * @throws 401: {
-    "code": 213,
-    "name": "TOO_MANY_FAILED_ATTEMPTS_EXCEPTION",
-    "message": "Account is locked due to too many failed login attempts"
-  }
+ * @throws 401 {AuthenticationException}
+ * @throws 401 {LoginTimeoutException}
+ * @throws 401 {LoginFreezeException}
+ * @throws 401 {TooManyFailedAttemptsException}
  * @returns {UserData} UserData
  */
 export async function authenticate(email: string, password: string): Promise<UserData> {
@@ -243,16 +184,8 @@ export async function authenticate(email: string, password: string): Promise<Use
  * @permission Everyone can use this endpoint
  * @params {string} email (required)
  * @returns {boolean} success
- * @throws 400: {
-    "code": 202,
-    "name": "EMAIL_UNKNOWN_EXCEPTION",
-    "message": "This email is not known"
-  }
- * @throws 400: {
-    "code": 206,
-    "name": "ALREADY_ACTIVATED_EXCEPTION",
-    "message": "This user is already activated"
-  }
+ * @throws 400: {EmailUnknownException}
+ * @throws 400: {AlreadyActivatedException}
  */
 export async function requestActivationMail(email: string): Promise<boolean> {
   const result: resultResponse = await userServiceClient.get(`activation?email=${email}`);
@@ -263,11 +196,7 @@ export async function requestActivationMail(email: string): Promise<boolean> {
  * Complete an email activation
  * @permission Everyone can use this endpoint
  * @params {string} hash (required)
- * @throws 400: {
-    "code": 205,
-    "name": "ACTIVATION_UNKNOWN_EXCEPTION",
-    "message": "This activation does not exist"
-  }
+ * @throws 400: {ActivationUnknownException}
  * @returns {boolean} success
  */
 export async function completeActivationMail(hash: string): Promise<boolean> {
@@ -279,16 +208,8 @@ export async function completeActivationMail(hash: string): Promise<boolean> {
  * Request a password reset.
  * @permission Everyone can use this endpoint
  * @params {string} email (required)
- * @throws 400: {
-    "code": 202,
-    "name": "EMAIL_UNKNOWN_EXCEPTION",
-    "message": "This email is not known"
-  }
- * @throws 400: {
-    "code": 204,
-    "name": "NOT_ACTIVATED_EXCEPTION",
-    "message": "This account needs to be activated before this action can be performed"
-  }
+ * @throws 400: {EmailUnknownException}
+ * @throws 400: {NotActivatedException}
  * @returns {boolean} success
  */
 export async function requestPasswordReset(email: string): Promise<boolean> {
@@ -301,16 +222,8 @@ export async function requestPasswordReset(email: string): Promise<boolean> {
  * @permission Everyone can use this endpoint
  * @params {string} email (required)
  * @params {string} new password (required)
- * @throws 400: {
-    "code": 204,
-    "name": "NOT_ACTIVATED_EXCEPTION",
-    "message": "This account needs to be activated before this action can be performed"
-  }
- * @throws 400: {
-    "code": 207,
-    "name": "NEW_PASSWORD_HASH_UNKNOWN_EXCEPTION",
-    "message": "This new password hash does not exist"
-  }
+ * @throws 400: {NotActivatedException}
+ * @throws 400: {NewPasswordHashUnknownException}
  * @returns {boolean} success
  */
 export async function completePasswordReset(hash: string, newPassword: string): Promise<boolean> {
@@ -322,26 +235,10 @@ export async function completePasswordReset(hash: string, newPassword: string): 
  * Confirm the password for the user making the request
  * @permission Everyone can use this endpoint
  * @params {string} password (required)
- * @throws 401: {
-    "code": 106,
-    "name": "AUTHENTICATION_EXCEPTION",
-    "message": "This password email combination is unknown"
-  }
- * @throws 401: {
-    "code": 211,
-    "name": "LOGIN_TIMEOUT_EXCEPTION",
-    "message": "Login attempt too fast"
-  }
- * @throws 401: {
-    "code": 212,
-    "name": "LOGIN_FREEZE_EXCEPTION",
-    "message": "Login timeout in progress, too many failed login attempts"
-  }
- * @throws 401: {
-    "code": 213,
-    "name": "TOO_MANY_FAILED_ATTEMPTS_EXCEPTION",
-    "message": "Account is locked due to too many failed login attempts"
-  }
+ * @throws 401 {AuthenticationException}
+ * @throws 401 {LoginTimeoutException}
+ * @throws 401 {LoginFreezeException}
+ * @throws 401 {TooManyFailedAttemptsException}
  * @returns {boolean} success
  */
 export async function confirmPassword(password: string): Promise<boolean> {
