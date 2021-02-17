@@ -43,7 +43,7 @@ export async function getList(rql = ''): Promise<UserDataList> {
  * @returns {UserDataList} UserDataList
  */
 export async function getPatients(rql = ''): Promise<UserDataList> {
-  return await userServiceClient.get(`patients/${rql}`) as UserDataList;
+  return await userServiceClient.get(`patients${rql}`) as UserDataList;
 }
 
 /**
@@ -54,7 +54,7 @@ export async function getPatients(rql = ''): Promise<UserDataList> {
  * @returns {UserDataList} UserDataList
  */
 export async function getStaff(rql = ''): Promise<UserDataList> {
-  return await userServiceClient.get(`staff/${rql}`) as UserDataList;
+  return await userServiceClient.get(`staff${rql}`) as UserDataList;
 }
 
 /**
@@ -161,8 +161,8 @@ export async function register(data: RegisterUserData): Promise<UserData> {
  * @returns {boolean} success
  */
 export async function updatePassword(oldPassword: string, newPassword: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.put('password', { oldPassword, newPassword });
-  return result.status === Results.Success;
+  const result = await userServiceClient.put('password', { oldPassword, newPassword });
+  return !!result.id;
 }
 
 /**
@@ -254,8 +254,8 @@ export async function confirmPassword(password: string): Promise<boolean> {
  * @returns {boolean} success
  */
 export async function emailAvailable(email: string): Promise<boolean> {
-  const result = await userServiceClient.get(`email_available?email=${email}`);
-  return result.emailAvailable;
+  const result: resultResponse = await userServiceClient.get(`email_available?email=${email}`);
+  return result.status === Results.Success;
 }
 
 /**
@@ -318,7 +318,7 @@ export async function updateGlobalRole(roleId: string): Promise<Role> {
  * @returns {Role} Role
  */
 export async function addPermissionToGlobalRoles(): Promise<Role> {
-  return await userServiceClient.post(`roles/add_permissions`) as Role;
+  return await userServiceClient.post('roles/add_permissions') as Role;
 }
 
 /**

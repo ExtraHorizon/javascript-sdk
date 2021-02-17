@@ -96,78 +96,78 @@ interface Error {
 
 export const ResourceUnknownException: Error = {
   code: 16,
-  name: "RESOURCE_UNKNOWN_EXCEPTION",
-  message: "Requested resource is unknown",
-}
+  name: 'RESOURCE_UNKNOWN_EXCEPTION',
+  message: 'Requested resource is unknown',
+};
 
 export const AuthenticationException: Error = {
   code: 106,
-  name: "AUTHENTICATION_EXCEPTION",
-  message: "This password email combination is unknown"
-}
+  name: 'AUTHENTICATION_EXCEPTION',
+  message: 'This password email combination is unknown',
+};
 
 export const EmailUnknownException: Error = {
   code: 202,
-  name: "EMAIL_UNKNOWN_EXCEPTION",
-  message: "This email is not known"
-}
+  name: 'EMAIL_UNKNOWN_EXCEPTION',
+  message: 'This email is not known',
+};
 
 export const EmailUsedException: Error = {
   code: 203,
-  name: "EMAIL_USED_EXCEPTION",
-  message: "This email address is already in use"
-}
+  name: 'EMAIL_USED_EXCEPTION',
+  message: 'This email address is already in use',
+};
 
 export const ResourceAlreadyExistsException: Error = {
   code: 203,
-  name: "RESOURCE_ALREADY_EXISTS_EXCEPTION",
-  message: "This resource already exists"
-}
+  name: 'RESOURCE_ALREADY_EXISTS_EXCEPTION',
+  message: 'This resource already exists',
+};
 
 export const NotActivatedException: Error = {
   code: 204,
-  name: "NOT_ACTIVATED_EXCEPTION",
-  message: "This account needs to be activated before this action can be performed"
-}
+  name: 'NOT_ACTIVATED_EXCEPTION',
+  message: 'This account needs to be activated before this action can be performed',
+};
 
 export const ActivationUnknownException: Error = {
   code: 205,
-  name: "ACTIVATION_UNKNOWN_EXCEPTION",
-  message: "This activation does not exist"
-}
+  name: 'ACTIVATION_UNKNOWN_EXCEPTION',
+  message: 'This activation does not exist',
+};
 
 export const AlreadyActivatedException: Error = {
   code: 206,
-  name: "ALREADY_ACTIVATED_EXCEPTION",
-  message: "This user is already activated"
-}
+  name: 'ALREADY_ACTIVATED_EXCEPTION',
+  message: 'This user is already activated',
+};
 
 export const NewPasswordHashUnknownException: Error = {
   code: 207,
-  name: "NEW_PASSWORD_HASH_UNKNOWN_EXCEPTION",
-  message: "This new password hash does not exist"
-}
+  name: 'NEW_PASSWORD_HASH_UNKNOWN_EXCEPTION',
+  message: 'This new password hash does not exist',
+};
 
 export const PasswordException: Error = {
   code: 208,
-  name: "PASSWORD_EXCEPTION",
-  message: "The provided password is not correct"
-}
+  name: 'PASSWORD_EXCEPTION',
+  message: 'The provided password is not correct',
+};
 
 export const LoginTimeoutException: Error = {
   code: 211,
-  name: "LOGIN_TIMEOUT_EXCEPTION",
-  message: "Login attempt too fast"
-}
+  name: 'LOGIN_TIMEOUT_EXCEPTION',
+  message: 'Login attempt too fast',
+};
 
 export const LoginFreezeException: Error = {
   code: 212,
-  name: "LOGIN_FREEZE_EXCEPTION",
-  message: "Login timeout in progress, too many failed login attempts"
-}
+  name: 'LOGIN_FREEZE_EXCEPTION',
+  message: 'Login timeout in progress, too many failed login attempts',
+};
 
 export const TooManyFailedAttemptsException: Error = {
   code: 213,
-  name: "TOO_MANY_FAILED_ATTEMPTS_EXCEPTION",
-  message: "Account is locked due to too many failed login attempts"
-}
+  name: 'TOO_MANY_FAILED_ATTEMPTS_EXCEPTION',
+  message: 'Account is locked due to too many failed login attempts',
+};
