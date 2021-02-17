@@ -385,11 +385,10 @@ export async function getGroupRoles(groupId: string, rql = ''): Promise<RolesDat
  * @params {string} groupId of the targeted group (required)
  * @permission CREATE_GROUP_ROLE | scope:staff_enlistment | Create a role for any group
  * @permission CREATE_GROUP_ROLE | scope:global | Create a role for the group
- * @returns {boolean} success
+ * @returns {Role} Role
  */
-export async function addRoleToGroup(groupId: string, name: string, description: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.post(`groups/${groupId}/roles`, { name, description });
-  return result.status === Results.Success;
+export async function addRoleToGroup(groupId: string, name: string, description: string): Promise<Role> {
+  return await userServiceClient.post(`groups/${groupId}/roles`, { name, description }) as Role;
 }
 
 /**
@@ -445,7 +444,7 @@ export async function addPermissionToGroupRoles(groupId: string, permissions: st
  * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
-export async function removePermissionFromGroupRoles(groupId: string, rql: string, permissions: string[]): Promise<boolean> {
+export async function removePermissionFromGroupRoles(groupId: string, permissions: string[], rql: string): Promise<boolean> {
   const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/remove_permissions${rql}`, { permissions });
   return response.recordsAffected === 1;
 }
@@ -459,7 +458,7 @@ export async function removePermissionFromGroupRoles(groupId: string, rql: strin
  * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
-export async function addGroupRoles(groupId: string, rql = '', roles: string[]): Promise<boolean> {
+export async function addGroupRoles(groupId: string, roles: string[], rql = ''): Promise<boolean> {
   const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/add_roles${rql}`, { roles });
   return response.recordsAffected === 1;
 }
@@ -473,7 +472,7 @@ export async function addGroupRoles(groupId: string, rql = '', roles: string[]):
  * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
-export async function removeGroupRoles(groupId: string, rql = '', roles: string[]): Promise<boolean> {
+export async function removeGroupRoles(groupId: string, roles: string[], rql = ''): Promise<boolean> {
   const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/remove_roles${rql}`, { roles });
   return response.recordsAffected === 1;
 }
@@ -485,7 +484,7 @@ export async function removeGroupRoles(groupId: string, rql = '', roles: string[
  * @permission ADD_STAFF | scope:global | Add staff to any group
  * @returns {boolean} success
  */
-export async function addUsersToStaff(rql = '', groups: string[]): Promise<boolean> {
+export async function addUsersToStaff(groups: string[], rql = ''): Promise<boolean> {
   const response: recordsAffectedResponse = await userServiceClient.post(`add_to_staff${rql}`, { groups });
   return response.recordsAffected === 1;
 }
@@ -497,7 +496,7 @@ export async function addUsersToStaff(rql = '', groups: string[]): Promise<boole
  * @permission ADD_STAFF | scope:global | Remove staff from any group
  * @returns {boolean} success
  */
-export async function removeUsersFromStaff(rql = '', groups: string[]): Promise<boolean> {
+export async function removeUsersFromStaff(groups: string[], rql = ''): Promise<boolean> {
   const response: recordsAffectedResponse = await userServiceClient.post(`remove_from_staff${rql}`, { groups });
   return response.recordsAffected === 1;
 }

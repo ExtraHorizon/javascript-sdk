@@ -330,3 +330,141 @@ describe('Global roles', () => {
     nock.enableNetConnect();
   });
 });
+
+describe('Group roles', () => {
+  const roleId = '5bfbfc3146e0fb321rsa4b28';
+  const groupId = '5bfbfc3146e0fb321rsa4b28';
+
+  const permissionList = {
+    "permissions": [
+      "VIEW_PRESCRIPTIONS"
+    ]
+  }
+
+  const roleList = {
+    "roles": [
+      "5bfbfc3146e0fb321rsa4b28"
+    ]
+  }
+
+  const groupList = {
+    "groups": [
+      "5bfbfc3146e0fb321rsa4b28"
+    ]
+  }
+
+  it('Can retrieve a list of group permissions', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .get('/groups/permissions')
+      .reply(200, permissionResponse);
+
+    const permissions = await sdk.users.getGroupPermissions();
+
+    expect(permissions.data.length).toBeGreaterThan(0);
+  });
+
+  it('Can retrieve a list of roles for a specific group', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .get(`/groups/${groupId}/roles`)
+      .reply(200, roleResponse);
+
+    const roles = await sdk.users.getGroupRoles(groupId);
+
+    expect(roles.data.length).toBeGreaterThan(0);
+  });
+
+  it('Can add a role to a group', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/roles`)
+      .reply(200, roleData);
+
+    const role = await sdk.users.addRoleToGroup(groupId, 'test', 'test');
+
+    expect(role.id);
+  });
+
+  it('Can update a group role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .put(`/groups/${groupId}/roles/${roleId}`)
+      .reply(200, roleData);
+
+    const role = await sdk.users.updateGroupRole(groupId, roleId, 'test', 'test');
+
+    expect(role.id);
+  });
+
+  it('Can delete a role from a group', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .delete(`/groups/${groupId}/roles/${roleId}`)
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.deleteGroupRole(groupId, roleId);
+
+    expect(role).toBe(true);
+  });
+
+  it('Can add permissions to group roles', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/roles/add_permissions`)
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.addPermissionToGroupRoles(groupId, permissionList.permissions);
+
+    expect(role).toBe(true);
+  });
+
+  it('Can remove permissions from group roles', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/roles/remove_permissions`)
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.removePermissionFromGroupRoles(groupId, permissionList.permissions, '');
+
+    expect(role).toBe(true);
+  });
+
+  it('Can assign roles to staff members of a group', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/staff/add_roles`)
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.addGroupRoles(groupId, roleList.roles);
+
+    expect(role).toBe(true);
+  });
+
+  it('Can remove a role from a user', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/staff/remove_roles`)
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.removeGroupRoles(groupId, roleList.roles);
+
+    expect(role).toBe(true);
+  });
+
+  it('Can add users to staff', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/add_to_staff')
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.addUsersToStaff(groupList.groups);
+
+    expect(role).toBe(true);
+  });
+
+  it('Can remove users from staff', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/remove_from_staff')
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.removeUsersFromStaff(groupList.groups);
+
+    expect(role).toBe(true);
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    nock.enableNetConnect();
+  });
+});
