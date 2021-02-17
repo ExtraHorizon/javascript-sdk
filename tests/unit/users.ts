@@ -1,10 +1,10 @@
 import * as nock from 'nock';
 import * as sdk from '../../src/index';
 import { apiHost } from '../__helpers__/config';
-import { userData, updatedUserData, newUserData } from '../__helpers__/user';
-import { userResponse } from '../__helpers__/apiResponse';
+import { userData, updatedUserData, newUserData, roleData } from '../__helpers__/user';
+import { userResponse, permissionResponse, roleResponse } from '../__helpers__/apiResponse';
 
-describe('User', () => {
+describe('Users', () => {
   const userId = '5a0b2adc265ced65a8cab865';
   const groupId = '5bfbfc3146e0fb321rsa4b28';
   const oldEmail = 'test@test.test';
@@ -212,6 +212,117 @@ describe('User', () => {
     const result = await sdk.users.emailAvailable(newEmail);
 
     expect(result).toBe(true);
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    nock.enableNetConnect();
+  });
+});
+
+describe('Global roles', () => {
+  const roleId = '5bfbfc3146e0fb321rsa4b28';
+
+  const permissionList = {
+    "permissions": [
+      "VIEW_PRESCRIPTIONS"
+    ]
+  }
+
+  const roleList = {
+    "roles": [
+      "5bfbfc3146e0fb321rsa4b28"
+    ]
+  }
+
+  it('Can retrieve a list of permissions', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .get('/permissions')
+      .reply(200, permissionResponse);
+
+    const permissions = await sdk.users.getGlobalPermissions();
+
+    expect(permissions.data.length).toBeGreaterThan(0);
+  });
+
+  it('Can retrieve a list of roles', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .get('/roles')
+      .reply(200, roleResponse);
+
+    const roles = await sdk.users.getGlobalRoles();
+
+    expect(roles.data.length).toBeGreaterThan(0);
+  });
+
+  it('Can create a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/roles')
+      .reply(200, roleData);
+
+    const role = await sdk.users.createGlobalRole();
+
+    expect(role.id);
+  });
+
+  it('Can delete a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .delete('/roles')
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.removeGlobalRole();
+
+    expect(role).toBe(true);
+  });
+
+  it('Can update a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .put(`/roles/${roleId}`)
+      .reply(200, roleData);
+
+    const role = await sdk.users.updateGlobalRole(roleId);
+
+    expect(role.id);
+  });
+
+  it('Can add permissions to a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/roles/add_permissions')
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.addPermissionToGlobalRoles(permissionList.permissions);
+
+    expect(role).toBe(true);
+  });
+
+  it('Can remove permissions from a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/roles/remove_permissions')
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.removePermissionFromGlobalRoles(permissionList.permissions, '');
+
+    expect(role).toBe(true);
+  });
+
+  it('Can add a role to a user', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/add_roles')
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.addGlobalRolesToUser(roleList.roles);
+
+    expect(role).toBe(true);
+  });
+
+  it('Can remove a role from a user', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/remove_roles')
+      .reply(200, { recordsAffected: 1 });
+
+    const role = await sdk.users.removeGlobalRoleFromUser(roleList.roles);
+
+    expect(role).toBe(true);
   });
 
   afterEach(() => {

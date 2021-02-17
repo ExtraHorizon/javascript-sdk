@@ -35,7 +35,7 @@ export interface Role {
   updateTimestamp: number;
 }
 
-interface Permission {
+export interface Permission {
   name: string;
   description: string;
 }

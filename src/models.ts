@@ -7,10 +7,6 @@ export interface recordsAffectedResponse {
   recordsAffected: number;
 }
 
-export interface recordsAffectedResponseSnake {
-  records_affected: number;
-}
-
 export interface resultResponse {
   status: number;
 }
