@@ -15,7 +15,7 @@ export async function getHealth(): Promise<boolean> {
 }
 
 /**
- * Retrieve the current logged in user.
+ * Retrieve the current logged in user
  * @permission Everyone can use this endpoint
  * @returns {UserData} UserData
  */
@@ -24,11 +24,11 @@ export async function getCurrent(): Promise<UserData> {
 }
 
 /**
- * Retrieve a list of users.
+ * Retrieve a list of users
+ * @params {string} rql Add filters to the requested list (optional)
  * @permission See a subset of fields from all staff members of groups where you have a patient enlistment
  * @permission --------- | scope:group  | See a subset of fields from all patients of the group
  * @permission VIEW_USER | scope:global | See all fields of all users
- * @params {string} rql Add filters to the requested list (optional)
  * @returns {UserDataList} UserDataList
  */
 export async function getList(rql = ''): Promise<UserDataList> {
@@ -36,10 +36,10 @@ export async function getList(rql = ''): Promise<UserDataList> {
 }
 
 /**
- * Retrieve a list of users that have a patient enlistment.
+ * Retrieve a list of users that have a patient enlistment
+ * @params {string} rql Add filters to the requested list (optional)
  * @permission --------- | scope:group  | View the patients of the group
  * @permission VIEW_PATIENTS | scope:global | View all patients
- * @params {string} rql Add filters to the requested list (optional)
  * @returns {UserDataList} UserDataList
  */
 export async function getPatients(rql = ''): Promise<UserDataList> {
@@ -47,10 +47,10 @@ export async function getPatients(rql = ''): Promise<UserDataList> {
 }
 
 /**
- * Retrieve a list of users that have a staff enlistment.
+ * Retrieve a list of users that have a staff enlistment
+ * @params {string} rql Add filters to the requested list (optional)
  * @permission --------- | scope:group  | View the other staff members of the group
  * @permission VIEW_STAFF | scope:global | View all staff members
- * @params {string} rql Add filters to the requested list (optional)
  * @returns {UserDataList} UserDataList
  */
 export async function getStaff(rql = ''): Promise<UserDataList> {
@@ -58,13 +58,13 @@ export async function getStaff(rql = ''): Promise<UserDataList> {
 }
 
 /**
- * Retrieve a specific user.
+ * Retrieve a specific user
+ * @params {string} userId of the targeted user (required)
  * @permission See your own user object
  * @permission --------- | scope:group  | See a subset of the fields for any staff member or patient of the group
  * @permission VIEW_PATIENTS | scope:global | See a subset of fields for any user with a patient enlistment
  * @permission VIEW_STAFF | scope:global | See a subset of fields for any user with a staff enlistment
  * @permission VIEW_USER | scope:global | See any user object
- * @params {string} userId of the targeted user (required)
  * @throws 404 {ResourceUnknownException}
  * @returns {UserData} UserData
  */
@@ -73,11 +73,11 @@ export async function getById(userId: string): Promise<UserData> {
 }
 
 /**
- * Update a specific user.
- * @permission Update your own data
- * @permission UPDATE_USER | scope:global | Update any user
+ * Update a specific user
  * @params {string} userId of the targeted user (required)
  * @params {any} data Fields to update
+ * @permission Update your own data
+ * @permission UPDATE_USER | scope:global | Update any user
  * @throws 404 {ResourceUnknownException}
  * @returns {UserData} UserData
  */
@@ -87,9 +87,9 @@ export async function update(userId: string, data: any): Promise<UserData> {
 
 /**
  * Delete a specific user
+ * @params {string} userId of the targeted user (required)
  * @permission Delete your own user object
  * @permission DELETE_USER | scope:global | Delete any user
- * @params {string} userId of the targeted user (required)
  * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
@@ -99,12 +99,12 @@ export async function remove(userId: string): Promise<boolean> {
 }
 
 /**
- * Update the email address of a specific user.
+ * Update the email address of a specific user
+ * @params {string} userId of the targeted user (required)
+ * @params {string} email
  * An email is send to validate and activate the new address.
  * @permission Update your own data
  * @permission UPDATE_USER_EMAIL | scope:global | Update any user
- * @params {string} userId of the targeted user (required)
- * @params {string} email
  * @throws 400 {EmailUsedException}
  * @throws 404 {ResourceUnknownException}
  * @returns {UserData} UserData
@@ -114,10 +114,10 @@ export async function updateEmail(userId: string, email: string): Promise<UserDa
 }
 
 /**
- * Add a patient enlistment to a user.
- * @permission ADD_PATIENT | scope:global | Add any patient enlistment
+ * Add a patient enlistment to a user
  * @params {string} userId of the targeted user (required)
  * @params {string} groupId of the targeted group (required)
+ * @permission ADD_PATIENT | scope:global | Add any patient enlistment
  * @throws 400 {ResourceAlreadyExistsException}
  * @returns {boolean} success
  */
@@ -128,11 +128,11 @@ export async function addPatientEnlistment(userId: string, groupId: string): Pro
 
 /**
  * Remove a patient enlistment from a user.
+ * @params {string} userId of the targeted user (required)
+ * @params {string} groupId of the targeted group (required)
  * @permission Remove a patient enlistment from yourself
  * @permission REMOVE_PATIENT | scope:group | Remove a patient enlistment for the group
  * @permission REMOVE_PATIENT | scope:global | Remove any patient enlistment
- * @params {string} userId of the targeted user (required)
- * @params {string} groupId of the targeted group (required)
  * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
@@ -142,9 +142,9 @@ export async function deletePatientEnlistment(userId: string, groupId: string): 
 }
 
 /**
- * Create an account.
- * @permission Everyone can use this endpoint
+ * Create an account
  * @params {RegisterUserData} registerData Data necessary to register (required)
+ * @permission Everyone can use this endpoint
  * @returns {UserData} UserData
  * @throws 400 {EmailUsedException}
  */
@@ -153,10 +153,10 @@ export async function register(data: RegisterUserData): Promise<UserData> {
 }
 
 /**
- * Change your password..
- * @permission Everyone can use this endpoint
+ * Change your password
  * @params {string} Old password (required)
  * @params {string} New password (required)
+ * @permission Everyone can use this endpoint
  * @throws 400 {PasswordException}
  * @returns {boolean} success
  */
@@ -166,10 +166,10 @@ export async function updatePassword(oldPassword: string, newPassword: string): 
 }
 
 /**
- * Authenticate a user.
- * @permission Everyone can use this endpoint
+ * Authenticate a user
  * @params {string} email (required)
  * @params {string} password (required)
+ * @permission Everyone can use this endpoint
  * @throws 401 {AuthenticationException}
  * @throws 401 {LoginTimeoutException}
  * @throws 401 {LoginFreezeException}
@@ -181,9 +181,9 @@ export async function authenticate(email: string, password: string): Promise<Use
 }
 
 /**
- * Request an email activation.
- * @permission Everyone can use this endpoint
+ * Request an email activation
  * @params {string} email (required)
+ * @permission Everyone can use this endpoint
  * @returns {boolean} success
  * @throws 400: {EmailUnknownException}
  * @throws 400: {AlreadyActivatedException}
@@ -195,8 +195,8 @@ export async function requestActivationMail(email: string): Promise<boolean> {
 
 /**
  * Complete an email activation
- * @permission Everyone can use this endpoint
  * @params {string} hash (required)
+ * @permission Everyone can use this endpoint
  * @throws 400: {ActivationUnknownException}
  * @returns {boolean} success
  */
@@ -206,9 +206,9 @@ export async function completeActivationMail(hash: string): Promise<boolean> {
 }
 
 /**
- * Request a password reset.
- * @permission Everyone can use this endpoint
+ * Request a password reset
  * @params {string} email (required)
+ * @permission Everyone can use this endpoint
  * @throws 400: {EmailUnknownException}
  * @throws 400: {NotActivatedException}
  * @returns {boolean} success
@@ -219,10 +219,10 @@ export async function requestPasswordReset(email: string): Promise<boolean> {
 }
 
 /**
- * Complete a password reset..
- * @permission Everyone can use this endpoint
+ * Complete a password reset
  * @params {string} email (required)
  * @params {string} new password (required)
+ * @permission Everyone can use this endpoint
  * @throws 400: {NotActivatedException}
  * @throws 400: {NewPasswordHashUnknownException}
  * @returns {boolean} success
@@ -234,8 +234,8 @@ export async function completePasswordReset(hash: string, newPassword: string): 
 
 /**
  * Confirm the password for the user making the request
- * @permission Everyone can use this endpoint
  * @params {string} password (required)
+ * @permission Everyone can use this endpoint
  * @throws 401 {AuthenticationException}
  * @throws 401 {LoginTimeoutException}
  * @throws 401 {LoginFreezeException}
@@ -248,9 +248,9 @@ export async function confirmPassword(password: string): Promise<boolean> {
 }
 
 /**
- * Check if an email address is still available.
- * @permission Everyone can use this endpoint
+ * Check if an email address is still available
  * @params {string} email (required)
+ * @permission Everyone can use this endpoint
  * @returns {boolean} success
  */
 export async function emailAvailable(email: string): Promise<boolean> {
@@ -259,7 +259,7 @@ export async function emailAvailable(email: string): Promise<boolean> {
 }
 
 /**
- * Retrieve a list of global permissions.
+ * Retrieve a list of global permissions
  * @permission Everyone can use this endpoint
  * @returns {PermissionDataList} PermissionDataList
  */
@@ -268,7 +268,7 @@ export async function getGlobalPermissions(): Promise<PermissionDataList> {
 }
 
 /**
- * Retrieve a list of global roles.
+ * Retrieve a list of global roles
  * @permission Everyone can use this endpoint
  * @returns {RolesDataList} RolesDataList
  */
@@ -277,9 +277,9 @@ export async function getGlobalRoles(rql = ''): Promise<RolesDataList> {
 }
 
 /**
- * Create a global role.
- * @permission CREATE_ROLE | scope:global | Create all roles
+ * Create a global role
  * @params {RegisterUserData} registerData Data necessary to register (required)
+ * @permission CREATE_ROLE | scope:global | Create all roles
  * @returns {Role} Role
  */
 export async function createGlobalRole(rql = ''): Promise<Role> {
@@ -287,10 +287,10 @@ export async function createGlobalRole(rql = ''): Promise<Role> {
 }
 
 /**
- * Delete a global role.
+ * Delete a global role
+ * @params {string} userId of the targeted user (required)
  * @permission Delete your own user object
  * @permission DELETE_ROLE | scope:global | Delete any user
- * @params {string} userId of the targeted user (required)
  * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
@@ -300,7 +300,8 @@ export async function removeGlobalRole(rql = ''): Promise<boolean> {
 }
 
 /**
- * Add a role.
+ * Update a global role
+ * @params {string} roleId (required)
  * @permission Update roles
  * @permission UPDATE_ROLE | scope:global | Update any role
  * @returns {Role} Role
@@ -310,10 +311,9 @@ export async function updateGlobalRole(roleId: string): Promise<Role> {
 }
 
 /**
- * Add global roles from permission.
+ * Add global roles from permission
  * @permission Add your own roles
  * @permission ADD_ROLE_PERMISSIONS | scope:global | Add permission to a role
- * @params {string} roleId (required)
  * @throws 404 {ResourceUnknownException}
  * @returns {Role} Role
  */
@@ -322,39 +322,180 @@ export async function addPermissionToGlobalRoles(): Promise<Role> {
 }
 
 /**
- * Add global roles from permission.
+ * Add global roles from permission
+ * @params {string} rql Add filters to the requested list (optional)
  * @permission Remove your own roles
  * @permission REMOVE_ROLE_PERMISSIONS | scope:global | Remove permission from role
- * @params {string} roleId (required)
  * @throws 404 {ResourceUnknownException}
  * @returns {Role} Role
  */
-export async function removePermissionFromGlobalRoles(rql = ''): Promise<Role> {
-  return await userServiceClient.post(`roles/remove_permissions/${rql}`) as Role;
-}
-
-/**
- * Add global roles.
- * @permission Add your own roles
- * @permission ADD_ROLE_PERMISSIONS | scope:global | Add any global role to the user
- * @params {string} roleId (required)
- * @returns {Role} Role
- */
-export async function addPermissionGlobalPermissions(rql = ''): Promise<Role> {
-  return await userServiceClient.post(`roles/add_roles/${rql}`) as Role;
-}
-
-/**
- * Remove global roles.
- * @permission Remove your own roles
- * @permission REMOVE_ROLE_FROM_USER | scope:global | Remove any global role from user
- * @params {string} roleId (required)
- * @returns {Role} Role
- */
-export async function removePermissionGlobalPermissions(rql = ''): Promise<boolean> {
-  const response: recordsAffectedResponseSnake = await userServiceClient.post(`roles/remove_roles/${rql}`) as Role;
+export async function removePermissionFromGlobalRoles(rql = ''): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`roles/remove_permissions/${rql}`);
   return response.records_affected === 1;
 }
 
+/**
+ * Add global roles to users
+ * @params {string} rql Add filters to the requested list (optional)
+ * @permission Add global roles to user
+ * @permission ADD_ROLE_TO_USER | scope:global | Add any global role to the user
+ * @returns {Role} Role
+ */
+export async function addGlobalRolesToUser(rql = ''): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`roles/add_roles/${rql}`);
+  return response.records_affected === 1;
+}
 
+/**
+ * Remove global roles from users
+ * @params {string} rql Add filters to the requested list (optional)
+ * @permission Remove role from user
+ * @permission REMOVE_ROLE_FROM_USER | scope:global | Remove any global role from user
+ * @returns {Role} Role
+ */
+export async function removeGlobalRoleFromUser(rql = ''): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`roles/remove_roles/${rql}`);
+  return response.records_affected === 1;
+}
 
+/**
+ * Retrieve a list of group permissions
+ * @permission Everyone can use this endpoint
+ * @returns {PermissionDataList} PermissionDataList
+ */
+export async function getGroupPermissions(): Promise<PermissionDataList> {
+  return await userServiceClient.get('groups/permissions') as PermissionDataList;
+}
+
+/**
+ * Retrieve a list of group roles
+ * @params {string} rql Add filters to the requested list (optional)
+ * @params {string} groupId of the targeted group (required)
+ * @permission Everyone can use this endpoint
+ * @returns {RolesDataList} RolesDataList
+ */
+export async function getGroupRoles(groupId: string, rql = ''): Promise<RolesDataList> {
+  return await userServiceClient.get(`groups/${groupId}/roles${rql}`) as RolesDataList;
+}
+
+/**
+ * Add a role to a group
+ * @params {string} groupId of the targeted group (required)
+ * @permission CREATE_GROUP_ROLE | scope:staff_enlistment | Create a role for any group
+ * @permission CREATE_GROUP_ROLE | scope:global | Create a role for the group
+ * @returns {boolean} success
+ */
+export async function addRoleToGroup(groupId: string, name: string, description: string): Promise<boolean> {
+  const result: resultResponse = await userServiceClient.post(`groups/${groupId}/roles`, { name, description });
+  return result.status === Results.Success;
+}
+
+/**
+ * Update a group role
+ * @params {string} groupId of the targeted group (required)
+ * @params {string} roleId of the targeted role (required)
+ * @params {string} name of the role (optional)
+ * @params {string} description of the role (optional)
+ * @permission UPDATE_GROUP_ROLE | scope:staff_enlistment | Update a role for the group
+ * @permission UPDATE_GROUP_ROLE | scope:global | Update a role for any group
+ * @throws 404 {ResourceUnknownException}
+ * @returns {Role} Role
+ */
+export async function updateGroupRole(groupId: string, roleId: string, name: string, description: string): Promise<Role> {
+  return await userServiceClient.put(`groups/${groupId}/roles/${roleId}`, { name, description }) as Role;
+}
+
+/**
+ * Delete a group role
+ * @params {string} groupId of the targeted group (required)
+ * @params {string} roleId of the targeted role (required)
+ * @params {string} rql Add filters to the requested list (optional)
+ * @permission DELETE_GROUP_ROLE | scope:staff_enlistment | Delete a role for the group
+ * @permission DELETE_GROUP_ROLE | scope:global | Delete a role from any group
+ * @throws 404 {ResourceUnknownException}
+ * @returns {boolean} success
+ */
+export async function deleteGroupRole(groupId: string, roleId: string, rql = ''): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.delete(`groups/${groupId}/roles/${roleId}${rql}`);
+  return response.records_affected === 1;
+}
+
+/**
+ * Add permission to group role
+ * @params {string} groupId of the targeted group (required)
+ * @params {string} rql Add filters to the requested list (optional)
+ * @permission ADD_GROUP_ROLE_PERMISSION | scope:staff_enlistment | Add permissions to roles of the group
+ * @permission ADD_GROUP_ROLE_PERMISSION | scope:global | Add permissions to roles of any group
+ * @throws 404 {ResourceUnknownException}
+ * @returns {boolean} success
+ */
+export async function addPermissionToGroupRoles(groupId: string, permissions: string[]): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`groups/${groupId}/roles/add_permissions`, { permissions });
+  return response.records_affected === 1;
+}
+
+/**
+ * Remove permission from group role
+ * @params {string} groupId of the targeted group (required)
+ * @params {string} rql Add filters to the requested list (required)
+ * @permission REMOVE_GROUP_ROLE_PERMISSION | scope:staff_enlistment | Remove permissions from roles of the group
+ * @permission REMOVE_GROUP_ROLE_PERMISSION | scope:global | Remove permissions from roles of any group
+ * @throws 404 {ResourceUnknownException}
+ * @returns {boolean} success
+ */
+export async function removePermissionFromGroupRoles(groupId: string, rql: string, permissions: string[]): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`groups/${groupId}/roles/remove_permissions${rql}`, { permissions });
+  return response.records_affected === 1;
+}
+
+/**
+ * Assign roles to staff members of a group
+ * @params {string} groupId of the targeted group (required)
+ * @params {string} rql Add filters to the requested list (optional)
+ * @permission ADD_GROUP_ROLE_TO_STAFF | scope:staff_enlistment | Assign roles for the group
+ * @permission ADD_GROUP_ROLE_TO_STAFF | scope:global | Assign roles for any group
+ * @throws 404 {ResourceUnknownException}
+ * @returns {boolean} success
+ */
+export async function addGroupRoles(groupId: string, rql = '', roles: string[]): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`groups/${groupId}/staff/add_roles${rql}`, { roles });
+  return response.records_affected === 1;
+}
+
+/**
+ * Remove roles from staff members of a group
+ * @params {string} groupId of the targeted group (required)
+ * @params {string} rql Add filters to the requested list (required)
+ * @permission REMOVE_GROUP_ROLE_FROM_STAFF | scope:staff_enlistment | Remove roles from staff of the group
+ * @permission REMOVE_GROUP_ROLE_FROM_STAFF | scope:global | Remove roles from staff of any group
+ * @throws 404 {ResourceUnknownException}
+ * @returns {boolean} success
+ */
+export async function removeGroupRoles(groupId: string, rql = '', roles: string[]): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`groups/${groupId}/staff/remove_roles${rql}`, { roles });
+  return response.records_affected === 1;
+}
+
+/**
+ * Add users to staff
+ * @params {string} rql Add filters to the requested list (optional)
+ * @permission ADD_STAFF | scope:staff_enlistment | Add staff to the group
+ * @permission ADD_STAFF | scope:global | Add staff to any group
+ * @returns {boolean} success
+ */
+export async function addUsersToStaff(rql = '', groups: string[]): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`add_to_staff${rql}`, { groups });
+  return response.records_affected === 1;
+}
+
+/**
+ * Remove users from staff
+ * @params {string} rql Add filters to the requested list (required)
+ * @permission ADD_STAFF | scope:staff_enlistment | Remove staff from the group
+ * @permission ADD_STAFF | scope:global | Remove staff from any group
+ * @returns {boolean} success
+ */
+export async function removeUsersFromStaff(rql = '', groups: string[]): Promise<boolean> {
+  const response: recordsAffectedResponseSnake = await userServiceClient.post(`remove_from_staff${rql}`, { groups });
+  return response.records_affected === 1;
+}
