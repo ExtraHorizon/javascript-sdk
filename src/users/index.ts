@@ -305,11 +305,11 @@ export async function createGlobalRole(rql = ''): Promise<Role> {
  * @permission Delete your own user object
  * @permission DELETE_ROLE | scope:global | Delete any user
  * @throws {ResourceUnknownError}
- * @returns {boolean} success
- */
-export async function removeGlobalRole(rql = ''): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function removeGlobalRole(rql = ''): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.delete(`roles${rql}`);
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -328,11 +328,11 @@ export async function updateGlobalRole(roleId: string): Promise<Role> {
  * @permission Add your own roles
  * @permission ADD_ROLE_PERMISSIONS | scope:global | Add permission to a role
  * @throws {ResourceUnknownError}
- * @returns {Role} Role
- */
-export async function addPermissionToGlobalRoles(permissionData: string[]): Promise<boolean> {
-  const response: recordsAffectedResponse = await userServiceClient.post('roles/add_permissions', { permissions: permissionData });
-  return response.recordsAffected === 1;
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function addPermissionToGlobalRoles(permissions: string[]): Promise<number> {
+  const response: recordsAffectedResponse = await userServiceClient.post('roles/add_permissions', { permissions: permissions });
+  return response.recordsAffected;
 }
 
 /**
@@ -341,12 +341,12 @@ export async function addPermissionToGlobalRoles(permissionData: string[]): Prom
  * @permission Remove your own roles
  * @permission REMOVE_ROLE_PERMISSIONS | scope:global | Remove permission from role
  * @throws {ResourceUnknownError}
- * @returns {Role} Role
- */
-export async function removePermissionFromGlobalRoles(permissionData: string[], rql: string): Promise<boolean> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`roles/remove_permissions${rql}`, { permissions: permissionData });
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function removePermissionFromGlobalRoles(permissions: string[], rql: string): Promise<number> {
+  const response: recordsAffectedResponse = await userServiceClient.post(`roles/remove_permissions${rql}`, { permissions });
 
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -354,11 +354,11 @@ export async function removePermissionFromGlobalRoles(permissionData: string[], 
  * @params {string} rql Add filters to the requested list (optional)
  * @permission Add global roles to user
  * @permission ADD_ROLE_TO_USER | scope:global | Add any global role to the user
- * @returns {Role} Role
- */
-export async function addGlobalRolesToUser(roleData: string[], rql = ''): Promise<boolean> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`add_roles${rql}`, { roles: roleData });
-  return response.recordsAffected === 1;
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function addGlobalRolesToUser(roles: string[], rql = ''): Promise<number> {
+  const response: recordsAffectedResponse = await userServiceClient.post(`add_roles${rql}`, { roles });
+  return response.recordsAffected;
 }
 
 /**
@@ -366,11 +366,11 @@ export async function addGlobalRolesToUser(roleData: string[], rql = ''): Promis
  * @params {string} rql Add filters to the requested list (optional)
  * @permission Remove role from user
  * @permission REMOVE_ROLE_FROM_USER | scope:global | Remove any global role from user
- * @returns {Role} Role
- */
-export async function removeGlobalRoleFromUser(roleData: string[], rql = ''): Promise<boolean> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`remove_roles${rql}`, { roles: roleData });
-  return response.recordsAffected === 1;
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function removeGlobalRoleFromUser(roles: string[], rql = ''): Promise<number> {
+  const response: recordsAffectedResponse = await userServiceClient.post(`remove_roles${rql}`, { roles });
+  return response.recordsAffected;
 }
 
 /**
@@ -427,11 +427,11 @@ export async function updateGroupRole(groupId: string, roleId: string, name: str
  * @permission DELETE_GROUP_ROLE | scope:staff_enlistment | Delete a role for the group
  * @permission DELETE_GROUP_ROLE | scope:global | Delete a role from any group
  * @throws {ResourceUnknownError}
- * @returns {boolean} success
- */
-export async function deleteGroupRole(groupId: string, roleId: string, rql = ''): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function deleteGroupRole(groupId: string, roleId: string, rql = ''): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.delete(`groups/${groupId}/roles/${roleId}${rql}`);
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -441,11 +441,11 @@ export async function deleteGroupRole(groupId: string, roleId: string, rql = '')
  * @permission ADD_GROUP_ROLE_PERMISSION | scope:staff_enlistment | Add permissions to roles of the group
  * @permission ADD_GROUP_ROLE_PERMISSION | scope:global | Add permissions to roles of any group
  * @throws {ResourceUnknownError}
- * @returns {boolean} success
- */
-export async function addPermissionToGroupRoles(groupId: string, permissions: string[]): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function addPermissionToGroupRoles(groupId: string, permissions: string[]): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/add_permissions`, { permissions });
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -455,11 +455,11 @@ export async function addPermissionToGroupRoles(groupId: string, permissions: st
  * @permission REMOVE_GROUP_ROLE_PERMISSION | scope:staff_enlistment | Remove permissions from roles of the group
  * @permission REMOVE_GROUP_ROLE_PERMISSION | scope:global | Remove permissions from roles of any group
  * @throws {ResourceUnknownError}
- * @returns {boolean} success
- */
-export async function removePermissionFromGroupRoles(groupId: string, permissions: string[], rql: string): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function removePermissionFromGroupRoles(groupId: string, permissions: string[], rql: string): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/remove_permissions${rql}`, { permissions });
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -469,11 +469,11 @@ export async function removePermissionFromGroupRoles(groupId: string, permission
  * @permission ADD_GROUP_ROLE_TO_STAFF | scope:staff_enlistment | Assign roles for the group
  * @permission ADD_GROUP_ROLE_TO_STAFF | scope:global | Assign roles for any group
  * @throws {ResourceUnknownError}
- * @returns {boolean} success
- */
-export async function addGroupRoles(groupId: string, roles: string[], rql = ''): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function addGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/add_roles${rql}`, { roles });
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -483,11 +483,11 @@ export async function addGroupRoles(groupId: string, roles: string[], rql = ''):
  * @permission REMOVE_GROUP_ROLE_FROM_STAFF | scope:staff_enlistment | Remove roles from staff of the group
  * @permission REMOVE_GROUP_ROLE_FROM_STAFF | scope:global | Remove roles from staff of any group
  * @throws {ResourceUnknownError}
- * @returns {boolean} success
- */
-export async function removeGroupRoles(groupId: string, roles: string[], rql = ''): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function removeGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/remove_roles${rql}`, { roles });
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -495,11 +495,11 @@ export async function removeGroupRoles(groupId: string, roles: string[], rql = '
  * @params {string} rql Add filters to the requested list (optional)
  * @permission ADD_STAFF | scope:staff_enlistment | Add staff to the group
  * @permission ADD_STAFF | scope:global | Add staff to any group
- * @returns {boolean} success
- */
-export async function addUsersToStaff(groups: string[], rql = ''): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function addUsersToStaff(groups: string[], rql = ''): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.post(`add_to_staff${rql}`, { groups });
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
 
 /**
@@ -507,9 +507,9 @@ export async function addUsersToStaff(groups: string[], rql = ''): Promise<boole
  * @params {string} rql Add filters to the requested list (required)
  * @permission ADD_STAFF | scope:staff_enlistment | Remove staff from the group
  * @permission ADD_STAFF | scope:global | Remove staff from any group
- * @returns {boolean} success
- */
-export async function removeUsersFromStaff(groups: string[], rql = ''): Promise<boolean> {
+ * @returns {number} affectedRecords
+affectedRecords */
+export async function removeUsersFromStaff(groups: string[], rql = ''): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.post(`remove_from_staff${rql}`, { groups });
-  return response.recordsAffected === 1;
+  return response.recordsAffected;
 }
