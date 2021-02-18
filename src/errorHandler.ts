@@ -34,7 +34,7 @@ const ErrorClassDefinitions = [
 
 export function typeReceivedError(error) {
   if (!(error instanceof QError)) {
-    return new Error('Generic error: could not find any instance of QError...'); // TODO
+    return new Error('Generic error: could not find any instance of QError...');
   }
 
   const ErrorClassDefinition = ErrorClassDefinitions.find(
