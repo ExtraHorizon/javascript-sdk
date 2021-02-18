@@ -1,10 +1,8 @@
 import { QError } from '@qompium/q-errors';
-import { MissingRequiredFieldsError, ResourceUnknownError } from './errors';
+import { MissingRequiredFieldsError, ResourceUnknownError, ResourceAlreadyExistsError, AuthenticationError } from './errors';
 import {
   EmailUsedError,
-  AuthenticationError,
   EmailUnknownError,
-  ResourceAlreadyExistsError,
   NotActivatedError,
   ActivationUnknownError,
   AlreadyActivatedError,

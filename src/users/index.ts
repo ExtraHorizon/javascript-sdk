@@ -390,7 +390,7 @@ export async function createGlobalRole(rql = ''): Promise<Role> {
  * @permission DELETE_ROLE | scope:global | Delete any user
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function removeGlobalRole(rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.delete(`roles${rql}`);
@@ -421,7 +421,7 @@ export async function updateGlobalRole(roleId: string): Promise<Role> {
  * @permission ADD_ROLE_PERMISSIONS | scope:global | Add permission to a role
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function addPermissionToGlobalRoles(permissions: string[]): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post('roles/add_permissions', { permissions });
@@ -438,7 +438,7 @@ export async function addPermissionToGlobalRoles(permissions: string[]): Promise
  * @permission REMOVE_ROLE_PERMISSIONS | scope:global | Remove permission from role
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function removePermissionFromGlobalRoles(permissions: string[], rql: string): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`roles/remove_permissions${rql}`, { permissions });
@@ -455,7 +455,7 @@ export async function removePermissionFromGlobalRoles(permissions: string[], rql
  * @permission Add global roles to user
  * @permission ADD_ROLE_TO_USER | scope:global | Add any global role to the user
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function addGlobalRolesToUser(roles: string[], rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`add_roles${rql}`, { roles });
@@ -471,7 +471,7 @@ export async function addGlobalRolesToUser(roles: string[], rql = ''): Promise<n
  * @permission Remove role from user
  * @permission REMOVE_ROLE_FROM_USER | scope:global | Remove any global role from user
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function removeGlobalRoleFromUser(roles: string[], rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`remove_roles${rql}`, { roles });
@@ -552,7 +552,7 @@ export async function updateGroupRole(groupId: string, roleId: string, name: str
  * @permission DELETE_GROUP_ROLE | scope:global | Delete a role from any group
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function deleteGroupRole(groupId: string, roleId: string, rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.delete(`groups/${groupId}/roles/${roleId}${rql}`);
@@ -570,7 +570,7 @@ export async function deleteGroupRole(groupId: string, roleId: string, rql = '')
  * @permission ADD_GROUP_ROLE_PERMISSION | scope:global | Add permissions to roles of any group
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function addPermissionToGroupRoles(groupId: string, permissions: string[]): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/add_permissions`, { permissions });
@@ -588,7 +588,7 @@ export async function addPermissionToGroupRoles(groupId: string, permissions: st
  * @permission REMOVE_GROUP_ROLE_PERMISSION | scope:global | Remove permissions from roles of any group
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function removePermissionFromGroupRoles(groupId: string, permissions: string[], rql: string): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/remove_permissions${rql}`, { permissions });
@@ -606,7 +606,7 @@ export async function removePermissionFromGroupRoles(groupId: string, permission
  * @permission ADD_GROUP_ROLE_TO_STAFF | scope:global | Assign roles for any group
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function addGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/add_roles${rql}`, { roles });
@@ -624,7 +624,7 @@ export async function addGroupRoles(groupId: string, roles: string[], rql = ''):
  * @permission REMOVE_GROUP_ROLE_FROM_STAFF | scope:global | Remove roles from staff of any group
  * @throws {ResourceUnknownError}
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function removeGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/remove_roles${rql}`, { roles });
@@ -640,7 +640,7 @@ export async function removeGroupRoles(groupId: string, roles: string[], rql = '
  * @permission ADD_STAFF | scope:staff_enlistment | Add staff to the group
  * @permission ADD_STAFF | scope:global | Add staff to any group
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function addUsersToStaff(groups: string[], rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`add_to_staff${rql}`, { groups });
@@ -656,7 +656,7 @@ export async function addUsersToStaff(groups: string[], rql = ''): Promise<numbe
  * @permission ADD_STAFF | scope:staff_enlistment | Remove staff from the group
  * @permission ADD_STAFF | scope:global | Remove staff from any group
  * @returns {number} affectedRecords
-affectedRecords */
+ */
 export async function removeUsersFromStaff(groups: string[], rql = ''): Promise<number> {
   try {
     const response: recordsAffectedResponse = await userServiceClient.post(`remove_from_staff${rql}`, { groups });

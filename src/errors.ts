@@ -22,3 +22,11 @@ export class MissingRequiredFieldsError extends ApiError {
     this.requiredFields = this.qError.details.required_fields;
   }
 }
+
+export class AuthenticationError extends ApiError {
+  static qName: 'AUTHENTICATION_EXCEPTION';
+}
+
+export class ResourceAlreadyExistsError extends ApiError {
+  static qName: 'RESOURCE_ALREADY_EXISTS_EXCEPTION';
+}

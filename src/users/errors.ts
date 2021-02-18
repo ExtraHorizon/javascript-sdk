@@ -4,16 +4,8 @@ export class EmailUsedError extends ApiError {
   static qName = 'EMAIL_USED_EXCEPTION';
 }
 
-export class AuthenticationError extends ApiError {
-  static qName: 'AUTHENTICATION_EXCEPTION';
-}
-
 export class EmailUnknownError extends ApiError {
   static qName: 'EMAIL_UNKNOWN_EXCEPTION';
-}
-
-export class ResourceAlreadyExistsError extends ApiError {
-  static qName: 'RESOURCE_ALREADY_EXISTS_EXCEPTION';
 }
 
 export class NotActivatedError extends ApiError {
