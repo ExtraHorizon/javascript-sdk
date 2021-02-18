@@ -11,8 +11,12 @@ const userServiceClient = new ApiClient('users', 'v1');
  * @returns {boolean} success
  */
 export async function getHealth(): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.get('health');
-  return result.status === Results.Success;
+  try {
+    const result: resultResponse = await userServiceClient.get('health');
+    return result.status === Results.Success;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -21,7 +25,11 @@ export async function getHealth(): Promise<boolean> {
  * @returns {UserData} UserData
  */
 export async function getCurrent(): Promise<UserData> {
-  return await userServiceClient.get('me') as UserData;
+  try {
+    return await userServiceClient.get('me') as UserData;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -33,7 +41,11 @@ export async function getCurrent(): Promise<UserData> {
  * @returns {UserDataList} UserDataList
  */
 export async function getList(rql = ''): Promise<UserDataList> {
-  return await userServiceClient.get(rql) as UserDataList;
+  try {
+    return await userServiceClient.get(rql) as UserDataList;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -44,7 +56,11 @@ export async function getList(rql = ''): Promise<UserDataList> {
  * @returns {UserDataList} UserDataList
  */
 export async function getPatients(rql = ''): Promise<UserDataList> {
-  return await userServiceClient.get(`patients${rql}`) as UserDataList;
+  try {
+    return await userServiceClient.get(`patients${rql}`) as UserDataList;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -55,7 +71,11 @@ export async function getPatients(rql = ''): Promise<UserDataList> {
  * @returns {UserDataList} UserDataList
  */
 export async function getStaff(rql = ''): Promise<UserDataList> {
-  return await userServiceClient.get(`staff${rql}`) as UserDataList;
+  try {
+    return await userServiceClient.get(`staff${rql}`) as UserDataList;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -70,7 +90,11 @@ export async function getStaff(rql = ''): Promise<UserDataList> {
  * @returns {UserData} UserData
  */
 export async function getById(userId: string): Promise<UserData> {
-  return await userServiceClient.get(userId) as UserData;
+  try {
+    return await userServiceClient.get(userId) as UserData;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -83,7 +107,11 @@ export async function getById(userId: string): Promise<UserData> {
  * @returns {UserData} UserData
  */
 export async function update(userId: string, data: any): Promise<UserData> {
-  return await userServiceClient.put(userId, data) as UserData;
+  try {
+    return await userServiceClient.put(userId, data) as UserData;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -95,9 +123,13 @@ export async function update(userId: string, data: any): Promise<UserData> {
  * @returns {boolean} success
  */
 export async function remove(userId: string): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.delete(userId);
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.delete(userId);
 
-  return response.recordsAffected;
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -148,9 +180,13 @@ export async function addPatientEnlistment(userId: string, groupId: string): Pro
  * @returns {number} affectedRecords
  */
 export async function deletePatientEnlistment(userId: string, groupId: string): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.delete(`${userId}/patient_enlistments/${groupId}`);
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.delete(`${userId}/patient_enlistments/${groupId}`);
 
-  return response.recordsAffected;
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -161,7 +197,11 @@ export async function deletePatientEnlistment(userId: string, groupId: string): 
  * @throws {EmailUsedError}
  */
 export async function register(data: RegisterUserData): Promise<UserData> {
-  return await userServiceClient.post('register', data) as UserData;
+  try {
+    return await userServiceClient.post('register', data) as UserData;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -173,9 +213,13 @@ export async function register(data: RegisterUserData): Promise<UserData> {
  * @returns {boolean} success
  */
 export async function updatePassword(oldPassword: string, newPassword: string): Promise<boolean> {
-  const result = await userServiceClient.put('password', { oldPassword, newPassword });
+  try {
+    const result = await userServiceClient.put('password', { oldPassword, newPassword });
 
-  return !!result.id;
+    return !!result.id;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -190,7 +234,11 @@ export async function updatePassword(oldPassword: string, newPassword: string): 
  * @returns {UserData} UserData
  */
 export async function authenticate(email: string, password: string): Promise<UserData> {
-  return await userServiceClient.post('authenticate', { email, password }) as UserData;
+  try {
+    return await userServiceClient.post('authenticate', { email, password }) as UserData;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -202,8 +250,12 @@ export async function authenticate(email: string, password: string): Promise<Use
  * @throws {AlreadyActivatedError}
  */
 export async function requestActivationMail(email: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.get(`activation?email=${email}`);
-  return result.status === Results.Success;
+  try {
+    const result: resultResponse = await userServiceClient.get(`activation?email=${email}`);
+    return result.status === Results.Success;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -214,8 +266,12 @@ export async function requestActivationMail(email: string): Promise<boolean> {
  * @returns {boolean} success
  */
 export async function completeActivationMail(hash: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.post('activation', { hash });
-  return result.status === Results.Success;
+  try {
+    const result: resultResponse = await userServiceClient.post('activation', { hash });
+    return result.status === Results.Success;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -227,8 +283,12 @@ export async function completeActivationMail(hash: string): Promise<boolean> {
  * @returns {boolean} success
  */
 export async function requestPasswordReset(email: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.get(`forgot_password?email=${email}`);
-  return result.status === Results.Success;
+  try {
+    const result: resultResponse = await userServiceClient.get(`forgot_password?email=${email}`);
+    return result.status === Results.Success;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -241,8 +301,12 @@ export async function requestPasswordReset(email: string): Promise<boolean> {
  * @returns {boolean} success
  */
 export async function completePasswordReset(hash: string, newPassword: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.post('forgot_password', { hash, newPassword });
-  return result.status === Results.Success;
+  try {
+    const result: resultResponse = await userServiceClient.post('forgot_password', { hash, newPassword });
+    return result.status === Results.Success;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -256,8 +320,12 @@ export async function completePasswordReset(hash: string, newPassword: string): 
  * @returns {boolean} success
  */
 export async function confirmPassword(password: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.post('confirm_password', { password });
-  return result.status === Results.Success;
+  try {
+    const result: resultResponse = await userServiceClient.post('confirm_password', { password });
+    return result.status === Results.Success;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -267,8 +335,12 @@ export async function confirmPassword(password: string): Promise<boolean> {
  * @returns {boolean} success
  */
 export async function emailAvailable(email: string): Promise<boolean> {
-  const result: resultResponse = await userServiceClient.get(`email_available?email=${email}`);
-  return result.status === Results.Success;
+  try {
+    const result: resultResponse = await userServiceClient.get(`email_available?email=${email}`);
+    return result.status === Results.Success;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -277,7 +349,11 @@ export async function emailAvailable(email: string): Promise<boolean> {
  * @returns {PermissionDataList} PermissionDataList
  */
 export async function getGlobalPermissions(): Promise<PermissionDataList> {
-  return await userServiceClient.get('permissions') as PermissionDataList;
+  try {
+    return await userServiceClient.get('permissions') as PermissionDataList;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -286,7 +362,11 @@ export async function getGlobalPermissions(): Promise<PermissionDataList> {
  * @returns {RolesDataList} RolesDataList
  */
 export async function getGlobalRoles(rql = ''): Promise<RolesDataList> {
-  return await userServiceClient.get(`roles${rql}`) as RolesDataList;
+  try {
+    return await userServiceClient.get(`roles${rql}`) as RolesDataList;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -296,7 +376,11 @@ export async function getGlobalRoles(rql = ''): Promise<RolesDataList> {
  * @returns {Role} Role
  */
 export async function createGlobalRole(rql = ''): Promise<Role> {
-  return await userServiceClient.post(`roles${rql}`) as Role;
+  try {
+    return await userServiceClient.post(`roles${rql}`) as Role;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -308,8 +392,12 @@ export async function createGlobalRole(rql = ''): Promise<Role> {
  * @returns {number} affectedRecords
 affectedRecords */
 export async function removeGlobalRole(rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.delete(`roles${rql}`);
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.delete(`roles${rql}`);
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -320,7 +408,11 @@ export async function removeGlobalRole(rql = ''): Promise<number> {
  * @returns {Role} Role
  */
 export async function updateGlobalRole(roleId: string): Promise<Role> {
-  return await userServiceClient.put(`roles/${roleId}`) as Role;
+  try {
+    return await userServiceClient.put(`roles/${roleId}`) as Role;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -331,8 +423,12 @@ export async function updateGlobalRole(roleId: string): Promise<Role> {
  * @returns {number} affectedRecords
 affectedRecords */
 export async function addPermissionToGlobalRoles(permissions: string[]): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post('roles/add_permissions', { permissions });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post('roles/add_permissions', { permissions });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -344,9 +440,13 @@ export async function addPermissionToGlobalRoles(permissions: string[]): Promise
  * @returns {number} affectedRecords
 affectedRecords */
 export async function removePermissionFromGlobalRoles(permissions: string[], rql: string): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`roles/remove_permissions${rql}`, { permissions });
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`roles/remove_permissions${rql}`, { permissions });
 
-  return response.recordsAffected;
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -357,8 +457,12 @@ export async function removePermissionFromGlobalRoles(permissions: string[], rql
  * @returns {number} affectedRecords
 affectedRecords */
 export async function addGlobalRolesToUser(roles: string[], rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`add_roles${rql}`, { roles });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`add_roles${rql}`, { roles });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -369,8 +473,12 @@ export async function addGlobalRolesToUser(roles: string[], rql = ''): Promise<n
  * @returns {number} affectedRecords
 affectedRecords */
 export async function removeGlobalRoleFromUser(roles: string[], rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`remove_roles${rql}`, { roles });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`remove_roles${rql}`, { roles });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -379,7 +487,11 @@ export async function removeGlobalRoleFromUser(roles: string[], rql = ''): Promi
  * @returns {PermissionDataList} PermissionDataList
  */
 export async function getGroupPermissions(): Promise<PermissionDataList> {
-  return await userServiceClient.get('groups/permissions') as PermissionDataList;
+  try {
+    return await userServiceClient.get('groups/permissions') as PermissionDataList;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -390,7 +502,11 @@ export async function getGroupPermissions(): Promise<PermissionDataList> {
  * @returns {RolesDataList} RolesDataList
  */
 export async function getGroupRoles(groupId: string, rql = ''): Promise<RolesDataList> {
-  return await userServiceClient.get(`groups/${groupId}/roles${rql}`) as RolesDataList;
+  try {
+    return await userServiceClient.get(`groups/${groupId}/roles${rql}`) as RolesDataList;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -401,7 +517,11 @@ export async function getGroupRoles(groupId: string, rql = ''): Promise<RolesDat
  * @returns {Role} Role
  */
 export async function addRoleToGroup(groupId: string, name: string, description: string): Promise<Role> {
-  return await userServiceClient.post(`groups/${groupId}/roles`, { name, description }) as Role;
+  try {
+    return await userServiceClient.post(`groups/${groupId}/roles`, { name, description }) as Role;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -416,7 +536,11 @@ export async function addRoleToGroup(groupId: string, name: string, description:
  * @returns {Role} Role
  */
 export async function updateGroupRole(groupId: string, roleId: string, name: string, description: string): Promise<Role> {
-  return await userServiceClient.put(`groups/${groupId}/roles/${roleId}`, { name, description }) as Role;
+  try {
+    return await userServiceClient.put(`groups/${groupId}/roles/${roleId}`, { name, description }) as Role;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -430,8 +554,12 @@ export async function updateGroupRole(groupId: string, roleId: string, name: str
  * @returns {number} affectedRecords
 affectedRecords */
 export async function deleteGroupRole(groupId: string, roleId: string, rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.delete(`groups/${groupId}/roles/${roleId}${rql}`);
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.delete(`groups/${groupId}/roles/${roleId}${rql}`);
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -444,8 +572,12 @@ export async function deleteGroupRole(groupId: string, roleId: string, rql = '')
  * @returns {number} affectedRecords
 affectedRecords */
 export async function addPermissionToGroupRoles(groupId: string, permissions: string[]): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/add_permissions`, { permissions });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/add_permissions`, { permissions });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -458,8 +590,12 @@ export async function addPermissionToGroupRoles(groupId: string, permissions: st
  * @returns {number} affectedRecords
 affectedRecords */
 export async function removePermissionFromGroupRoles(groupId: string, permissions: string[], rql: string): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/remove_permissions${rql}`, { permissions });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/roles/remove_permissions${rql}`, { permissions });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -472,8 +608,12 @@ export async function removePermissionFromGroupRoles(groupId: string, permission
  * @returns {number} affectedRecords
 affectedRecords */
 export async function addGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/add_roles${rql}`, { roles });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/add_roles${rql}`, { roles });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -486,8 +626,12 @@ export async function addGroupRoles(groupId: string, roles: string[], rql = ''):
  * @returns {number} affectedRecords
 affectedRecords */
 export async function removeGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/remove_roles${rql}`, { roles });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`groups/${groupId}/staff/remove_roles${rql}`, { roles });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -498,8 +642,12 @@ export async function removeGroupRoles(groupId: string, roles: string[], rql = '
  * @returns {number} affectedRecords
 affectedRecords */
 export async function addUsersToStaff(groups: string[], rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`add_to_staff${rql}`, { groups });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`add_to_staff${rql}`, { groups });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -510,6 +658,10 @@ export async function addUsersToStaff(groups: string[], rql = ''): Promise<numbe
  * @returns {number} affectedRecords
 affectedRecords */
 export async function removeUsersFromStaff(groups: string[], rql = ''): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`remove_from_staff${rql}`, { groups });
-  return response.recordsAffected;
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`remove_from_staff${rql}`, { groups });
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
