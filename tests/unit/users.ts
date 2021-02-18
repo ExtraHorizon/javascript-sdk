@@ -3,6 +3,7 @@ import * as sdk from '../../src/index';
 import { apiHost } from '../__helpers__/config';
 import { userData, updatedUserData, newUserData, roleData } from '../__helpers__/user';
 import { userResponse, permissionResponse, roleResponse } from '../__helpers__/apiResponse';
+import { ResourceUnknownException } from '../__helpers__/user';
 
 describe('Users', () => {
   const userId = '5a0b2adc265ced65a8cab865';
@@ -73,6 +74,21 @@ describe('Users', () => {
     expect(user.id);
   });
 
+  it('Can not get user by id', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .get(`/${userId}`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.getById(userId);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can update a user', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .put(`/${userId}`)
@@ -84,6 +100,21 @@ describe('Users', () => {
     expect(user.lastName).toBe('testje');
   });
 
+  it('Can not update a user', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .put(`/${userId}`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.update(userId, { first_name: 'testje', last_name: 'testje' });
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can remove a user', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .delete(`/${userId}`)
@@ -92,6 +123,21 @@ describe('Users', () => {
     const result = await sdk.users.remove(userId);
 
     expect(result).toBeGreaterThan(0);
+  });
+
+  it('Can not remove a user', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .delete(`/${userId}`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.remove(userId);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
   });
 
   it('Can update a users email', async () => {
@@ -122,6 +168,21 @@ describe('Users', () => {
     const result = await sdk.users.deletePatientEnlistment(userId, groupId);
 
     expect(result).toBeGreaterThan(0);
+  });
+
+  it('Can not remove a patient enlistment from a user', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .delete(`/${userId}/patient_enlistments/${groupId}`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.deletePatientEnlistment(userId, groupId);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
   });
 
   it('Can register a new user', async () => {
@@ -275,6 +336,21 @@ describe('Global roles', () => {
     expect(role).toBeGreaterThan(0);
   });
 
+  it('Can not delete a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .delete('/roles')
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.removeGlobalRole();
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can update a role', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .put(`/roles/${roleId}`)
@@ -295,6 +371,21 @@ describe('Global roles', () => {
     expect(role).toBeGreaterThan(0);
   });
 
+  it('Can not add permissions to a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/roles/add_permissions')
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.addPermissionToGlobalRoles(permissionList.permissions);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can remove permissions from a role', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .post('/roles/remove_permissions')
@@ -303,6 +394,21 @@ describe('Global roles', () => {
     const role = await sdk.users.removePermissionFromGlobalRoles(permissionList.permissions, '');
 
     expect(role).toBeGreaterThan(0);
+  });
+
+  it('Can not remove permissions from a role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/roles/remove_permissions')
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.removePermissionFromGlobalRoles(permissionList.permissions, '');
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
   });
 
   it('Can add a role to a user', async () => {
@@ -393,6 +499,21 @@ describe('Group roles', () => {
     expect(role.id);
   });
 
+  it('Can not update a group role', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .put(`/groups/${groupId}/roles/${roleId}`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.updateGroupRole(groupId, roleId, 'test', 'test');
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can delete a role from a group', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .delete(`/groups/${groupId}/roles/${roleId}`)
@@ -401,6 +522,21 @@ describe('Group roles', () => {
     const role = await sdk.users.deleteGroupRole(groupId, roleId);
 
     expect(role).toBeGreaterThan(0);
+  });
+
+  it('Can not delete a role from a group', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .delete(`/groups/${groupId}/roles/${roleId}`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.deleteGroupRole(groupId, roleId);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
   });
 
   it('Can add permissions to group roles', async () => {
@@ -413,6 +549,21 @@ describe('Group roles', () => {
     expect(role).toBeGreaterThan(0);
   });
 
+  it('Can not add permissions to group roles', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/roles/add_permissions`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.addPermissionToGroupRoles(groupId, permissionList.permissions);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can remove permissions from group roles', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .post(`/groups/${groupId}/roles/remove_permissions`)
@@ -421,6 +572,21 @@ describe('Group roles', () => {
     const role = await sdk.users.removePermissionFromGroupRoles(groupId, permissionList.permissions, '');
 
     expect(role).toBeGreaterThan(0);
+  });
+
+  it('Can not remove permissions from group roles', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/roles/remove_permissions`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.removePermissionFromGroupRoles(groupId, permissionList.permissions, '');
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
   });
 
   it('Can assign roles to staff members of a group', async () => {
@@ -433,6 +599,21 @@ describe('Group roles', () => {
     expect(role).toBeGreaterThan(0);
   });
 
+  it('Can not assign roles to staff members of a group', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/staff/add_roles`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.addGroupRoles(groupId, roleList.roles);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can remove a role from a user', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .post(`/groups/${groupId}/staff/remove_roles`)
@@ -441,6 +622,21 @@ describe('Group roles', () => {
     const role = await sdk.users.removeGroupRoles(groupId, roleList.roles);
 
     expect(role).toBeGreaterThan(0);
+  });
+
+  it('Can not remove a role from a user', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post(`/groups/${groupId}/staff/remove_roles`)
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.removeGroupRoles(groupId, roleList.roles);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
   });
 
   it('Can add users to staff', async () => {
@@ -453,6 +649,21 @@ describe('Group roles', () => {
     expect(role).toBeGreaterThan(0);
   });
 
+  it('Can not add users to staff', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/add_to_staff')
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.addUsersToStaff(groupList.groups);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
+  });
+
   it('Can remove users from staff', async () => {
     nock(`https://api.${apiHost}/users/v1`)
       .post('/remove_from_staff')
@@ -461,6 +672,21 @@ describe('Group roles', () => {
     const role = await sdk.users.removeUsersFromStaff(groupList.groups);
 
     expect(role).toBeGreaterThan(0);
+  });
+
+  it('Can not remove users from staff', async () => {
+    nock(`https://api.${apiHost}/users/v1`)
+      .post('/remove_from_staff')
+      .reply(404, ResourceUnknownException);
+
+    let thrownError;
+    try {
+      await sdk.users.removeUsersFromStaff(groupList.groups);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError.qError.qName).toBe("RESOURCE_UNKNOWN_EXCEPTION");
   });
 
   afterEach(() => {
