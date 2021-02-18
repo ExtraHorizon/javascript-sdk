@@ -1,6 +1,7 @@
 import { ApiClient } from '../oauth1-api';
 import { RegisterUserData, UserData, UserDataList, PermissionDataList, RolesDataList, Role } from './models';
 import { recordsAffectedResponse, resultResponse, Results } from '../models';
+import { typeReceivedError } from '../errorHandler';
 
 const userServiceClient = new ApiClient('users', 'v1');
 
@@ -93,9 +94,10 @@ export async function update(userId: string, data: any): Promise<UserData> {
  * @throws 404 {ResourceUnknownException}
  * @returns {boolean} success
  */
-export async function remove(userId: string): Promise<boolean> {
+export async function remove(userId: string): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.delete(userId);
-  return response.recordsAffected === 1;
+
+  return response.recordsAffected;
 }
 
 /**
@@ -105,12 +107,16 @@ export async function remove(userId: string): Promise<boolean> {
  * An email is send to validate and activate the new address.
  * @permission Update your own data
  * @permission UPDATE_USER_EMAIL | scope:global | Update any user
- * @throws 400 {EmailUsedException}
- * @throws 404 {ResourceUnknownException}
+ * @throws {EmailUsedError}
+ * @throws {ResourceUnknownError}
  * @returns {UserData} UserData
  */
 export async function updateEmail(userId: string, email: string): Promise<UserData> {
-  return await userServiceClient.put(`${userId}/email`, { email }) as UserData;
+  try {
+    return await userServiceClient.put(`${userId}/email`, { email }) as UserData;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -118,12 +124,17 @@ export async function updateEmail(userId: string, email: string): Promise<UserDa
  * @params {string} userId of the targeted user (required)
  * @params {string} groupId of the targeted group (required)
  * @permission ADD_PATIENT | scope:global | Add any patient enlistment
- * @throws 400 {ResourceAlreadyExistsException}
- * @returns {boolean} success
+ * @throws {ResourceAlreadyExistsException}
+ * @returns {number} affectedRecords
  */
-export async function addPatientEnlistment(userId: string, groupId: string): Promise<boolean> {
-  const response: recordsAffectedResponse = await userServiceClient.post(`${userId}/patient_enlistments`, { groupId });
-  return response.recordsAffected === 1;
+export async function addPatientEnlistment(userId: string, groupId: string): Promise<number> {
+  try {
+    const response: recordsAffectedResponse = await userServiceClient.post(`${userId}/patient_enlistments`, { groupId });
+
+    return response.recordsAffected;
+  } catch (e) {
+    throw typeReceivedError(e);
+  }
 }
 
 /**
@@ -134,11 +145,12 @@ export async function addPatientEnlistment(userId: string, groupId: string): Pro
  * @permission REMOVE_PATIENT | scope:group | Remove a patient enlistment for the group
  * @permission REMOVE_PATIENT | scope:global | Remove any patient enlistment
  * @throws 404 {ResourceUnknownException}
- * @returns {boolean} success
+ * @returns {number} affectedRecords
  */
-export async function deletePatientEnlistment(userId: string, groupId: string): Promise<boolean> {
+export async function deletePatientEnlistment(userId: string, groupId: string): Promise<number> {
   const response: recordsAffectedResponse = await userServiceClient.delete(`${userId}/patient_enlistments/${groupId}`);
-  return response.recordsAffected === 1;
+
+  return response.recordsAffected;
 }
 
 /**
@@ -162,6 +174,7 @@ export async function register(data: RegisterUserData): Promise<UserData> {
  */
 export async function updatePassword(oldPassword: string, newPassword: string): Promise<boolean> {
   const result = await userServiceClient.put('password', { oldPassword, newPassword });
+
   return !!result.id;
 }
 
@@ -170,10 +183,10 @@ export async function updatePassword(oldPassword: string, newPassword: string): 
  * @params {string} email (required)
  * @params {string} password (required)
  * @permission Everyone can use this endpoint
- * @throws 401 {AuthenticationException}
- * @throws 401 {LoginTimeoutException}
- * @throws 401 {LoginFreezeException}
- * @throws 401 {TooManyFailedAttemptsException}
+ * @throws {AuthenticationException}
+ * @throws {LoginTimeoutException}
+ * @throws {LoginFreezeException}
+ * @throws {TooManyFailedAttemptsException}
  * @returns {UserData} UserData
  */
 export async function authenticate(email: string, password: string): Promise<UserData> {
@@ -332,7 +345,7 @@ export async function addPermissionToGlobalRoles(permissionData: string[]): Prom
  */
 export async function removePermissionFromGlobalRoles(permissionData: string[], rql: string): Promise<boolean> {
   const response: recordsAffectedResponse = await userServiceClient.post(`roles/remove_permissions${rql}`, { permissions: permissionData });
-  console.log('rrerere', response);
+
   return response.recordsAffected === 1;
 }
 
