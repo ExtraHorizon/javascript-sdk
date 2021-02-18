@@ -30,17 +30,17 @@ const ErrorClassDefinitions = [
   TooManyFailedAttemptsError,
 ];
 
-export function typeReceivedError(error) {
+export function typeReceivedError(error: any) {
   if (!(error instanceof QError)) {
-    return new Error('Generic error: could not find any instance of QError...');
+    return error;
   }
 
   const ErrorClassDefinition = ErrorClassDefinitions.find(
-    definition => error.qName === definition.qName
+    definition => error?.qName === definition.qName
   );
 
   if (!ErrorClassDefinition) {
-    return new Error('Generic error: could not find any ErrorClassDefinition...');
+    return error;
   }
 
   return new ErrorClassDefinition(error);

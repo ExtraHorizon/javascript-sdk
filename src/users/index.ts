@@ -157,6 +157,7 @@ export async function updateEmail(userId: string, email: string): Promise<UserDa
  * @params {string} groupId of the targeted group (required)
  * @permission ADD_PATIENT | scope:global | Add any patient enlistment
  * @throws {ResourceAlreadyExistsError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function addPatientEnlistment(userId: string, groupId: string): Promise<number> {
@@ -195,6 +196,7 @@ export async function deletePatientEnlistment(userId: string, groupId: string): 
  * @permission Everyone can use this endpoint
  * @returns {UserData} UserData
  * @throws {EmailUsedError}
+ * @throws {MissingRequiredFieldsError}
  */
 export async function register(data: RegisterUserData): Promise<UserData> {
   try {
@@ -231,6 +233,7 @@ export async function updatePassword(oldPassword: string, newPassword: string): 
  * @throws {LoginTimeoutError}
  * @throws {LoginFreezeError}
  * @throws {TooManyFailedAttemptsError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {UserData} UserData
  */
 export async function authenticate(email: string, password: string): Promise<UserData> {
@@ -263,6 +266,7 @@ export async function requestActivationMail(email: string): Promise<boolean> {
  * @params {string} hash (required)
  * @permission Everyone can use this endpoint
  * @throws {ActivationUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {boolean} success
  */
 export async function completeActivationMail(hash: string): Promise<boolean> {
@@ -298,6 +302,7 @@ export async function requestPasswordReset(email: string): Promise<boolean> {
  * @permission Everyone can use this endpoint
  * @throws {NotActivatedError}
  * @throws {NewPasswordHashUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {boolean} success
  */
 export async function completePasswordReset(hash: string, newPassword: string): Promise<boolean> {
@@ -317,6 +322,7 @@ export async function completePasswordReset(hash: string, newPassword: string): 
  * @throws {LoginTimeoutError}
  * @throws {LoginFreezeError}
  * @throws {TooManyFailedAttemptsError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {boolean} success
  */
 export async function confirmPassword(password: string): Promise<boolean> {
@@ -373,6 +379,7 @@ export async function getGlobalRoles(rql = ''): Promise<RolesDataList> {
  * Create a global role
  * @params {RegisterUserData} registerData Data necessary to register (required)
  * @permission CREATE_ROLE | scope:global | Create all roles
+ * @throws {MissingRequiredFieldsError}
  * @returns {Role} Role
  */
 export async function createGlobalRole(rql = ''): Promise<Role> {
@@ -420,6 +427,7 @@ export async function updateGlobalRole(roleId: string): Promise<Role> {
  * @permission Add your own roles
  * @permission ADD_ROLE_PERMISSIONS | scope:global | Add permission to a role
  * @throws {ResourceUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function addPermissionToGlobalRoles(permissions: string[]): Promise<number> {
@@ -437,6 +445,7 @@ export async function addPermissionToGlobalRoles(permissions: string[]): Promise
  * @permission Remove your own roles
  * @permission REMOVE_ROLE_PERMISSIONS | scope:global | Remove permission from role
  * @throws {ResourceUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function removePermissionFromGlobalRoles(permissions: string[], rql: string): Promise<number> {
@@ -454,6 +463,7 @@ export async function removePermissionFromGlobalRoles(permissions: string[], rql
  * @params {string} rql Add filters to the requested list (optional)
  * @permission Add global roles to user
  * @permission ADD_ROLE_TO_USER | scope:global | Add any global role to the user
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function addGlobalRolesToUser(roles: string[], rql = ''): Promise<number> {
@@ -470,6 +480,7 @@ export async function addGlobalRolesToUser(roles: string[], rql = ''): Promise<n
  * @params {string} rql Add filters to the requested list (optional)
  * @permission Remove role from user
  * @permission REMOVE_ROLE_FROM_USER | scope:global | Remove any global role from user
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function removeGlobalRoleFromUser(roles: string[], rql = ''): Promise<number> {
@@ -514,6 +525,7 @@ export async function getGroupRoles(groupId: string, rql = ''): Promise<RolesDat
  * @params {string} groupId of the targeted group (required)
  * @permission CREATE_GROUP_ROLE | scope:staff_enlistment | Create a role for any group
  * @permission CREATE_GROUP_ROLE | scope:global | Create a role for the group
+ * @throws {MissingRequiredFieldsError}
  * @returns {Role} Role
  */
 export async function addRoleToGroup(groupId: string, name: string, description: string): Promise<Role> {
@@ -569,6 +581,7 @@ export async function deleteGroupRole(groupId: string, roleId: string, rql = '')
  * @permission ADD_GROUP_ROLE_PERMISSION | scope:staff_enlistment | Add permissions to roles of the group
  * @permission ADD_GROUP_ROLE_PERMISSION | scope:global | Add permissions to roles of any group
  * @throws {ResourceUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function addPermissionToGroupRoles(groupId: string, permissions: string[]): Promise<number> {
@@ -587,6 +600,7 @@ export async function addPermissionToGroupRoles(groupId: string, permissions: st
  * @permission REMOVE_GROUP_ROLE_PERMISSION | scope:staff_enlistment | Remove permissions from roles of the group
  * @permission REMOVE_GROUP_ROLE_PERMISSION | scope:global | Remove permissions from roles of any group
  * @throws {ResourceUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function removePermissionFromGroupRoles(groupId: string, permissions: string[], rql: string): Promise<number> {
@@ -605,6 +619,7 @@ export async function removePermissionFromGroupRoles(groupId: string, permission
  * @permission ADD_GROUP_ROLE_TO_STAFF | scope:staff_enlistment | Assign roles for the group
  * @permission ADD_GROUP_ROLE_TO_STAFF | scope:global | Assign roles for any group
  * @throws {ResourceUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function addGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
@@ -623,6 +638,7 @@ export async function addGroupRoles(groupId: string, roles: string[], rql = ''):
  * @permission REMOVE_GROUP_ROLE_FROM_STAFF | scope:staff_enlistment | Remove roles from staff of the group
  * @permission REMOVE_GROUP_ROLE_FROM_STAFF | scope:global | Remove roles from staff of any group
  * @throws {ResourceUnknownError}
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function removeGroupRoles(groupId: string, roles: string[], rql = ''): Promise<number> {
@@ -639,6 +655,7 @@ export async function removeGroupRoles(groupId: string, roles: string[], rql = '
  * @params {string} rql Add filters to the requested list (optional)
  * @permission ADD_STAFF | scope:staff_enlistment | Add staff to the group
  * @permission ADD_STAFF | scope:global | Add staff to any group
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function addUsersToStaff(groups: string[], rql = ''): Promise<number> {
@@ -655,6 +672,7 @@ export async function addUsersToStaff(groups: string[], rql = ''): Promise<numbe
  * @params {string} rql Add filters to the requested list (required)
  * @permission ADD_STAFF | scope:staff_enlistment | Remove staff from the group
  * @permission ADD_STAFF | scope:global | Remove staff from any group
+ * @throws {MissingRequiredFieldsError}
  * @returns {number} affectedRecords
  */
 export async function removeUsersFromStaff(groups: string[], rql = ''): Promise<number> {
