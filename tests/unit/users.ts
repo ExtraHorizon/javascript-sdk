@@ -91,7 +91,7 @@ describe('Users', () => {
 
     const result = await sdk.users.remove(userId);
 
-    expect(result).toBe(true);
+    expect(result).toBeGreaterThan(0);
   });
 
   it('Can update a users email', async () => {
@@ -111,7 +111,7 @@ describe('Users', () => {
 
     const result = await sdk.users.addPatientEnlistment(userId, groupId);
 
-    expect(result).toBe(true);
+    expect(result).toBeGreaterThan(0);
   });
 
   it('Can remove a patient enlistment from a user', async () => {
@@ -121,7 +121,7 @@ describe('Users', () => {
 
     const result = await sdk.users.deletePatientEnlistment(userId, groupId);
 
-    expect(result).toBe(true);
+    expect(result).toBeGreaterThan(0);
   });
 
   it('Can register a new user', async () => {
@@ -272,7 +272,7 @@ describe('Global roles', () => {
 
     const role = await sdk.users.removeGlobalRole();
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can update a role', async () => {
@@ -292,7 +292,7 @@ describe('Global roles', () => {
 
     const role = await sdk.users.addPermissionToGlobalRoles(permissionList.permissions);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can remove permissions from a role', async () => {
@@ -302,7 +302,7 @@ describe('Global roles', () => {
 
     const role = await sdk.users.removePermissionFromGlobalRoles(permissionList.permissions, '');
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can add a role to a user', async () => {
@@ -312,7 +312,7 @@ describe('Global roles', () => {
 
     const role = await sdk.users.addGlobalRolesToUser(roleList.roles);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can remove a role from a user', async () => {
@@ -322,7 +322,7 @@ describe('Global roles', () => {
 
     const role = await sdk.users.removeGlobalRoleFromUser(roleList.roles);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   afterEach(() => {
@@ -400,7 +400,7 @@ describe('Group roles', () => {
 
     const role = await sdk.users.deleteGroupRole(groupId, roleId);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can add permissions to group roles', async () => {
@@ -410,7 +410,7 @@ describe('Group roles', () => {
 
     const role = await sdk.users.addPermissionToGroupRoles(groupId, permissionList.permissions);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can remove permissions from group roles', async () => {
@@ -420,7 +420,7 @@ describe('Group roles', () => {
 
     const role = await sdk.users.removePermissionFromGroupRoles(groupId, permissionList.permissions, '');
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can assign roles to staff members of a group', async () => {
@@ -430,7 +430,7 @@ describe('Group roles', () => {
 
     const role = await sdk.users.addGroupRoles(groupId, roleList.roles);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can remove a role from a user', async () => {
@@ -440,7 +440,7 @@ describe('Group roles', () => {
 
     const role = await sdk.users.removeGroupRoles(groupId, roleList.roles);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can add users to staff', async () => {
@@ -450,7 +450,7 @@ describe('Group roles', () => {
 
     const role = await sdk.users.addUsersToStaff(groupList.groups);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   it('Can remove users from staff', async () => {
@@ -460,7 +460,7 @@ describe('Group roles', () => {
 
     const role = await sdk.users.removeUsersFromStaff(groupList.groups);
 
-    expect(role).toBe(true);
+    expect(role).toBeGreaterThan(0);
   });
 
   afterEach(() => {

@@ -87,5 +87,3 @@ export enum Gender {
   Female = 2,
   NotApplicable = 9,
 }
-
-

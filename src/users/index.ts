@@ -331,7 +331,7 @@ export async function updateGlobalRole(roleId: string): Promise<Role> {
  * @returns {number} affectedRecords
 affectedRecords */
 export async function addPermissionToGlobalRoles(permissions: string[]): Promise<number> {
-  const response: recordsAffectedResponse = await userServiceClient.post('roles/add_permissions', { permissions: permissions });
+  const response: recordsAffectedResponse = await userServiceClient.post('roles/add_permissions', { permissions });
   return response.recordsAffected;
 }
 
