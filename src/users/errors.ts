@@ -4,46 +4,46 @@ export class EmailUsedError extends ApiError {
   static qName = 'EMAIL_USED_EXCEPTION';
 }
 
-export class AuthenticationException extends ApiError {
+export class AuthenticationError extends ApiError {
   static qName: 'AUTHENTICATION_EXCEPTION';
 };
 
-export class EmailUnknownException extends ApiError {
+export class EmailUnknownError extends ApiError {
   static qName: 'EMAIL_UNKNOWN_EXCEPTION';
 };
 
-export class ResourceAlreadyExistsException extends ApiError {
+export class ResourceAlreadyExistsError extends ApiError {
   static qName: 'RESOURCE_ALREADY_EXISTS_EXCEPTION';
 };
 
-export class NotActivatedException extends ApiError {
+export class NotActivatedError extends ApiError {
   static qName: 'NOT_ACTIVATED_EXCEPTION';
 };
 
-export class ActivationUnknownException extends ApiError {
+export class ActivationUnknownError extends ApiError {
   static qName: 'ACTIVATION_UNKNOWN_EXCEPTION';
 };
 
-export class AlreadyActivatedException extends ApiError {
+export class AlreadyActivatedError extends ApiError {
   static qName: 'ALREADY_ACTIVATED_EXCEPTION';
 };
 
-export class NewPasswordHashUnknownException extends ApiError {
+export class NewPasswordHashUnknownError extends ApiError {
   static qName: 'NEW_PASSWORD_HASH_UNKNOWN_EXCEPTION';
 };
 
-export class PasswordException extends ApiError {
+export class PasswordError extends ApiError {
   static qName: 'PASSWORD_EXCEPTION';
 };
 
-export class LoginTimeoutException extends ApiError {
+export class LoginTimeoutError extends ApiError {
   static qName: 'LOGIN_TIMEOUT_EXCEPTION';
 };
 
-export class LoginFreezeException extends ApiError {
+export class LoginFreezeError extends ApiError {
   static qName: 'LOGIN_FREEZE_EXCEPTION';
 };
 
-export class TooManyFailedAttemptsException extends ApiError {
+export class TooManyFailedAttemptsError extends ApiError {
   static qName: 'TOO_MANY_FAILED_ATTEMPTS_EXCEPTION';
 };
