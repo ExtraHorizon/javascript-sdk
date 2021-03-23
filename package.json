@@ -6,6 +6,9 @@
   "author": "Qompium",
   "license": "UNLICENSED",
   "private": true,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "start": "yarn test",
     "build": "yarn lint --fix && tsc",
@@ -21,7 +24,6 @@
   },
   "devDependencies": {
     "@qompium/eslint-config-q-node": "^1.2.9",
-    "@qompium/license-checker": "^1.0.3",
     "@types/dotenv-safe": "^8.1.1",
     "@types/humps": "^2.0.0",
     "@types/jest": "^26.0.20",
