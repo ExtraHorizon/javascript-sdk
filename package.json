@@ -2,7 +2,7 @@
   "name": "@extrahorizon/javascript-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
   "author": "Qompium",
   "license": "UNLICENSED",
   "private": true,
@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@qompium/eslint-config-q-node": "^1.2.9",
-    "@qompium/license-checker": "^1.0.3",
     "@types/dotenv-safe": "^8.1.1",
     "@types/humps": "^2.0.0",
     "@types/jest": "^26.0.20",
