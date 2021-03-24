@@ -1,6 +1,11 @@
-import { listResponse } from '../../models';
+import { listResponse } from "../../models";
 
-export interface UserData {
+interface DAO {
+  creationTimestamp: number;
+  updateTimestamp?: number;
+}
+
+export interface UserData extends DAO {
   id: string;
   firstName: string;
   lastName: string;
@@ -14,25 +19,20 @@ export interface UserData {
   staffEnlistments: Array<StaffEnlistment>;
   lastFailedTimestamp: number;
   failedCount: number;
-  creationTimestamp: number;
-  updateTimestamp: number;
   profileImage: string;
 }
 
-interface PatientEnlistment {
+interface PatientEnlistment extends DAO {
   groupId: string;
   expiryTimestamp: number;
   expired: boolean;
-  creationTimestamp: number;
 }
 
-export interface Role {
+export interface Role extends DAO {
   id: string;
   name: string;
   description: string;
   permissions: Array<Permission>;
-  creationTimestamp: number;
-  updateTimestamp: number;
 }
 
 export interface Permission {
@@ -40,20 +40,16 @@ export interface Permission {
   description: string;
 }
 
-interface StaffEnlistment {
+interface StaffEnlistment extends DAO {
   groupId: string;
   roles: Array<GroupRole>;
-  creationTimestamp: number;
-  updateTimestamp: number;
 }
 
-interface GroupRole {
+interface GroupRole extends DAO {
   groupId: string;
   name: string;
   description: string;
   permissions: string;
-  creationTimestamp: number;
-  updateTimestamp: number;
 }
 
 export interface UserDataList extends listResponse {
