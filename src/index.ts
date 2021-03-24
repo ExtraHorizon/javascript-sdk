@@ -5,7 +5,7 @@ import usersFn from './endpoints/users';
 
 export function client(config: Config) {
   const http = createHttpClient(config);
-  const httpWithAuth = addAuth(http, config.oauth);
+  const httpWithAuth = addAuth(http, config);
 
   return { users: usersFn(http, httpWithAuth) };
 }

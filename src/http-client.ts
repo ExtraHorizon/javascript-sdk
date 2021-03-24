@@ -1,22 +1,39 @@
 /* eslint-disable no-underscore-dangle */
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { Config } from './types';
+import { qErrorFromResponse } from '@qompium/q-errors';
+import * as AxiosLogger from 'axios-logger';
 
-const errorLogger = error => {
-  console.log('error', error);
-  // TODO
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import { Config } from './types';
+import { typeReceivedError } from './errorHandler';
+
+const errorLogger = ({ response }: AxiosError) => {
+  const qError = qErrorFromResponse(response.data, response.status);
+  throw typeReceivedError(qError);
 };
 
-export const createHttpClient = ({ apiHost }: Pick<Config, 'apiHost'>) => {
-  const instance = axios.create({
+export const createHttpClient = ({
+  apiHost,
+  debug,
+}: Pick<Config, 'apiHost' | 'debug'>) => {
+  const http = axios.create({
     baseURL: `https://api.${apiHost}`,
   });
-  // instance.interceptors.request.use(config => {
+  // http.interceptors.request.use(config => {
   //   console.log('config', config);
   //   return config;
   // });
-  instance.interceptors.response.use(res => res, errorLogger);
-  return instance;
+  if (debug) {
+    http.interceptors.request.use(
+      AxiosLogger.requestLogger,
+      AxiosLogger.errorLogger
+    );
+    http.interceptors.response.use(
+      AxiosLogger.responseLogger,
+      AxiosLogger.errorLogger
+    );
+  }
+  http.interceptors.response.use(res => res, errorLogger);
+  return http;
 };
 
 const parseAuthParams = options => {
@@ -50,11 +67,28 @@ const parseAuthParams = options => {
   }
   return {};
 };
-export const addAuth = (http: AxiosInstance, options: Config['oauth']) => {
+export const addAuth = (
+  http: AxiosInstance,
+  options: Pick<Config, 'oauth' | 'debug'>
+) => {
   let accessToken = '';
   let refreshToken = '';
   const httpWithAuth = axios.create({ ...http.defaults });
-  const auth = parseAuthParams(options);
+
+  if (options.debug) {
+    httpWithAuth.interceptors.request.use(
+      AxiosLogger.requestLogger,
+      AxiosLogger.errorLogger
+    );
+    httpWithAuth.interceptors.response.use(
+      AxiosLogger.responseLogger,
+      AxiosLogger.errorLogger
+    );
+  }
+
+  httpWithAuth.interceptors.response.use(res => res, errorLogger);
+
+  const auth = parseAuthParams(options.oauth);
 
   const refreshTokens = async () => {
     const tokenResult = await http.post(auth.path, {
