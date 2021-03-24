@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { UserData } from './types';
 import { resultResponse, Results } from '../../models';
+import { toCamelCase } from '../../utils';
 
 export default (
   http: AxiosInstance,
@@ -25,7 +26,8 @@ export default (
    * @returns {UserData} UserData
    */
   async function getMe(): Promise<UserData> {
-    return (await httpWithAuth.get(getPath('/me'))).data;
+    const user = await httpWithAuth.get(getPath('/me'));
+    return toCamelCase(user.data);
   }
 
   /**
