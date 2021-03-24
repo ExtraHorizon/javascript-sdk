@@ -16,14 +16,8 @@ export default (
    * @returns {boolean} success
    */
   async function getHealth(): Promise<boolean> {
-    try {
-      const result: resultResponse = await http.get(getPath('/health'));
-      // const result: resultResponse = await http.get(`${USER_BASE}/health`);
-
-      return result.status === Results.Success;
-    } catch (e) {
-      throw typeReceivedError(e);
-    }
+    const result: resultResponse = await http.get(getPath('/health'));
+    return result.status === Results.Success;
   }
 
   /**
@@ -35,8 +29,24 @@ export default (
     return (await httpWithAuth.get(getPath('/me'))).data;
   }
 
+  /**
+   * Retrieve a specific user
+   * @params {string} userId of the targeted user (required)
+   * @permission See your own user object
+   * @permission --------- | scope:group  | See a subset of the fields for any staff member or patient of the group
+   * @permission VIEW_PATIENTS | scope:global | See a subset of fields for any user with a patient enlistment
+   * @permission VIEW_STAFF | scope:global | See a subset of fields for any user with a staff enlistment
+   * @permission VIEW_USER | scope:global | See any user object
+   * @throws {ResourceUnknownError}
+   * @returns {UserData} UserData
+   */
+  async function getById(userId: string): Promise<UserData> {
+    return (await httpWithAuth.get(getPath(`/${userId}`))).data;
+  }
+
   return {
     getHealth,
     getMe,
+    getById,
   };
 };

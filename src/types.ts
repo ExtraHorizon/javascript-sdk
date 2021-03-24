@@ -21,5 +21,6 @@ export type ConfigOath2 = ConfigOauth2AuthorizationCode | ConfigOauth2Password;
 
 export interface Config {
   apiHost: string;
+  debug?: boolean;
   oauth?: ConfigOauth1 | ConfigOath2;
 }
