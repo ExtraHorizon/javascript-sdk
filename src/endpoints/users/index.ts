@@ -42,7 +42,8 @@ export default (
    * @returns {UserData} UserData
    */
   async function getById(userId: string): Promise<UserData> {
-    return (await httpWithAuth.get(getPath(`/${userId}`))).data;
+    const user = await httpWithAuth.get(getPath(`/${userId}`));
+    return toCamelCase(user.data);
   }
 
   return {
