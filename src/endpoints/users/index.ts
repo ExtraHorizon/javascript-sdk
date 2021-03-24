@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { UserData } from './types';
 import { resultResponse, Results } from '../../models';
-import { typeReceivedError } from '../../errorHandler';
 
 export default (
   http: AxiosInstance,

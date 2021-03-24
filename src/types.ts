@@ -1,6 +1,14 @@
-export interface ConfigOauth1 {
+interface ConfigOauth1Base {
   consumerKey: string;
   consumerSecret: string;
+}
+
+export interface ConfigOauth1WithEmail extends ConfigOauth1Base {
+  email: string;
+  password: string;
+}
+
+export interface ConfigOauth1WithToken extends ConfigOauth1Base {
   tokenKey: string;
   tokenSecret: string;
 }
@@ -22,5 +30,5 @@ export type ConfigOath2 = ConfigOauth2AuthorizationCode | ConfigOauth2Password;
 export interface Config {
   apiHost: string;
   debug?: boolean;
-  oauth?: ConfigOauth1 | ConfigOath2;
+  oauth?: ConfigOauth1WithEmail | ConfigOauth1WithToken | ConfigOath2;
 }
