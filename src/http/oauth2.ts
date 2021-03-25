@@ -24,9 +24,7 @@ export const addAuth = (
       grant_type: 'refresh_token',
       refresh_token: tokenData.refreshToken,
     });
-
     tokenData = tokenResult.data;
-
     return tokenData;
   };
 
