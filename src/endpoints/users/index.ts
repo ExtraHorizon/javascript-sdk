@@ -25,11 +25,7 @@ export default (
    * @returns {UserData} UserData
    */
   async function getMe(): Promise<UserData> {
-    const result = await httpWithAuth.get(getPath('/me'));
-    if (result && !result.data) {
-      console.log('result', result);
-    }
-    return result && result.data;
+    return (await httpWithAuth.get(getPath('/me'))).data;
   }
 
   /**
