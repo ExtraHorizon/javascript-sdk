@@ -3,7 +3,44 @@ import * as crypto from 'crypto';
 import { qErrorFromResponse } from '@qompium/q-errors';
 import { AxiosError } from 'axios';
 import { camelizeKeys } from 'humps';
-import { typeReceivedError, fallbackError } from '../errorHandler';
+import { typeReceivedError } from '../errorHandler';
+
+const cleanHeaders = (headers: Record<string, any>) =>
+  headers && headers.Authorization
+    ? {
+        ...headers,
+        Authorization: `Bearer ${`...${headers.Authorization.substr(-5)}`}`,
+      }
+    : headers;
+
+export function fallbackError(error) {
+  const { config, response } = error;
+  const data = response?.data;
+
+  const errorData: {
+    status?: number;
+    statusText?: string;
+    requestId?: string;
+    message: string;
+    details: Record<string, any>;
+    request?: Record<string, any>;
+  } = {
+    status: response?.status,
+    statusText: response?.statusText,
+    message: data && 'message' in data ? data.message : '',
+    details: data && 'details' in data ? data.details : {},
+    request: config
+      ? {
+          url: config.url,
+          headers: cleanHeaders(config.headers), // Obscure the Authorization token
+          method: config.method,
+          payloadData: config.data,
+        }
+      : {},
+  };
+
+  return new Error(JSON.stringify(errorData, null, '  '));
+}
 
 export const errorLogger = (error: AxiosError) => {
   const qError = qErrorFromResponse(error.response.data, error.response.status);
