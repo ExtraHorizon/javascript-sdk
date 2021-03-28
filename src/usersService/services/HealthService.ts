@@ -11,7 +11,7 @@ export class HealthService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async getHealthService(): Promise<any> {
+    public static async getHealth(): Promise<any> {
         const result = await __request({
             method: 'GET',
             path: `/health`,

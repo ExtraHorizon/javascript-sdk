@@ -25,7 +25,7 @@ export class UsersService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async getUsersService(
+    public static async find(
         rql?: string,
     ): Promise<(PagedResult & {
         data?: Array<FullUser>,
@@ -52,7 +52,7 @@ export class UsersService {
      * @returns any Operation successful
      * @throws ApiError
      */
-    public static async deleteUsersService(
+    public static async removeUsers(
         rql: string,
     ): Promise<{
         records_affected?: number,
@@ -76,7 +76,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async getUsersService1(): Promise<FullUser> {
+    public static async me(): Promise<FullUser> {
         const result = await __request({
             method: 'GET',
             path: `/me`,
@@ -95,7 +95,7 @@ export class UsersService {
      * @returns Patient Success
      * @throws ApiError
      */
-    public static async getUsersService2(
+    public static async patients(
         rql?: string,
     ): Promise<Array<Patient>> {
         const result = await __request({
@@ -119,7 +119,7 @@ export class UsersService {
      * @returns StaffMember Success
      * @throws ApiError
      */
-    public static async getUsersService3(
+    public static async staff(
         rql?: string,
     ): Promise<Array<StaffMember>> {
         const result = await __request({
@@ -146,7 +146,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async getUsersService4(
+    public static async findById(
         userId: ObjectId,
     ): Promise<FullUser> {
         const result = await __request({
@@ -171,7 +171,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async putUsersService(
+    public static async update(
         userId: ObjectId,
         requestBody?: {
             first_name?: string,
@@ -203,7 +203,7 @@ export class UsersService {
      * @returns any Operation successful
      * @throws ApiError
      */
-    public static async deleteUsersService1(
+    public static async removeUser(
         userId: ObjectId,
     ): Promise<{
         records_affected?: number,
@@ -232,7 +232,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async putUsersService1(
+    public static async updateEmail(
         userId: ObjectId,
         requestBody?: {
             email: string,
@@ -261,7 +261,7 @@ export class UsersService {
      * @returns any Operation successful
      * @throws ApiError
      */
-    public static async postUsersService(
+    public static async addPatientEnlistment(
         userId: ObjectId,
         requestBody?: {
             group_id: ObjectId,
@@ -294,7 +294,7 @@ export class UsersService {
      * @returns any Operation successful
      * @throws ApiError
      */
-    public static async deleteUsersService2(
+    public static async removePatientEnlistment(
         userId: ObjectId,
         groupId: ObjectId,
     ): Promise<{
@@ -320,7 +320,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async postUsersService1(
+    public static async createAccount(
         requestBody?: {
             first_name: string,
             last_name: string,
@@ -356,7 +356,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async putUsersService2(
+    public static async changePassword(
         requestBody?: {
             old_password: string,
             new_password: string,
@@ -383,7 +383,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async postUsersService2(
+    public static async authenticate(
         requestBody?: {
             email: string,
             password: string,
@@ -410,7 +410,7 @@ export class UsersService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async getUsersService5(
+    public static async requestEmailActivation(
         email: string,
     ): Promise<any> {
         const result = await __request({
@@ -436,7 +436,7 @@ export class UsersService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async postUsersService3(
+    public static async validateEmailActivation(
         requestBody?: HashBean,
     ): Promise<any> {
         const result = await __request({
@@ -460,7 +460,7 @@ export class UsersService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async getUsersService6(
+    public static async requestPasswordReset(
         email: string,
     ): Promise<any> {
         const result = await __request({
@@ -486,7 +486,7 @@ export class UsersService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async postUsersService4(
+    public static async validatePasswordReset(
         requestBody?: {
             hash?: string,
             new_password: string,
@@ -513,7 +513,7 @@ export class UsersService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async postUsersService5(
+    public static async confirmPassword(
         requestBody?: {
             password: string,
         },
@@ -539,7 +539,7 @@ export class UsersService {
      * @returns any Success
      * @throws ApiError
      */
-    public static async getUsersService7(
+    public static async isEmailAvailable(
         email: string,
     ): Promise<{
         email_available?: boolean,
@@ -566,7 +566,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async putUsersService3(
+    public static async updateProfileImage(
         userId: ObjectId,
         requestBody?: HashBean,
     ): Promise<FullUser> {
@@ -592,7 +592,7 @@ export class UsersService {
      * @returns FullUser Success
      * @throws ApiError
      */
-    public static async deleteUsersService3(
+    public static async deleteProfileImage(
         userId: ObjectId,
     ): Promise<FullUser> {
         const result = await __request({
