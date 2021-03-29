@@ -13,7 +13,7 @@ const cleanHeaders = (headers: Record<string, any>) =>
       }
     : headers;
 
-export function fallbackError(error) {
+export function fallbackError(error: AxiosError) {
   const { config, response } = error;
   const data = response?.data;
 
@@ -21,14 +21,14 @@ export function fallbackError(error) {
     status?: number;
     statusText?: string;
     requestId?: string;
-    message: string;
-    details: Record<string, any>;
+    error: string;
+    description: Record<string, any>;
     request?: Record<string, any>;
   } = {
     status: response?.status,
     statusText: response?.statusText,
-    message: data && 'message' in data ? data.message : '',
-    details: data && 'details' in data ? data.details : {},
+    error: data && 'error' in data ? data.error : '',
+    description: data && 'description' in data ? data.description : {},
     request: config
       ? {
           url: config.url,
