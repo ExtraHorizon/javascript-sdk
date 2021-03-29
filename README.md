@@ -1,6 +1,4 @@
-# javascript-sdk
-
-Extrahorizon Javascript SDK
+# Extrahorizon Javascript SDK
 
 ## 🧙 Installation
 
