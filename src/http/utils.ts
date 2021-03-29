@@ -47,7 +47,6 @@ export const errorLogger = (error: AxiosError) => {
   if (qError) {
     throw typeReceivedError(qError);
   } else {
-    console.log('fall');
     throw fallbackError(error);
   }
 };
