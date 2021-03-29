@@ -9,7 +9,7 @@ const cleanHeaders = (headers: Record<string, any>) =>
     : headers;
 
 export class ApiError {
-  public readonly qName: string;
+  public qName: string;
 
   public readonly status?: number;
 
@@ -21,7 +21,6 @@ export class ApiError {
 
   constructor(error: AxiosError) {
     const { config, response } = error;
-    console.log('response', response?.data);
     this.status = response?.status;
     this.statusText = response?.statusText;
     this.response = response?.data;
@@ -37,19 +36,8 @@ export class ApiError {
 }
 
 export class ResourceUnknownError extends ApiError {
-  static qName = 'RESOURCE_UNKNOWN_EXCEPTION';
-}
-
-export class MissingRequiredFieldsError extends ApiError {
-  static qName = 'MISSING_REQUIRED_FIELDS_EXCEPTION';
-
-  // TODO handle missing fields
-}
-
-export class AuthenticationError extends ApiError {
-  static qName = 'AUTHENTICATION_EXCEPTION';
-}
-
-export class ResourceAlreadyExistsError extends ApiError {
-  static qName = 'RESOURCE_ALREADY_EXISTS_EXCEPTION';
+  constructor(error: AxiosError) {
+    super(error);
+    this.qName = 'RESOURCE_UNKNOWN_EXCEPTION';
+  }
 }
