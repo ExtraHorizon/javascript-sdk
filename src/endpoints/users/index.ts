@@ -1,4 +1,5 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { decamelizeKeys } from 'humps';
 import { UserData } from './types';
 import { resultResponse, Results } from '../../models';
 
@@ -7,7 +8,13 @@ export default (
   httpWithAuth: AxiosInstance,
   apiVersion = 1
 ) => {
-  const getPath = url => `/users/v${apiVersion}${url}`;
+  const BASE_PATH = `/users/v${apiVersion}`;
+
+  const get = (axios, path, config?: AxiosRequestConfig) =>
+    axios.get(`${BASE_PATH}${path}`, config);
+
+  const put = (axios, path, data) =>
+    axios.put(`${BASE_PATH}${path}`, decamelizeKeys(data));
 
   /**
    * Perform a health check
@@ -15,7 +22,7 @@ export default (
    * @returns {boolean} success
    */
   async function getHealth(): Promise<boolean> {
-    const result: resultResponse = await http.get(getPath('/health'));
+    const result: resultResponse = await get(http, '/health');
     return result.status === Results.Success;
   }
 
@@ -25,7 +32,7 @@ export default (
    * @returns {UserData} UserData
    */
   async function getMe(): Promise<UserData> {
-    return (await httpWithAuth.get(getPath('/me'))).data;
+    return (await get(httpWithAuth, '/me', {})).data;
   }
 
   /**
@@ -40,12 +47,26 @@ export default (
    * @returns {UserData} UserData
    */
   async function getById(userId: string): Promise<UserData> {
-    return (await httpWithAuth.get(getPath(`/${userId}`))).data;
+    return (await get(httpWithAuth, `/${userId}`)).data;
+  }
+
+  /**
+   * Update a specific user
+   * @params {string} userId of the targeted user (required)
+   * @params {any} data Fields to update
+   * @permission Update your own data
+   * @permission UPDATE_USER | scope:global | Update any user
+   * @throws {ResourceUnknownError}
+   * @returns {UserData} UserData
+   */
+  async function putUserId(userId: string, data: any): Promise<UserData> {
+    return (await put(httpWithAuth, `/${userId}`, data)).data;
   }
 
   return {
     getHealth,
     getMe,
     getById,
+    putUserId,
   };
 };
