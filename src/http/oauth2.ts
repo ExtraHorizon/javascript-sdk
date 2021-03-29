@@ -4,7 +4,8 @@ import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { TokenDataOauth2 } from './types';
-import { camelizeResponseData, errorLogger } from './utils';
+import { camelizeResponseData } from './utils';
+import { typeReceivedError } from '../errorHandler';
 
 export const addAuth = (
   http: AxiosInstance,
@@ -45,13 +46,11 @@ export const addAuth = (
     },
   }));
 
-  httpWithAuth.interceptors.response.use(res => res);
-
   httpWithAuth.interceptors.response.use(
     (response: AxiosResponse) => response,
     async error => {
       // Only needed if it's an axiosError, otherwise it's already typed
-      if (error.isAxiosError) {
+      if (error && error.isAxiosError) {
         const originalRequest = error.config;
         if (
           error.response &&
@@ -74,12 +73,12 @@ export const addAuth = (
           return http(originalRequest);
         }
 
-        return Promise.reject(error);
+        return Promise.reject(typeReceivedError(error));
       }
+      return Promise.reject(error);
     }
   );
 
-  httpWithAuth.interceptors.response.use(res => res, errorLogger);
   httpWithAuth.interceptors.response.use(camelizeResponseData);
 
   return httpWithAuth;
