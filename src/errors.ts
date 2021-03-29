@@ -1,32 +1,43 @@
-import { QError } from '@qompium/q-errors';
+import { AxiosError } from 'axios';
+
+const cleanHeaders = (headers: Record<string, any>) =>
+  headers && headers.Authorization
+    ? {
+        ...headers,
+        Authorization: `Bearer ${`...${headers.Authorization.substr(-5)}`}`,
+      }
+    : headers;
 
 export class ApiError {
-  qError: QError;
+  public qName: string;
 
-  constructor(qError) {
-    this.qError = qError;
+  public readonly status?: number;
+
+  public readonly statusText?: string;
+
+  public readonly request?: Record<string, any>;
+
+  public readonly response?: Record<string, any>;
+
+  constructor(error: AxiosError) {
+    const { config, response } = error;
+    this.status = response?.status;
+    this.statusText = response?.statusText;
+    this.response = response?.data;
+    this.request = config
+      ? {
+          url: config.url,
+          headers: cleanHeaders(config.headers), // Obscure the Authorization token
+          method: config.method,
+          payloadData: config.data,
+        }
+      : {};
   }
 }
 
 export class ResourceUnknownError extends ApiError {
-  static qName = 'RESOURCE_UNKNOWN_EXCEPTION';
-}
-
-export class MissingRequiredFieldsError extends ApiError {
-  static qName = 'MISSING_REQUIRED_FIELDS_EXCEPTION';
-
-  requiredFields: string[];
-
-  constructor(qError: QError) {
-    super(qError);
-    this.requiredFields = this.qError.details.required_fields;
+  constructor(error: AxiosError) {
+    super(error);
+    this.qName = 'RESOURCE_UNKNOWN_EXCEPTION';
   }
-}
-
-export class AuthenticationError extends ApiError {
-  static qName: 'AUTHENTICATION_EXCEPTION';
-}
-
-export class ResourceAlreadyExistsError extends ApiError {
-  static qName: 'RESOURCE_ALREADY_EXISTS_EXCEPTION';
 }
