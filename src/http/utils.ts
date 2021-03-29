@@ -1,54 +1,11 @@
 import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
-import { qErrorFromResponse } from '@qompium/q-errors';
 import { AxiosError } from 'axios';
 import { camelizeKeys } from 'humps';
 import { typeReceivedError } from '../errorHandler';
 
-const cleanHeaders = (headers: Record<string, any>) =>
-  headers && headers.Authorization
-    ? {
-        ...headers,
-        Authorization: `Bearer ${`...${headers.Authorization.substr(-5)}`}`,
-      }
-    : headers;
-
-export function fallbackError(error: AxiosError) {
-  const { config, response } = error;
-  const data = response?.data;
-
-  const errorData: {
-    status?: number;
-    statusText?: string;
-    requestId?: string;
-    error: string;
-    description: Record<string, any>;
-    request?: Record<string, any>;
-  } = {
-    status: response?.status,
-    statusText: response?.statusText,
-    error: data && 'error' in data ? data.error : '',
-    description: data && 'description' in data ? data.description : {},
-    request: config
-      ? {
-          url: config.url,
-          headers: cleanHeaders(config.headers), // Obscure the Authorization token
-          method: config.method,
-          payloadData: config.data,
-        }
-      : {},
-  };
-
-  return new Error(JSON.stringify(errorData, null, '  '));
-}
-
 export const errorLogger = (error: AxiosError) => {
-  const qError = qErrorFromResponse(error.response.data, error.response.status);
-  if (qError) {
-    throw typeReceivedError(qError);
-  } else {
-    throw fallbackError(error);
-  }
+  throw typeReceivedError(error);
 };
 
 function hmacSha1Hash(baseString: string, key: string) {

@@ -1,9 +1,9 @@
-import { QError } from '@qompium/q-errors';
 import {
   MissingRequiredFieldsError,
   ResourceUnknownError,
   ResourceAlreadyExistsError,
   AuthenticationError,
+  ApiError,
 } from './errors';
 import {
   EmailUsedError,
@@ -16,7 +16,7 @@ import {
   LoginTimeoutError,
   LoginFreezeError,
   TooManyFailedAttemptsError,
-} from './users/errors';
+} from './endpoints/users/errors';
 
 const ErrorClassDefinitions = [
   ResourceUnknownError,
@@ -36,16 +36,12 @@ const ErrorClassDefinitions = [
 ];
 
 export function typeReceivedError(error: any) {
-  if (!(error instanceof QError)) {
-    return error;
-  }
-
   const ErrorClassDefinition = ErrorClassDefinitions.find(
     definition => error?.qName === definition.qName
   );
 
   if (!ErrorClassDefinition) {
-    return error;
+    return new ApiError(error);
   }
 
   return new ErrorClassDefinition(error);
