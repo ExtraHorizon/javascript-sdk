@@ -101,7 +101,7 @@ export const parseAuthParams = options => {
   return {};
 };
 
-export const cleanData = res =>
+export const camelizeResponseData = res =>
   res
     ? {
         ...res,
