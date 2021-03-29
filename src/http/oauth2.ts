@@ -4,7 +4,7 @@ import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { TokenDataOauth2 } from './types';
-import { camelizeResponseData } from './utils';
+import { camelizeResponseData, errorLogger } from './utils';
 
 export const addAuth = (
   http: AxiosInstance,
@@ -50,32 +50,36 @@ export const addAuth = (
   httpWithAuth.interceptors.response.use(
     (response: AxiosResponse) => response,
     async error => {
-      const originalRequest = error.config;
-      if (
-        error.response &&
-        (error.response.status === 403 || error.response.status === 401) &&
-        !originalRequest._retry
-      ) {
-        originalRequest._retry = true;
-        tokenData.accessToken = '';
-        if (error.response.code === 118) {
-          // ACCESS_TOKEN_EXPIRED_EXCEPTION
-          originalRequest.headers.Authorization = `Bearer ${
-            (await refreshTokens()).accessToken
-          }`;
-        } else {
-          // All others, retry authenticate
-          originalRequest.headers.Authorization = `Bearer ${
-            (await authenticate()).accessToken
-          }`;
+      // Only needed if it's an axiosError, otherwise it's already typed
+      if (error.isAxiosError) {
+        const originalRequest = error.config;
+        if (
+          error.response &&
+          (error.response.status === 403 || error.response.status === 401) &&
+          !originalRequest._retry
+        ) {
+          originalRequest._retry = true;
+          tokenData.accessToken = '';
+          if (error.response.code === 118) {
+            // ACCESS_TOKEN_EXPIRED_EXCEPTION
+            originalRequest.headers.Authorization = `Bearer ${
+              (await refreshTokens()).accessToken
+            }`;
+          } else {
+            // All others, retry authenticate
+            originalRequest.headers.Authorization = `Bearer ${
+              (await authenticate()).accessToken
+            }`;
+          }
+          return http(originalRequest);
         }
-        return http(originalRequest);
-      }
 
-      return Promise.reject(error);
+        return Promise.reject(error);
+      }
     }
   );
 
+  httpWithAuth.interceptors.response.use(res => res, errorLogger);
   httpWithAuth.interceptors.response.use(camelizeResponseData);
 
   return httpWithAuth;
