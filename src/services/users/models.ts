@@ -1,6 +1,6 @@
 import { listResponse } from '../../models';
 
-export interface UserData {
+export interface UserData extends DataAccessObject {
   id: string;
   firstName: string;
   lastName: string;
@@ -14,25 +14,20 @@ export interface UserData {
   staffEnlistments: Array<StaffEnlistment>;
   lastFailedTimestamp: number;
   failedCount: number;
-  creationTimestamp: number;
-  updateTimestamp: number;
   profileImage: string;
 }
 
-interface PatientEnlistment {
+export interface PatientEnlistment extends DataAccessObject {
   groupId: string;
   expiryTimestamp: number;
   expired: boolean;
-  creationTimestamp: number;
 }
 
-export interface Role {
+export interface Role extends DataAccessObject {
   id: string;
   name: string;
   description: string;
   permissions: Array<Permission>;
-  creationTimestamp: number;
-  updateTimestamp: number;
 }
 
 export interface Permission {
@@ -40,20 +35,16 @@ export interface Permission {
   description: string;
 }
 
-interface StaffEnlistment {
+export interface StaffEnlistment extends DataAccessObject {
   groupId: string;
   roles: Array<GroupRole>;
-  creationTimestamp: number;
-  updateTimestamp: number;
 }
 
-interface GroupRole {
+export interface GroupRole extends DataAccessObject {
   groupId: string;
   name: string;
   description: string;
   permissions: string;
-  creationTimestamp: number;
-  updateTimestamp: number;
 }
 
 export interface UserDataList extends listResponse {
@@ -86,4 +77,9 @@ export enum Gender {
   Male = 1,
   Female = 2,
   NotApplicable = 9,
+}
+
+interface DataAccessObject {
+  creationTimestamp: number;
+  updateTimestamp?: number;
 }
