@@ -46,8 +46,6 @@ export const addAuth = (
     },
   }));
 
-  httpWithAuth.interceptors.response.use(res => res);
-
   httpWithAuth.interceptors.response.use(
     (response: AxiosResponse) => response,
     async error => {
@@ -81,7 +79,6 @@ export const addAuth = (
     }
   );
 
-  httpWithAuth.interceptors.response.use(res => res);
   httpWithAuth.interceptors.response.use(camelizeResponseData);
 
   return httpWithAuth;
