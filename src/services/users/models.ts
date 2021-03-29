@@ -1,7 +1,8 @@
 import { listResponse } from '../../models';
+import { ObjectId } from './types';
 
 export interface UserData extends DataAccessObject {
-  id: string;
+  id: ObjectId;
   firstName: string;
   lastName: string;
   language: string;
@@ -18,13 +19,13 @@ export interface UserData extends DataAccessObject {
 }
 
 export interface PatientEnlistment extends DataAccessObject {
-  groupId: string;
+  groupId: ObjectId;
   expiryTimestamp: number;
   expired: boolean;
 }
 
 export interface Role extends DataAccessObject {
-  id: string;
+  id: ObjectId;
   name: string;
   description: string;
   permissions: Array<Permission>;
@@ -36,12 +37,12 @@ export interface Permission {
 }
 
 export interface StaffEnlistment extends DataAccessObject {
-  groupId: string;
+  groupId: ObjectId;
   roles: Array<GroupRole>;
 }
 
 export interface GroupRole extends DataAccessObject {
-  groupId: string;
+  groupId: ObjectId;
   name: string;
   description: string;
   permissions: string;

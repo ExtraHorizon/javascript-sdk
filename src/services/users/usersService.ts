@@ -17,8 +17,8 @@ export default class UsersService {
   async health(): Promise<boolean> {
     return this.http.get({
       path: '/health',
-      authenticate: false,
-    });
+      skipAuthentication: true,
+    }).then(() => true).catch(() => false);
   }
 
   /**
@@ -26,7 +26,7 @@ export default class UsersService {
    * @permission Everyone can use this endpoint
    * @returns {UserData} UserData
    */
-  async me(): Promise<UserData> {
+  async me(): Promise<Partial<UserData>> {
     return this.http.get({
       path: '/me',
     });
@@ -43,7 +43,7 @@ export default class UsersService {
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async findById(userId: string): Promise<UserData> {
+  async findById(userId: string): Promise<Partial<UserData>> {
     return this.http.get({
       path: `/${userId}`,
     });
@@ -70,11 +70,11 @@ export default class UsersService {
         language?: LanguageCode,
         timeZone?: TimeZone,
     }
-  ): Promise<UserData> {
+  ): Promise<Partial<UserData>> {
     return this.http.put({
       path: `/${userId}`,
       body: requestBody,
-      snakeCaseRequest: true,
+      decamelizeRequest: true,
     });
   }
 }

@@ -3,6 +3,6 @@ export type HttpConfig = {
     readonly path: string;
     readonly query?: Record<string, any>;
     readonly body?: any;
-    readonly authenticate?: boolean;
-    readonly snakeCaseRequest?: boolean;
+    readonly skipAuthentication?: boolean;
+    readonly decamelizeRequest?: boolean;
 }
