@@ -3,7 +3,7 @@ import * as AxiosLogger from 'axios-logger';
 
 import axios from 'axios';
 import { Config } from '../types';
-import { cleanData, errorLogger } from './utils';
+import { camelizeResponseData, errorLogger } from './utils';
 
 export function createHttpClient({ apiHost, debug }: Config) {
   const http = axios.create({
@@ -21,7 +21,7 @@ export function createHttpClient({ apiHost, debug }: Config) {
     );
   }
   http.interceptors.response.use(res => res, errorLogger);
-  http.interceptors.response.use(cleanData);
+  http.interceptors.response.use(camelizeResponseData);
 
   return http;
 }

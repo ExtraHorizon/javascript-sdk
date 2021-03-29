@@ -4,7 +4,7 @@ import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { TokenDataOauth2 } from './types';
-import { cleanData } from './utils';
+import { camelizeResponseData } from './utils';
 
 export const addAuth = (
   http: AxiosInstance,
@@ -76,7 +76,7 @@ export const addAuth = (
     }
   );
 
-  httpWithAuth.interceptors.response.use(cleanData);
+  httpWithAuth.interceptors.response.use(camelizeResponseData);
 
   return httpWithAuth;
 };
