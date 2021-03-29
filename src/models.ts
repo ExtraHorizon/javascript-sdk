@@ -1,6 +1,6 @@
 export interface listResponse {
   query: string;
-  page: { total: number, offset: number, limit: number },
+  page: { total: number; offset: number; limit: number };
 }
 
 export interface recordsAffectedResponse {
@@ -12,5 +12,5 @@ export interface resultResponse {
 }
 
 export enum Results {
-  Success = 200
+  Success = 200,
 }

@@ -1,8 +1,9 @@
 import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { camelizeKeys } from 'humps';
 import { typeReceivedError } from '../errorHandler';
+import { Config } from '../types';
 
 export const errorLogger = (error: AxiosError) => {
   throw typeReceivedError(error);
@@ -12,8 +13,8 @@ function hmacSha1Hash(baseString: string, key: string) {
   return crypto.createHmac('sha1', key).update(baseString).digest('base64');
 }
 
-export const parseAuthParams = options => {
-  if ('consumerKey' in options) {
+export const parseAuthParams = (options: Config['oauth']) => {
+  if ('consumerKey' in options && 'email' in options) {
     // oauth1
     return {
       path: '/auth/v2/oauth1/tokens',
@@ -58,10 +59,10 @@ export const parseAuthParams = options => {
   return {};
 };
 
-export const camelizeResponseData = res =>
-  res
-    ? {
-        ...res,
-        data: camelizeKeys(res.data),
-      }
-    : res;
+export const camelizeResponseData = ({
+  data,
+  ...response
+}: AxiosResponse): AxiosResponse => ({
+  ...response,
+  data: camelizeKeys(data),
+});
