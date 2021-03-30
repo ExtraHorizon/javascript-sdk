@@ -1,21 +1,21 @@
 import { AxiosInstance } from 'axios';
+import { decamelizeKeys } from 'humps';
 import { UserData } from './types';
 import { resultResponse, Results } from '../../models';
+import httpClient from '../http-client';
 
-export default (
-  http: AxiosInstance,
-  httpWithAuth: AxiosInstance,
-  apiVersion = 1
-) => {
-  const getPath = url => `/users/v${apiVersion}${url}`;
-
+export default (http: AxiosInstance, httpWithAuth: AxiosInstance) => {
+  const wrappedHttp = httpClient({
+    basePath: '/users/v1',
+    transformRequestData: decamelizeKeys,
+  });
   /**
    * Perform a health check
    * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
   async function getHealth(): Promise<boolean> {
-    const result: resultResponse = await http.get(getPath('/health'));
+    const result: resultResponse = await wrappedHttp.get(http, '/health');
     return result.status === Results.Success;
   }
 
@@ -25,7 +25,7 @@ export default (
    * @returns {UserData} UserData
    */
   async function getMe(): Promise<UserData> {
-    return (await httpWithAuth.get(getPath('/me'))).data;
+    return (await wrappedHttp.get(httpWithAuth, '/me')).data;
   }
 
   /**
@@ -40,12 +40,26 @@ export default (
    * @returns {UserData} UserData
    */
   async function getById(userId: string): Promise<UserData> {
-    return (await httpWithAuth.get(getPath(`/${userId}`))).data;
+    return (await wrappedHttp.get(httpWithAuth, `/${userId}`)).data;
+  }
+
+  /**
+   * Update a specific user
+   * @params {string} userId of the targeted user (required)
+   * @params {any} data Fields to update
+   * @permission Update your own data
+   * @permission UPDATE_USER | scope:global | Update any user
+   * @throws {ResourceUnknownError}
+   * @returns {UserData} UserData
+   */
+  async function putUserId(userId: string, data: any): Promise<UserData> {
+    return (await wrappedHttp.put(httpWithAuth, `/${userId}`, data)).data;
   }
 
   return {
     getHealth,
     getMe,
     getById,
+    putUserId,
   };
 };
