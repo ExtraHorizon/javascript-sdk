@@ -18,11 +18,11 @@ describe('http client', () => {
   const authConfig = parseAuthParams(mockParams.oauth);
   const httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
 
-  test('Create Axios client', async () => {
+  it('Create Axios client', async () => {
     expect(httpWithAuth).toBeDefined();
   });
 
-  test('Make call with authorization', async () => {
+  it('Make call with authorization', async () => {
     const mockToken = 'test';
     nock(mockParams.apiHost)
       .post('/auth/v2/oauth2/token')
@@ -35,7 +35,7 @@ describe('http client', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
   });
 
-  test('Make call with authorization but with wrong password', async () => {
+  it('Make call with authorization but with wrong password', async () => {
     expect.assertions(1);
     nock(mockParams.apiHost).post('/auth/v2/oauth2/token').reply(400, {
       error: 'invalid_grant',
