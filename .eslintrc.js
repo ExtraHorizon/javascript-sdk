@@ -6,6 +6,7 @@ module.exports = {
     project: './tsconfig.eslint.json'
   },
   rules: {
-    "max-classes-per-file": 0
+    "max-classes-per-file": 0,
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.spec.ts"]}]
   }
 };

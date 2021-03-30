@@ -83,3 +83,5 @@ export const addAuth = (
 
   return httpWithAuth;
 };
+
+export default addAuth;

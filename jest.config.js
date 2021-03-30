@@ -11,13 +11,14 @@ module.exports = {
   transform: {
     '\\.ts$': 'ts-jest'
   },
-  testRegex: '/tests/.*\\.(ts|js)$',
+  testRegex: '.*(\\.test|tests).*\\.(ts|js)$',
   // setupFiles: [
   //   "<rootDir>/tests/__helpers__/beforeEachSuite.ts"
   // ],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '/tests/__helpers__/'
+    '/tests/__helpers__/',
+    '/build/'
   ],
   reporters: [
     'default',
