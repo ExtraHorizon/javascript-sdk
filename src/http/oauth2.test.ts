@@ -7,9 +7,9 @@ import { parseAuthParams } from './utils';
 const mockParams = {
   apiHost: 'https://api.test.com',
   oauth: {
-    clientId: '263bfa9a1d1ced19e228c28eb2a331f774184243',
-    password: 'Azerty123',
-    username: 'jens.verbeken@craftzing.com',
+    clientId: '',
+    password: '',
+    username: '',
   },
 };
 
