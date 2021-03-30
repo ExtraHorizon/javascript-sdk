@@ -6,9 +6,9 @@ import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
 function validateConfig({ apiHost, ...config }: Config): Config {
   return {
     ...config,
-    apiHost: apiHost.endsWith('/')
-      ? apiHost.substr(0, apiHost.length - 1)
-      : apiHost,
+    apiHost: apiHost.endsWith('/') ?
+      apiHost.substr(0, apiHost.length - 1) :
+      apiHost,
   };
 }
 

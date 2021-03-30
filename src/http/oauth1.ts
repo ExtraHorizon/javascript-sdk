@@ -1,14 +1,14 @@
 import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance } from 'axios';
 import { Config } from '../types';
-import { TokenDataOauth1 } from './types';
+import { AuthConfig, TokenDataOauth1 } from './types';
 import { camelizeResponseData } from './utils';
 
 export const addAuth = (
   http: AxiosInstance,
   options: Config,
-  authConfig: Record<string, any>
-) => {
+  authConfig: AuthConfig
+): AxiosInstance => {
   let tokenData: TokenDataOauth1;
 
   const httpWithAuth = axios.create({ ...http.defaults });

@@ -1,3 +1,6 @@
+import OAuth = require('oauth-1.0a');
+
+/* eslint-disable camelcase */
 export interface TokenDataOauth2 {
   accessToken: string;
   refreshToken: string;
@@ -24,3 +27,30 @@ export interface TokenResponseOauth2 {
   password: string;
   clientId: string;
 }
+
+interface AuthConfigBase {
+  path: string;
+}
+interface AuthConfig1 extends AuthConfigBase {
+  params: {
+    email: string;
+    password: string;
+  };
+  oauth1: OAuth;
+}
+
+interface AuthConfig2Password extends AuthConfigBase {
+  params: {
+    grant_type: string;
+    client_id: string;
+    username: string;
+    password: string;
+  };
+}
+interface AuthConfig2Code extends AuthConfigBase {
+  params: {
+    grant_type: string;
+    client_id: string;
+  };
+}
+export type AuthConfig = AuthConfig2Password | AuthConfig2Code | AuthConfig1;
