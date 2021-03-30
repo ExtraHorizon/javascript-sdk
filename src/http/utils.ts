@@ -1,13 +1,8 @@
 import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { camelizeKeys } from 'humps';
-import { typeReceivedError } from '../errorHandler';
 import { Config } from '../types';
-
-export const errorLogger = (error: AxiosError) => {
-  throw typeReceivedError(error);
-};
 
 function hmacSha1Hash(baseString: string, key: string) {
   return crypto.createHmac('sha1', key).update(baseString).digest('base64');
