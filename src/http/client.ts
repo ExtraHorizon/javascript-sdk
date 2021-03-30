@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import * as AxiosLogger from 'axios-logger';
 
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { Config } from '../types';
 import { camelizeResponseData, errorLogger } from './utils';
 
-export function createHttpClient({ apiHost, debug }: Config) {
+export function createHttpClient({ apiHost, debug }: Config): AxiosInstance {
   const http = axios.create({
     baseURL: apiHost,
   });
