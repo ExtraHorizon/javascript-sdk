@@ -14,7 +14,6 @@
     "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
-    "@qompium/q-errors": "^1.2.1",
     "axios": "^0.21.1",
     "dotenv-safe": "^8.2.0",
     "humps": "^2.0.1",

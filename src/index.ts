@@ -1,8 +1,7 @@
 import { Config } from './types';
 
 import usersFn from './services/users';
-import { parseAuthParams } from './http/utils';
-import { createHttpClient, addAuth1, addAuth2 } from './http';
+import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   return {
