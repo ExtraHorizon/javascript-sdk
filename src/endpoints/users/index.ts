@@ -2,8 +2,8 @@ import { AxiosInstance } from 'axios';
 import { decamelizeKeys } from 'humps';
 import { UserData } from './types';
 import { resultResponse, Results } from '../../models';
-
 import httpClient from '../http-client';
+
 export default (
   http: AxiosInstance,
   httpWithAuth: AxiosInstance,
@@ -47,9 +47,23 @@ export default (
     return (await wrappedHttp.get(httpWithAuth, `/${userId}`)).data;
   }
 
+  /**
+   * Update a specific user
+   * @params {string} userId of the targeted user (required)
+   * @params {any} data Fields to update
+   * @permission Update your own data
+   * @permission UPDATE_USER | scope:global | Update any user
+   * @throws {ResourceUnknownError}
+   * @returns {UserData} UserData
+   */
+  async function putUserId(userId: string, data: any): Promise<UserData> {
+    return (await wrappedHttp.put(httpWithAuth, `/${userId}`, data)).data;
+  }
+
   return {
     getHealth,
     getMe,
     getById,
+    putUserId,
   };
 };
