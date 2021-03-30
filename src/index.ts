@@ -1,6 +1,6 @@
 import { Config } from './types';
 
-import usersFn from './endpoints/users';
+import usersFn from './services/users';
 import { parseAuthParams } from './http/utils';
 import { createHttpClient, addAuth1, addAuth2 } from './http';
 
