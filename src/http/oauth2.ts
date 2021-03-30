@@ -3,15 +3,15 @@ import * as AxiosLogger from 'axios-logger';
 
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
-import { TokenDataOauth2 } from './types';
+import { AuthConfig, TokenDataOauth2 } from './types';
 import { camelizeResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
 
 export const addAuth = (
   http: AxiosInstance,
   options: Config,
-  authConfig: Record<string, any>
-) => {
+  authConfig: AuthConfig
+): AxiosInstance => {
   let tokenData: TokenDataOauth2;
   const httpWithAuth = axios.create({ ...http.defaults });
 
