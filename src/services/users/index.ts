@@ -4,13 +4,9 @@ import { UserData } from './types';
 import { resultResponse, Results } from '../../models';
 import httpClient from '../http-client';
 
-export default (
-  http: AxiosInstance,
-  httpWithAuth: AxiosInstance,
-  apiVersion = 1
-) => {
+export default (http: AxiosInstance, httpWithAuth: AxiosInstance) => {
   const wrappedHttp = httpClient({
-    BASE_PATH: `/users/v${apiVersion}`,
+    basePath: '/users/v1',
     transformRequestData: decamelizeKeys,
   });
   /**
