@@ -25,3 +25,5 @@ export function createHttpClient({ apiHost, debug }: Config) {
 
   return http;
 }
+
+export default createHttpClient;
