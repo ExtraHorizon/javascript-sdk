@@ -28,10 +28,11 @@ export interface TokenResponseOauth2 {
   clientId: string;
 }
 
-interface AuthConfigBase {
+interface OauthConfigBase {
   path: string;
 }
-export interface AuthConfig1 extends AuthConfigBase {
+
+export interface Oauth1Config extends OauthConfigBase {
   params: {
     email: string;
     password: string;
@@ -39,7 +40,7 @@ export interface AuthConfig1 extends AuthConfigBase {
   oauth1: OAuth;
 }
 
-interface AuthConfig2Password extends AuthConfigBase {
+interface Oauth2ConfigPassword extends OauthConfigBase {
   params: {
     grant_type: string;
     client_id: string;
@@ -47,10 +48,12 @@ interface AuthConfig2Password extends AuthConfigBase {
     password: string;
   };
 }
-interface AuthConfig2Code extends AuthConfigBase {
+
+interface Oauth2ConfigCode extends OauthConfigBase {
   params: {
     grant_type: string;
     client_id: string;
   };
 }
-export type AuthConfig = AuthConfig2Password | AuthConfig2Code | AuthConfig1;
+
+export type AuthConfig = Oauth2ConfigPassword | Oauth2ConfigCode | Oauth1Config;
