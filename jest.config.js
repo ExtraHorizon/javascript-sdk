@@ -1,6 +1,7 @@
 module.exports = {
   verbose: true,
   testEnvironment: 'node',
+  setupFiles: ['dotenv/config'],
   moduleFileExtensions: [
     'ts',
     'tsx',
