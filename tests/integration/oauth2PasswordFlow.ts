@@ -8,8 +8,8 @@ describe('OAuth2 Password Flow', () => {
       apiHost: process.env.API_HOST,
       oauth: {
         clientId: process.env.CLIENT_ID,
-        username: process.env.USERNAME,
-        password: process.env.PASSWORD,
+        username: process.env.API_USERNAME,
+        password: process.env.API_PASSWORD,
       },
     });
   });
