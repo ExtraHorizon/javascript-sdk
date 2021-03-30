@@ -1,4 +1,5 @@
 import * as nock from 'nock';
+import { ApiError } from '../errors';
 import createHttpClient from './client';
 import createAuthHttpClient from './oauth2';
 import { parseAuthParams } from './utils';
@@ -13,15 +14,15 @@ const mockParams = {
 };
 
 describe('http client', () => {
-  test('Create Axios client', async () => {
-    const http = createHttpClient(mockParams);
-    const authConfig = parseAuthParams(mockParams.oauth);
-    const httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
+  const http = createHttpClient(mockParams);
+  const authConfig = parseAuthParams(mockParams.oauth);
+  const httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
 
+  test('Create Axios client', async () => {
     expect(httpWithAuth).toBeDefined();
   });
 
-  test('Create Axios client + check whether the authorization is added correctly', async () => {
+  test('Make call with authorization', async () => {
     const mockToken = 'test';
     nock(mockParams.apiHost)
       .post('/auth/v2/oauth2/token')
@@ -29,12 +30,22 @@ describe('http client', () => {
 
     nock(mockParams.apiHost).get('/test').reply(200, '');
 
-    const http = createHttpClient(mockParams);
-    const authConfig = parseAuthParams(mockParams.oauth);
-    const httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
-
     const result = await httpWithAuth.get('test');
 
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
+  });
+
+  test('Make call with authorization but with wrong password', async () => {
+    expect.assertions(1);
+    nock(mockParams.apiHost).post('/auth/v2/oauth2/token').reply(400, {
+      error: 'invalid_grant',
+      description: 'this password email combination is unknown',
+    });
+
+    try {
+      await httpWithAuth.get('test');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ApiError);
+    }
   });
 });
