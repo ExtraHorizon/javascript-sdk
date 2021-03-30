@@ -1,13 +1,13 @@
 import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance } from 'axios';
 import { Config } from '../types';
-import { AuthConfig, TokenDataOauth1 } from './types';
+import { TokenDataOauth1, AuthConfig1 } from './types';
 import { camelizeResponseData } from './utils';
 
 export const addAuth = (
   http: AxiosInstance,
   options: Config,
-  authConfig: AuthConfig
+  authConfig: AuthConfig1
 ): AxiosInstance => {
   let tokenData: TokenDataOauth1;
 

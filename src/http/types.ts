@@ -31,7 +31,7 @@ export interface TokenResponseOauth2 {
 interface AuthConfigBase {
   path: string;
 }
-interface AuthConfig1 extends AuthConfigBase {
+export interface AuthConfig1 extends AuthConfigBase {
   params: {
     email: string;
     password: string;
