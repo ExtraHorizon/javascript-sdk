@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 interface HttpClient {
   BASE_PATH: string;
@@ -7,9 +7,9 @@ interface HttpClient {
 export default ({ BASE_PATH, transformRequestData }: HttpClient) => {
   console.log('BASE_PATH`', BASE_PATH);
   return {
-    get: (axios, path, config?: AxiosRequestConfig) =>
+    get: (axios: AxiosInstance, path: string, config?: AxiosRequestConfig) =>
       axios.get(`${BASE_PATH}${path}`, config),
-    put: (axios, path, data) =>
+    put: (axios: AxiosInstance, path: string, data) =>
       axios.put(`${BASE_PATH}${path}`, transformRequestData(data)),
   };
 };
