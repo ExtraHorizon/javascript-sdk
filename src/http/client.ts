@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import * as AxiosLogger from 'axios-logger';
 
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import { Config } from '../types';
 import { camelizeResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
