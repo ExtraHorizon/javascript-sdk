@@ -1,6 +1,5 @@
 import * as nock from 'nock';
 import { ApiError } from '../errors';
-// import { ApiError } from '../errors';
 import createHttpClient from './client';
 import createAuthHttpClient from './oauth2';
 import { parseAuthParams } from './utils';
