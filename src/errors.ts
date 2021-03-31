@@ -1,4 +1,51 @@
-import { AxiosError } from 'axios';
+type Method =
+  | 'get'
+  | 'GET'
+  | 'delete'
+  | 'DELETE'
+  | 'head'
+  | 'HEAD'
+  | 'options'
+  | 'OPTIONS'
+  | 'post'
+  | 'POST'
+  | 'put'
+  | 'PUT'
+  | 'patch'
+  | 'PATCH'
+  | 'purge'
+  | 'PURGE'
+  | 'link'
+  | 'LINK'
+  | 'unlink'
+  | 'UNLINK';
+
+interface RequestConfig {
+  url?: string;
+  method?: Method;
+  baseURL?: string;
+  headers?: any;
+  params?: any;
+  data?: any;
+}
+
+interface Response<T = any> {
+  data: T;
+  status: number;
+  statusText: string;
+  headers: any;
+  config: RequestConfig;
+  request?: any;
+}
+
+export interface HttpError<T = any> extends Error {
+  config: RequestConfig;
+  code?: string;
+  request?: any;
+  response?: Response<T>;
+  isAxiosError: boolean;
+  toJSON: () => Record<string, unknown>;
+}
 
 const cleanHeaders = (headers: Record<string, any>) =>
   headers && headers.Authorization
