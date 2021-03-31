@@ -18,6 +18,7 @@ module.exports = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '/tests/__helpers__/',
+    '/tests/e2e/',
     '/build/'
   ],
   reporters: [
