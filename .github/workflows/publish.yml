@@ -9,8 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Extract version
+        id: extract_version
+        uses: Saionaro/extract-package-version@v1.0.6
+      - name: Use Node LTS
+        uses: actions/setup-node@v1
         with:
           node-version: 14
       - run: yarn install
@@ -20,7 +25,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Print version
+        run: echo ${{ steps.extract_version.outputs.version }}
       - uses: actions/setup-node@v1
         with:
           node-version: 14
@@ -28,6 +36,7 @@ jobs:
           scope: "@extrahorizon"
       - run: yarn install
       - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
+      - run: git tag -a v${{steps.extract_version.outputs.version}} -m "Tagging v${{steps.extract_version.outputs.version}}"
       - run: git push --tags && git push
       - run: yarn publish
         env:
