@@ -18,4 +18,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn run lint
+      - name: Run linter
+        run: yarn run lint
