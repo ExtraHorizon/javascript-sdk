@@ -6,6 +6,9 @@
   "author": "Qompium",
   "license": "UNLICENSED",
   "private": true,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "start": "yarn test",
     "build": "yarn lint --fix && tsc",
