@@ -5,7 +5,7 @@ import { resultResponse, Results } from '../../models';
 import httpClient from '../http-client';
 
 export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
-  const wrappedHttp = httpClient({
+  const userClient = httpClient({
     basePath: '/users/v1',
     transformRequestData: decamelizeKeys,
   });
@@ -15,7 +15,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    * @returns {boolean} success
    */
   async function health(): Promise<boolean> {
-    const result: resultResponse = await wrappedHttp.get(http, '/health');
+    const result: resultResponse = await userClient.get(http, '/health');
     return result.status === Results.Success;
   }
 
@@ -25,7 +25,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    * @returns {UserData} UserData
    */
   async function me(): Promise<Partial<UserData>> {
-    return (await wrappedHttp.get(httpWithAuth, '/me')).data;
+    return (await userClient.get(httpWithAuth, '/me')).data;
   }
 
   /**
@@ -40,7 +40,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    * @returns {UserData} UserData
    */
   async function findById(userId: string): Promise<Partial<UserData>> {
-    return (await wrappedHttp.get(httpWithAuth, `/${userId}`)).data;
+    return (await userClient.get(httpWithAuth, `/${userId}`)).data;
   }
 
   /**
@@ -59,7 +59,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
     >
   ): Promise<UserData> {
-    return (await wrappedHttp.put(httpWithAuth, `/${userId}`, userData)).data;
+    return (await userClient.put(httpWithAuth, `/${userId}`, userData)).data;
   }
 
   return {
