@@ -30,5 +30,4 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn
-      - name: Run linter
-        run: yarn run lint
+      - run: yarn run lint
