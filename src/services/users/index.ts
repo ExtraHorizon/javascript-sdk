@@ -14,7 +14,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
-  async function getHealth(): Promise<boolean> {
+  async function health(): Promise<boolean> {
     const result: resultResponse = await wrappedHttp.get(http, '/health');
     return result.status === Results.Success;
   }
@@ -24,7 +24,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    * @permission Everyone can use this endpoint
    * @returns {UserData} UserData
    */
-  async function getMe(): Promise<UserData> {
+  async function me(): Promise<Partial<UserData>> {
     return (await wrappedHttp.get(httpWithAuth, '/me')).data;
   }
 
@@ -39,7 +39,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async function getById(userId: string): Promise<UserData> {
+  async function findById(userId: string): Promise<Partial<UserData>> {
     return (await wrappedHttp.get(httpWithAuth, `/${userId}`)).data;
   }
 
@@ -52,14 +52,16 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async function putUserId(userId: string, data: any): Promise<UserData> {
-    return (await wrappedHttp.put(httpWithAuth, `/${userId}`, data)).data;
+  async function update(userId: string, userData: Pick<UserData,
+    'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
+  >): Promise<UserData> {
+    return (await wrappedHttp.put(httpWithAuth, `/${userId}`, userData)).data;
   }
 
   return {
-    getHealth,
-    getMe,
-    getById,
-    putUserId,
+    health,
+    me,
+    findById,
+    update,
   };
 };
