@@ -54,12 +54,14 @@ export const addAuth = (
         const originalRequest = error.config;
         if (
           error.response &&
-          (error.response.status === 403 || error.response.status === 401) &&
+          (error.response.status === 403 ||
+            error.response.status === 401 ||
+            error.response.status === 400) &&
           !originalRequest._retry
         ) {
           originalRequest._retry = true;
           tokenData.accessToken = '';
-          if (error.response.code === 118) {
+          if (error.response?.data?.code === 118) {
             // ACCESS_TOKEN_EXPIRED_EXCEPTION
             originalRequest.headers.Authorization = `Bearer ${
               (await refreshTokens()).accessToken
