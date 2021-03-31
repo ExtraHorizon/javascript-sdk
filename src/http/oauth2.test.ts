@@ -1,5 +1,6 @@
 import * as nock from 'nock';
 import { ApiError } from '../errors';
+// import { ApiError } from '../errors';
 import createHttpClient from './client';
 import createAuthHttpClient from './oauth2';
 import { parseAuthParams } from './utils';
@@ -14,6 +15,9 @@ const mockParams = {
 };
 
 describe('http client', () => {
+  beforeEach(() => {
+    nock.cleanAll();
+  });
   const http = createHttpClient(mockParams);
   const authConfig = parseAuthParams(mockParams.oauth);
   const httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
@@ -47,5 +51,28 @@ describe('http client', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(ApiError);
     }
+  });
+
+  it('Make call with authorization but first reply with expired token', async () => {
+    const mockToken = 'expired access token';
+    nock(mockParams.apiHost)
+      .post('/auth/v2/oauth2/token')
+      .reply(200, { access_token: mockToken });
+
+    nock(mockParams.apiHost).get('/test').reply(400, {
+      code: 118,
+      error: 'invalid_grant',
+      description: 'the associated authorization is expired',
+    });
+
+    nock(mockParams.apiHost)
+      .post('/auth/v2/oauth2/token')
+      .reply(200, { access_token: 'access token' });
+
+    nock(mockParams.apiHost).get('/test').reply(200, {});
+
+    const result = await httpWithAuth.get('test');
+
+    expect(result.data).toBeDefined();
   });
 });
