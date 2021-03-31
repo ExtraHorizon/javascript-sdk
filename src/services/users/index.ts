@@ -1,10 +1,10 @@
-import { AxiosInstance } from 'axios';
 import { decamelizeKeys } from 'humps';
-import { UserData } from './types';
+import type { HttpInstance } from '../../types';
+import type { UserData } from './types';
 import { resultResponse, Results } from '../../models';
 import httpClient from '../http-client';
 
-export default (http: AxiosInstance, httpWithAuth: AxiosInstance) => {
+export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const wrappedHttp = httpClient({
     basePath: '/users/v1',
     transformRequestData: decamelizeKeys,
