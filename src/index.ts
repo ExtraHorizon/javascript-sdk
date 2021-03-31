@@ -1,6 +1,6 @@
 import { Config } from './types';
 
-import usersFn from './services/users';
+import usersService from './services/users';
 import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
@@ -23,5 +23,5 @@ export function client(rawConfig: Config) {
     authConfig
   );
 
-  return { users: usersFn(http, httpWithAuth) };
+  return { users: usersService(http, httpWithAuth) };
 }
