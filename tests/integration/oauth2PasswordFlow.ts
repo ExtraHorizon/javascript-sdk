@@ -14,13 +14,13 @@ describe('OAuth2 Password Flow', () => {
     });
   });
 
-  it('getHealth()', async () => {
-    const res = await sdk.users.getHealth();
+  it('health()', async () => {
+    const res = await sdk.users.health();
     expect(res).toBe(true);
   });
 
-  it('getMe()', async () => {
-    const user = await sdk.users.getMe();
+  it('me()', async () => {
+    const user = await sdk.users.me();
     expect(user.id).toBeDefined();
     expect(user.firstName).toBeDefined();
   });

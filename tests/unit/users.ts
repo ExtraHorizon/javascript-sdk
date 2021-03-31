@@ -36,7 +36,7 @@ describe('Users', () => {
   it('Can get health', async () => {
     nock(`${apiHost}/users/v1`).get('/health').reply(200, '');
 
-    const health = await sdk.users.getHealth();
+    const health = await sdk.users.health();
 
     expect(health).toBe(true);
   });
@@ -48,7 +48,7 @@ describe('Users', () => {
       .reply(200, { access_token: mockToken });
     nock(`${apiHost}/users/v1`).get('/me').reply(200, userData);
 
-    const user = await sdk.users.getMe();
+    const user = await sdk.users.me();
 
     expect(user.id);
   });
@@ -56,7 +56,7 @@ describe('Users', () => {
   it('Can get user by id', async () => {
     nock(`${apiHost}/users/v1`).get(`/${userId}`).reply(200, userData);
 
-    const user = await sdk.users.getById(userId);
+    const user = await sdk.users.findById(userId);
 
     expect(user.id);
   });
@@ -68,7 +68,7 @@ describe('Users', () => {
       .reply(404, ResourceUnknownException);
 
     try {
-      await sdk.users.getById(userId);
+      await sdk.users.findById(userId);
     } catch (error) {
       expect(error).toBeInstanceOf(ResourceUnknownError);
     }
@@ -77,9 +77,9 @@ describe('Users', () => {
   it('Can update a user', async () => {
     nock(`${apiHost}/users/v1`).put(`/${userId}`).reply(200, updatedUserData);
 
-    const user = await sdk.users.putUserId(userId, {
-      first_name: 'testje',
-      last_name: 'testje',
+    const user = await sdk.users.update(userId, {
+      firstName: 'testje',
+      lastName: 'testje',
     });
 
     expect(user.firstName).toBe('testje');
@@ -92,7 +92,7 @@ describe('Users', () => {
       .reply(404, ResourceUnknownException);
 
     try {
-      await sdk.users.putUserId(userId);
+      await sdk.users.update(userId);
     } catch (error) {
       expect(error).toBeInstanceOf(ResourceUnknownError);
     }
