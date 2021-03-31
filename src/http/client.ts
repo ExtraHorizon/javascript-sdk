@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import * as AxiosLogger from 'axios-logger';
 
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { Config } from '../types';
 import { camelizeResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
@@ -23,7 +23,7 @@ export function createHttpClient({ apiHost, debug }: Config): AxiosInstance {
   }
   http.interceptors.response.use(
     res => res,
-    (error: AxiosError) => {
+    error => {
       throw typeReceivedError(error);
     }
   );

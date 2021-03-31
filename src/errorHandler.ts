@@ -1,11 +1,10 @@
-import { AxiosError } from 'axios';
-import { ResourceUnknownError, ApiError } from './errors';
+import { ResourceUnknownError, ApiError, HttpError } from './errors';
 
 const ErrorClassDefinitionsMap = {
   16: ResourceUnknownError,
 };
 
-export function typeReceivedError(error: AxiosError) {
+export function typeReceivedError(error: HttpError) {
   const ErrorClassDefinition =
     ErrorClassDefinitionsMap[error?.response?.data?.code];
 
