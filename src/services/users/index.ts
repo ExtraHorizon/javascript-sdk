@@ -46,15 +46,19 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   /**
    * Update a specific user
    * @params {string} userId of the targeted user (required)
-   * @params {any} data Fields to update
+   * @params {Pick<UserData,'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'>} data Fields to update
    * @permission Update your own data
    * @permission UPDATE_USER | scope:global | Update any user
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async function update(userId: string, userData: Pick<UserData,
-    'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
-  >): Promise<UserData> {
+  async function update(
+    userId: string,
+    userData: Pick<
+      UserData,
+      'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
+    >
+  ): Promise<UserData> {
     return (await wrappedHttp.put(httpWithAuth, `/${userId}`, userData)).data;
   }
 
