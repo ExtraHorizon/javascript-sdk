@@ -12,13 +12,7 @@ type Method =
   | 'put'
   | 'PUT'
   | 'patch'
-  | 'PATCH'
-  | 'purge'
-  | 'PURGE'
-  | 'link'
-  | 'LINK'
-  | 'unlink'
-  | 'UNLINK';
+  | 'PATCH';
 
 interface RequestConfig {
   url?: string;
