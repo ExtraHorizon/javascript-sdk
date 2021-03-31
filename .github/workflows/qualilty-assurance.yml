@@ -3,7 +3,7 @@ name: Quality assurance
 on: [push]
 
 jobs:
-  build:
+  quality-assurance:
     runs-on: ubuntu-latest
 
     strategy:
