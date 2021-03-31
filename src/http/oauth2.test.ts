@@ -14,12 +14,14 @@ const mockParams = {
 };
 
 describe('http client', () => {
-  beforeEach(() => {
-    nock.cleanAll();
-  });
   const http = createHttpClient(mockParams);
   const authConfig = parseAuthParams(mockParams.oauth);
-  const httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
+  let httpWithAuth;
+
+  beforeEach(() => {
+    nock.cleanAll();
+    httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
+  });
 
   it('Create Axios client', async () => {
     expect(httpWithAuth).toBeDefined();
@@ -82,15 +84,15 @@ describe('http client', () => {
       .post('/auth/v2/oauth2/token')
       .reply(200, { access_token: mockToken });
 
+    nock(mockParams.apiHost).post('/auth/v2/oauth2/token').reply(400, {
+      error: 'invalid_grant',
+      description: 'The refresh token is unknown',
+    });
+
     nock(mockParams.apiHost).get('/test').reply(400, {
       code: 118,
       error: 'invalid_grant',
       description: 'the associated authorization is expired',
-    });
-
-    nock(mockParams.apiHost).post('/auth/v2/oauth2/token').reply(400, {
-      error: 'invalid_grant',
-      description: 'The refresh token is unknown',
     });
 
     nock(mockParams.apiHost).get('/test').reply(200, {});
