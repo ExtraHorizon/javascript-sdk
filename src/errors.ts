@@ -60,7 +60,7 @@ export class ApiError {
 
   public readonly response?: Record<string, any>;
 
-  constructor(error: AxiosError) {
+  constructor(error: HttpError) {
     const { config, response } = error;
     this.status = response?.status;
     this.statusText = response?.statusText;
@@ -77,7 +77,7 @@ export class ApiError {
 }
 
 export class ResourceUnknownError extends ApiError {
-  constructor(error: AxiosError) {
+  constructor(error: HttpError) {
     super(error);
     this.qName = 'RESOURCE_UNKNOWN_EXCEPTION';
   }
