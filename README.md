@@ -74,8 +74,8 @@ import { client } from '@extrahorizon/javascript-sdk';
 const sdk = client(config);
 
 (async () => {
-  console.log('getHealth', await sdk.users.getHealth());
-  console.log('getMe', await sdk.users.getMe());
+  console.log('sdk.users.health()', await sdk.users.health());
+  console.log('sdk.users.me()', await sdk.users.me());
 })();
 ```
 
