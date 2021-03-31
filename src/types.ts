@@ -1,3 +1,7 @@
+import { AxiosInstance } from 'axios';
+
+export type HttpInstance = AxiosInstance;
+
 interface ConfigOauth1Base {
   consumerKey: string;
   consumerSecret: string;
