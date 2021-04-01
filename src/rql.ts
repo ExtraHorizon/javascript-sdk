@@ -2,21 +2,9 @@ export default function rqlBuilder() {
   let returnString = '';
 
   const concatValue = function concatValue(operation, value) {
-    const seperator = returnString.startsWith('?') ? '&' : '?';
     returnString = returnString
-      .concat(seperator)
+      .concat(returnString.startsWith('?') ? '&' : '?')
       .concat(`${operation}(${value})`);
-  };
-
-  const concatKeyValue = function concatKeyValue(
-    operation: string,
-    key: string,
-    value: string
-  ) {
-    const seperator = returnString.startsWith('?') ? '&' : '?';
-    returnString = returnString
-      .concat(seperator)
-      .concat(`${operation}(${key},${value})`);
   };
 
   const api = {
@@ -36,7 +24,7 @@ export default function rqlBuilder() {
       (memo, operator) => ({
         ...memo,
         [operator](field: string, list: Array<string>) {
-          concatKeyValue('in', field, list.join(','));
+          concatValue('in', `${field},${list.join(',')}`);
           return api;
         },
       }),
@@ -46,7 +34,7 @@ export default function rqlBuilder() {
       (memo, operator) => ({
         ...memo,
         [operator](field: string, value: string) {
-          concatKeyValue(operator, field, value);
+          concatValue(operator, `${field},${value}`);
           return api;
         },
       }),
