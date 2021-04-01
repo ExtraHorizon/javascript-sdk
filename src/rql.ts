@@ -2,7 +2,7 @@ export default function rqlBuilder() {
   let returnString = '';
 
   const api = {
-    select(value: string | Array<string>) {
+    select(value: string | string[]) {
       return processQuery(
         'select',
         typeof value === 'string' ? value : value.join(',')
@@ -11,16 +11,16 @@ export default function rqlBuilder() {
     limit(limit: number, offset?: number) {
       return processQuery('limit', `${limit}${offset ? `,${offset}` : ''}`);
     },
-    sort(value: string | Array<string>) {
+    sort(value: string | string[]) {
       return processQuery(
         'sort',
         typeof value === 'string' ? value : value.join(',')
       );
     },
-    out(field: string, list: Array<string>) {
+    out(field: string, list: string[]) {
       return processQuery('out', `${field},${list.join(',')}`);
     },
-    in(field: string, list: Array<string>) {
+    in(field: string, list: string[]) {
       return processQuery('in', `${field},${list.join(',')}`);
     },
     ge(field: string, value: string) {
