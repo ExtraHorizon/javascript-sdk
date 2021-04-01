@@ -20,17 +20,21 @@ export default function rqlBuilder() {
       concatValue('sort', fields);
       return api;
     },
-    ...['in', 'out'].reduce(
+    ...['out'].reduce(
       (memo, operator) => ({
         ...memo,
         [operator](field: string, list: Array<string>) {
-          concatValue('in', `${field},${list.join(',')}`);
+          concatValue(operator, `${field},${list.join(',')}`);
           return api;
         },
       }),
       {}
     ),
-    ...['ge', 'eq', 'gt', 'lt', 'le', 'ne', 'like'].reduce(
+    in(field: string, list: Array<string>) {
+      concatValue('in', `${field},${list.join(',')}`);
+      return api;
+    },
+    ...['ge', 'eq', 'le', 'ne'].reduce(
       (memo, operator) => ({
         ...memo,
         [operator](field: string, value: string) {
@@ -40,6 +44,18 @@ export default function rqlBuilder() {
       }),
       {}
     ),
+    like(field: string, value: string) {
+      concatValue('like', `${field},${value}`);
+      return api;
+    },
+    lt(field: string, value: string) {
+      concatValue('gt', `${field},${value}`);
+      return api;
+    },
+    gt(field: string, value: string) {
+      concatValue('gt', `${field},${value}`);
+      return api;
+    },
     toString: function toString() {
       return returnString;
     },

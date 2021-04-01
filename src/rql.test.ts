@@ -1,7 +1,7 @@
 import rqlBuilder from './rql';
 
 describe('rql string builder', () => {
-  console.log('test', rqlBuilder());
+  console.log('test', rqlBuilder().select('name'));
   it('parse select', async () => {
     const rql = rqlBuilder();
     const result = rql.select(['name', 'id']).toString();
@@ -61,5 +61,10 @@ describe('rql string builder', () => {
       .like('name', 'fitbit')
       .toString();
     expect(result).toBe('?select(name,id)&like(name,fitbit)');
+  });
+
+  it('foo between 3 and 10', async () => {
+    const result = rqlBuilder().lt('foo', '3').gt('foo', '10').toString();
+    expect(result).toBe('?gt(foo,3)&gt(foo,10)');
   });
 });
