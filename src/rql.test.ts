@@ -1,7 +1,6 @@
 import rqlBuilder from './rql';
 
 describe('rql string builder', () => {
-  console.log('test', rqlBuilder().select('name'));
   it('parse select', async () => {
     const rql = rqlBuilder();
     const result = rql.select(['name', 'id']).toString();
