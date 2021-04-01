@@ -7,6 +7,12 @@ describe('rql string builder', () => {
     expect(result).toBe('?select(name,id)');
   });
 
+  it('parse select with space', async () => {
+    const rql = rqlBuilder();
+    const result = rql.select(["'first name'", 'id']).build();
+    expect(result).toBe(`?select('first name',id)`);
+  });
+
   it('parse limit', async () => {
     const result = rqlBuilder().limit(10, 15).build();
     expect(result).toBe('?limit(10,15)');
