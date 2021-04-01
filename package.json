@@ -5,7 +5,6 @@
   "main": "build/index.js",
   "author": "Qompium",
   "license": "UNLICENSED",
-  "private": true,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },

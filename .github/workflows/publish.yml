@@ -3,7 +3,7 @@ name: Publish @extrahorizon/javascript-sdk
 on:
   push:
     branches:
-      - test-script
+      - master
 
 jobs:
   build:
@@ -40,5 +40,6 @@ jobs:
       - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
       - run: git tag -a v${{steps.extract_version.outputs.version}} -m "Tagging v${{steps.extract_version.outputs.version}}"
       - run: git push --tags && git push
+      - run: yarn publish --registry https://npm.pkg.github.com/
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
