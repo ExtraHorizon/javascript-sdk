@@ -3,47 +3,47 @@ export default function rqlBuilder() {
 
   const api = {
     select(value) {
-      return concatValue('select', value);
+      return processQuery('select', value);
     },
     limit(limit: number, offset?: number) {
-      return concatValue('limit', `${limit}${offset ? `,${offset}` : ''}`);
+      return processQuery('limit', `${limit}${offset ? `,${offset}` : ''}`);
     },
     sort(fields: Array<string>) {
-      return concatValue('sort', fields);
+      return processQuery('sort', fields.join(','));
     },
     out(field: string, list: Array<string>) {
-      return concatValue('out', `${field},${list.join(',')}`);
+      return processQuery('out', `${field},${list.join(',')}`);
     },
     in(field: string, list: Array<string>) {
-      return concatValue('in', `${field},${list.join(',')}`);
+      return processQuery('in', `${field},${list.join(',')}`);
     },
     ge(field: string, value: string) {
-      return concatValue('ge', `${field},${value}`);
+      return processQuery('ge', `${field},${value}`);
     },
     eq(field: string, value: string) {
-      return concatValue('eq', `${field},${value}`);
+      return processQuery('eq', `${field},${value}`);
     },
     le(field: string, value: string) {
-      return concatValue('le', `${field},${value}`);
+      return processQuery('le', `${field},${value}`);
     },
     ne(field: string, value: string) {
-      return concatValue('ne', `${field},${value}`);
+      return processQuery('ne', `${field},${value}`);
     },
     like(field: string, value: string) {
-      return concatValue('like', `${field},${value}`);
+      return processQuery('like', `${field},${value}`);
     },
     lt(field: string, value: string) {
-      return concatValue('gt', `${field},${value}`);
+      return processQuery('gt', `${field},${value}`);
     },
     gt(field: string, value: string) {
-      return concatValue('gt', `${field},${value}`);
+      return processQuery('gt', `${field},${value}`);
     },
     toString() {
       return returnString;
     },
   };
 
-  function concatValue(operation, value) {
+  function processQuery(operation: string, value: string) {
     returnString = returnString
       .concat(returnString.startsWith('?') ? '&' : '?')
       .concat(`${operation}(${value})`);
