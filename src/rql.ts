@@ -50,6 +50,11 @@ export default function rqlBuilder() {
   };
 
   function processQuery(operation: string, value: string) {
+    if (value.includes(' ')) {
+      console.log(
+        'A space has been detected while building the rql, please be aware that problems can arise'
+      );
+    }
     returnString = returnString
       .concat(returnString.startsWith('?') ? '&' : '?')
       .concat(`${operation}(${value})`);
