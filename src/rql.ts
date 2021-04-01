@@ -1,65 +1,54 @@
 export default function rqlBuilder() {
   let returnString = '';
 
-  const concatValue = function concatValue(operation, value) {
-    returnString = returnString
-      .concat(returnString.startsWith('?') ? '&' : '?')
-      .concat(`${operation}(${value})`);
-  };
-
   const api = {
-    select: function select(value) {
-      concatValue('select', value);
-      return api;
+    select(value) {
+      return concatValue('select', value);
     },
     limit(limit: number, offset?: number) {
-      concatValue('limit', `${limit}${offset ? `,${offset}` : ''}`);
-      return api;
+      return concatValue('limit', `${limit}${offset ? `,${offset}` : ''}`);
     },
     sort(fields: Array<string>) {
-      concatValue('sort', fields);
-      return api;
+      return concatValue('sort', fields);
     },
-    ...['out'].reduce(
-      (memo, operator) => ({
-        ...memo,
-        [operator](field: string, list: Array<string>) {
-          concatValue(operator, `${field},${list.join(',')}`);
-          return api;
-        },
-      }),
-      {}
-    ),
+    out(field: string, list: Array<string>) {
+      return concatValue('out', `${field},${list.join(',')}`);
+    },
     in(field: string, list: Array<string>) {
-      concatValue('in', `${field},${list.join(',')}`);
-      return api;
+      return concatValue('in', `${field},${list.join(',')}`);
     },
-    ...['ge', 'eq', 'le', 'ne'].reduce(
-      (memo, operator) => ({
-        ...memo,
-        [operator](field: string, value: string) {
-          concatValue(operator, `${field},${value}`);
-          return api;
-        },
-      }),
-      {}
-    ),
+    ge(field: string, value: string) {
+      return concatValue('ge', `${field},${value}`);
+    },
+    eq(field: string, value: string) {
+      return concatValue('eq', `${field},${value}`);
+    },
+    le(field: string, value: string) {
+      return concatValue('le', `${field},${value}`);
+    },
+    ne(field: string, value: string) {
+      return concatValue('ne', `${field},${value}`);
+    },
     like(field: string, value: string) {
-      concatValue('like', `${field},${value}`);
-      return api;
+      return concatValue('like', `${field},${value}`);
     },
     lt(field: string, value: string) {
-      concatValue('gt', `${field},${value}`);
-      return api;
+      return concatValue('gt', `${field},${value}`);
     },
     gt(field: string, value: string) {
-      concatValue('gt', `${field},${value}`);
-      return api;
+      return concatValue('gt', `${field},${value}`);
     },
-    toString: function toString() {
+    toString() {
       return returnString;
     },
   };
+
+  function concatValue(operation, value) {
+    returnString = returnString
+      .concat(returnString.startsWith('?') ? '&' : '?')
+      .concat(`${operation}(${value})`);
+    return api;
+  }
 
   return api;
 }
