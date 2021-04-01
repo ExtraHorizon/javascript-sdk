@@ -3,7 +3,7 @@ name: Publish @extrahorizon/javascript-sdk
 on:
   push:
     branches:
-      - master
+      - test-script
 
 jobs:
   build:
