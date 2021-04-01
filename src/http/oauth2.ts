@@ -54,9 +54,7 @@ export const addAuth = (
         const originalRequest = error.config;
         if (
           error.response &&
-          (error.response.status === 403 ||
-            error.response.status === 401 ||
-            error.response.status === 400) &&
+          [400, 401, 403].includes(error.response.status) &&
           !originalRequest._retry
         ) {
           originalRequest._retry = true;
