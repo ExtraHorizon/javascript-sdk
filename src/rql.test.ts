@@ -3,46 +3,40 @@ import rqlBuilder from './rql';
 describe('rql string builder', () => {
   it('parse select', async () => {
     const rql = rqlBuilder();
-    const result = rql.select(['name', 'id']).toString();
+    const result = rql.select(['name', 'id']).build();
     expect(result).toBe('?select(name,id)');
   });
 
   it('parse limit', async () => {
-    const result = rqlBuilder().limit(10, 15).toString();
+    const result = rqlBuilder().limit(10, 15).build();
     expect(result).toBe('?limit(10,15)');
   });
 
   it('parse limit + offset', async () => {
-    const result = rqlBuilder().limit(10).toString();
+    const result = rqlBuilder().limit(10).build();
     expect(result).toBe('?limit(10)');
   });
 
   it('parse select + limit', async () => {
-    const result = rqlBuilder().select(['name', 'id']).limit(10, 15).toString();
-    expect(result).toBe('?select(name,id)&limit(10,15)');
+    const result = rqlBuilder().select('name').limit(10, 15).build();
+    expect(result).toBe('?select(name)&limit(10,15)');
   });
 
   it('parse select + in', async () => {
     const result = rqlBuilder()
       .select(['name', 'id'])
       .in('name', ['fitbit'])
-      .toString();
+      .build();
     expect(result).toBe('?select(name,id)&in(name,fitbit)');
   });
 
   it('parse select + sort', async () => {
-    const result = rqlBuilder()
-      .select(['name', 'id'])
-      .sort(['name'])
-      .toString();
+    const result = rqlBuilder().select(['name', 'id']).sort('name').build();
     expect(result).toBe('?select(name,id)&sort(name)');
   });
 
   it('parse select + inverted sort', async () => {
-    const result = rqlBuilder()
-      .select(['name', 'id'])
-      .sort(['-name'])
-      .toString();
+    const result = rqlBuilder().select(['name', 'id']).sort('-name').build();
     expect(result).toBe('?select(name,id)&sort(-name)');
   });
 
@@ -50,7 +44,7 @@ describe('rql string builder', () => {
     const result = rqlBuilder()
       .select(['name', 'id'])
       .sort(['name', '-description'])
-      .toString();
+      .build();
     expect(result).toBe('?select(name,id)&sort(name,-description)');
   });
 
@@ -58,12 +52,12 @@ describe('rql string builder', () => {
     const result = rqlBuilder()
       .select(['name', 'id'])
       .like('name', 'fitbit')
-      .toString();
+      .build();
     expect(result).toBe('?select(name,id)&like(name,fitbit)');
   });
 
   it('foo between 3 and 10', async () => {
-    const result = rqlBuilder().lt('foo', '3').gt('foo', '10').toString();
+    const result = rqlBuilder().lt('foo', '3').gt('foo', '10').build();
     expect(result).toBe('?gt(foo,3)&gt(foo,10)');
   });
 });
