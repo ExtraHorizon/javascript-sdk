@@ -72,3 +72,11 @@ export type ApplicationDataUpdate =
 export interface ApplicationDataList extends listResponse {
   data: ApplicationData[];
 }
+
+export interface ApplicationVersionCreationData {
+  name: string;
+}
+
+export type ApplicationVersionData =
+  | OAuth1ApplicationVersion
+  | OAuth2ApplicationVersion;
