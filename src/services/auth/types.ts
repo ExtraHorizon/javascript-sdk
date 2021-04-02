@@ -1,3 +1,5 @@
+import { listResponse } from '../../models';
+
 interface OAuth1ApplicationVersion {
   id: string;
   name: string;
@@ -43,6 +45,7 @@ export type OAuth1ApplicationCreationSchema = Pick<
   OAuth1Application,
   'type' | 'name' | 'description'
 >;
+
 export type OAuth2ApplicationCreationSchema = Pick<
   OAuth2Application,
   'type' | 'name' | 'description' | 'logo' | 'redirectUris' | 'confidential'
@@ -51,3 +54,21 @@ export type OAuth2ApplicationCreationSchema = Pick<
 export type ApplicationDataCreation =
   | OAuth1ApplicationCreationSchema
   | OAuth2ApplicationCreationSchema;
+
+export type OAuth1ApplicationUpdateSchema = Pick<
+  OAuth1Application,
+  'type' | 'name' | 'description'
+>;
+
+export type OAuth2ApplicationUpdateSchema = Pick<
+  OAuth2Application,
+  'type' | 'name' | 'description' | 'logo' | 'redirectUris'
+>;
+
+export type ApplicationDataUpdate =
+  | OAuth1ApplicationUpdateSchema
+  | OAuth2ApplicationUpdateSchema;
+
+export interface ApplicationDataList extends listResponse {
+  data: ApplicationData[];
+}
