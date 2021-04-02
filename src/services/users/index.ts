@@ -54,9 +54,11 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
    */
   async function update(
     userId: string,
-    userData: Pick<
-      UserData,
-      'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
+    userData: Partial<
+      Pick<
+        UserData,
+        'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
+      >
     >
   ): Promise<UserData> {
     return (await userClient.put(httpWithAuth, `/${userId}`, userData)).data;
