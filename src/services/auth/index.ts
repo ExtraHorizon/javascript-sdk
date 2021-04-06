@@ -1,18 +1,20 @@
 import type { HttpInstance } from '../../types';
 import type {
-  ApplicationData,
-  ApplicationDataCreation,
-  ApplicationDataList,
-  ApplicationDataUpdate,
-  ApplicationVersionCreationData,
-  ApplicationVersionData,
+  Application,
+  ApplicationCreation,
+  ApplicationList,
+  ApplicationUpdate,
+  ApplicationVersionCreation,
+  ApplicationVersion,
+  OAuth2Authorization,
+  OAuth2AuthorizationCreation,
+  OAuth2AuthorizationList,
 } from './types';
 import httpClient from '../http-client';
 
 export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
     basePath: '/auth/v2',
-    // transformRequestData: decamelizeKeys,
   });
 
   return {
@@ -21,17 +23,15 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @permission CREATE_APPLICATIONS | scope:global |
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications
      */
-    async createApplication(
-      data: ApplicationDataCreation
-    ): Promise<ApplicationData> {
+    async createApplication(data: ApplicationCreation): Promise<Application> {
       return (await authClient.post(httpWithAuth, '/applications', data)).data;
     },
     /**
      * Create an OAuth application
-     * @permission CREATE_APPLICATIONS | scope:global |
+     * @permission VIEW_APPLICATIONS | scope:global |
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
      * */
-    async getApplications(query?: string): Promise<ApplicationDataList> {
+    async getApplications(query?: string): Promise<ApplicationList> {
       return (
         await authClient.get(
           httpWithAuth,
@@ -47,8 +47,8 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
      */
     async updateApplication(
       applicationId: string,
-      data: ApplicationDataUpdate
-    ): Promise<ApplicationData> {
+      data: ApplicationUpdate
+    ): Promise<Application> {
       return (
         await authClient.put(
           httpWithAuth,
@@ -75,8 +75,8 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
      */
     async createApplicationVersion(
       applicationId: string,
-      data: ApplicationVersionCreationData
-    ): Promise<ApplicationVersionData> {
+      data: ApplicationVersionCreation
+    ): Promise<ApplicationVersion> {
       return (
         await authClient.post(
           httpWithAuth,
@@ -101,6 +101,51 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
           `/applications/${applicationId}/${versionId}`
         )
       ).data.affectedRecords;
+    },
+
+    /**
+     * Create an OAuth2 authorization
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/post_oauth2_authorizations
+     * @throws {ApplicationUnknownError}
+     * @throws {CallbackNotValidError}
+     * @throws {UnsupportedResponseTypeError}
+     */
+    async createOauth2Authorization(
+      data: OAuth2AuthorizationCreation
+    ): Promise<OAuth2Authorization> {
+      return (
+        await authClient.post(httpWithAuth, `/oauth2/authorizations`, data)
+      ).data;
+    },
+
+    /**
+     * Get a list of OAuth2 Authorizations
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
+     */
+    async getOauth2Authorizations(
+      query?: string
+    ): Promise<OAuth2AuthorizationList> {
+      return (
+        await authClient.get(
+          httpWithAuth,
+          `/oauth2/authorizations${query ? `?${query}` : ''}`
+        )
+      ).data;
+    },
+
+    /**
+     * Delete an OAuth2 Authorization
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
+     */
+    async deleteOauth2Authorizations(
+      query?: string
+    ): Promise<OAuth2AuthorizationList> {
+      return (
+        await authClient.get(
+          httpWithAuth,
+          `/oauth2/authorizations${query ? `?${query}` : ''}`
+        )
+      ).data;
     },
   };
 };
