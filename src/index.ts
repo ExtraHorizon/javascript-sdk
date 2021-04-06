@@ -4,6 +4,8 @@ import usersService from './services/users';
 import authService from './services/auth';
 import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
 
+export { default as rqlBuilder } from './rql';
+
 function validateConfig({ apiHost, ...config }: Config): Config {
   return {
     ...config,
