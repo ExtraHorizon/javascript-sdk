@@ -121,6 +121,7 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
     /**
      * Get a list of OAuth2 Authorizations
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
+     * @permission VIEW_AUTHORIZATIONS | scope:global |
      */
     async getOauth2Authorizations(
       query?: string
@@ -136,14 +137,15 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
     /**
      * Delete an OAuth2 Authorization
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
+     * @permission DELETE_AUTHORIZATIONS | scope:global |
      */
     async deleteOauth2Authorizations(
-      query?: string
+      authorizationId: string
     ): Promise<OAuth2AuthorizationList> {
       return (
-        await authClient.get(
+        await authClient.delete(
           httpWithAuth,
-          `/oauth2/authorizations${query ? `?${query}` : ''}`
+          `/oauth2/authorizations/${authorizationId}`
         )
       ).data;
     },
