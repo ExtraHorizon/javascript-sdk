@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as nock from 'nock';
+import { ResourceUnknownError } from '../../../src/errors';
 import { client } from '../../../src/index';
 import { authorizationList, newAuthorization } from '../../__helpers__/auth';
 
@@ -83,5 +84,28 @@ describe('Users', () => {
     );
 
     expect(deleteResult.affectedRecords).toEqual(1);
+  });
+
+  it('Can not delete unknown resource authorization', async () => {
+    const mockToken = 'mockToken';
+    const authorizationId = '123';
+    expect.assertions(1);
+    nock(apiHost)
+      .post('/auth/v2/oauth2/token')
+      .reply(200, { access_token: mockToken });
+
+    nock(`${apiHost}${authBase}`)
+      .delete(`/oauth2/authorizations/${authorizationId}`)
+      .reply(404, {
+        code: 16,
+        name: 'RESOURCE_UNKNOWN_EXCEPTION',
+        message: 'Requested resource is unknown',
+      });
+
+    try {
+      await sdk.auth.deleteOauth2Authorization(authorizationId);
+    } catch (error) {
+      expect(error).toBeInstanceOf(ResourceUnknownError);
+    }
   });
 });
