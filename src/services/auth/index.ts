@@ -11,6 +11,7 @@ import type {
   OAuth2AuthorizationList,
 } from './types';
 import httpClient from '../http-client';
+import { affectedRecordsResponse } from '../../models';
 
 export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
@@ -94,13 +95,13 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
     async deleteApplicationVersion(
       applicationId: string,
       versionId: string
-    ): Promise<number> {
+    ): Promise<affectedRecordsResponse> {
       return (
         await authClient.delete(
           httpWithAuth,
           `/applications/${applicationId}/${versionId}`
         )
-      ).data.affectedRecords;
+      ).data;
     },
 
     /**
@@ -139,9 +140,9 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
      * @permission DELETE_AUTHORIZATIONS | scope:global |
      */
-    async deleteOauth2Authorizations(
+    async deleteOauth2Authorization(
       authorizationId: string
-    ): Promise<OAuth2AuthorizationList> {
+    ): Promise<affectedRecordsResponse> {
       return (
         await authClient.delete(
           httpWithAuth,

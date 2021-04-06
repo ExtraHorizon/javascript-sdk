@@ -32,14 +32,6 @@ describe('Users', () => {
     nock.cleanAll();
   });
 
-  // it('Can get health', async () => {
-  //   nock(`${apiHost}/users/v1`).get('/health').reply(200, '');
-
-  //   const health = await sdk.users.health();
-
-  //   expect(health).toBe(true);
-  // });
-
   it('Can create applications', async () => {
     const mockToken = 'mockToken';
     nock(apiHost)
@@ -114,7 +106,7 @@ describe('Users', () => {
       versionId
     );
 
-    expect(deleteResult).toEqual(1);
+    expect(deleteResult.affectedRecords).toEqual(1);
   });
 
   it('Can create application versions', async () => {
