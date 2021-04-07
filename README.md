@@ -5,13 +5,13 @@
 Using npm:
 
 ```sh
-npm install @qompium/javascript-sdk
+npm install @extrahorizon/javascript-sdk
 ```
 
 Using yarn:
 
 ```sh
-yarn add @qompium/javascript-sdk
+yarn add @extrahorizon/javascript-sdk
 ```
 
 ## ⚙️ Configuration
@@ -64,6 +64,24 @@ const sdk = client({
 });
 ```
 
+- oAuth2 MFA if you have token
+
+```js
+import { client } from '@extrahorizon/javascript-sdk';
+
+try {
+  const sdk = client({
+    apiHost: '',
+    oauth: {
+      clientId: '',
+      token: '',
+      methodId: '',
+      code: '',
+    },
+  });
+} catch (error) {}
+```
+
 ### Your first request
 
 With es6 imports
@@ -84,9 +102,9 @@ const sdk = client(config);
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
 
 ```ts
-import { rqlBuilder } from "@extrahorizon/javascript-sdk";
+import { rqlBuilder } from '@extrahorizon/javascript-sdk';
 
-const rql = rqlBuilder().select('name').eq('name','fitbit').build();
+const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 // ?select(name)&eq(name,fitbit)
 ```
 
