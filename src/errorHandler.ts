@@ -4,16 +4,24 @@ import {
   HttpError,
   FieldFormatError,
   UnsupportedResponseTypeError,
-  NoPermissionExceptionError,
+  NoPermissionError,
   CallbackNotValidError,
+  UserNotAuthenticatedError,
+  EmptyBodyError,
+  NotEnoughMfaMethodsError,
+  InvalidMfaCodeError,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
-  10: NoPermissionExceptionError,
+  10: NoPermissionError,
+  13: EmptyBodyError,
   15: FieldFormatError,
   16: ResourceUnknownError,
+  104: UserNotAuthenticatedError,
   113: CallbackNotValidError,
   114: UnsupportedResponseTypeError,
+  130: InvalidMfaCodeError,
+  133: NotEnoughMfaMethodsError,
 };
 
 export function typeReceivedError(error: HttpError) {

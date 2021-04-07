@@ -81,5 +81,10 @@ export class ResourceUnknownError extends ApiError {}
 
 export class FieldFormatError extends ApiError {}
 export class UnsupportedResponseTypeError extends ApiError {}
-export class NoPermissionExceptionError extends ApiError {}
+export class NoPermissionError extends ApiError {}
 export class CallbackNotValidError extends ApiError {}
+export class UserNotAuthenticatedError extends ApiError {}
+export class EmptyBodyError extends ApiError {}
+export class NotEnoughMfaMethodsError extends ApiError {}
+export class InvalidMfaCodeError extends ApiError {}
+export class MfaRequiredError extends ApiError {}
