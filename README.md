@@ -5,13 +5,13 @@
 Using npm:
 
 ```sh
-npm install @qompium/javascript-sdk
+npm install @extrahorizon/javascript-sdk
 ```
 
 Using yarn:
 
 ```sh
-yarn add @qompium/javascript-sdk
+yarn add @extrahorizon/javascript-sdk
 ```
 
 ## ⚙️ Configuration
