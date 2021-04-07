@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "build/index.js",
   "author": "Qompium",
@@ -13,7 +13,7 @@
     "start": "yarn test",
     "build": "yarn lint --fix && tsc",
     "watch": "tsc -w",
-    "postinstall": "husky install",
+    "prepare": "husky install",
     "test": "yarn build && jest",
     "lint": "eslint src/**/*.ts"
   },
