@@ -64,24 +64,6 @@ const sdk = client({
 });
 ```
 
-- oAuth2 MFA if you have token
-
-```js
-import { client } from '@extrahorizon/javascript-sdk';
-
-try {
-  const sdk = client({
-    apiHost: '',
-    oauth: {
-      clientId: '',
-      token: '',
-      methodId: '',
-      code: '',
-    },
-  });
-} catch (error) {}
-```
-
 ### Your first request
 
 With es6 imports
