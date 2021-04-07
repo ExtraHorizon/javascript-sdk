@@ -9,11 +9,17 @@ import type {
   OAuth2Authorization,
   OAuth2AuthorizationCreation,
   OAuth2AuthorizationList,
+  MfaSetting,
+  Presence,
+  MfaMethodCreation,
+  MfaMethodVerification,
+  PresenceToken,
+  MfaMethod,
 } from './types';
 import httpClient from '../http-client';
 import { affectedRecordsResponse } from '../../models';
 
-export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
+export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
     basePath: '/auth/v2',
   });
@@ -139,6 +145,7 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
      * Delete an OAuth2 Authorization
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
      * @permission DELETE_AUTHORIZATIONS | scope:global |
+     * @throws {ResourceUnknownError}
      */
     async deleteOauth2Authorization(
       authorizationId: string
@@ -149,6 +156,135 @@ export default (_http: HttpInstance, httpWithAuth: HttpInstance) => {
           `/oauth2/authorizations/${authorizationId}`
         )
       ).data;
+    },
+
+    /**
+     * Generate a presence token by supplying a secret to confirm the presence of the owner of the account
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Confirm%20presence/post_confirmPresence
+     * @throws {UserNotAuthenticatedError}
+     * @throws {AuthenticationError}
+     * @throws {LoginTimeoutError}
+     * @throws {LoginFreezeError}
+     * @throws {TooManyFailedAttemptsError}
+     * */
+    async confirmPresence(data: { password: string }): Promise<Presence> {
+      return (await authClient.post(httpWithAuth, `/confirmPresence`, data))
+        .data;
+    },
+
+    /**
+     * View the MFA settings of a user (or create the settings if they have none)
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/get_mfa_users__userId_
+     * @permission VIEW_USER_MFA_SETTINGS | scope:global | 	See anyone their MFA settings
+     */
+    async mfaSetting(userId: string): Promise<MfaSetting> {
+      return (await authClient.get(httpWithAuth, `/mfa/users/${userId}`)).data;
+    },
+
+    /**
+     * Enable MFA for a user
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__enable
+     * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @throws {InvalidPresenceTokenError}
+     * @throws {NotEnoughMfaMethodsError}
+     */
+    async mfaEnable(
+      userId: string,
+      data: PresenceToken
+    ): Promise<affectedRecordsResponse> {
+      return (
+        await authClient.post(httpWithAuth, `/mfa/users/${userId}/enable`, data)
+      ).data;
+    },
+
+    /**
+     * Disable MFA for a user
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
+     * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @throws {InvalidPresenceTokenError}
+     */
+    async mfaDisable(
+      userId: string,
+      data: PresenceToken
+    ): Promise<affectedRecordsResponse> {
+      return (
+        await authClient.post(
+          httpWithAuth,
+          `/mfa/users/${userId}/disable`,
+          data
+        )
+      ).data;
+    },
+
+    /**
+     * Add a MFA method to a user
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
+     * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @throws {InvalidPresenceTokenError}
+     * */
+    async mfaAddMethod(
+      userId: string,
+      data: MfaMethodCreation
+    ): Promise<MfaMethod> {
+      return (
+        await authClient.post(
+          httpWithAuth,
+          `/mfa/users/${userId}/methods`,
+          data
+        )
+      ).data;
+    },
+
+    /**
+     * Confirm the correct functioning of a MFA method
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__verification_confirm
+     * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @throws {ResourceUnknownError}
+     * @throws {IllegalArgumentException}
+     * @throws {InvalidMfaCodeError}
+     * @throws {InvalidPresenceTokenError}
+     */
+    async mfaMethodConfirmVerification(
+      userId: string,
+      methodId: string,
+      data: MfaMethodVerification
+    ): Promise<{ description: string }> {
+      return (
+        await authClient.post(
+          httpWithAuth,
+          `/mfa/users/${userId}/methods/${methodId}/verification/confirm`,
+          data
+        )
+      ).data;
+    },
+
+    /**
+     * Remove a MFA method from a user
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__remove
+     * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @throws {NotEnoughMfaMethodsError}
+     * @throws {InvalidPresenceTokenError}
+     */
+    async mfaMethodRemove(
+      userId: string,
+      methodId: string,
+      data: PresenceToken
+    ): Promise<affectedRecordsResponse> {
+      return (
+        await authClient.post(
+          httpWithAuth,
+          `/mfa/users/${userId}/methods/${methodId}/remove`,
+          data
+        )
+      ).data;
+    },
+
+    /**
+     * Check the service health
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
+     * */
+    async getHealth(): Promise<boolean> {
+      return (await authClient.get(http, '/health')).status === 200;
     },
   };
 };

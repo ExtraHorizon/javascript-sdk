@@ -99,3 +99,50 @@ export interface OAuth2Authorization extends Timestamp {
 export interface OAuth2AuthorizationList extends listResponse {
   data: OAuth2Authorization[];
 }
+
+interface RecoveryCodesMethod extends Timestamp {
+  id: string;
+  name: string;
+  tags: string[];
+  verified: boolean;
+  type: string; // recoveryCodes
+  codes: string[];
+}
+
+interface TotpMethod {
+  id: string;
+  name: string;
+  tags: string[];
+  verified: boolean;
+  type: string; // totp
+  secret: string;
+}
+
+export type MfaMethod = RecoveryCodesMethod | TotpMethod;
+
+export interface MfaSetting {
+  id: string;
+  methods: [MfaMethod];
+  enabled: boolean;
+  updateTimestamp: number;
+}
+
+export interface Presence extends Timestamp {
+  token: string;
+}
+
+export interface MfaMethodCreation {
+  presenceToken: string;
+  type: string; // totp or recoveryCodes
+  name: string;
+  tags: string[];
+}
+
+export interface MfaMethodVerification {
+  presenceToken: string;
+  code: string;
+}
+
+export interface PresenceToken {
+  presenceToken: string;
+}

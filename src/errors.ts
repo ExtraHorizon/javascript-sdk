@@ -87,4 +87,9 @@ export class UserNotAuthenticatedError extends ApiError {}
 export class EmptyBodyError extends ApiError {}
 export class NotEnoughMfaMethodsError extends ApiError {}
 export class InvalidMfaCodeError extends ApiError {}
-export class MfaRequiredError extends ApiError {}
+export class AuthenticationError extends ApiError {}
+export class LoginTimeoutError extends ApiError {}
+export class LoginFreezeError extends ApiError {}
+export class TooManyFailedAttemptsError extends ApiError {}
+export class InvalidPresenceTokenError extends ApiError {}
+export class IllegalArgumentException extends ApiError {}
