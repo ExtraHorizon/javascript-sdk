@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "description": "",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "author": "Qompium",
   "license": "UNLICENSED",
   "private": true,
@@ -10,13 +11,17 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
+    "clean": "rimraf dist",
     "start": "yarn test",
-    "build": "yarn lint --fix && tsc",
+    "build": "yarn clean && yarn lint --fix && tsc",
     "watch": "tsc -w",
     "prepare": "husky install",
     "test": "yarn build && jest",
     "lint": "eslint src/**/*.ts"
   },
+  "files": [
+    "build"
+  ],
   "dependencies": {
     "axios": "^0.21.1",
     "axios-logger": "^2.5.0",
