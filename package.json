@@ -15,7 +15,7 @@
     "start": "yarn test",
     "build": "yarn clean && yarn lint --fix && tsc",
     "watch": "tsc -w",
-    "prepare": "husky install",
+    "prepare": "yarn build && husky install",
     "test": "yarn build && jest",
     "lint": "eslint src/**/*.ts"
   },
@@ -45,6 +45,7 @@
     "jest-junit": "^12.0.0",
     "lint-staged": "^10.5.4",
     "nock": "^13.0.7",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.5.0",
     "typescript": "^4.1.3"
   },
