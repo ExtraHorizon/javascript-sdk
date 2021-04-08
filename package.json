@@ -6,7 +6,6 @@
   "types": "build/index.d.ts",
   "author": "Qompium",
   "license": "UNLICENSED",
-  "private": true,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
