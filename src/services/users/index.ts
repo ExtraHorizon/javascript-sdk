@@ -11,7 +11,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   });
   
   const healthMethods = healthService(userClient, http);
-  const usersMethods = usersService(userClient, httpWithAuth);
+  const usersMethods = usersService(userClient, http, httpWithAuth);
   
 
   return {

@@ -1,7 +1,5 @@
-interface IErrorResponse {
-    code: number;
-    name: string;
-    message: string;
+export interface ErrorResponse {
+    code?: number;
+    name?: string;
+    message?: string;
 }
-
-export type ErrorResponse = Partial<IErrorResponse>;

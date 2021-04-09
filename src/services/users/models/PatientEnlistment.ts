@@ -1,12 +1,8 @@
-/* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
-
 import type { ObjectId } from '../../models/ObjectId';
 
 export type PatientEnlistment = {
-    group_id?: ObjectId;
-    expiry_timestamp?: number;
+    groupId?: ObjectId;
+    expiryTimestamp?: number;
     expired?: boolean;
-    creation_timestamp?: number;
+    creationTimestamp?: number;
 }
