@@ -33,7 +33,7 @@ export function client(rawConfig: Config) {
     // httpWithAuth = ('oauth1' in authConfig ? addAuth1 : addAuth2)(http, config);
     httpWithAuth = addAuth2(http, config);
 
-    await httpWithAuth.authenticate(authConfig);
+    return await httpWithAuth.authenticate(authConfig);
   }
 
   return {

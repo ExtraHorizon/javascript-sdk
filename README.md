@@ -64,6 +64,42 @@ const sdk = client({
 });
 ```
 
+- oAuth2 password grant flow with two-step MFA in try / catch
+
+```js
+import { client, MfaRequiredError } from '@extrahorizon/javascript-sdk';
+
+const apiHost = 'https://api.dev.fibricheck.com';
+const clientId = '263bfa9a1d1ced19e228c28eb2a331f774184243';
+const password = 'Azerty123';
+const username = 'jens.verbeken@craftzing.com';
+
+const sdk = client({
+  apiHost,
+});
+
+try {
+  await sdk.authenticate({
+    clientId,
+    password,
+    username,
+  });
+} catch (error) {
+  if (error instanceof MfaRequiredError) {
+    const { mfa } = error.response;
+
+    // Your logic to request which method the user want to use in case of multiple methods
+    const methodId = mfa.methods[0].id;
+
+    await sdk.confirmMfa({
+      token: mfa.token,
+      methodId,
+      code: '', // code from ie. Google Authenticator
+    });
+  }
+}
+```
+
 ### Your first request
 
 With es6 imports
