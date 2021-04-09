@@ -207,7 +207,7 @@ export default (userClient, http: HttpInstance, httpWithAuth: HttpInstance) => (
     recordsAffected?: number,
 }> {
 
-  return (await userClient.post(httpWithAuth, `/${userId}/patient_enlistments/`, requestBody)).data;
+  return (await userClient.post(httpWithAuth, `/${userId}/patient_enlistments`, requestBody)).data;
 },
 
 /**
