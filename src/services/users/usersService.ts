@@ -1,5 +1,8 @@
 import type { HttpInstance } from '../../types';
 import type { UserData } from './types';
+import type { PagedResult } from '../models/PagedResult'
+
+type PartialUserData = Partial<UserData>;
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   
@@ -23,7 +26,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async findById(userId: string): Promise<Partial<UserData>> {
+  async findById(userId: string): Promise<PartialUserData> {
     return (await userClient.get(httpWithAuth, `/${userId}`)).data;
   },
 
@@ -39,11 +42,37 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async update(
     userId: string,
     userData: Pick<
-      UserData,
+      PartialUserData,
       'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
     >
-  ): Promise<UserData> {
+  ): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, `/${userId}`, userData)).data;
-  }
+  },
+
+  /**
+   * Retrieve a list of users
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
+   * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
+   * `VIEW_USER` | `global` | See all fields of all users
+   *
+   * @param rql Add filters to the requested list.
+   * @returns any Success
+   * @throws ApiError
+   */
+  async find(
+    rql?: string,
+  ): Promise<(PagedResult & {
+      data?: Array<PartialUserData>,
+  })> {
+    return (await userClient.get(httpWithAuth, '/', {
+      query: {
+        'RQL': rql,
+      }
+    })).data;
+  },
+
+
 
 })
