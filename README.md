@@ -79,6 +79,17 @@ const sdk = client(config);
 })();
 ```
 
+### RQL builder
+
+The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
+
+```ts
+import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+
+const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
+// ?select(name)&eq(name,fitbit)
+```
+
 ## 📚 Docs --> TODO
 
 - [docs](https://extraHorizon.github.io/javascript-sdk/)
