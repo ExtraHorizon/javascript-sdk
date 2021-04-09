@@ -74,7 +74,6 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
     try {
       authConfig = data;
       const tokenResult = await http.post(authConfig.path, authConfig.params);
-      console.log(tokenResult.data);
       tokenData = tokenResult.data;
     } catch (error) {
       throw typeReceivedError(error);
