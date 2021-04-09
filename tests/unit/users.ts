@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as nock from 'nock';
 import { ResourceUnknownError } from '../../src/errors';
 import { client } from '../../src/index';
@@ -12,20 +13,21 @@ describe('Users', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   let sdk;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post('/auth/v2/oauth2/token')
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   afterEach(() => {

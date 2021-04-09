@@ -21,7 +21,6 @@ describe('http client', () => {
   beforeEach(() => {
     nock.cleanAll();
     httpWithAuth = createAuthHttpClient(http, mockParams);
-    httpWithAuth.authenticate(authConfig);
   });
 
   it('Create Axios client', async () => {
@@ -34,6 +33,7 @@ describe('http client', () => {
       .post('/auth/v2/oauth2/token')
       .reply(200, { access_token: mockToken });
 
+    await httpWithAuth.authenticate(authConfig);
     nock(mockParams.apiHost).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -49,7 +49,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.get('test');
+      await httpWithAuth.authenticate(authConfig);
     } catch (error) {
       expect(error).toBeInstanceOf(ApiError);
     }
@@ -61,6 +61,7 @@ describe('http client', () => {
       .post('/auth/v2/oauth2/token')
       .reply(200, { access_token: mockToken });
 
+    await httpWithAuth.authenticate(authConfig);
     nock(mockParams.apiHost).get('/test').reply(400, {
       code: 118,
       error: 'invalid_grant',
@@ -99,6 +100,7 @@ describe('http client', () => {
     nock(mockParams.apiHost).get('/test').reply(200, {});
 
     try {
+      await httpWithAuth.authenticate(authConfig);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(ApiError);

@@ -18,12 +18,16 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
   }
 
   const refreshTokens = async () => {
-    const tokenResult = await http.post(authConfig.path, {
-      grant_type: 'refresh_token',
-      refresh_token: tokenData.refreshToken,
-    });
-    tokenData = tokenResult.data;
-    return tokenData;
+    try {
+      const tokenResult = await http.post(authConfig.path, {
+        grant_type: 'refresh_token',
+        refresh_token: tokenData.refreshToken,
+      });
+      tokenData = tokenResult.data;
+      return tokenData;
+    } catch (error) {
+      throw typeReceivedError(error);
+    }
   };
 
   httpWithAuth.interceptors.request.use(async config => ({
@@ -66,13 +70,20 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
 
-  async function authenticate(data: AuthConfig) {
+  async function authenticate(
+    data: AuthConfig
+  ): Promise<{ isAuthenticated: boolean; mfaData?: any }> {
     try {
       authConfig = data;
       const tokenResult = await http.post(authConfig.path, authConfig.params);
       console.log(tokenResult.data);
       tokenData = tokenResult.data;
+      console.log('tokenData', tokenData);
+      return { isAuthenticated: true };
     } catch (error) {
+      if (error.response?.data?.error === 'mfa_required') {
+        return { isAuthenticated: false, mfaData: error.response.data.mfa };
+      }
       throw typeReceivedError(error);
     }
   }
