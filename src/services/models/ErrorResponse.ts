@@ -1,9 +1,7 @@
-/* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
-
-export type ErrorResponse = {
-    code?: number;
-    name?: string;
-    message?: string;
+interface IErrorResponse {
+    code: number;
+    name: string;
+    message: string;
 }
+
+export type ErrorResponse = Partial<IErrorResponse>;
