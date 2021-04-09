@@ -1,6 +1,6 @@
 import type { ObjectId } from '../../models/ObjectId';
 
-export type PatientEnlistment = {
+export interface PatientEnlistment {
     groupId?: ObjectId;
     expiryTimestamp?: number;
     expired?: boolean;

@@ -1,6 +1,6 @@
 import type { ObjectId } from '../../models/ObjectId';
 
-export type StaffEnlistment = {
+export interface StaffEnlistment {
     groupId?: string;
     roles?: Array<{
         groupId?: ObjectId,

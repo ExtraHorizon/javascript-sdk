@@ -3,7 +3,7 @@ import type { LanguageCode } from '../../models/LanguageCode';
 import type { ObjectId } from '../../models/ObjectId';
 import type { TimeZone } from '../../models/TimeZone';
 
-export type Patient = {
+export interface Patient {
     id?: ObjectId;
     firstName?: string;
     lastName?: string;
