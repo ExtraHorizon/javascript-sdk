@@ -70,20 +70,13 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
 
-  async function authenticate(
-    data: AuthConfig
-  ): Promise<{ isAuthenticated: boolean; mfaData?: any }> {
+  async function authenticate(data: AuthConfig) {
     try {
       authConfig = data;
       const tokenResult = await http.post(authConfig.path, authConfig.params);
       console.log(tokenResult.data);
       tokenData = tokenResult.data;
-      console.log('tokenData', tokenData);
-      return { isAuthenticated: true };
     } catch (error) {
-      if (error.response?.data?.error === 'mfa_required') {
-        return { isAuthenticated: false, mfaData: error.response.data.mfa };
-      }
       throw typeReceivedError(error);
     }
   }

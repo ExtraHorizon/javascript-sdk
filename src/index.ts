@@ -20,14 +20,6 @@ export function client(rawConfig: Config) {
 
   let httpWithAuth;
 
-  async function confirmMfa(data: {
-    token: string;
-    methodId: string;
-    code: string;
-  }) {
-    await httpWithAuth.confirmMfa(data);
-  }
-
   async function authenticate(oauth: OAuthConfig) {
     const authConfig = parseAuthParams(oauth);
     // httpWithAuth = ('oauth1' in authConfig ? addAuth1 : addAuth2)(http, config);
@@ -38,7 +30,9 @@ export function client(rawConfig: Config) {
 
   return {
     authenticate,
-    confirmMfa,
+    get confirmMfa() {
+      return httpWithAuth.confirmMfa;
+    },
     get users() {
       return usersService(http, httpWithAuth);
     },
