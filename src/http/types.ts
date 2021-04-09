@@ -56,22 +56,4 @@ interface Oauth2ConfigCode extends OauthConfigBase {
   };
 }
 
-interface Oauth2Mfa extends OauthConfigBase {
-  params: {
-    grant_type: string;
-    client_id: string;
-    username: string;
-    password: string;
-  };
-  mfa: {
-    grant_type: string;
-    client_id: string;
-    code: string;
-  };
-}
-
-export type AuthConfig =
-  | Oauth2ConfigPassword
-  | Oauth2ConfigCode
-  | Oauth2Mfa
-  | Oauth1Config;
+export type AuthConfig = Oauth2ConfigPassword | Oauth2ConfigCode | Oauth1Config;
