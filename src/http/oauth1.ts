@@ -15,12 +15,12 @@ export const addAuth = (
 
   if (options.debug) {
     httpWithAuth.interceptors.request.use(
-      AxiosLogger.requestLogger,
-      AxiosLogger.errorLogger
+      AxiosLogger.requestLogger
+      // AxiosLogger.errorLogger
     );
     httpWithAuth.interceptors.response.use(
-      AxiosLogger.responseLogger,
-      AxiosLogger.errorLogger
+      AxiosLogger.responseLogger
+      // AxiosLogger.errorLogger
     );
   }
 

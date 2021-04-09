@@ -2,14 +2,14 @@ import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
 import { AxiosResponse } from 'axios';
 import { camelizeKeys } from 'humps';
-import { Config } from '../types';
+import { OAuthConfig } from '../types';
 import { AuthConfig } from './types';
 
 function hmacSha1Hash(baseString: string, key: string) {
   return crypto.createHmac('sha1', key).update(baseString).digest('base64');
 }
 
-export const parseAuthParams = (options: Config['oauth']): AuthConfig => {
+export const parseAuthParams = (options: OAuthConfig): AuthConfig => {
   if ('consumerKey' in options && 'email' in options) {
     // oauth1
     return {

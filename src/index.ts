@@ -1,7 +1,7 @@
-import { Config } from './types';
+import { Config, OAuthConfig } from './types';
 
 import usersService from './services/users';
-import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
+import { createHttpClient, addAuth2, parseAuthParams } from './http';
 
 export { default as rqlBuilder } from './rql';
 
@@ -17,13 +17,30 @@ function validateConfig({ apiHost, ...config }: Config): Config {
 export function client(rawConfig: Config) {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
-  const authConfig: any = parseAuthParams(config.oauth);
 
-  const httpWithAuth = (authConfig.oauth1 ? addAuth1 : addAuth2)(
-    http,
-    config,
-    authConfig
-  );
+  let httpWithAuth;
 
-  return { users: usersService(http, httpWithAuth) };
+  async function confirmMfa(data: {
+    token: string;
+    methodId: string;
+    code: string;
+  }) {
+    await httpWithAuth.confirmMfa(data);
+  }
+
+  async function authenticate(oauth: OAuthConfig) {
+    const authConfig = parseAuthParams(oauth);
+    // httpWithAuth = ('oauth1' in authConfig ? addAuth1 : addAuth2)(http, config);
+    httpWithAuth = addAuth2(http, config);
+
+    await httpWithAuth.authenticate(authConfig);
+  }
+
+  return {
+    authenticate,
+    confirmMfa,
+    get users() {
+      return usersService(http, httpWithAuth);
+    },
+  };
 }

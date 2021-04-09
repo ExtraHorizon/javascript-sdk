@@ -7,12 +7,9 @@ import { AuthConfig, TokenDataOauth2 } from './types';
 import { camelizeResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
 
-export const addAuth = (
-  http: AxiosInstance,
-  options: Config,
-  authConfig: AuthConfig
-): AxiosInstance => {
+export const addAuth = (http: AxiosInstance, options: Config) => {
   let tokenData: TokenDataOauth2;
+  let authConfig;
   const httpWithAuth = axios.create({ ...http.defaults });
 
   if (options.debug) {
@@ -29,20 +26,11 @@ export const addAuth = (
     return tokenData;
   };
 
-  const authenticate = async () => {
-    const tokenResult = await http.post(authConfig.path, authConfig.params);
-    tokenData = tokenResult.data;
-    return tokenData;
-  };
-
   httpWithAuth.interceptors.request.use(async config => ({
     ...config,
     headers: {
       ...config.headers,
-      Authorization: `Bearer ${
-        (tokenData && tokenData.accessToken) ||
-        (await authenticate()).accessToken
-      }`,
+      Authorization: `Bearer ${tokenData && tokenData.accessToken}`,
     },
   }));
 
@@ -58,17 +46,14 @@ export const addAuth = (
           !originalRequest._retry
         ) {
           originalRequest._retry = true;
-          tokenData.accessToken = '';
           if (error.response?.data?.code === 118) {
+            tokenData.accessToken = '';
             // ACCESS_TOKEN_EXPIRED_EXCEPTION
             originalRequest.headers.Authorization = `Bearer ${
               (await refreshTokens()).accessToken
             }`;
           } else {
-            // All others, retry authenticate
-            originalRequest.headers.Authorization = `Bearer ${
-              (await authenticate()).accessToken
-            }`;
+            return Promise.reject(typeReceivedError(error));
           }
           return http(originalRequest);
         }
@@ -81,7 +66,41 @@ export const addAuth = (
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
 
-  return httpWithAuth;
+  async function authenticate(data: AuthConfig) {
+    try {
+      authConfig = data;
+      const tokenResult = await http.post(authConfig.path, authConfig.params);
+      console.log(tokenResult.data);
+      tokenData = tokenResult.data;
+    } catch (error) {
+      throw typeReceivedError(error);
+    }
+  }
+
+  async function confirmMfa({
+    token,
+    methodId,
+    code,
+  }: {
+    token: string;
+    methodId: string;
+    code: string;
+  }) {
+    try {
+      const tokenResult = await http.post(authConfig.path, {
+        ...authConfig.params,
+        grant_type: 'mfa',
+        token,
+        code,
+        method_id: methodId,
+      });
+      tokenData = tokenResult.data;
+    } catch (error) {
+      throw typeReceivedError(error);
+    }
+  }
+
+  return { ...httpWithAuth, confirmMfa, authenticate };
 };
 
 export default addAuth;

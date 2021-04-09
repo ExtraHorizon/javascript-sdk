@@ -20,7 +20,8 @@ describe('http client', () => {
 
   beforeEach(() => {
     nock.cleanAll();
-    httpWithAuth = createAuthHttpClient(http, mockParams, authConfig);
+    httpWithAuth = createAuthHttpClient(http, mockParams);
+    httpWithAuth.authenticate(authConfig);
   });
 
   it('Create Axios client', async () => {

@@ -30,10 +30,24 @@ export interface ConfigOauth2Password {
   password: string;
 }
 
-export type ConfigOath2 = ConfigOauth2AuthorizationCode | ConfigOauth2Password;
+export interface ConfigOauth2Mfa {
+  clientId: string;
+  username: string;
+  password: string;
+  code: string;
+}
+
+export type ConfigOath2 =
+  | ConfigOauth2AuthorizationCode
+  | ConfigOauth2Password
+  | ConfigOauth2Mfa;
+
+export type OAuthConfig =
+  | ConfigOauth1WithEmail
+  | ConfigOauth1WithToken
+  | ConfigOath2;
 
 export interface Config {
   apiHost: string;
   debug?: boolean;
-  oauth?: ConfigOauth1WithEmail | ConfigOauth1WithToken | ConfigOath2;
 }
