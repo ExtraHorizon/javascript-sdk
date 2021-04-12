@@ -10,6 +10,5 @@ export default (userClient, http: HttpInstance) => ({
   async health(): Promise<boolean> {
     const result: resultResponse = await userClient.get(http, '/health');
     return result.status === Results.Success;
-  }
-
-})
+  },
+});

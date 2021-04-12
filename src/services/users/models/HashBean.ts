@@ -1,3 +1,3 @@
 export interface HashBean {
-    hash: string;
+  hash: string;
 }

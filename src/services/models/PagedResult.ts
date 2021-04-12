@@ -1,8 +1,8 @@
 export interface PagedResult {
-    query?: string;
-    page?: {
-        total?: number,
-        offset?: number,
-        limit?: number,
-    };
+  query?: string;
+  page?: {
+    total?: number;
+    offset?: number;
+    limit?: number;
+  };
 }

@@ -8,16 +8,19 @@ import type { HashBean } from './models/HashBean';
 
 type PartialUserData = Partial<UserData>;
 
-export default (userClient, http: HttpInstance, httpWithAuth: HttpInstance) => ({
-  
+export default (
+  userClient,
+  http: HttpInstance,
+  httpWithAuth: HttpInstance
+) => ({
   /**
    * Retrieve the current logged in user
    * @permission Everyone can use this endpoint
    * @returns {UserData} UserData
    */
-   async me(): Promise<PartialUserData> {
+  async me(): Promise<PartialUserData> {
     return (await userClient.get(httpWithAuth, '/me')).data;
-   },
+  },
 
   /**
    * Retrieve a specific user
@@ -66,15 +69,19 @@ export default (userClient, http: HttpInstance, httpWithAuth: HttpInstance) => (
    * @throws ApiError
    */
   async find(
-    rql?: string,
-  ): Promise<(PagedResult & {
-      data?: Array<PartialUserData>,
-  })> {
-    return (await userClient.get(httpWithAuth, '/', {
-      params: {
-        'RQL': rql,
-      }
-    })).data;
+    rql?: string
+  ): Promise<
+    PagedResult & {
+      data?: Array<PartialUserData>;
+    }
+  > {
+    return (
+      await userClient.get(httpWithAuth, '/', {
+        params: {
+          RQL: rql,
+        },
+      })
+    ).data;
   },
 
   /**
@@ -90,15 +97,17 @@ export default (userClient, http: HttpInstance, httpWithAuth: HttpInstance) => (
    * @throws ApiError
    */
   async removeUsers(
-    rql: string,
+    rql: string
   ): Promise<{
-      recordsAffected?: number,
+    recordsAffected?: number;
   }> {
-    return (await userClient.delete(httpWithAuth, '/', {
-      params: {
-        'RQL': rql,
-      }
-    })).data;
+    return (
+      await userClient.delete(httpWithAuth, '/', {
+        params: {
+          RQL: rql,
+        },
+      })
+    ).data;
   },
 
   /**
@@ -112,53 +121,52 @@ export default (userClient, http: HttpInstance, httpWithAuth: HttpInstance) => (
    * @returns Patient Success
    * @throws ApiError
    */
-  async patients(
-    rql?: string,
-  ): Promise<Array<Patient>> {
-
-    return (await userClient.get(httpWithAuth, '/patients', {
-      params: {
-        'RQL': rql,
-      }
-    })).data;
+  async patients(rql?: string): Promise<Array<Patient>> {
+    return (
+      await userClient.get(httpWithAuth, '/patients', {
+        params: {
+          RQL: rql,
+        },
+      })
+    ).data;
   },
 
   /**
-     * Retrieve a list of users that have a staff enlistment
-     * Permission | Scope | Effect
-     * - | - | -
-     * none | `staff enlistment` | View the other staff members of the group
-     * `VIEW_STAFF` | `global`  | View all staff members
-     *
-     * @param rql Add filters to the requested list.
-     * @returns StaffMember Success
-     * @throws ApiError
-     */
-   async staff(
-    rql?: string,
-): Promise<Array<StaffMember>> {
-  return (await userClient.get(httpWithAuth, '/staff', {
-    params: {
-      'RQL': rql,
-    }
-  })).data;
-},
+   * Retrieve a list of users that have a staff enlistment
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `staff enlistment` | View the other staff members of the group
+   * `VIEW_STAFF` | `global`  | View all staff members
+   *
+   * @param rql Add filters to the requested list.
+   * @returns StaffMember Success
+   * @throws ApiError
+   */
+  async staff(rql?: string): Promise<Array<StaffMember>> {
+    return (
+      await userClient.get(httpWithAuth, '/staff', {
+        params: {
+          RQL: rql,
+        },
+      })
+    ).data;
+  },
 
-/**
- * Delete a specific user
- * Permission | Scope | Effect
- * - | - | -
- * none | | Delete your own user object
- * `DELETE_USER` | `global` | Delete any user
- *
- * @param userId Id of the targeted user
- * @returns any Operation successful
- * @throws ApiError
- */
+  /**
+   * Delete a specific user
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Delete your own user object
+   * `DELETE_USER` | `global` | Delete any user
+   *
+   * @param userId Id of the targeted user
+   * @returns any Operation successful
+   * @throws ApiError
+   */
   async remove(
-    userId: ObjectId,
+    userId: ObjectId
   ): Promise<{
-    recordsAffected?: number,
+    recordsAffected?: number;
   }> {
     return (await userClient.delete(httpWithAuth, `/${userId}`)).data;
   },
@@ -180,10 +188,11 @@ export default (userClient, http: HttpInstance, httpWithAuth: HttpInstance) => (
   async updateEmail(
     userId: ObjectId,
     requestBody?: {
-        email: string,
-    },
+      email: string;
+    }
   ): Promise<PartialUserData> {
-    return (await userClient.put(httpWithAuth, `/${userId}/email`, requestBody)).data;
+    return (await userClient.put(httpWithAuth, `/${userId}/email`, requestBody))
+      .data;
   },
 
   /**
@@ -197,246 +206,250 @@ export default (userClient, http: HttpInstance, httpWithAuth: HttpInstance) => (
    * @returns any Operation successful
    * @throws ApiError
    */
-   async addPatientEnlistment(
+  async addPatientEnlistment(
     userId: ObjectId,
     requestBody?: {
-        groupId: ObjectId,
-        expiryTimestamp?: number,
-    },
-): Promise<{
-    recordsAffected?: number,
-}> {
-
-  return (await userClient.post(httpWithAuth, `/${userId}/patient_enlistments`, requestBody)).data;
-},
-
-/**
-     * Remove a patient enlistment from a user
-     * Permission | Scope | Effect
-     * - | - | -
-     * none | | Remove a patient enlistment from yourself
-     * `REMOVE_PATIENT` | `staff enlistment` | Remove a patient enlistment for the group
-     * `REMOVE_PATIENT` | `global` | Remove any patient enlistment
-     *
-     * @param userId Id of the targeted user
-     * @param groupId Id of the targeted group
-     * @returns any Operation successful
-     * @throws ApiError
-     */
- async removePatientEnlistment(
-  userId: ObjectId,
-  groupId: ObjectId,
-): Promise<{
-  recordsAffected?: number,
-}> {
-
-  return (await userClient.delete(httpWithAuth, `/${userId}/patient_enlistments/${groupId}`)).data;
-},
-
-/**
- * Create an account
- * Permission | Scope | Effect
- * - | - | -
- * none | | Everyone can use this endpoint
- *
- * @param requestBody
- * @returns FullUser Success
- * @throws ApiError
- */
- async createAccount(
-  requestBody?: RegisterUserData,
-): Promise<PartialUserData> {
-  return (await userClient.post(http, '/register', requestBody)).data;
-},
-
-/**
-  * Change your password
-  * Permission | Scope | Effect
-  * - | - | -
-  * none |  | Everyone can use this endpoint
-  *
-  * @param requestBody
-  * @returns FullUser Success
-  * @throws ApiError
-  */
-  async changePassword(
-  requestBody?: {
-      oldPassword: string,
-      newPassword: string,
+      groupId: ObjectId;
+      expiryTimestamp?: number;
+    }
+  ): Promise<{
+    recordsAffected?: number;
+  }> {
+    return (
+      await userClient.post(
+        httpWithAuth,
+        `/${userId}/patient_enlistments`,
+        requestBody
+      )
+    ).data;
   },
-): Promise<PartialUserData> {
-  return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
-},
 
-/**
- * Authenticate a user
- * Permission | Scope | Effect
- * - | - | -
- * none |  | Everyone can use this endpoint
- *
- * @param requestBody
- * @returns FullUser Success
- * @throws ApiError
- */
- async authenticate(
-  requestBody?: {
-      email: string,
-      password: string,
+  /**
+   * Remove a patient enlistment from a user
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Remove a patient enlistment from yourself
+   * `REMOVE_PATIENT` | `staff enlistment` | Remove a patient enlistment for the group
+   * `REMOVE_PATIENT` | `global` | Remove any patient enlistment
+   *
+   * @param userId Id of the targeted user
+   * @param groupId Id of the targeted group
+   * @returns any Operation successful
+   * @throws ApiError
+   */
+  async removePatientEnlistment(
+    userId: ObjectId,
+    groupId: ObjectId
+  ): Promise<{
+    recordsAffected?: number;
+  }> {
+    return (
+      await userClient.delete(
+        httpWithAuth,
+        `/${userId}/patient_enlistments/${groupId}`
+      )
+    ).data;
   },
-): Promise<PartialUserData> {
-  return (await userClient.post(http, '/authenticate', requestBody)).data;
-},
 
-/**
- * Request an email activation
- * Permission | Scope | Effect
- * - | - | -
- * none |  | Everyone can use this endpoint
- *
- * @param email
- * @returns any Success
- * @throws ApiError
- */
- async requestEmailActivation(
-  email: string,
-): Promise<any> {
-  return (await userClient.get(http, '/activation', {
-    params: {
-      'email': email,
+  /**
+   * Create an account
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   *
+   * @param requestBody
+   * @returns FullUser Success
+   * @throws ApiError
+   */
+  async createAccount(
+    requestBody?: RegisterUserData
+  ): Promise<PartialUserData> {
+    return (await userClient.post(http, '/register', requestBody)).data;
   },
-  })).data;
-},
 
-/**
- * Complete an email activation
- * Permission | Scope | Effect
- * - | - | -
- * none |  | Everyone can use this endpoint
- *
- * @param requestBody
- * @returns any Success
- * @throws ApiError
- */
-async validateEmailActivation(
-  requestBody?: HashBean,
-): Promise<any> {
-  return (await userClient.post(http, '/activation', requestBody)).data;
-},
-
-/**
- * Request a password reset
- * Permission | Scope | Effect
- * - | - | -
- * none |  | Everyone can use this endpoint
- *
- * @param email
- * @returns any Success
- * @throws ApiError
- */
-async requestPasswordReset(
-  email: string,
-): Promise<any> {
-
-  return (await userClient.get(http, '/forgot_password', {
-    params: {
-      'email': email,
+  /**
+   * Change your password
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @param requestBody
+   * @returns FullUser Success
+   * @throws ApiError
+   */
+  async changePassword(requestBody?: {
+    oldPassword: string;
+    newPassword: string;
+  }): Promise<PartialUserData> {
+    return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
   },
-  })).data;
-},
 
-/**
- * Complete a password reset
- * Permission | Scope | Effect
- * - | - | -
- * none |  | Everyone can use this endpoint
- *
- * @param requestBody
- * @returns any Success
- * @throws ApiError
- */
- async validatePasswordReset(
-  requestBody?: {
-      hash?: string,
-      newPassword: string,
+  /**
+   * Authenticate a user
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @param requestBody
+   * @returns FullUser Success
+   * @throws ApiError
+   */
+  async authenticate(requestBody?: {
+    email: string;
+    password: string;
+  }): Promise<PartialUserData> {
+    return (await userClient.post(http, '/authenticate', requestBody)).data;
   },
-): Promise<any> {
-  return (await userClient.post(http, '/forgot_password', requestBody)).data;
-},
 
-/**
-     * Confirm the password for the user making the request
-     * Permission | Scope | Effect
-     * - | - | -
-     * none |  | Everyone can use this endpoint
-     *
-     * @param requestBody
-     * @returns any Success
-     * @throws ApiError
-     */
- async confirmPassword(
-  requestBody?: {
-      password: string,
+  /**
+   * Request an email activation
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @param email
+   * @returns any Success
+   * @throws ApiError
+   */
+  async requestEmailActivation(email: string): Promise<any> {
+    return (
+      await userClient.get(http, '/activation', {
+        params: {
+          email,
+        },
+      })
+    ).data;
   },
-): Promise<any> {
-  return (await userClient.post(httpWithAuth, '/confirm_password', requestBody)).data;
-},
 
-/**
- * Check if an email address is still available
- * Permission | Scope | Effect
- * - | - | -
- * none | | Everyone can use this endpoint
- *
- * @param email
- * @returns any Success
- * @throws ApiError
- */
- async isEmailAvailable(
-  email: string,
-): Promise<{
-  emailAvailable?: boolean,
-}> {
-  return (await userClient.get(http, '/email_available', {
-    params: {
-      'email': email,
+  /**
+   * Complete an email activation
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @param requestBody
+   * @returns any Success
+   * @throws ApiError
+   */
+  async validateEmailActivation(requestBody?: HashBean): Promise<any> {
+    return (await userClient.post(http, '/activation', requestBody)).data;
   },
-  })).data;
-},
 
-/**
- * Update the profile image of a user
- * Permission | Scope | Effect
- * - | - | -
- * none | | Update your own profile image
- * `UPDATE_PROFILE_IMAGE` | `global` | Update any user its profile image
- *
- * @param userId Id of the targeted user
- * @param requestBody
- * @returns FullUser Success
- * @throws ApiError
- */
-async updateProfileImage(
-  userId: ObjectId,
-  requestBody?: HashBean,
-): Promise<PartialUserData> {
-  return (await userClient.put(httpWithAuth, `/${userId}/profile_image`, requestBody)).data;
-},
+  /**
+   * Request a password reset
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @param email
+   * @returns any Success
+   * @throws ApiError
+   */
+  async requestPasswordReset(email: string): Promise<any> {
+    return (
+      await userClient.get(http, '/forgot_password', {
+        params: {
+          email,
+        },
+      })
+    ).data;
+  },
 
-/**
-     * Delete the profile image of a user
-     * Permission | Scope | Effect
-     * - | - | -
-     * none | | Delete your own profile image
-     * `UPDATE_PROFILE_IMAGE` | `global` | Delete any user its profile image
-     *
-     * @param userId Id of the targeted user
-     * @returns FullUser Success
-     * @throws ApiError
-     */
-async deleteProfileImage(
-  userId: ObjectId,
-): Promise<PartialUserData> {
-  return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`)).data;
-},
+  /**
+   * Complete a password reset
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @param requestBody
+   * @returns any Success
+   * @throws ApiError
+   */
+  async validatePasswordReset(requestBody?: {
+    hash?: string;
+    newPassword: string;
+  }): Promise<any> {
+    return (await userClient.post(http, '/forgot_password', requestBody)).data;
+  },
 
-})
+  /**
+   * Confirm the password for the user making the request
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @param requestBody
+   * @returns any Success
+   * @throws ApiError
+   */
+  async confirmPassword(requestBody?: { password: string }): Promise<any> {
+    return (
+      await userClient.post(httpWithAuth, '/confirm_password', requestBody)
+    ).data;
+  },
+
+  /**
+   * Check if an email address is still available
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   *
+   * @param email
+   * @returns any Success
+   * @throws ApiError
+   */
+  async isEmailAvailable(
+    email: string
+  ): Promise<{
+    emailAvailable?: boolean;
+  }> {
+    return (
+      await userClient.get(http, '/email_available', {
+        params: {
+          email,
+        },
+      })
+    ).data;
+  },
+
+  /**
+   * Update the profile image of a user
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Update your own profile image
+   * `UPDATE_PROFILE_IMAGE` | `global` | Update any user its profile image
+   *
+   * @param userId Id of the targeted user
+   * @param requestBody
+   * @returns FullUser Success
+   * @throws ApiError
+   */
+  async updateProfileImage(
+    userId: ObjectId,
+    requestBody?: HashBean
+  ): Promise<PartialUserData> {
+    return (
+      await userClient.put(
+        httpWithAuth,
+        `/${userId}/profile_image`,
+        requestBody
+      )
+    ).data;
+  },
+
+  /**
+   * Delete the profile image of a user
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Delete your own profile image
+   * `UPDATE_PROFILE_IMAGE` | `global` | Delete any user its profile image
+   *
+   * @param userId Id of the targeted user
+   * @returns FullUser Success
+   * @throws ApiError
+   */
+  async deleteProfileImage(userId: ObjectId): Promise<PartialUserData> {
+    return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`))
+      .data;
+  },
+});
