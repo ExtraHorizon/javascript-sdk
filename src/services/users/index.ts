@@ -3,6 +3,7 @@ import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import healthService from './healthService';
 import usersService from './usersService';
+import groupRolesService from './groupRolesService';
 
 export default (
   http: HttpInstance,
@@ -15,9 +16,11 @@ export default (
 
   const healthMethods = healthService(userClient, http);
   const usersMethods = usersService(userClient, http, httpWithAuth);
+  const groupRolesMethods = groupRolesService(userClient, http, httpWithAuth);
 
   return {
     ...healthMethods,
     ...usersMethods,
+    ...groupRolesMethods,
   };
 };
