@@ -24,4 +24,9 @@ describe('OAuth2 Password Flow', () => {
     expect(user.id).toBeDefined();
     expect(user.firstName).toBeDefined();
   });
+
+  it('find()', async () => {
+    const res = await sdk.users.find('?select(id)');
+    expect(res).toBeDefined();
+  });
 });
