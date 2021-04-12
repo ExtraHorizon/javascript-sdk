@@ -4,7 +4,10 @@ import httpClient from '../http-client';
 import healthService from './healthService';
 import usersService from './usersService';
 
-export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
+export default (
+  http: HttpInstance,
+  httpWithAuth: HttpInstance
+): ReturnType<typeof usersService> & ReturnType<typeof healthService> => {
   const userClient = httpClient({
     basePath: '/users/v1',
     transformRequestData: decamelizeKeys,

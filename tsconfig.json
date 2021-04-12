@@ -9,7 +9,6 @@
     "baseUrl": "./",
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": false,
-    "removeComments": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "typeRoots": ["node_modules/@types"],

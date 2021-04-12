@@ -1,4 +1,3 @@
-
 import { userData, permissionData, roleData } from './user';
 
 export const emptyListResponse = {
@@ -18,9 +17,7 @@ export const userResponse = {
     offset: 0,
     limit: 20,
   },
-  data: [
-    userData,
-  ],
+  data: [userData],
 };
 
 export const permissionResponse = {
@@ -29,9 +26,7 @@ export const permissionResponse = {
     offset: 0,
     limit: 0,
   },
-  data: [
-    permissionData,
-  ],
+  data: [permissionData],
 };
 
 export const roleResponse = {
@@ -39,9 +34,7 @@ export const roleResponse = {
   page: {
     total: 1,
     offset: 0,
-    limit: 20
+    limit: 20,
   },
-  data: [
-    roleData
-  ]
-}
+  data: [roleData],
+};
