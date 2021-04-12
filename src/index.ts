@@ -15,7 +15,12 @@ function validateConfig({ apiHost, ...config }: Config): Config {
   };
 }
 
-export function client(rawConfig: Config) {
+interface Client {
+  users: ReturnType<typeof usersService>;
+  auth: ReturnType<typeof authService>;
+}
+
+export function client(rawConfig: Config): Client {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
   const authConfig: any = parseAuthParams(config.oauth);

@@ -34,7 +34,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       return (await authClient.post(httpWithAuth, '/applications', data)).data;
     },
     /**
-     * Create an OAuth application
+     * Get OAuth applications
      * @permission VIEW_APPLICATIONS | scope:global |
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
      * */
@@ -89,7 +89,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       ).data;
     },
     /**
-     * Delete an OAuth application
+     * Delete an application version
      * @permission DELETE_APPLICATIONS | scope:global |
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId__versions__versionId_
      * @throws {ResourceUnknownError}
