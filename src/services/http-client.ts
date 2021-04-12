@@ -4,6 +4,7 @@ interface HttpClient {
   basePath: string;
   transformRequestData?<R>(args?: R): R;
 }
+
 export default ({
   basePath,
   transformRequestData = data => data,
