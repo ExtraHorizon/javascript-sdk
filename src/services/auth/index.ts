@@ -38,13 +38,9 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @permission VIEW_APPLICATIONS | scope:global |
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
      * */
-    async getApplications(query?: string): Promise<ApplicationList> {
-      return (
-        await authClient.get(
-          httpWithAuth,
-          `/applications${query ? `?${query}` : ''}`
-        )
-      ).data;
+    async getApplications(rql?: string): Promise<ApplicationList> {
+      return (await authClient.get(httpWithAuth, `/applications${rql || ''}`))
+        .data;
     },
     /**
      * Update an OAuth application
@@ -131,13 +127,10 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @permission VIEW_AUTHORIZATIONS | scope:global |
      */
     async getOauth2Authorizations(
-      query?: string
+      rql?: string
     ): Promise<OAuth2AuthorizationList> {
       return (
-        await authClient.get(
-          httpWithAuth,
-          `/oauth2/authorizations${query ? `?${query}` : ''}`
-        )
+        await authClient.get(httpWithAuth, `/oauth2/authorizations${rql || ''}`)
       ).data;
     },
 
