@@ -77,16 +77,17 @@ describe('Users Service', () => {
   });
 
   it('Can update a user', async () => {
-
     const newData = {
       firstName: 'aaaaa',
       lastName: 'bbbbb',
     };
 
-    nock(`${apiHost}/users/v1`).put(`/${userId}`).reply(200, {
-      ...updatedUserData,
-      ...newData
-    });
+    nock(`${apiHost}/users/v1`)
+      .put(`/${userId}`)
+      .reply(200, {
+        ...updatedUserData,
+        ...newData,
+      });
 
     const user = await sdk.users.update(userId, newData);
 
@@ -108,19 +109,15 @@ describe('Users Service', () => {
 
   it('Can get users list', async () => {
     const rql = '?select(firstName,id)&sort(-firstName)';
-    nock(`${apiHost}/users/v1`)
-      .get(`/?RQL=${encodeURIComponent(rql)}`)
-      .reply(200, userResponse);
+    nock(`${apiHost}/users/v1`).get(`/${rql}`).reply(200, userResponse);
 
     const users = await sdk.users.find(rql);
-    
+
     expect(users.data.length).toBeGreaterThan(0);
   });
 
   it('Can get patients list', async () => {
-    nock(`${apiHost}/users/v1`)
-      .get('/patients')
-      .reply(200, userResponse);
+    nock(`${apiHost}/users/v1`).get('/patients').reply(200, userResponse);
 
     const users = await sdk.users.patients();
 
@@ -128,9 +125,7 @@ describe('Users Service', () => {
   });
 
   it('Can get staff list', async () => {
-    nock(`${apiHost}/users/v1`)
-      .get('/staff')
-      .reply(200, userResponse);
+    nock(`${apiHost}/users/v1`).get('/staff').reply(200, userResponse);
 
     const users = await sdk.users.staff();
 
@@ -185,7 +180,7 @@ describe('Users Service', () => {
       .post('/register')
       .reply(200, {
         ...newUserData,
-        id: userId
+        id: userId,
       });
 
     const newUser = await sdk.users.createAccount(newUserData);
@@ -194,9 +189,7 @@ describe('Users Service', () => {
   });
 
   it('Can update a users password', async () => {
-    nock(`${apiHost}/users/v1`)
-      .put(`/password`)
-      .reply(200, userData);
+    nock(`${apiHost}/users/v1`).put(`/password`).reply(200, userData);
 
     const result = await sdk.users.changePassword({ oldPassword, newPassword });
 
@@ -208,21 +201,19 @@ describe('Users Service', () => {
       .post('/authenticate')
       .reply(200, {
         ...newUserData,
-        id: userId
+        id: userId,
       });
 
     const authenticatedUser = await sdk.users.authenticate({
       email: newEmail,
       password: newPassword,
-  });
+    });
 
     expect(authenticatedUser.id).toBeDefined();
   });
 
   it('Can request activation mail', async () => {
-    nock(`${apiHost}/users/v1`)
-      .get(`/activation?email=${newEmail}`)
-      .reply(200);
+    nock(`${apiHost}/users/v1`).get(`/activation?email=${newEmail}`).reply(200);
 
     const result = await sdk.users.requestEmailActivation(newEmail);
 
@@ -230,9 +221,7 @@ describe('Users Service', () => {
   });
 
   it('Can complete an email activation', async () => {
-    nock(`${apiHost}/users/v1`)
-      .post('/activation')
-      .reply(200);
+    nock(`${apiHost}/users/v1`).post('/activation').reply(200);
 
     const result = await sdk.users.validateEmailActivation({ hash });
 
@@ -250,9 +239,7 @@ describe('Users Service', () => {
   });
 
   it('Can complete a password reset', async () => {
-    nock(`${apiHost}/users/v1`)
-      .post('/forgot_password')
-      .reply(200);
+    nock(`${apiHost}/users/v1`).post('/forgot_password').reply(200);
 
     const result = await sdk.users.validatePasswordReset({ hash, newPassword });
 
@@ -260,9 +247,7 @@ describe('Users Service', () => {
   });
 
   it('Confirm the password for the user making the request', async () => {
-    nock(`${apiHost}/users/v1`)
-      .post('/confirm_password')
-      .reply(200);
+    nock(`${apiHost}/users/v1`).post('/confirm_password').reply(200);
 
     const result = await sdk.users.confirmPassword({ password: newPassword });
 
@@ -273,12 +258,11 @@ describe('Users Service', () => {
     nock(`${apiHost}/users/v1`)
       .get(`/email_available?email=${newEmail}`)
       .reply(200, {
-        emailAvailable: true
+        emailAvailable: true,
       });
 
     const result = await sdk.users.isEmailAvailable(newEmail);
 
     expect(result).toEqual({ emailAvailable: true });
   });
-
 });
