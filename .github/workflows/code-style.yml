@@ -31,3 +31,4 @@ jobs:
             ${{ runner.os }}-yarn-
       - run: yarn
       - run: yarn run lint
+      - run: yarn run prettier --check
