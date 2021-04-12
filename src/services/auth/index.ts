@@ -276,7 +276,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * Check the service health
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
      * */
-    async getHealth(): Promise<boolean> {
+    async health(): Promise<boolean> {
       return (await authClient.get(http, '/health')).status === 200;
     },
   };
