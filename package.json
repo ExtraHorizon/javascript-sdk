@@ -56,6 +56,6 @@
     "outputName": "jest-junit.xml"
   },
   "lint-staged": {
-    "*.ts": "yarn lint --fix && yarn prettier --write"
+    "*.ts": "yarn lint --fix && yarn run prettier --write"
   }
 }
