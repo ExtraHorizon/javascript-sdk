@@ -69,19 +69,13 @@ export default (
    * @throws ApiError
    */
   async find(
-    rql?: string
+    rql = ''
   ): Promise<
     PagedResult & {
       data?: Array<PartialUserData>;
     }
   > {
-    return (
-      await userClient.get(httpWithAuth, '/', {
-        params: {
-          RQL: rql,
-        },
-      })
-    ).data;
+    return (await userClient.get(httpWithAuth, `/${rql}`)).data;
   },
 
   /**
@@ -97,17 +91,11 @@ export default (
    * @throws ApiError
    */
   async removeUsers(
-    rql: string
+    rql = ''
   ): Promise<{
     recordsAffected?: number;
   }> {
-    return (
-      await userClient.delete(httpWithAuth, '/', {
-        params: {
-          RQL: rql,
-        },
-      })
-    ).data;
+    return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
   },
 
   /**
@@ -121,14 +109,8 @@ export default (
    * @returns Patient Success
    * @throws ApiError
    */
-  async patients(rql?: string): Promise<Array<Patient>> {
-    return (
-      await userClient.get(httpWithAuth, '/patients', {
-        params: {
-          RQL: rql,
-        },
-      })
-    ).data;
+  async patients(rql = ''): Promise<Array<Patient>> {
+    return (await userClient.get(httpWithAuth, `/patients${rql}`)).data;
   },
 
   /**
@@ -142,14 +124,8 @@ export default (
    * @returns StaffMember Success
    * @throws ApiError
    */
-  async staff(rql?: string): Promise<Array<StaffMember>> {
-    return (
-      await userClient.get(httpWithAuth, '/staff', {
-        params: {
-          RQL: rql,
-        },
-      })
-    ).data;
+  async staff(rql = ''): Promise<Array<StaffMember>> {
+    return (await userClient.get(httpWithAuth, `/staff${rql}`)).data;
   },
 
   /**
