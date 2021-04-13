@@ -17,6 +17,7 @@
     "watch": "tsc -w",
     "prepare": "yarn build && husky install",
     "test": "yarn build && jest",
+    "test:e2e": "yarn build && jest tests/e2e",
     "lint": "eslint src --ext .ts",
     "prettier": "prettier src"
   },

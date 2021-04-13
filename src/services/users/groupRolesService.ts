@@ -47,8 +47,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
         name?: string;
         description?: string;
         permissions?: Array<string>;
-        creationTimestamp?: number;
-        updateTimestamp?: number;
+        creationTimestamp?: Date;
+        updateTimestamp?: Date;
       }>;
     }
   > {
@@ -80,8 +80,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId?: ObjectId;
     name?: string;
     permissions?: Array<string>;
-    creationTimestamp?: number;
-    updateTimestamp?: number;
+    creationTimestamp?: Date;
+    updateTimestamp?: Date;
   }> {
     return (
       await userClient.post(
@@ -118,8 +118,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     name?: string;
     description?: string;
     permissions?: Array<string>;
-    creationTimestamp?: number;
-    updateTimestamp?: number;
+    creationTimestamp?: Date;
+    updateTimestamp?: Date;
   }> {
     return (
       await userClient.put(
