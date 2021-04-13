@@ -20,7 +20,7 @@ export default (
 
   const healthMethods = healthService(userClient, http);
   const usersMethods = usersService(userClient, http, httpWithAuth);
-  const groupRolesMethods = groupRolesService(userClient, http, httpWithAuth);
+  const groupRolesMethods = groupRolesService(userClient, httpWithAuth);
 
   return {
     ...healthMethods,

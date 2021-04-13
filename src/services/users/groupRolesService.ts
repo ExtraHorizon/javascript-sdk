@@ -6,11 +6,7 @@ import type { GroupRolePermissionsBean } from './models/GroupRolePermissionsBean
 import type { StaffRolesBean } from './models/StaffRolesBean';
 import type { StaffGroupsBean } from './models/StaffGroupsBean';
 
-export default (
-  userClient,
-  http: HttpInstance,
-  httpWithAuth: HttpInstance
-) => ({
+export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
    * Retrieve a list of group permissions
    * Permission | Scope | Effect
