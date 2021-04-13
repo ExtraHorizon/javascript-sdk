@@ -6,11 +6,7 @@ import type { RolePermissionsBean } from './models/RolePermissionsBean';
 import type { Role } from './models/Role';
 import type { UserRolesBean } from './models/UserRolesBean';
 
-export default (
-  userClient,
-  http: HttpInstance,
-  httpWithAuth: HttpInstance
-) => ({
+export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
    * Retrieve a list of permissions
    * Permission | Scope | Effect
