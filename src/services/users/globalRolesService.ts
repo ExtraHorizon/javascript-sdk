@@ -144,7 +144,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceNotFound}
    */
-  async postGlobalRolesService2(
+  async removePermissionsFromRole(
     rql: string,
     requestBody?: RolePermissionsBean
   ): Promise<{
