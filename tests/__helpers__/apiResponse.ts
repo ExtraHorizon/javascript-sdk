@@ -1,6 +1,6 @@
 import { userData, permissionData, roleData } from './user';
 
-export const emptyListResponse = {
+export const emptyPagedResult = {
   query: {},
   page: {
     total: 0,
@@ -19,6 +19,10 @@ export const userResponse = {
   },
   data: [userData],
 };
+
+export const patientsResponse = [userData];
+
+export const staffResponse = [userData];
 
 export const permissionResponse = {
   page: {

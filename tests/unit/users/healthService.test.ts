@@ -1,9 +1,9 @@
 import * as nock from 'nock';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
 
 describe('Health Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  let sdk;
+  let sdk: Client;
 
   beforeAll(() => {
     sdk = client({
@@ -31,5 +31,4 @@ describe('Health Service', () => {
     const health = await sdk.users.health();
     expect(health).toBe(true);
   });
-
 });

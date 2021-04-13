@@ -1,15 +1,15 @@
-import { listResponse } from '../../models';
+import type { PagedResult } from '../models/Responses';
 
 interface Timestamp {
-  updateTimestamp: number;
-  creationTimestamp: number;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 interface OAuth1ApplicationVersion {
   id: string;
   name: string;
   consumerKey: string;
   consumerSecret: string;
-  creationTimestamp: number;
+  creationTimestamp: Date;
 }
 
 interface OAuth1Application extends Timestamp {
@@ -25,7 +25,7 @@ interface OAuth2ApplicationVersion {
   name: string;
   clientId: string;
   clientSecret: string;
-  creationTimestamp: number;
+  creationTimestamp: Date;
 }
 
 interface OAuth2Application extends Timestamp {
@@ -69,7 +69,7 @@ export type ApplicationUpdate =
   | OAuth1ApplicationUpdateSchema
   | OAuth2ApplicationUpdateSchema;
 
-export interface ApplicationList extends listResponse {
+export interface ApplicationList extends PagedResult {
   data: Application[];
 }
 
@@ -96,7 +96,7 @@ export interface OAuth2Authorization extends Timestamp {
   authorizationCode: string;
   state: string;
 }
-export interface OAuth2AuthorizationList extends listResponse {
+export interface OAuth2AuthorizationList extends PagedResult {
   data: OAuth2Authorization[];
 }
 
@@ -124,7 +124,7 @@ export interface MfaSetting {
   id: string;
   methods: [MfaMethod];
   enabled: boolean;
-  updateTimestamp: number;
+  updateTimestamp: Date;
 }
 
 export interface Presence extends Timestamp {

@@ -1,5 +1,6 @@
 import type { HttpInstance } from '../../types';
-import { resultResponse, Results } from '../../models';
+import { ResultResponse } from '../models/Responses';
+import { Results } from '../models/Results';
 
 export default (userClient, http: HttpInstance) => ({
   /**
@@ -8,7 +9,7 @@ export default (userClient, http: HttpInstance) => ({
    * @returns {boolean} success
    */
   async health(): Promise<boolean> {
-    const result: resultResponse = await userClient.get(http, '/health');
+    const result: ResultResponse = await userClient.get(http, '/health');
     return result.status === Results.Success;
   },
 });
