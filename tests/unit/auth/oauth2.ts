@@ -9,20 +9,21 @@ describe('Auth - OAuth2', () => {
   const authBase = '/auth/v2';
   let sdk: ReturnType<typeof client>;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post('/auth/v2/oauth2/token')
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   afterEach(() => {
@@ -30,11 +31,6 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can create authorizations', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post('/auth/v2/oauth2/token')
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${authBase}`)
       .post('/oauth2/authorizations')
       .reply(200, newAuthorization);
@@ -51,11 +47,6 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can get authorizations', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post('/auth/v2/oauth2/token')
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${authBase}`)
       .get('/oauth2/authorizations')
       .reply(200, authorizationList);
@@ -67,11 +58,7 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can delete authorization', async () => {
-    const mockToken = 'mockToken';
     const authorizationId = '123';
-    nock(apiHost)
-      .post('/auth/v2/oauth2/token')
-      .reply(200, { access_token: mockToken });
 
     nock(`${apiHost}${authBase}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)
@@ -87,12 +74,8 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can not delete unknown resource authorization', async () => {
-    const mockToken = 'mockToken';
     const authorizationId = '123';
     expect.assertions(1);
-    nock(apiHost)
-      .post('/auth/v2/oauth2/token')
-      .reply(200, { access_token: mockToken });
 
     nock(`${apiHost}${authBase}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)

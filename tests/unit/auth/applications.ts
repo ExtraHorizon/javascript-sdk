@@ -12,20 +12,21 @@ describe('Auth - Applications', () => {
   const authBase = '/auth/v2';
   let sdk: ReturnType<typeof client>;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post('/auth/v2/oauth2/token')
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   afterEach(() => {
@@ -33,11 +34,6 @@ describe('Auth - Applications', () => {
   });
 
   it('Can create applications', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post('/auth/v2/oauth2/token')
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${authBase}`)
       .post('/applications')
       .reply(200, newApplication);
@@ -52,11 +48,6 @@ describe('Auth - Applications', () => {
   });
 
   it('Can get applications', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post('/auth/v2/oauth2/token')
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${authBase}`)
       .get('/applications')
       .reply(200, applicationDataList);
