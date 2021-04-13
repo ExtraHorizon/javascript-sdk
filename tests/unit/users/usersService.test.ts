@@ -153,7 +153,7 @@ describe('Users Service', () => {
         email: newEmail,
       });
 
-    const user = await sdk.users.updateEmail(userId, newEmail);
+    const user = await sdk.users.updateEmail(userId, { email: newEmail });
 
     expect(user.email).toBe(newEmail);
   });
