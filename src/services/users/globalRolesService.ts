@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
+import type { PagedResult } from '../models/Responses';
 import type { ObjectId } from '../models/ObjectId';
-import type { PagedResult } from '../models/PagedResult';
 import type { GlobalPermission } from './models/GlobalPermission';
 import type { RolePermissionsBean } from './models/RolePermissionsBean';
 import type { Role } from './models/Role';
@@ -66,8 +66,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     name?: string;
     description?: string;
     permissions?: Array<GlobalPermission>;
-    creationTimestamp?: number;
-    updateTimestamp?: number;
+    creationTimestamp?: Date;
+    updateTimestamp?: Date;
   }> {
     return (await userClient.post(httpWithAuth, `/roles${rql}`, requestBody))
       .data;
