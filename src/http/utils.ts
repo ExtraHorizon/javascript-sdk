@@ -1,6 +1,7 @@
 import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
 import { AxiosResponse } from 'axios';
+import { mapObjIndexed } from 'ramda';
 import { camelizeKeys } from 'humps';
 import { Config } from '../types';
 import { AuthConfig } from './types';
@@ -62,4 +63,30 @@ export const camelizeResponseData = ({
 }: AxiosResponse): AxiosResponse => ({
   ...response,
   data: camelizeKeys(data),
+});
+
+export const recursiveMap = fn => obj =>
+  mapObjIndexed((value, key) => {
+    if (Array.isArray(value)) {
+      return value.map(recursiveMap(fn));
+    }
+    if (typeof value !== 'object') {
+      return fn(value, key);
+    }
+    return recursiveMap(fn)(value);
+  }, obj);
+
+export const transformResponseData = ({
+  data,
+  ...response
+}: AxiosResponse): AxiosResponse => ({
+  ...response,
+  data: recursiveMap((value, key) => {
+    if (
+      ['creationTimestamp', 'expiryTimestamp', 'updateTimestamp'].includes(key)
+    ) {
+      return new Date(value);
+    }
+    return value;
+  })(data),
 });

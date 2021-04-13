@@ -1,15 +1,15 @@
 import { listResponse } from '../../models';
 
 interface Timestamp {
-  updateTimestamp: string;
-  creationTimestamp: string;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 interface OAuth1ApplicationVersion {
   id: string;
   name: string;
   consumerKey: string;
   consumerSecret: string;
-  creationTimestamp: string;
+  creationTimestamp: Date;
 }
 
 interface OAuth1Application extends Timestamp {
@@ -25,7 +25,7 @@ interface OAuth2ApplicationVersion {
   name: string;
   clientId: string;
   clientSecret: string;
-  creationTimestamp: string;
+  creationTimestamp: Date;
 }
 
 interface OAuth2Application extends Timestamp {
@@ -124,13 +124,11 @@ export interface MfaSetting {
   id: string;
   methods: [MfaMethod];
   enabled: boolean;
-  updateTimestamp: string;
+  updateTimestamp: Date;
 }
 
 export interface Presence extends Timestamp {
   token: string;
-  expiryTimestamp: string;
-  creationTimestamp: string;
 }
 
 export interface MfaMethodCreation {
