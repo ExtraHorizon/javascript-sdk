@@ -17,7 +17,7 @@
     "watch": "tsc -w",
     "prepare": "yarn build && husky install",
     "test": "yarn build && jest",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint src --ext .ts",
     "prettier": "prettier src"
   },
   "files": [
@@ -37,8 +37,8 @@
     "@types/jest": "^26.0.20",
     "@types/nock": "^11.1.0",
     "@types/node": "^14.14.25",
-    "@typescript-eslint/eslint-plugin": "^4.20.0",
-    "@typescript-eslint/parser": "^4.20.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.19.0",
     "eslint-config-prettier": "^8.1.0",
     "husky": "^6.0.0",
