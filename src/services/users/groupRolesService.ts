@@ -25,7 +25,7 @@ export default (
       data?: Array<GlobalPermission>;
     }
   > {
-    return (await userClient.get(http, '/groups/permissions')).data;
+    return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
   },
 
   /**
