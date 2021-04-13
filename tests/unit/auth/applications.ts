@@ -7,7 +7,7 @@ import {
   newApplicationVersion,
 } from '../../__helpers__/auth';
 
-describe('Users', () => {
+describe('Auth - Applications', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const authBase = '/auth/v2';
   let sdk: ReturnType<typeof client>;

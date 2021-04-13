@@ -4,7 +4,7 @@ import { ResourceUnknownError } from '../../../src/errors';
 import { client } from '../../../src/index';
 import { authorizationList, newAuthorization } from '../../__helpers__/auth';
 
-describe('Users', () => {
+describe('Auth - OAuth2', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const authBase = '/auth/v2';
   let sdk: ReturnType<typeof client>;
