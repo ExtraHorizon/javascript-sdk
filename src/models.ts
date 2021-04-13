@@ -3,8 +3,8 @@ export interface listResponse {
   page: { total: number; offset: number; limit: number };
 }
 
-export interface recordsAffectedResponse {
-  recordsAffected: number;
+export interface affectedRecordsResponse {
+  affectedRecords: number;
 }
 
 export interface resultResponse {

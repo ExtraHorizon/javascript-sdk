@@ -1,7 +1,39 @@
-import { ResourceUnknownError, ApiError, HttpError } from './errors';
+import {
+  ResourceUnknownError,
+  ApiError,
+  HttpError,
+  FieldFormatError,
+  UnsupportedResponseTypeError,
+  NoPermissionError,
+  CallbackNotValidError,
+  UserNotAuthenticatedError,
+  EmptyBodyError,
+  NotEnoughMfaMethodsError,
+  InvalidMfaCodeError,
+  AuthenticationError,
+  LoginTimeoutError,
+  LoginFreezeError,
+  TooManyFailedAttemptsError,
+  InvalidPresenceTokenError,
+  IllegalArgumentException,
+} from './errors';
 
 const ErrorClassDefinitionsMap = {
+  10: NoPermissionError,
+  13: EmptyBodyError,
+  15: FieldFormatError,
   16: ResourceUnknownError,
+  26: IllegalArgumentException,
+  104: UserNotAuthenticatedError,
+  106: AuthenticationError,
+  113: CallbackNotValidError,
+  114: UnsupportedResponseTypeError,
+  130: InvalidMfaCodeError,
+  132: InvalidPresenceTokenError,
+  133: NotEnoughMfaMethodsError,
+  211: LoginTimeoutError,
+  212: LoginFreezeError,
+  213: TooManyFailedAttemptsError,
 };
 
 export function typeReceivedError(error: HttpError) {
