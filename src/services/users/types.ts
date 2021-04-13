@@ -1,4 +1,4 @@
-import { ListResponse } from '../models/Responses';
+import { PagedResult } from '../models/Responses';
 
 export interface UserData {
   id: string;
@@ -56,7 +56,7 @@ interface GroupRole {
   updateTimestamp: Date;
 }
 
-export interface UserDataList extends ListResponse {
+export interface UserDataList extends PagedResult {
   data: Array<UserData>;
 }
 
@@ -74,11 +74,11 @@ export interface RegisterUserData {
   timeZone?: string;
 }
 
-export interface PermissionDataList extends ListResponse {
+export interface PermissionDataList extends PagedResult {
   data: Array<Permission>;
 }
 
-export interface RolesDataList extends ListResponse {
+export interface RolesDataList extends PagedResult {
   data: Array<Role>;
 }
 

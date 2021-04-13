@@ -1,4 +1,4 @@
-import type { ListResponse } from '../models/Responses';
+import type { PagedResult } from '../models/Responses';
 
 interface Timestamp {
   updateTimestamp: Date;
@@ -69,7 +69,7 @@ export type ApplicationUpdate =
   | OAuth1ApplicationUpdateSchema
   | OAuth2ApplicationUpdateSchema;
 
-export interface ApplicationList extends ListResponse {
+export interface ApplicationList extends PagedResult {
   data: Application[];
 }
 
@@ -96,7 +96,7 @@ export interface OAuth2Authorization extends Timestamp {
   authorizationCode: string;
   state: string;
 }
-export interface OAuth2AuthorizationList extends ListResponse {
+export interface OAuth2AuthorizationList extends PagedResult {
   data: OAuth2Authorization[];
 }
 

@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
-import type { ListResponse } from '../models/Responses';
+import type { PagedResult } from '../models/Responses';
 import type { GlobalPermission } from './models/GlobalPermission';
 import type { GroupRolePermissionsBean } from './models/GroupRolePermissionsBean';
 import type { StaffRolesBean } from './models/StaffRolesBean';
@@ -17,7 +17,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws ApiError
    */
   async getGroupsPermissions(): Promise<
-    ListResponse & {
+    PagedResult & {
       data?: Array<GlobalPermission>;
     }
   > {
@@ -40,7 +40,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     rql = ''
   ): Promise<
-    ListResponse & {
+    PagedResult & {
       data?: Array<{
         id?: ObjectId;
         groupId?: ObjectId;

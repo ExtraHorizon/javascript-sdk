@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import type { UserData, RegisterUserData } from './types';
-import type { ListResponse } from '../models/Responses';
+import type { PagedResult } from '../models/Responses';
 import type { ObjectId } from '../models/ObjectId';
 import type { Patient } from './models/Patient';
 import type { StaffMember } from './models/StaffMember';
@@ -71,7 +71,7 @@ export default (
   async find(
     rql = ''
   ): Promise<
-    ListResponse & {
+    PagedResult & {
       data?: Array<PartialUserData>;
     }
   > {

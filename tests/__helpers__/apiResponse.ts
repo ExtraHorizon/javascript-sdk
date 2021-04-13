@@ -1,6 +1,6 @@
 import { userData, permissionData, roleData } from './user';
 
-export const emptyListResponse = {
+export const emptyPagedResult = {
   query: {},
   page: {
     total: 0,

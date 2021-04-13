@@ -1,4 +1,4 @@
-export interface ListResponse {
+export interface PagedResult {
   query: string;
   page: {
     total: number;
