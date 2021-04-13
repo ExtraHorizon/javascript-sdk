@@ -1,7 +1,10 @@
 import { Config } from './types';
 
 import usersService from './services/users';
+import authService from './services/auth';
 import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
+
+export { default as rqlBuilder } from './rql';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   return {
@@ -12,7 +15,25 @@ function validateConfig({ apiHost, ...config }: Config): Config {
   };
 }
 
-export function client(rawConfig: Config) {
+export interface Client {
+  users: ReturnType<typeof usersService>;
+  auth: ReturnType<typeof authService>;
+}
+
+/**
+ * Create ExtraHorizon client.
+ *
+ * @example
+ * const sdk = client({
+ *   apiHost: 'xxx.fibricheck.com',
+ *   oauth: {
+ *     clientId: 'string',
+ *     username: 'string',
+ *     password: 'string',
+ *   },
+ * });
+ */
+export function client(rawConfig: Config): Client {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
   const authConfig: any = parseAuthParams(config.oauth);
@@ -23,5 +44,8 @@ export function client(rawConfig: Config) {
     authConfig
   );
 
-  return { users: usersService(http, httpWithAuth) };
+  return {
+    users: usersService(http, httpWithAuth),
+    auth: authService(http, httpWithAuth),
+  };
 }

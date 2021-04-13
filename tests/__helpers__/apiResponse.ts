@@ -1,7 +1,6 @@
-
 import { userData, permissionData, roleData } from './user';
 
-export const emptyListResponse = {
+export const emptyPagedResult = {
   query: {},
   page: {
     total: 0,
@@ -18,10 +17,12 @@ export const userResponse = {
     offset: 0,
     limit: 20,
   },
-  data: [
-    userData,
-  ],
+  data: [userData],
 };
+
+export const patientsResponse = [userData];
+
+export const staffResponse = [userData];
 
 export const permissionResponse = {
   page: {
@@ -29,9 +30,7 @@ export const permissionResponse = {
     offset: 0,
     limit: 0,
   },
-  data: [
-    permissionData,
-  ],
+  data: [permissionData],
 };
 
 export const roleResponse = {
@@ -39,9 +38,7 @@ export const roleResponse = {
   page: {
     total: 1,
     offset: 0,
-    limit: 20
+    limit: 20,
   },
-  data: [
-    roleData
-  ]
-}
+  data: [roleData],
+};

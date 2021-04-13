@@ -4,7 +4,7 @@ import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { AuthConfig, TokenDataOauth2 } from './types';
-import { camelizeResponseData } from './utils';
+import { camelizeResponseData, transformResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
 
 export const addAuth = (
@@ -54,12 +54,12 @@ export const addAuth = (
         const originalRequest = error.config;
         if (
           error.response &&
-          (error.response.status === 403 || error.response.status === 401) &&
+          [400, 401, 403].includes(error.response.status) &&
           !originalRequest._retry
         ) {
           originalRequest._retry = true;
           tokenData.accessToken = '';
-          if (error.response.code === 118) {
+          if (error.response?.data?.code === 118) {
             // ACCESS_TOKEN_EXPIRED_EXCEPTION
             originalRequest.headers.Authorization = `Bearer ${
               (await refreshTokens()).accessToken
@@ -80,6 +80,7 @@ export const addAuth = (
   );
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
+  httpWithAuth.interceptors.response.use(transformResponseData);
 
   return httpWithAuth;
 };

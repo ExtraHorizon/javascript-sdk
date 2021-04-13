@@ -62,6 +62,7 @@ export class ApiError {
 
   constructor(error: HttpError) {
     const { config, response } = error;
+    this.qName = response?.data?.name;
     this.status = response?.status;
     this.statusText = response?.statusText;
     this.response = response?.data;
@@ -76,9 +77,19 @@ export class ApiError {
   }
 }
 
-export class ResourceUnknownError extends ApiError {
-  constructor(error: HttpError) {
-    super(error);
-    this.qName = 'RESOURCE_UNKNOWN_EXCEPTION';
-  }
-}
+export class ResourceUnknownError extends ApiError {}
+
+export class FieldFormatError extends ApiError {}
+export class UnsupportedResponseTypeError extends ApiError {}
+export class NoPermissionError extends ApiError {}
+export class CallbackNotValidError extends ApiError {}
+export class UserNotAuthenticatedError extends ApiError {}
+export class EmptyBodyError extends ApiError {}
+export class NotEnoughMfaMethodsError extends ApiError {}
+export class InvalidMfaCodeError extends ApiError {}
+export class AuthenticationError extends ApiError {}
+export class LoginTimeoutError extends ApiError {}
+export class LoginFreezeError extends ApiError {}
+export class TooManyFailedAttemptsError extends ApiError {}
+export class InvalidPresenceTokenError extends ApiError {}
+export class IllegalArgumentException extends ApiError {}
