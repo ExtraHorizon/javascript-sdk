@@ -66,15 +66,13 @@ export const camelizeResponseData = ({
 });
 
 export const recursiveMap = fn => obj =>
-  mapObjIndexed((value, key) => {
-    if (Array.isArray(value)) {
-      return value.map(recursiveMap(fn));
-    }
-    if (typeof value !== 'object') {
-      return fn(value, key);
-    }
-    return recursiveMap(fn)(value);
-  }, obj);
+  Array.isArray(obj)
+    ? obj.map(recursiveMap(fn))
+    : mapObjIndexed(
+        (value, key) =>
+          typeof value !== 'object' ? fn(value, key) : recursiveMap(fn)(value),
+        obj
+      );
 
 export const transformResponseData = ({
   data,

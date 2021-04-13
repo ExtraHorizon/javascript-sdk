@@ -1,5 +1,5 @@
 import * as nock from 'nock';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
 import {
   permissionResponse,
   roleResponse,
@@ -10,7 +10,7 @@ describe('Group Roles Service', () => {
   const groupId = '5bfbfc3146e0fb321rsa4b28';
   const roleId = '5bfbfc3146e0fb321rsa4b21';
 
-  let sdk;
+  let sdk: Client;
 
   beforeAll(() => {
     sdk = client({

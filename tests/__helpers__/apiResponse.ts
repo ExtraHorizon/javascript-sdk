@@ -20,6 +20,10 @@ export const userResponse = {
   data: [userData],
 };
 
+export const patientsResponse = [userData];
+
+export const staffResponse = [userData];
+
 export const permissionResponse = {
   page: {
     total: 1,

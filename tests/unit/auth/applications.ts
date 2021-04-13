@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as nock from 'nock';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
 import {
   applicationDataList,
   newApplication,
@@ -10,7 +10,7 @@ import {
 describe('Auth - Applications', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const authBase = '/auth/v2';
-  let sdk: ReturnType<typeof client>;
+  let sdk: Client;
 
   beforeAll(() => {
     sdk = client({
@@ -48,7 +48,7 @@ describe('Auth - Applications', () => {
       description: newApplication.description,
     });
 
-    expect(createdResult).toEqual(newApplication);
+    expect(createdResult.id).toEqual(newApplication.id);
   });
 
   it('Can get applications', async () => {
@@ -84,7 +84,7 @@ describe('Auth - Applications', () => {
       description: newApplication.description,
     });
 
-    expect(updatedResult).toEqual(newApplication);
+    expect(updatedResult.id).toEqual(newApplication.id);
   });
 
   it('Can delete applications versions', async () => {
@@ -127,6 +127,6 @@ describe('Auth - Applications', () => {
       }
     );
 
-    expect(createdResult).toEqual(newApplicationVersion);
+    expect(createdResult.id).toEqual(newApplicationVersion.id);
   });
 });
