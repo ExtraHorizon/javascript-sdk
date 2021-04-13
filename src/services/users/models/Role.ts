@@ -6,6 +6,6 @@ export interface Role {
   name?: string;
   description?: string;
   permissions?: Array<GlobalPermission>;
-  creationTimestamp?: number;
-  updateTimestamp?: number;
+  creationTimestamp?: Date;
+  updateTimestamp?: Date;
 }
