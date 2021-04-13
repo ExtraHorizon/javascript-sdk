@@ -2,7 +2,7 @@
 import * as nock from 'nock';
 import { client } from '../../../src/index';
 
-describe('Users', () => {
+describe('Auth - Health', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const authBase = '/auth/v2';
   let sdk: ReturnType<typeof client>;
