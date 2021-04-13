@@ -7,9 +7,9 @@ export interface StaffEnlistment {
     name?: string;
     description?: string;
     permissions?: Array<string>;
-    creationTimestamp?: number;
-    updateTimestamp?: number;
+    creationTimestamp?: Date;
+    updateTimestamp?: Date;
   }>;
-  creationTimestamp?: number;
-  updateTimestamp?: number;
+  creationTimestamp?: Date;
+  updateTimestamp?: Date;
 }

@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
-import type { PagedResult } from '../models/PagedResult';
+import type { PagedResult } from '../models/Responses';
 import type { GlobalPermission } from './models/GlobalPermission';
 import type { GroupRolePermissionsBean } from './models/GroupRolePermissionsBean';
 import type { StaffRolesBean } from './models/StaffRolesBean';

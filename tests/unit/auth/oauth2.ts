@@ -1,13 +1,13 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as nock from 'nock';
 import { ResourceUnknownError } from '../../../src/errors';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
 import { authorizationList, newAuthorization } from '../../__helpers__/auth';
 
 describe('Auth - OAuth2', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const authBase = '/auth/v2';
-  let sdk: ReturnType<typeof client>;
+  let sdk: Client;
 
   beforeAll(() => {
     sdk = client({
@@ -47,7 +47,7 @@ describe('Auth - OAuth2', () => {
       redirectUri: 'http://localhost',
     });
 
-    expect(createdResult).toEqual(newAuthorization);
+    expect(createdResult.id).toEqual(newAuthorization.id);
   });
 
   it('Can get authorizations', async () => {

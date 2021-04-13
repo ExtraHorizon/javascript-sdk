@@ -1,14 +1,17 @@
 import * as nock from 'nock';
-import { camelizeKeys } from 'humps';
 import { ResourceUnknownError } from '../../../src/errors';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
 import {
   userData,
   newUserData,
   updatedUserData,
   ResourceUnknownException,
 } from '../../__helpers__/user';
-import { userResponse } from '../../__helpers__/apiResponse';
+import {
+  patientsResponse,
+  staffResponse,
+  userResponse,
+} from '../../__helpers__/apiResponse';
 
 describe('Users Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
@@ -20,7 +23,7 @@ describe('Users Service', () => {
   const newPassword = 'NewPass123';
   const hash = 'bced43a8ccb74868536ae8bc5a13a40385265038';
 
-  let sdk;
+  let sdk: Client;
 
   beforeAll(() => {
     sdk = client({
@@ -101,7 +104,7 @@ describe('Users Service', () => {
       .reply(404, ResourceUnknownException);
 
     try {
-      await sdk.users.update(userId);
+      await sdk.users.update(userId, {});
     } catch (error) {
       expect(error).toBeInstanceOf(ResourceUnknownError);
     }
@@ -117,19 +120,19 @@ describe('Users Service', () => {
   });
 
   it('Can get patients list', async () => {
-    nock(`${apiHost}/users/v1`).get('/patients').reply(200, userResponse);
+    nock(`${apiHost}/users/v1`).get('/patients').reply(200, patientsResponse);
 
-    const users = await sdk.users.patients();
+    const patients = await sdk.users.patients();
 
-    expect(users.data.length).toBeGreaterThan(0);
+    expect(patients.length).toBeGreaterThan(0);
   });
 
   it('Can get staff list', async () => {
-    nock(`${apiHost}/users/v1`).get('/staff').reply(200, userResponse);
+    nock(`${apiHost}/users/v1`).get('/staff').reply(200, staffResponse);
 
-    const users = await sdk.users.staff();
+    const staff = await sdk.users.staff();
 
-    expect(users.data.length).toBeGreaterThan(0);
+    expect(staff.length).toBeGreaterThan(0);
   });
 
   it('Can remove a user', async () => {
@@ -150,7 +153,7 @@ describe('Users Service', () => {
         email: newEmail,
       });
 
-    const user = await sdk.users.updateEmail(userId, newEmail);
+    const user = await sdk.users.updateEmail(userId, { email: newEmail });
 
     expect(user.email).toBe(newEmail);
   });
@@ -193,7 +196,7 @@ describe('Users Service', () => {
 
     const result = await sdk.users.changePassword({ oldPassword, newPassword });
 
-    expect(result).toEqual(camelizeKeys(userData));
+    expect(result.id).toEqual(userData.id);
   });
 
   it('Can authenticate', async () => {
