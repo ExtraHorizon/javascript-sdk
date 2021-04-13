@@ -1,4 +1,4 @@
-import { listResponse } from '../../models';
+import { ListResponse } from '../models/Responses';
 
 export interface UserData {
   id: string;
@@ -21,9 +21,9 @@ export interface UserData {
 
 interface PatientEnlistment {
   groupId: string;
-  expiryTimestamp: number;
+  expiryTimestamp: Date;
   expired: boolean;
-  creationTimestamp: number;
+  creationTimestamp: Date;
 }
 
 export interface Role {
@@ -31,8 +31,8 @@ export interface Role {
   name: string;
   description: string;
   permissions: Array<Permission>;
-  creationTimestamp: number;
-  updateTimestamp: number;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 export interface Permission {
@@ -43,8 +43,8 @@ export interface Permission {
 interface StaffEnlistment {
   groupId: string;
   roles: Array<GroupRole>;
-  creationTimestamp: number;
-  updateTimestamp: number;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 interface GroupRole {
@@ -52,11 +52,11 @@ interface GroupRole {
   name: string;
   description: string;
   permissions: string;
-  creationTimestamp: number;
-  updateTimestamp: number;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
-export interface UserDataList extends listResponse {
+export interface UserDataList extends ListResponse {
   data: Array<UserData>;
 }
 
@@ -74,11 +74,11 @@ export interface RegisterUserData {
   timeZone?: string;
 }
 
-export interface PermissionDataList extends listResponse {
+export interface PermissionDataList extends ListResponse {
   data: Array<Permission>;
 }
 
-export interface RolesDataList extends listResponse {
+export interface RolesDataList extends ListResponse {
   data: Array<Role>;
 }
 

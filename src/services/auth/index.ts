@@ -17,7 +17,7 @@ import type {
   MfaMethod,
 } from './types';
 import httpClient from '../http-client';
-import { affectedRecordsResponse } from '../../models';
+import type { AffectedRecordsResponse } from '../models/Responses';
 
 export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
@@ -73,7 +73,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      */
     async deleteApplication(
       applicationId: string
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecordsResponse> {
       return (
         await authClient.delete(httpWithAuth, `/applications/${applicationId}`)
       ).data;
@@ -106,7 +106,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async deleteApplicationVersion(
       applicationId: string,
       versionId: string
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecordsResponse> {
       return (
         await authClient.delete(
           httpWithAuth,
@@ -154,7 +154,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      */
     async deleteOauth2Authorization(
       authorizationId: string
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecordsResponse> {
       return (
         await authClient.delete(
           httpWithAuth,
@@ -199,7 +199,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async mfaEnable(
       userId: string,
       data: PresenceToken
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecordsResponse> {
       return (
         await authClient.post(httpWithAuth, `/mfa/users/${userId}/enable`, data)
       ).data;
@@ -215,7 +215,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async mfaDisable(
       userId: string,
       data: PresenceToken
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecordsResponse> {
       return (
         await authClient.post(
           httpWithAuth,
@@ -281,7 +281,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       userId: string,
       methodId: string,
       data: PresenceToken
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecordsResponse> {
       return (
         await authClient.post(
           httpWithAuth,

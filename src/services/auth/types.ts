@@ -1,4 +1,4 @@
-import { listResponse } from '../../models';
+import type { ListResponse } from '../models/Responses';
 
 interface Timestamp {
   updateTimestamp: Date;
@@ -69,7 +69,7 @@ export type ApplicationUpdate =
   | OAuth1ApplicationUpdateSchema
   | OAuth2ApplicationUpdateSchema;
 
-export interface ApplicationList extends listResponse {
+export interface ApplicationList extends ListResponse {
   data: Application[];
 }
 
@@ -96,7 +96,7 @@ export interface OAuth2Authorization extends Timestamp {
   authorizationCode: string;
   state: string;
 }
-export interface OAuth2AuthorizationList extends listResponse {
+export interface OAuth2AuthorizationList extends ListResponse {
   data: OAuth2Authorization[];
 }
 
