@@ -2,7 +2,12 @@ import { Config, MfaConfig, OAuthConfig } from './types';
 
 import usersService from './services/users';
 import authService from './services/auth';
-import { createHttpClient, addAuth1, parseAuthParams, addAuth2 } from './http';
+import {
+  createHttpClient,
+  createOAuth1HttpClient,
+  parseAuthParams,
+  createOAuth2HttpClient,
+} from './http';
 
 export { default as rqlBuilder } from './rql';
 
@@ -49,10 +54,9 @@ export function client(rawConfig: Config): Client {
 
   async function authenticate(oauth: OAuthConfig) {
     const authConfig: any = parseAuthParams(oauth);
-    httpWithAuth = await ('oauth1' in authConfig ? addAuth1 : addAuth2)(
-      http,
-      config
-    );
+    httpWithAuth = await ('oauth1' in authConfig
+      ? createOAuth1HttpClient
+      : createOAuth2HttpClient)(http, config);
 
     await httpWithAuth.authenticate(authConfig);
   }

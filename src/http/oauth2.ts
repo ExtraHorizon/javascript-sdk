@@ -7,7 +7,7 @@ import { AuthConfig, TokenDataOauth2 } from './types';
 import { camelizeResponseData, transformResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
 
-export const addAuth = (http: AxiosInstance, options: Config) => {
+export default (http: AxiosInstance, options: Config) => {
   let tokenData: TokenDataOauth2;
   let authConfig;
   const httpWithAuth = axios.create({ ...http.defaults });
@@ -106,5 +106,3 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
 
   return { ...httpWithAuth, authenticate, confirmMfa };
 };
-
-export default addAuth;

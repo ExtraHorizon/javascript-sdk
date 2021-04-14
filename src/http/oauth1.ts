@@ -5,7 +5,7 @@ import { TokenDataOauth1, Oauth1Config } from './types';
 import { camelizeResponseData, transformResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
 
-export const addAuth = (http: AxiosInstance, options: Config) => {
+export default (http: AxiosInstance, options: Config) => {
   let tokenData: TokenDataOauth1;
   let authConfig;
 
@@ -26,18 +26,16 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
     ...config,
     headers: {
       ...config.headers,
-      ...{
-        'Content-Type': 'application/json',
-        ...authConfig.oauth1.toHeader(
-          authConfig.oauth1.authorize(
-            {
-              url: config.baseURL + config.url,
-              method: config.method,
-            },
-            tokenData
-          )
-        ),
-      },
+      'Content-Type': 'application/json',
+      ...authConfig.oauth1.toHeader(
+        authConfig.oauth1.authorize(
+          {
+            url: config.baseURL + config.url,
+            method: config.method,
+          },
+          tokenData
+        )
+      ),
     },
   }));
 
@@ -61,16 +59,16 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
 
       const tokenResult = await http.post(authConfig.path, authConfig.params, {
         headers: {
+          'Content-Type': 'application/json',
           ...authConfig.oauth1.toHeader(
             authConfig.oauth1.authorize({
               url: options.apiHost + authConfig.path,
               method: 'POST',
             })
           ),
-          'Content-Type': 'application/json',
         },
       });
-      tokenData = authConfig.oauth1 && {
+      tokenData = {
         ...tokenResult.data,
         key: tokenResult.data.token,
         secret: tokenResult.data.tokenSecret,
@@ -99,17 +97,17 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
         },
         {
           headers: {
+            'Content-Type': 'application/json',
             ...authConfig.oauth1.toHeader(
               authConfig.oauth1.authorize({
                 url: `${options.apiHost}${authConfig.path}/mfa`,
                 method: 'POST',
               })
             ),
-            'Content-Type': 'application/json',
           },
         }
       );
-      tokenData = authConfig.oauth1 && {
+      tokenData = {
         ...tokenResult.data,
         key: tokenResult.data.token,
         secret: tokenResult.data.tokenSecret,
@@ -121,5 +119,3 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
 
   return { ...httpWithAuth, authenticate, confirmMfa };
 };
-
-export default addAuth;
