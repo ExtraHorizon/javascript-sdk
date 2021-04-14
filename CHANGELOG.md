@@ -12,8 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Client initialization is changed. For example if you want to use the OAuth2 password flow, you no longer pass in the credentials as `oauth` property in the client. But you have to call the `authenticate` function. See README for other flows.
 
 ```diff
-import { client } from '@extrahorizon/javascript-sdk';
-
 -const sdk = client({
 -  apiHost: '',
 -  oauth: {
@@ -22,7 +20,6 @@ import { client } from '@extrahorizon/javascript-sdk';
 -    username: '',
 -  },
 -});
-
 
 +const sdk = client({
 +  apiHost: '',
@@ -34,3 +31,7 @@ import { client } from '@extrahorizon/javascript-sdk';
 +  username: ''
 +});
 ```
+
+### Added
+
+- Multi-factor authentication via (authenticate / confirmMfa functions)
