@@ -8,14 +8,9 @@ describe('Auth - Health', () => {
 
   let sdk: ReturnType<typeof client>;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
   });
 

@@ -1,6 +1,7 @@
 import * as nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { Client, client } from '../../../src/index';
+import { GlobalPermissionName } from '../../../src/services/users/models/GlobalPermissionName';
 import {
   permissionResponse,
   roleResponse,
@@ -94,7 +95,7 @@ describe('Global Roles Service', () => {
 
   it('Add permissions to a role', async () => {
     const requestBody = {
-      permissions: ['VIEW_PRESCRIPTIONS'],
+      permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
     nock(`${apiHost}${USER_BASE}`)
       .post('/roles/add_permissions')
@@ -108,7 +109,7 @@ describe('Global Roles Service', () => {
   it('Remove permissions from roles', async () => {
     const rql = '';
     const requestBody = {
-      permissions: ['VIEW_PRESCRIPTIONS'],
+      permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
     nock(`${apiHost}${USER_BASE}`)
       .post(`/roles/remove_permissions${rql}`)

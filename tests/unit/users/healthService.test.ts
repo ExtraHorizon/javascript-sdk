@@ -6,20 +6,21 @@ describe('Health Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   let sdk: Client;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   afterEach(() => {
