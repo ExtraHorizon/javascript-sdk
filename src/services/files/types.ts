@@ -19,8 +19,8 @@ export interface TokenObject {
 export interface CreateFileResponse {
   tokens?: Array<TokenObject>;
   creatorId?: ObjectId;
-  creationTimestamp?: string;
-  updateTimestamp?: string;
+  creationTimestamp?: Date;
+  updateTimestamp?: Date;
   name?: string;
   mimetype?: string;
   size?: number;
