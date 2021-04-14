@@ -1,9 +1,5 @@
 import type { HttpInstance } from '../../types';
-
-// FIXME missing types
-type TokenObject = unknown;
-type CreateTokenRequest = unknown;
-type Token = unknown;
+import type { TokenObject, CreateTokenRequest, Token } from './types';
 
 export default (userClient, httpAuth: HttpInstance) => ({
   /**

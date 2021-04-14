@@ -9,10 +9,7 @@ import { FILES_BASE } from '../../constants';
 export type FilesService = ReturnType<typeof filesService> &
   ReturnType<typeof tokensService>;
 
-export default (
-  // http: HttpInstance,
-  httpWithAuth: HttpInstance
-): FilesService => {
+export default (httpWithAuth: HttpInstance): FilesService => {
   const client = httpClient({
     basePath: FILES_BASE,
     transformRequestData: decamelizeKeys,

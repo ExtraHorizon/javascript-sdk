@@ -1,9 +1,5 @@
 import type { HttpInstance } from '../../types';
-
-// FIXME missing types
-type PagedResult = unknown;
-type CreateFileResponse = unknown;
-type Token = unknown;
+import type { FilesList, CreateFileResponse, Token } from './types';
 
 export default (userClient, httpAuth: HttpInstance) => ({
   /**
@@ -16,13 +12,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws ApiError
    */
-  async find(
-    rql = ''
-  ): Promise<
-    PagedResult & {
-      data?: Array<CreateFileResponse>;
-    }
-  > {
+  async find(rql = ''): Promise<FilesList> {
     return (await userClient.get(httpAuth, `/${rql}`)).data;
   },
 
@@ -52,7 +42,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @throws {401 Error}
    */
   async deleteFile(token: Token): Promise<void> {
-    return (await userClient.delete(httpAuth, `/${token}`)).data;
+    await userClient.delete(httpAuth, `/${token}`);
   },
 
   /**
