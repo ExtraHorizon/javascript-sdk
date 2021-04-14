@@ -2,9 +2,9 @@ import type { HttpInstance } from '../../types';
 import type { PagedResult } from '../models/Responses';
 import type { ObjectId } from '../models/ObjectId';
 import type { GlobalPermission } from './models/GlobalPermission';
-import type { RolePermissionsBean } from './models/RolePermissionsBean';
+import type { RolePermissions } from './models/RolePermissions';
 import type { Role } from './models/Role';
-import type { UserRolesBean } from './models/UserRolesBean';
+import type { UserRoles } from './models/UserRoles';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
@@ -124,7 +124,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ResourceNotFound}
    */
   async addPermissionsToRole(
-    requestBody?: RolePermissionsBean
+    requestBody?: RolePermissions
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -146,7 +146,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removePermissionsFromRole(
     rql: string,
-    requestBody?: RolePermissionsBean
+    requestBody?: RolePermissions
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -172,7 +172,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addRolesToUsers(
     rql = '',
-    requestBody?: UserRolesBean
+    requestBody?: UserRoles
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -194,7 +194,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removeRolesFromUsers(
     rql: string,
-    requestBody?: UserRolesBean
+    requestBody?: UserRoles
   ): Promise<{
     recordsAffected?: number;
   }> {

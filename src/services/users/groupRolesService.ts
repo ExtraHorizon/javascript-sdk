@@ -2,9 +2,9 @@ import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
 import type { PagedResult } from '../models/Responses';
 import type { GlobalPermission } from './models/GlobalPermission';
-import type { GroupRolePermissionsBean } from './models/GroupRolePermissionsBean';
-import type { StaffRolesBean } from './models/StaffRolesBean';
-import type { StaffGroupsBean } from './models/StaffGroupsBean';
+import type { GroupRolePermissions } from './models/GroupRolePermissions';
+import type { StaffRoles } from './models/StaffRoles';
+import type { StaffGroups } from './models/StaffGroups';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
@@ -174,7 +174,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async addPermissionsToGroupRoles(
     groupId: ObjectId,
     rql = '',
-    requestBody?: GroupRolePermissionsBean
+    requestBody?: GroupRolePermissions
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -203,7 +203,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removePermissionsFromGroupRoles(
     groupId: ObjectId,
     rql: string,
-    requestBody?: GroupRolePermissionsBean
+    requestBody?: GroupRolePermissions
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -232,7 +232,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async assignRolesToStaff(
     groupId: ObjectId,
     rql = '',
-    requestBody?: StaffRolesBean
+    requestBody?: StaffRoles
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -261,7 +261,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removeRolesFromStaff(
     groupId: ObjectId,
     rql: string,
-    requestBody?: StaffRolesBean
+    requestBody?: StaffRoles
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -288,7 +288,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addUserToStaff(
     rql = '',
-    requestBody?: StaffGroupsBean
+    requestBody?: StaffGroups
   ): Promise<{
     recordsAffected?: number;
   }> {
@@ -311,7 +311,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removeUsersFromStaff(
     rql: string,
-    requestBody?: StaffGroupsBean
+    requestBody?: StaffGroups
   ): Promise<{
     recordsAffected?: number;
   }> {
