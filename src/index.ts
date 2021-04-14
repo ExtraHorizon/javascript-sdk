@@ -60,13 +60,18 @@ export function client(rawConfig: Config): Client {
   return {
     authenticate,
     get confirmMfa() {
+      if (!httpWithAuth) {
+        throw new Error(
+          'First call authenticate. See README for more info how to use MFA.'
+        );
+      }
       return httpWithAuth.confirmMfa;
     },
     get users() {
-      return usersService(http, httpWithAuth);
+      return usersService(http, httpWithAuth || http);
     },
     get auth() {
-      return authService(http, httpWithAuth);
+      return authService(http, httpWithAuth || http);
     },
   };
 }
