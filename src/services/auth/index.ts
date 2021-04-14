@@ -35,6 +35,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async createApplication(data: ApplicationCreation): Promise<Application> {
       return (await authClient.post(httpWithAuth, '/applications', data)).data;
     },
+
     /**
      * Get a list of applications
      * @permission VIEW_APPLICATIONS | scope:global |
@@ -45,6 +46,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       return (await authClient.get(httpWithAuth, `/applications${rql || ''}`))
         .data;
     },
+
     /**
      * Update an OAuth application
      *
@@ -64,6 +66,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
         )
       ).data;
     },
+
     /**
      * Delete an OAuth application
      *
@@ -78,6 +81,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
         await authClient.delete(httpWithAuth, `/applications/${applicationId}`)
       ).data;
     },
+
     /**
      * Create an application version
      *
@@ -96,6 +100,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
         )
       ).data;
     },
+
     /**
      * Delete an application version
      *
