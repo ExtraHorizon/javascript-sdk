@@ -28,7 +28,7 @@ import { client } from '@extrahorizon/javascript-sdk';
 +  apiHost: '',
 +});
 +
-+sdk.authenticate({
++await sdk.authenticate({
 +  clientId: '',
 +  password: '',
 +  username: ''

@@ -25,12 +25,13 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: 'dev.fibricheck.com',
-  oauth: {
-    consumerKey: '',
-    consumerSecret: '',
-    tokenKey: '',
-    tokenSecret: '',
-  },
+});
+
+await sdk.authenticate({
+  consumerKey: '',
+  consumerSecret: '',
+  tokenKey: '',
+  tokenSecret: '',
 });
 ```
 
@@ -41,11 +42,13 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
-  oauth: {
-    clientId: '',
-    password: '',
-    username: '',
-  },
+  oauth: {},
+});
+
+await sdk.authenticate({
+  clientId: '',
+  password: '',
+  username: '',
 });
 ```
 
@@ -56,11 +59,12 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
-  oauth: {
-    clientId: '',
-    code: '',
-    redirectUri: '',
-  },
+});
+
+await sdk.authenticate({
+  clientId: '',
+  code: '',
+  redirectUri: '',
 });
 ```
 

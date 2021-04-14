@@ -41,3 +41,9 @@ export interface Config {
   apiHost: string;
   debug?: boolean;
 }
+
+export interface MfaConfig {
+  token: string;
+  methodId: string;
+  code: string;
+}

@@ -104,7 +104,7 @@ export const addAuth = (http: AxiosInstance, options: Config) => {
     }
   }
 
-  return { ...httpWithAuth, confirmMfa, authenticate };
+  return { ...httpWithAuth, authenticate, confirmMfa };
 };
 
 export default addAuth;

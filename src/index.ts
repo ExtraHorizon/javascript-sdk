@@ -1,8 +1,8 @@
-import { Config, OAuthConfig } from './types';
+import { Config, MfaConfig, OAuthConfig } from './types';
 
 import usersService from './services/users';
 import authService from './services/auth';
-import { createHttpClient, addAuth2, parseAuthParams } from './http';
+import { createHttpClient, addAuth1, parseAuthParams, addAuth2 } from './http';
 
 export { default as rqlBuilder } from './rql';
 
@@ -16,8 +16,14 @@ function validateConfig({ apiHost, ...config }: Config): Config {
 }
 
 export interface Client {
+  /**
+   *  Authentication method to exchange credentials for tokens
+   */
   authenticate: (oauth: OAuthConfig) => Promise<void>;
-  confirmMfa: (oauth: OAuthConfig) => Promise<void>;
+  /**
+   *  Confirm MFA method with code
+   */
+  confirmMfa: (oauth: MfaConfig) => Promise<void>;
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService>;
 }
@@ -42,9 +48,11 @@ export function client(rawConfig: Config): Client {
   let httpWithAuth;
 
   async function authenticate(oauth: OAuthConfig) {
-    const authConfig = parseAuthParams(oauth);
-    // httpWithAuth = ('oauth1' in authConfig ? addAuth1 : addAuth2)(http, config);
-    httpWithAuth = addAuth2(http, config);
+    const authConfig: any = parseAuthParams(oauth);
+    httpWithAuth = await ('oauth1' in authConfig ? addAuth1 : addAuth2)(
+      http,
+      config
+    );
 
     await httpWithAuth.authenticate(authConfig);
   }
