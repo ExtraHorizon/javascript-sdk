@@ -5,6 +5,7 @@ import type { ObjectId } from '../models/ObjectId';
 import type { Patient } from './models/Patient';
 import type { StaffMember } from './models/StaffMember';
 import type { HashBean } from './models/HashBean';
+import { Results } from '../models/Results';
 
 type PartialUserData = Partial<UserData>;
 
@@ -284,17 +285,19 @@ export default (
    * none |  | Everyone can use this endpoint
    *
    * @param email
-   * @returns any Success
+   * @returns {boolean} Success
    * @throws ApiError
    */
-  async requestEmailActivation(email: string): Promise<any> {
+  async requestEmailActivation(email: string): Promise<boolean> {
     return (
-      await userClient.get(http, '/activation', {
-        params: {
-          email,
-        },
-      })
-    ).data;
+      (
+        await userClient.get(http, '/activation', {
+          params: {
+            email,
+          },
+        })
+      ).status === Results.Success
+    );
   },
 
   /**
@@ -304,11 +307,14 @@ export default (
    * none |  | Everyone can use this endpoint
    *
    * @param requestBody
-   * @returns any Success
+   * @returns {boolean} Success
    * @throws ApiError
    */
-  async validateEmailActivation(requestBody?: HashBean): Promise<any> {
-    return (await userClient.post(http, '/activation', requestBody)).data;
+  async validateEmailActivation(requestBody?: HashBean): Promise<boolean> {
+    return (
+      (await userClient.post(http, '/activation', requestBody)).status ===
+      Results.Success
+    );
   },
 
   /**
@@ -318,17 +324,19 @@ export default (
    * none |  | Everyone can use this endpoint
    *
    * @param email
-   * @returns any Success
+   * @returns {boolean} Success
    * @throws ApiError
    */
-  async requestPasswordReset(email: string): Promise<any> {
+  async requestPasswordReset(email: string): Promise<boolean> {
     return (
-      await userClient.get(http, '/forgot_password', {
-        params: {
-          email,
-        },
-      })
-    ).data;
+      (
+        await userClient.get(http, '/forgot_password', {
+          params: {
+            email,
+          },
+        })
+      ).status === Results.Success
+    );
   },
 
   /**
@@ -344,8 +352,11 @@ export default (
   async validatePasswordReset(requestBody?: {
     hash?: string;
     newPassword: string;
-  }): Promise<any> {
-    return (await userClient.post(http, '/forgot_password', requestBody)).data;
+  }): Promise<boolean> {
+    return (
+      (await userClient.post(http, '/forgot_password', requestBody)).status ===
+      Results.Success
+    );
   },
 
   /**
@@ -358,10 +369,11 @@ export default (
    * @returns any Success
    * @throws ApiError
    */
-  async confirmPassword(requestBody?: { password: string }): Promise<any> {
+  async confirmPassword(requestBody?: { password: string }): Promise<boolean> {
     return (
-      await userClient.post(httpWithAuth, '/confirm_password', requestBody)
-    ).data;
+      (await userClient.post(httpWithAuth, '/confirm_password', requestBody))
+        .status === Results.Success
+    );
   },
 
   /**
