@@ -1,7 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { PagedResult } from '../models/Responses';
 import type { ObjectId } from '../models/ObjectId';
-import type { GlobalPermission } from './models/GlobalPermission';
+import type { GlobalPermissionsList } from './models/GlobalPermission';
 import type { RolePermissions } from './models/RolePermissions';
 import type { Role, RoleCreation, RoleList, RoleUpdate } from './models/Role';
 import type { UserRoles } from './models/UserRoles';
@@ -17,11 +16,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws ApiError
    */
-  async getPermissions(): Promise<
-    PagedResult & {
-      data?: Array<GlobalPermission>;
-    }
-  > {
+  async getPermissions(): Promise<GlobalPermissionsList> {
     return (await userClient.get(httpWithAuth, '/permissions')).data;
   },
 
