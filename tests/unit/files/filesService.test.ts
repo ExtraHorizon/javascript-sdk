@@ -10,12 +10,6 @@ jest.mock('fs');
 describe('Files Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const token = '5a0b2adc265ced65a8cab861';
-  // const groupId = '5bfbfc3146e0fb321rsa4b28';
-  // const oldEmail = 'old@bbb.ccc';
-  // const newEmail = 'new@bbb.ccc';
-  // const oldPassword = 'OldPass123';
-  // const newPassword = 'NewPass123';
-  // const hash = 'bced43a8ccb74868536ae8bc5a13a40385265038';
 
   let sdk: Client;
 
