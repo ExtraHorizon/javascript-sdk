@@ -1,5 +1,5 @@
 import type { ObjectId } from '../../models/ObjectId';
 
-export interface UserRolesBean {
+export interface StaffRoles {
   roles: Array<ObjectId>;
 }

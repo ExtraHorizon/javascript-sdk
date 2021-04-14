@@ -1,10 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as nock from 'nock';
+import { AUTH_BASE } from '../../../src/constants';
 import { client } from '../../../src/index';
 
 describe('Auth - Health', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  const authBase = '/auth/v2';
+
   let sdk: ReturnType<typeof client>;
 
   beforeAll(() => {
@@ -23,7 +24,7 @@ describe('Auth - Health', () => {
   });
 
   it('Can get health', async () => {
-    nock(`${apiHost}${authBase}`).get('/health').reply(200);
+    nock(`${apiHost}${AUTH_BASE}`).get('/health').reply(200);
 
     const health = await sdk.auth.health();
 

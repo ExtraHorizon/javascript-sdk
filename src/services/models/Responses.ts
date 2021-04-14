@@ -7,7 +7,7 @@ export interface PagedResult {
   };
 }
 
-export interface AffectedRecordsResponse {
+export interface AffectedRecords {
   affectedRecords: number;
 }
 

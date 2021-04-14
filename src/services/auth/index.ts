@@ -17,11 +17,13 @@ import type {
   MfaMethod,
 } from './types';
 import httpClient from '../http-client';
-import type { AffectedRecordsResponse } from '../models/Responses';
+import type { AffectedRecords } from '../models/Responses';
+import { AUTH_BASE } from '../../constants';
+import { Results } from '../models/Results';
 
 export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
-    basePath: '/auth/v2',
+    basePath: AUTH_BASE,
   });
 
   return {
@@ -35,6 +37,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async createApplication(data: ApplicationCreation): Promise<Application> {
       return (await authClient.post(httpWithAuth, '/applications', data)).data;
     },
+
     /**
      * Get a list of applications
      * @permission VIEW_APPLICATIONS | scope:global |
@@ -45,6 +48,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       return (await authClient.get(httpWithAuth, `/applications${rql || ''}`))
         .data;
     },
+
     /**
      * Update an OAuth application
      *
@@ -64,6 +68,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
         )
       ).data;
     },
+
     /**
      * Delete an OAuth application
      *
@@ -71,13 +76,12 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId_
      * @throws {ResourceUnknownError}
      */
-    async deleteApplication(
-      applicationId: string
-    ): Promise<AffectedRecordsResponse> {
+    async deleteApplication(applicationId: string): Promise<AffectedRecords> {
       return (
         await authClient.delete(httpWithAuth, `/applications/${applicationId}`)
       ).data;
     },
+
     /**
      * Create an application version
      *
@@ -96,6 +100,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
         )
       ).data;
     },
+
     /**
      * Delete an application version
      *
@@ -106,7 +111,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async deleteApplicationVersion(
       applicationId: string,
       versionId: string
-    ): Promise<AffectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.delete(
           httpWithAuth,
@@ -154,7 +159,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      */
     async deleteOauth2Authorization(
       authorizationId: string
-    ): Promise<AffectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.delete(
           httpWithAuth,
@@ -199,7 +204,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async mfaEnable(
       userId: string,
       data: PresenceToken
-    ): Promise<AffectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.post(httpWithAuth, `/mfa/users/${userId}/enable`, data)
       ).data;
@@ -215,7 +220,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
     async mfaDisable(
       userId: string,
       data: PresenceToken
-    ): Promise<AffectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.post(
           httpWithAuth,
@@ -281,7 +286,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       userId: string,
       methodId: string,
       data: PresenceToken
-    ): Promise<AffectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.post(
           httpWithAuth,
@@ -297,7 +302,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
      * */
     async health(): Promise<boolean> {
-      return (await authClient.get(http, '/health')).status === 200;
+      return (await authClient.get(http, '/health')).status === Results.Success;
     },
   };
 };

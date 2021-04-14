@@ -1,10 +1,10 @@
 import type { HttpInstance } from '../../types';
-import type { PagedResult } from '../models/Responses';
 import type { ObjectId } from '../models/ObjectId';
-import type { GlobalPermission } from './models/GlobalPermission';
-import type { RolePermissionsBean } from './models/RolePermissionsBean';
-import type { Role } from './models/Role';
-import type { UserRolesBean } from './models/UserRolesBean';
+import type { GlobalPermissionsList } from './models/GlobalPermission';
+import type { RolePermissions } from './models/RolePermissions';
+import type { Role, RoleCreation, RoleList, RoleUpdate } from './models/Role';
+import type { UserRoles } from './models/UserRoles';
+import { RecordsAffected } from './types';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
@@ -16,11 +16,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws ApiError
    */
-  async getPermissions(): Promise<
-    PagedResult & {
-      data?: Array<GlobalPermission>;
-    }
-  > {
+  async getPermissions(): Promise<GlobalPermissionsList> {
     return (await userClient.get(httpWithAuth, '/permissions')).data;
   },
 
@@ -34,13 +30,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws ApiError
    */
-  async getRoles(
-    rql = ''
-  ): Promise<
-    PagedResult & {
-      data?: Array<Role>;
-    }
-  > {
+  async getRoles(rql = ''): Promise<RoleList> {
     return (await userClient.get(httpWithAuth, `/roles${rql}`)).data;
   },
 
@@ -55,20 +45,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws ApiError
    */
-  async createRole(
-    rql = '',
-    requestBody?: {
-      name: string;
-      description: string;
-    }
-  ): Promise<{
-    id?: ObjectId;
-    name?: string;
-    description?: string;
-    permissions?: Array<GlobalPermission>;
-    creationTimestamp?: Date;
-    updateTimestamp?: Date;
-  }> {
+  async createRole(rql = '', requestBody: RoleCreation): Promise<Role> {
     return (await userClient.post(httpWithAuth, `/roles${rql}`, requestBody))
       .data;
   },
@@ -83,11 +60,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceNotFound}
    */
-  async deleteRole(
-    rql: string
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  async deleteRole(rql: string): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
   },
 
@@ -102,13 +75,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns Role Success
    * @throws ApiError
    */
-  async updateRole(
-    id: ObjectId,
-    requestBody?: {
-      name?: string;
-      description?: string;
-    }
-  ): Promise<Role> {
+  async updateRole(id: ObjectId, requestBody: RoleUpdate): Promise<Role> {
     return (await userClient.put(httpWithAuth, `/roles${id}`, requestBody))
       .data;
   },
@@ -124,10 +91,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ResourceNotFound}
    */
   async addPermissionsToRole(
-    requestBody?: RolePermissionsBean
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+    requestBody?: RolePermissions
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(httpWithAuth, '/roles/add_permissions', requestBody)
     ).data;
@@ -146,10 +111,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removePermissionsFromRole(
     rql: string,
-    requestBody?: RolePermissionsBean
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+    requestBody?: RolePermissions
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -172,10 +135,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addRolesToUsers(
     rql = '',
-    requestBody?: UserRolesBean
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+    requestBody?: UserRoles
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(httpWithAuth, `/add_roles${rql}`, requestBody)
     ).data;
@@ -194,10 +155,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removeRolesFromUsers(
     rql: string,
-    requestBody?: UserRolesBean
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+    requestBody?: UserRoles
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(httpWithAuth, `/remove_roles${rql}`, requestBody)
     ).data;
