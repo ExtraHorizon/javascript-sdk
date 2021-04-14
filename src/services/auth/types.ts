@@ -16,7 +16,7 @@ interface OAuth1Application extends Timestamp {
   id: string;
   name: string;
   description: string;
-  type: string; // 'oauth2'
+  type: string; // 'oauth1'
   versions: Array<OAuth1ApplicationVersion>;
 }
 
@@ -33,10 +33,10 @@ interface OAuth2Application extends Timestamp {
   name: string;
   description: string;
   type: string; // 'oauth2'
-  versions: Array<OAuth2ApplicationVersion>;
-  logo: string;
-  redirectUris: Array<string>;
-  confidential: boolean;
+  versions?: OAuth2ApplicationVersion[];
+  logo?: string;
+  redirectUris: string[];
+  confidential?: boolean;
 }
 
 export type Application = OAuth1Application | OAuth2Application;

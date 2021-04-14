@@ -1,3 +1,4 @@
+import { ObjectId } from '../models/ObjectId';
 import { PagedResult } from '../models/Responses';
 
 export interface UserData {
@@ -18,6 +19,15 @@ export interface UserData {
   updateTimestamp: number;
   profileImage: string;
 }
+
+export type PartialUserData = Partial<UserData>;
+
+export type UserDataUpdate = Partial<
+  Pick<
+    UserData,
+    'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
+  >
+>;
 
 interface PatientEnlistment {
   groupId: string;
@@ -87,4 +97,40 @@ export enum Gender {
   Male = 1,
   Female = 2,
   NotApplicable = 9,
+}
+
+export interface UserList extends PagedResult {
+  data?: PartialUserData[];
+}
+
+export interface RecordsAffected {
+  recordsAffected: number;
+}
+
+export interface Email {
+  email: string;
+}
+
+export interface AddPatientEnlistment {
+  groupId: ObjectId;
+  expiryTimestamp?: number;
+}
+
+export interface ChangePassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface Authenticate {
+  email: string;
+  password: string;
+}
+
+export interface PasswordReset {
+  hash?: string;
+  newPassword: string;
+}
+
+export interface ConfirmPassword {
+  password: string;
 }

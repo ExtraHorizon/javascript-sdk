@@ -1,13 +1,22 @@
 import type { HttpInstance } from '../../types';
-import type { UserData, RegisterUserData } from './types';
-import type { PagedResult } from '../models/Responses';
+import type {
+  RegisterUserData,
+  PartialUserData,
+  UserDataUpdate,
+  UserList,
+  RecordsAffected,
+  Email,
+  AddPatientEnlistment,
+  ChangePassword,
+  Authenticate,
+  PasswordReset,
+  ConfirmPassword,
+} from './types';
 import type { ObjectId } from '../models/ObjectId';
 import type { Patient } from './models/Patient';
 import type { StaffMember } from './models/StaffMember';
 import type { HashBean } from './models/HashBean';
 import { Results } from '../models/Results';
-
-type PartialUserData = Partial<UserData>;
 
 export default (
   userClient,
@@ -49,10 +58,7 @@ export default (
    */
   async update(
     userId: string,
-    userData: Pick<
-      PartialUserData,
-      'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
-    >
+    userData: UserDataUpdate
   ): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, `/${userId}`, userData)).data;
   },
@@ -69,13 +75,7 @@ export default (
    * @returns any Success
    * @throws ApiError
    */
-  async find(
-    rql = ''
-  ): Promise<
-    PagedResult & {
-      data?: Array<PartialUserData>;
-    }
-  > {
+  async find(rql = ''): Promise<UserList> {
     return (await userClient.get(httpWithAuth, `/${rql}`)).data;
   },
 
@@ -91,11 +91,7 @@ export default (
    * @returns any Operation successful
    * @throws ApiError
    */
-  async removeUsers(
-    rql = ''
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  async removeUsers(rql = ''): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
   },
 
@@ -110,7 +106,7 @@ export default (
    * @returns Patient Success
    * @throws ApiError
    */
-  async patients(rql = ''): Promise<Array<Patient>> {
+  async patients(rql = ''): Promise<Patient[]> {
     return (await userClient.get(httpWithAuth, `/patients${rql}`)).data;
   },
 
@@ -125,7 +121,7 @@ export default (
    * @returns StaffMember Success
    * @throws ApiError
    */
-  async staff(rql = ''): Promise<Array<StaffMember>> {
+  async staff(rql = ''): Promise<StaffMember[]> {
     return (await userClient.get(httpWithAuth, `/staff${rql}`)).data;
   },
 
@@ -140,11 +136,7 @@ export default (
    * @returns any Operation successful
    * @throws ApiError
    */
-  async remove(
-    userId: ObjectId
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  async remove(userId: ObjectId): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${userId}`)).data;
   },
 
@@ -164,9 +156,7 @@ export default (
    */
   async updateEmail(
     userId: ObjectId,
-    requestBody?: {
-      email: string;
-    }
+    requestBody?: Email
   ): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, `/${userId}/email`, requestBody))
       .data;
@@ -185,13 +175,8 @@ export default (
    */
   async addPatientEnlistment(
     userId: ObjectId,
-    requestBody?: {
-      groupId: ObjectId;
-      expiryTimestamp?: number;
-    }
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+    requestBody?: AddPatientEnlistment
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -217,9 +202,7 @@ export default (
   async removePatientEnlistment(
     userId: ObjectId,
     groupId: ObjectId
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.delete(
         httpWithAuth,
@@ -254,10 +237,7 @@ export default (
    * @returns FullUser Success
    * @throws ApiError
    */
-  async changePassword(requestBody?: {
-    oldPassword: string;
-    newPassword: string;
-  }): Promise<PartialUserData> {
+  async changePassword(requestBody?: ChangePassword): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
   },
 
@@ -271,10 +251,7 @@ export default (
    * @returns FullUser Success
    * @throws ApiError
    */
-  async authenticate(requestBody?: {
-    email: string;
-    password: string;
-  }): Promise<PartialUserData> {
+  async authenticate(requestBody?: Authenticate): Promise<PartialUserData> {
     return (await userClient.post(http, '/authenticate', requestBody)).data;
   },
 
@@ -349,10 +326,7 @@ export default (
    * @returns any Success
    * @throws ApiError
    */
-  async validatePasswordReset(requestBody?: {
-    hash?: string;
-    newPassword: string;
-  }): Promise<boolean> {
+  async validatePasswordReset(requestBody?: PasswordReset): Promise<boolean> {
     return (
       (await userClient.post(http, '/forgot_password', requestBody)).status ===
       Results.Success
@@ -369,7 +343,7 @@ export default (
    * @returns any Success
    * @throws ApiError
    */
-  async confirmPassword(requestBody?: { password: string }): Promise<boolean> {
+  async confirmPassword(requestBody?: ConfirmPassword): Promise<boolean> {
     return (
       (await userClient.post(httpWithAuth, '/confirm_password', requestBody))
         .status === Results.Success
