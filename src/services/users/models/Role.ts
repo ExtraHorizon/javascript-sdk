@@ -11,6 +11,9 @@ export interface Role {
   updateTimestamp?: Date;
 }
 
+export interface GroupRole extends Role {
+  groupId?: ObjectId;
+}
 export interface RoleCreation {
   name: string;
   description: string;
@@ -22,4 +25,12 @@ export interface RoleUpdate {
 
 export interface RoleList extends PagedResult {
   data: Role[];
+}
+export interface GroupRoleList extends PagedResult {
+  data: GroupRole[];
+}
+
+export interface AddRole {
+  name: string;
+  description: string;
 }

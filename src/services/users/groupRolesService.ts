@@ -1,10 +1,11 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
-import type { PagedResult } from '../models/Responses';
-import type { GlobalPermission } from './models/GlobalPermission';
+import type { GlobalPermissionsList } from './models/GlobalPermission';
 import type { GroupRolePermissions } from './models/GroupRolePermissions';
 import type { StaffRoles } from './models/StaffRoles';
 import type { StaffGroups } from './models/StaffGroups';
+import type { AddRole, GroupRole, GroupRoleList } from './models/Role';
+import type { RecordsAffected } from './types';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
@@ -16,11 +17,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws ApiError
    */
-  async getGroupsPermissions(): Promise<
-    PagedResult & {
-      data?: Array<GlobalPermission>;
-    }
-  > {
+  async getGroupsPermissions(): Promise<GlobalPermissionsList> {
     return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
   },
 
@@ -36,22 +33,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws ApiError
    */
-  async getGroupsRoles(
-    groupId: ObjectId,
-    rql = ''
-  ): Promise<
-    PagedResult & {
-      data?: Array<{
-        id?: ObjectId;
-        groupId?: ObjectId;
-        name?: string;
-        description?: string;
-        permissions?: Array<string>;
-        creationTimestamp?: Date;
-        updateTimestamp?: Date;
-      }>;
-    }
-  > {
+  async getGroupsRoles(groupId: ObjectId, rql = ''): Promise<GroupRoleList> {
     return (
       await userClient.get(httpWithAuth, `/groups/${groupId}/roles${rql}`)
     ).data;
@@ -71,18 +53,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addRoleToGroup(
     groupId: ObjectId,
-    requestBody?: {
-      name: string;
-      description: string;
-    }
-  ): Promise<{
-    id?: ObjectId;
-    groupId?: ObjectId;
-    name?: string;
-    permissions?: Array<string>;
-    creationTimestamp?: Date;
-    updateTimestamp?: Date;
-  }> {
+    requestBody?: AddRole
+  ): Promise<GroupRole> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -108,19 +80,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async updateGroupsRole(
     groupId: ObjectId,
     roleId: ObjectId,
-    requestBody?: {
-      name?: string;
-      description?: string;
-    }
-  ): Promise<{
-    id?: ObjectId;
-    groupId?: ObjectId;
-    name?: string;
-    description?: string;
-    permissions?: Array<string>;
-    creationTimestamp?: Date;
-    updateTimestamp?: Date;
-  }> {
+    requestBody?: AddRole
+  ): Promise<GroupRole> {
     return (
       await userClient.put(
         httpWithAuth,
@@ -147,9 +108,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     roleId: ObjectId,
     rql: string
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.delete(
         httpWithAuth,
@@ -175,9 +134,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     rql = '',
     requestBody?: GroupRolePermissions
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -204,9 +161,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     rql: string,
     requestBody?: GroupRolePermissions
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -233,9 +188,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     rql = '',
     requestBody?: StaffRoles
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -262,9 +215,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     rql: string,
     requestBody?: StaffRoles
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -289,9 +240,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async addUserToStaff(
     rql = '',
     requestBody?: StaffGroups
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(httpWithAuth, `/add_to_staff${rql}`, requestBody)
     ).data;
@@ -312,9 +261,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removeUsersFromStaff(
     rql: string,
     requestBody?: StaffGroups
-  ): Promise<{
-    recordsAffected?: number;
-  }> {
+  ): Promise<RecordsAffected> {
     return (
       await userClient.post(
         httpWithAuth,
