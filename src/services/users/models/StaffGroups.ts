@@ -1,5 +1,5 @@
 import type { ObjectId } from '../../models/ObjectId';
 
-export interface StaffGroupsBean {
+export interface StaffGroups {
   groups: Array<ObjectId>;
 }
