@@ -1,6 +1,6 @@
 import * as nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
 import {
   permissionResponse,
   roleResponse,
@@ -11,22 +11,23 @@ describe('Global Roles Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const roleId = '5bfbfc3146e0fb321rsa4b21';
 
-  let sdk;
+  let sdk: Client;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   it('Retrieve a list of permissions', async () => {

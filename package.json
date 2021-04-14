@@ -19,7 +19,8 @@
     "test": "yarn build && jest",
     "test:e2e": "yarn build && jest tests/e2e",
     "lint": "eslint src --ext .ts",
-    "prettier": "prettier src"
+    "prettier": "prettier src",
+    "majestic": "majestic"
   },
   "files": [
     "build"
