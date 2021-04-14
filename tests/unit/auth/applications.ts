@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as nock from 'nock';
+import { AUTH_BASE } from '../../../src/constants';
 import { Client, client } from '../../../src/index';
 import {
   applicationDataList,
@@ -9,7 +10,7 @@ import {
 
 describe('Auth - Applications', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  const authBase = '/auth/v2';
+
   let sdk: Client;
 
   beforeAll(() => {
@@ -24,7 +25,7 @@ describe('Auth - Applications', () => {
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
   });
 
@@ -35,10 +36,10 @@ describe('Auth - Applications', () => {
   it('Can create applications', async () => {
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .post('/applications')
       .reply(200, newApplication);
 
@@ -54,10 +55,10 @@ describe('Auth - Applications', () => {
   it('Can get applications', async () => {
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .get('/applications')
       .reply(200, applicationDataList);
 
@@ -71,10 +72,10 @@ describe('Auth - Applications', () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .put(`/applications/${applicationId}`)
       .reply(200, newApplication);
 
@@ -92,10 +93,10 @@ describe('Auth - Applications', () => {
     const applicationId = '123';
     const versionId = '456';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .delete(`/applications/${applicationId}/${versionId}`)
       .reply(200, {
         affectedRecords: 1,
@@ -113,10 +114,10 @@ describe('Auth - Applications', () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .post(`/applications/${applicationId}/versions`)
       .reply(200, newApplicationVersion);
 

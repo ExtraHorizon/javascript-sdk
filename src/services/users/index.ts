@@ -5,6 +5,7 @@ import healthService from './healthService';
 import usersService from './usersService';
 import groupRolesService from './groupRolesService';
 import globalRolesService from './globalRolesService';
+import { USER_BASE } from '../../constants';
 
 export type UsersService = ReturnType<typeof usersService> &
   ReturnType<typeof healthService> &
@@ -16,7 +17,7 @@ export default (
   httpWithAuth: HttpInstance
 ): UsersService => {
   const userClient = httpClient({
-    basePath: '/users/v1',
+    basePath: USER_BASE,
     transformRequestData: decamelizeKeys,
   });
 

@@ -18,10 +18,11 @@ import type {
 } from './types';
 import httpClient from '../http-client';
 import type { AffectedRecordsResponse } from '../models/Responses';
+import { AUTH_BASE } from '../../constants';
 
 export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
-    basePath: '/auth/v2',
+    basePath: AUTH_BASE,
   });
 
   return {

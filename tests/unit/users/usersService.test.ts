@@ -1,4 +1,5 @@
 import * as nock from 'nock';
+import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
 import { Client, client } from '../../../src/index';
 import {
@@ -37,7 +38,7 @@ describe('Users Service', () => {
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
   });
 
@@ -49,9 +50,9 @@ describe('Users Service', () => {
   it('Can get me', async () => {
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
-    nock(`${apiHost}/users/v1`).get('/me').reply(200, userData);
+    nock(`${apiHost}${USER_BASE}`).get('/me').reply(200, userData);
 
     const user = await sdk.users.me();
 
@@ -59,7 +60,7 @@ describe('Users Service', () => {
   });
 
   it('Can get user by id', async () => {
-    nock(`${apiHost}/users/v1`).get(`/${userId}`).reply(200, userData);
+    nock(`${apiHost}${USER_BASE}`).get(`/${userId}`).reply(200, userData);
 
     const user = await sdk.users.findById(userId);
 
@@ -68,7 +69,7 @@ describe('Users Service', () => {
 
   it('Can not get user by id', async () => {
     expect.assertions(1);
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .get(`/${userId}`)
       .reply(404, ResourceUnknownException);
 
@@ -85,7 +86,7 @@ describe('Users Service', () => {
       lastName: 'bbbbb',
     };
 
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .put(`/${userId}`)
       .reply(200, {
         ...updatedUserData,
@@ -99,7 +100,7 @@ describe('Users Service', () => {
   });
 
   it('Can not update a user', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .put(`/${userId}`)
       .reply(404, ResourceUnknownException);
 
@@ -112,7 +113,7 @@ describe('Users Service', () => {
 
   it('Can get users list', async () => {
     const rql = '?select(firstName,id)&sort(-firstName)';
-    nock(`${apiHost}/users/v1`).get(`/${rql}`).reply(200, userResponse);
+    nock(`${apiHost}${USER_BASE}`).get(`/${rql}`).reply(200, userResponse);
 
     const users = await sdk.users.find(rql);
 
@@ -120,7 +121,9 @@ describe('Users Service', () => {
   });
 
   it('Can get patients list', async () => {
-    nock(`${apiHost}/users/v1`).get('/patients').reply(200, patientsResponse);
+    nock(`${apiHost}${USER_BASE}`)
+      .get('/patients')
+      .reply(200, patientsResponse);
 
     const patients = await sdk.users.patients();
 
@@ -128,7 +131,7 @@ describe('Users Service', () => {
   });
 
   it('Can get staff list', async () => {
-    nock(`${apiHost}/users/v1`).get('/staff').reply(200, staffResponse);
+    nock(`${apiHost}${USER_BASE}`).get('/staff').reply(200, staffResponse);
 
     const staff = await sdk.users.staff();
 
@@ -136,7 +139,7 @@ describe('Users Service', () => {
   });
 
   it('Can remove a user', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .delete(`/${userId}`)
       .reply(200, { recordsAffected: 1 });
 
@@ -146,7 +149,7 @@ describe('Users Service', () => {
   });
 
   it('Can update a users email', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .put(`/${userId}/email`)
       .reply(200, {
         ...updatedUserData,
@@ -159,7 +162,7 @@ describe('Users Service', () => {
   });
 
   it('Add a patient enlistment to a user', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .post(`/${userId}/patient_enlistments`)
       .reply(200, { recordsAffected: 1 });
 
@@ -169,7 +172,7 @@ describe('Users Service', () => {
   });
 
   it('Can remove a patient enlistment from a user', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .delete(`/${userId}/patient_enlistments/${groupId}`)
       .reply(200, { recordsAffected: 1 });
 
@@ -179,7 +182,7 @@ describe('Users Service', () => {
   });
 
   it('Can register a new user', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .post('/register')
       .reply(200, {
         ...newUserData,
@@ -192,7 +195,7 @@ describe('Users Service', () => {
   });
 
   it('Can update a users password', async () => {
-    nock(`${apiHost}/users/v1`).put(`/password`).reply(200, userData);
+    nock(`${apiHost}${USER_BASE}`).put(`/password`).reply(200, userData);
 
     const result = await sdk.users.changePassword({ oldPassword, newPassword });
 
@@ -200,7 +203,7 @@ describe('Users Service', () => {
   });
 
   it('Can authenticate', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .post('/authenticate')
       .reply(200, {
         ...newUserData,
@@ -216,7 +219,9 @@ describe('Users Service', () => {
   });
 
   it('Can request activation mail', async () => {
-    nock(`${apiHost}/users/v1`).get(`/activation?email=${newEmail}`).reply(200);
+    nock(`${apiHost}${USER_BASE}`)
+      .get(`/activation?email=${newEmail}`)
+      .reply(200);
 
     const result = await sdk.users.requestEmailActivation(newEmail);
 
@@ -224,7 +229,7 @@ describe('Users Service', () => {
   });
 
   it('Can complete an email activation', async () => {
-    nock(`${apiHost}/users/v1`).post('/activation').reply(200);
+    nock(`${apiHost}${USER_BASE}`).post('/activation').reply(200);
 
     const result = await sdk.users.validateEmailActivation({ hash });
 
@@ -232,7 +237,7 @@ describe('Users Service', () => {
   });
 
   it('Can request a password reset', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .get(`/forgot_password?email=${newEmail}`)
       .reply(200);
 
@@ -242,7 +247,7 @@ describe('Users Service', () => {
   });
 
   it('Can complete a password reset', async () => {
-    nock(`${apiHost}/users/v1`).post('/forgot_password').reply(200);
+    nock(`${apiHost}${USER_BASE}`).post('/forgot_password').reply(200);
 
     const result = await sdk.users.validatePasswordReset({ hash, newPassword });
 
@@ -250,7 +255,7 @@ describe('Users Service', () => {
   });
 
   it('Confirm the password for the user making the request', async () => {
-    nock(`${apiHost}/users/v1`).post('/confirm_password').reply(200);
+    nock(`${apiHost}${USER_BASE}`).post('/confirm_password').reply(200);
 
     const result = await sdk.users.confirmPassword({ password: newPassword });
 
@@ -258,7 +263,7 @@ describe('Users Service', () => {
   });
 
   it('Can check if email is available', async () => {
-    nock(`${apiHost}/users/v1`)
+    nock(`${apiHost}${USER_BASE}`)
       .get(`/email_available?email=${newEmail}`)
       .reply(200, {
         emailAvailable: true,
