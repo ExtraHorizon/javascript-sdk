@@ -17,33 +17,41 @@ import type {
   MfaMethod,
 } from './types';
 import httpClient from '../http-client';
-import { affectedRecordsResponse } from '../../models';
+import type { AffectedRecords } from '../models/Responses';
+import { AUTH_BASE } from '../../constants';
+import { Results } from '../models/Results';
 
 export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
-    basePath: '/auth/v2',
+    basePath: AUTH_BASE,
   });
 
   return {
     /**
      * Create an OAuth application
+     *
      * @permission CREATE_APPLICATIONS | scope:global |
+     * @async
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications
      */
     async createApplication(data: ApplicationCreation): Promise<Application> {
       return (await authClient.post(httpWithAuth, '/applications', data)).data;
     },
+
     /**
-     * Get OAuth applications
+     * Get a list of applications
      * @permission VIEW_APPLICATIONS | scope:global |
+     * @async
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
      * */
     async getApplications(rql?: string): Promise<ApplicationList> {
       return (await authClient.get(httpWithAuth, `/applications${rql || ''}`))
         .data;
     },
+
     /**
      * Update an OAuth application
+     *
      * @permission UPDATE_APPLICATIONS | scope:global |
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/put_applications
      * @throws {ResourceUnknownError}
@@ -60,20 +68,24 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
         )
       ).data;
     },
+
     /**
      * Delete an OAuth application
+     *
      * @permission DELETE_APPLICATIONS | scope:global |
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId_
      * @throws {ResourceUnknownError}
      */
-    async deleteApplication(applicationId: string): Promise<number> {
+    async deleteApplication(applicationId: string): Promise<AffectedRecords> {
       return (
         await authClient.delete(httpWithAuth, `/applications/${applicationId}`)
-      ).data.affectedRecords;
+      ).data;
     },
+
     /**
      * Create an application version
-     * @permission CREATE_APPLICATIONS | scope:global |
+     *
+     * @permission CREATE_APPLICATIONS | scope:global | Required for this endpoint
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications__applicationId__versions
      */
     async createApplicationVersion(
@@ -88,16 +100,18 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
         )
       ).data;
     },
+
     /**
      * Delete an application version
-     * @permission DELETE_APPLICATIONS | scope:global |
+     *
+     * @permission DELETE_APPLICATIONS | scope:global | Required for this endpoint
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId__versions__versionId_
      * @throws {ResourceUnknownError}
      */
     async deleteApplicationVersion(
       applicationId: string,
       versionId: string
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.delete(
           httpWithAuth,
@@ -108,6 +122,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Create an OAuth2 authorization
+     *
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/post_oauth2_authorizations
      * @throws {ApplicationUnknownError}
      * @throws {CallbackNotValidError}
@@ -123,8 +138,9 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Get a list of OAuth2 Authorizations
+     *
+     * @permission VIEW_AUTHORIZATIONS | scope:global | Required for this endpoint
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
-     * @permission VIEW_AUTHORIZATIONS | scope:global |
      */
     async getOauth2Authorizations(
       rql?: string
@@ -136,13 +152,14 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Delete an OAuth2 Authorization
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
-     * @permission DELETE_AUTHORIZATIONS | scope:global |
+     *
+     * @permission DELETE_AUTHORIZATIONS | scope:global |	Required for this endpoint
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/delete_oauth2_authorizations__authorizationId_
      * @throws {ResourceUnknownError}
      */
     async deleteOauth2Authorization(
       authorizationId: string
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.delete(
           httpWithAuth,
@@ -153,6 +170,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Generate a presence token by supplying a secret to confirm the presence of the owner of the account
+     *
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Confirm%20presence/post_confirmPresence
      * @throws {UserNotAuthenticatedError}
      * @throws {AuthenticationError}
@@ -167,8 +185,9 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * View the MFA settings of a user (or create the settings if they have none)
+     *
+     * @permission VIEW_USER_MFA_SETTINGS | scope:global | See anyone their MFA settings
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/get_mfa_users__userId_
-     * @permission VIEW_USER_MFA_SETTINGS | scope:global | 	See anyone their MFA settings
      */
     async mfaSetting(userId: string): Promise<MfaSetting> {
       return (await authClient.get(httpWithAuth, `/mfa/users/${userId}`)).data;
@@ -176,15 +195,16 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Enable MFA for a user
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__enable
+     *
      * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__enable
      * @throws {InvalidPresenceTokenError}
      * @throws {NotEnoughMfaMethodsError}
      */
     async mfaEnable(
       userId: string,
       data: PresenceToken
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.post(httpWithAuth, `/mfa/users/${userId}/enable`, data)
       ).data;
@@ -192,14 +212,15 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Disable MFA for a user
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
+     *
      * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
      * @throws {InvalidPresenceTokenError}
      */
     async mfaDisable(
       userId: string,
       data: PresenceToken
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.post(
           httpWithAuth,
@@ -211,10 +232,11 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Add a MFA method to a user
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
+     *
      * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
      * @throws {InvalidPresenceTokenError}
-     * */
+     */
     async mfaAddMethod(
       userId: string,
       data: MfaMethodCreation
@@ -230,8 +252,9 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Confirm the correct functioning of a MFA method
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__verification_confirm
+     *
      * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__verification_confirm
      * @throws {ResourceUnknownError}
      * @throws {IllegalArgumentException}
      * @throws {InvalidMfaCodeError}
@@ -253,8 +276,9 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Remove a MFA method from a user
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__remove
+     *
      * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
+     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__remove
      * @throws {NotEnoughMfaMethodsError}
      * @throws {InvalidPresenceTokenError}
      */
@@ -262,7 +286,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
       userId: string,
       methodId: string,
       data: PresenceToken
-    ): Promise<affectedRecordsResponse> {
+    ): Promise<AffectedRecords> {
       return (
         await authClient.post(
           httpWithAuth,
@@ -274,10 +298,11 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
 
     /**
      * Check the service health
+     *
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
      * */
     async health(): Promise<boolean> {
-      return (await authClient.get(http, '/health')).status === 200;
+      return (await authClient.get(http, '/health')).status === Results.Success;
     },
   };
 };

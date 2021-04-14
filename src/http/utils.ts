@@ -1,9 +1,11 @@
 import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
 import { AxiosResponse } from 'axios';
+import { mapObjIndexed } from 'ramda';
 import { camelizeKeys } from 'humps';
 import { OAuthConfig } from '../types';
 import { AuthConfig } from './types';
+import { AUTH_BASE } from '../constants';
 
 function hmacSha1Hash(baseString: string, key: string) {
   return crypto.createHmac('sha1', key).update(baseString).digest('base64');
@@ -13,7 +15,7 @@ export const parseAuthParams = (options: OAuthConfig): AuthConfig => {
   if ('consumerKey' in options && 'email' in options) {
     // oauth1
     return {
-      path: '/auth/v2/oauth1/tokens',
+      path: `${AUTH_BASE}/oauth1/tokens`,
       params: {
         email: options.email,
         password: options.password,
@@ -32,7 +34,7 @@ export const parseAuthParams = (options: OAuthConfig): AuthConfig => {
   if ('username' in options) {
     // oauth2
     return {
-      path: '/auth/v2/oauth2/token',
+      path: `${AUTH_BASE}/oauth2/token`,
       params: {
         grant_type: 'password',
         client_id: options.clientId,
@@ -45,7 +47,7 @@ export const parseAuthParams = (options: OAuthConfig): AuthConfig => {
   if ('code' in options) {
     // oauth2
     return {
-      path: '/auth/v2/oauth2/token',
+      path: `${AUTH_BASE}/oauth2/token`,
       params: {
         grant_type: 'authorization_code',
         client_id: options.clientId,
@@ -62,4 +64,28 @@ export const camelizeResponseData = ({
 }: AxiosResponse): AxiosResponse => ({
   ...response,
   data: camelizeKeys(data),
+});
+
+export const recursiveMap = fn => obj =>
+  Array.isArray(obj)
+    ? obj.map(recursiveMap(fn))
+    : mapObjIndexed(
+        (value, key) =>
+          typeof value !== 'object' ? fn(value, key) : recursiveMap(fn)(value),
+        obj
+      );
+
+export const transformResponseData = ({
+  data,
+  ...response
+}: AxiosResponse): AxiosResponse => ({
+  ...response,
+  data: recursiveMap((value, key) => {
+    if (
+      ['creationTimestamp', 'expiryTimestamp', 'updateTimestamp'].includes(key)
+    ) {
+      return new Date(value);
+    }
+    return value;
+  })(data),
 });

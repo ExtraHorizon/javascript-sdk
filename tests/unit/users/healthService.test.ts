@@ -1,9 +1,10 @@
 import * as nock from 'nock';
-import { client } from '../../../src/index';
+import { AUTH_BASE, USER_BASE } from '../../../src/constants';
+import { Client, client } from '../../../src/index';
 
 describe('Health Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  let sdk;
+  let sdk: Client;
 
   beforeAll(() => {
     sdk = client({
@@ -17,7 +18,7 @@ describe('Health Service', () => {
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
   });
 
@@ -27,7 +28,7 @@ describe('Health Service', () => {
   });
 
   it('Can get health', async () => {
-    nock(`${apiHost}/users/v1`).get('/health').reply(200, '');
+    nock(`${apiHost}${USER_BASE}`).get('/health').reply(200, '');
     const health = await sdk.users.health();
     expect(health).toBe(true);
   });

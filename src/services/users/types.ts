@@ -1,4 +1,5 @@
-import { listResponse } from '../../models';
+import { ObjectId } from '../models/ObjectId';
+import { PagedResult } from '../models/Responses';
 
 export interface UserData {
   id: string;
@@ -19,11 +20,20 @@ export interface UserData {
   profileImage: string;
 }
 
+export type PartialUserData = Partial<UserData>;
+
+export type UserDataUpdate = Partial<
+  Pick<
+    UserData,
+    'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'
+  >
+>;
+
 interface PatientEnlistment {
   groupId: string;
-  expiryTimestamp: number;
+  expiryTimestamp: Date;
   expired: boolean;
-  creationTimestamp: number;
+  creationTimestamp: Date;
 }
 
 export interface Role {
@@ -31,8 +41,8 @@ export interface Role {
   name: string;
   description: string;
   permissions: Array<Permission>;
-  creationTimestamp: number;
-  updateTimestamp: number;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 export interface Permission {
@@ -43,8 +53,8 @@ export interface Permission {
 interface StaffEnlistment {
   groupId: string;
   roles: Array<GroupRole>;
-  creationTimestamp: number;
-  updateTimestamp: number;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 interface GroupRole {
@@ -52,11 +62,11 @@ interface GroupRole {
   name: string;
   description: string;
   permissions: string;
-  creationTimestamp: number;
-  updateTimestamp: number;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
-export interface UserDataList extends listResponse {
+export interface UserDataList extends PagedResult {
   data: Array<UserData>;
 }
 
@@ -74,11 +84,11 @@ export interface RegisterUserData {
   timeZone?: string;
 }
 
-export interface PermissionDataList extends listResponse {
+export interface PermissionDataList extends PagedResult {
   data: Array<Permission>;
 }
 
-export interface RolesDataList extends listResponse {
+export interface RolesDataList extends PagedResult {
   data: Array<Role>;
 }
 
@@ -87,4 +97,40 @@ export enum Gender {
   Male = 1,
   Female = 2,
   NotApplicable = 9,
+}
+
+export interface UserList extends PagedResult {
+  data?: PartialUserData[];
+}
+
+export interface RecordsAffected {
+  recordsAffected: number;
+}
+
+export interface Email {
+  email: string;
+}
+
+export interface AddPatientEnlistment {
+  groupId: ObjectId;
+  expiryTimestamp?: number;
+}
+
+export interface ChangePassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface Authenticate {
+  email: string;
+  password: string;
+}
+
+export interface PasswordReset {
+  hash?: string;
+  newPassword: string;
+}
+
+export interface ConfirmPassword {
+  password: string;
 }

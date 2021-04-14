@@ -15,13 +15,26 @@ function validateConfig({ apiHost, ...config }: Config): Config {
   };
 }
 
-interface Client {
+export interface Client {
   authenticate: (oauth: OAuthConfig) => Promise<void>;
   confirmMfa: (oauth: OAuthConfig) => Promise<void>;
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService>;
 }
 
+/**
+ * Create ExtraHorizon client.
+ *
+ * @example
+ * const sdk = client({
+ *   apiHost: 'xxx.fibricheck.com',
+ *   oauth: {
+ *     clientId: 'string',
+ *     username: 'string',
+ *     password: 'string',
+ *   },
+ * });
+ */
 export function client(rawConfig: Config): Client {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);

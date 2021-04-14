@@ -4,9 +4,12 @@ import httpClient from '../http-client';
 import healthService from './healthService';
 import usersService from './usersService';
 import groupRolesService from './groupRolesService';
+import globalRolesService from './globalRolesService';
+import { USER_BASE } from '../../constants';
 
 export type UsersService = ReturnType<typeof usersService> &
   ReturnType<typeof healthService> &
+  ReturnType<typeof globalRolesService> &
   ReturnType<typeof groupRolesService>;
 
 export default (
@@ -14,17 +17,19 @@ export default (
   httpWithAuth: HttpInstance
 ): UsersService => {
   const userClient = httpClient({
-    basePath: '/users/v1',
+    basePath: USER_BASE,
     transformRequestData: decamelizeKeys,
   });
 
   const healthMethods = healthService(userClient, http);
   const usersMethods = usersService(userClient, http, httpWithAuth);
   const groupRolesMethods = groupRolesService(userClient, httpWithAuth);
+  const globalRolesMethods = globalRolesService(userClient, httpWithAuth);
 
   return {
     ...healthMethods,
     ...usersMethods,
     ...groupRolesMethods,
+    ...globalRolesMethods,
   };
 };

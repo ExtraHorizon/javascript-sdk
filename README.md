@@ -115,6 +115,16 @@ const sdk = client(config);
 })();
 ```
 
+### Tests
+
+To run the unit tests: `yarn start`
+
+To run them in watch mode: `yarn start:watch`
+
+To run e2e tests, copy `.env.example` to `.env` and set up the credentials
+
+Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
+
 ### RQL builder
 
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html

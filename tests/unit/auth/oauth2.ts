@@ -1,13 +1,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as nock from 'nock';
+import { AUTH_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
 import { authorizationList, newAuthorization } from '../../__helpers__/auth';
 
 describe('Auth - OAuth2', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  const authBase = '/auth/v2';
-  let sdk: ReturnType<typeof client>;
+
+  let sdk: Client;
 
   beforeAll(async () => {
     sdk = client({
@@ -16,7 +17,7 @@ describe('Auth - OAuth2', () => {
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post('/auth/v2/oauth2/token')
+      .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
     await sdk.authenticate({
@@ -31,7 +32,7 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can create authorizations', async () => {
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .post('/oauth2/authorizations')
       .reply(200, newAuthorization);
 
@@ -43,11 +44,11 @@ describe('Auth - OAuth2', () => {
       redirectUri: 'http://localhost',
     });
 
-    expect(createdResult).toEqual(newAuthorization);
+    expect(createdResult.id).toEqual(newAuthorization.id);
   });
 
   it('Can get authorizations', async () => {
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .get('/oauth2/authorizations')
       .reply(200, authorizationList);
 
@@ -60,7 +61,7 @@ describe('Auth - OAuth2', () => {
   it('Can delete authorization', async () => {
     const authorizationId = '123';
 
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)
       .reply(200, {
         affectedRecords: 1,
@@ -77,7 +78,7 @@ describe('Auth - OAuth2', () => {
     const authorizationId = '123';
     expect.assertions(1);
 
-    nock(`${apiHost}${authBase}`)
+    nock(`${apiHost}${AUTH_BASE}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)
       .reply(404, {
         code: 16,
