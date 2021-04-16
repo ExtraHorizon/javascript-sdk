@@ -58,7 +58,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async deleteRole(rql: string): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
@@ -88,7 +88,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async addPermissionsToRole(
     requestBody?: RolePermissions
@@ -107,7 +107,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async removePermissionsFromRole(
     rql: string,
