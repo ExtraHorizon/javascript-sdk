@@ -16,7 +16,7 @@ export interface TokenObject {
   accessLevel?: TokenPermission;
 }
 
-export interface CreateFileResponse {
+export interface FileDetails {
   tokens?: Array<TokenObject>;
   creatorId?: ObjectId;
   creationTimestamp?: Date;
@@ -28,7 +28,7 @@ export interface CreateFileResponse {
 }
 
 export interface FilesList extends PagedResult {
-  data: Array<CreateFileResponse>;
+  data: Array<FileDetails>;
 }
 
 export interface CreateTokenRequest {

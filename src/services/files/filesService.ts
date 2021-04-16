@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import { ResultResponse } from '../models/Responses';
 import { Results } from '../models/Results';
-import type { FilesList, CreateFileResponse, Token } from './types';
+import type { FilesList, FileDetails, Token } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -25,10 +25,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param requestBody
-   * @returns CreateFileResponse Success
+   * @returns FileDetails Success
    * @throws {FileTooLargeException}
    */
-  async createFile(requestBody?: any): Promise<CreateFileResponse> {
+  async createFile(requestBody?: any): Promise<FileDetails> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -75,11 +75,11 @@ export default (client, httpAuth: HttpInstance) => ({
    * `read` | **Required** to return name, size, mimetype.
    *
    * @param token
-   * @returns CreateFileResponse Success
+   * @returns FileDetails Success
    * @throws {InvalidTokenException}
    * @throws {UnauthorizedTokenException}
    */
-  async getFileDetails(token: Token): Promise<CreateFileResponse> {
+  async getFileDetails(token: Token): Promise<FileDetails> {
     return (await client.get(httpAuth, `/${token}/details`)).data;
   },
 });
