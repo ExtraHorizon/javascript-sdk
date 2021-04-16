@@ -11,9 +11,9 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @param token
    * @param tokenToAccess The token that should be deleted
    * @returns void
-   * @throws {400 Error}
-   * @throws {401 Error}
-   * @throws {403 Error}
+   * @throws {InvalidTokenException}
+   * @throws {UnauthorizedTokenException}
+   * @throws {TokenNotDeleteableException}
    */
   async deleteToken(token: Token, tokenToAccess: Token): Promise<void> {
     await userClient.delete(httpAuth, `/${token}/tokens/${tokenToAccess}`);
@@ -28,8 +28,8 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @param token
    * @param requestBody
    * @returns TokenObject Success
-   * @throws {400 Error}
-   * @throws {401 Error}
+   * @throws {InvalidTokenException}
+   * @throws {UnauthorizedTokenException}
    */
   async generateToken(
     token: Token,

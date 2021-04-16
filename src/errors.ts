@@ -93,4 +93,7 @@ export class LoginFreezeError extends ApiError {}
 export class TooManyFailedAttemptsError extends ApiError {}
 export class InvalidPresenceTokenError extends ApiError {}
 export class IllegalArgumentException extends ApiError {}
+export class InvalidTokenException extends ApiError {}
+export class UnauthorizedTokenException extends ApiError {}
+export class TokenNotDeleteableException extends ApiError {}
 export class FileTooLargeException extends ApiError {}

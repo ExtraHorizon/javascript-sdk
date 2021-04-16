@@ -16,6 +16,9 @@ import {
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
   IllegalArgumentException,
+  InvalidTokenException,
+  UnauthorizedTokenException,
+  TokenNotDeleteableException,
   FileTooLargeException,
 } from './errors';
 
@@ -35,6 +38,9 @@ const ErrorClassDefinitionsMap = {
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
+  2605: InvalidTokenException,
+  2606: UnauthorizedTokenException,
+  2607: TokenNotDeleteableException,
   2610: FileTooLargeException,
 };
 

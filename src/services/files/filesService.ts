@@ -40,8 +40,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param token
    * @returns void
-   * @throws {400 Error}
-   * @throws {401 Error}
+   * @throws {InvalidTokenException}
+   * @throws {UnauthorizedTokenException}
    */
   async deleteFile(token: Token): Promise<boolean> {
     const result: ResultResponse = await client.delete(httpAuth, `/${token}`);
@@ -56,8 +56,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param token
    * @returns any Success
-   * @throws {400 Error}
-   * @throws {401 Error}
+   * @throws {InvalidTokenException}
+   * @throws {UnauthorizedTokenException}
    */
   async retrieveFile(token: Token): Promise<any> {
     return (await client.get(httpAuth, `/${token}/file`)).data;
@@ -76,8 +76,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param token
    * @returns CreateFileResponse Success
-   * @throws {400 Error}
-   * @throws {401 Error}
+   * @throws {InvalidTokenException}
+   * @throws {UnauthorizedTokenException}
    */
   async getFileDetails(token: Token): Promise<CreateFileResponse> {
     return (await client.get(httpAuth, `/${token}/details`)).data;
