@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { FilesList, CreateFileResponse, Token } from './types';
 
-export default (userClient, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance) => ({
   /**
    * List all files
    * Permission | Scope | Effect
@@ -13,7 +13,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @throws {ApiError}
    */
   async find(rql = ''): Promise<FilesList> {
-    return (await userClient.get(httpAuth, `/${rql}`)).data;
+    return (await client.get(httpAuth, `/${rql}`)).data;
   },
 
   /**
@@ -27,7 +27,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @throws {FileTooLargeException}
    */
   async createFile(requestBody?: any): Promise<CreateFileResponse> {
-    return (await userClient.post(httpAuth, '/', requestBody)).data;
+    return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
   /**
@@ -42,7 +42,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @throws {401 Error}
    */
   async deleteFile(token: Token): Promise<void> {
-    await userClient.delete(httpAuth, `/${token}`);
+    await client.delete(httpAuth, `/${token}`);
   },
 
   /**
@@ -57,7 +57,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @throws {401 Error}
    */
   async retrieveFile(token: Token): Promise<any> {
-    return (await userClient.get(httpAuth, `/${token}/file`)).data;
+    return (await client.get(httpAuth, `/${token}/file`)).data;
   },
 
   /**
@@ -77,6 +77,6 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @throws {401 Error}
    */
   async getFileDetails(token: Token): Promise<CreateFileResponse> {
-    return (await userClient.get(httpAuth, `/${token}/details`)).data;
+    return (await client.get(httpAuth, `/${token}/details`)).data;
   },
 });
