@@ -1,3 +1,4 @@
+import type { ReadStream } from 'fs';
 import type { HttpInstance } from '../../types';
 import { ResultResponse } from '../models/Responses';
 import { Results } from '../models/Results';
@@ -55,12 +56,33 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param token
-   * @returns any Success
+   * @returns arraybuffer Success
    * @throws {InvalidTokenException}
    * @throws {UnauthorizedTokenException}
    */
   async retrieveFile(token: Token): Promise<any> {
-    return (await client.get(httpAuth, `/${token}/file`)).data;
+    return (
+      await client.get(httpAuth, `/${token}/file`, {
+        responseType: 'arraybuffer',
+      })
+    ).data;
+  },
+
+  /**
+   * Retrieve a file stream from the object store
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   *
+   * @param token
+   * @returns ReadStream Success
+   * @throws {InvalidTokenException}
+   * @throws {UnauthorizedTokenException}
+   */
+  async retrieveFileStream(token: Token): Promise<{ data: ReadStream }> {
+    return await client.get(httpAuth, `/${token}/file`, {
+      responseType: 'stream',
+    });
   },
 
   /**
