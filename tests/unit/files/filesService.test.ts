@@ -62,7 +62,7 @@ describe('Files Service', () => {
 
     const res = await sdk.files.deleteFile(token);
 
-    expect(res).toBeUndefined();
+    expect(res).toBe(true);
   });
 
   it('Retrieve a file', async () => {

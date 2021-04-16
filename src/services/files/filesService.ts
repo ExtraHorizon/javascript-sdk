@@ -1,4 +1,6 @@
 import type { HttpInstance } from '../../types';
+import { ResultResponse } from '../models/Responses';
+import { Results } from '../models/Results';
 import type { FilesList, CreateFileResponse, Token } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -41,8 +43,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {400 Error}
    * @throws {401 Error}
    */
-  async deleteFile(token: Token): Promise<void> {
-    await client.delete(httpAuth, `/${token}`);
+  async deleteFile(token: Token): Promise<boolean> {
+    const result: ResultResponse = await client.delete(httpAuth, `/${token}`);
+    return result.status === Results.Success;
   },
 
   /**
