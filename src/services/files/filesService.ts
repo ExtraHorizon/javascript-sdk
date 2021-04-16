@@ -24,7 +24,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns CreateFileResponse Success
-   * @throws {400 Error}
+   * @throws {FileTooLargeException}
    */
   async createFile(requestBody?: any): Promise<CreateFileResponse> {
     return (await userClient.post(httpAuth, '/', requestBody)).data;

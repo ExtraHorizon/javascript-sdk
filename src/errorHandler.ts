@@ -16,6 +16,7 @@ import {
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
   IllegalArgumentException,
+  FileTooLargeException,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -34,6 +35,7 @@ const ErrorClassDefinitionsMap = {
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
+  2610: FileTooLargeException,
 };
 
 export function typeReceivedError(error: HttpError) {
