@@ -10,7 +10,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async find(rql = ''): Promise<FilesList> {
     return (await userClient.get(httpAuth, `/${rql}`)).data;
