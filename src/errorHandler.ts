@@ -1,5 +1,6 @@
 import {
   ResourceUnknownError,
+  ResourceAlreadyExistsException,
   ApiError,
   HttpError,
   FieldFormatError,
@@ -16,11 +17,15 @@ import {
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
   IllegalArgumentException,
+  PasswordException,
+  EmailUsedException,
+  EmailUnknownException,
+  AlreadyActivatedException,
+  ActivationUnknownException,
   InvalidTokenException,
   UnauthorizedTokenException,
   TokenNotDeleteableException,
   FileTooLargeException,
-  EmailUsedException,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -28,6 +33,7 @@ const ErrorClassDefinitionsMap = {
   13: EmptyBodyError,
   15: FieldFormatError,
   16: ResourceUnknownError,
+  17: ResourceAlreadyExistsException,
   26: IllegalArgumentException,
   104: UserNotAuthenticatedError,
   106: AuthenticationError,
@@ -36,7 +42,11 @@ const ErrorClassDefinitionsMap = {
   130: InvalidMfaCodeError,
   132: InvalidPresenceTokenError,
   133: NotEnoughMfaMethodsError,
+  202: EmailUnknownException,
   203: EmailUsedException,
+  205: ActivationUnknownException,
+  206: AlreadyActivatedException,
+  208: PasswordException,
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
