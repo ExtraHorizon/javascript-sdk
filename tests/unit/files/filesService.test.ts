@@ -44,16 +44,15 @@ describe('Files Service', () => {
   });
 
   it('Add a new file', async () => {
-    let newFile;
-    try {
-      newFile = fs.readFileSync('../../__helpers__/file.ts', 'utf8');
-    } catch (err) {
-      console.error(err);
-    }
+    jest.spyOn(fs, 'readFileSync').mockImplementation(() => ``);
+    const newFile = {
+      name: 'testfile',
+      file: fs.readFileSync('test'),
+    };
+
     nock(`${apiHost}${FILES_BASE}`).post('/').reply(200, fileData);
 
     const res = await sdk.files.createFile(newFile);
-
     expect(res).toBeDefined();
   });
 

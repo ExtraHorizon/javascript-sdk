@@ -34,7 +34,9 @@ export default (client, httpAuth: HttpInstance) => ({
     const form = new FormData();
     form.append('name', name);
     form.append('file', file);
-    form.append('tags', tags);
+    if (tags) {
+      form.append('tags', tags);
+    }
     return (
       await client.post(httpAuth, '/', form, { headers: form.getHeaders() })
     ).data;
