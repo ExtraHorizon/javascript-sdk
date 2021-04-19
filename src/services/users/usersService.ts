@@ -134,7 +134,7 @@ export default (
    *
    * @param userId Id of the targeted user
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ResourceUnknownError}
    */
   async remove(userId: ObjectId): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${userId}`)).data;
@@ -152,7 +152,8 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {EmailUsedException}
+   * @throws {ResourceUnknownError}
    */
   async updateEmail(
     userId: ObjectId,
@@ -171,7 +172,7 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ResourceAlreadyExistsException}
    */
   async addPatientEnlistment(
     userId: ObjectId,
@@ -197,7 +198,7 @@ export default (
    * @param userId Id of the targeted user
    * @param groupId Id of the targeted group
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ResourceUnknownError}
    */
   async removePatientEnlistment(
     userId: ObjectId,
@@ -219,7 +220,7 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {EmailUsedException}
    */
   async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
     return (await userClient.post(http, '/register', requestBody)).data;
@@ -233,7 +234,7 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {PasswordException}
    */
   async changePassword(requestBody: ChangePassword): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
