@@ -16,6 +16,11 @@ import {
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
   IllegalArgumentException,
+  InvalidTokenException,
+  UnauthorizedTokenException,
+  TokenNotDeleteableException,
+  FileTooLargeException,
+  EmailUsedException,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -31,9 +36,14 @@ const ErrorClassDefinitionsMap = {
   130: InvalidMfaCodeError,
   132: InvalidPresenceTokenError,
   133: NotEnoughMfaMethodsError,
+  203: EmailUsedException,
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
+  2605: InvalidTokenException,
+  2606: UnauthorizedTokenException,
+  2607: TokenNotDeleteableException,
+  2610: FileTooLargeException,
 };
 
 export function typeReceivedError(error: HttpError) {
