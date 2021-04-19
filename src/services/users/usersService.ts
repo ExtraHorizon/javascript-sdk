@@ -221,9 +221,7 @@ export default (
    * @returns FullUser Success
    * @throws ApiError
    */
-  async createAccount(
-    requestBody?: RegisterUserData
-  ): Promise<PartialUserData> {
+  async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
     return (await userClient.post(http, '/register', requestBody)).data;
   },
 
@@ -237,7 +235,7 @@ export default (
    * @returns FullUser Success
    * @throws ApiError
    */
-  async changePassword(requestBody?: ChangePassword): Promise<PartialUserData> {
+  async changePassword(requestBody: ChangePassword): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
   },
 
@@ -249,9 +247,12 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
    */
-  async authenticate(requestBody?: Authenticate): Promise<PartialUserData> {
+  async authenticate(requestBody: Authenticate): Promise<PartialUserData> {
     return (await userClient.post(http, '/authenticate', requestBody)).data;
   },
 
@@ -263,7 +264,8 @@ export default (
    *
    * @param email
    * @returns {boolean} Success
-   * @throws ApiError
+   * @throws {EmailUnknownException}
+   * @throws {AlreadyActivatedException}
    */
   async requestEmailActivation(email: string): Promise<boolean> {
     return (
@@ -285,7 +287,7 @@ export default (
    *
    * @param requestBody
    * @returns {boolean} Success
-   * @throws ApiError
+   * @throws {ActivationUnknownException}
    */
   async validateEmailActivation(requestBody?: HashBean): Promise<boolean> {
     return (

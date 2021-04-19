@@ -16,6 +16,10 @@ import {
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
   IllegalArgumentException,
+  PasswordException,
+  EmailUnknownException,
+  AlreadyActivatedException,
+  ActivationUnknownException,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -31,6 +35,10 @@ const ErrorClassDefinitionsMap = {
   130: InvalidMfaCodeError,
   132: InvalidPresenceTokenError,
   133: NotEnoughMfaMethodsError,
+  202: EmailUnknownException,
+  205: ActivationUnknownException,
+  206: AlreadyActivatedException,
+  208: PasswordException,
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
