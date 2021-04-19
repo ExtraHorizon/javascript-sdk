@@ -73,7 +73,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async find(rql = ''): Promise<UserList> {
     return (await userClient.get(httpWithAuth, `/${rql}`)).data;
@@ -89,7 +89,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async removeUsers(rql = ''): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
@@ -104,7 +104,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns Patient Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async patients(rql = ''): Promise<Patient[]> {
     return (await userClient.get(httpWithAuth, `/patients${rql}`)).data;
@@ -119,7 +119,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns StaffMember Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async staff(rql = ''): Promise<StaffMember[]> {
     return (await userClient.get(httpWithAuth, `/staff${rql}`)).data;
@@ -305,7 +305,7 @@ export default (
    *
    * @param email
    * @returns {boolean} Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async requestPasswordReset(email: string): Promise<boolean> {
     return (
@@ -327,7 +327,7 @@ export default (
    *
    * @param requestBody
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async validatePasswordReset(requestBody?: PasswordReset): Promise<boolean> {
     return (
@@ -344,7 +344,7 @@ export default (
    *
    * @param requestBody
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async confirmPassword(requestBody?: ConfirmPassword): Promise<boolean> {
     return (
@@ -361,7 +361,7 @@ export default (
    *
    * @param email
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async isEmailAvailable(
     email: string
@@ -387,7 +387,7 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async updateProfileImage(
     userId: ObjectId,
@@ -411,7 +411,7 @@ export default (
    *
    * @param userId Id of the targeted user
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async deleteProfileImage(userId: ObjectId): Promise<PartialUserData> {
     return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`))

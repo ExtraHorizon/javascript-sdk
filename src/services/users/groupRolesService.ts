@@ -15,7 +15,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * none |  | Everyone can use this endpoint
    *
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async getGroupsPermissions(): Promise<GlobalPermissionsList> {
     return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
@@ -31,7 +31,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async getGroupsRoles(groupId: ObjectId, rql = ''): Promise<GroupRoleList> {
     return (
@@ -49,7 +49,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param groupId Id of the targeted group
    * @param requestBody
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async addRoleToGroup(
     groupId: ObjectId,
@@ -75,7 +75,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param roleId Id of the targeted role
    * @param requestBody
    * @returns any Success
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async updateGroupsRole(
     groupId: ObjectId,
@@ -102,7 +102,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param roleId Id of the targeted role
    * @param rql Add filters to the requested list.
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async removeRoleFromGroup(
     groupId: ObjectId,
@@ -128,7 +128,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async addPermissionsToGroupRoles(
     groupId: ObjectId,
@@ -155,7 +155,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async removePermissionsFromGroupRoles(
     groupId: ObjectId,
@@ -182,7 +182,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async assignRolesToStaff(
     groupId: ObjectId,
@@ -209,7 +209,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async removeRolesFromStaff(
     groupId: ObjectId,
@@ -235,7 +235,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async addUserToStaff(
     rql = '',
@@ -256,7 +256,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async removeUsersFromStaff(
     rql: string,
