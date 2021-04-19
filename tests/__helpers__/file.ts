@@ -1,12 +1,9 @@
-import {
-  CreateFileResponse,
-  TokenPermission,
-} from '../../src/services/files/types';
+import { FileDetails, TokenPermission } from '../../src/services/files/types';
 
 const token = '5a0b2adc265ced65a8cab865';
 const now = new Date();
 
-export const fileData: CreateFileResponse = {
+export const fileData: FileDetails = {
   tokens: [{ token, accessLevel: TokenPermission.FULL }],
   creatorId: '5a0b2adc265ced65a8cab861',
   creationTimestamp: now,

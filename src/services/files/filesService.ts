@@ -67,7 +67,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenException}
    * @throws {UnauthorizedTokenException}
    */
-  async retrieveFile(token: Token): Promise<any> {
+  async retrieveFile(token: Token): Promise<Buffer> {
     return (
       await client.get(httpAuth, `/${token}/file`, {
         responseType: 'arraybuffer',
