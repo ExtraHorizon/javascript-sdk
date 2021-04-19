@@ -1,3 +1,4 @@
+import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
 import type { GlobalPermissionsList } from './models/GlobalPermission';
@@ -60,7 +61,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async deleteRole(rql: string): Promise<RecordsAffected> {
+  async deleteRole(rql: RQLString): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
   },
 
@@ -110,7 +111,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ResourceUnknownError}
    */
   async removePermissionsFromRole(
-    rql: string,
+    rql: RQLString,
     requestBody?: RolePermissions
   ): Promise<RecordsAffected> {
     return (
@@ -154,7 +155,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ApiError}
    */
   async removeRolesFromUsers(
-    rql: string,
+    rql: RQLString,
     requestBody?: UserRoles
   ): Promise<RecordsAffected> {
     return (

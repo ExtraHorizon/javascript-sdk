@@ -49,8 +49,12 @@ const cleanHeaders = (headers: Record<string, any>) =>
       }
     : headers;
 
-export class ApiError {
+export class ApiError extends Error {
   public qName: string;
+
+  public readonly error?: string;
+
+  public readonly message: string;
 
   public readonly status?: number;
 
@@ -62,10 +66,15 @@ export class ApiError {
 
   constructor(error: HttpError) {
     const { config, response } = error;
+    const message = response?.data.description || response?.data.message;
+    super(message);
     this.qName = response?.data?.name;
     this.status = response?.status;
     this.statusText = response?.statusText;
-    this.response = response?.data;
+    this.error = response?.data.error || response?.data.name;
+    this.response = {
+      ...response?.data,
+    };
     this.request = config
       ? {
           url: config.url,
@@ -78,6 +87,7 @@ export class ApiError {
 }
 
 export class ResourceUnknownError extends ApiError {}
+export class ResourceAlreadyExistsError extends ApiError {}
 
 export class FieldFormatError extends ApiError {}
 export class UnsupportedResponseTypeError extends ApiError {}
@@ -92,9 +102,14 @@ export class LoginTimeoutError extends ApiError {}
 export class LoginFreezeError extends ApiError {}
 export class TooManyFailedAttemptsError extends ApiError {}
 export class InvalidPresenceTokenError extends ApiError {}
-export class IllegalArgumentException extends ApiError {}
-export class InvalidTokenException extends ApiError {}
-export class UnauthorizedTokenException extends ApiError {}
-export class TokenNotDeleteableException extends ApiError {}
-export class FileTooLargeException extends ApiError {}
-export class EmailUsedException extends ApiError {}
+export class IllegalArgumentError extends ApiError {}
+export class MissingRequiredFieldsError extends ApiError {}
+export class PasswordError extends ApiError {}
+export class EmailUsedError extends ApiError {}
+export class EmailUnknownError extends ApiError {}
+export class AlreadyActivatedError extends ApiError {}
+export class ActivationUnknownError extends ApiError {}
+export class InvalidTokenError extends ApiError {}
+export class UnauthorizedTokenError extends ApiError {}
+export class TokenNotDeleteableError extends ApiError {}
+export class FileTooLargeError extends ApiError {}

@@ -134,7 +134,7 @@ export default (
    *
    * @param userId Id of the targeted user
    * @returns any Operation successful
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async remove(userId: ObjectId): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${userId}`)).data;
@@ -152,7 +152,8 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
-   * @throws {ApiError}
+   * @throws {EmailUsedError}
+   * @throws {ResourceUnknownError}
    */
   async updateEmail(
     userId: ObjectId,
@@ -171,7 +172,7 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
+   * @throws {ResourceAlreadyExistsError}
    */
   async addPatientEnlistment(
     userId: ObjectId,
@@ -197,7 +198,7 @@ export default (
    * @param userId Id of the targeted user
    * @param groupId Id of the targeted group
    * @returns any Operation successful
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async removePatientEnlistment(
     userId: ObjectId,
@@ -219,7 +220,7 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws {EmailUsedException}
+   * @throws {EmailUsedError}
    */
   async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
     return (await userClient.post(http, '/register', requestBody)).data;
@@ -233,9 +234,9 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws {ApiError}
+   * @throws {PasswordError}
    */
-  async changePassword(requestBody?: ChangePassword): Promise<PartialUserData> {
+  async changePassword(requestBody: ChangePassword): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
   },
 
@@ -247,9 +248,12 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws {ApiError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
    */
-  async authenticate(requestBody?: Authenticate): Promise<PartialUserData> {
+  async authenticate(requestBody: Authenticate): Promise<PartialUserData> {
     return (await userClient.post(http, '/authenticate', requestBody)).data;
   },
 
@@ -261,7 +265,8 @@ export default (
    *
    * @param email
    * @returns {boolean} Success
-   * @throws {ApiError}
+   * @throws {EmailUnknownError}
+   * @throws {AlreadyActivatedError}
    */
   async requestEmailActivation(email: string): Promise<boolean> {
     return (
@@ -283,7 +288,7 @@ export default (
    *
    * @param requestBody
    * @returns {boolean} Success
-   * @throws {ApiError}
+   * @throws {ActivationUnknownError}
    */
   async validateEmailActivation(requestBody?: HashBean): Promise<boolean> {
     return (
