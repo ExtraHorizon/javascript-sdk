@@ -49,7 +49,7 @@ const cleanHeaders = (headers: Record<string, any>) =>
       }
     : headers;
 
-export class ApiError {
+export class ApiError extends Error {
   public qName: string;
 
   public readonly error?: string;
@@ -66,12 +66,12 @@ export class ApiError {
 
   constructor(error: HttpError) {
     const { config, response } = error;
-
+    const message = response?.data.description || response?.data.message;
+    super(message);
     this.qName = response?.data?.name;
     this.status = response?.status;
     this.statusText = response?.statusText;
     this.error = response?.data.error || response?.data.name;
-    this.message = response?.data.description || response?.data.message;
     this.response = {
       ...response?.data,
     };
