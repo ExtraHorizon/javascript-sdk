@@ -55,6 +55,18 @@ export const parseAuthParams = (options: OAuthConfig): AuthConfig => {
     };
   }
 
+  if ('refreshToken' in options) {
+    // oauth2
+    return {
+      path: `${AUTH_BASE}/oauth2/token`,
+      accessToken: options.accessToken,
+      params: {
+        grant_type: 'refresh_token',
+        refresh_token: options.refreshToken,
+      },
+    };
+  }
+
   throw new Error('Invalid Oauth config');
 };
 

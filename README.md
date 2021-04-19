@@ -18,7 +18,8 @@ yarn add @extrahorizon/javascript-sdk
 
 ### Authentication
 
-- oAuth1 authentication
+<details>
+    <summary>OAuth1 authentication</summary>
 
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
@@ -35,7 +36,10 @@ await sdk.authenticate({
 });
 ```
 
-- oAuth2 password grant flow
+</details>
+
+<details>
+    <summary>OAuth2 Password Grant flow</summary>
 
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
@@ -52,13 +56,19 @@ await sdk.authenticate({
 });
 ```
 
-- oAuth2 authorization grant flow
+</details>
+
+<details>
+    <summary>OAuth2 Authorization Code Request flow with callback</summary>
 
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
+  freshTokensCallback: tokenData => {
+    localStorage.setItem('tokenData', tokenData);
+  },
 });
 
 await sdk.authenticate({
@@ -68,7 +78,27 @@ await sdk.authenticate({
 });
 ```
 
-- oAuth2 password grant flow with two-step MFA in try / catch
+</details>
+
+<details>
+    <summary>OAuth2 refresh token flow</summary>
+
+```js
+import { client } from '@extrahorizon/javascript-sdk';
+
+const sdk = client({
+  apiHost: '',
+});
+
+await sdk.authenticate({
+  refreshToken: '',
+});
+```
+
+</details>
+
+<details>
+    <summary>OAuth2 password grant flow with two-step MFA in try / catch</summary>
 
 ```js
 import { client, MfaRequiredError } from '@extrahorizon/javascript-sdk';
@@ -103,6 +133,8 @@ try {
   }
 }
 ```
+
+</details>
 
 ### Your first request
 

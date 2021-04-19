@@ -23,8 +23,8 @@ export default (http: AxiosInstance, options: Config) => {
         grant_type: 'refresh_token',
         refresh_token: tokenData.refreshToken,
       });
-      tokenData = tokenResult.data;
-      return tokenData;
+      setTokenData(tokenResult.data);
+      return tokenResult.data;
     } catch (error) {
       throw typeReceivedError(error);
     }
@@ -50,9 +50,13 @@ export default (http: AxiosInstance, options: Config) => {
           !originalRequest._retry
         ) {
           originalRequest._retry = true;
-          if (error.response?.data?.code === 118) {
-            tokenData.accessToken = '';
+          if (
+            error.response?.data?.code === 118 ||
             // ACCESS_TOKEN_EXPIRED_EXCEPTION
+            error.response?.data?.code === 117
+            // ACCESS_TOKEN_UNKNOWN
+          ) {
+            tokenData.accessToken = '';
             originalRequest.headers.Authorization = `Bearer ${
               (await refreshTokens()).accessToken
             }`;
@@ -71,11 +75,25 @@ export default (http: AxiosInstance, options: Config) => {
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
 
+  async function setTokenData(data: TokenDataOauth2) {
+    if (options.freshTokensCallback) {
+      await options.freshTokensCallback(data);
+    }
+    tokenData = data;
+  }
+
   async function authenticate(data: AuthConfig) {
     try {
       authConfig = data;
-      const tokenResult = await http.post(authConfig.path, authConfig.params);
-      tokenData = tokenResult.data;
+      if ('accessToken' in authConfig) {
+        tokenData = {
+          accessToken: authConfig.accessToken,
+          refreshToken: authConfig.params.refresh_token,
+        };
+      } else {
+        const tokenResult = await http.post(authConfig.path, authConfig.params);
+        setTokenData(tokenResult.data);
+      }
     } catch (error) {
       throw typeReceivedError(error);
     }
@@ -98,7 +116,7 @@ export default (http: AxiosInstance, options: Config) => {
         code,
         method_id: methodId,
       });
-      tokenData = tokenResult.data;
+      setTokenData(tokenResult.data);
     } catch (error) {
       throw typeReceivedError(error);
     }

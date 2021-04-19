@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { TokenDataOauth2 } from './http/types';
 
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
@@ -30,16 +31,22 @@ export interface ConfigOauth2Password {
   password: string;
 }
 
-export type ConfigOath2 = ConfigOauth2AuthorizationCode | ConfigOauth2Password;
+export interface ConfigOauth2Refresh {
+  accessToken: string;
+  refreshToken: string;
+}
 
 export type OAuthConfig =
   | ConfigOauth1WithEmail
   | ConfigOauth1WithToken
-  | ConfigOath2;
+  | ConfigOauth2AuthorizationCode
+  | ConfigOauth2Password
+  | ConfigOauth2Refresh;
 
 export interface Config {
   apiHost: string;
   debug?: boolean;
+  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 
 export interface MfaConfig {
