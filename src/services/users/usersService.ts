@@ -152,7 +152,7 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
-   * @throws {EmailUsedException}
+   * @throws {EmailUsedError}
    * @throws {ResourceUnknownError}
    */
   async updateEmail(
@@ -172,7 +172,7 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceAlreadyExistsException}
+   * @throws {ResourceAlreadyExistsError}
    */
   async addPatientEnlistment(
     userId: ObjectId,
@@ -220,7 +220,7 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws {EmailUsedException}
+   * @throws {EmailUsedError}
    */
   async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
     return (await userClient.post(http, '/register', requestBody)).data;
@@ -234,7 +234,7 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws {PasswordException}
+   * @throws {PasswordError}
    */
   async changePassword(requestBody: ChangePassword): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
@@ -265,8 +265,8 @@ export default (
    *
    * @param email
    * @returns {boolean} Success
-   * @throws {EmailUnknownException}
-   * @throws {AlreadyActivatedException}
+   * @throws {EmailUnknownError}
+   * @throws {AlreadyActivatedError}
    */
   async requestEmailActivation(email: string): Promise<boolean> {
     return (
@@ -288,7 +288,7 @@ export default (
    *
    * @param requestBody
    * @returns {boolean} Success
-   * @throws {ActivationUnknownException}
+   * @throws {ActivationUnknownError}
    */
   async validateEmailActivation(requestBody?: HashBean): Promise<boolean> {
     return (
