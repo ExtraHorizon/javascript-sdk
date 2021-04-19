@@ -256,7 +256,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @permission UPDATE_USER_MFA_SETTINGS | scope:global | 	Enable MFA for any account
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__verification_confirm
      * @throws {ResourceUnknownError}
-     * @throws {IllegalArgumentException}
+     * @throws {IllegalArgumentError}
      * @throws {InvalidMfaCodeError}
      * @throws {InvalidPresenceTokenError}
      */
