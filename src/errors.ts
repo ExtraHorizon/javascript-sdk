@@ -97,3 +97,4 @@ export class InvalidTokenException extends ApiError {}
 export class UnauthorizedTokenException extends ApiError {}
 export class TokenNotDeleteableException extends ApiError {}
 export class FileTooLargeException extends ApiError {}
+export class EmailUsedException extends ApiError {}

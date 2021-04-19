@@ -219,11 +219,9 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws {ApiError}
+   * @throws {EmailUsedException}
    */
-  async createAccount(
-    requestBody?: RegisterUserData
-  ): Promise<PartialUserData> {
+  async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
     return (await userClient.post(http, '/register', requestBody)).data;
   },
 

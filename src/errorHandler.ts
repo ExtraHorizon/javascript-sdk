@@ -20,6 +20,7 @@ import {
   UnauthorizedTokenException,
   TokenNotDeleteableException,
   FileTooLargeException,
+  EmailUsedException,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -35,6 +36,7 @@ const ErrorClassDefinitionsMap = {
   130: InvalidMfaCodeError,
   132: InvalidPresenceTokenError,
   133: NotEnoughMfaMethodsError,
+  203: EmailUsedException,
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
