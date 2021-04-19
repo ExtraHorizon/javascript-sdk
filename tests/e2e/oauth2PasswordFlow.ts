@@ -68,4 +68,11 @@ describe('OAuth2 Password Flow', () => {
     const res = await sdk.data.health();
     expect(res).toBe(true);
   });
+
+  // files service
+  it('find()', async () => {
+    const rql = rqlBuilder().select('name').build();
+    const res = await sdk.files.find(rql);
+    expect(res.data.length).toBeGreaterThan(0);
+  });
 });
