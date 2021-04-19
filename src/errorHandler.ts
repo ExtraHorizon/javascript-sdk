@@ -15,12 +15,14 @@ import {
   LoginFreezeError,
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
+  MissingRequiredFieldsException,
   IllegalArgumentException,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
   10: NoPermissionError,
   13: EmptyBodyError,
+  14: MissingRequiredFieldsException,
   15: FieldFormatError,
   16: ResourceUnknownError,
   26: IllegalArgumentException,

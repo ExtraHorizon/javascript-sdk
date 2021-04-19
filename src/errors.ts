@@ -52,6 +52,10 @@ const cleanHeaders = (headers: Record<string, any>) =>
 export class ApiError {
   public qName: string;
 
+  public readonly error?: string;
+
+  public readonly message?: string;
+
   public readonly status?: number;
 
   public readonly statusText?: string;
@@ -65,7 +69,11 @@ export class ApiError {
     this.qName = response?.data?.name;
     this.status = response?.status;
     this.statusText = response?.statusText;
-    this.response = response?.data;
+    this.error = response?.data.error || response?.data.name;
+    this.message = response?.data.description || response?.data.message;
+    this.response = {
+      ...response?.data,
+    };
     this.request = config
       ? {
           url: config.url,
@@ -93,3 +101,4 @@ export class LoginFreezeError extends ApiError {}
 export class TooManyFailedAttemptsError extends ApiError {}
 export class InvalidPresenceTokenError extends ApiError {}
 export class IllegalArgumentException extends ApiError {}
+export class MissingRequiredFieldsException extends ApiError {}
