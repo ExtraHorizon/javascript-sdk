@@ -1,3 +1,4 @@
+import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type {
   Application,
@@ -44,7 +45,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @async
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
      * */
-    async getApplications(rql?: string): Promise<ApplicationList> {
+    async getApplications(rql?: RQLString): Promise<ApplicationList> {
       return (await authClient.get(httpWithAuth, `/applications${rql || ''}`))
         .data;
     },
@@ -143,7 +144,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
      */
     async getOauth2Authorizations(
-      rql?: string
+      rql?: RQLString
     ): Promise<OAuth2AuthorizationList> {
       return (
         await authClient.get(httpWithAuth, `/oauth2/authorizations${rql || ''}`)

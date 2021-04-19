@@ -1,3 +1,4 @@
+import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
 import type { GlobalPermissionsList } from './models/GlobalPermission';
@@ -107,7 +108,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removeRoleFromGroup(
     groupId: ObjectId,
     roleId: ObjectId,
-    rql: string
+    rql: RQLString
   ): Promise<RecordsAffected> {
     return (
       await userClient.delete(
@@ -159,7 +160,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removePermissionsFromGroupRoles(
     groupId: ObjectId,
-    rql: string,
+    rql: RQLString,
     requestBody?: GroupRolePermissions
   ): Promise<RecordsAffected> {
     return (
@@ -213,7 +214,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removeRolesFromStaff(
     groupId: ObjectId,
-    rql: string,
+    rql: RQLString,
     requestBody?: StaffRoles
   ): Promise<RecordsAffected> {
     return (
@@ -259,7 +260,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws ApiError
    */
   async removeUsersFromStaff(
-    rql: string,
+    rql: RQLString,
     requestBody?: StaffGroups
   ): Promise<RecordsAffected> {
     return (
