@@ -1,4 +1,3 @@
-import { decamelizeKeys } from 'humps';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import filesService from './filesService';
@@ -12,7 +11,6 @@ export type FilesService = ReturnType<typeof filesService> &
 export default (httpWithAuth: HttpInstance): FilesService => {
   const client = httpClient({
     basePath: FILES_BASE,
-    transformRequestData: decamelizeKeys,
   });
 
   const filesMethods = filesService(client, httpWithAuth);
