@@ -1,50 +1,69 @@
-export default function rqlBuilder() {
-  let returnString = '';
+/* eslint-disable @typescript-eslint/no-empty-interface */
+export interface RQLString extends String {}
 
-  const api = {
-    select(value: string | string[]) {
+interface RQLBuilder {
+  select: (value: string | string[]) => RQLBuilder;
+  limit: (limit: number, offset?: number) => RQLBuilder;
+  sort: (value: string | string[]) => RQLBuilder;
+  out: (field: string, list: string[]) => RQLBuilder;
+  in: (field: string, list: string[]) => RQLBuilder;
+  ge: (field: string, value: string) => RQLBuilder;
+  eq: (field: string, value: string) => RQLBuilder;
+  le: (field: string, value: string) => RQLBuilder;
+  ne: (field: string, value: string) => RQLBuilder;
+  like: (field: string, value: string) => RQLBuilder;
+  lt: (field: string, value: string) => RQLBuilder;
+  gt: (field: string, value: string) => RQLBuilder;
+  build: () => RQLString;
+}
+
+export default function rqlBuilder(): RQLBuilder {
+  let returnString: RQLString = '';
+
+  const api: RQLBuilder = {
+    select(value) {
       return processQuery(
         'select',
         typeof value === 'string' ? value : value.join(',')
       );
     },
-    limit(limit: number, offset?: number) {
+    limit(limit, offset?) {
       return processQuery('limit', `${limit}${offset ? `,${offset}` : ''}`);
     },
-    sort(value: string | string[]) {
+    sort(value) {
       return processQuery(
         'sort',
         typeof value === 'string' ? value : value.join(',')
       );
     },
-    out(field: string, list: string[]) {
+    out(field, list) {
       return processQuery('out', `${field},${list.join(',')}`);
     },
-    in(field: string, list: string[]) {
+    in(field, list) {
       return processQuery('in', `${field},${list.join(',')}`);
     },
-    ge(field: string, value: string) {
+    ge(field, value) {
       return processQuery('ge', `${field},${value}`);
     },
-    eq(field: string, value: string) {
+    eq(field, value) {
       return processQuery('eq', `${field},${value}`);
     },
-    le(field: string, value: string) {
+    le(field, value) {
       return processQuery('le', `${field},${value}`);
     },
-    ne(field: string, value: string) {
+    ne(field, value) {
       return processQuery('ne', `${field},${value}`);
     },
-    like(field: string, value: string) {
+    like(field, value) {
       return processQuery('like', `${field},${value}`);
     },
-    lt(field: string, value: string) {
+    lt(field, value) {
       return processQuery('gt', `${field},${value}`);
     },
-    gt(field: string, value: string) {
+    gt(field, value) {
       return processQuery('gt', `${field},${value}`);
     },
-    build(): string {
+    build(): RQLString {
       return returnString;
     },
   };
