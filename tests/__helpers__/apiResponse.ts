@@ -1,4 +1,5 @@
 import { userData, permissionData, roleData } from './user';
+import { fileData } from './file';
 
 export const emptyPagedResult = {
   query: {},
@@ -41,4 +42,14 @@ export const roleResponse = {
     limit: 20,
   },
   data: [roleData],
+};
+
+export const filesResponse = {
+  query: {},
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [fileData],
 };

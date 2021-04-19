@@ -2,6 +2,7 @@ import { Config } from './types';
 
 import usersService from './services/users';
 import authService from './services/auth';
+import filesService from './services/files';
 import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
 
 export { default as rqlBuilder } from './rql';
@@ -18,6 +19,7 @@ function validateConfig({ apiHost, ...config }: Config): Config {
 export interface Client {
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService>;
+  files: ReturnType<typeof filesService>;
 }
 
 /**
@@ -47,5 +49,6 @@ export function client(rawConfig: Config): Client {
   return {
     users: usersService(http, httpWithAuth),
     auth: authService(http, httpWithAuth),
+    files: filesService(httpWithAuth),
   };
 }

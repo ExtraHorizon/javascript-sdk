@@ -60,10 +60,14 @@ export const parseAuthParams = (options: Config['oauth']): AuthConfig => {
 
 export const camelizeResponseData = ({
   data,
+  config,
   ...response
 }: AxiosResponse): AxiosResponse => ({
   ...response,
-  data: camelizeKeys(data),
+  config,
+  data: ['arraybuffer', 'stream'].includes(config.responseType)
+    ? data
+    : camelizeKeys(data),
 });
 
 export const recursiveMap = fn => obj =>
@@ -75,17 +79,23 @@ export const recursiveMap = fn => obj =>
         obj
       );
 
+const mapFunction = (value, key) => {
+  if (
+    ['creationTimestamp', 'expiryTimestamp', 'updateTimestamp'].includes(key)
+  ) {
+    return new Date(value);
+  }
+  return value;
+};
+
 export const transformResponseData = ({
   data,
+  config,
   ...response
 }: AxiosResponse): AxiosResponse => ({
   ...response,
-  data: recursiveMap((value, key) => {
-    if (
-      ['creationTimestamp', 'expiryTimestamp', 'updateTimestamp'].includes(key)
-    ) {
-      return new Date(value);
-    }
-    return value;
-  })(data),
+  config,
+  data: ['arraybuffer', 'stream'].includes(config.responseType)
+    ? data
+    : recursiveMap(mapFunction)(data),
 });
