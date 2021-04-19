@@ -1,3 +1,4 @@
+import { ReadStream } from 'fs';
 import { ObjectId } from '../models/ObjectId';
 import { PagedResult } from '../models/Responses';
 
@@ -33,4 +34,10 @@ export interface FilesList extends PagedResult {
 
 export interface CreateTokenRequest {
   accessLevel?: TokenPermission;
+}
+
+export interface CreateFile {
+  name: string;
+  file: Buffer | ReadStream;
+  tags?: string[];
 }

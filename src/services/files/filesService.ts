@@ -1,8 +1,9 @@
 import type { ReadStream } from 'fs';
+import * as FormData from 'form-data';
 import type { HttpInstance } from '../../types';
 import { ResultResponse } from '../models/Responses';
 import { Results } from '../models/Results';
-import type { FilesList, FileDetails, Token } from './types';
+import type { FilesList, FileDetails, Token, CreateFile } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -29,8 +30,14 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns FileDetails Success
    * @throws {FileTooLargeException}
    */
-  async createFile(requestBody?: any): Promise<FileDetails> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+  async createFile({ name, file, tags }: CreateFile): Promise<FileDetails> {
+    const form = new FormData();
+    form.append('name', name);
+    form.append('file', file);
+    form.append('tags', tags);
+    return (
+      await client.post(httpAuth, '/', form, { headers: form.getHeaders() })
+    ).data;
   },
 
   /**
