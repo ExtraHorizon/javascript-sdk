@@ -2,6 +2,7 @@ import { Config, MfaConfig, OAuthConfig } from './types';
 
 import usersService from './services/users';
 import authService from './services/auth';
+import filesService from './services/files';
 import {
   createHttpClient,
   createOAuth1HttpClient,
@@ -31,6 +32,7 @@ export interface Client {
   confirmMfa: (oauth: MfaConfig) => Promise<void>;
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService>;
+  files: ReturnType<typeof filesService>;
 }
 
 /**
@@ -76,6 +78,9 @@ export function client(rawConfig: Config): Client {
     },
     get auth() {
       return authService(http, httpWithAuth || http);
+    },
+    get files() {
+      return filesService(httpWithAuth || http);
     },
   };
 }

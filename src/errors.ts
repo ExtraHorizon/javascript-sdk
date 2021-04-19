@@ -78,6 +78,7 @@ export class ApiError {
 }
 
 export class ResourceUnknownError extends ApiError {}
+export class ResourceAlreadyExistsException extends ApiError {}
 
 export class FieldFormatError extends ApiError {}
 export class UnsupportedResponseTypeError extends ApiError {}
@@ -93,3 +94,12 @@ export class LoginFreezeError extends ApiError {}
 export class TooManyFailedAttemptsError extends ApiError {}
 export class InvalidPresenceTokenError extends ApiError {}
 export class IllegalArgumentException extends ApiError {}
+export class PasswordException extends ApiError {}
+export class EmailUsedException extends ApiError {}
+export class EmailUnknownException extends ApiError {}
+export class AlreadyActivatedException extends ApiError {}
+export class ActivationUnknownException extends ApiError {}
+export class InvalidTokenException extends ApiError {}
+export class UnauthorizedTokenException extends ApiError {}
+export class TokenNotDeleteableException extends ApiError {}
+export class FileTooLargeException extends ApiError {}
