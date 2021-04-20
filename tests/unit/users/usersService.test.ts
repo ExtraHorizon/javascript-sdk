@@ -6,7 +6,7 @@ import {
   userData,
   newUserData,
   updatedUserData,
-  ResourceUnknownException,
+  resourceUnknownError,
 } from '../../__helpers__/user';
 import {
   patientsResponse,
@@ -71,7 +71,7 @@ describe('Users Service', () => {
     expect.assertions(1);
     nock(`${apiHost}${USER_BASE}`)
       .get(`/${userId}`)
-      .reply(404, ResourceUnknownException);
+      .reply(404, resourceUnknownError);
 
     try {
       await sdk.users.findById(userId);
@@ -102,7 +102,7 @@ describe('Users Service', () => {
   it('Can not update a user', async () => {
     nock(`${apiHost}${USER_BASE}`)
       .put(`/${userId}`)
-      .reply(404, ResourceUnknownException);
+      .reply(404, resourceUnknownError);
 
     try {
       await sdk.users.update(userId, {});

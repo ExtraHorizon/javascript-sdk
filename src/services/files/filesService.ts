@@ -28,7 +28,7 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns FileDetails Success
-   * @throws {FileTooLargeException}
+   * @throws {FileTooLargeError}
    */
   async createFile({ name, file, tags }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
@@ -50,8 +50,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param token
    * @returns void
-   * @throws {InvalidTokenException}
-   * @throws {UnauthorizedTokenException}
+   * @throws {InvalidTokenError}
+   * @throws {UnauthorizedTokenError}
    */
   async deleteFile(token: Token): Promise<boolean> {
     const result: ResultResponse = await client.delete(httpAuth, `/${token}`);
@@ -66,8 +66,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param token
    * @returns arraybuffer Success
-   * @throws {InvalidTokenException}
-   * @throws {UnauthorizedTokenException}
+   * @throws {InvalidTokenError}
+   * @throws {UnauthorizedTokenError}
    */
   async retrieveFile(token: Token): Promise<Buffer> {
     return (
@@ -85,8 +85,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param token
    * @returns ReadStream Success
-   * @throws {InvalidTokenException}
-   * @throws {UnauthorizedTokenException}
+   * @throws {InvalidTokenError}
+   * @throws {UnauthorizedTokenError}
    */
   async retrieveFileStream(token: Token): Promise<{ data: ReadStream }> {
     return await client.get(httpAuth, `/${token}/file`, {
@@ -107,8 +107,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param token
    * @returns FileDetails Success
-   * @throws {InvalidTokenException}
-   * @throws {UnauthorizedTokenException}
+   * @throws {InvalidTokenError}
+   * @throws {UnauthorizedTokenError}
    */
   async getFileDetails(token: Token): Promise<FileDetails> {
     return (await client.get(httpAuth, `/${token}/details`)).data;
