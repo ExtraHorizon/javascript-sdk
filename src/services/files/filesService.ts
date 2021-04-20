@@ -4,6 +4,7 @@ import type { HttpInstance } from '../../types';
 import { ResultResponse } from '../models/Responses';
 import { Results } from '../models/Results';
 import type { FilesList, FileDetails, Token, CreateFile } from './types';
+import { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -16,8 +17,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(rql = ''): Promise<FilesList> {
-    return (await client.get(httpAuth, `/${rql}`)).data;
+  async find(rql?: RQLString): Promise<FilesList> {
+    return (await client.get(httpAuth, `/${rql || ''}`)).data;
   },
 
   /**
