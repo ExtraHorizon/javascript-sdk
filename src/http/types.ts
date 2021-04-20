@@ -57,7 +57,6 @@ interface Oauth2ConfigCode extends OauthConfigBase {
 }
 
 interface Oauth2Refresh extends OauthConfigBase {
-  accessToken: string;
   params: {
     grant_type: string;
     refresh_token: string;

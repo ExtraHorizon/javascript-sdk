@@ -85,15 +85,8 @@ export default (http: AxiosInstance, options: Config) => {
   async function authenticate(data: AuthConfig) {
     try {
       authConfig = data;
-      if ('accessToken' in authConfig) {
-        tokenData = {
-          accessToken: authConfig.accessToken,
-          refreshToken: authConfig.params.refresh_token,
-        };
-      } else {
-        const tokenResult = await http.post(authConfig.path, authConfig.params);
-        setTokenData(tokenResult.data);
-      }
+      const tokenResult = await http.post(authConfig.path, authConfig.params);
+      setTokenData(tokenResult.data);
     } catch (error) {
       throw typeReceivedError(error);
     }

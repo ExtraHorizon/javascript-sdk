@@ -32,7 +32,6 @@ export interface ConfigOauth2Password {
 }
 
 export interface ConfigOauth2Refresh {
-  accessToken: string;
   refreshToken: string;
 }
 
