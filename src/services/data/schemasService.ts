@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import { Schema, InputSchema } from './types';
 
-export default (userClient, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance) => ({
   /**
    * Create a schema
    * Permission | Scope | Effect
@@ -11,7 +11,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    * @returns Schema successful operation
    * @throws ApiError
    */
-  async createSchema(requestBody?: InputSchema): Promise<Schema> {
-    return (await userClient.post(httpAuth, '/', requestBody)).data;
+  async createSchema(requestBody: InputSchema): Promise<Schema> {
+    return (await client.post(httpAuth, '/', requestBody)).data;
   },
 });
