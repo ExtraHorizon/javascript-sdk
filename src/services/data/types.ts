@@ -8,77 +8,87 @@ export enum CreateMode {
   PERMISSION_REQUIRED = 'permissionRequired',
 }
 
-export enum ArrayConfigurationType {
-  ARRAY = 'array',
+/**
+ * Specifies the conditions to be met in order to be able to view a document for a schema
+ */
+export enum ReadMode {
+  ALL_USERS = 'allUsers',
+  DEFAULT = 'default',
+  ENLISTED_IN_LINKED_GROUPS = 'enlistedInLinkedGroups',
 }
 
-export interface IArrayConfiguration {
-  type?: ArrayConfigurationType;
+/**
+ * Specifies the conditions to be met in order to be able to update a document for a schema
+ */
+export enum UpdateMode {
+  DEFAULT = 'default',
+  CREATOR_ONLY = 'creatorOnly',
+  DISABLED = 'disabled',
+  LINKED_GROUPS_STAFF_ONLY = 'linkedGroupsStaffOnly',
+}
+
+/**
+ * Specifies the conditions to be met in order to be able to delete a document for a schema
+ */
+export enum DeleteMode {
+  PERMISSION_REQUIRED = 'permissionRequired',
+  LINKED_USERS_ONLY = 'linkedUsersOnly',
+}
+
+export enum GroupSyncMode {
+  DISABLED = 'disabled',
+  CREATOR_PATIENT_ENLISTMENTS = 'creatorPatientEnlistments',
+  LINKED_USERS_PATIENT_ENLISTMENTS = 'linkedUsersPatientEnlistments',
+}
+
+export enum ConfigurationType {
+  STRING = 'string',
+  NUMBER = 'number',
+  BOOLEAN = 'boolean',
+  OBJECT = 'object',
+  ARRAY = 'array',
+  DATE_TIME = 'date-time',
+  DOCUMENT = 'document',
+  INPUT = 'input',
+}
+
+interface BaseConfiguration {
+  queryable?: boolean;
+}
+
+export interface ArrayConfiguration extends BaseConfiguration {
+  type?: ConfigurationType.ARRAY;
   items?: TypeConfiguration;
   minItems?: number;
   maxItems?: number;
   contains?: TypeConfiguration;
 }
 
-export interface BaseTypeOptions {
-  queryable?: boolean;
-}
-
-export type ArrayConfiguration = IArrayConfiguration & BaseTypeOptions;
-
-export enum ObjectConfigurationType {
-  OBJECT = 'object',
-}
-
-export interface IObjectConfiguration {
-  type?: ObjectConfigurationType;
+export interface ObjectConfiguration extends BaseConfiguration {
+  type?: ConfigurationType.OBJECT;
   properties?: Record<string, TypeConfiguration>;
   required?: Array<string>;
 }
 
-export type ObjectConfiguration = IObjectConfiguration & BaseTypeOptions;
-
-export enum StringConfigurationType {
-  STRING = 'string',
-}
-
-export enum StringConfigurationFormat {
-  DATE_TIME = 'date-time',
-}
-
-export interface IStringConfiguration {
-  type?: StringConfigurationType;
+export interface StringConfiguration extends BaseConfiguration {
+  type?: ConfigurationType.STRING;
   minLength?: number;
   maxLength?: number;
   enum?: Array<string>;
   pattern?: string;
-  format?: StringConfigurationFormat;
+  format?: ConfigurationType.DATE_TIME;
 }
 
-export type StringConfiguration = IStringConfiguration & BaseTypeOptions;
-
-export enum NumberConfigurationType {
-  STRING = 'string',
-}
-
-export interface INumberConfiguration {
-  type?: NumberConfigurationType;
+export interface NumberConfiguration extends BaseConfiguration {
+  type?: ConfigurationType.NUMBER;
   minimum?: number;
   maximum?: number;
   enum?: Array<number>;
 }
 
-export type NumberConfiguration = INumberConfiguration & BaseTypeOptions;
-
-export enum BooleanConfigurationType {
-  BOOLEAN = 'boolean',
+export interface BooleanConfiguration extends BaseConfiguration {
+  type?: ConfigurationType.BOOLEAN;
 }
-
-export interface IBooleanConfiguration {
-  type?: BooleanConfigurationType;
-}
-
-export type BooleanConfiguration = IBooleanConfiguration & BaseTypeOptions;
 
 export type TypeConfiguration =
   | ObjectConfiguration
@@ -87,21 +97,13 @@ export type TypeConfiguration =
   | NumberConfiguration
   | BooleanConfiguration;
 
-export enum DocumentConditionType {
-  DOCUMENT = 'document',
-}
-
 export interface DocumentCondition {
-  type?: DocumentConditionType;
+  type?: ConfigurationType.DOCUMENT;
   configuration?: TypeConfiguration;
 }
 
-export enum InputConditionType {
-  INPUT = 'input',
-}
-
 export interface InputCondition {
-  type?: InputConditionType;
+  type?: ConfigurationType.INPUT;
   configuration?: TypeConfiguration;
 }
 
@@ -172,45 +174,12 @@ export interface CreationTransition {
 
 export type StatusData = Record<string, string>;
 
-export interface ITransition {
+export interface BaseTransition {
   name?: string;
   fromStatuses?: Array<string>;
 }
 
-export type Transition = CreationTransition & ITransition;
-
-/**
- * Specifies the conditions to be met in order to be able to view a document for a schema
- */
-export enum ReadMode {
-  ALL_USERS = 'allUsers',
-  DEFAULT = 'default',
-  ENLISTED_IN_LINKED_GROUPS = 'enlistedInLinkedGroups',
-}
-
-/**
- * Specifies the conditions to be met in order to be able to update a document for a schema
- */
-export enum UpdateMode {
-  DEFAULT = 'default',
-  CREATOR_ONLY = 'creatorOnly',
-  DISABLED = 'disabled',
-  LINKED_GROUPS_STAFF_ONLY = 'linkedGroupsStaffOnly',
-}
-
-/**
- * Specifies the conditions to be met in order to be able to delete a document for a schema
- */
-export enum DeleteMode {
-  PERMISSION_REQUIRED = 'permissionRequired',
-  LINKED_USERS_ONLY = 'linkedUsersOnly',
-}
-
-export enum GroupSyncMode {
-  DISABLED = 'disabled',
-  CREATOR_PATIENT_ENLISTMENTS = 'creatorPatientEnlistments',
-  LINKED_USERS_PATIENT_ENLISTMENTS = 'linkedUsersPatientEnlistments',
-}
+export type Transition = CreationTransition & BaseTransition;
 
 export interface Schema {
   id?: ObjectId;
