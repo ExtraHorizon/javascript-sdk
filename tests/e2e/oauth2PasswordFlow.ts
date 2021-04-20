@@ -47,6 +47,7 @@ describe('OAuth2 Password Flow', () => {
   });
 
   it('getRoles()', async () => {
+    expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
       const res = await sdk.users.getRoles(rql);
@@ -71,8 +72,13 @@ describe('OAuth2 Password Flow', () => {
 
   // files service
   it('find()', async () => {
+    expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
-    const res = await sdk.files.find(rql);
-    expect(res.data.length).toBeGreaterThan(0);
+    try {
+      const res = await sdk.files.find(rql);
+      expect(res.data.length).toBeGreaterThan(0);
+    } catch (err) {
+      expect(err instanceof NoPermissionError).toBe(true);
+    }
   });
 });
