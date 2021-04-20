@@ -1,3 +1,4 @@
+import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
 import type { GlobalPermissionsList } from './models/GlobalPermission';
@@ -14,7 +15,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * none |  | Everyone can use this endpoint
    *
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async getPermissions(): Promise<GlobalPermissionsList> {
     return (await userClient.get(httpWithAuth, '/permissions')).data;
@@ -28,7 +29,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async getRoles(rql = ''): Promise<RoleList> {
     return (await userClient.get(httpWithAuth, `/roles${rql}`)).data;
@@ -43,7 +44,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async createRole(rql = '', requestBody: RoleCreation): Promise<Role> {
     return (await userClient.post(httpWithAuth, `/roles${rql}`, requestBody))
@@ -58,9 +59,9 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
-  async deleteRole(rql: string): Promise<RecordsAffected> {
+  async deleteRole(rql: RQLString): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
   },
 
@@ -73,7 +74,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param id Id of the targeted role
    * @param requestBody
    * @returns Role Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async updateRole(id: ObjectId, requestBody: RoleUpdate): Promise<Role> {
     return (await userClient.put(httpWithAuth, `/roles${id}`, requestBody))
@@ -88,7 +89,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async addPermissionsToRole(
     requestBody?: RolePermissions
@@ -107,10 +108,10 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ResourceNotFound}
+   * @throws {ResourceUnknownError}
    */
   async removePermissionsFromRole(
-    rql: string,
+    rql: RQLString,
     requestBody?: RolePermissions
   ): Promise<RecordsAffected> {
     return (
@@ -131,7 +132,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async addRolesToUsers(
     rql = '',
@@ -151,10 +152,10 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async removeRolesFromUsers(
-    rql: string,
+    rql: RQLString,
     requestBody?: UserRoles
   ): Promise<RecordsAffected> {
     return (

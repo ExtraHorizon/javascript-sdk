@@ -73,7 +73,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async find(rql = ''): Promise<UserList> {
     return (await userClient.get(httpWithAuth, `/${rql}`)).data;
@@ -89,7 +89,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async removeUsers(rql = ''): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
@@ -104,7 +104,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns Patient Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async patients(rql = ''): Promise<Patient[]> {
     return (await userClient.get(httpWithAuth, `/patients${rql}`)).data;
@@ -119,7 +119,7 @@ export default (
    *
    * @param rql Add filters to the requested list.
    * @returns StaffMember Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async staff(rql = ''): Promise<StaffMember[]> {
     return (await userClient.get(httpWithAuth, `/staff${rql}`)).data;
@@ -134,7 +134,7 @@ export default (
    *
    * @param userId Id of the targeted user
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ResourceUnknownError}
    */
   async remove(userId: ObjectId): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${userId}`)).data;
@@ -152,7 +152,8 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {EmailUsedError}
+   * @throws {ResourceUnknownError}
    */
   async updateEmail(
     userId: ObjectId,
@@ -171,7 +172,7 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ResourceAlreadyExistsError}
    */
   async addPatientEnlistment(
     userId: ObjectId,
@@ -197,7 +198,7 @@ export default (
    * @param userId Id of the targeted user
    * @param groupId Id of the targeted group
    * @returns any Operation successful
-   * @throws ApiError
+   * @throws {ResourceUnknownError}
    */
   async removePatientEnlistment(
     userId: ObjectId,
@@ -219,11 +220,9 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {EmailUsedError}
    */
-  async createAccount(
-    requestBody?: RegisterUserData
-  ): Promise<PartialUserData> {
+  async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
     return (await userClient.post(http, '/register', requestBody)).data;
   },
 
@@ -235,9 +234,9 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {PasswordError}
    */
-  async changePassword(requestBody?: ChangePassword): Promise<PartialUserData> {
+  async changePassword(requestBody: ChangePassword): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
   },
 
@@ -249,9 +248,12 @@ export default (
    *
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
    */
-  async authenticate(requestBody?: Authenticate): Promise<PartialUserData> {
+  async authenticate(requestBody: Authenticate): Promise<PartialUserData> {
     return (await userClient.post(http, '/authenticate', requestBody)).data;
   },
 
@@ -263,7 +265,8 @@ export default (
    *
    * @param email
    * @returns {boolean} Success
-   * @throws ApiError
+   * @throws {EmailUnknownError}
+   * @throws {AlreadyActivatedError}
    */
   async requestEmailActivation(email: string): Promise<boolean> {
     return (
@@ -285,7 +288,7 @@ export default (
    *
    * @param requestBody
    * @returns {boolean} Success
-   * @throws ApiError
+   * @throws {ActivationUnknownError}
    */
   async validateEmailActivation(requestBody?: HashBean): Promise<boolean> {
     return (
@@ -302,7 +305,7 @@ export default (
    *
    * @param email
    * @returns {boolean} Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async requestPasswordReset(email: string): Promise<boolean> {
     return (
@@ -324,7 +327,7 @@ export default (
    *
    * @param requestBody
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async validatePasswordReset(requestBody?: PasswordReset): Promise<boolean> {
     return (
@@ -341,7 +344,7 @@ export default (
    *
    * @param requestBody
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async confirmPassword(requestBody?: ConfirmPassword): Promise<boolean> {
     return (
@@ -358,7 +361,7 @@ export default (
    *
    * @param email
    * @returns any Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async isEmailAvailable(
     email: string
@@ -384,7 +387,7 @@ export default (
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async updateProfileImage(
     userId: ObjectId,
@@ -408,7 +411,7 @@ export default (
    *
    * @param userId Id of the targeted user
    * @returns FullUser Success
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async deleteProfileImage(userId: ObjectId): Promise<PartialUserData> {
     return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`))
