@@ -9,7 +9,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `CREATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param requestBody
    * @returns Schema successful operation
-   * @throws ApiError
+   * @throws {ApiError}
    */
   async createSchema(requestBody: InputSchema): Promise<Schema> {
     return (await client.post(httpAuth, '/', requestBody)).data;
