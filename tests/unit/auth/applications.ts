@@ -13,20 +13,21 @@ describe('Auth - Applications', () => {
 
   let sdk: Client;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   afterEach(() => {
@@ -34,11 +35,6 @@ describe('Auth - Applications', () => {
   });
 
   it('Can create applications', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${AUTH_BASE}`)
       .post('/applications')
       .reply(200, newApplication);
@@ -53,11 +49,6 @@ describe('Auth - Applications', () => {
   });
 
   it('Can get applications', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${AUTH_BASE}`)
       .get('/applications')
       .reply(200, applicationDataList);

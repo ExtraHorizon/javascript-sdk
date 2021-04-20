@@ -17,6 +17,8 @@ import {
   LoginFreezeError,
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
+  InvalidGrantError,
+  MFARequiredError,
   MissingRequiredFieldsError,
   IllegalArgumentError,
   PasswordError,
@@ -60,13 +62,25 @@ const ErrorClassDefinitionsMap = {
   2610: FileTooLargeError,
 };
 
+const ErrorClassDifinitionsByErrorMap = {
+  invalid_grant: InvalidGrantError,
+  mfa_required: MFARequiredError,
+};
+
 export function typeReceivedError(error: HttpError) {
   const ErrorClassDefinition =
     ErrorClassDefinitionsMap[error?.response?.data?.code];
 
-  if (!ErrorClassDefinition) {
-    return new ApiError(error);
+  if (ErrorClassDefinition) {
+    return new ErrorClassDefinition(error);
   }
 
-  return new ErrorClassDefinition(error);
+  const ErrorClassDefinitionByCode =
+    ErrorClassDifinitionsByErrorMap[error?.response?.data?.error];
+
+  if (ErrorClassDefinitionByCode) {
+    return new ErrorClassDefinitionByCode(error);
+  }
+
+  return new ApiError(error);
 }

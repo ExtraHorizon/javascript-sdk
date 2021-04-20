@@ -1,6 +1,7 @@
 import * as nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { client } from '../../../src/index';
+import { Client, client } from '../../../src/index';
+import { GlobalPermissionName } from '../../../src/services/users/models/GlobalPermissionName';
 import {
   permissionResponse,
   roleResponse,
@@ -11,22 +12,23 @@ describe('Global Roles Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const roleId = '5bfbfc3146e0fb321rsa4b21';
 
-  let sdk;
+  let sdk: Client;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   it('Retrieve a list of permissions', async () => {
@@ -49,19 +51,18 @@ describe('Global Roles Service', () => {
   });
 
   it('Create a role', async () => {
-    const rql = '';
     const newRole = {
       name: 'newRole',
       description: 'this is a new role',
     };
     nock(`${apiHost}${USER_BASE}`)
-      .post(`/roles${rql}`)
+      .post(`/roles`)
       .reply(200, {
         ...newRole,
         id: roleId,
       });
 
-    const res = await sdk.users.createRole(rql, newRole);
+    const res = await sdk.users.createRole(newRole);
 
     expect(res.id).toBe(roleId);
     expect(res.name).toBe(newRole.name);
@@ -93,7 +94,7 @@ describe('Global Roles Service', () => {
 
   it('Add permissions to a role', async () => {
     const requestBody = {
-      permissions: ['VIEW_PRESCRIPTIONS'],
+      permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
     nock(`${apiHost}${USER_BASE}`)
       .post('/roles/add_permissions')
@@ -107,7 +108,7 @@ describe('Global Roles Service', () => {
   it('Remove permissions from roles', async () => {
     const rql = '';
     const requestBody = {
-      permissions: ['VIEW_PRESCRIPTIONS'],
+      permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
     nock(`${apiHost}${USER_BASE}`)
       .post(`/roles/remove_permissions${rql}`)

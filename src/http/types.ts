@@ -1,6 +1,6 @@
+/* eslint-disable camelcase */
 import OAuth = require('oauth-1.0a');
 
-/* eslint-disable camelcase */
 export interface TokenDataOauth2 {
   accessToken: string;
   refreshToken: string;
@@ -56,4 +56,15 @@ interface Oauth2ConfigCode extends OauthConfigBase {
   };
 }
 
-export type AuthConfig = Oauth2ConfigPassword | Oauth2ConfigCode | Oauth1Config;
+interface Oauth2Refresh extends OauthConfigBase {
+  params: {
+    grant_type: string;
+    refresh_token: string;
+  };
+}
+
+export type AuthConfig =
+  | Oauth2ConfigPassword
+  | Oauth2ConfigCode
+  | Oauth2Refresh
+  | Oauth1Config;

@@ -10,20 +10,21 @@ describe('Auth - OAuth2', () => {
 
   let sdk: Client;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     sdk = client({
       apiHost,
-      oauth: {
-        clientId: '',
-        username: '',
-        password: '',
-      },
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
+
+    await sdk.authenticate({
+      clientId: '',
+      username: '',
+      password: '',
+    });
   });
 
   afterEach(() => {
@@ -31,11 +32,6 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can create authorizations', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${AUTH_BASE}`)
       .post('/oauth2/authorizations')
       .reply(200, newAuthorization);
@@ -52,11 +48,6 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can get authorizations', async () => {
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
-      .reply(200, { access_token: mockToken });
-
     nock(`${apiHost}${AUTH_BASE}`)
       .get('/oauth2/authorizations')
       .reply(200, authorizationList);
@@ -68,11 +59,7 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can delete authorization', async () => {
-    const mockToken = 'mockToken';
     const authorizationId = '123';
-    nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
-      .reply(200, { access_token: mockToken });
 
     nock(`${apiHost}${AUTH_BASE}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)
@@ -88,12 +75,8 @@ describe('Auth - OAuth2', () => {
   });
 
   it('Can not delete unknown resource authorization', async () => {
-    const mockToken = 'mockToken';
     const authorizationId = '123';
     expect.assertions(1);
-    nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
-      .reply(200, { access_token: mockToken });
 
     nock(`${apiHost}${AUTH_BASE}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)

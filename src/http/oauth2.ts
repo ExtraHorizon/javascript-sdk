@@ -7,12 +7,9 @@ import { AuthConfig, TokenDataOauth2 } from './types';
 import { camelizeResponseData, transformResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
 
-export const addAuth = (
-  http: AxiosInstance,
-  options: Config,
-  authConfig: AuthConfig
-): AxiosInstance => {
+export default (http: AxiosInstance, options: Config) => {
   let tokenData: TokenDataOauth2;
+  let authConfig;
   const httpWithAuth = axios.create({ ...http.defaults });
 
   if (options.debug) {
@@ -21,28 +18,23 @@ export const addAuth = (
   }
 
   const refreshTokens = async () => {
-    const tokenResult = await http.post(authConfig.path, {
-      grant_type: 'refresh_token',
-      refresh_token: tokenData.refreshToken,
-    });
-    tokenData = tokenResult.data;
-    return tokenData;
-  };
-
-  const authenticate = async () => {
-    const tokenResult = await http.post(authConfig.path, authConfig.params);
-    tokenData = tokenResult.data;
-    return tokenData;
+    try {
+      const tokenResult = await http.post(authConfig.path, {
+        grant_type: 'refresh_token',
+        refresh_token: tokenData.refreshToken,
+      });
+      setTokenData(tokenResult.data);
+      return tokenResult.data;
+    } catch (error) {
+      throw typeReceivedError(error);
+    }
   };
 
   httpWithAuth.interceptors.request.use(async config => ({
     ...config,
     headers: {
       ...config.headers,
-      Authorization: `Bearer ${
-        (tokenData && tokenData.accessToken) ||
-        (await authenticate()).accessToken
-      }`,
+      Authorization: `Bearer ${tokenData && tokenData.accessToken}`,
     },
   }));
 
@@ -58,17 +50,18 @@ export const addAuth = (
           !originalRequest._retry
         ) {
           originalRequest._retry = true;
-          tokenData.accessToken = '';
-          if (error.response?.data?.code === 118) {
+          if (
+            error.response?.data?.code === 118 ||
             // ACCESS_TOKEN_EXPIRED_EXCEPTION
+            error.response?.data?.code === 117
+            // ACCESS_TOKEN_UNKNOWN
+          ) {
+            tokenData.accessToken = '';
             originalRequest.headers.Authorization = `Bearer ${
               (await refreshTokens()).accessToken
             }`;
           } else {
-            // All others, retry authenticate
-            originalRequest.headers.Authorization = `Bearer ${
-              (await authenticate()).accessToken
-            }`;
+            return Promise.reject(typeReceivedError(error));
           }
           return http(originalRequest);
         }
@@ -82,7 +75,45 @@ export const addAuth = (
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
 
-  return httpWithAuth;
-};
+  async function setTokenData(data: TokenDataOauth2) {
+    if (options.freshTokensCallback) {
+      await options.freshTokensCallback(data);
+    }
+    tokenData = data;
+  }
 
-export default addAuth;
+  async function authenticate(data: AuthConfig) {
+    try {
+      authConfig = data;
+      const tokenResult = await http.post(authConfig.path, authConfig.params);
+      setTokenData(tokenResult.data);
+    } catch (error) {
+      throw typeReceivedError(error);
+    }
+  }
+
+  async function confirmMfa({
+    token,
+    methodId,
+    code,
+  }: {
+    token: string;
+    methodId: string;
+    code: string;
+  }) {
+    try {
+      const tokenResult = await http.post(authConfig.path, {
+        ...authConfig.params,
+        grant_type: 'mfa',
+        token,
+        code,
+        method_id: methodId,
+      });
+      setTokenData(tokenResult.data);
+    } catch (error) {
+      throw typeReceivedError(error);
+    }
+  }
+
+  return { ...httpWithAuth, authenticate, confirmMfa };
+};
