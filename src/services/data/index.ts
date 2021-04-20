@@ -1,4 +1,3 @@
-import { decamelizeKeys } from 'humps';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import infrastructureService from './infrastructureService';
@@ -12,13 +11,12 @@ export default (
   http: HttpInstance,
   httpWithAuth: HttpInstance
 ): DataService => {
-  const userClient = httpClient({
+  const client = httpClient({
     basePath: DATA_BASE,
-    transformRequestData: decamelizeKeys,
   });
 
-  const infrastructureMethods = infrastructureService(userClient, http);
-  const schemasMethods = schemasService(userClient, httpWithAuth);
+  const infrastructureMethods = infrastructureService(client, http);
+  const schemasMethods = schemasService(client, httpWithAuth);
 
   return {
     ...infrastructureMethods,
