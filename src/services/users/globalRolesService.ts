@@ -31,8 +31,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async getRoles(rql = ''): Promise<RoleList> {
-    return (await userClient.get(httpWithAuth, `/roles${rql}`)).data;
+  async getRoles(rql?: RQLString): Promise<RoleList> {
+    return (await userClient.get(httpWithAuth, `/roles${rql || ''}`)).data;
   },
 
   /**
@@ -41,14 +41,12 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * - | - | -
    * `CREATE_ROLE` | `global` | **Required** for this endpoint
    *
-   * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Success
    * @throws {ApiError}
    */
-  async createRole(rql = '', requestBody: RoleCreation): Promise<Role> {
-    return (await userClient.post(httpWithAuth, `/roles${rql}`, requestBody))
-      .data;
+  async createRole(requestBody: RoleCreation): Promise<Role> {
+    return (await userClient.post(httpWithAuth, `/roles`, requestBody)).data;
   },
 
   /**
@@ -129,18 +127,13 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * - | - | -
    * `ADD_ROLE_TO_USER` | `global` | **Required** for this endpoint
    *
-   * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
    * @throws {ApiError}
    */
-  async addRolesToUsers(
-    rql = '',
-    requestBody?: UserRoles
-  ): Promise<RecordsAffected> {
-    return (
-      await userClient.post(httpWithAuth, `/add_roles${rql}`, requestBody)
-    ).data;
+  async addRolesToUsers(requestBody?: UserRoles): Promise<RecordsAffected> {
+    return (await userClient.post(httpWithAuth, `/add_roles`, requestBody))
+      .data;
   },
 
   /**
