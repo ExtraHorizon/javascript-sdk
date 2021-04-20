@@ -71,7 +71,7 @@ describe('OAuth2 Password Flow', () => {
       const res = await sdk.files.find(rql);
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
-      expect(err instanceof NoPermissionError).toBe(true);
+      expect(err).toBeInstanceOf(NoPermissionError);
     }
   });
 
@@ -87,7 +87,7 @@ describe('OAuth2 Password Flow', () => {
       const schema = await sdk.data.createSchema(newSchemaInput);
       expect(schema.creationTransition).toBeDefined();
     } catch (err) {
-      expect(err instanceof NoPermissionError).toBe(true);
+      expect(err).toBeInstanceOf(NoPermissionError);
     }
   });
 });
