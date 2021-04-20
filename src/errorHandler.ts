@@ -26,6 +26,7 @@ import {
   UnauthorizedTokenException,
   TokenNotDeleteableException,
   FileTooLargeException,
+  InvalidGrantError,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -56,13 +57,24 @@ const ErrorClassDefinitionsMap = {
   2610: FileTooLargeException,
 };
 
+const ErrorClassDifinitionsByErrorMap = {
+  invalid_grant: InvalidGrantError,
+};
+
 export function typeReceivedError(error: HttpError) {
   const ErrorClassDefinition =
     ErrorClassDefinitionsMap[error?.response?.data?.code];
 
-  if (!ErrorClassDefinition) {
-    return new ApiError(error);
+  if (ErrorClassDefinition) {
+    return new ErrorClassDefinition(error);
   }
 
-  return new ErrorClassDefinition(error);
+  const ErrorClassDefinitionByCode =
+    ErrorClassDifinitionsByErrorMap[error?.response?.data?.error];
+
+  if (ErrorClassDefinitionByCode) {
+    return new ErrorClassDefinitionByCode(error);
+  }
+
+  return new ApiError(error);
 }

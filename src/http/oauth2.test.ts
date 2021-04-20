@@ -1,6 +1,6 @@
 import * as nock from 'nock';
 import { AUTH_BASE } from '../constants';
-import { ApiError } from '../errors';
+import { InvalidGrantError } from '../errors';
 import createHttpClient from './client';
 import createAuthHttpClient from './oauth2';
 import { parseAuthParams } from './utils';
@@ -52,7 +52,7 @@ describe('http client', () => {
     try {
       await httpWithAuth.authenticate(authConfig);
     } catch (error) {
-      expect(error).toBeInstanceOf(ApiError);
+      expect(error).toBeInstanceOf(InvalidGrantError);
     }
   });
 
@@ -104,12 +104,17 @@ describe('http client', () => {
       await httpWithAuth.authenticate(authConfig);
       await httpWithAuth.get('test');
     } catch (error) {
-      expect(error).toBeInstanceOf(ApiError);
+      expect(error).toBeInstanceOf(InvalidGrantError);
       expect(error.response.error).toBe('invalid_grant');
     }
   });
 
   it('Make call with authorization but reply twice with unknown token', async () => {
+    /*  Authenticate => returns unknown access token
+     *  The get call fails because 117 is returned
+     *  this trigger the sdk to try and refresh the token
+     *  the refresh token => returns invalid_grant
+     */
     const mockToken = 'unknown access token';
     nock(mockParams.apiHost)
       .post(`${AUTH_BASE}/oauth2/token`)
@@ -123,13 +128,14 @@ describe('http client', () => {
 
     nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth2/token`).reply(400, {
       error: 'invalid_grant',
-      description: 'this password email combination is unknown',
+      description: 'The refresh token is unknown',
     });
 
     try {
+      await httpWithAuth.authenticate(authConfig);
       await httpWithAuth.get('test');
     } catch (error) {
-      expect(error).toBeInstanceOf(ApiError);
+      expect(error).toBeInstanceOf(InvalidGrantError);
     }
   });
 });
