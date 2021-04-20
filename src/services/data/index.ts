@@ -5,13 +5,13 @@ import infrastructureService from './infrastructureService';
 import schemasService from './schemasService';
 import { DATA_BASE } from '../../constants';
 
-export type UsersService = ReturnType<typeof infrastructureService> &
+export type DataService = ReturnType<typeof infrastructureService> &
   ReturnType<typeof schemasService>;
 
 export default (
   http: HttpInstance,
   httpWithAuth: HttpInstance
-): UsersService => {
+): DataService => {
   const userClient = httpClient({
     basePath: DATA_BASE,
     transformRequestData: decamelizeKeys,

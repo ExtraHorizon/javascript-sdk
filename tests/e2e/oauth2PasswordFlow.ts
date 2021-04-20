@@ -48,6 +48,7 @@ describe('OAuth2 Password Flow', () => {
   });
 
   it('getRoles()', async () => {
+    expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
       const res = await sdk.users.getRoles(rql);
@@ -66,6 +67,7 @@ describe('OAuth2 Password Flow', () => {
 
   // files service
   it('find()', async () => {
+    expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
     try {
       const res = await sdk.files.find(rql);
