@@ -1,4 +1,24 @@
-export const newSchemaData = {
+import {
+  CreateMode,
+  ReadMode,
+  UpdateMode,
+  DeleteMode,
+  GroupSyncMode,
+} from '../../src/services/data/types';
+
+export const newSchemaInput = {
+  name: 'Fibricheck measurement',
+  description: 'The schema for holding FibriCheck measurements',
+  createMode: CreateMode.DEFAULT,
+  readMode: ReadMode.ALL_USERS,
+  updateMode: UpdateMode.DEFAULT,
+  deleteMode: DeleteMode.PERMISSION_REQUIRED,
+  groupSyncMode: GroupSyncMode.DISABLED,
+  defaultLimit: 5,
+  maximumLimit: 5,
+};
+
+export const newSchemaCreated = {
   id: '5e9fff9d90135a2a9a718e2f',
   name: 'FibriCheck Measurement',
   description: 'The schema for holding FibriCheck measurements',
