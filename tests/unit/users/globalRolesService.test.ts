@@ -51,19 +51,18 @@ describe('Global Roles Service', () => {
   });
 
   it('Create a role', async () => {
-    const rql = '';
     const newRole = {
       name: 'newRole',
       description: 'this is a new role',
     };
     nock(`${apiHost}${USER_BASE}`)
-      .post(`/roles${rql}`)
+      .post(`/roles`)
       .reply(200, {
         ...newRole,
         id: roleId,
       });
 
-    const res = await sdk.users.createRole(rql, newRole);
+    const res = await sdk.users.createRole(newRole);
 
     expect(res.id).toBe(roleId);
     expect(res.name).toBe(newRole.name);

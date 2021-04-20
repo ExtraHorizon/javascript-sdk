@@ -131,9 +131,13 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ApiError}
    */
-  async addRolesToUsers(requestBody?: UserRoles): Promise<RecordsAffected> {
-    return (await userClient.post(httpWithAuth, `/add_roles`, requestBody))
-      .data;
+  async addRolesToUsers(
+    rql: RQLString,
+    requestBody?: UserRoles
+  ): Promise<RecordsAffected> {
+    return (
+      await userClient.post(httpWithAuth, `/add_roles${rql}`, requestBody)
+    ).data;
   },
 
   /**
