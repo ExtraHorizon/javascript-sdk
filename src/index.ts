@@ -51,7 +51,7 @@ export function client(rawConfig: Config): Client {
   return {
     users: usersService(http, httpWithAuth),
     auth: authService(http, httpWithAuth),
-    data: dataService(http),
+    data: dataService(http, httpWithAuth),
     files: filesService(httpWithAuth),
   };
 }
