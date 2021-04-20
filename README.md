@@ -46,7 +46,6 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
-  oauth: {},
 });
 
 await sdk.authenticate({
@@ -59,7 +58,7 @@ await sdk.authenticate({
 </details>
 
 <details>
-    <summary>OAuth2 Authorization Code Request flow with callback</summary>
+    <summary>OAuth2 Authorization Code Grant flow with callback</summary>
 
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
@@ -81,7 +80,7 @@ await sdk.authenticate({
 </details>
 
 <details>
-    <summary>OAuth2 refresh token flow</summary>
+    <summary>OAuth2 Refresh Token Grant flow</summary>
 
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
@@ -103,20 +102,15 @@ await sdk.authenticate({
 ```js
 import { client, MfaRequiredError } from '@extrahorizon/javascript-sdk';
 
-const apiHost = 'https://api.dev.fibricheck.com';
-const clientId = '263bfa9a1d1ced19e228c28eb2a331f774184243';
-const password = 'Azerty123';
-const username = 'jens.verbeken@craftzing.com';
-
 const sdk = client({
-  apiHost,
+  apiHost: '',
 });
 
 try {
   await sdk.authenticate({
-    clientId,
-    password,
-    username,
+    clientId: '',
+    password: '',
+    username: '',
   });
 } catch (error) {
   if (error instanceof MfaRequiredError) {
@@ -136,6 +130,8 @@ try {
 
 </details>
 
+<br>
+
 ### Your first request
 
 With es6 imports
@@ -143,9 +139,17 @@ With es6 imports
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
 
-const sdk = client(config);
-
 (async () => {
+  const sdk = client({
+    apiHost: '',
+  });
+
+  await sdk.authenticate({
+    clientId: '',
+    password: '',
+    username: '',
+  });
+
   console.log('sdk.users.health()', await sdk.users.health());
   console.log('sdk.users.me()', await sdk.users.me());
 })();
