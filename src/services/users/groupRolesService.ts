@@ -57,7 +57,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addRoleToGroup(
     groupId: ObjectId,
-    requestBody?: AddRole
+    requestBody: AddRole
   ): Promise<GroupRole> {
     return (
       await userClient.post(
@@ -136,8 +136,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addPermissionsToGroupRoles(
     groupId: ObjectId,
-    rql?: RQLString,
-    requestBody?: GroupRolePermissions
+    requestBody: GroupRolePermissions,
+    rql?: RQLString
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -163,8 +163,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removePermissionsFromGroupRoles(
     groupId: ObjectId,
-    rql: RQLString,
-    requestBody?: GroupRolePermissions
+    requestBody: GroupRolePermissions,
+    rql: RQLString
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -190,8 +190,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async assignRolesToStaff(
     groupId: ObjectId,
-    rql?: RQLString,
-    requestBody?: StaffRoles
+    requestBody: StaffRoles,
+    rql?: RQLString
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -218,7 +218,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removeRolesFromStaff(
     groupId: ObjectId,
     rql: RQLString,
-    requestBody?: StaffRoles
+    requestBody: StaffRoles
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -242,8 +242,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ApiError}
    */
   async addUserToStaff(
-    rql?: RQLString,
-    requestBody?: StaffGroups
+    rql: RQLString,
+    requestBody: StaffGroups
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -268,7 +268,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removeUsersFromStaff(
     rql: RQLString,
-    requestBody?: StaffGroups
+    requestBody: StaffGroups
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(

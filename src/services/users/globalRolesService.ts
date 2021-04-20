@@ -90,7 +90,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ResourceUnknownError}
    */
   async addPermissionsToRole(
-    requestBody?: RolePermissions
+    requestBody: RolePermissions
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(httpWithAuth, '/roles/add_permissions', requestBody)
@@ -110,7 +110,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removePermissionsFromRole(
     rql: RQLString,
-    requestBody?: RolePermissions
+    requestBody: RolePermissions
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -153,7 +153,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removeRolesFromUsers(
     rql: RQLString,
-    requestBody?: UserRoles
+    requestBody: UserRoles
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(httpWithAuth, `/remove_roles${rql}`, requestBody)
