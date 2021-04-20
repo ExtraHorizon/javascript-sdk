@@ -104,3 +104,4 @@ export class UnauthorizedTokenException extends ApiError {}
 export class TokenNotDeleteableException extends ApiError {}
 export class FileTooLargeException extends ApiError {}
 export class InvalidGrantError extends ApiError {}
+export class MFARequiredError extends ApiError {}

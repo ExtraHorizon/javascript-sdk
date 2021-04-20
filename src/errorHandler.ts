@@ -27,6 +27,7 @@ import {
   TokenNotDeleteableException,
   FileTooLargeException,
   InvalidGrantError,
+  MFARequiredError,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -59,6 +60,7 @@ const ErrorClassDefinitionsMap = {
 
 const ErrorClassDifinitionsByErrorMap = {
   invalid_grant: InvalidGrantError,
+  mfa_required: MFARequiredError,
 };
 
 export function typeReceivedError(error: HttpError) {

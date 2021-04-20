@@ -1,6 +1,6 @@
 import * as nock from 'nock';
 import { AUTH_BASE } from '../constants';
-import { InvalidGrantError } from '../errors';
+import { InvalidGrantError, MFARequiredError } from '../errors';
 import createHttpClient from './client';
 import createAuthHttpClient from './oauth2';
 import { parseAuthParams } from './utils';
@@ -17,7 +17,7 @@ const mockParams = {
 describe('http client', () => {
   const http = createHttpClient(mockParams);
   const authConfig = parseAuthParams(mockParams.oauth);
-  let httpWithAuth;
+  let httpWithAuth: ReturnType<typeof createAuthHttpClient>;
 
   beforeEach(() => {
     nock.cleanAll();
@@ -136,6 +136,72 @@ describe('http client', () => {
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
+    }
+  });
+
+  it('Initialize with RefreshToken', async () => {
+    expect.assertions(2);
+    const mockToken = 'access token';
+    nock(mockParams.apiHost)
+      .post(`${AUTH_BASE}/oauth2/token`)
+      .reply(200, (_uri, data) => {
+        expect(data).toEqual({
+          grant_type: 'refresh_token',
+          refresh_token: 'test',
+        });
+
+        return { access_token: mockToken };
+      });
+
+    const refreshConfig = parseAuthParams({ refreshToken: 'test' });
+    await httpWithAuth.authenticate(refreshConfig);
+    nock(mockParams.apiHost).get('/test').reply(200, '');
+
+    const result = await httpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
+  });
+
+  it('Initialize with MFA Enabled', async () => {
+    expect.assertions(2);
+    const mockToken = 'access token';
+    nock(mockParams.apiHost)
+      .post(`${AUTH_BASE}/oauth2/token`)
+      .reply(400, {
+        error: 'mfa_required',
+        description: 'Multifactor authentication is required for this user',
+        mfa: {
+          token: '608c038a830f40d7fe028a3f05c85b84f9040d37',
+          tokenExpiresIn: 900000,
+          methods: [
+            {
+              id: '507f191e810c19729de860ea',
+              type: 'totp',
+              name: 'Google Authenticator',
+              tags: ['selected'],
+            },
+          ],
+        },
+      });
+
+    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth2/token`).reply(200, {
+      accessToken: mockToken,
+    });
+
+    nock(mockParams.apiHost).get('/test').reply(200, '');
+
+    try {
+      await httpWithAuth.authenticate(authConfig);
+    } catch (error) {
+      expect(error).toBeInstanceOf(MFARequiredError);
+      const { mfa } = error.response;
+      await httpWithAuth.confirmMfa({
+        token: mfa.token,
+        methodId: mfa.methods[0].id,
+        code: 'code',
+      });
+      const result = await httpWithAuth.get('test');
+      expect(result).toBeDefined();
     }
   });
 });
