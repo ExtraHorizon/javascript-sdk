@@ -17,6 +17,7 @@ import type { Patient } from './models/Patient';
 import type { StaffMember } from './models/StaffMember';
 import type { HashBean } from './models/HashBean';
 import { Results } from '../models/Results';
+import { RQLString } from '../../rql';
 
 export default (
   userClient,
@@ -75,8 +76,8 @@ export default (
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(rql = ''): Promise<UserList> {
-    return (await userClient.get(httpWithAuth, `/${rql}`)).data;
+  async find(rql?: RQLString): Promise<UserList> {
+    return (await userClient.get(httpWithAuth, `/${rql || ''}`)).data;
   },
 
   /**
@@ -91,7 +92,7 @@ export default (
    * @returns any Operation successful
    * @throws {ApiError}
    */
-  async removeUsers(rql = ''): Promise<RecordsAffected> {
+  async removeUsers(rql: RQLString): Promise<RecordsAffected> {
     return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
   },
 
@@ -106,8 +107,8 @@ export default (
    * @returns Patient Success
    * @throws {ApiError}
    */
-  async patients(rql = ''): Promise<Patient[]> {
-    return (await userClient.get(httpWithAuth, `/patients${rql}`)).data;
+  async patients(rql?: RQLString): Promise<Patient[]> {
+    return (await userClient.get(httpWithAuth, `/patients${rql || ''}`)).data;
   },
 
   /**
@@ -121,8 +122,8 @@ export default (
    * @returns StaffMember Success
    * @throws {ApiError}
    */
-  async staff(rql = ''): Promise<StaffMember[]> {
-    return (await userClient.get(httpWithAuth, `/staff${rql}`)).data;
+  async staff(rql?: RQLString): Promise<StaffMember[]> {
+    return (await userClient.get(httpWithAuth, `/staff${rql || ''}`)).data;
   },
 
   /**

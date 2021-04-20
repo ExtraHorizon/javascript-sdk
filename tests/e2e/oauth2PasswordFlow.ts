@@ -1,5 +1,7 @@
 import { client } from '../../src';
 import rqlBuilder from '../../src/rql';
+import { NoPermissionError } from '../../src/errors';
+import { newSchemaInput } from '../__helpers__/data';
 
 describe('OAuth2 Password Flow', () => {
   let sdk;
@@ -45,9 +47,14 @@ describe('OAuth2 Password Flow', () => {
   });
 
   it('getRoles()', async () => {
+    expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
-    const res = await sdk.users.getRoles(rql);
-    expect(res.data.length).toBeGreaterThan(0);
+    try {
+      const res = await sdk.users.getRoles(rql);
+      expect(res.data.length).toBeGreaterThan(0);
+    } catch (err) {
+      expect(err).toBeInstanceOf(NoPermissionError);
+    }
   });
 
   // auth service
@@ -59,8 +66,29 @@ describe('OAuth2 Password Flow', () => {
 
   // files service
   it('find()', async () => {
+    expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
-    const res = await sdk.files.find(rql);
-    expect(res.data.length).toBeGreaterThan(0);
+    try {
+      const res = await sdk.files.find(rql);
+      expect(res.data.length).toBeGreaterThan(0);
+    } catch (err) {
+      expect(err).toBeInstanceOf(NoPermissionError);
+    }
+  });
+
+  // data infrastructure service
+  it('health()', async () => {
+    const res = await sdk.data.health();
+    expect(res).toBe(true);
+  });
+
+  // data schemas service
+  it('createSchema()', async () => {
+    try {
+      const schema = await sdk.data.createSchema(newSchemaInput);
+      expect(schema.creationTransition).toBeDefined();
+    } catch (err) {
+      expect(err).toBeInstanceOf(NoPermissionError);
+    }
   });
 });
