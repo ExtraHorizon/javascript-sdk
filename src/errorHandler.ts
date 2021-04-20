@@ -1,4 +1,5 @@
 import {
+  ServerError,
   ResourceUnknownError,
   ResourceAlreadyExistsError,
   ApiError,
@@ -30,6 +31,7 @@ import {
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
+  1: ServerError,
   10: NoPermissionError,
   13: EmptyBodyError,
   14: MissingRequiredFieldsError,

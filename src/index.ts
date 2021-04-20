@@ -2,6 +2,7 @@ import { Config } from './types';
 
 import usersService from './services/users';
 import authService from './services/auth';
+import dataService from './services/data';
 import filesService from './services/files';
 import { createHttpClient, addAuth1, addAuth2, parseAuthParams } from './http';
 
@@ -19,6 +20,7 @@ function validateConfig({ apiHost, ...config }: Config): Config {
 export interface Client {
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService>;
+  data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
 }
 
@@ -49,6 +51,7 @@ export function client(rawConfig: Config): Client {
   return {
     users: usersService(http, httpWithAuth),
     auth: authService(http, httpWithAuth),
+    data: dataService(http),
     files: filesService(httpWithAuth),
   };
 }

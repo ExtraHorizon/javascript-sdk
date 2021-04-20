@@ -86,6 +86,8 @@ export class ApiError extends Error {
   }
 }
 
+export class ServerError extends ApiError {}
+
 export class ResourceUnknownError extends ApiError {}
 export class ResourceAlreadyExistsError extends ApiError {}
 
