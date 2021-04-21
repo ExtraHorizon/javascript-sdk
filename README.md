@@ -182,7 +182,7 @@ const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 
 ## 📝 Changelog
 
-You can check the changelog on the [releases](https://github.com/craftzing/node-akeneo-api/releases) page.
+You can check the changelog on the [releases](https://github.com/ExtraHorizon/javascript-sdk/releases) page.
 
 ## 🔑 License
 

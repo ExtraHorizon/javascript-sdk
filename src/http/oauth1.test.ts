@@ -47,7 +47,7 @@ describe('http client', () => {
 
   it('Make call with authorization but with wrong password', async () => {
     expect.assertions(1);
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth1/token`).reply(400, {
+    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
       error: 'invalid_grant',
       description: 'this password email combination is unknown',
     });
@@ -62,7 +62,7 @@ describe('http client', () => {
   it('Make call with authorization but reply twice with unknown token', async () => {
     const mockToken = 'unknown access token';
     nock(mockParams.apiHost)
-      .post(`${AUTH_BASE}/oauth1/token`)
+      .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, { access_token: mockToken });
 
     nock(mockParams.apiHost).get('/test').reply(400, {
@@ -71,7 +71,7 @@ describe('http client', () => {
       message: 'The access token is unknown',
     });
 
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth1/token`).reply(400, {
+    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
       error: 'invalid_grant',
       description: 'this password email combination is unknown',
     });

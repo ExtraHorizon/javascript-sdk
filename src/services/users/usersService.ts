@@ -15,7 +15,7 @@ import type {
 import type { ObjectId } from '../models/ObjectId';
 import type { Patient } from './models/Patient';
 import type { StaffMember } from './models/StaffMember';
-import type { HashBean } from './models/HashBean';
+import type { Hash } from './models/Hash';
 import { Results } from '../models/Results';
 import { RQLString } from '../../rql';
 
@@ -158,7 +158,7 @@ export default (
    */
   async updateEmail(
     userId: ObjectId,
-    requestBody?: Email
+    requestBody: Email
   ): Promise<PartialUserData> {
     return (await userClient.put(httpWithAuth, `/${userId}/email`, requestBody))
       .data;
@@ -177,7 +177,7 @@ export default (
    */
   async addPatientEnlistment(
     userId: ObjectId,
-    requestBody?: AddPatientEnlistment
+    requestBody: AddPatientEnlistment
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -291,7 +291,7 @@ export default (
    * @returns {boolean} Success
    * @throws {ActivationUnknownError}
    */
-  async validateEmailActivation(requestBody?: HashBean): Promise<boolean> {
+  async validateEmailActivation(requestBody: Hash): Promise<boolean> {
     return (
       (await userClient.post(http, '/activation', requestBody)).status ===
       Results.Success
@@ -330,7 +330,7 @@ export default (
    * @returns any Success
    * @throws {ApiError}
    */
-  async validatePasswordReset(requestBody?: PasswordReset): Promise<boolean> {
+  async validatePasswordReset(requestBody: PasswordReset): Promise<boolean> {
     return (
       (await userClient.post(http, '/forgot_password', requestBody)).status ===
       Results.Success
@@ -347,7 +347,7 @@ export default (
    * @returns any Success
    * @throws {ApiError}
    */
-  async confirmPassword(requestBody?: ConfirmPassword): Promise<boolean> {
+  async confirmPassword(requestBody: ConfirmPassword): Promise<boolean> {
     return (
       (await userClient.post(httpWithAuth, '/confirm_password', requestBody))
         .status === Results.Success
@@ -392,7 +392,7 @@ export default (
    */
   async updateProfileImage(
     userId: ObjectId,
-    requestBody?: HashBean
+    requestBody: Hash
   ): Promise<PartialUserData> {
     return (
       await userClient.put(

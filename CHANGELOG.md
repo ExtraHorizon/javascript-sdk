@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2021-04-21
+
 ### Breaking changes
 
 Client initialization is changed. For example if you want to use the OAuth2 password flow, you no longer pass in the credentials as `oauth` property in the client. But you have to call the `authenticate` function. See README for other flows.
@@ -34,4 +36,14 @@ Client initialization is changed. For example if you want to use the OAuth2 pass
 
 ### Added
 
-- Multi-factor authentication via (authenticate / confirmMfa functions)
+- Multi-factor authentication via (authenticate / confirmMfa functions).
+- `freshTokensCallback` option when creating the client. Pass in a function to retrieve the response when new tokens are received.
+- OAuth2 Refresh Token Grant flow.
+- `files` service.
+- `data` service: only to create a schema at the moment.
+
+### Changes
+
+- Functions that accept an RQL parameter no longer accepts regular string, but expect the output of and rqlBuilder -> build().
+- `ApiError` now extends the built-in `Error`.
+- Some functions allowed empty `requestBody` which was incorrect in some cases, these have been fixed as well.
