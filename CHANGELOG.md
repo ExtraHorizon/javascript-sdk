@@ -40,9 +40,10 @@ Client initialization is changed. For example if you want to use the OAuth2 pass
 - `freshTokensCallback` option when creating the client. Pass in a function to retrieve the response when new tokens are received.
 - OAuth2 Refresh Token Grant flow.
 - `files` service.
-- `data` service: only schemas.
+- `data` service: only to create a schema at the moment.
 
 ### Changes
 
 - Functions that accept an RQL parameter no longer accepts regular string, but expect the output of and rqlBuilder -> build().
 - `ApiError` now extends the built-in `Error`.
+- Some functions allowed empty `requestBody` which was incorrect in some cases, these have been fixed as well.
