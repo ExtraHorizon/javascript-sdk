@@ -133,7 +133,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addRolesToUsers(
     rql: RQLString,
-    requestBody?: UserRoles
+    requestBody: UserRoles
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(httpWithAuth, `/add_roles${rql}`, requestBody)

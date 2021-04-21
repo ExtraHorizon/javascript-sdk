@@ -84,7 +84,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async updateGroupsRole(
     groupId: ObjectId,
     roleId: ObjectId,
-    requestBody?: AddRole
+    requestBody: AddRole
   ): Promise<GroupRole> {
     return (
       await userClient.put(
@@ -217,8 +217,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async removeRolesFromStaff(
     groupId: ObjectId,
-    rql: RQLString,
-    requestBody: StaffRoles
+    requestBody: StaffRoles,
+    rql: RQLString
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -241,9 +241,9 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ApiError}
    */
-  async addUserToStaff(
-    rql: RQLString,
-    requestBody: StaffGroups
+  async addUsersToStaff(
+    requestBody: StaffGroups,
+    rql?: RQLString
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(
@@ -267,8 +267,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ApiError}
    */
   async removeUsersFromStaff(
-    rql: RQLString,
-    requestBody: StaffGroups
+    requestBody: StaffGroups,
+    rql: RQLString
   ): Promise<RecordsAffected> {
     return (
       await userClient.post(

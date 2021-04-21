@@ -33,7 +33,7 @@ export default (userClient, httpAuth: HttpInstance) => ({
    */
   async generateToken(
     token: Token,
-    requestBody?: CreateTokenRequest
+    requestBody: CreateTokenRequest
   ): Promise<TokenObject> {
     return (await userClient.post(httpAuth, `/${token}/tokens`, requestBody))
       .data;
