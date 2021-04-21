@@ -34,11 +34,13 @@ Client initialization is changed. For example if you want to use the OAuth2 pass
 
 ### Added
 
-- Multi-factor authentication via (authenticate / confirmMfa functions)
+- Multi-factor authentication via (authenticate / confirmMfa functions).
 - `freshTokensCallback` option when creating the client. Pass in a function to retrieve the response when new tokens are received.
-- OAuth2 Refresh Token Grant flow
+- OAuth2 Refresh Token Grant flow.
+- `files` service.
+- `data` service: only schemas.
 
 ### Changes
 
-- Functions that accept an RQL parameter no longer accepts regular string, but expect the output of and rqlBuilder -> build()
-- `ApiError` now extends the built-in `Error`
+- Functions that accept an RQL parameter no longer accepts regular string, but expect the output of and rqlBuilder -> build().
+- `ApiError` now extends the built-in `Error`.
