@@ -39,7 +39,12 @@ export default (client, httpAuth: HttpInstance) => ({
       form.append('tags', tags);
     }
     return (
-      await client.post(httpAuth, '/', form, { headers: form.getHeaders() })
+      await client.post(httpAuth, '/', form, {
+        headers:
+          typeof window === 'undefined'
+            ? form.getHeaders()
+            : { 'Content-Type': 'multipart/form-data' },
+      })
     ).data;
   },
 
