@@ -4,6 +4,8 @@ import usersService from './services/users';
 import authService from './services/auth';
 import dataService from './services/data';
 import filesService from './services/files';
+import tasksService from './services/tasks';
+
 import {
   createHttpClient,
   createOAuth1HttpClient,
@@ -35,6 +37,7 @@ export interface Client {
   auth: ReturnType<typeof authService>;
   data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
+  tasks: ReturnType<typeof tasksService>;
 }
 
 /**
@@ -86,6 +89,9 @@ export function client(rawConfig: Config): Client {
     },
     get files() {
       return filesService(httpWithAuth || http);
+    },
+    get tasks() {
+      return tasksService(httpWithAuth || http);
     },
   };
 }
