@@ -92,11 +92,11 @@ describe('Group Roles Service', () => {
     const rql = '';
     nock(`${apiHost}${USER_BASE}`)
       .delete(`/groups/${groupId}/roles/${roleId}${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.removeRoleFromGroup(groupId, roleId, rql);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Add permissions to group roles', async () => {
@@ -104,7 +104,7 @@ describe('Group Roles Service', () => {
     const permissions = [];
     nock(`${apiHost}${USER_BASE}`)
       .post(`/groups/${groupId}/roles/add_permissions${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.addPermissionsToGroupRoles(
       groupId,
@@ -114,7 +114,7 @@ describe('Group Roles Service', () => {
       rql
     );
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Remove permissions from group roles', async () => {
@@ -122,7 +122,7 @@ describe('Group Roles Service', () => {
     const permissions = [];
     nock(`${apiHost}${USER_BASE}`)
       .post(`/groups/${groupId}/roles/remove_permissions${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.removePermissionsFromGroupRoles(
       groupId,
@@ -132,7 +132,7 @@ describe('Group Roles Service', () => {
       rql
     );
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Assign roles to staff members of a group', async () => {
@@ -140,11 +140,11 @@ describe('Group Roles Service', () => {
     const roles = [];
     nock(`${apiHost}${USER_BASE}`)
       .post(`/groups/${groupId}/staff/add_roles${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.assignRolesToStaff(groupId, { roles }, rql);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Remove roles from staff members of a group', async () => {
@@ -152,11 +152,11 @@ describe('Group Roles Service', () => {
     const roles = [];
     nock(`${apiHost}${USER_BASE}`)
       .post(`/groups/${groupId}/staff/remove_roles${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.removeRolesFromStaff(groupId, { roles }, rql);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Add users to staff', async () => {
@@ -164,11 +164,11 @@ describe('Group Roles Service', () => {
     const groups = [];
     nock(`${apiHost}${USER_BASE}`)
       .post(`/add_to_staff${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.addUsersToStaff({ groups }, rql);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Remove users from staff', async () => {
@@ -176,10 +176,10 @@ describe('Group Roles Service', () => {
     const groups = [];
     nock(`${apiHost}${USER_BASE}`)
       .post(`/remove_from_staff${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.removeUsersFromStaff({ groups }, rql);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 });

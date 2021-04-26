@@ -6,7 +6,7 @@ import type { GroupRolePermissions } from './models/GroupRolePermissions';
 import type { StaffRoles } from './models/StaffRoles';
 import type { StaffGroups } from './models/StaffGroups';
 import type { AddRole, GroupRole, GroupRoleList } from './models/Role';
-import type { RecordsAffected } from './types';
+import { AffectedRecords } from '../models/Responses';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
@@ -112,7 +112,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     roleId: ObjectId,
     rql: RQLString
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.delete(
         httpWithAuth,
@@ -138,7 +138,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     requestBody: GroupRolePermissions,
     rql?: RQLString
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -165,7 +165,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     requestBody: GroupRolePermissions,
     rql: RQLString
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -192,7 +192,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     requestBody: StaffRoles,
     rql?: RQLString
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -219,7 +219,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     groupId: ObjectId,
     requestBody: StaffRoles,
     rql: RQLString
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -244,7 +244,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async addUsersToStaff(
     requestBody: StaffGroups,
     rql?: RQLString
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -269,7 +269,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removeUsersFromStaff(
     requestBody: StaffGroups,
     rql: RQLString
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,

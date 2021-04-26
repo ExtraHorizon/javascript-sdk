@@ -2,7 +2,11 @@ import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { TokenDataOauth1, Oauth1Config } from './types';
-import { camelizeResponseData, transformResponseData } from './utils';
+import {
+  camelizeResponseData,
+  transformKeysResponseData,
+  transformResponseData,
+} from './utils';
 import { typeReceivedError } from '../errorHandler';
 
 export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
@@ -52,6 +56,7 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
+  httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
   async function authenticate(data: Oauth1Config) {
     try {

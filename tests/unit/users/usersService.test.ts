@@ -141,11 +141,11 @@ describe('Users Service', () => {
   it('Can remove a user', async () => {
     nock(`${apiHost}${USER_BASE}`)
       .delete(`/${userId}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const result = await sdk.users.remove(userId);
 
-    expect(result).toEqual({ recordsAffected: 1 });
+    expect(result).toEqual({ affectedRecords: 1 });
   });
 
   it('Can update a users email', async () => {
@@ -164,21 +164,21 @@ describe('Users Service', () => {
   it('Add a patient enlistment to a user', async () => {
     nock(`${apiHost}${USER_BASE}`)
       .post(`/${userId}/patient_enlistments`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const result = await sdk.users.addPatientEnlistment(userId, { groupId });
 
-    expect(result).toEqual({ recordsAffected: 1 });
+    expect(result).toEqual({ affectedRecords: 1 });
   });
 
   it('Can remove a patient enlistment from a user', async () => {
     nock(`${apiHost}${USER_BASE}`)
       .delete(`/${userId}/patient_enlistments/${groupId}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const result = await sdk.users.removePatientEnlistment(userId, groupId);
 
-    expect(result).toEqual({ recordsAffected: 1 });
+    expect(result).toEqual({ affectedRecords: 1 });
   });
 
   it('Can register a new user', async () => {

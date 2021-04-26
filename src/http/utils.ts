@@ -2,7 +2,6 @@ import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
 import { AxiosResponse } from 'axios';
 import { mapObjIndexed } from 'ramda';
-import { camelizeKeys } from 'humps';
 import { OAuthConfig } from '../types';
 import { AuthConfig } from './types';
 import { AUTH_BASE } from '../constants';
@@ -110,3 +109,65 @@ export const transformResponseData = ({
     ? data
     : recursiveMap(mapFunction)(data),
 });
+
+export function recursiveRenameKeys(fn: { (arg: string): string }, obj) {
+  if (Array.isArray(obj)) {
+    return obj.map(value => recursiveRenameKeys(fn, value));
+  }
+  if (Object(obj) === obj) {
+    return Object.keys(obj).reduce((memo, key) => {
+      if (Object(obj[key]) === obj[key]) {
+        return { ...memo, [fn(key)]: recursiveRenameKeys(fn, obj[key]) };
+      }
+      return { ...memo, [fn(key)]: obj[key] };
+    }, {});
+  }
+  return obj;
+}
+
+const keyFunction = key => {
+  if (['records_affected', 'recordsAffected'].includes(key)) {
+    return 'affectedRecords';
+  }
+  return key;
+};
+
+export const transformKeysResponseData = ({
+  data,
+  config,
+  ...response
+}: AxiosResponse): AxiosResponse => ({
+  ...response,
+  config,
+  data: ['arraybuffer', 'stream'].includes(config.responseType)
+    ? data
+    : recursiveRenameKeys(keyFunction, data),
+});
+
+export function camelize(string: string): string {
+  return string
+    .split(/_/)
+    .map((word, index) =>
+      index > 0 ? word.substr(0, 1).toUpperCase() + word.substr(1) : word
+    )
+    .join('');
+}
+
+export function decamelize(string: string): string {
+  return string
+    .split(/(?=[A-Z])/)
+    .join('_')
+    .toLowerCase();
+}
+
+export function camelizeKeys(
+  object: Record<string, unknown>
+): Record<string, unknown> {
+  return recursiveRenameKeys(camelize, object);
+}
+
+export function decamelizeKeys(
+  object: Record<string, unknown>
+): Record<string, unknown> {
+  return recursiveRenameKeys(decamelize, object);
+}

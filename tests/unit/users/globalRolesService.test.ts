@@ -71,12 +71,12 @@ describe('Global Roles Service', () => {
   it('Delete a role', async () => {
     const rql = '';
     nock(`${apiHost}${USER_BASE}`).delete(`/roles${rql}`).reply(200, {
-      recordsAffected: 1,
+      affectedRecords: 1,
     });
 
     const res = await sdk.users.deleteRole(rql);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Update a role', async () => {
@@ -98,11 +98,11 @@ describe('Global Roles Service', () => {
     };
     nock(`${apiHost}${USER_BASE}`)
       .post('/roles/add_permissions')
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.addPermissionsToRole(requestBody);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Remove permissions from roles', async () => {
@@ -112,11 +112,11 @@ describe('Global Roles Service', () => {
     };
     nock(`${apiHost}${USER_BASE}`)
       .post(`/roles/remove_permissions${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.removePermissionsFromRole(rql, requestBody);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Add roles to users', async () => {
@@ -126,11 +126,11 @@ describe('Global Roles Service', () => {
     };
     nock(`${apiHost}${USER_BASE}`)
       .post(`/add_roles${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.addRolesToUsers(rql, requestBody);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('Remove roles from users', async () => {
@@ -140,10 +140,10 @@ describe('Global Roles Service', () => {
     };
     nock(`${apiHost}${USER_BASE}`)
       .post(`/remove_roles${rql}`)
-      .reply(200, { recordsAffected: 1 });
+      .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.removeRolesFromUsers(rql, requestBody);
 
-    expect(res.recordsAffected).toBe(1);
+    expect(res.affectedRecords).toBe(1);
   });
 });
