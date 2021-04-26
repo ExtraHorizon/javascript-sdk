@@ -1,4 +1,5 @@
 import type { ObjectId } from '../models/ObjectId';
+import { PagedResult } from '../models/Responses';
 
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema
@@ -202,7 +203,7 @@ export interface Schema {
   creationTimestamp?: Date;
 }
 
-export interface InputSchema {
+export interface SchemaInput {
   name: string;
   description: string;
   createMode?: CreateMode;
@@ -212,4 +213,13 @@ export interface InputSchema {
   groupSyncMode?: GroupSyncMode;
   defaultLimit?: number;
   maximumLimit?: number;
+}
+
+export type UpdateSchemaInput = Pick<
+  Partial<SchemaInput>,
+  'name' | 'description' | 'defaultLimit' | 'maximumLimit'
+>;
+
+export interface SchemasList extends PagedResult {
+  data: Array<Schema>;
 }
