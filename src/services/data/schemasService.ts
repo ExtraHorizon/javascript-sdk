@@ -28,7 +28,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async findSchemas(rql?: RQLString): Promise<SchemasList> {
+  async find(rql?: RQLString): Promise<SchemasList> {
     return (await client.get(httpAuth, `/${rql || ''}`)).data;
   },
 

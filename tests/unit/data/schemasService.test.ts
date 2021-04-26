@@ -42,7 +42,7 @@ describe('Schemas Service', () => {
 
   it('Request a list of schemas', async () => {
     nock(`${apiHost}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
-    const res = await sdk.data.findSchemas();
+    const res = await sdk.data.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
