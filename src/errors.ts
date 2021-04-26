@@ -110,6 +110,7 @@ export class LoginFreezeError extends ApiError {}
 export class TooManyFailedAttemptsError extends ApiError {}
 export class InvalidPresenceTokenError extends ApiError {}
 export class IllegalArgumentError extends ApiError {}
+export class IllegalStateError extends ApiError {}
 export class MissingRequiredFieldsError extends ApiError {}
 export class PasswordError extends ApiError {}
 export class EmailUsedError extends ApiError {}
