@@ -1,5 +1,5 @@
 import * as nock from 'nock';
-import createHttpClient from './client';
+import { createHttpClient } from './client';
 
 const mockParams = {
   apiHost: 'https://api.test.com',

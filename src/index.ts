@@ -11,7 +11,7 @@ import {
   createOAuth2HttpClient,
 } from './http';
 
-export { default as rqlBuilder } from './rql';
+export { rqlBuilder } from './rql';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   return {

@@ -1,4 +1,4 @@
-import rqlBuilder from './rql';
+import { rqlBuilder } from './rql';
 
 describe('rql string builder', () => {
   it('parse select', async () => {
