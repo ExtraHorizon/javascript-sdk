@@ -18,8 +18,11 @@ interface RequestConfig {
   url?: string;
   method?: Method;
   baseURL?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   headers?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
 }
 
@@ -27,8 +30,10 @@ interface Response<T = any> {
   data: T;
   status: number;
   statusText: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   headers: any;
   config: RequestConfig;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   request?: any;
 }
 
