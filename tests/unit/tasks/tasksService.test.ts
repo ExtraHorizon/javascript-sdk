@@ -32,9 +32,10 @@ describe('Tasks Service', () => {
   });
 
   it('View a list of tasks', async () => {
+    const rql = '';
     nock(`${apiHost}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
-    const res = await sdk.tasks.getList();
+    const res = await sdk.tasks.find(rql);
 
     expect(res.data.length).toBeGreaterThan(0);
   });
