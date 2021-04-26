@@ -2,6 +2,7 @@ import {
   camelize,
   camelizeKeys,
   decamelize,
+  mapObjIndexed,
   recursiveMap,
   recursiveRenameKeys,
 } from './utils';
@@ -87,7 +88,7 @@ describe('recursiveRenameKeys', () => {
       test: 'value',
     });
 
-    expect(Object.keys(result)).toBe(['testtest']);
+    expect(Object.keys(result)).toStrictEqual(['test_test']);
   });
 
   it('complex object', () => {
@@ -121,15 +122,12 @@ describe('recursiveRenameKeys', () => {
         ],
       }
     );
-    expect(result.patientEnlistments[0].expiry_ts).toBe(
-      '2018-11-26T13:59:13.289Z'
-    );
+    expect(result.patientEnlistments[0].expiry_ts).toBe(1543240753289);
   });
 
   it('complex array', () => {
     const result = recursiveRenameKeys(
       key => {
-        console.log('key', key);
         if (key === 'phone_number') {
           return 'phone';
         }
@@ -160,27 +158,32 @@ describe('recursiveRenameKeys', () => {
         },
       ]
     );
-    expect(result[0].patientEnlistments[0].expiry_ts).toBe(
-      '2018-11-26T13:59:13.289Z'
-    );
+    expect(result[0].patientEnlistments[0].expiry_ts).toBe(1543240753289);
   });
 });
 
 describe('camelize', () => {
   it('easystring', () => {
     const result = camelize('easy_string_to_test');
-    console.log('result', result);
+    expect(result).toBe('easyStringToTest');
   });
   it('camelizeKeys', () => {
     const result = camelizeKeys({
       easy_string_to_test: 'test',
     });
-    console.log('result', result);
+    expect(result.easyStringToTest).toBeDefined();
   });
 });
 describe('decamelize', () => {
   it('easystring', () => {
     const result = decamelize('easyStringTo_test');
-    console.log('result', result);
+    expect(result).toBe('easy_string_to_test');
+  });
+});
+
+describe('mapObjIndexed', () => {
+  it('easy object', () => {
+    const result = mapObjIndexed(value => `-> ${value}`, { test: 'test' });
+    expect(result.test).toBe('-> test');
   });
 });

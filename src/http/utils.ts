@@ -1,7 +1,6 @@
 import * as OAuth from 'oauth-1.0a';
 import * as crypto from 'crypto';
 import { AxiosResponse } from 'axios';
-import { mapObjIndexed } from 'ramda';
 import { OAuthConfig } from '../types';
 import { AuthConfig } from './types';
 import { AUTH_BASE } from '../constants';
@@ -79,6 +78,12 @@ export const camelizeResponseData = ({
     ? data
     : camelizeKeys(data),
 });
+
+export const mapObjIndexed = (fn, object): Record<string, unknown> =>
+  Object.keys(object).reduce(
+    (memo, key) => ({ ...memo, [key]: fn(object[key]) }),
+    {}
+  );
 
 export const recursiveMap = fn => obj =>
   Array.isArray(obj)
