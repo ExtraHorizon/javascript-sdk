@@ -17,7 +17,7 @@ interface RQLBuilder {
   build: () => RQLString;
 }
 
-export default function rqlBuilder(): RQLBuilder {
+export function rqlBuilder(): RQLBuilder {
   let returnString: RQLString = '';
 
   const api: RQLBuilder = {

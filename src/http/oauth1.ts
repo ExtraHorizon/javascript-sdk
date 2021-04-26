@@ -5,7 +5,7 @@ import { TokenDataOauth1, Oauth1Config } from './types';
 import { camelizeResponseData, transformResponseData } from './utils';
 import { typeReceivedError } from '../errorHandler';
 
-export default (http: AxiosInstance, options: Config) => {
+export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
   let tokenData: TokenDataOauth1;
   let authConfig;
 
@@ -118,4 +118,4 @@ export default (http: AxiosInstance, options: Config) => {
   }
 
   return { ...httpWithAuth, authenticate, confirmMfa };
-};
+}
