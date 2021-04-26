@@ -1,5 +1,5 @@
 import { client } from '../../src';
-import rqlBuilder from '../../src/rql';
+import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
 import { newSchemaInput } from '../__helpers__/data';
 
