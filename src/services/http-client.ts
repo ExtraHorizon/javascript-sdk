@@ -2,7 +2,9 @@ import { HttpInstance, HttpRequestConfig } from '../types';
 
 interface HttpClient {
   basePath: string;
-  transformRequestData?<R>(args?: R): R;
+  transformRequestData?(
+    args?: Record<string, unknown>
+  ): Record<string, unknown>;
 }
 
 export default ({

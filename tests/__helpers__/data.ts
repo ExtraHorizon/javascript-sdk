@@ -4,6 +4,7 @@ import {
   UpdateMode,
   DeleteMode,
   GroupSyncMode,
+  IndexFieldsType,
 } from '../../src/services/data/types';
 
 export const newSchemaInput = {
@@ -292,4 +293,34 @@ export const schemasListResponse = {
       creationTimestamp: '2021-04-21T21:37:14.798Z',
     },
   ],
+};
+
+export const newIndexCreated = {
+  id: '5e9fff9d90135a2a9a718e2f',
+  name: 'location',
+  fields: [
+    {
+      name: 'PropertyNameToIndex',
+      type: 'asc',
+    },
+  ],
+  options: {
+    background: true,
+    unique: true,
+    sparse: true,
+  },
+  system: true,
+};
+
+export const newIndexInput = {
+  fields: [
+    {
+      name: 'PropertyNameToIndex',
+      type: IndexFieldsType.ASC,
+    },
+  ],
+  options: {
+    unique: true,
+    sparse: true,
+  },
 };

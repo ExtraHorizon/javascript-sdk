@@ -103,10 +103,6 @@ export interface UserList extends PagedResult {
   data?: PartialUserData[];
 }
 
-export interface RecordsAffected {
-  recordsAffected: number;
-}
-
 export interface Email {
   email: string;
 }

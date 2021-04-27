@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking changes
+
+Removed `debug` option. Use `responseLogger` and `requestLogger` options in stead. See README for example.
+
+```diff
+-const sdk = client({
+-  apiHost: '',
+-  debug: true
+-});
+
+
++import AxiosLogger from "axios-logger";
++
++const sdk = client({
++  apiHost: '',
++  requestLogger: AxiosLogger.requestLogger,
++  responseLogger: AxiosLogger.responseLogger
++});
++
++await sdk.authenticate({
++  clientId: '',
++  password: '',
++  username: ''
++});
+```
+
 ## [0.0.6] - 2021-04-21
 
 ### Breaking changes

@@ -1,4 +1,3 @@
-import { decamelizeKeys } from 'humps';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import healthService from './healthService';
@@ -6,6 +5,7 @@ import usersService from './usersService';
 import groupRolesService from './groupRolesService';
 import globalRolesService from './globalRolesService';
 import { USER_BASE } from '../../constants';
+import { decamelizeKeys } from '../../http/utils';
 
 export type UsersService = ReturnType<typeof usersService> &
   ReturnType<typeof healthService> &
