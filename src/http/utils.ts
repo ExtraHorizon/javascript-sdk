@@ -66,7 +66,7 @@ export function parseAuthParams(options: OAuthConfig): AuthConfig {
   throw new Error('Invalid Oauth config');
 }
 
-function mapObjIndexed(fn, object): Record<string, unknown> {
+export function mapObjIndexed(fn, object): Record<string, unknown> {
   return Object.keys(object).reduce(
     (memo, key) => ({ ...memo, [key]: fn(object[key], key) }),
     {}
