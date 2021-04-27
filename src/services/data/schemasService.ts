@@ -9,7 +9,13 @@ import {
 } from './types';
 import { RQLString } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default <
+  SchemaType,
+  SchemaProperties extends Record<keyof SchemaProperties, TypeConfiguration>
+>(
+  client,
+  httpAuth: HttpInstance
+) => ({
   /**
    * Create a schema
    * Permission | Scope | Effect
@@ -33,10 +39,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find<
-    SchemaType,
-    AdditionalProps extends Record<keyof AdditionalProps, TypeConfiguration>
-  >(rql?: RQLString): Promise<SchemasList<SchemaType, AdditionalProps>> {
+  async find(
+    rql?: RQLString
+  ): Promise<SchemasList<SchemaType, SchemaProperties>> {
     return (await client.get(httpAuth, `/${rql || ''}`)).data;
   },
 

@@ -12,7 +12,9 @@ import {
   parseAuthParams,
   createOAuth2HttpClient,
 } from './http';
+import { TypeConfiguration } from './services/data/types';
 
+export type { ConfigurationType } from './services/data/types';
 export { rqlBuilder } from './rql';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
@@ -53,7 +55,10 @@ export interface Client {
  *   },
  * });
  */
-export function client(rawConfig: Config): Client {
+export function client<
+  SchemaType,
+  SchemaProperties extends Record<keyof SchemaProperties, TypeConfiguration>
+>(rawConfig: Config) {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 
@@ -85,7 +90,7 @@ export function client(rawConfig: Config): Client {
       return authService(http, httpWithAuth || http);
     },
     get data() {
-      return dataService(http, httpWithAuth);
+      return dataService<SchemaType, SchemaProperties>(http, httpWithAuth);
     },
     get files() {
       return filesService(httpWithAuth || http);
