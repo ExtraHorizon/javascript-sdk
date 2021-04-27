@@ -1,6 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-import AxiosLogger from 'axios-logger';
-
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { AuthConfig, TokenDataOauth2 } from './types';
@@ -16,9 +14,31 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
   let authConfig;
   const httpWithAuth = axios.create({ ...http.defaults });
 
-  if (options.debug) {
-    httpWithAuth.interceptors.request.use(AxiosLogger.requestLogger);
-    httpWithAuth.interceptors.response.use(AxiosLogger.responseLogger);
+  const { requestLogger, responseLogger } = options;
+  if (requestLogger) {
+    httpWithAuth.interceptors.request.use(
+      config => {
+        requestLogger(config);
+        return config;
+      },
+      error => {
+        requestLogger(error);
+        return error;
+      }
+    );
+  }
+
+  if (responseLogger) {
+    httpWithAuth.interceptors.response.use(
+      response => {
+        responseLogger(response);
+        return response;
+      },
+      error => {
+        responseLogger(error);
+        return error;
+      }
+    );
   }
 
   const refreshTokens = async () => {

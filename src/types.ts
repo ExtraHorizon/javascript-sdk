@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { TokenDataOauth2 } from './http/types';
 
 export type HttpInstance = AxiosInstance;
@@ -44,7 +44,8 @@ export type OAuthConfig =
 
 export interface Config {
   apiHost: string;
-  debug?: boolean;
+  responseLogger?: (response: AxiosResponse | Error) => unknown;
+  requestLogger?: (request: AxiosRequestConfig | Error) => unknown;
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 

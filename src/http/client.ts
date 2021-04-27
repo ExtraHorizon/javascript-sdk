@@ -1,23 +1,39 @@
-/* eslint-disable no-underscore-dangle */
-import AxiosLogger from 'axios-logger';
-
 import axios, { AxiosInstance } from 'axios';
 import { Config } from '../types';
 import { camelizeResponseData } from './utils';
 
-export function createHttpClient({ apiHost, debug }: Config): AxiosInstance {
+export function createHttpClient({
+  apiHost,
+  requestLogger,
+  responseLogger,
+}: Config): AxiosInstance {
   const http = axios.create({
     baseURL: apiHost,
   });
 
-  if (debug) {
+  if (requestLogger) {
     http.interceptors.request.use(
-      AxiosLogger.requestLogger,
-      AxiosLogger.errorLogger
+      config => {
+        requestLogger(config);
+        return config;
+      },
+      error => {
+        requestLogger(error);
+        return Promise.reject(error);
+      }
     );
+  }
+
+  if (responseLogger) {
     http.interceptors.response.use(
-      AxiosLogger.responseLogger,
-      AxiosLogger.errorLogger
+      response => {
+        responseLogger(response);
+        return response;
+      },
+      error => {
+        responseLogger(error);
+        return error;
+      }
     );
   }
 
