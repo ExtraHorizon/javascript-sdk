@@ -12,7 +12,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param requestBody
    * @returns any Success
-   * @throws {400Error}
+   * @throws {IllegalArgumentError}
    */
   async updateCreationTransition(
     schemaId: ObjectId,
@@ -31,7 +31,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param requestBody
    * @returns any Success
-   * @throws {400Error}
+   * @throws {IllegalArgumentError}
    */
   async createTransition(
     schemaId: ObjectId,
@@ -51,8 +51,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param transitionId The id of the targeted transition.
    * @param requestBody
    * @returns any Success
-   * @throws {400Error}
-   * @throws {404Error}
+   * @throws {IllegalArgumentError}
+   * @throws {ResourceUnknownError}
    */
   async updateTransition(
     schemaId: ObjectId,
@@ -76,7 +76,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param transitionId The id of the targeted transition.
    * @returns any Success
-   * @throws {404Error}
+   * @throws {ResourceUnknownError}
    */
   async deleteTransition(
     schemaId: ObjectId,
