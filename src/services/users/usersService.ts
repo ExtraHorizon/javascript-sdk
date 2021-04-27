@@ -4,7 +4,6 @@ import type {
   PartialUserData,
   UserDataUpdate,
   UserList,
-  RecordsAffected,
   Email,
   AddPatientEnlistment,
   ChangePassword,
@@ -18,6 +17,7 @@ import type { StaffMember } from './models/StaffMember';
 import type { Hash } from './models/Hash';
 import { Results } from '../models/Results';
 import { RQLString } from '../../rql';
+import { AffectedRecords } from '../models/Responses';
 
 export default (
   userClient,
@@ -92,7 +92,7 @@ export default (
    * @returns any Operation successful
    * @throws {ApiError}
    */
-  async removeUsers(rql: RQLString): Promise<RecordsAffected> {
+  async removeUsers(rql: RQLString): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
   },
 
@@ -137,7 +137,7 @@ export default (
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async remove(userId: ObjectId): Promise<RecordsAffected> {
+  async remove(userId: ObjectId): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/${userId}`)).data;
   },
 
@@ -178,7 +178,7 @@ export default (
   async addPatientEnlistment(
     userId: ObjectId,
     requestBody: AddPatientEnlistment
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -204,7 +204,7 @@ export default (
   async removePatientEnlistment(
     userId: ObjectId,
     groupId: ObjectId
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.delete(
         httpWithAuth,
