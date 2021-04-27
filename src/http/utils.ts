@@ -1,6 +1,5 @@
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
-import { AxiosResponse } from 'axios';
 import { OAuthConfig } from '../types';
 import { AuthConfig } from './types';
 import { AUTH_BASE } from '../constants';
@@ -9,7 +8,7 @@ function hmacSha1Hash(baseString: string, key: string) {
   return crypto.createHmac('sha1', key).update(baseString).digest('base64');
 }
 
-export const parseAuthParams = (options: OAuthConfig): AuthConfig => {
+export function parseAuthParams(options: OAuthConfig): AuthConfig {
   if ('consumerKey' in options && 'email' in options) {
     // oauth1
     return {
@@ -65,25 +64,14 @@ export const parseAuthParams = (options: OAuthConfig): AuthConfig => {
   }
 
   throw new Error('Invalid Oauth config');
-};
+}
 
-export const camelizeResponseData = ({
-  data,
-  config,
-  ...response
-}: AxiosResponse): AxiosResponse => ({
-  ...response,
-  config,
-  data: ['arraybuffer', 'stream'].includes(config.responseType)
-    ? data
-    : camelizeKeys(data),
-});
-
-export const mapObjIndexed = (fn, object): Record<string, unknown> =>
-  Object.keys(object).reduce(
+function mapObjIndexed(fn, object): Record<string, unknown> {
+  return Object.keys(object).reduce(
     (memo, key) => ({ ...memo, [key]: fn(object[key], key) }),
     {}
   );
+}
 
 export const recursiveMap = fn => obj =>
   Array.isArray(obj)
@@ -94,32 +82,6 @@ export const recursiveMap = fn => obj =>
         obj
       );
 
-const mapFunction = (value, key) => {
-  if (
-    [
-      'creationTimestamp',
-      'expiryTimestamp',
-      'updateTimestamp',
-      'lastFailedTimestamp',
-    ].includes(key)
-  ) {
-    return new Date(value);
-  }
-  return value;
-};
-
-export const transformResponseData = ({
-  data,
-  config,
-  ...response
-}: AxiosResponse): AxiosResponse => ({
-  ...response,
-  config,
-  data: ['arraybuffer', 'stream'].includes(config.responseType)
-    ? data
-    : recursiveMap(mapFunction)(data),
-});
-
 /**
  * See if an object (`val`) is an instance of the supplied constructor. This
  * function will check up the inheritance chain, if any.
@@ -128,6 +90,7 @@ function is(Ctor, value) {
   return (value != null && value.constructor === Ctor) || value instanceof Ctor;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function recursiveRenameKeys(fn: { (arg: string): string }, obj) {
   if (Array.isArray(obj)) {
     return obj.map(value => recursiveRenameKeys(fn, value));
@@ -143,25 +106,6 @@ export function recursiveRenameKeys(fn: { (arg: string): string }, obj) {
   }
   return obj;
 }
-
-const keyFunction = key => {
-  if (['records_affected', 'recordsAffected'].includes(key)) {
-    return 'affectedRecords';
-  }
-  return key;
-};
-
-export const transformKeysResponseData = ({
-  data,
-  config,
-  ...response
-}: AxiosResponse): AxiosResponse => ({
-  ...response,
-  config,
-  data: ['arraybuffer', 'stream'].includes(config.responseType)
-    ? data
-    : recursiveRenameKeys(keyFunction, data),
-});
 
 export function camelize(string: string): string {
   return string

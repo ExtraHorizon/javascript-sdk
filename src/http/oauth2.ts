@@ -6,7 +6,7 @@ import {
   camelizeResponseData,
   transformKeysResponseData,
   transformResponseData,
-} from './utils';
+} from './interceptors';
 import { typeReceivedError } from '../errorHandler';
 
 export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {

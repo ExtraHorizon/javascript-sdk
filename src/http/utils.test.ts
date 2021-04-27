@@ -174,6 +174,7 @@ describe('camelize', () => {
     expect(result.easyStringToTest).toBeDefined();
   });
 });
+
 describe('decamelize', () => {
   it('easystring', () => {
     const result = decamelize('easyStringTo_test');

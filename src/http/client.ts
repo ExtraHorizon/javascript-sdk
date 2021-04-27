@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { Config } from '../types';
-import { camelizeResponseData } from './utils';
+import { camelizeResponseData } from './interceptors';
 
 export function createHttpClient({
   apiHost,
