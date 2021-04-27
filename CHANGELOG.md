@@ -27,7 +27,7 @@ Client initialization is changed. For example if you want to use the OAuth2 pass
 +  apiHost: '',
 +});
 +
-+await sdk.authenticate({
++await sdk.auth.authenticate({
 +  clientId: '',
 +  password: '',
 +  username: ''

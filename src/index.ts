@@ -48,7 +48,7 @@ export interface Client {
  * const sdk = client({
  *   apiHost: 'xxx.fibricheck.com',
  * });
- * await sdk.authenticate(
+ * await sdk.auth.authenticate(
  *   clientId: 'string',
  *   username: 'string',
  *   password: 'string',
