@@ -223,3 +223,30 @@ export type UpdateSchemaInput = Pick<
 export interface SchemasList extends PagedResult {
   data: Array<Schema>;
 }
+
+export type IndexFieldsName = string;
+
+export enum IndexFieldsType {
+  ASC = 'asc',
+  DESC = 'desc',
+  TEXT = 'text',
+}
+
+export interface IndexOptions {
+  background?: boolean;
+  unique?: boolean;
+  sparse?: boolean;
+}
+
+export interface Index {
+  id?: ObjectId;
+  name?: string;
+  fields?: Array<{
+    name?: IndexFieldsName;
+    type?: IndexFieldsType;
+  }>;
+  options?: IndexOptions;
+  system?: boolean;
+}
+
+export type IndexInput = Pick<Index, 'fields' | 'options'>;

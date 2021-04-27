@@ -5,7 +5,7 @@ import type { GlobalPermissionsList } from './models/GlobalPermission';
 import type { RolePermissions } from './models/RolePermissions';
 import type { Role, RoleCreation, RoleList, RoleUpdate } from './models/Role';
 import type { UserRoles } from './models/UserRoles';
-import { RecordsAffected } from './types';
+import { AffectedRecords } from '../models/Responses';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
@@ -59,7 +59,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async deleteRole(rql: RQLString): Promise<RecordsAffected> {
+  async deleteRole(rql: RQLString): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
   },
 
@@ -91,7 +91,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addPermissionsToRole(
     requestBody: RolePermissions
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(httpWithAuth, '/roles/add_permissions', requestBody)
     ).data;
@@ -111,7 +111,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removePermissionsFromRole(
     rql: RQLString,
     requestBody: RolePermissions
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -134,7 +134,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async addRolesToUsers(
     rql: RQLString,
     requestBody: UserRoles
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(httpWithAuth, `/add_roles${rql}`, requestBody)
     ).data;
@@ -154,7 +154,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async removeRolesFromUsers(
     rql: RQLString,
     requestBody: UserRoles
-  ): Promise<RecordsAffected> {
+  ): Promise<AffectedRecords> {
     return (
       await userClient.post(httpWithAuth, `/remove_roles${rql}`, requestBody)
     ).data;
