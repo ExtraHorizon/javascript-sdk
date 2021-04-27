@@ -123,3 +123,4 @@ export class TokenNotDeleteableError extends ApiError {}
 export class FileTooLargeError extends ApiError {}
 export class InvalidGrantError extends ApiError {}
 export class MFARequiredError extends ApiError {}
+export class StatusInUseError extends ApiError {}
