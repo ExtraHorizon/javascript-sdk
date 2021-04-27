@@ -26,6 +26,7 @@ interface RequestConfig {
   data?: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Response<T = any> {
   data: T;
   status: number;
@@ -37,17 +38,21 @@ interface Response<T = any> {
   request?: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface HttpError<T = any> extends Error {
   config: RequestConfig;
   code?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   request?: any;
   response?: Response<T>;
   isAxiosError: boolean;
   toJSON: () => Record<string, unknown>;
 }
 
-const cleanHeaders = (headers: Record<string, any>) =>
-  headers && headers.Authorization
+const cleanHeaders = (headers: Record<string, unknown>) =>
+  headers &&
+  'Authorization' in headers &&
+  typeof headers.Authorization === 'string'
     ? {
         ...headers,
         Authorization: `Bearer ${`...${headers.Authorization.substr(-5)}`}`,
