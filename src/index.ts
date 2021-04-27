@@ -46,11 +46,11 @@ export interface Client {
  * @example
  * const sdk = client({
  *   apiHost: 'xxx.fibricheck.com',
- *   oauth: {
- *     clientId: 'string',
- *     username: 'string',
- *     password: 'string',
- *   },
+ * });
+ * await sdk.authenticate(
+ *   clientId: 'string',
+ *   username: 'string',
+ *   password: 'string',
  * });
  */
 export function client(rawConfig: Config): Client {
