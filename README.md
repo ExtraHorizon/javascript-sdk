@@ -180,7 +180,7 @@ const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 
 You can pass in two logger function that will be called by Axios on every request/response respectively.
 
-````ts
+```ts
 import AxiosLogger from "axios-logger";
 
 const sdk = client({
@@ -203,6 +203,45 @@ await sdk.users.health();
 
 ```
 
+### Typescript for your Schemas
+
+If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `ConfigurationType` to define properties on a schema.
+
+```ts
+import type { ConfigurationType } from '@extrahorizon/javascript-sdk';
+type SchemaStatus = {
+  start: any;
+  annotate: any;
+  review: any;
+  panel: any;
+  expert: any;
+  completed: any;
+  lambda: any;
+};
+
+type SchemaProperties = {
+  signals: {
+    type: ConfigurationType.OBJECT;
+    properties: {};
+  };
+  measurementTimestamp: {
+    type: ConfigurationType.STRING;
+    format: ConfigurationType.DATE_TIME;
+  };
+};
+
+const sdk = client<SchemaStatus, SchemaProperties>({
+  apiHost: 'https://api.dev.fibricheck.com',
+});
+
+const { data: schemas } = await sdk.data.find();
+const props = schema[0].properties;
+```
+
+You then have easy access to your typed properties
+
+![schema-typing](assets/schema.png)
+
 ## 📚 Docs --> TODO
 
 - [docs](https://extraHorizon.github.io/javascript-sdk/)
@@ -214,4 +253,11 @@ You can check the changelog on the [releases](https://github.com/ExtraHorizon/ja
 ## 🔑 License
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
-````
+
+```
+
+```
+
+```
+
+```
