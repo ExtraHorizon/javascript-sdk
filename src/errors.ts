@@ -70,8 +70,10 @@ export class ApiError extends Error {
 
   public readonly statusText?: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public readonly request?: Record<string, any>;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public readonly response?: Record<string, any>;
 
   constructor(error: HttpError) {
