@@ -253,11 +253,3 @@ You can check the changelog on the [releases](https://github.com/ExtraHorizon/ja
 ## 🔑 License
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
-
-```
-
-```
-
-```
-
-```
