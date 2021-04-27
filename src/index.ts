@@ -25,16 +25,17 @@ function validateConfig({ apiHost, ...config }: Config): Config {
 }
 
 export interface Client {
-  /**
-   *  Authentication method to exchange credentials for tokens
-   */
-  authenticate: (oauth: OAuthConfig) => Promise<void>;
-  /**
-   *  Confirm MFA method with code
-   */
-  confirmMfa: (oauth: MfaConfig) => Promise<void>;
   users: ReturnType<typeof usersService>;
-  auth: ReturnType<typeof authService>;
+  auth: ReturnType<typeof authService> & {
+    /**
+     *  Authentication method to exchange credentials for tokens
+     */
+    authenticate: (oauth: OAuthConfig) => Promise<void>;
+    /**
+     *  Confirm MFA method with code
+     */
+    confirmMfa: (oauth: MfaConfig) => Promise<void>;
+  };
   data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
   tasks: ReturnType<typeof tasksService>;
@@ -69,20 +70,22 @@ export function client(rawConfig: Config): Client {
   }
 
   return {
-    authenticate,
-    get confirmMfa() {
-      if (!httpWithAuth) {
-        throw new Error(
-          'First call authenticate. See README for more info how to use MFA.'
-        );
-      }
-      return httpWithAuth.confirmMfa;
-    },
     get users() {
       return usersService(http, httpWithAuth || http);
     },
     get auth() {
-      return authService(http, httpWithAuth || http);
+      return {
+        ...authService(http, httpWithAuth || http),
+        authenticate,
+        confirmMfa() {
+          if (!httpWithAuth) {
+            throw new Error(
+              'First call authenticate. See README for more info how to use MFA.'
+            );
+          }
+          return httpWithAuth.confirmMfa;
+        },
+      };
     },
     get data() {
       return dataService(http, httpWithAuth);
