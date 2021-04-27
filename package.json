@@ -2,16 +2,16 @@
   "name": "@extrahorizon/javascript-sdk",
   "version": "0.0.6",
   "description": "",
-  "main": "dist/index.cjs",
-  "types": "dist/types/index.d.ts",
-  "browser": "dist/index.mjs",
+  "main": "build/index.cjs",
+  "types": "build/types/index.d.ts",
+  "browser": "build/index.mjs",
   "author": "Qompium",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf build",
     "start": "yarn test",
     "start:watch": "yarn test --watch",
     "build": "yarn clean && yarn lint --fix && tsc",
@@ -26,7 +26,7 @@
     "majestic": "majestic"
   },
   "files": [
-    "dist"
+    "build"
   ],
   "dependencies": {
     "axios": "^0.21.1",
