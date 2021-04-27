@@ -1,7 +1,12 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
 import type { AffectedRecords } from '../models/Responses';
-import { Schema, SchemaInput, SchemasList, UpdateSchemaInput } from './types';
+import {
+  SchemaInput,
+  SchemasList,
+  TypeConfiguration,
+  UpdateSchemaInput,
+} from './types';
 import { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -14,7 +19,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Schema successful operation
    * @throws {ApiError}
    */
-  async createSchema(requestBody: SchemaInput): Promise<Schema> {
+  async createSchema(requestBody: SchemaInput): Promise<SchemaInput> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -28,7 +33,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(rql?: RQLString): Promise<SchemasList> {
+  async find<
+    SchemaType,
+    AdditionalProps extends Record<keyof AdditionalProps, TypeConfiguration>
+  >(rql?: RQLString): Promise<SchemasList<SchemaType, AdditionalProps>> {
     return (await client.get(httpAuth, `/${rql || ''}`)).data;
   },
 
