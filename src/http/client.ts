@@ -25,5 +25,3 @@ export function createHttpClient({ apiHost, debug }: Config): AxiosInstance {
 
   return http;
 }
-
-export default createHttpClient;

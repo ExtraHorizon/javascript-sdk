@@ -1,8 +1,8 @@
 import * as nock from 'nock';
 import { AUTH_BASE } from '../constants';
 import { InvalidGrantError, MFARequiredError } from '../errors';
-import createHttpClient from './client';
-import createAuthHttpClient from './oauth2';
+import { createHttpClient } from './client';
+import { createOAuth2HttpClient } from './oauth2';
 import { parseAuthParams } from './utils';
 
 const mockParams = {
@@ -17,11 +17,11 @@ const mockParams = {
 describe('http client', () => {
   const http = createHttpClient(mockParams);
   const authConfig = parseAuthParams(mockParams.oauth);
-  let httpWithAuth: ReturnType<typeof createAuthHttpClient>;
+  let httpWithAuth: ReturnType<typeof createOAuth2HttpClient>;
 
   beforeEach(() => {
     nock.cleanAll();
-    httpWithAuth = createAuthHttpClient(http, mockParams);
+    httpWithAuth = createOAuth2HttpClient(http, mockParams);
   });
 
   it('Create Axios client', async () => {

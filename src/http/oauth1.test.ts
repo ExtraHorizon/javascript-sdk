@@ -1,8 +1,8 @@
 import * as nock from 'nock';
 import { AUTH_BASE } from '../constants';
 import { ApiError } from '../errors';
-import createHttpClient from './client';
-import createAuthHttpClient from './oauth1';
+import { createHttpClient } from './client';
+import { createOAuth1HttpClient } from './oauth1';
 import { parseAuthParams } from './utils';
 
 const mockParams = {
@@ -22,7 +22,7 @@ describe('http client', () => {
 
   beforeEach(() => {
     nock.cleanAll();
-    httpWithAuth = createAuthHttpClient(http, mockParams);
+    httpWithAuth = createOAuth1HttpClient(http, mockParams);
   });
 
   it('Create Axios client', async () => {
