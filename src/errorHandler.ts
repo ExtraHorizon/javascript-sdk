@@ -31,6 +31,7 @@ import {
   UnauthorizedTokenError,
   TokenNotDeleteableError,
   FileTooLargeError,
+  StatusInUseError,
 } from './errors';
 
 const ErrorClassDefinitionsMap = {
@@ -58,6 +59,7 @@ const ErrorClassDefinitionsMap = {
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
+  414: StatusInUseError,
   2605: InvalidTokenError,
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,
