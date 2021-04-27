@@ -5,6 +5,9 @@ import {
   DeleteMode,
   GroupSyncMode,
   IndexFieldsType,
+  CreationTransitionType,
+  ConfigurationType,
+  Condition,
 } from '../../src/services/data/types';
 
 export const newSchemaInput = {
@@ -323,4 +326,28 @@ export const newIndexInput = {
     unique: true,
     sparse: true,
   },
+};
+
+const inputCondition: Condition = {
+  type: ConfigurationType.INPUT,
+  configuration: {
+    type: ConfigurationType.NUMBER,
+    minimum: -180,
+    maximum: 180,
+  },
+};
+
+const documentCondition: Condition = {
+  type: ConfigurationType.DOCUMENT,
+  configuration: {
+    type: ConfigurationType.NUMBER,
+    minimum: -180,
+    maximum: 180,
+  },
+};
+
+export const transitionInput = {
+  toStatus: 'start',
+  type: CreationTransitionType.MANUAL,
+  conditions: [inputCondition, documentCondition],
 };

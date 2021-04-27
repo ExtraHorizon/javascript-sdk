@@ -16,7 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async updateCreationTransition(
     schemaId: ObjectId,
-    requestBody?: CreationTransition
+    requestBody: CreationTransition
   ): Promise<AffectedRecords> {
     return (
       await client.put(httpAuth, `/${schemaId}/creationTransition`, requestBody)
