@@ -3,6 +3,7 @@ import type { ObjectId } from '../models/ObjectId';
 import type { AffectedRecords } from '../models/Responses';
 import {
   SchemaInput,
+  Schema,
   SchemasList,
   TypeConfiguration,
   UpdateSchemaInput,
@@ -25,7 +26,9 @@ export default <
    * @returns Schema successful operation
    * @throws {ApiError}
    */
-  async createSchema(requestBody: SchemaInput): Promise<SchemaInput> {
+  async createSchema(
+    requestBody: SchemaInput
+  ): Promise<Schema<SchemaType, SchemaProperties>> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
