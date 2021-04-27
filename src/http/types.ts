@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import * as OAuth from 'oauth-1.0a';
+import OAuth from 'oauth-1.0a';
 
 export interface TokenDataOauth2 {
   accessToken: string;

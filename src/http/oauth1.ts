@@ -1,4 +1,4 @@
-import * as AxiosLogger from 'axios-logger';
+import AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { TokenDataOauth1, Oauth1Config } from './types';

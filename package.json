@@ -2,8 +2,10 @@
   "name": "@extrahorizon/javascript-sdk",
   "version": "0.0.6",
   "description": "",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "type": "module",
+  "browser": "dist/index.mjs",
   "author": "Qompium",
   "license": "UNLICENSED",
   "publishConfig": {
@@ -14,6 +16,8 @@
     "start": "yarn test",
     "start:watch": "yarn test --watch",
     "build": "yarn clean && yarn lint --fix && tsc",
+    "build:library": "rollup --config rollup.config.js",
+    "build:declarations": "tsc --project tsconfig.declarations.json",
     "watch": "tsc -w",
     "prepare": "yarn build && husky install",
     "test": "yarn build && jest",
@@ -23,7 +27,7 @@
     "majestic": "majestic"
   },
   "files": [
-    "build"
+    "dist"
   ],
   "dependencies": {
     "axios": "^0.21.1",
@@ -33,6 +37,9 @@
   },
   "devDependencies": {
     "@qompium/eslint-config-q-node": "^1.2.9",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@rollup/plugin-typescript": "^8.2.1",
     "@types/humps": "^2.0.0",
     "@types/jest": "^26.0.20",
     "@types/nock": "^11.1.0",
@@ -49,6 +56,8 @@
     "nock": "^13.0.7",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
+    "rollup": "^2.45.2",
+    "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^26.5.0",
     "typescript": "^4.1.3"
   },

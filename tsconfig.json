@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "declaration": true,
-    "target": "es2018",
+    "target": "ES2019",
     "moduleResolution": "node",
     "outDir": "./build",
     "rootDir": "./src",
     "baseUrl": "./",
     "noImplicitAny": false,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "typeRoots": ["node_modules/@types"],

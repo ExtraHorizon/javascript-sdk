@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import * as AxiosLogger from 'axios-logger';
+import AxiosLogger from 'axios-logger';
 
 import axios, { AxiosInstance } from 'axios';
 import { Config } from '../types';

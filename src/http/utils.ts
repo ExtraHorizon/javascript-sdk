@@ -1,5 +1,5 @@
-import * as OAuth from 'oauth-1.0a';
-import * as crypto from 'crypto';
+import OAuth from 'oauth-1.0a';
+import crypto from 'crypto';
 import { AxiosResponse } from 'axios';
 import { OAuthConfig } from '../types';
 import { AuthConfig } from './types';
