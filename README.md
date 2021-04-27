@@ -190,13 +190,13 @@ const sdk = client({
 });
 
 await sdk.authentiate({
-  refreshToken: '7967a108ed50a997b8b369f9b179c4b93f716b5d'
+  refreshToken: 'refreshToken'
 })
 
 await sdk.users.health();
 
-[Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"7967a108ed50a997b8b369f9b179c4b93f716b5d"}
-[Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"8eac2993d760d2c14d8a1d1f8cbca6aae803affb","token_type":"bearer","expires_in":299.999,"refresh_token":"3c7e37c4810e2516d68c8b7faed4fe11b24e6f38","user_id":"60701d6559080100071a3d92","application_id":"605b073594587e6f193a9593"}
+[Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"refreshToken"}
+[Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"accessToken","token_type":"bearer","expires_in":299.999,"refresh_token":"refreshToken","user_id":"userId","application_id":"applicationId"}
 
 [Axios][Request] GET /auth/v2/health
 [Axios][Response] GET /auth/v2/health 200:OK
