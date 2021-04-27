@@ -1,10 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-import * as AxiosLogger from 'axios-logger';
-
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { AuthConfig, TokenDataOauth2 } from './types';
-import { camelizeResponseData, transformResponseData } from './utils';
+import {
+  camelizeResponseData,
+  transformKeysResponseData,
+  transformResponseData,
+} from './interceptors';
 import { typeReceivedError } from '../errorHandler';
 
 export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
@@ -12,9 +14,31 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
   let authConfig;
   const httpWithAuth = axios.create({ ...http.defaults });
 
-  if (options.debug) {
-    httpWithAuth.interceptors.request.use(AxiosLogger.requestLogger);
-    httpWithAuth.interceptors.response.use(AxiosLogger.responseLogger);
+  const { requestLogger, responseLogger } = options;
+  if (requestLogger) {
+    httpWithAuth.interceptors.request.use(
+      config => {
+        requestLogger(config);
+        return config;
+      },
+      error => {
+        requestLogger(error);
+        return error;
+      }
+    );
+  }
+
+  if (responseLogger) {
+    httpWithAuth.interceptors.response.use(
+      response => {
+        responseLogger(response);
+        return response;
+      },
+      error => {
+        responseLogger(error);
+        return error;
+      }
+    );
   }
 
   const refreshTokens = async () => {
@@ -74,6 +98,7 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
+  httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
   async function setTokenData(data: TokenDataOauth2) {
     if (options.freshTokensCallback) {

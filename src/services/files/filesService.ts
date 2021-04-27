@@ -1,5 +1,5 @@
 import type { ReadStream } from 'fs';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
 import { ResultResponse } from '../models/Responses';
 import { Results } from '../models/Results';

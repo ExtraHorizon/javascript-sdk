@@ -1,4 +1,4 @@
-import * as nock from 'nock';
+import nock from 'nock';
 import { AUTH_BASE } from '../constants';
 import { InvalidGrantError, MFARequiredError } from '../errors';
 import { createHttpClient } from './client';

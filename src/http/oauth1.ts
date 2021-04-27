@@ -1,8 +1,11 @@
-import * as AxiosLogger from 'axios-logger';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
 import { TokenDataOauth1, Oauth1Config } from './types';
-import { camelizeResponseData, transformResponseData } from './utils';
+import {
+  camelizeResponseData,
+  transformKeysResponseData,
+  transformResponseData,
+} from './interceptors';
 import { typeReceivedError } from '../errorHandler';
 
 export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
@@ -11,14 +14,30 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
 
   const httpWithAuth = axios.create({ ...http.defaults });
 
-  if (options.debug) {
+  const { requestLogger, responseLogger } = options;
+  if (requestLogger) {
     httpWithAuth.interceptors.request.use(
-      AxiosLogger.requestLogger,
-      AxiosLogger.errorLogger
+      config => {
+        requestLogger(config);
+        return config;
+      },
+      error => {
+        requestLogger(error);
+        return error;
+      }
     );
+  }
+
+  if (responseLogger) {
     httpWithAuth.interceptors.response.use(
-      AxiosLogger.responseLogger,
-      AxiosLogger.errorLogger
+      response => {
+        responseLogger(response);
+        return response;
+      },
+      error => {
+        responseLogger(error);
+        return error;
+      }
     );
   }
 
@@ -52,6 +71,7 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
+  httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
   async function authenticate(data: Oauth1Config) {
     try {
