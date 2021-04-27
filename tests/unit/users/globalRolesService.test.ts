@@ -1,4 +1,4 @@
-import * as nock from 'nock';
+import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { Client, client } from '../../../src/index';
 import { GlobalPermissionName } from '../../../src/services/users/models/GlobalPermissionName';

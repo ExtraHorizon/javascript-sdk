@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import * as nock from 'nock';
+import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
 import { Client, client } from '../../../src/index';

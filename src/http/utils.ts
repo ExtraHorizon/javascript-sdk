@@ -81,7 +81,7 @@ export const camelizeResponseData = ({
 
 export const mapObjIndexed = (fn, object): Record<string, unknown> =>
   Object.keys(object).reduce(
-    (memo, key) => ({ ...memo, [key]: fn(object[key]) }),
+    (memo, key) => ({ ...memo, [key]: fn(object[key], key) }),
     {}
   );
 
@@ -96,7 +96,12 @@ export const recursiveMap = fn => obj =>
 
 const mapFunction = (value, key) => {
   if (
-    ['creationTimestamp', 'expiryTimestamp', 'updateTimestamp'].includes(key)
+    [
+      'creationTimestamp',
+      'expiryTimestamp',
+      'updateTimestamp',
+      'lastFailedTimestamp',
+    ].includes(key)
   ) {
     return new Date(value);
   }
@@ -115,13 +120,22 @@ export const transformResponseData = ({
     : recursiveMap(mapFunction)(data),
 });
 
+/**
+ * See if an object (`val`) is an instance of the supplied constructor. This
+ * function will check up the inheritance chain, if any.
+ */
+function is(Ctor, value) {
+  return (value != null && value.constructor === Ctor) || value instanceof Ctor;
+}
+
 export function recursiveRenameKeys(fn: { (arg: string): string }, obj) {
   if (Array.isArray(obj)) {
     return obj.map(value => recursiveRenameKeys(fn, value));
   }
-  if (Object(obj) === obj) {
+
+  if (is(Object, obj)) {
     return Object.keys(obj).reduce((memo, key) => {
-      if (Object(obj[key]) === obj[key]) {
+      if (is(Object, obj[key]) && !is(Date, obj[key])) {
         return { ...memo, [fn(key)]: recursiveRenameKeys(fn, obj[key]) };
       }
       return { ...memo, [fn(key)]: obj[key] };

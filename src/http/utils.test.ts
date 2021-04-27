@@ -19,7 +19,7 @@ describe('recursiveMap', () => {
   it('complex object', () => {
     const result = recursiveMap((value, key) => {
       if (key.includes('stamp')) {
-        return new Date(value).toISOString();
+        return new Date(value);
       }
       return value;
     })({
@@ -42,8 +42,8 @@ describe('recursiveMap', () => {
         },
       ],
     });
-    expect(result.patient_enlistments[0].expiry_timestamp).toBe(
-      '2018-11-26T13:59:13.289Z'
+    expect(result.patient_enlistments[0].expiry_timestamp).toStrictEqual(
+      new Date('2018-11-26T13:59:13.289Z')
     );
   });
 

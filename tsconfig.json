@@ -9,6 +9,7 @@
     "baseUrl": "./",
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "typeRoots": ["node_modules/@types"],
