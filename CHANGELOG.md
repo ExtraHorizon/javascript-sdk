@@ -25,12 +25,6 @@ Removed `debug` option. Use `responseLogger` and `requestLogger` options in stea
 +  requestLogger: AxiosLogger.requestLogger,
 +  responseLogger: AxiosLogger.responseLogger
 +});
-+
-+await sdk.authenticate({
-+  clientId: '',
-+  password: '',
-+  username: ''
-+});
 ```
 
 ## [0.0.6] - 2021-04-21
