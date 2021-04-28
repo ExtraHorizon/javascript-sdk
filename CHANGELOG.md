@@ -7,7 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.7] - 2021-04-28
+
 ### Breaking changes
+
+The `authenticate` and `confirmMfa` methods have been scoped under the `auth` namespace.
+
+```diff
+-await sdk.authenticate({ refreshToken: '' });
++await sdk.auth.authenticate({ refreshToken: '' });
+```
+
+Certains methods under the `users` namespace have had their name changed.
+
+```diff
+- sdk.user.mfaDisable
++ sdk.user.disableMfa
+- sdk.user.mfaEnable
++ sdk.user.enableMfa
+- sdk.user.mfaSetting
++ sdk.user.getMfaSetting
+- sdk.user.mfaAddMethod
++ sdk.user.addMfaMethod
+- sdk.user.mfaMethodConfirmVerification
++ sdk.user.confirmMfaMethodVerification
+- sdk.user.mfaRemoveMethod
++ sdk.user.removeMfaMethod
+```
 
 Removed `debug` option. Use `responseLogger` and `requestLogger` options in stead. See README for example.
 
@@ -26,8 +52,6 @@ Removed `debug` option. Use `responseLogger` and `requestLogger` options in stea
 +  responseLogger: AxiosLogger.responseLogger
 +});
 ```
-
-## [0.0.7] - 2021-04-28
 
 ### Added
 
@@ -58,7 +82,7 @@ Client initialization is changed. For example if you want to use the OAuth2 pass
 +  apiHost: '',
 +});
 +
-+await sdk.auth.authenticate({
++await sdk.authenticate({
 +  clientId: '',
 +  password: '',
 +  username: ''
