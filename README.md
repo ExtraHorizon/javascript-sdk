@@ -180,7 +180,7 @@ const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 
 You can pass in two logger function that will be called by Axios on every request/response respectively.
 
-````ts
+```ts
 import AxiosLogger from "axios-logger";
 
 const sdk = client({
@@ -214,4 +214,3 @@ You can check the changelog on the [releases](https://github.com/ExtraHorizon/ja
 ## 🔑 License
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
-````
