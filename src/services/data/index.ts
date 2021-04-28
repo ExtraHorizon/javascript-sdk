@@ -1,17 +1,17 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import infrastructureService from './infrastructureService';
-import schemasService from './schemasService';
-import indexesService from './indexesService';
-import statusesService from './statusesService';
-import propertiesService from './propertiesService';
+import infrastructure from './infrastructure';
+import schemas from './schemas';
+import indexes from './indexes';
+import statuses from './statuses';
+import properties from './properties';
 import { DATA_BASE } from '../../constants';
 
-export type DataService = ReturnType<typeof infrastructureService> &
-  ReturnType<typeof schemasService> &
-  ReturnType<typeof indexesService> &
-  ReturnType<typeof statusesService> &
-  ReturnType<typeof propertiesService>;
+export type DataService = ReturnType<typeof infrastructure> &
+  ReturnType<typeof schemas> &
+  ReturnType<typeof indexes> &
+  ReturnType<typeof statuses> &
+  ReturnType<typeof properties>;
 
 export const dataService = (
   http: HttpInstance,
@@ -21,11 +21,11 @@ export const dataService = (
     basePath: DATA_BASE,
   });
 
-  const infrastructureMethods = infrastructureService(client, http);
-  const schemasMethods = schemasService(client, httpWithAuth);
-  const indexesMethods = indexesService(client, httpWithAuth);
-  const statusesMethods = statusesService(client, httpWithAuth);
-  const propertiesMethods = propertiesService(client, httpWithAuth);
+  const infrastructureMethods = infrastructure(client, http);
+  const schemasMethods = schemas(client, httpWithAuth);
+  const indexesMethods = indexes(client, httpWithAuth);
+  const statusesMethods = statuses(client, httpWithAuth);
+  const propertiesMethods = properties(client, httpWithAuth);
 
   return {
     ...infrastructureMethods,
