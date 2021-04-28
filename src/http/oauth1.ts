@@ -74,28 +74,24 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
   async function authenticate(data: Oauth1Config) {
-    try {
-      authConfig = data;
+    authConfig = data;
 
-      const tokenResult = await http.post(authConfig.path, authConfig.params, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...authConfig.oauth1.toHeader(
-            authConfig.oauth1.authorize({
-              url: options.apiHost + authConfig.path,
-              method: 'POST',
-            })
-          ),
-        },
-      });
-      tokenData = {
-        ...tokenResult.data,
-        key: tokenResult.data.token,
-        secret: tokenResult.data.tokenSecret,
-      };
-    } catch (error) {
-      throw typeReceivedError(error);
-    }
+    const tokenResult = await http.post(authConfig.path, authConfig.params, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...authConfig.oauth1.toHeader(
+          authConfig.oauth1.authorize({
+            url: options.apiHost + authConfig.path,
+            method: 'POST',
+          })
+        ),
+      },
+    });
+    tokenData = {
+      ...tokenResult.data,
+      key: tokenResult.data.token,
+      secret: tokenResult.data.tokenSecret,
+    };
   }
 
   async function confirmMfa({
@@ -107,34 +103,30 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
     methodId: string;
     code: string;
   }) {
-    try {
-      const tokenResult = await http.post(
-        `${authConfig.path}/mfa`,
-        {
-          token,
-          code,
-          methodId,
+    const tokenResult = await http.post(
+      `${authConfig.path}/mfa`,
+      {
+        token,
+        code,
+        methodId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authConfig.oauth1.toHeader(
+            authConfig.oauth1.authorize({
+              url: `${options.apiHost}${authConfig.path}/mfa`,
+              method: 'POST',
+            })
+          ),
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            ...authConfig.oauth1.toHeader(
-              authConfig.oauth1.authorize({
-                url: `${options.apiHost}${authConfig.path}/mfa`,
-                method: 'POST',
-              })
-            ),
-          },
-        }
-      );
-      tokenData = {
-        ...tokenResult.data,
-        key: tokenResult.data.token,
-        secret: tokenResult.data.tokenSecret,
-      };
-    } catch (error) {
-      throw typeReceivedError(error);
-    }
+      }
+    );
+    tokenData = {
+      ...tokenResult.data,
+      key: tokenResult.data.token,
+      secret: tokenResult.data.tokenSecret,
+    };
   }
 
   return { ...httpWithAuth, authenticate, confirmMfa };

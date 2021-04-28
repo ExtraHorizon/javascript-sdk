@@ -32,6 +32,7 @@ import {
   TokenNotDeleteableError,
   FileTooLargeError,
   StatusInUseError,
+  MfaReattemptDelayError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -48,9 +49,11 @@ export const ErrorClassDefinitionsMap = {
   106: AuthenticationError,
   113: CallbackNotValidError,
   114: UnsupportedResponseTypeError,
+  129: MFARequiredError,
   130: InvalidMfaCodeError,
   132: InvalidPresenceTokenError,
   133: NotEnoughMfaMethodsError,
+  134: MfaReattemptDelayError,
   202: EmailUnknownError,
   203: EmailUsedError,
   205: ActivationUnknownError,

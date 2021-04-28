@@ -78,12 +78,12 @@ export class ApiError extends Error {
 
   constructor(error: HttpError) {
     const { config, response } = error;
-    const message = response?.data.description || response?.data.message;
+    const message = response?.data?.description || response?.data?.message;
     super(message);
     this.qName = response?.data?.name;
     this.status = response?.status;
     this.statusText = response?.statusText;
-    this.error = response?.data.error || response?.data.name;
+    this.error = response?.data?.error || response?.data?.name;
     this.response = {
       ...response?.data,
     };
@@ -131,3 +131,4 @@ export class FileTooLargeError extends ApiError {}
 export class InvalidGrantError extends ApiError {}
 export class MFARequiredError extends ApiError {}
 export class StatusInUseError extends ApiError {}
+export class MfaReattemptDelayError extends ApiError {}
