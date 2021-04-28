@@ -34,7 +34,7 @@ import {
   StatusInUseError,
 } from './errors';
 
-const ErrorClassDefinitionsMap = {
+export const ErrorClassDefinitionsMap = {
   1: ServerError,
   10: NoPermissionError,
   13: EmptyBodyError,
