@@ -13,7 +13,7 @@ export type DataService = ReturnType<typeof infrastructureService> &
   ReturnType<typeof statusesService> &
   ReturnType<typeof propertiesService>;
 
-export default (
+export const dataService = (
   http: HttpInstance,
   httpWithAuth: HttpInstance
 ): DataService => {

@@ -1,10 +1,12 @@
 import { Config, MfaConfig, OAuthConfig } from './types';
 
-import usersService from './services/users';
-import authService from './services/auth';
-import dataService from './services/data';
-import filesService from './services/files';
-import tasksService from './services/tasks';
+import {
+  usersService,
+  authService,
+  dataService,
+  tasksService,
+  filesService,
+} from './services';
 
 import {
   createHttpClient,

@@ -22,7 +22,7 @@ import type { AffectedRecords } from '../models/Responses';
 import { AUTH_BASE } from '../../constants';
 import { Results } from '../models/Results';
 
-export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
+export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
     basePath: AUTH_BASE,
   });

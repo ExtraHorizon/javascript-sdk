@@ -1,18 +1,18 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import healthService from './healthService';
-import usersService from './usersService';
+import usersUsersService from './usersService';
 import groupRolesService from './groupRolesService';
 import globalRolesService from './globalRolesService';
 import { USER_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
 
-export type UsersService = ReturnType<typeof usersService> &
+export type UsersService = ReturnType<typeof usersUsersService> &
   ReturnType<typeof healthService> &
   ReturnType<typeof globalRolesService> &
   ReturnType<typeof groupRolesService>;
 
-export default (
+export const usersService = (
   http: HttpInstance,
   httpWithAuth: HttpInstance
 ): UsersService => {
@@ -22,7 +22,7 @@ export default (
   });
 
   const healthMethods = healthService(userClient, http);
-  const usersMethods = usersService(userClient, http, httpWithAuth);
+  const usersMethods = usersUsersService(userClient, http, httpWithAuth);
   const groupRolesMethods = groupRolesService(userClient, httpWithAuth);
   const globalRolesMethods = globalRolesService(userClient, httpWithAuth);
 
