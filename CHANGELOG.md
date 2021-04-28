@@ -27,6 +27,17 @@ Removed `debug` option. Use `responseLogger` and `requestLogger` options in stea
 +});
 ```
 
+## [0.0.7] - 2021-04-28
+
+### Added
+
+- Tasks Service
+- Data Service now includes:
+  - Schemas Service
+  - Properties Service
+  - Statuses Service
+  - Indexes Service
+
 ## [0.0.6] - 2021-04-21
 
 ### Breaking changes
