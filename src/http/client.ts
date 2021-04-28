@@ -42,7 +42,6 @@ export function createHttpClient({
   http.interceptors.response.use(camelizeResponseData, async error => {
     // This is needed for catching cases where authenticated endpoints are called
     // before authenticate is called. Then the default axios instance is used
-    console.log('error.response.data', error.response.data);
     if (
       ErrorClassDefinitionsMap[error.response.data.code] ===
       UserNotAuthenticatedError
