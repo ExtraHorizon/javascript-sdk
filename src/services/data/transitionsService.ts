@@ -36,7 +36,7 @@ export default (client, httpAuth: HttpInstance) => ({
   async createTransition(
     schemaId: ObjectId,
     requestBody?: Transition
-  ): Promise<AffectedRecords> {
+  ): Promise<Transition> {
     return (
       await client.post(httpAuth, `/${schemaId}/transitions`, requestBody)
     ).data;

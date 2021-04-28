@@ -179,6 +179,7 @@ export interface CreationTransition {
 export type StatusData = Record<string, string>;
 
 export interface BaseTransition {
+  id?: ObjectId;
   name?: string;
   fromStatuses?: Array<string>;
 }
