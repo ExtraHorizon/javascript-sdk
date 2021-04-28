@@ -8,6 +8,10 @@ import {
   CreationTransitionType,
   ConfigurationType,
   Condition,
+  Transition,
+  CreationTransitionAction,
+  CreationTransitionAfterAction,
+  CreationTransition,
 } from '../../src/services/data/types';
 
 export const newSchemaInput = {
@@ -346,8 +350,26 @@ const documentCondition: Condition = {
   },
 };
 
-export const transitionInput = {
+export const transitionInput: CreationTransition = {
   toStatus: 'start',
   type: CreationTransitionType.MANUAL,
   conditions: [inputCondition, documentCondition],
+};
+
+export const newTransition: Transition = {
+  toStatus: 'start',
+  type: CreationTransitionType.MANUAL,
+  conditions: [inputCondition, documentCondition],
+  actions: [
+    {
+      type: CreationTransitionAction.ALGORITHM,
+    },
+  ],
+  afterActions: [
+    {
+      type: CreationTransitionAfterAction.NOTIFY_ALGO_QUEUE_MANAGER,
+    },
+  ],
+  name: 'move',
+  fromStatuses: ['start'],
 };

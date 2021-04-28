@@ -11,7 +11,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody
-   * @returns any Success
+   * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
   async updateCreationTransition(
@@ -30,7 +30,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody
-   * @returns any Success
+   * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
   async createTransition(
@@ -50,7 +50,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param transitionId The id of the targeted transition.
    * @param requestBody
-   * @returns any Success
+   * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
@@ -75,7 +75,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param transitionId The id of the targeted transition.
-   * @returns any Success
+   * @returns {Promise<AffectedRecords>}
    * @throws {ResourceUnknownError}
    */
   async deleteTransition(
