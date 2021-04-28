@@ -1,5 +1,5 @@
-export { authService } from './auth';
-export { dataService } from './data';
-export { filesService } from './files';
-export { tasksService } from './tasks';
-export { usersService } from './users';
+export * from './auth';
+export * from './data';
+export * from './files';
+export * from './tasks';
+export * from './users';
