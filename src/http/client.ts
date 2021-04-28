@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { UserNotAuthenticatedError } from '../errors';
-import { ErrorClassDefinitionsMap, typeReceivedError } from '../errorHandler';
+import { ErrorClassDefinitionsMap } from '../errorHandler';
 import { Config } from '../types';
 import { camelizeResponseData } from './interceptors';
 
@@ -66,7 +66,7 @@ await sdk.auth.authenticate({
         )
       );
     }
-    return Promise.reject(typeReceivedError(error));
+    return Promise.reject(error);
   });
 
   return http;
