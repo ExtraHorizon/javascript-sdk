@@ -28,7 +28,7 @@ const sdk = client({
   apiHost: 'dev.fibricheck.com',
 });
 
-await sdk.authenticate({
+await sdk.auth.authenticate({
   consumerKey: '',
   consumerSecret: '',
   tokenKey: '',
@@ -48,7 +48,7 @@ const sdk = client({
   apiHost: '',
 });
 
-await sdk.authenticate({
+await sdk.auth.authenticate({
   clientId: '',
   password: '',
   username: '',
@@ -70,7 +70,7 @@ const sdk = client({
   },
 });
 
-await sdk.authenticate({
+await sdk.auth.authenticate({
   clientId: '',
   code: '',
   redirectUri: '',
@@ -89,7 +89,7 @@ const sdk = client({
   apiHost: '',
 });
 
-await sdk.authenticate({
+await sdk.auth.authenticate({
   refreshToken: '',
 });
 ```
@@ -107,7 +107,7 @@ const sdk = client({
 });
 
 try {
-  await sdk.authenticate({
+  await sdk.auth.authenticate({
     clientId: '',
     password: '',
     username: '',
@@ -119,7 +119,7 @@ try {
     // Your logic to request which method the user want to use in case of multiple methods
     const methodId = mfa.methods[0].id;
 
-    await sdk.confirmMfa({
+    await sdk.auth.confirmMfa({
       token: mfa.token,
       methodId,
       code: '', // code from ie. Google Authenticator
@@ -144,7 +144,7 @@ import { client } from '@extrahorizon/javascript-sdk';
     apiHost: '',
   });
 
-  await sdk.authenticate({
+  await sdk.auth.authenticate({
     clientId: '',
     password: '',
     username: '',

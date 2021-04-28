@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "build/index.cjs",
   "types": "build/types/index.d.ts",
@@ -18,7 +18,7 @@
     "build:library": "rollup --config rollup.config.js",
     "build:declarations": "tsc --project tsconfig.declarations.json",
     "watch": "rollup --config rollup.config.js -w",
-    "watch-declarations": "tsc -w --project tsconfig.declarations.json",
+    "watch:declarations": "tsc -w --project tsconfig.declarations.json",
     "prepare": "yarn build && husky install",
     "test": "jest",
     "test:e2e": "yarn build && jest tests/e2e",

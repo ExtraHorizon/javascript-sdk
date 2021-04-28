@@ -10,7 +10,7 @@ describe('OAuth2 Password Flow', () => {
     sdk = client({
       apiHost: process.env.API_HOST,
     });
-    await sdk.authenticate({
+    await sdk.auth.authenticate({
       username: process.env.API_USERNAME,
       password: process.env.API_PASSWORD,
     });
