@@ -22,7 +22,7 @@ import type { AffectedRecords } from '../models/Responses';
 import { AUTH_BASE } from '../../constants';
 import { Results } from '../models/Results';
 
-export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
+export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
     basePath: AUTH_BASE,
   });
@@ -190,7 +190,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @permission VIEW_USER_MFA_SETTINGS | scope:global | See anyone their MFA settings
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/get_mfa_users__userId_
      */
-    async mfaSetting(userId: string): Promise<MfaSetting> {
+    async getMfaSetting(userId: string): Promise<MfaSetting> {
       return (await authClient.get(httpWithAuth, `/mfa/users/${userId}`)).data;
     },
 
@@ -202,7 +202,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @throws {InvalidPresenceTokenError}
      * @throws {NotEnoughMfaMethodsError}
      */
-    async mfaEnable(
+    async enableMfa(
       userId: string,
       data: PresenceToken
     ): Promise<AffectedRecords> {
@@ -218,7 +218,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
      * @throws {InvalidPresenceTokenError}
      */
-    async mfaDisable(
+    async disableMfa(
       userId: string,
       data: PresenceToken
     ): Promise<AffectedRecords> {
@@ -238,7 +238,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
      * @throws {InvalidPresenceTokenError}
      */
-    async mfaAddMethod(
+    async addMfaMethod(
       userId: string,
       data: MfaMethodCreation
     ): Promise<MfaMethod> {
@@ -261,7 +261,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @throws {InvalidMfaCodeError}
      * @throws {InvalidPresenceTokenError}
      */
-    async mfaMethodConfirmVerification(
+    async confirmMfaMethodVerification(
       userId: string,
       methodId: string,
       data: MfaMethodVerification
@@ -283,7 +283,7 @@ export default (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @throws {NotEnoughMfaMethodsError}
      * @throws {InvalidPresenceTokenError}
      */
-    async mfaMethodRemove(
+    async removeMfaMethod(
       userId: string,
       methodId: string,
       data: PresenceToken

@@ -8,9 +8,12 @@ export const camelizeResponseData = ({
 }: AxiosResponse): AxiosResponse => ({
   ...response,
   config,
-  data: ['arraybuffer', 'stream'].includes(config.responseType)
-    ? data
-    : camelizeKeys(data),
+  data:
+    // Note: the /data endpoint can return custom properties that the user has defined
+    config.url.startsWith('/data') ||
+    ['arraybuffer', 'stream'].includes(config.responseType)
+      ? data
+      : camelizeKeys(data),
 });
 
 const mapFunction = (value, key) => {
