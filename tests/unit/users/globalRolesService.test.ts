@@ -24,7 +24,7 @@ describe('Global Roles Service', () => {
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    await sdk.authenticate({
+    await sdk.auth.authenticate({
       clientId: '',
       username: '',
       password: '',
