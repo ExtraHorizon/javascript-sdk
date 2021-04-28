@@ -21,18 +21,18 @@ The `authenticate` and `confirmMfa` methods have been scoped under the `auth` na
 Certains methods under the `users` namespace have had their name changed.
 
 ```diff
-- sdk.user.mfaDisable
-+ sdk.user.disableMfa
-- sdk.user.mfaEnable
-+ sdk.user.enableMfa
-- sdk.user.mfaSetting
-+ sdk.user.getMfaSetting
-- sdk.user.mfaAddMethod
-+ sdk.user.addMfaMethod
-- sdk.user.mfaMethodConfirmVerification
-+ sdk.user.confirmMfaMethodVerification
-- sdk.user.mfaRemoveMethod
-+ sdk.user.removeMfaMethod
+-sdk.user.mfaDisable
++sdk.user.disableMfa
+-sdk.user.mfaEnable
++sdk.user.enableMfa
+-sdk.user.mfaSetting
++sdk.user.getMfaSetting
+-sdk.user.mfaAddMethod
++sdk.user.addMfaMethod
+-sdk.user.mfaMethodConfirmVerification
++sdk.user.confirmMfaMethodVerification
+-sdk.user.mfaRemoveMethod
++sdk.user.removeMfaMethod
 ```
 
 Removed `debug` option. Use `responseLogger` and `requestLogger` options in stead. See README for example.
