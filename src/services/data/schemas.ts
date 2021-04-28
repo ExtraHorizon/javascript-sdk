@@ -1,22 +1,10 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
 import type { AffectedRecords } from '../models/Responses';
-import {
-  SchemaInput,
-  Schema,
-  SchemasList,
-  TypeConfiguration,
-  UpdateSchemaInput,
-} from './types';
+import { SchemaInput, Schema, SchemasList, UpdateSchemaInput } from './types';
 import { RQLString } from '../../rql';
 
-export default <
-  SchemaType,
-  SchemaProperties extends Record<keyof SchemaProperties, TypeConfiguration>
->(
-  client,
-  httpAuth: HttpInstance
-) => ({
+export default (client, httpAuth: HttpInstance) => ({
   /**
    * Create a schema
    * Permission | Scope | Effect
@@ -26,9 +14,7 @@ export default <
    * @returns Schema successful operation
    * @throws {ApiError}
    */
-  async createSchema(
-    requestBody: SchemaInput
-  ): Promise<Schema<SchemaType, SchemaProperties>> {
+  async createSchema(requestBody: SchemaInput): Promise<Schema> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -42,9 +28,7 @@ export default <
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(
-    rql?: RQLString
-  ): Promise<SchemasList<SchemaType, SchemaProperties>> {
+  async find(rql?: RQLString): Promise<SchemasList> {
     return (await client.get(httpAuth, `/${rql || ''}`)).data;
   },
 

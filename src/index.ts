@@ -14,7 +14,6 @@ import {
   parseAuthParams,
   createOAuth2HttpClient,
 } from './http';
-import { TypeConfiguration } from './services/data/types';
 
 export type { ConfigurationType } from './services/data/types';
 export { rqlBuilder } from './rql';
@@ -131,10 +130,7 @@ export interface Client {
  *   password: 'string',
  * });
  */
-export function client<
-  SchemaType,
-  SchemaProperties extends Record<keyof SchemaProperties, TypeConfiguration>
->(rawConfig: Config) {
+export function client(rawConfig: Config) {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 
@@ -169,7 +165,7 @@ export function client<
       };
     },
     get data() {
-      return dataService<SchemaType, SchemaProperties>(http, httpWithAuth);
+      return dataService(http, httpWithAuth);
     },
     get files() {
       return filesService(httpWithAuth || http);

@@ -182,12 +182,12 @@ export interface BaseTransition {
 
 export type Transition = CreationTransition & BaseTransition;
 
-export interface Schema<StatusType, AdditionalProps> {
+export interface Schema {
   id?: ObjectId;
   name?: string;
   description?: string;
-  properties?: AdditionalProps;
-  statuses?: StatusType;
+  properties?: Record<string, any>;
+  statuses?: Record<string, StatusData>;
   creationTransition?: CreationTransition;
   transitions?: Array<Transition>;
   createMode?: CreateMode;
@@ -218,8 +218,8 @@ export type UpdateSchemaInput = Pick<
   'name' | 'description' | 'defaultLimit' | 'maximumLimit'
 >;
 
-export interface SchemasList<StatusType, AdditionalProps> extends PagedResult {
-  data: Array<Schema<StatusType, AdditionalProps>>;
+export interface SchemasList extends PagedResult {
+  data: Array<Schema>;
 }
 
 export type IndexFieldsName = string;
