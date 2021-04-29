@@ -208,7 +208,7 @@ await sdk.users.health();
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `ConfigurationType` to define properties on a schema.
 
 ```ts
-import type { Schema } from '@extrahorizon/javascript-sdk';
+import type { Schema, JSONSchema7 } from '@extrahorizon/javascript-sdk';
 interface CustomSchema extends Schema {
   statuses?: Record<
     | 'start'
