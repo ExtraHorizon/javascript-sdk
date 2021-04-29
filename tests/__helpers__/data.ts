@@ -324,3 +324,49 @@ export const newIndexInput = {
     sparse: true,
   },
 };
+
+export const newDocumentCreated = {
+  id: '5e9fff9d90135a2a9a718e2f',
+  userId: '5e9fff9d90135a2a9a718e2f',
+  groupIds: ['5e9fff9d90135a2a9a718e2f'],
+  status: 'start',
+  data: {
+    additionalProp1: {},
+    additionalProp2: {},
+    additionalProp3: {},
+  },
+  transitionLock: {
+    timestamp: '2021-04-29T21:07:45.544Z',
+  },
+  commentCount: 5,
+  updateTimestamp: '2021-04-29T21:07:45.544Z',
+  creationTimestamp: '2021-04-29T21:07:45.544Z',
+};
+
+export const documentsListResponse = {
+  query: '{}',
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [
+    {
+      id: '5e9fff9d90135a2a9a718e2f',
+      userId: '5e9fff9d90135a2a9a718e2f',
+      groupIds: ['5e9fff9d90135a2a9a718e2f'],
+      status: 'start',
+      data: {
+        additionalProp1: {},
+        additionalProp2: {},
+        additionalProp3: {},
+      },
+      transitionLock: {
+        timestamp: '2021-04-29T21:07:45.551Z',
+      },
+      commentCount: 5,
+      updateTimestamp: '2021-04-29T21:07:45.551Z',
+      creationTimestamp: '2021-04-29T21:07:45.551Z',
+    },
+  ],
+};
