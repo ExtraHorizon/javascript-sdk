@@ -208,39 +208,31 @@ await sdk.users.health();
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `ConfigurationType` to define properties on a schema.
 
 ```ts
-import type { ConfigurationType } from '@extrahorizon/javascript-sdk';
-type SchemaStatus = {
-  start: any;
-  annotate: any;
-  review: any;
-  panel: any;
-  expert: any;
-  completed: any;
-  lambda: any;
-};
+import type { Schema } from '@extrahorizon/javascript-sdk';
+interface CustomSchema extends Schema {
+  statuses?: Record<
+    | 'start'
+    | 'annotate'
+    | 'review'
+    | 'panel'
+    | 'expert'
+    | 'completed'
+    | 'lambda',
+    never
+  >;
+  properties?: Record<
+    'signals' | ' measurementTimestamp' | 'tags' | 'claim' | 'info',
+    JSONSchema7
+  >;
+}
 
-type SchemaProperties = {
-  signals: {
-    type: ConfigurationType.OBJECT;
-    properties: {};
-  };
-  measurementTimestamp: {
-    type: ConfigurationType.STRING;
-    format: ConfigurationType.DATE_TIME;
-  };
-};
-
-const sdk = client<SchemaStatus, SchemaProperties>({
+const sdk = client({
   apiHost: 'https://api.dev.fibricheck.com',
 });
 
 const { data: schemas } = await sdk.data.find();
-const props = schema[0].properties;
+const mySchema: CustomSchema = schemas[0];
 ```
-
-You then have easy access to your typed properties
-
-![schema-typing](assets/schema.png)
 
 ## 📚 Docs --> TODO
 
