@@ -212,21 +212,17 @@ As example the typing of the first schema in the example value from the get sche
 ```ts
 import type { Schema, JSONSchema7 } from '@extrahorizon/javascript-sdk';
 
-interface Location extends JSONSchema7 {
-  properties: {
-    longitutde: JSONSchema7;
-    latitude: JSONSchema7;
-  };
-}
-
-interface Properties extends JSONSchema7 {
-  ppg: JSONSchema7;
-  location: Location;
-}
-
 interface CustomSchema extends Schema {
   statuses?: Record<'start', never>;
-  properties?: Properties;
+  properties?: JSONSchema7 & {
+    ppg: JSONSchema7;
+    location: JSONSchema7 & {
+      properties: {
+        longitutde: JSONSchema7;
+        latitude: JSONSchema7;
+      };
+    };
+  };
 }
 
 const sdk = client({
