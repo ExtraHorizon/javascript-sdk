@@ -189,7 +189,7 @@ const sdk = client({
   responseLogger: AxiosLogger.responseLogger,
 });
 
-await sdk.authentiate({
+await sdk.auth.authenticate({
   refreshToken: 'refreshToken'
 })
 
