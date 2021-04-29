@@ -1,3 +1,4 @@
+import type { JSONSchema7 } from 'json-schema';
 import type { ObjectId } from '../models/ObjectId';
 import { PagedResult } from '../models/Responses';
 
@@ -186,8 +187,8 @@ export interface Schema {
   id?: ObjectId;
   name?: string;
   description?: string;
-  properties?: Record<string, any>;
-  statuses?: Record<string, StatusData>;
+  properties?: Record<string, JSONSchema7>;
+  statuses?: Record<string, never>;
   creationTransition?: CreationTransition;
   transitions?: Array<Transition>;
   createMode?: CreateMode;

@@ -15,7 +15,9 @@ import {
   createOAuth2HttpClient,
 } from './http';
 
-export type { ConfigurationType } from './services/data/types';
+export type { JSONSchema7 } from 'json-schema';
+
+export type { ConfigurationType, Schema } from './services/data/types';
 export { rqlBuilder } from './rql';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
