@@ -49,7 +49,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(schemaId: ObjectId, rql?: RQLString): Promise<DocumentsList> {
+  async findDocuments(
+    schemaId: ObjectId,
+    rql?: RQLString
+  ): Promise<DocumentsList> {
     return (await client.get(httpAuth, `/${schemaId}/documents${rql || ''}`))
       .data;
   },
