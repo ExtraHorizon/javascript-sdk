@@ -205,25 +205,28 @@ await sdk.users.health();
 
 ### Typescript for your Schemas
 
-If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `ConfigurationType` to define properties on a schema.
+If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` to extend from and `JSONSchema7` to use for properties.
+
+As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
 
 ```ts
 import type { Schema, JSONSchema7 } from '@extrahorizon/javascript-sdk';
+
+interface Location extends JSONSchema7 {
+  properties: {
+    longitutde: JSONSchema7;
+    latitude: JSONSchema7;
+  };
+}
+
+interface Properties extends JSONSchema7 {
+  ppg: JSONSchema7;
+  location: Location;
+}
+
 interface CustomSchema extends Schema {
-  statuses?: Record<
-    | 'start'
-    | 'annotate'
-    | 'review'
-    | 'panel'
-    | 'expert'
-    | 'completed'
-    | 'lambda',
-    never
-  >;
-  properties?: Record<
-    'signals' | ' measurementTimestamp' | 'tags' | 'claim' | 'info',
-    JSONSchema7
-  >;
+  statuses?: Record<'start', never>;
+  properties?: Properties;
 }
 
 const sdk = client({

@@ -189,7 +189,7 @@ export interface Schema {
   id?: ObjectId;
   name?: string;
   description?: string;
-  properties?: Record<string, JSONSchema7>;
+  properties?: any;
   statuses?: Record<string, never>;
   creationTransition?: CreationTransition;
   transitions?: Array<Transition>;
