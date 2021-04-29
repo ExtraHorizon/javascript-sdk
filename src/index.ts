@@ -15,9 +15,12 @@ import {
   createOAuth2HttpClient,
 } from './http';
 
-export type { JSONSchema7 } from 'json-schema';
+export type {
+  ConfigurationType,
+  Schema,
+  JSONSchema7,
+} from './services/data/types';
 
-export type { ConfigurationType, Schema } from './services/data/types';
 export { rqlBuilder } from './rql';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
@@ -132,7 +135,7 @@ export interface Client {
  *   password: 'string',
  * });
  */
-export function client(rawConfig: Config) {
+export function client(rawConfig: Config): Client {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 

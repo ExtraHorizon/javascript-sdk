@@ -2,6 +2,8 @@ import type { JSONSchema7 } from 'json-schema';
 import type { ObjectId } from '../models/ObjectId';
 import { PagedResult } from '../models/Responses';
 
+export { JSONSchema7 };
+
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema
  */
