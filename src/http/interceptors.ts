@@ -16,7 +16,7 @@ export const camelizeResponseData = ({
       : camelizeKeys(data),
 });
 
-const mapFunction = (value, key) => {
+const mapDateValues = (value, key) => {
   if (
     [
       'creationTimestamp',
@@ -39,10 +39,10 @@ export const transformResponseData = ({
   config,
   data: ['arraybuffer', 'stream'].includes(config.responseType)
     ? data
-    : recursiveMap(mapFunction)(data),
+    : recursiveMap(mapDateValues)(data),
 });
 
-const keyFunction = key => {
+const convertRecordsAffectedKeys = key => {
   if (['records_affected', 'recordsAffected'].includes(key)) {
     return 'affectedRecords';
   }
@@ -58,5 +58,5 @@ export const transformKeysResponseData = ({
   config,
   data: ['arraybuffer', 'stream'].includes(config.responseType)
     ? data
-    : recursiveRenameKeys(keyFunction, data),
+    : recursiveRenameKeys(convertRecordsAffectedKeys, data),
 });
