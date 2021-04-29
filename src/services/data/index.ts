@@ -13,7 +13,10 @@ export type DataService = ReturnType<typeof infrastructure> &
   ReturnType<typeof statuses> &
   ReturnType<typeof properties>;
 
-export const dataService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
+export const dataService = (
+  http: HttpInstance,
+  httpWithAuth: HttpInstance
+): DataService => {
   const client = httpClient({
     basePath: DATA_BASE,
   });
@@ -25,8 +28,8 @@ export const dataService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const propertiesMethods = properties(client, httpWithAuth);
 
   return {
-    ...schemasMethods,
     ...infrastructureMethods,
+    ...schemasMethods,
     ...indexesMethods,
     ...statusesMethods,
     ...propertiesMethods,
