@@ -164,7 +164,7 @@ export function client(rawConfig: Config): Client {
       };
     },
     get data() {
-      return dataService(http, httpWithAuth);
+      return dataService(http, httpWithAuth || http);
     },
     get files() {
       return filesService(httpWithAuth || http);
