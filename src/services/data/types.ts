@@ -1,6 +1,9 @@
 import type { ObjectId } from '../models/ObjectId';
 import { PagedResult } from '../models/Responses';
 
+// TODO check with Jens if we want to transform these fields too
+type Timestamp = string;
+
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema
  */
@@ -250,3 +253,21 @@ export interface Index {
 }
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
+
+export interface Document {
+  id?: ObjectId;
+  userId?: ObjectId;
+  groupIds?: Array<ObjectId>;
+  status?: string;
+  data?: Record<string, any>;
+  transitionLock?: {
+    timestamp?: Timestamp;
+  };
+  commentCount?: number;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface DocumentsList extends PagedResult {
+  data: Array<Document>;
+}
