@@ -1,8 +1,59 @@
-import type { JSONSchema7 } from 'json-schema';
+import type { JSONSchema7 } from './json-schema';
 import type { ObjectId } from '../models/ObjectId';
 import { PagedResult } from '../models/Responses';
 
-export { JSONSchema7 };
+export enum JSONSchemaType {
+  OBJECT = 'object',
+  ARRAY = 'array',
+  STRING = 'string',
+  NUMBER = 'number',
+  BOOLEAN = 'boolean',
+}
+
+export type JSONSchema =
+  | JSONSchemaObject
+  | JSONSchemaArray
+  | JSONSchemaString
+  | JSONSchemaNumber
+  | JSONSchemaBoolean;
+
+export type JSONSchemaObject = Pick<JSONSchema7, 'required'> & {
+  type: JSONSchemaType.OBJECT;
+  properties?: {
+    [key: string]: JSONSchema;
+  };
+  additionalProperties?: JSONSchema;
+};
+
+export type JSONSchemaArray = Pick<JSONSchema7, 'minItems' | 'maxItems'> & {
+  type: JSONSchemaType.ARRAY;
+  items: JSONSchema | JSONSchema[];
+  contains: JSONSchema;
+};
+
+export type JSONSchemaString = Pick<
+  JSONSchema7,
+  'minLength' | 'maxLength' | 'pattern' | 'enum'
+> & {
+  type: JSONSchemaType.STRING;
+  const: string;
+  format: 'date-time';
+};
+// format is static 'date-time
+
+export type JSONSchemaNumber = Pick<
+  JSONSchema7,
+  'type' | 'minimum' | 'maximum' | 'enum'
+> & {
+  type: JSONSchemaType.NUMBER;
+  const: number;
+};
+
+export type JSONSchemaBoolean = {
+  type: JSONSchemaType.BOOLEAN;
+  enum: boolean[];
+  const: boolean;
+};
 
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema

@@ -18,7 +18,12 @@ import {
 export type {
   ConfigurationType,
   Schema,
-  JSONSchema7,
+  JSONSchema,
+  JSONSchemaObject,
+  JSONSchemaArray,
+  JSONSchemaString,
+  JSONSchemaNumber,
+  JSONSchemaBoolean,
 } from './services/data/types';
 
 export { rqlBuilder } from './rql';
