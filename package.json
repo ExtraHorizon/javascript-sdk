@@ -30,10 +30,8 @@
     "build"
   ],
   "dependencies": {
-    "@types/json-schema": "^7.0.7",
     "axios": "^0.21.1",
     "form-data": "^4.0.0",
-    "json-schema": "^0.3.0",
     "oauth-1.0a": "^2.2.6"
   },
   "devDependencies": {
