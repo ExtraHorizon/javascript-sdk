@@ -16,6 +16,7 @@ import {
 } from './http';
 
 export { rqlBuilder } from './rql';
+export * from './services/users/models/GlobalPermissionName';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   return {
