@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, TASKS_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, rqlBuilder } from '../../../src/index';
 import { taskData, tasksResponse } from '../../__helpers__/task';
 
 describe('Tasks Service', () => {
@@ -32,7 +32,7 @@ describe('Tasks Service', () => {
   });
 
   it('View a list of tasks', async () => {
-    const rql = '';
+    const rql = rqlBuilder().build();
     nock(`${apiHost}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
     const res = await sdk.tasks.find(rql);
