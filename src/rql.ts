@@ -1,8 +1,8 @@
 // Does not allow custom error on type errors. This is a hackish work around.
-type TypePropertyIsNotAllowed = 'Please use rqlBuilder to construct valid RQL. See README for an example.';
-type NoType<T> = T extends any ? TypePropertyIsNotAllowed : T;
+type NotAnRQLStringError = 'Please use rqlBuilder to construct valid RQL. See README for an example.';
+type RQLCheck<T> = T extends any ? NotAnRQLStringError : T;
 
-export type RQLString = NoType<string & { __stringtype: 'RQL' }>;
+export type RQLString = RQLCheck<string & { __stringtype: 'RQL' }>;
 
 export interface RQLBuilder {
   select: (value: string | string[]) => RQLBuilder;
