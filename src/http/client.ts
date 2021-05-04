@@ -34,7 +34,7 @@ export function createHttpClient({
       },
       error => {
         responseLogger(error);
-        return error;
+        return Promise.reject(error);
       }
     );
   }
@@ -43,7 +43,7 @@ export function createHttpClient({
     // This is needed for catching cases where authenticated endpoints are called
     // before authenticate is called. Then the default axios instance is used
     if (
-      ErrorClassDefinitionsMap[error.response.data.code] ===
+      ErrorClassDefinitionsMap[error.response?.data?.code] ===
       UserNotAuthenticatedError
     ) {
       return Promise.reject(
