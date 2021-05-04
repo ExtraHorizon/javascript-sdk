@@ -8,6 +8,7 @@ To get started with the Contentful Management JS SDK you'll need to install it, 
 - [Authentication](#authentication)
 - [Your first request](#your-first-request)
 - [RQLBuilder](#RQLBuilder)
+- [Interceptors](#interceptors)
 - [Raw queries](#Raw-queries)
 
 ## Installation
@@ -194,9 +195,17 @@ const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 // ?select(name)&eq(name,fitbit)
 ```
 
+## Interceptors
+
+The data returned from the backend is mapped using interceptors:
+
+- timestamps will be of type Date
+- keys will be camelCased
+- `records_affected` will be replaced by `affected_records`
+
 ## Raw queries
 
-You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK.
+You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
 
 ```ts
 import { client } from '@extrahorizon/javascript-sdk';
