@@ -370,7 +370,7 @@ export default (
   async isEmailAvailable(
     email: string
   ): Promise<{
-    emailAvailable?: boolean;
+    emailAvailable: boolean;
   }> {
     return (
       await userClient.get(http, '/email_available', {
