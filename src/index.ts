@@ -18,11 +18,15 @@ import {
 export { rqlBuilder } from './rql';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
+  const validApiHostEnd = apiHost.endsWith('/')
+    ? apiHost.substr(0, apiHost.length - 1)
+    : apiHost;
+
   return {
     ...config,
-    apiHost: apiHost.endsWith('/')
-      ? apiHost.substr(0, apiHost.length - 1)
-      : apiHost,
+    apiHost: validApiHostEnd.startsWith('https://')
+      ? validApiHostEnd
+      : `https://${validApiHostEnd}`,
   };
 }
 
