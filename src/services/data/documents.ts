@@ -49,10 +49,12 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async findDocuments<CustomDocument extends Document>(
+  async findDocuments<CustomDocument = null>(
     schemaId: ObjectId,
     rql?: RQLString
-  ): Promise<DocumentsList<CustomDocument>> {
+  ): Promise<
+    DocumentsList<CustomDocument extends null ? Document : CustomDocument>
+  > {
     return (await client.get(httpAuth, `/${schemaId}/documents${rql || ''}`))
       .data;
   },

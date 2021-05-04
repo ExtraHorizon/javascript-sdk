@@ -310,7 +310,7 @@ export interface Index {
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
 
-export interface Document {
+export interface DocumentBase {
   id?: ObjectId;
   userIds?: ObjectId[];
   groupIds?: ObjectId[];
@@ -324,6 +324,10 @@ export interface Document {
   creationTimestamp?: Date;
   statusChangedTimestamp?: Date;
   creatorId?: ObjectId;
+}
+
+export interface Document extends DocumentBase {
+  data?: Record<string, any>;
 }
 
 export interface DocumentsList<CustomDocument> extends PagedResult {
