@@ -237,14 +237,17 @@ import type {
   JSONSchemaNumber,
 } from '@extrahorizon/javascript-sdk';
 
-interface CustomSchema extends Schema {
+interface MySchema extends Schema {
   statuses?: Record<'start', never>;
   properties?: {
-    ppg: JSONSchemaArray;
+    ppg: JSONSchemaArray & {
+      max: 2000;
+      items: JSONSchemaNumber & { max: 255 }[];
+    };
     location: JSONSchemaObject & {
       properties: {
-        longitutde: JSONSchemaNumber;
-        latitude: JSONSchemaNumber;
+        longitutde: JSONSchemaNumber & { min: -180; max: 180 };
+        latitude: JSONSchemaNumber & { min: -90; max: 90 };
       };
     };
   };
