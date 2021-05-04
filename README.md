@@ -242,13 +242,13 @@ interface MySchema extends Schema {
   statuses?: Record<'start', never>;
   properties?: {
     ppg: JSONSchemaArray & {
-      max: 2000;
-      items: JSONSchemaNumber & { max: 255 }[];
+      maxItems: 2000;
+      items: JSONSchemaNumber & { maximum: 255 }[];
     };
     location: JSONSchemaObject & {
       properties: {
-        longitutde: JSONSchemaNumber & { min: -180; max: 180 };
-        latitude: JSONSchemaNumber & { min: -90; max: 90 };
+        longitutde: JSONSchemaNumber & { minium: -180; maximum: 180 };
+        latitude: JSONSchemaNumber & { minium: -90; maximum: 90 };
       };
     };
   };
