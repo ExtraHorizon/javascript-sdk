@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
 import type { AffectedRecords } from '../models/Responses';
-import { Transition, CreationTransition } from './types';
+import { Transition, CreationTransition, TransitionInput } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -35,8 +35,8 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async createTransition(
     schemaId: ObjectId,
-    requestBody?: Transition
-  ): Promise<Transition> {
+    requestBody: Transition
+  ): Promise<TransitionInput> {
     return (
       await client.post(httpAuth, `/${schemaId}/transitions`, requestBody)
     ).data;

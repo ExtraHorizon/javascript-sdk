@@ -169,7 +169,7 @@ export enum CreationTransitionAfterAction {
 }
 
 export interface CreationTransition {
-  toStatus?: string;
+  toStatus: string;
   type?: CreationTransitionType;
   conditions?: Array<Condition>;
   actions?: Array<{ type: CreationTransitionAction }>;
@@ -185,6 +185,9 @@ export interface BaseTransition {
 }
 
 export type Transition = CreationTransition & BaseTransition;
+
+export type TransitionInput = Transition &
+  Required<Pick<BaseTransition, 'name' | 'fromStatuses'>>;
 
 export interface Schema {
   id?: ObjectId;
