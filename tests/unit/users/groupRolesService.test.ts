@@ -45,7 +45,7 @@ describe('Group Roles Service', () => {
       .get(`/groups/${groupId}/roles${rql}`)
       .reply(200, roleResponse);
 
-    const roles = await sdk.users.getGroupsRoles(groupId, rql);
+    const roles = await sdk.users.getGroupsRoles(groupId, { rql });
 
     expect(roles.data.length).toBeGreaterThan(0);
   });
@@ -111,7 +111,7 @@ describe('Group Roles Service', () => {
       {
         permissions,
       },
-      rql
+      { rql }
     );
 
     expect(res.affectedRecords).toBe(1);
@@ -142,7 +142,7 @@ describe('Group Roles Service', () => {
       .post(`/groups/${groupId}/staff/add_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.assignRolesToStaff(groupId, { roles }, rql);
+    const res = await sdk.users.assignRolesToStaff(groupId, { roles }, { rql });
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -166,7 +166,7 @@ describe('Group Roles Service', () => {
       .post(`/add_to_staff${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.addUsersToStaff({ groups }, rql);
+    const res = await sdk.users.addUsersToStaff({ groups }, { rql });
 
     expect(res.affectedRecords).toBe(1);
   });
