@@ -45,7 +45,7 @@ describe('Global Roles Service', () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${USER_BASE}`).get(`/roles${rql}`).reply(200, roleResponse);
 
-    const roles = await sdk.users.getRoles(rql);
+    const roles = await sdk.users.getRoles({ rql });
 
     expect(roles.data.length).toBeGreaterThan(0);
   });
