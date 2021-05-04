@@ -51,10 +51,13 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async findDocuments(
     schemaId: ObjectId,
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<DocumentsList> {
-    return (await client.get(httpAuth, `/${schemaId}/documents${rql || ''}`))
-      .data;
+    return (
+      await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
+    ).data;
   },
 
   /**
@@ -76,12 +79,14 @@ export default (client, httpAuth: HttpInstance) => ({
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: Record<string, any>,
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<AffectedRecords> {
     return (
       await client.put(
         httpAuth,
-        `/${schemaId}/documents/${documentId}${rql || ''}`,
+        `/${schemaId}/documents/${documentId}${options?.rql || ''}`,
         requestBody
       )
     ).data;
@@ -135,12 +140,16 @@ export default (client, httpAuth: HttpInstance) => ({
     requestBody: {
       fields: Array<string>;
     },
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<AffectedRecords> {
     return (
       await client.post(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/deleteFields${rql || ''}`,
+        `/${schemaId}/documents/${documentId}/deleteFields${
+          options?.rql || ''
+        }`,
         requestBody
       )
     ).data;
@@ -169,12 +178,14 @@ export default (client, httpAuth: HttpInstance) => ({
       id: ObjectId;
       data?: Record<string, any>;
     },
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<AffectedRecords> {
     return (
       await client.post(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/transition${rql || ''}`,
+        `/${schemaId}/documents/${documentId}/transition${options?.rql || ''}`,
         requestBody
       )
     ).data;

@@ -36,10 +36,15 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async getGroupsRoles(
     groupId: ObjectId,
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<GroupRoleList> {
     return (
-      await userClient.get(httpWithAuth, `/groups/${groupId}/roles${rql || ''}`)
+      await userClient.get(
+        httpWithAuth,
+        `/groups/${groupId}/roles${options?.rql || ''}`
+      )
     ).data;
   },
 
@@ -137,12 +142,14 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async addPermissionsToGroupRoles(
     groupId: ObjectId,
     requestBody: GroupRolePermissions,
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
-        `/groups/${groupId}/roles/add_permissions${rql || ''}`,
+        `/groups/${groupId}/roles/add_permissions${options?.rql || ''}`,
         requestBody
       )
     ).data;
@@ -191,12 +198,14 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
   async assignRolesToStaff(
     groupId: ObjectId,
     requestBody: StaffRoles,
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
-        `/groups/${groupId}/staff/add_roles${rql || ''}`,
+        `/groups/${groupId}/staff/add_roles${options?.rql || ''}`,
         requestBody
       )
     ).data;
@@ -243,12 +252,14 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    */
   async addUsersToStaff(
     requestBody: StaffGroups,
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<AffectedRecords> {
     return (
       await userClient.post(
         httpWithAuth,
-        `/add_to_staff${rql || ''}`,
+        `/add_to_staff${options?.rql || ''}`,
         requestBody
       )
     ).data;
