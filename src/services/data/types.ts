@@ -275,3 +275,19 @@ export interface Document {
 export interface DocumentsList extends PagedResult {
   data: Array<Document>;
 }
+
+export type CommentText = string;
+
+export interface Comment {
+  id?: ObjectId;
+  schemaId?: ObjectId;
+  measurementId?: ObjectId;
+  userId?: ObjectId;
+  text?: CommentText;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface CommentsList extends PagedResult {
+  data: Array<Comment>;
+}

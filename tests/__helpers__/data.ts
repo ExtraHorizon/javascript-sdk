@@ -332,6 +332,36 @@ export const newIndexInput = {
   },
 };
 
+export const newCommentCreated = {
+  id: '5e9fff9d90135a2a9a718e2f',
+  schemaId: '5e9fff9d90135a2a9a718e2f',
+  measurementId: '5e9fff9d90135a2a9a718e2f',
+  userId: '5e9fff9d90135a2a9a718e2f',
+  text: 'Your comment here',
+  updateTimestamp: '2021-04-30T08:08:11.940Z',
+  creationTimestamp: '2021-04-30T08:08:11.940Z',
+};
+
+export const commentsListResponse = {
+  query: '{}',
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [
+    {
+      id: '5e9fff9d90135a2a9a718e2f',
+      schemaId: '5e9fff9d90135a2a9a718e2f',
+      measurementId: '5e9fff9d90135a2a9a718e2f',
+      userId: '5e9fff9d90135a2a9a718e2f',
+      text: 'Your comment here',
+      updateTimestamp: '2021-04-30T08:08:11.948Z',
+      creationTimestamp: '2021-04-30T08:08:11.948Z',
+    },
+  ],
+};
+
 export const newDocumentCreated = {
   id: '5e9fff9d90135a2a9a718e2f',
   userId: '5e9fff9d90135a2a9a718e2f',
