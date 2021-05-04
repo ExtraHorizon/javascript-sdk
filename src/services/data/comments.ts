@@ -76,7 +76,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {ApiError}
    */
 
-  // TODO swagger must be wrong!! the request body is missing
   async updateComment(
     commentId: ObjectId,
     schemaId: ObjectId,
