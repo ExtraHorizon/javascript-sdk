@@ -1,6 +1,16 @@
 # Extrahorizon Javascript SDK
 
-## 🧙 Installation
+## Getting started
+
+To get started with the Contentful Management JS SDK you'll need to install it, and then get credentials which will allow you to access your content in Contentful.
+
+- [Installation](#Installation)
+- [Authentication](#authentication)
+- [Your first request](#your-first-request)
+- [RQLBuilder](#RQLBuilder)
+- [Raw queries](#Raw-queries)
+
+## Installation
 
 Using npm:
 
@@ -14,9 +24,7 @@ Using yarn:
 yarn add @extrahorizon/javascript-sdk
 ```
 
-## ⚙️ Configuration
-
-### Authentication
+## Authentication
 
 <details>
     <summary>OAuth1 Token authentication</summary>
@@ -175,17 +183,7 @@ import { client } from '@extrahorizon/javascript-sdk';
 })();
 ```
 
-### Tests
-
-To run the unit tests: `yarn start`
-
-To run them in watch mode: `yarn start:watch`
-
-To run e2e tests, copy `.env.example` to `.env` and set up the credentials
-
-Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
-
-### RQL builder
+## RQLBuilder
 
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
 
@@ -195,6 +193,39 @@ import { rqlBuilder } from '@extrahorizon/javascript-sdk';
 const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 // ?select(name)&eq(name,fitbit)
 ```
+
+## Raw queries
+
+You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK.
+
+```ts
+import { client } from '@extrahorizon/javascript-sdk';
+
+(async () => {
+  const sdk = client({
+    apiHost: '',
+  });
+
+  await sdk.auth.authenticate({
+    clientId: '',
+    password: '',
+    username: '',
+  });
+
+  const me = await sdk.rawAxios.get('/users/v1/me').data;
+  console.log('Me', me);
+})();
+```
+
+### Tests
+
+To run the unit tests: `yarn start`
+
+To run them in watch mode: `yarn start:watch`
+
+To run e2e tests, copy `.env.example` to `.env` and set up the credentials
+
+Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
 
 ### Logging
 

@@ -1,3 +1,4 @@
+import { AxiosInstance } from 'axios';
 import { Config, MfaConfig, AuthParams } from './types';
 
 import {
@@ -135,6 +136,7 @@ export interface Client {
   data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
   tasks: ReturnType<typeof tasksService>;
+  rawAxios: AxiosInstance;
 }
 
 /**
@@ -192,6 +194,14 @@ export function client(rawConfig: Config): Client {
     },
     get tasks() {
       return tasksService(httpWithAuth || http);
+    },
+    get rawAxios() {
+      if (!httpWithAuth) {
+        throw new Error(
+          'First call authenticate. See README for more info how to use rawAxios.'
+        );
+      }
+      return httpWithAuth;
     },
   };
 }
