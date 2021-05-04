@@ -5,6 +5,13 @@ import {
   DeleteMode,
   GroupSyncMode,
   IndexFieldsType,
+  CreationTransitionType,
+  ConfigurationType,
+  Condition,
+  Transition,
+  CreationTransitionAction,
+  CreationTransitionAfterAction,
+  CreationTransition,
 } from '../../src/services/data/types';
 
 export const newSchemaInput = {
@@ -323,4 +330,122 @@ export const newIndexInput = {
     unique: true,
     sparse: true,
   },
+};
+
+export const newCommentCreated = {
+  id: '5e9fff9d90135a2a9a718e2f',
+  schemaId: '5e9fff9d90135a2a9a718e2f',
+  measurementId: '5e9fff9d90135a2a9a718e2f',
+  userId: '5e9fff9d90135a2a9a718e2f',
+  text: 'Your comment here',
+  updateTimestamp: '2021-04-30T08:08:11.940Z',
+  creationTimestamp: '2021-04-30T08:08:11.940Z',
+};
+
+export const commentsListResponse = {
+  query: '{}',
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [
+    {
+      id: '5e9fff9d90135a2a9a718e2f',
+      schemaId: '5e9fff9d90135a2a9a718e2f',
+      measurementId: '5e9fff9d90135a2a9a718e2f',
+      userId: '5e9fff9d90135a2a9a718e2f',
+      text: 'Your comment here',
+      updateTimestamp: '2021-04-30T08:08:11.948Z',
+      creationTimestamp: '2021-04-30T08:08:11.948Z',
+    },
+  ],
+};
+
+export const newDocumentCreated = {
+  id: '5e9fff9d90135a2a9a718e2f',
+  userId: '5e9fff9d90135a2a9a718e2f',
+  groupIds: ['5e9fff9d90135a2a9a718e2f'],
+  status: 'start',
+  data: {
+    additionalProp1: {},
+    additionalProp2: {},
+    additionalProp3: {},
+  },
+  transitionLock: {
+    timestamp: '2021-04-29T21:07:45.544Z',
+  },
+  commentCount: 5,
+  updateTimestamp: '2021-04-29T21:07:45.544Z',
+  creationTimestamp: '2021-04-29T21:07:45.544Z',
+};
+
+export const documentsListResponse = {
+  query: '{}',
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [
+    {
+      id: '5e9fff9d90135a2a9a718e2f',
+      userId: '5e9fff9d90135a2a9a718e2f',
+      groupIds: ['5e9fff9d90135a2a9a718e2f'],
+      status: 'start',
+      data: {
+        additionalProp1: {},
+        additionalProp2: {},
+        additionalProp3: {},
+      },
+      transitionLock: {
+        timestamp: '2021-04-29T21:07:45.551Z',
+      },
+      commentCount: 5,
+      updateTimestamp: '2021-04-29T21:07:45.551Z',
+      creationTimestamp: '2021-04-29T21:07:45.551Z',
+    },
+  ],
+};
+
+const inputCondition: Condition = {
+  type: ConfigurationType.INPUT,
+  configuration: {
+    type: ConfigurationType.NUMBER,
+    minimum: -180,
+    maximum: 180,
+  },
+};
+
+const documentCondition: Condition = {
+  type: ConfigurationType.DOCUMENT,
+  configuration: {
+    type: ConfigurationType.NUMBER,
+    minimum: -180,
+    maximum: 180,
+  },
+};
+
+export const transitionInput: CreationTransition = {
+  toStatus: 'start',
+  type: CreationTransitionType.MANUAL,
+  conditions: [inputCondition, documentCondition],
+};
+
+export const newTransition: Transition = {
+  toStatus: 'start',
+  type: CreationTransitionType.MANUAL,
+  conditions: [inputCondition, documentCondition],
+  actions: [
+    {
+      type: CreationTransitionAction.ALGORITHM,
+    },
+  ],
+  afterActions: [
+    {
+      type: CreationTransitionAfterAction.NOTIFY_ALGO_QUEUE_MANAGER,
+    },
+  ],
+  name: 'move',
+  fromStatuses: ['start'],
 };

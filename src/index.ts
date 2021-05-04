@@ -1,4 +1,4 @@
-import { Config, MfaConfig, OAuthConfig } from './types';
+import { Config, MfaConfig, AuthParams } from './types';
 
 import {
   usersService,
@@ -27,13 +27,18 @@ export type {
 } from './services/data/types';
 
 export { rqlBuilder } from './rql';
+export * from './services/users/models/GlobalPermissionName';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
+  const validApiHostEnd = apiHost.endsWith('/')
+    ? apiHost.substr(0, apiHost.length - 1)
+    : apiHost;
+
   return {
     ...config,
-    apiHost: apiHost.endsWith('/')
-      ? apiHost.substr(0, apiHost.length - 1)
-      : apiHost,
+    apiHost: validApiHostEnd.startsWith('https://')
+      ? validApiHostEnd
+      : `https://${validApiHostEnd}`,
   };
 }
 
@@ -41,13 +46,29 @@ export interface Client {
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService> & {
     /**
-     * Use OAuth1 authentication
+     * Use OAuth1 Token authentication
      * @example
      * await sdk.auth.authenticate({
      *  consumerKey: '',
      *  consumerSecret: '',
-     *  tokenKey: '',
+     *  token: '',
      *  tokenSecret: '',
+     * });
+     */
+    authenticate(oauth: {
+      consumerKey: string;
+      consumerSecret: string;
+      token: string;
+      tokenSecret: string;
+    }): Promise<void>;
+    /**
+     * Use OAuth1 Password authentication
+     * @example
+     * await sdk.auth.authenticate({
+     *  consumerKey: '',
+     *  consumerSecret: '',
+     *  email: '',
+     *  password: '',
      * });
      */
     authenticate(oauth: {
@@ -146,7 +167,7 @@ export function client(rawConfig: Config): Client {
 
   let httpWithAuth;
 
-  async function authenticate(oauth: OAuthConfig) {
+  async function authenticate(oauth: AuthParams) {
     const authConfig = parseAuthParams(oauth);
     httpWithAuth = await ('oauth1' in authConfig
       ? createOAuth1HttpClient

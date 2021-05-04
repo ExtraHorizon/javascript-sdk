@@ -203,38 +203,45 @@ export enum CreationTransitionType {
   AUTOMATIC = 'automatic',
 }
 
+export enum CreationTransitionAction {
+  ALGORITHM = 'algorithm',
+  DELAY = 'delay',
+  TASK = 'task',
+  LINK_CREATOR = 'linkCreator',
+  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
+  LINK_USER_FROM_DATA = 'linkUserFromData',
+  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
+  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
+  SET = 'set',
+  UNSET = 'unset',
+  ADD_ITEMS = 'addItems',
+  REMOVE_ITEMS = 'removeItems',
+}
+
+export enum CreationTransitionAfterAction {
+  NOTIFY_ALGO_QUEUE_MANAGER = 'notifyAlgoQueueManager',
+}
+
 export interface CreationTransition {
-  toStatus?: string;
+  toStatus: string;
   type?: CreationTransitionType;
   conditions?: Array<Condition>;
-  actions?: Array<{
-    type?:
-      | 'algorithm'
-      | 'delay'
-      | 'task'
-      | 'linkCreator'
-      | 'linkEnlistedGroups'
-      | 'linkUserFromData'
-      | 'linkGroupFromData'
-      | 'measurementReviewedNotification'
-      | 'set'
-      | 'unset'
-      | 'addItems'
-      | 'removeItems';
-  }>;
-  afterActions?: Array<{
-    type?: 'notifyAlgoQueueManager';
-  }>;
+  actions?: Array<{ type: CreationTransitionAction }>;
+  afterActions?: Array<{ type: CreationTransitionAfterAction }>;
 }
 
 export type StatusData = Record<string, string>;
 
 export interface BaseTransition {
+  id?: ObjectId;
   name?: string;
   fromStatuses?: Array<string>;
 }
 
 export type Transition = CreationTransition & BaseTransition;
+
+export type TransitionInput = Transition &
+  Required<Pick<BaseTransition, 'name' | 'fromStatuses'>>;
 
 export interface Schema {
   id?: ObjectId;
@@ -302,3 +309,37 @@ export interface Index {
 }
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
+
+export interface Document {
+  id?: ObjectId;
+  userId?: ObjectId;
+  groupIds?: Array<ObjectId>;
+  status?: string;
+  data?: Record<string, any>;
+  transitionLock?: {
+    timestamp?: Date;
+  };
+  commentCount?: number;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface DocumentsList extends PagedResult {
+  data: Array<Document>;
+}
+
+export type CommentText = string;
+
+export interface Comment {
+  id?: ObjectId;
+  schemaId?: ObjectId;
+  measurementId?: ObjectId;
+  userId?: ObjectId;
+  text?: CommentText;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface CommentsList extends PagedResult {
+  data: Array<Comment>;
+}
