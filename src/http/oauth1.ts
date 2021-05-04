@@ -1,12 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Config } from '../types';
-import { TokenDataOauth1, Oauth1Config } from './types';
+import { TokenDataOauth1, OAuth1Config } from './types';
 import {
   camelizeResponseData,
   transformKeysResponseData,
   transformResponseData,
 } from './interceptors';
 import { typeReceivedError } from '../errorHandler';
+import { USER_BASE } from '../constants';
 
 export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
   let tokenData: TokenDataOauth1;
@@ -41,6 +42,13 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
     );
   }
 
+  async function setTokenData(data: TokenDataOauth1) {
+    if (options.freshTokensCallback) {
+      await options.freshTokensCallback(data);
+    }
+    tokenData = data;
+  }
+
   httpWithAuth.interceptors.request.use(async config => ({
     ...config,
     headers: {
@@ -73,25 +81,45 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
-  async function authenticate(data: Oauth1Config) {
+  async function authenticate(data: OAuth1Config) {
+    // If the user has passed in a token/tokenSecret combination.
+    // Validate it against /users/me
     authConfig = data;
-
-    const tokenResult = await http.post(authConfig.path, authConfig.params, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...authConfig.oauth1.toHeader(
-          authConfig.oauth1.authorize({
-            url: options.apiHost + authConfig.path,
-            method: 'POST',
-          })
-        ),
-      },
-    });
-    tokenData = {
-      ...tokenResult.data,
-      key: tokenResult.data.token,
-      secret: tokenResult.data.tokenSecret,
-    };
+    if ('tokenData' in data) {
+      tokenData = data.tokenData;
+      const path = `${USER_BASE}/me`;
+      await http.get(path, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authConfig.oauth1.toHeader(
+            authConfig.oauth1.authorize(
+              {
+                url: options.apiHost + path,
+                method: 'get',
+              },
+              tokenData
+            )
+          ),
+        },
+      });
+    } else {
+      const tokenResult = await http.post(authConfig.path, authConfig.params, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...authConfig.oauth1.toHeader(
+            authConfig.oauth1.authorize({
+              url: options.apiHost + authConfig.path,
+              method: 'POST',
+            })
+          ),
+        },
+      });
+      setTokenData({
+        ...tokenResult.data,
+        key: tokenResult.data.token,
+        secret: tokenResult.data.tokenSecret,
+      });
+    }
   }
 
   async function confirmMfa({
@@ -122,11 +150,11 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
         },
       }
     );
-    tokenData = {
+    setTokenData({
       ...tokenResult.data,
       key: tokenResult.data.token,
       secret: tokenResult.data.tokenSecret,
-    };
+    });
   }
 
   return { ...httpWithAuth, authenticate, confirmMfa };

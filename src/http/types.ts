@@ -32,7 +32,12 @@ interface OauthConfigBase {
   path: string;
 }
 
-export interface Oauth1Config extends OauthConfigBase {
+export interface Oauth1Token extends OauthConfigBase {
+  oauth1: OAuth;
+  tokenData: TokenDataOauth1;
+}
+
+export interface Oauth1Password extends OauthConfigBase {
   params: {
     email: string;
     password: string;
@@ -63,8 +68,11 @@ interface Oauth2Refresh extends OauthConfigBase {
   };
 }
 
-export type AuthConfig =
+export type OAuth1Config = Oauth1Token | Oauth1Password;
+
+export type OAuth2Config =
   | Oauth2ConfigPassword
   | Oauth2ConfigCode
-  | Oauth2Refresh
-  | Oauth1Config;
+  | Oauth2Refresh;
+
+export type AuthConfig = OAuth1Config | OAuth2Config;

@@ -1,4 +1,4 @@
-import { Config, MfaConfig, OAuthConfig } from './types';
+import { Config, MfaConfig, AuthParams } from './types';
 
 import {
   usersService,
@@ -34,13 +34,29 @@ export interface Client {
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService> & {
     /**
-     * Use OAuth1 authentication
+     * Use OAuth1 Token authentication
      * @example
      * await sdk.auth.authenticate({
      *  consumerKey: '',
      *  consumerSecret: '',
-     *  tokenKey: '',
+     *  token: '',
      *  tokenSecret: '',
+     * });
+     */
+    authenticate(oauth: {
+      consumerKey: string;
+      consumerSecret: string;
+      token: string;
+      tokenSecret: string;
+    }): Promise<void>;
+    /**
+     * Use OAuth1 Password authentication
+     * @example
+     * await sdk.auth.authenticate({
+     *  consumerKey: '',
+     *  consumerSecret: '',
+     *  email: '',
+     *  password: '',
      * });
      */
     authenticate(oauth: {
@@ -139,7 +155,7 @@ export function client(rawConfig: Config): Client {
 
   let httpWithAuth;
 
-  async function authenticate(oauth: OAuthConfig) {
+  async function authenticate(oauth: AuthParams) {
     const authConfig = parseAuthParams(oauth);
     httpWithAuth = await ('oauth1' in authConfig
       ? createOAuth1HttpClient
