@@ -83,7 +83,7 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
 
   async function authenticate(data: OAuth1Config) {
     // If the user has passed in a token/tokenSecret combination.
-    // Validate it against /users/me
+    // Validate it against /users/me on the unauthenticated Axios client
     authConfig = data;
     if ('tokenData' in data) {
       tokenData = data.tokenData;
