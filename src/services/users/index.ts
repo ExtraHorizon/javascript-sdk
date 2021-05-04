@@ -1,18 +1,18 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import healthService from './healthService';
-import usersService from './usersService';
-import groupRolesService from './groupRolesService';
-import globalRolesService from './globalRolesService';
+import health from './health';
+import users from './users';
+import groupRoles from './groupRoles';
+import globalRoles from './globalRoles';
 import { USER_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
 
-export type UsersService = ReturnType<typeof usersService> &
-  ReturnType<typeof healthService> &
-  ReturnType<typeof globalRolesService> &
-  ReturnType<typeof groupRolesService>;
+export type UsersService = ReturnType<typeof users> &
+  ReturnType<typeof health> &
+  ReturnType<typeof globalRoles> &
+  ReturnType<typeof groupRoles>;
 
-export default (
+export const usersService = (
   http: HttpInstance,
   httpWithAuth: HttpInstance
 ): UsersService => {
@@ -21,10 +21,10 @@ export default (
     transformRequestData: decamelizeKeys,
   });
 
-  const healthMethods = healthService(userClient, http);
-  const usersMethods = usersService(userClient, http, httpWithAuth);
-  const groupRolesMethods = groupRolesService(userClient, httpWithAuth);
-  const globalRolesMethods = globalRolesService(userClient, httpWithAuth);
+  const healthMethods = health(userClient, http);
+  const usersMethods = users(userClient, http, httpWithAuth);
+  const groupRolesMethods = groupRoles(userClient, httpWithAuth);
+  const globalRolesMethods = globalRoles(userClient, httpWithAuth);
 
   return {
     ...healthMethods,

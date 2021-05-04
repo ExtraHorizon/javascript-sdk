@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, rqlBuilder } from '../../../src/index';
 import { GlobalPermissionName } from '../../../src/services/users/models/GlobalPermissionName';
 import {
   permissionResponse,
@@ -24,7 +24,7 @@ describe('Global Roles Service', () => {
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    await sdk.authenticate({
+    await sdk.auth.authenticate({
       clientId: '',
       username: '',
       password: '',
@@ -42,7 +42,7 @@ describe('Global Roles Service', () => {
   });
 
   it('Retrieve a list of roles', async () => {
-    const rql = '';
+    const rql = rqlBuilder().build();
     nock(`${apiHost}${USER_BASE}`).get(`/roles${rql}`).reply(200, roleResponse);
 
     const roles = await sdk.users.getRoles(rql);
@@ -69,7 +69,7 @@ describe('Global Roles Service', () => {
   });
 
   it('Delete a role', async () => {
-    const rql = '';
+    const rql = rqlBuilder().build();
     nock(`${apiHost}${USER_BASE}`).delete(`/roles${rql}`).reply(200, {
       affectedRecords: 1,
     });
@@ -106,7 +106,7 @@ describe('Global Roles Service', () => {
   });
 
   it('Remove permissions from roles', async () => {
-    const rql = '';
+    const rql = rqlBuilder().build();
     const requestBody = {
       permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
@@ -120,7 +120,7 @@ describe('Global Roles Service', () => {
   });
 
   it('Add roles to users', async () => {
-    const rql = '';
+    const rql = rqlBuilder().build();
     const requestBody = {
       roles: [roleId],
     };
@@ -134,7 +134,7 @@ describe('Global Roles Service', () => {
   });
 
   it('Remove roles from users', async () => {
-    const rql = '';
+    const rql = rqlBuilder().build();
     const requestBody = {
       roles: [roleId],
     };

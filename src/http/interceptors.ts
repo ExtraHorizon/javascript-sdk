@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios';
+import { DATA_BASE } from '../constants';
 import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
 
 export const camelizeResponseData = ({
@@ -8,12 +9,15 @@ export const camelizeResponseData = ({
 }: AxiosResponse): AxiosResponse => ({
   ...response,
   config,
-  data: ['arraybuffer', 'stream'].includes(config.responseType)
-    ? data
-    : camelizeKeys(data),
+  data:
+    // Note: the /data endpoint can return custom properties that the user has defined
+    config.url.startsWith(DATA_BASE) ||
+    ['arraybuffer', 'stream'].includes(config.responseType)
+      ? data
+      : camelizeKeys(data),
 });
 
-const mapFunction = (value, key) => {
+const mapDateValues = (value, key) => {
   if (
     [
       'creationTimestamp',
@@ -36,10 +40,10 @@ export const transformResponseData = ({
   config,
   data: ['arraybuffer', 'stream'].includes(config.responseType)
     ? data
-    : recursiveMap(mapFunction)(data),
+    : recursiveMap(mapDateValues)(data),
 });
 
-const keyFunction = key => {
+const convertRecordsAffectedKeys = key => {
   if (['records_affected', 'recordsAffected'].includes(key)) {
     return 'affectedRecords';
   }
@@ -55,5 +59,5 @@ export const transformKeysResponseData = ({
   config,
   data: ['arraybuffer', 'stream'].includes(config.responseType)
     ? data
-    : recursiveRenameKeys(keyFunction, data),
+    : recursiveRenameKeys(convertRecordsAffectedKeys, data),
 });

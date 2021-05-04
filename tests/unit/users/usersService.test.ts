@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
-import { Client, client } from '../../../src/index';
+import { Client, client, rqlBuilder } from '../../../src/index';
 import {
   userData,
   newUserData,
@@ -35,7 +35,7 @@ describe('Users Service', () => {
       .post(`${AUTH_BASE}/oauth2/token`)
       .reply(200, { access_token: mockToken });
 
-    await sdk.authenticate({
+    await sdk.auth.authenticate({
       clientId: '',
       username: '',
       password: '',
@@ -112,7 +112,10 @@ describe('Users Service', () => {
   });
 
   it('Can get users list', async () => {
-    const rql = '?select(firstName,id)&sort(-firstName)';
+    const rql = rqlBuilder()
+      .select(['firstName', 'id'])
+      .sort('-firstName')
+      .build();
     nock(`${apiHost}${USER_BASE}`).get(`/${rql}`).reply(200, userResponse);
 
     const users = await sdk.users.find(rql);

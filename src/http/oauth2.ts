@@ -42,16 +42,12 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
   }
 
   const refreshTokens = async () => {
-    try {
-      const tokenResult = await http.post(authConfig.path, {
-        grant_type: 'refresh_token',
-        refresh_token: tokenData.refreshToken,
-      });
-      setTokenData(tokenResult.data);
-      return tokenResult.data;
-    } catch (error) {
-      throw typeReceivedError(error);
-    }
+    const tokenResult = await http.post(authConfig.path, {
+      grant_type: 'refresh_token',
+      refresh_token: tokenData.refreshToken,
+    });
+    setTokenData(tokenResult.data);
+    return tokenResult.data;
   };
 
   httpWithAuth.interceptors.request.use(async config => ({
@@ -108,13 +104,9 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
   }
 
   async function authenticate(data: AuthConfig) {
-    try {
-      authConfig = data;
-      const tokenResult = await http.post(authConfig.path, authConfig.params);
-      setTokenData(tokenResult.data);
-    } catch (error) {
-      throw typeReceivedError(error);
-    }
+    authConfig = data;
+    const tokenResult = await http.post(authConfig.path, authConfig.params);
+    setTokenData(tokenResult.data);
   }
 
   async function confirmMfa({
@@ -126,18 +118,14 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
     methodId: string;
     code: string;
   }) {
-    try {
-      const tokenResult = await http.post(authConfig.path, {
-        ...authConfig.params,
-        grant_type: 'mfa',
-        token,
-        code,
-        method_id: methodId,
-      });
-      setTokenData(tokenResult.data);
-    } catch (error) {
-      throw typeReceivedError(error);
-    }
+    const tokenResult = await http.post(authConfig.path, {
+      ...authConfig.params,
+      grant_type: 'mfa',
+      token,
+      code,
+      method_id: methodId,
+    });
+    setTokenData(tokenResult.data);
   }
 
   return { ...httpWithAuth, authenticate, confirmMfa };
