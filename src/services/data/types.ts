@@ -122,14 +122,14 @@ export interface ArrayConfiguration extends BaseConfiguration {
 export interface ObjectConfiguration extends BaseConfiguration {
   type?: ConfigurationType.OBJECT;
   properties?: Record<string, TypeConfiguration>;
-  required?: Array<string>;
+  required?: string[];
 }
 
 export interface StringConfiguration extends BaseConfiguration {
   type?: ConfigurationType.STRING;
   minLength?: number;
   maxLength?: number;
-  enum?: Array<string>;
+  enum?: string[];
   pattern?: string;
   format?: ConfigurationType.DATE_TIME;
 }
@@ -138,7 +138,7 @@ export interface NumberConfiguration extends BaseConfiguration {
   type?: ConfigurationType.NUMBER;
   minimum?: number;
   maximum?: number;
-  enum?: Array<number>;
+  enum?: number[];
 }
 
 export interface BooleanConfiguration extends BaseConfiguration {
@@ -225,9 +225,9 @@ export enum CreationTransitionAfterAction {
 export interface CreationTransition {
   toStatus: string;
   type?: CreationTransitionType;
-  conditions?: Array<Condition>;
-  actions?: Array<{ type: CreationTransitionAction }>;
-  afterActions?: Array<{ type: CreationTransitionAfterAction }>;
+  conditions?: Condition[];
+  actions?: { type: CreationTransitionAction }[];
+  afterActions?: { type: CreationTransitionAfterAction }[];
 }
 
 export type StatusData = Record<string, string>;
@@ -235,7 +235,7 @@ export type StatusData = Record<string, string>;
 export interface BaseTransition {
   id?: ObjectId;
   name?: string;
-  fromStatuses?: Array<string>;
+  fromStatuses?: string[];
 }
 
 export type Transition = CreationTransition & BaseTransition;
@@ -250,7 +250,7 @@ export interface Schema {
   properties?: any;
   statuses?: Record<string, never>;
   creationTransition?: CreationTransition;
-  transitions?: Array<Transition>;
+  transitions?: Transition[];
   createMode?: CreateMode;
   readMode?: ReadMode;
   updateMode?: UpdateMode;
@@ -280,7 +280,7 @@ export type UpdateSchemaInput = Pick<
 >;
 
 export interface SchemasList extends PagedResult {
-  data: Array<Schema>;
+  data: Schema[];
 }
 
 export type IndexFieldsName = string;
@@ -300,10 +300,10 @@ export interface IndexOptions {
 export interface Index {
   id?: ObjectId;
   name?: string;
-  fields?: Array<{
+  fields?: {
     name?: IndexFieldsName;
     type?: IndexFieldsType;
-  }>;
+  }[];
   options?: IndexOptions;
   system?: boolean;
 }
@@ -313,7 +313,7 @@ export type IndexInput = Pick<Index, 'fields' | 'options'>;
 export interface Document {
   id?: ObjectId;
   userIds?: ObjectId[];
-  groupIds?: Array<ObjectId>;
+  groupIds?: ObjectId[];
   status?: string;
   data?: any;
   transitionLock?: {
@@ -343,5 +343,5 @@ export interface Comment {
 }
 
 export interface CommentsList extends PagedResult {
-  data: Array<Comment>;
+  data: Comment[];
 }
