@@ -1,52 +1,52 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { TokenDataOauth2 } from './http/types';
+import { TokenDataOauth1, TokenDataOauth2 } from './http/types';
 
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
 
-interface ConfigOauth1Base {
+interface ParamsOauth1Base {
   consumerKey: string;
   consumerSecret: string;
 }
 
-export interface ConfigOauth1WithEmail extends ConfigOauth1Base {
+export interface ParamsOauth1WithEmail extends ParamsOauth1Base {
   email: string;
   password: string;
 }
 
-export interface ConfigOauth1WithToken extends ConfigOauth1Base {
-  tokenKey: string;
+export interface ParamsOauth1WithToken extends ParamsOauth1Base {
+  token: string;
   tokenSecret: string;
 }
 
-export interface ConfigOauth2AuthorizationCode {
+export interface ParamsOauth2AuthorizationCode {
   clientId: string;
   code: string;
   redirectUri: string;
 }
 
-export interface ConfigOauth2Password {
+export interface ParamsOauth2Password {
   clientId: string;
   username: string;
   password: string;
 }
 
-export interface ConfigOauth2Refresh {
+export interface ParamsOauth2Refresh {
   refreshToken: string;
 }
 
-export type OAuthConfig =
-  | ConfigOauth1WithEmail
-  | ConfigOauth1WithToken
-  | ConfigOauth2AuthorizationCode
-  | ConfigOauth2Password
-  | ConfigOauth2Refresh;
+export type AuthParams =
+  | ParamsOauth1WithEmail
+  | ParamsOauth1WithToken
+  | ParamsOauth2AuthorizationCode
+  | ParamsOauth2Password
+  | ParamsOauth2Refresh;
 
 export interface Config {
   apiHost: string;
   responseLogger?: (response: AxiosResponse | Error) => unknown;
   requestLogger?: (request: AxiosRequestConfig | Error) => unknown;
-  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
+  freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
 }
 
 export interface MfaConfig {

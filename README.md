@@ -19,7 +19,7 @@ yarn add @extrahorizon/javascript-sdk
 ### Authentication
 
 <details>
-    <summary>OAuth1 authentication</summary>
+    <summary>OAuth1 Token authentication</summary>
 
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
@@ -31,8 +31,28 @@ const sdk = client({
 await sdk.auth.authenticate({
   consumerKey: '',
   consumerSecret: '',
-  tokenKey: '',
+  token: '',
   tokenSecret: '',
+});
+```
+
+</details>
+
+<details>
+    <summary>OAuth1 Email authentication</summary>
+
+```js
+import { client } from '@extrahorizon/javascript-sdk';
+
+const sdk = client({
+  apiHost: 'dev.fibricheck.com',
+});
+
+await sdk.auth.authenticate({
+  consumerKey: '',
+  consumerSecret: '',
+  email: '',
+  password: '',
 });
 ```
 

@@ -90,10 +90,15 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ResourceUnknownError}
    */
   async addPermissionsToRole(
+    rql: RQLString,
     requestBody: RolePermissions
   ): Promise<AffectedRecords> {
     return (
-      await userClient.post(httpWithAuth, '/roles/add_permissions', requestBody)
+      await userClient.post(
+        httpWithAuth,
+        `/roles/add_permissions${rql}`,
+        requestBody
+      )
     ).data;
   },
 

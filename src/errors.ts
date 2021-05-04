@@ -132,3 +132,5 @@ export class InvalidGrantError extends ApiError {}
 export class MFARequiredError extends ApiError {}
 export class StatusInUseError extends ApiError {}
 export class MfaReattemptDelayError extends ApiError {}
+export class OauthTokenError extends ApiError {}
+export class OauthKeyError extends ApiError {}
