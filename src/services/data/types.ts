@@ -312,7 +312,7 @@ export type IndexInput = Pick<Index, 'fields' | 'options'>;
 
 export interface Document {
   id?: ObjectId;
-  userId?: ObjectId;
+  userIds?: ObjectId[];
   groupIds?: Array<ObjectId>;
   status?: string;
   data?: any;
@@ -322,6 +322,8 @@ export interface Document {
   commentCount?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
+  statusChangedTimestamp?: Date;
+  creatorId?: ObjectId;
 }
 
 export interface DocumentsList<CustomDocument> extends PagedResult {
