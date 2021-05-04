@@ -1,7 +1,10 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
-export interface RQLString extends String {}
+// TypeScript Does not allow custom error on type errors. This is a hackish work around.
+type NotAnRQLStringError = 'Please use rqlBuilder to construct valid RQL. See README for an example.';
+type RQLCheck<T> = T extends any ? NotAnRQLStringError : T;
 
-interface RQLBuilder {
+export type RQLString = RQLCheck<string>;
+
+export interface RQLBuilder {
   select: (value: string | string[]) => RQLBuilder;
   limit: (limit: number, offset?: number) => RQLBuilder;
   sort: (value: string | string[]) => RQLBuilder;
@@ -18,7 +21,7 @@ interface RQLBuilder {
 }
 
 export function rqlBuilder(): RQLBuilder {
-  let returnString: RQLString = '';
+  let returnString = '';
 
   const api: RQLBuilder = {
     select(value) {
@@ -64,7 +67,7 @@ export function rqlBuilder(): RQLBuilder {
       return processQuery('gt', `${field},${value}`);
     },
     build(): RQLString {
-      return returnString;
+      return returnString as RQLString;
     },
   };
 

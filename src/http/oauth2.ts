@@ -23,7 +23,7 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
       },
       error => {
         requestLogger(error);
-        return error;
+        return Promise.reject(error);
       }
     );
   }
@@ -36,7 +36,7 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
       },
       error => {
         responseLogger(error);
-        return error;
+        return Promise.reject(error);
       }
     );
   }

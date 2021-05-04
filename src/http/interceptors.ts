@@ -24,6 +24,9 @@ const mapDateValues = (value, key) => {
       'expiryTimestamp',
       'updateTimestamp',
       'lastFailedTimestamp',
+      'statusChangedTimestamp',
+      'startTimestamp',
+      'timestamp',
     ].includes(key)
   ) {
     return new Date(value);

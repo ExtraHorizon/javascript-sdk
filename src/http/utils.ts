@@ -1,6 +1,6 @@
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
-import { OAuthConfig } from '../types';
+import { AuthParams } from '../types';
 import { AuthConfig } from './types';
 import { AUTH_BASE } from '../constants';
 
@@ -8,7 +8,7 @@ function hmacSha1Hash(baseString: string, key: string) {
   return crypto.createHmac('sha1', key).update(baseString).digest('base64');
 }
 
-export function parseAuthParams(options: OAuthConfig): AuthConfig {
+export function parseAuthParams(options: AuthParams): AuthConfig {
   if ('consumerKey' in options && 'email' in options) {
     // oauth1
     return {
@@ -16,6 +16,25 @@ export function parseAuthParams(options: OAuthConfig): AuthConfig {
       params: {
         email: options.email,
         password: options.password,
+      },
+      oauth1: new OAuth({
+        consumer: {
+          key: options.consumerKey,
+          secret: options.consumerSecret,
+        },
+        signature_method: 'HMAC-SHA1',
+        hash_function: hmacSha1Hash,
+      }),
+    };
+  }
+
+  if ('consumerKey' in options && 'tokenSecret' in options) {
+    // oauth1
+    return {
+      path: `${AUTH_BASE}/oauth1/tokens`,
+      tokenData: {
+        key: options.token,
+        secret: options.tokenSecret,
       },
       oauth1: new OAuth({
         consumer: {
