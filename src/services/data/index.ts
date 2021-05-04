@@ -5,6 +5,7 @@ import schemas from './schemas';
 import indexes from './indexes';
 import statuses from './statuses';
 import properties from './properties';
+import documents from './documents';
 import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
 
@@ -13,6 +14,7 @@ export type DataService = ReturnType<typeof infrastructure> &
   ReturnType<typeof indexes> &
   ReturnType<typeof statuses> &
   ReturnType<typeof properties> &
+  ReturnType<typeof documents> &
   ReturnType<typeof transitions>;
 
 export const dataService = (
@@ -28,6 +30,7 @@ export const dataService = (
   const indexesMethods = indexes(client, httpWithAuth);
   const statusesMethods = statuses(client, httpWithAuth);
   const propertiesMethods = properties(client, httpWithAuth);
+  const documentsMethods = documents(client, httpWithAuth);
   const transitionsMethods = transitions(client, httpWithAuth);
 
   return {
@@ -36,6 +39,7 @@ export const dataService = (
     ...indexesMethods,
     ...statusesMethods,
     ...propertiesMethods,
+    ...documentsMethods,
     ...transitionsMethods,
   };
 };

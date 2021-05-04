@@ -93,12 +93,12 @@ describe('Global Roles Service', () => {
   });
 
   it('Add permissions to a role', async () => {
-    const rql = '';
+    const rql = rqlBuilder().limit(10).build();
     const requestBody = {
       permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
     nock(`${apiHost}${USER_BASE}`)
-      .post('/roles/add_permissions')
+      .post(`/roles/add_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.addPermissionsToRole(rql, requestBody);

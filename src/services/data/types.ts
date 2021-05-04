@@ -257,3 +257,21 @@ export interface Index {
 }
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
+
+export interface Document {
+  id?: ObjectId;
+  userId?: ObjectId;
+  groupIds?: Array<ObjectId>;
+  status?: string;
+  data?: Record<string, any>;
+  transitionLock?: {
+    timestamp?: Date;
+  };
+  commentCount?: number;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface DocumentsList extends PagedResult {
+  data: Array<Document>;
+}
