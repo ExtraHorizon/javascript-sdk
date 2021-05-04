@@ -199,8 +199,8 @@ const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 
 The data returned from the backend is mapped using interceptors:
 
-- timestamps will be of type Date
-- keys will be camelCased
+- Timestamps will be of type Date
+- Keys in objects will be camelCased
 - `records_affected` will be replaced by `affected_records`
 
 ## Raw queries
