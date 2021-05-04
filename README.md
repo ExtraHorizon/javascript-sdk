@@ -232,6 +232,7 @@ As example the typing of the first schema in the example value from the get sche
 ```ts
 import type {
   Schema,
+  Document,
   JSONSchemaObject,
   JSONSchemaArray,
   JSONSchemaNumber,
@@ -259,6 +260,17 @@ const sdk = client({
 
 const { data: schemas } = await sdk.data.find();
 const mySchema: CustomSchema = schemas[0];
+
+interface CustomDocument extends Document {
+  data: {
+    ppg: Number[];
+    location: {
+      longitude: Number;
+      latitude: Number;
+    };
+  };
+}
+const document = await sdk.data.findDocuments<CustomDocument>();
 ```
 
 ## 📚 Docs --> TODO
