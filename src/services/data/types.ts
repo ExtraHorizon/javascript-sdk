@@ -315,7 +315,7 @@ export interface Document {
   userId?: ObjectId;
   groupIds?: Array<ObjectId>;
   status?: string;
-  data?: Record<string, any>;
+  data?: any;
   transitionLock?: {
     timestamp?: Date;
   };
@@ -324,8 +324,8 @@ export interface Document {
   creationTimestamp?: Date;
 }
 
-export interface DocumentsList extends PagedResult {
-  data: Array<Document>;
+export interface DocumentsList<CustomDocument> extends PagedResult {
+  data: CustomDocument[];
 }
 
 export type CommentText = string;

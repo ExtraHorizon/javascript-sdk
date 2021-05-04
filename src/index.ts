@@ -24,6 +24,7 @@ export type {
   JSONSchemaString,
   JSONSchemaNumber,
   JSONSchemaBoolean,
+  Document,
 } from './services/data/types';
 
 export { rqlBuilder } from './rql';
