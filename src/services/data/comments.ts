@@ -80,12 +80,16 @@ export default (client, httpAuth: HttpInstance) => ({
   async updateComment(
     commentId: ObjectId,
     schemaId: ObjectId,
-    documentId: ObjectId
+    documentId: ObjectId,
+    requestBody: {
+      text: CommentText;
+    }
   ): Promise<AffectedRecords> {
     return (
       await client.put(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments/${commentId}`
+        `/${schemaId}/documents/${documentId}/comments/${commentId}`,
+        requestBody
       )
     ).data;
   },

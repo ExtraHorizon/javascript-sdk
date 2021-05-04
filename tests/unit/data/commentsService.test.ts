@@ -57,7 +57,9 @@ describe('Comments Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.updateComment(commentId, schemaId, documentId);
+    const res = await sdk.data.updateComment(commentId, schemaId, documentId, {
+      text: 'My updated comment',
+    });
     expect(res.affectedRecords).toBe(1);
   });
 
