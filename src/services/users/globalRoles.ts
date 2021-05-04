@@ -31,8 +31,9 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async getRoles(rql?: RQLString): Promise<RoleList> {
-    return (await userClient.get(httpWithAuth, `/roles${rql || ''}`)).data;
+  async getRoles(options?: { rql?: RQLString }): Promise<RoleList> {
+    return (await userClient.get(httpWithAuth, `/roles${options?.rql || ''}`))
+      .data;
   },
 
   /**

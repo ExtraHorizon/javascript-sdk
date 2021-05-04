@@ -118,7 +118,7 @@ describe('Users Service', () => {
       .build();
     nock(`${apiHost}${USER_BASE}`).get(`/${rql}`).reply(200, userResponse);
 
-    const users = await sdk.users.find(rql);
+    const users = await sdk.users.find({ rql });
 
     expect(users.data.length).toBeGreaterThan(0);
   });

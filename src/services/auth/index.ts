@@ -45,9 +45,12 @@ export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @async
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
      * */
-    async getApplications(rql?: RQLString): Promise<ApplicationList> {
-      return (await authClient.get(httpWithAuth, `/applications${rql || ''}`))
-        .data;
+    async getApplications(options?: {
+      rql?: RQLString;
+    }): Promise<ApplicationList> {
+      return (
+        await authClient.get(httpWithAuth, `/applications${options?.rql || ''}`)
+      ).data;
     },
 
     /**
@@ -143,11 +146,14 @@ export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @permission VIEW_AUTHORIZATIONS | scope:global | Required for this endpoint
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
      */
-    async getOauth2Authorizations(
-      rql?: RQLString
-    ): Promise<OAuth2AuthorizationList> {
+    async getOauth2Authorizations(options?: {
+      rql?: RQLString;
+    }): Promise<OAuth2AuthorizationList> {
       return (
-        await authClient.get(httpWithAuth, `/oauth2/authorizations${rql || ''}`)
+        await authClient.get(
+          httpWithAuth,
+          `/oauth2/authorizations${options?.rql || ''}`
+        )
       ).data;
     },
 
