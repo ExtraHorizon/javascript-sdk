@@ -16,21 +16,11 @@ import {
   createOAuth2HttpClient,
 } from './http';
 
-export type {
-  ConfigurationType,
-  Schema,
-  JSONSchema,
-  JSONSchemaObject,
-  JSONSchemaArray,
-  JSONSchemaString,
-  JSONSchemaNumber,
-  JSONSchemaBoolean,
-  DocumentBase,
-} from './services/data/types';
-
 export { rqlBuilder } from './rql';
+
 export * from './errors';
-export * from './services/users/types';
+
+export * from './services';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   const validApiHostEnd = apiHost.endsWith('/')
@@ -184,6 +174,15 @@ export function client(rawConfig: Config): Client {
     get users() {
       return usersService(http, httpWithAuth || http);
     },
+    get data() {
+      return dataService(http, httpWithAuth || http);
+    },
+    get files() {
+      return filesService(httpWithAuth || http);
+    },
+    get tasks() {
+      return tasksService(httpWithAuth || http);
+    },
     get auth() {
       return {
         ...authService(http, httpWithAuth || http),
@@ -198,15 +197,6 @@ export function client(rawConfig: Config): Client {
           return httpWithAuth.confirmMfa(mfa);
         },
       };
-    },
-    get data() {
-      return dataService(http, httpWithAuth || http);
-    },
-    get files() {
-      return filesService(httpWithAuth || http);
-    },
-    get tasks() {
-      return tasksService(httpWithAuth || http);
     },
     get rawAxios() {
       if (!httpWithAuth) {
