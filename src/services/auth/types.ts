@@ -1,4 +1,4 @@
-import type { PagedResult } from '../models/Responses';
+import type { PagedResult } from '../types';
 
 interface Timestamp {
   updateTimestamp: Date;

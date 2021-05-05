@@ -18,9 +18,8 @@ import type {
   MfaMethod,
 } from './types';
 import httpClient from '../http-client';
-import type { AffectedRecords } from '../models/Responses';
+import { AffectedRecords, Results } from '../types';
 import { AUTH_BASE } from '../../constants';
-import { Results } from '../models/Results';
 
 export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({

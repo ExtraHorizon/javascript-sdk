@@ -1,4 +1,5 @@
 import type { HttpInstance } from '../../types';
+import { ObjectId, Results, AffectedRecords } from '../types';
 import type {
   RegisterUserData,
   PartialUserData,
@@ -14,11 +15,7 @@ import type {
   StaffMember,
   Hash,
 } from './types';
-import type { ObjectId } from '../models/ObjectId';
-
-import { Results } from '../models/Results';
-import { RQLString } from '../../rql';
-import { AffectedRecords } from '../models/Responses';
+import type { RQLString } from '../../rql';
 
 export default (
   userClient,

@@ -1,7 +1,4 @@
-import { ObjectId } from '../models/ObjectId';
-import { PagedResult } from '../models/Responses';
-import { LanguageCode } from '../models/LanguageCode';
-import { TimeZone } from '../models/TimeZone';
+import { ObjectId, PagedResult, LanguageCode, TimeZone } from '../types';
 
 export interface UserData {
   id: string;
@@ -31,7 +28,7 @@ export type UserDataUpdate = Partial<
   >
 >;
 
-interface PatientEnlistment {
+export interface PatientEnlistment {
   groupId: string;
   expiryTimestamp: Date;
   expired: boolean;

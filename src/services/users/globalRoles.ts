@@ -1,6 +1,6 @@
-import { RQLString } from '../../rql';
+import type { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId } from '../models/ObjectId';
+import type { ObjectId, AffectedRecords } from '../types';
 import type {
   GlobalPermissionsList,
   RolePermissions,
@@ -10,7 +10,6 @@ import type {
   RoleUpdate,
   UserRoles,
 } from './types';
-import { AffectedRecords } from '../models/Responses';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
