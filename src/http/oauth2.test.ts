@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE } from '../constants';
-import { InvalidGrantError, MFARequiredError } from '../errors';
+import { InvalidGrantError, MfaRequiredError } from '../errors';
 import { createHttpClient } from './client';
 import { createOAuth2HttpClient } from './oauth2';
 import { parseAuthParams } from './utils';
@@ -193,7 +193,7 @@ describe('http client', () => {
     try {
       await httpWithAuth.authenticate(authConfig);
     } catch (error) {
-      expect(error).toBeInstanceOf(MFARequiredError);
+      expect(error).toBeInstanceOf(MfaRequiredError);
       const { mfa } = error.response;
       await httpWithAuth.confirmMfa({
         token: mfa.token,
