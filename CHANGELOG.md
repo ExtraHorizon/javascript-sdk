@@ -7,7 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.8] - 2021-05-05
+## [1.0.0] - 2021-05-05
+
+### Breaking changes
+
+Optional paramaters are now grouped in an options object as last parameters.
+
+```diff
+- await sdk.tasks.find(rql);
++ await sdk.tasks.find({ rql });
+```
+
+```diff
+- await sdk.users.getGroupsRoles(groupId, rql);
++ await sdk.tasks.getGroupsRoles(groupId, { rql });
+```
 
 ### Added
 
