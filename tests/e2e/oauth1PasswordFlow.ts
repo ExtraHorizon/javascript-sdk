@@ -1,18 +1,19 @@
-import { Client, client } from '../../src';
+import { client } from '../../src';
 import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
 import { newSchemaInput } from '../__helpers__/data';
 
-describe('OAuth2 Password Flow', () => {
-  let sdk: Client;
+describe('OAuth1 Password Flow', () => {
+  let sdk;
 
   beforeAll(async () => {
     sdk = client({
       apiHost: process.env.API_HOST,
     });
     await sdk.auth.authenticate({
-      clientId: process.env.CLIENT_ID,
-      username: process.env.API_USERNAME,
+      consumerKey: process.env.CONSUMER_KEY,
+      consumerSecret: process.env.CONSUMER_SECRET,
+      email: process.env.API_USERNAME,
       password: process.env.API_PASSWORD,
     });
   });

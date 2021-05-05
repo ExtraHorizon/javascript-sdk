@@ -11,9 +11,7 @@ describe('OAuth2 Password Flow', () => {
       apiHost: process.env.API_HOST,
     });
     await sdk.auth.authenticate({
-      clientId: process.env.CLIENT_ID,
-      username: process.env.API_USERNAME,
-      password: process.env.API_PASSWORD,
+      refreshToken: process.env.API_REFRESH_TOKEN,
     });
   });
 
