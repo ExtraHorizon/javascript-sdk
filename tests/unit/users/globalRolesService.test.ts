@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { Client, client, rqlBuilder } from '../../../src/index';
-import { GlobalPermissionName } from '../../../src/services/users/models/GlobalPermissionName';
+import { GlobalPermissionName } from '../../../src/services/users/types';
 import {
   permissionResponse,
   roleResponse,

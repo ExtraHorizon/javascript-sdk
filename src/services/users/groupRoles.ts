@@ -1,11 +1,15 @@
 import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId } from '../models/ObjectId';
-import type { GlobalPermissionsList } from './models/GlobalPermission';
-import type { GroupRolePermissions } from './models/GroupRolePermissions';
-import type { StaffRoles } from './models/StaffRoles';
-import type { StaffGroups } from './models/StaffGroups';
-import type { AddRole, GroupRole, GroupRoleList } from './models/Role';
+import type {
+  GlobalPermissionsList,
+  GroupRolePermissions,
+  StaffRoles,
+  StaffGroups,
+  AddRole,
+  GroupRole,
+  GroupRoleList,
+} from './types';
 import { AffectedRecords } from '../models/Responses';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({

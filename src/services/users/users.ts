@@ -10,11 +10,12 @@ import type {
   Authenticate,
   PasswordReset,
   ConfirmPassword,
+  Patient,
+  StaffMember,
+  Hash,
 } from './types';
 import type { ObjectId } from '../models/ObjectId';
-import type { Patient } from './models/Patient';
-import type { StaffMember } from './models/StaffMember';
-import type { Hash } from './models/Hash';
+
 import { Results } from '../models/Results';
 import { RQLString } from '../../rql';
 import { AffectedRecords } from '../models/Responses';

@@ -30,7 +30,7 @@ export type {
 
 export { rqlBuilder } from './rql';
 export * from './errors';
-export * from './services/users/models/GlobalPermissionName';
+export * from './services/users/types';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   const validApiHostEnd = apiHost.endsWith('/')
