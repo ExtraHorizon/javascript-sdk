@@ -21,6 +21,8 @@ import httpClient from '../http-client';
 import { AffectedRecords, Results } from '../types';
 import { AUTH_BASE } from '../../constants';
 
+export * from './types';
+
 export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
     basePath: AUTH_BASE,

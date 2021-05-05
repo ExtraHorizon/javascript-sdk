@@ -46,6 +46,10 @@ function validateConfig({ apiHost, ...config }: Config): Config {
 }
 
 export interface Client {
+  rawAxios: AxiosInstance;
+  data: ReturnType<typeof dataService>;
+  files: ReturnType<typeof filesService>;
+  tasks: ReturnType<typeof tasksService>;
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService> & {
     /**
@@ -146,10 +150,6 @@ export interface Client {
       code: string;
     }) => Promise<void>;
   };
-  data: ReturnType<typeof dataService>;
-  files: ReturnType<typeof filesService>;
-  tasks: ReturnType<typeof tasksService>;
-  rawAxios: AxiosInstance;
 }
 
 /**
