@@ -52,12 +52,14 @@ export default (client, httpAuth: HttpInstance) => ({
   async findComments(
     schemaId: ObjectId,
     documentId: ObjectId,
-    rql?: RQLString
+    options?: {
+      rql?: RQLString;
+    }
   ): Promise<CommentsList> {
     return (
       await client.get(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments${rql || ''}`
+        `/${schemaId}/documents/${documentId}/comments${options?.rql || ''}`
       )
     ).data;
   },

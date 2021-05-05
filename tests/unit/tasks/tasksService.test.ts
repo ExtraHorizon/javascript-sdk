@@ -35,7 +35,7 @@ describe('Tasks Service', () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
-    const res = await sdk.tasks.find(rql);
+    const res = await sdk.tasks.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
   });
