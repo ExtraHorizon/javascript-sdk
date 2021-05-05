@@ -29,6 +29,7 @@ export type {
 } from './services/data/types';
 
 export { rqlBuilder } from './rql';
+export * from './errors';
 export * from './services/users/models/GlobalPermissionName';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
