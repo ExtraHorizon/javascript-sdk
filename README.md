@@ -313,33 +313,6 @@ interface CustomDocument extends DocumentBase {
 const document = await sdk.data.findDocuments<CustomDocument>();
 ```
 
-### Logging
-
-You can pass in two logger function that will be called by Axios on every request/response respectively.
-
-```ts
-import AxiosLogger from "axios-logger";
-
-const sdk = client({
-  apiHost: "https://api.dev.fibricheck.com",
-  requestLogger: AxiosLogger.requestLogger,
-  responseLogger: AxiosLogger.responseLogger,
-});
-
-await sdk.auth.authenticate({
-  refreshToken: 'refreshToken'
-})
-
-await sdk.users.health();
-
-[Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"refreshToken"}
-[Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"accessToken","token_type":"bearer","expires_in":299.999,"refresh_token":"refreshToken","user_id":"userId","application_id":"applicationId"}
-
-[Axios][Request] GET /auth/v2/health
-[Axios][Response] GET /auth/v2/health 200:OK
-
-```
-
 ## 📚 Docs --> TODO
 
 - [docs](https://extraHorizon.github.io/javascript-sdk/)
