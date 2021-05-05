@@ -11,9 +11,7 @@ describe('OAuth2 Password Flow', () => {
       apiHost: process.env.API_HOST,
     });
     await sdk.auth.authenticate({
-      clientId: process.env.CLIENT_ID,
-      username: process.env.API_USERNAME,
-      password: process.env.API_PASSWORD,
+      refreshToken: process.env.API_REFRESH_TOKEN,
     });
   });
 
@@ -51,7 +49,7 @@ describe('OAuth2 Password Flow', () => {
     expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
-      const res = await sdk.users.getRoles({ rql });
+      const res = await sdk.users.getRoles(rql);
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);
@@ -61,7 +59,7 @@ describe('OAuth2 Password Flow', () => {
   // auth service
   it('auth.getApplications()', async () => {
     const rql = rqlBuilder().select('name').build();
-    const res = await sdk.auth.getApplications({ rql });
+    const res = await sdk.auth.getApplications(rql);
     expect(res).toBeDefined();
   });
 
@@ -70,7 +68,7 @@ describe('OAuth2 Password Flow', () => {
     expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
     try {
-      const res = await sdk.files.find({ rql });
+      const res = await sdk.files.find(rql);
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);

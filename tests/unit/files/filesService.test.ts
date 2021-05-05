@@ -39,7 +39,7 @@ describe('Files Service', () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${FILES_BASE}`).get(`/${rql}`).reply(200, filesResponse);
 
-    const res = await sdk.files.find(rql);
+    const res = await sdk.files.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
   });
