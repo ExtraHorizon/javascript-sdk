@@ -16,6 +16,18 @@ import {
   createOAuth2HttpClient,
 } from './http';
 
+export type {
+  ConfigurationType,
+  Schema,
+  JSONSchema,
+  JSONSchemaObject,
+  JSONSchemaArray,
+  JSONSchemaString,
+  JSONSchemaNumber,
+  JSONSchemaBoolean,
+  DocumentBase,
+} from './services/data/types';
+
 export { rqlBuilder } from './rql';
 export * from './services/users/models/GlobalPermissionName';
 
