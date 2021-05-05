@@ -1,6 +1,17 @@
 # Extrahorizon Javascript SDK
 
-## 🧙 Installation
+## Getting started
+
+To get started with the Contentful Management JS SDK you'll need to install it, and then get credentials which will allow you to access your content in Contentful.
+
+- [Installation](#Installation)
+- [Authentication](#authentication)
+- [Your first request](#your-first-request)
+- [RQLBuilder](#RQLBuilder)
+- [Interceptors](#interceptors)
+- [Raw queries](#Raw-queries)
+
+## Installation
 
 Using npm:
 
@@ -14,12 +25,10 @@ Using yarn:
 yarn add @extrahorizon/javascript-sdk
 ```
 
-## ⚙️ Configuration
-
-### Authentication
+## Authentication
 
 <details>
-    <summary>OAuth1 authentication</summary>
+    <summary>OAuth1 Token authentication</summary>
 
 ```js
 import { client } from '@extrahorizon/javascript-sdk';
@@ -31,8 +40,28 @@ const sdk = client({
 await sdk.auth.authenticate({
   consumerKey: '',
   consumerSecret: '',
-  tokenKey: '',
+  token: '',
   tokenSecret: '',
+});
+```
+
+</details>
+
+<details>
+    <summary>OAuth1 Email authentication</summary>
+
+```js
+import { client } from '@extrahorizon/javascript-sdk';
+
+const sdk = client({
+  apiHost: 'dev.fibricheck.com',
+});
+
+await sdk.auth.authenticate({
+  consumerKey: '',
+  consumerSecret: '',
+  email: '',
+  password: '',
 });
 ```
 
@@ -155,6 +184,48 @@ import { client } from '@extrahorizon/javascript-sdk';
 })();
 ```
 
+## RQLBuilder
+
+The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
+
+```ts
+import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+
+const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
+// ?select(name)&eq(name,fitbit)
+```
+
+## Interceptors
+
+The data returned from the backend is mapped using interceptors:
+
+- Timestamps will be of type Date
+- Keys in objects will be camelCased
+- `records_affected` will be replaced by `affected_records`
+
+## Raw queries
+
+You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
+
+```ts
+import { client } from '@extrahorizon/javascript-sdk';
+
+(async () => {
+  const sdk = client({
+    apiHost: '',
+  });
+
+  await sdk.auth.authenticate({
+    clientId: '',
+    password: '',
+    username: '',
+  });
+
+  const me = await sdk.rawAxios.get('/users/v1/me').data;
+  console.log('Me', me);
+})();
+```
+
 ### Tests
 
 To run the unit tests: `yarn start`
@@ -165,15 +236,81 @@ To run e2e tests, copy `.env.example` to `.env` and set up the credentials
 
 Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
 
-### RQL builder
+### Logging
 
-The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
+You can pass in two logger function that will be called by Axios on every request/response respectively.
 
 ```ts
-import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+import AxiosLogger from "axios-logger";
 
-const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
-// ?select(name)&eq(name,fitbit)
+const sdk = client({
+  apiHost: "https://api.dev.fibricheck.com",
+  requestLogger: AxiosLogger.requestLogger,
+  responseLogger: AxiosLogger.responseLogger,
+});
+
+await sdk.auth.authenticate({
+  refreshToken: 'refreshToken'
+})
+
+await sdk.users.health();
+
+[Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"refreshToken"}
+[Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"accessToken","token_type":"bearer","expires_in":299.999,"refresh_token":"refreshToken","user_id":"userId","application_id":"applicationId"}
+
+[Axios][Request] GET /auth/v2/health
+[Axios][Response] GET /auth/v2/health 200:OK
+
+```
+
+### Typescript for your Schemas
+
+If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
+
+As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
+
+```ts
+import type {
+  Schema,
+  DocumentBase,
+  JSONSchemaObject,
+  JSONSchemaArray,
+  JSONSchemaNumber,
+} from '@extrahorizon/javascript-sdk';
+
+interface MySchema extends Schema {
+  statuses?: Record<'start', never>;
+  properties?: {
+    ppg: JSONSchemaArray & {
+      maxItems: 2000;
+      items: JSONSchemaNumber & { maximum: 255 }[];
+    };
+    location: JSONSchemaObject & {
+      properties: {
+        longitutde: JSONSchemaNumber & { minium: -180; maximum: 180 };
+        latitude: JSONSchemaNumber & { minium: -90; maximum: 90 };
+      };
+    };
+  };
+}
+
+const sdk = client({
+  apiHost: 'https://api.dev.fibricheck.com',
+});
+
+const { data: schemas } = await sdk.data.find();
+const mySchema: CustomSchema = schemas[0];
+
+interface CustomDocument extends DocumentBase {
+  data: {
+    ppg: Number[];
+    location: {
+      longitude: Number;
+      latitude: Number;
+    };
+  };
+}
+const document = await sdk.data.findDocuments<CustomDocument>();
 ```
 
 ### Logging

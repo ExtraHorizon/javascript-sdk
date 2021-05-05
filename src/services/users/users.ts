@@ -76,8 +76,8 @@ export default (
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(rql?: RQLString): Promise<UserList> {
-    return (await userClient.get(httpWithAuth, `/${rql || ''}`)).data;
+  async find(options?: { rql?: RQLString }): Promise<UserList> {
+    return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
   },
 
   /**
@@ -107,8 +107,10 @@ export default (
    * @returns Patient Success
    * @throws {ApiError}
    */
-  async patients(rql?: RQLString): Promise<Patient[]> {
-    return (await userClient.get(httpWithAuth, `/patients${rql || ''}`)).data;
+  async patients(options?: { rql?: RQLString }): Promise<Patient[]> {
+    return (
+      await userClient.get(httpWithAuth, `/patients${options?.rql || ''}`)
+    ).data;
   },
 
   /**
@@ -122,8 +124,9 @@ export default (
    * @returns StaffMember Success
    * @throws {ApiError}
    */
-  async staff(rql?: RQLString): Promise<StaffMember[]> {
-    return (await userClient.get(httpWithAuth, `/staff${rql || ''}`)).data;
+  async staff(options?: { rql?: RQLString }): Promise<StaffMember[]> {
+    return (await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`))
+      .data;
   },
 
   /**
@@ -367,7 +370,7 @@ export default (
   async isEmailAvailable(
     email: string
   ): Promise<{
-    emailAvailable?: boolean;
+    emailAvailable: boolean;
   }> {
     return (
       await userClient.get(http, '/email_available', {

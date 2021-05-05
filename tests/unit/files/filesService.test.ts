@@ -1,7 +1,7 @@
 import nock from 'nock';
 import * as fs from 'fs';
 import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, rqlBuilder } from '../../../src/index';
 import { fileData } from '../../__helpers__/file';
 import { filesResponse } from '../../__helpers__/apiResponse';
 
@@ -36,10 +36,10 @@ describe('Files Service', () => {
   });
 
   it('List all files', async () => {
-    const rql = '';
+    const rql = rqlBuilder().build();
     nock(`${apiHost}${FILES_BASE}`).get(`/${rql}`).reply(200, filesResponse);
 
-    const res = await sdk.files.find(rql);
+    const res = await sdk.files.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
   });

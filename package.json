@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "",
   "main": "build/index.cjs",
   "types": "build/types/index.d.ts",
@@ -21,7 +21,7 @@
     "watch:declarations": "tsc -w --project tsconfig.declarations.json",
     "prepare": "yarn build && husky install",
     "test": "jest",
-    "test:e2e": "yarn build && jest tests/e2e",
+    "test:e2e": "jest tests/e2e",
     "lint": "eslint src --ext .ts",
     "prettier": "prettier src",
     "majestic": "majestic"

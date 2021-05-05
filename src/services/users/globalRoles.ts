@@ -31,8 +31,9 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async getRoles(rql?: RQLString): Promise<RoleList> {
-    return (await userClient.get(httpWithAuth, `/roles${rql || ''}`)).data;
+  async getRoles(options?: { rql?: RQLString }): Promise<RoleList> {
+    return (await userClient.get(httpWithAuth, `/roles${options?.rql || ''}`))
+      .data;
   },
 
   /**
@@ -90,10 +91,15 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @throws {ResourceUnknownError}
    */
   async addPermissionsToRole(
+    rql: RQLString,
     requestBody: RolePermissions
   ): Promise<AffectedRecords> {
     return (
-      await userClient.post(httpWithAuth, '/roles/add_permissions', requestBody)
+      await userClient.post(
+        httpWithAuth,
+        `/roles/add_permissions${rql}`,
+        requestBody
+      )
     ).data;
   },
 

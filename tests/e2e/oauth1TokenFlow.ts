@@ -1,19 +1,20 @@
-import { Client, client } from '../../src';
+import { client } from '../../src';
 import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
 import { newSchemaInput } from '../__helpers__/data';
 
-describe('OAuth2 Password Flow', () => {
-  let sdk: Client;
+describe('OAuth1 Token Flow', () => {
+  let sdk;
 
   beforeAll(async () => {
     sdk = client({
       apiHost: process.env.API_HOST,
     });
     await sdk.auth.authenticate({
-      clientId: process.env.CLIENT_ID,
-      username: process.env.API_USERNAME,
-      password: process.env.API_PASSWORD,
+      consumerKey: process.env.CONSUMER_KEY,
+      consumerSecret: process.env.CONSUMER_SECRET,
+      token: process.env.TOKEN,
+      tokenSecret: process.env.TOKEN_SECRET,
     });
   });
 
@@ -27,6 +28,7 @@ describe('OAuth2 Password Flow', () => {
   it('users.me()', async () => {
     const user = await sdk.users.me();
     expect(user.id).toBeDefined();
+    console.log(user);
     expect(user.firstName).toBeDefined();
   });
 
@@ -51,7 +53,7 @@ describe('OAuth2 Password Flow', () => {
     expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
-      const res = await sdk.users.getRoles({ rql });
+      const res = await sdk.users.getRoles(rql);
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);
@@ -61,7 +63,7 @@ describe('OAuth2 Password Flow', () => {
   // auth service
   it('auth.getApplications()', async () => {
     const rql = rqlBuilder().select('name').build();
-    const res = await sdk.auth.getApplications({ rql });
+    const res = await sdk.auth.getApplications(rql);
     expect(res).toBeDefined();
   });
 
@@ -70,7 +72,7 @@ describe('OAuth2 Password Flow', () => {
     expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
     try {
-      const res = await sdk.files.find({ rql });
+      const res = await sdk.files.find(rql);
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);

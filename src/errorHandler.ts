@@ -33,6 +33,9 @@ import {
   FileTooLargeError,
   StatusInUseError,
   MfaReattemptDelayError,
+  LockedDocumentError,
+  OauthTokenError,
+  OauthKeyError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -47,6 +50,8 @@ export const ErrorClassDefinitionsMap = {
   27: IllegalStateError,
   104: UserNotAuthenticatedError,
   106: AuthenticationError,
+  107: OauthKeyError,
+  108: OauthTokenError,
   113: CallbackNotValidError,
   114: UnsupportedResponseTypeError,
   129: MFARequiredError,
@@ -63,6 +68,7 @@ export const ErrorClassDefinitionsMap = {
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
   414: StatusInUseError,
+  415: LockedDocumentError,
   2605: InvalidTokenError,
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,

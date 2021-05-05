@@ -1,5 +1,59 @@
+import type { JSONSchema7 } from './json-schema';
 import type { ObjectId } from '../models/ObjectId';
 import { PagedResult } from '../models/Responses';
+
+export enum JSONSchemaType {
+  OBJECT = 'object',
+  ARRAY = 'array',
+  STRING = 'string',
+  NUMBER = 'number',
+  BOOLEAN = 'boolean',
+}
+
+export type JSONSchema =
+  | JSONSchemaObject
+  | JSONSchemaArray
+  | JSONSchemaString
+  | JSONSchemaNumber
+  | JSONSchemaBoolean;
+
+export type JSONSchemaObject = Pick<JSONSchema7, 'required'> & {
+  type: JSONSchemaType.OBJECT;
+  properties?: {
+    [key: string]: JSONSchema;
+  };
+  additionalProperties?: JSONSchema;
+};
+
+export type JSONSchemaArray = Pick<JSONSchema7, 'minItems' | 'maxItems'> & {
+  type: JSONSchemaType.ARRAY;
+  items: JSONSchema | JSONSchema[];
+  contains: JSONSchema;
+};
+
+export type JSONSchemaString = Pick<
+  JSONSchema7,
+  'minLength' | 'maxLength' | 'pattern' | 'enum'
+> & {
+  type: JSONSchemaType.STRING;
+  const: string;
+  format: 'date-time';
+};
+// format is static 'date-time
+
+export type JSONSchemaNumber = Pick<
+  JSONSchema7,
+  'type' | 'minimum' | 'maximum' | 'enum'
+> & {
+  type: JSONSchemaType.NUMBER;
+  const: number;
+};
+
+export type JSONSchemaBoolean = {
+  type: JSONSchemaType.BOOLEAN;
+  enum: boolean[];
+  const: boolean;
+};
 
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema
@@ -68,14 +122,14 @@ export interface ArrayConfiguration extends BaseConfiguration {
 export interface ObjectConfiguration extends BaseConfiguration {
   type?: ConfigurationType.OBJECT;
   properties?: Record<string, TypeConfiguration>;
-  required?: Array<string>;
+  required?: string[];
 }
 
 export interface StringConfiguration extends BaseConfiguration {
   type?: ConfigurationType.STRING;
   minLength?: number;
   maxLength?: number;
-  enum?: Array<string>;
+  enum?: string[];
   pattern?: string;
   format?: ConfigurationType.DATE_TIME;
 }
@@ -84,7 +138,7 @@ export interface NumberConfiguration extends BaseConfiguration {
   type?: ConfigurationType.NUMBER;
   minimum?: number;
   maximum?: number;
-  enum?: Array<number>;
+  enum?: number[];
 }
 
 export interface BooleanConfiguration extends BaseConfiguration {
@@ -149,49 +203,54 @@ export enum CreationTransitionType {
   AUTOMATIC = 'automatic',
 }
 
+export enum CreationTransitionAction {
+  ALGORITHM = 'algorithm',
+  DELAY = 'delay',
+  TASK = 'task',
+  LINK_CREATOR = 'linkCreator',
+  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
+  LINK_USER_FROM_DATA = 'linkUserFromData',
+  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
+  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
+  SET = 'set',
+  UNSET = 'unset',
+  ADD_ITEMS = 'addItems',
+  REMOVE_ITEMS = 'removeItems',
+}
+
+export enum CreationTransitionAfterAction {
+  NOTIFY_ALGO_QUEUE_MANAGER = 'notifyAlgoQueueManager',
+}
+
 export interface CreationTransition {
-  toStatus?: string;
+  toStatus: string;
   type?: CreationTransitionType;
-  conditions?: Array<Condition>;
-  actions?: Array<{
-    type?:
-      | 'algorithm'
-      | 'delay'
-      | 'task'
-      | 'linkCreator'
-      | 'linkEnlistedGroups'
-      | 'linkUserFromData'
-      | 'linkGroupFromData'
-      | 'measurementReviewedNotification'
-      | 'set'
-      | 'unset'
-      | 'addItems'
-      | 'removeItems';
-  }>;
-  afterActions?: Array<{
-    type?: 'notifyAlgoQueueManager';
-  }>;
+  conditions?: Condition[];
+  actions?: { type: CreationTransitionAction }[];
+  afterActions?: { type: CreationTransitionAfterAction }[];
 }
 
 export type StatusData = Record<string, string>;
 
 export interface BaseTransition {
+  id?: ObjectId;
   name?: string;
-  fromStatuses?: Array<string>;
+  fromStatuses?: string[];
 }
 
 export type Transition = CreationTransition & BaseTransition;
+
+export type TransitionInput = Transition &
+  Required<Pick<BaseTransition, 'name' | 'fromStatuses'>>;
 
 export interface Schema {
   id?: ObjectId;
   name?: string;
   description?: string;
-  properties?: {
-    additionalProperties?: TypeConfiguration;
-  };
-  statuses?: Record<string, StatusData>;
+  properties?: any;
+  statuses?: Record<string, never>;
   creationTransition?: CreationTransition;
-  transitions?: Array<Transition>;
+  transitions?: Transition[];
   createMode?: CreateMode;
   readMode?: ReadMode;
   updateMode?: UpdateMode;
@@ -221,7 +280,7 @@ export type UpdateSchemaInput = Pick<
 >;
 
 export interface SchemasList extends PagedResult {
-  data: Array<Schema>;
+  data: Schema[];
 }
 
 export type IndexFieldsName = string;
@@ -241,12 +300,52 @@ export interface IndexOptions {
 export interface Index {
   id?: ObjectId;
   name?: string;
-  fields?: Array<{
+  fields?: {
     name?: IndexFieldsName;
     type?: IndexFieldsType;
-  }>;
+  }[];
   options?: IndexOptions;
   system?: boolean;
 }
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
+
+export interface DocumentBase {
+  id?: ObjectId;
+  userIds?: ObjectId[];
+  groupIds?: ObjectId[];
+  status?: string;
+  data?: any;
+  transitionLock?: {
+    timestamp?: Date;
+  };
+  commentCount?: number;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+  statusChangedTimestamp?: Date;
+  creatorId?: ObjectId;
+}
+
+export interface Document extends DocumentBase {
+  data?: Record<string, any>;
+}
+
+export interface DocumentsList<CustomDocument> extends PagedResult {
+  data: CustomDocument[];
+}
+
+export type CommentText = string;
+
+export interface Comment {
+  id?: ObjectId;
+  schemaId?: ObjectId;
+  measurementId?: ObjectId;
+  userId?: ObjectId;
+  text?: CommentText;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface CommentsList extends PagedResult {
+  data: Comment[];
+}

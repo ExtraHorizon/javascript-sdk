@@ -17,8 +17,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(rql?: RQLString): Promise<FilesList> {
-    return (await client.get(httpAuth, `/${rql || ''}`)).data;
+  async find(options?: { rql?: RQLString }): Promise<FilesList> {
+    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
   /**
