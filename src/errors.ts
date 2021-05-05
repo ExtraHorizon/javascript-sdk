@@ -129,7 +129,7 @@ export class UnauthorizedTokenError extends ApiError {}
 export class TokenNotDeleteableError extends ApiError {}
 export class FileTooLargeError extends ApiError {}
 export class InvalidGrantError extends ApiError {}
-export class MFARequiredError extends ApiError {}
+export class MfaRequiredError extends ApiError {}
 export class StatusInUseError extends ApiError {}
 export class MfaReattemptDelayError extends ApiError {}
 export class LockedDocumentError extends ApiError {}

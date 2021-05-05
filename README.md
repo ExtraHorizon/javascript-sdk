@@ -129,7 +129,7 @@ await sdk.auth.authenticate({
     <summary>OAuth2 password grant flow with two-step MFA in try / catch</summary>
 
 ```js
-import { client, MFARequiredError } from '@extrahorizon/javascript-sdk';
+import { client, MfaRequiredError } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
@@ -142,7 +142,7 @@ try {
     username: '',
   });
 } catch (error) {
-  if (error instanceof MFARequiredError) {
+  if (error instanceof MfaRequiredError) {
     const { mfa } = error.response;
 
     // Your logic to request which method the user want to use in case of multiple methods
