@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.8] - 2021-05-05
+
+### Added
+
+- The Axios instance used by the SDK is now directly accessible
+- Data Service now includes:
+  - Transitions Service
+  - Documents Service
+  - Comments Service
+- You can pass in your own interface when calling the `sdk.data.findDocuments<CustomDocument>(schemaId);` endpoint
+- The SDK also expose JSON-schema interface you can use to compose your own
+
+### Changes
+
+- OAuth1 token/tokenSecret flow is implemented.
+- Functions expecting an RQL should now show a more clear error when passing in a regular string.
+
 ## [0.0.7] - 2021-04-28
 
 ### Breaking changes
