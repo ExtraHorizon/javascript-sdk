@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "build/index.cjs",
   "types": "build/types/index.d.ts",
