@@ -1,12 +1,13 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords } from '../models/Responses';
 import { RQLString } from '../../rql';
-
-type PagedResult = unknown;
-type Mail = unknown;
-type PlainMailCreation = unknown;
-type TemplateBasedMailCreation = unknown;
-type QueuedMail = unknown;
+import {
+  Mail,
+  MailList,
+  PlainMailCreation,
+  TemplateBasedMailCreation,
+  QueuedMailList,
+} from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -19,13 +20,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<
-    PagedResult & {
-      data?: Array<Mail>;
-    }
-  > {
+  async find(options?: { rql?: RQLString }): Promise<MailList> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
@@ -71,13 +66,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async findOutboundMails(options?: {
-    rql?: string;
-  }): Promise<
-    PagedResult & {
-      data?: Array<QueuedMail>;
-    }
-  > {
+  async findOutboundMails(options?: { rql?: string }): Promise<QueuedMailList> {
     return (await client.get(httpAuth, `/queued${options?.rql || ''}`)).data;
   },
 });
