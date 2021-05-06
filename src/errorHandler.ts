@@ -36,6 +36,7 @@ import {
   LockedDocumentError,
   OauthTokenError,
   OauthKeyError,
+  NotActivatedError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -61,6 +62,7 @@ export const ErrorClassDefinitionsMap = {
   134: MfaReattemptDelayError,
   202: EmailUnknownError,
   203: EmailUsedError,
+  204: NotActivatedError,
   205: ActivationUnknownError,
   206: AlreadyActivatedError,
   208: PasswordError,

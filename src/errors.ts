@@ -135,3 +135,4 @@ export class MfaReattemptDelayError extends ApiError {}
 export class LockedDocumentError extends ApiError {}
 export class OauthTokenError extends ApiError {}
 export class OauthKeyError extends ApiError {}
+export class NotActivatedError extends ApiError {}

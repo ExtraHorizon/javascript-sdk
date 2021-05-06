@@ -34,7 +34,7 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns Mail Success
-   * @throws {ApiError}
+   * @throws {NotActivatedError}
    */
   async sendMail(
     requestBody?: PlainMailCreation | TemplateBasedMailCreation
