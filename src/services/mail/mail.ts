@@ -9,7 +9,25 @@ import {
   QueuedMailList,
 } from './types';
 
+// TODO replace these once we merge the types PR
+
+enum Results {
+  Success = 200,
+}
+type ResultResponse = any;
+
 export default (client, httpAuth: HttpInstance) => ({
+  /**
+   * Perform a health check for mail service
+   * @permission Everyone can use this endpoint
+   * @returns {boolean} success
+   * @throws {ApiError}
+   */
+  async health(): Promise<boolean> {
+    const result: ResultResponse = await client.get(httpAuth, '/health');
+    return result.status === Results.Success;
+  },
+
   /**
    * Retrieve a list of mails
    * Permission | Scope | Effect

@@ -35,6 +35,14 @@ describe('Mail Service', () => {
     nock.enableNetConnect();
   });
 
+  it('Check health', async () => {
+    nock(`${apiHost}${MAIL_BASE}`).get('/health').reply(200);
+
+    const endpointIsAvailable = await sdk.mail.health();
+
+    expect(endpointIsAvailable).toBe(true);
+  });
+
   it('Retrieve a list of mails', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${MAIL_BASE}`).get(`/${rql}`).reply(200, mailsResponse);
