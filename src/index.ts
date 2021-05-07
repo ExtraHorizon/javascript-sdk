@@ -7,6 +7,7 @@ import {
   dataService,
   tasksService,
   filesService,
+  templateService,
 } from './services';
 
 import {
@@ -149,6 +150,7 @@ export interface Client {
   data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
   tasks: ReturnType<typeof tasksService>;
+  template: ReturnType<typeof templateService>;
   rawAxios: AxiosInstance;
 }
 
@@ -207,6 +209,9 @@ export function client(rawConfig: Config): Client {
     },
     get tasks() {
       return tasksService(httpWithAuth || http);
+    },
+    get template() {
+      return templateService(httpWithAuth || http);
     },
     get rawAxios() {
       if (!httpWithAuth) {
