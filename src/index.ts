@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { Config, MfaConfig, AuthParams } from './types';
+import { ClientParams, AuthParams } from './types';
 
 import {
   usersService,
@@ -15,6 +15,8 @@ import {
   parseAuthParams,
   createOAuth2HttpClient,
 } from './http';
+import { validateConfig } from './utils';
+import { MfaConfig } from './http/types';
 
 export type {
   ConfigurationType,
@@ -32,19 +34,6 @@ export { rqlBuilder } from './rql';
 export * from './errors';
 export * from './services/users/models/GlobalPermissionName';
 
-function validateConfig({ apiHost, ...config }: Config): Config {
-  const validApiHostEnd = apiHost.endsWith('/')
-    ? apiHost.substr(0, apiHost.length - 1)
-    : apiHost;
-
-  return {
-    ...config,
-    apiHost: validApiHostEnd.startsWith('https://')
-      ? validApiHostEnd
-      : `https://${validApiHostEnd}`,
-  };
-}
-
 export interface Client {
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService> & {
@@ -52,62 +41,38 @@ export interface Client {
      * Use OAuth1 Token authentication
      * @example
      * await sdk.auth.authenticate({
-     *  consumerKey: '',
-     *  consumerSecret: '',
      *  token: '',
      *  tokenSecret: '',
      * });
      */
-    authenticate(oauth: {
-      consumerKey: string;
-      consumerSecret: string;
-      token: string;
-      tokenSecret: string;
-    }): Promise<void>;
+    authenticate(oauth: { token: string; tokenSecret: string }): Promise<void>;
     /**
      * Use OAuth1 Password authentication
      * @example
      * await sdk.auth.authenticate({
-     *  consumerKey: '',
-     *  consumerSecret: '',
      *  email: '',
      *  password: '',
      * });
      */
-    authenticate(oauth: {
-      consumerKey: string;
-      consumerSecret: string;
-      email: string;
-      password: string;
-    }): Promise<void>;
+    authenticate(oauth: { email: string; password: string }): Promise<void>;
     /**
      * Use OAuth2 Authorization Code Grant flow with callback
      * @example
      * await sdk.auth.authenticate({
-     *  clientId: '',
      *  code: '',
      *  redirectUri: '',
      * });
      */
-    authenticate(oauth: {
-      clientId: string;
-      code: string;
-      redirectUri: string;
-    }): Promise<void>;
+    authenticate(oauth: { code: string; redirectUri: string }): Promise<void>;
     /**
      * Use OAuth2 Password Grant flow
      * @example
      * await sdk.auth.authenticate({
-     *  clientId: '',
      *  password: '',
      *  username: '',
      * });
      */
-    authenticate(oauth: {
-      clientId: string;
-      username: string;
-      password: string;
-    }): Promise<void>;
+    authenticate(oauth: { username: string; password: string }): Promise<void>;
     /**
      * Use OAuth2 Refresh Token Grant flow
      * @example
@@ -121,7 +86,6 @@ export interface Client {
      *  @example
      *  try {
      *    await sdk.auth.authenticate({
-     *      clientId: '',
      *      password: '',
      *      username: '',
      *    });
@@ -158,35 +122,35 @@ export interface Client {
  * @example
  * const sdk = client({
  *   apiHost: 'xxx.fibricheck.com',
+ *   clientId: 'string',
  * });
  * await sdk.auth.authenticate({
- *   clientId: 'string',
  *   username: 'string',
  *   password: 'string',
  * });
  */
-export function client(rawConfig: Config): Client {
+export function client(rawConfig: ClientParams): Client {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 
-  let httpWithAuth;
+  const httpWithAuth =
+    'oauth1' in config
+      ? createOAuth1HttpClient(http, config)
+      : createOAuth2HttpClient(http, config);
 
   async function authenticate(oauth: AuthParams) {
     const authConfig = parseAuthParams(oauth);
-    httpWithAuth = await ('oauth1' in authConfig
-      ? createOAuth1HttpClient
-      : createOAuth2HttpClient)(http, config);
 
     await httpWithAuth.authenticate(authConfig);
   }
 
   return {
     get users() {
-      return usersService(http, httpWithAuth || http);
+      return usersService(httpWithAuth);
     },
     get auth() {
       return {
-        ...authService(http, httpWithAuth || http),
+        ...authService(httpWithAuth),
         authenticate,
         confirmMfa(mfa: MfaConfig) {
           console.log('confirm', !httpWithAuth);
@@ -200,13 +164,13 @@ export function client(rawConfig: Config): Client {
       };
     },
     get data() {
-      return dataService(http, httpWithAuth || http);
+      return dataService(httpWithAuth);
     },
     get files() {
-      return filesService(httpWithAuth || http);
+      return filesService(httpWithAuth);
     },
     get tasks() {
-      return tasksService(httpWithAuth || http);
+      return tasksService(httpWithAuth);
     },
     get rawAxios() {
       if (!httpWithAuth) {

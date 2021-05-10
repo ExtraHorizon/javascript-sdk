@@ -107,7 +107,27 @@ export class FieldFormatError extends ApiError {}
 export class UnsupportedResponseTypeError extends ApiError {}
 export class NoPermissionError extends ApiError {}
 export class CallbackNotValidError extends ApiError {}
-export class UserNotAuthenticatedError extends ApiError {}
+export class UserNotAuthenticatedError extends Error {
+  constructor(error: HttpError) {
+    const { config } = error;
+    super(`
+
+Looks like you forgot to authenticate. Please check the README file to get started.  
+As example if you want to use the Oauth2 Password Grant Flow you can authenticate using this snippet:
+
+const sdk = client({
+  apiHost: '${config.baseURL}',
+  clientId: '',
+});
+
+await sdk.auth.authenticate({
+  username: '',
+  password: '',
+});  
+    
+`);
+  }
+}
 export class EmptyBodyError extends ApiError {}
 export class NotEnoughMfaMethodsError extends ApiError {}
 export class InvalidMfaCodeError extends ApiError {}

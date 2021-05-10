@@ -22,7 +22,7 @@ import type { AffectedRecords } from '../models/Responses';
 import { AUTH_BASE } from '../../constants';
 import { Results } from '../models/Results';
 
-export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
+export const authService = (httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
     basePath: AUTH_BASE,
   });
@@ -309,7 +309,10 @@ export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
      * */
     async health(): Promise<boolean> {
-      return (await authClient.get(http, '/health')).status === Results.Success;
+      return (
+        (await authClient.get(httpWithAuth, '/health')).status ===
+        Results.Success
+      );
     },
   };
 };
