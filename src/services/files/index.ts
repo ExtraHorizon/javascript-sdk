@@ -1,9 +1,10 @@
 import type { HttpInstance } from '../../types';
+import { FILES_BASE } from '../../constants';
 import httpClient from '../http-client';
 import files from './files';
 import tokens from './tokens';
 
-import { FILES_BASE } from '../../constants';
+export * from './types';
 
 export type FilesService = ReturnType<typeof files> & ReturnType<typeof tokens>;
 
