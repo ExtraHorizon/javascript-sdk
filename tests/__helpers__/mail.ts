@@ -24,7 +24,6 @@ export const mailData = {
 };
 
 export const mailsResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,
@@ -93,7 +92,6 @@ export const queuedMailData = {
 };
 
 export const queuedMailsResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,
