@@ -18,7 +18,7 @@ import {
   TooManyFailedAttemptsError,
   InvalidPresenceTokenError,
   InvalidGrantError,
-  MFARequiredError,
+  MfaRequiredError,
   MissingRequiredFieldsError,
   IllegalArgumentError,
   IllegalStateError,
@@ -55,7 +55,7 @@ export const ErrorClassDefinitionsMap = {
   108: OauthTokenError,
   113: CallbackNotValidError,
   114: UnsupportedResponseTypeError,
-  129: MFARequiredError,
+  129: MfaRequiredError,
   130: InvalidMfaCodeError,
   132: InvalidPresenceTokenError,
   133: NotEnoughMfaMethodsError,
@@ -79,7 +79,7 @@ export const ErrorClassDefinitionsMap = {
 
 const ErrorClassDifinitionsByErrorMap = {
   invalid_grant: InvalidGrantError,
-  mfa_required: MFARequiredError,
+  mfa_required: MfaRequiredError,
 };
 
 export function typeReceivedError(error: HttpError) {

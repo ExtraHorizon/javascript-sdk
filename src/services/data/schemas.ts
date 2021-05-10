@@ -1,7 +1,11 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId } from '../models/ObjectId';
-import type { AffectedRecords } from '../models/Responses';
-import { Schema, SchemaInput, SchemasList, UpdateSchemaInput } from './types';
+import type { ObjectId, AffectedRecords } from '../types';
+import type {
+  Schema,
+  SchemaInput,
+  SchemasList,
+  UpdateSchemaInput,
+} from './types';
 import { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({

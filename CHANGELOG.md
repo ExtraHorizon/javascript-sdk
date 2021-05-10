@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2021-05-05
+
+### Changes
+
+- Correctly exporting all the possible errors.
+
+## [1.0.0] - 2021-05-05
+
+### Breaking changes
+
+Optional paramaters are now grouped in an options object as last parameters.
+
+```diff
+- await sdk.tasks.find(rql);
++ await sdk.tasks.find({ rql });
+```
+
+```diff
+- await sdk.users.getGroupsRoles(groupId, rql);
++ await sdk.tasks.getGroupsRoles(groupId, { rql });
+```
+
+### Added
+
+- The Axios instance used by the SDK is now directly accessible
+- Data Service now includes:
+  - Transitions Service
+  - Documents Service
+  - Comments Service
+- You can pass in your own interface when calling the `sdk.data.findDocuments<CustomDocument>(schemaId);` endpoint
+- The SDK also expose JSON-schema interface you can use to compose your own
+
+### Changes
+
+- OAuth1 token/tokenSecret flow is implemented.
+- Functions expecting an RQL should now show a more clear error when passing in a regular string.
+
 ## [0.0.7] - 2021-04-28
 
 ### Breaking changes

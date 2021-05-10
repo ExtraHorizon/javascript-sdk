@@ -1,7 +1,6 @@
 import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId } from '../models/ObjectId';
-import type { AffectedRecords } from '../models/Responses';
+import type { ObjectId, AffectedRecords } from '../types';
 import { Document, DocumentsList } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -49,12 +48,14 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async findDocuments(
+  async findDocuments<CustomDocument = null>(
     schemaId: ObjectId,
     options?: {
       rql?: RQLString;
     }
-  ): Promise<DocumentsList> {
+  ): Promise<
+    DocumentsList<CustomDocument extends null ? Document : CustomDocument>
+  > {
     return (
       await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
     ).data;

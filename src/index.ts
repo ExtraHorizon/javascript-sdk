@@ -18,7 +18,9 @@ import {
 } from './http';
 
 export { rqlBuilder } from './rql';
-export * from './services/users/models/GlobalPermissionName';
+
+export * from './errors';
+export * from './types';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   const validApiHostEnd = apiHost.endsWith('/')
