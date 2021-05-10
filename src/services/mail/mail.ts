@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords } from '../models/Responses';
+import { AffectedRecords, ResultResponse, Results } from '../types';
 import { RQLString } from '../../rql';
 import {
   Mail,
@@ -8,13 +8,6 @@ import {
   TemplateBasedMailCreation,
   QueuedMailList,
 } from './types';
-
-// TODO replace these once we merge the types PR
-
-enum Results {
-  Success = 200,
-}
-type ResultResponse = any;
 
 export default (client, httpAuth: HttpInstance) => ({
   /**

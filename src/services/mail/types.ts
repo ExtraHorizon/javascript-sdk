@@ -1,8 +1,4 @@
-// TODO replace these once we merge the types PR
-
-type Language = unknown;
-type ObjectId = unknown;
-type PagedResult = any;
+import { ObjectId, LanguageCode, PagedResult } from '../types';
 
 export interface MailList extends PagedResult {
   data: Mail[];
@@ -18,7 +14,7 @@ export interface Mail {
   replyTo?: MailAddressList;
   from?: MailAddress;
   body?: string;
-  language?: Language;
+  language?: LanguageCode;
   content?: Record<string, any>;
   views?: number;
   creationTimestamp?: Date;
