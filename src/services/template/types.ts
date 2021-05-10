@@ -1,8 +1,5 @@
-// TODO import these types when the types PR is merged
-
-type ObjectId = unknown;
-type PagedResult = any;
-type TypeConfiguration = unknown;
+import { ObjectId, PagedResult } from '../types';
+import { TypeConfiguration } from '../data/types';
 
 export interface TemplateList extends PagedResult {
   data: TemplateOut[];

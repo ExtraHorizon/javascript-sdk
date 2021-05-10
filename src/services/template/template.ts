@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords } from '../models/Responses';
+import { AffectedRecords, ResultResponse, Results } from '../types';
 import { RQLString } from '../../rql';
 import type {
   TemplateList,
@@ -7,12 +7,6 @@ import type {
   TemplateOut,
   CreateFileBean,
 } from './types';
-
-// TODO import these types once the types PR is merged
-type ResultResponse = any;
-enum Results {
-  Success = 200,
-}
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
