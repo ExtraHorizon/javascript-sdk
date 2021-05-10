@@ -1,10 +1,18 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { TokenDataOauth1, TokenDataOauth2 } from './http/types';
 
+export * from './http/types';
+export * from './services/types';
+export * from './services/auth/types';
+export * from './services/data/types';
+export * from './services/files/types';
+export * from './services/tasks/types';
+export * from './services/users/types';
+
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
 
-interface ParamsOauth1Base {
+export interface ParamsOauth1Base {
   consumerKey: string;
   consumerSecret: string;
 }
