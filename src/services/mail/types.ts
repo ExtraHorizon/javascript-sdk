@@ -37,7 +37,7 @@ export type PlainMailCreation = {
 
 export type TemplateBasedMailCreation = {
   templateId: ObjectId;
-  language?: Language;
+  language?: LanguageCode;
   content: Record<string, any>;
 } & CommonMailCreationProperties;
 
@@ -85,7 +85,7 @@ export interface QueuedMail {
       applicationId?: ObjectId;
       userId?: ObjectId;
     };
-    language?: Language;
+    language?: LanguageCode;
     content?: Record<string, any>;
   };
 }
