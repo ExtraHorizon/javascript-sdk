@@ -160,7 +160,6 @@ export const newSchemaCreated = {
 };
 
 export const schemasListResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,
@@ -343,7 +342,6 @@ export const newCommentCreated = {
 };
 
 export const commentsListResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,
@@ -381,7 +379,6 @@ export const newDocumentCreated = {
 };
 
 export const documentsListResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,

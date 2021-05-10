@@ -38,7 +38,6 @@ export const templateData = {
 };
 
 export const templateResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,

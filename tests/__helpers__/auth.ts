@@ -1,5 +1,4 @@
 export const applicationDataList = {
-  query: {},
   data: [
     {
       name: 'fitbit',
@@ -25,7 +24,6 @@ export const newApplicationVersion = {
 };
 
 export const authorizationList = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,
