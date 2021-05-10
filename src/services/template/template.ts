@@ -62,7 +62,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param templateId Id of the targeted template
    * @param requestBody
    * @returns TemplateOut Success
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async updateTemplate(
     templateId: string,
@@ -79,7 +79,7 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param templateId Id of the targeted template
    * @returns any Operation successful
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async deleteTemplate(templateId: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${templateId}`)).data;
@@ -94,7 +94,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param templateId Id of the targeted template
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
+   * @throws {LocalizationKeyMissingError}
+   * @throws {TemplateFillingError}
+   * @throws {ResourceUnknownError}
    */
   async resolveTemplateAsPdf(
     templateId: string,
@@ -115,7 +117,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param localizationCode Specifies the language the template must be resolved in
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
+   * @throws {LocalizationKeyMissingError}
+   * @throws {TemplateFillingError}
+   * @throws {ResourceUnknownError}
    */
   async resolveTemplateAsPdfUsingCode(
     templateId: string,
@@ -140,7 +144,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param templateId Id of the targeted template
    * @param requestBody
    * @returns string Success
-   * @throws {ApiError}
+   * @throws {LocalizationKeyMissingError}
+   * @throws {TemplateFillingError}
+   * @throws {ResourceUnknownError}
    */
   async resolveTemplateAsJson(
     templateId: string,
@@ -161,7 +167,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param localizationCode Specifies the language the template must be resolved in
    * @param requestBody
    * @returns string Success
-   * @throws ApiError
+   * @throws {LocalizationKeyMissingError}
+   * @throws {TemplateFillingError}
+   * @throws {ResourceUnknownError}
    */
   async resolveTemplateAsJsonUsingCode(
     templateId: string,
