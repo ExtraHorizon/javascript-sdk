@@ -1,7 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId } from '../models/ObjectId';
-import type { AffectedRecords } from '../models/Responses';
-import { StatusData } from './types';
+import type { ObjectId, AffectedRecords } from '../types';
+import type { StatusData } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**

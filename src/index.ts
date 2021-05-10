@@ -16,21 +16,10 @@ import {
   createOAuth2HttpClient,
 } from './http';
 
-export type {
-  ConfigurationType,
-  Schema,
-  JSONSchema,
-  JSONSchemaObject,
-  JSONSchemaArray,
-  JSONSchemaString,
-  JSONSchemaNumber,
-  JSONSchemaBoolean,
-  DocumentBase,
-} from './services/data/types';
-
 export { rqlBuilder } from './rql';
+
 export * from './errors';
-export * from './services/users/models/GlobalPermissionName';
+export * from './types';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   const validApiHostEnd = apiHost.endsWith('/')
@@ -46,6 +35,10 @@ function validateConfig({ apiHost, ...config }: Config): Config {
 }
 
 export interface Client {
+  rawAxios: AxiosInstance;
+  data: ReturnType<typeof dataService>;
+  files: ReturnType<typeof filesService>;
+  tasks: ReturnType<typeof tasksService>;
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService> & {
     /**
@@ -146,10 +139,6 @@ export interface Client {
       code: string;
     }) => Promise<void>;
   };
-  data: ReturnType<typeof dataService>;
-  files: ReturnType<typeof filesService>;
-  tasks: ReturnType<typeof tasksService>;
-  rawAxios: AxiosInstance;
 }
 
 /**
@@ -184,6 +173,15 @@ export function client(rawConfig: Config): Client {
     get users() {
       return usersService(http, httpWithAuth || http);
     },
+    get data() {
+      return dataService(http, httpWithAuth || http);
+    },
+    get files() {
+      return filesService(httpWithAuth || http);
+    },
+    get tasks() {
+      return tasksService(httpWithAuth || http);
+    },
     get auth() {
       return {
         ...authService(http, httpWithAuth || http),
@@ -198,15 +196,6 @@ export function client(rawConfig: Config): Client {
           return httpWithAuth.confirmMfa(mfa);
         },
       };
-    },
-    get data() {
-      return dataService(http, httpWithAuth || http);
-    },
-    get files() {
-      return filesService(httpWithAuth || http);
-    },
-    get tasks() {
-      return tasksService(httpWithAuth || http);
     },
     get rawAxios() {
       if (!httpWithAuth) {
