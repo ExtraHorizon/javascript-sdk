@@ -12,15 +12,15 @@ describe('Properties Service', () => {
   beforeAll(async () => {
     sdk = client({
       apiHost,
+      clientId: '',
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
     await sdk.auth.authenticate({
-      clientId: '',
       username: '',
       password: '',
     });

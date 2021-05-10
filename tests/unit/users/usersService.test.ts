@@ -29,14 +29,14 @@ describe('Users Service', () => {
   beforeAll(async () => {
     sdk = client({
       apiHost,
+      clientId: '',
     });
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
     await sdk.auth.authenticate({
-      clientId: '',
       username: '',
       password: '',
     });
@@ -50,7 +50,7 @@ describe('Users Service', () => {
   it('Can get me', async () => {
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
     nock(`${apiHost}${USER_BASE}`).get('/me').reply(200, userData);
 
