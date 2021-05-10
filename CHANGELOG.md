@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2021-05-12?
+
+### Breaking changes
+
+- ClientId for OAuth2 and consumerkey/secret for Oauth1 are now passed in during client initialization in stead of authentication. This way on not authenicated calls the clientId and consumerkey/secret information is added to the requests.
+
+OAuth2
+
+```diff
+const sdk = client({
+  apiHost: '',
++ clientId: '',
+});
+
+await sdk.authenticate({
+-  clientId: '',
+  password: '',
+  username: ''
+});
+```
+
+OAuth1
+
+```diff
+const sdk = client({
+  apiHost: '',
++ consumerKey: '',
++ consumerSecret: '',
+});
+
+await sdk.authenticate({
+- consumerKey: '',
+- consumerSecret: '',
+  password: '',
+  email: ''
+});
+```
+
 ## [1.0.1] - 2021-05-05
 
 ### Changes
