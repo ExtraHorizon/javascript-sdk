@@ -19,6 +19,7 @@ import {
 export { rqlBuilder } from './rql';
 
 export * from './errors';
+export * from './types';
 
 function validateConfig({ apiHost, ...config }: Config): Config {
   const validApiHostEnd = apiHost.endsWith('/')
