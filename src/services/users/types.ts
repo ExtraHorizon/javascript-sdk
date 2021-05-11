@@ -2,21 +2,21 @@ import { ObjectId, PagedResult, LanguageCode, TimeZone } from '../types';
 
 export interface UserData {
   id: string;
-  firstName: string;
-  lastName: string;
-  language: string;
-  timeZone: string;
+  firstName?: string;
+  lastName?: string;
+  language?: LanguageCode;
+  timeZone: TimeZone;
   email: string;
   phoneNumber: string;
   activation: boolean;
   patientEnlistments: PatientEnlistment[];
   roles: Role[];
   staffEnlistments: StaffEnlistment[];
-  lastFailedTimestamp: number;
+  lastFailedTimestamp: Date;
   failedCount: number;
-  creationTimestamp: number;
-  updateTimestamp: number;
   profileImage: string;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 export type PartialUserData = Partial<UserData>;
