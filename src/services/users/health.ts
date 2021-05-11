@@ -1,6 +1,5 @@
 import type { HttpInstance } from '../../types';
-import { ResultResponse } from '../models/Responses';
-import { Results } from '../models/Results';
+import { Results, ResultResponse } from '../types';
 
 export default (userClient, http: HttpInstance) => ({
   /**

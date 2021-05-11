@@ -18,21 +18,10 @@ import {
 import { validateConfig } from './utils';
 import { MfaConfig } from './http/types';
 
-export type {
-  ConfigurationType,
-  Schema,
-  JSONSchema,
-  JSONSchemaObject,
-  JSONSchemaArray,
-  JSONSchemaString,
-  JSONSchemaNumber,
-  JSONSchemaBoolean,
-  DocumentBase,
-} from './services/data/types';
-
 export { rqlBuilder } from './rql';
+
 export * from './errors';
-export * from './services/users/models/GlobalPermissionName';
+export * from './types';
 
 interface OAuth1Authenticate {
   /**
@@ -89,8 +78,12 @@ type Authenticate<
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
+  rawAxios: AxiosInstance;
+  data: ReturnType<typeof dataService>;
+  files: ReturnType<typeof filesService>;
+  tasks: ReturnType<typeof tasksService>;
   users: ReturnType<typeof usersService>;
-  auth: {
+  auth: ReturnType<typeof authService> & {
     /**
      *  Confirm MFA method with token, methodId and code
      *  @example
@@ -120,10 +113,6 @@ export interface Client<T extends ClientParams> {
       code: string;
     }) => Promise<void>;
   } & Authenticate<T>;
-  data: ReturnType<typeof dataService>;
-  files: ReturnType<typeof filesService>;
-  tasks: ReturnType<typeof tasksService>;
-  rawAxios: AxiosInstance;
 }
 
 /**
@@ -158,7 +147,15 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
     get users() {
       return usersService(httpWithAuth);
     },
-    // I can't get it to work without it
+    get data() {
+      return dataService(httpWithAuth);
+    },
+    get files() {
+      return filesService(httpWithAuth);
+    },
+    get tasks() {
+      return tasksService(httpWithAuth);
+    },
     get auth(): any {
       return {
         ...authService(httpWithAuth),
@@ -172,15 +169,6 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
           return httpWithAuth.confirmMfa(mfa);
         },
       };
-    },
-    get data() {
-      return dataService(httpWithAuth);
-    },
-    get files() {
-      return filesService(httpWithAuth);
-    },
-    get tasks() {
-      return tasksService(httpWithAuth);
     },
     get rawAxios() {
       if (!httpWithAuth) {

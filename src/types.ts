@@ -2,10 +2,23 @@ import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import * as OAuth from 'oauth-1.0a';
 import { TokenDataOauth1, TokenDataOauth2 } from './http/types';
 
+export * from './http/types';
+export * from './services/types';
+export * from './services/auth/types';
+export * from './services/data/types';
+export * from './services/files/types';
+export * from './services/tasks/types';
+export * from './services/users/types';
+
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
 
-export interface ParamsOauth1WithEmail {
+export interface ParamsOauth1Base {
+  consumerKey: string;
+  consumerSecret: string;
+}
+
+export interface ParamsOauth1WithEmail extends ParamsOauth1Base {
   email: string;
   password: string;
 }

@@ -1,5 +1,4 @@
-import { ObjectId } from '../models/ObjectId';
-import { PagedResult } from '../models/Responses';
+import type { ObjectId, PagedResult } from '../types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -13,7 +12,7 @@ export interface TasksList extends PagedResult {
   data: Array<Task>;
 }
 
-export type Task = {
+export interface Task {
   id?: ObjectId;
   status?: TaskStatus;
   statusChangedTimestamp?: Date;
@@ -30,7 +29,7 @@ export type Task = {
   priority?: number;
   creationTimestamp?: Date;
   updateTimestamp?: Date;
-};
+}
 
 export type TaskInput = Pick<
   Task,
