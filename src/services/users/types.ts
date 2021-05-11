@@ -66,10 +66,6 @@ export interface GroupRole {
   updateTimestamp: Date;
 }
 
-export interface UserDataList extends PagedResult {
-  data: UserData[];
-}
-
 export interface RegisterUserData {
   firstName: string;
   lastName: string;
