@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AuthParams, ParamsOauth1, ParamsOauth2 } from './types';
+import { AuthParams, ClientParams, ParamsOauth1 } from './types';
 
 import {
   usersService,
@@ -85,10 +85,10 @@ interface OAuth2Authenticate {
 }
 
 type Authenticate<
-  T extends ParamsOauth1 | ParamsOauth2 = ParamsOauth1
+  T extends ClientParams = ParamsOauth1
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
-export interface Client<T extends ParamsOauth1 | ParamsOauth2> {
+export interface Client<T extends ClientParams> {
   users: ReturnType<typeof usersService>;
   auth: {
     /**
@@ -139,9 +139,7 @@ export interface Client<T extends ParamsOauth1 | ParamsOauth2> {
  *   password: 'string',
  * });
  */
-export function client<T extends ParamsOauth1 | ParamsOauth2>(
-  rawConfig: T
-): Client<T> {
+export function client<T extends ClientParams>(rawConfig: T): Client<T> {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 
