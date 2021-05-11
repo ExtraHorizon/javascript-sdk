@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
-import { Client, client, rqlBuilder } from '../../../src/index';
+import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
 import {
   userData,
   newUserData,
@@ -24,7 +24,7 @@ describe('Users Service', () => {
   const newPassword = 'NewPass123';
   const hash = 'bced43a8ccb74868536ae8bc5a13a40385265038';
 
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

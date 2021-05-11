@@ -2,13 +2,13 @@
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import { authorizationList, newAuthorization } from '../../__helpers__/auth';
 
 describe('Auth - OAuth2', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
 
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

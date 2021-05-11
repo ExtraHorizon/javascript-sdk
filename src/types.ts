@@ -13,12 +13,7 @@ export * from './services/users/types';
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
 
-export interface ParamsOauth1Base {
-  consumerKey: string;
-  consumerSecret: string;
-}
-
-export interface ParamsOauth1WithEmail extends ParamsOauth1Base {
+export interface ParamsOauth1WithEmail {
   email: string;
   password: string;
 }

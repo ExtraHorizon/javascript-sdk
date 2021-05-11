@@ -1,13 +1,13 @@
 import nock from 'nock';
 import { AUTH_BASE, TASKS_BASE } from '../../../src/constants';
-import { Client, client, rqlBuilder } from '../../../src/index';
+import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
 import { taskData, tasksResponse } from '../../__helpers__/task';
 
 describe('Tasks Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const taskId = taskData.id;
 
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

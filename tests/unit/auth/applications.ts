@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import {
   applicationDataList,
   newApplication,
@@ -11,7 +11,7 @@ import {
 describe('Auth - Applications', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
 
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

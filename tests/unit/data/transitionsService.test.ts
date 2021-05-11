@@ -1,13 +1,13 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import { transitionInput, newTransition } from '../../__helpers__/data';
 
 describe('Transitions Service', () => {
   const schemaId = '2e9fff9d90135a2a9a718e2f';
   const transitionId = '1e9fff9d90135a2a9a718e2f';
   const apiHost = 'https://api.xxx.fibricheck.com';
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     try {

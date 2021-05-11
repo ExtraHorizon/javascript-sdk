@@ -1,10 +1,10 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 
 describe('Infrastructure Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

@@ -1,10 +1,10 @@
-import { Client, client } from '../../src';
+import { Client, client, ParamsOauth2 } from '../../src';
 import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
 import { newSchemaInput } from '../__helpers__/data';
 
 describe('OAuth2 Password Flow', () => {
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

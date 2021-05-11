@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import {
   newCommentCreated,
   commentsListResponse,
@@ -11,7 +11,7 @@ describe('Comments Service', () => {
   const documentId = '2e9fff9d90135a2a9a718e2f';
   const commentId = '3e9fff9d90135a2a9a718e2f';
   const apiHost = 'https://api.xxx.fibricheck.com';
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

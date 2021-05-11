@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import { TokenPermission } from '../../../src/services/files/types';
 
 jest.mock('fs');
@@ -9,7 +9,7 @@ describe('Token Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const token = '5a0b2adc265ced65a8cab861';
 
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({

@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import {
   newSchemaCreated,
   newIndexCreated,
@@ -11,7 +11,7 @@ describe('Indexes Service', () => {
   const schemaId = newSchemaCreated.id;
   const indexId = newIndexCreated.id;
   const apiHost = 'https://api.xxx.fibricheck.com';
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({
