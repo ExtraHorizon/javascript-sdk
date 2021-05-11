@@ -2,7 +2,7 @@ import type { HttpInstance } from '../../types';
 import { ObjectId, Results, AffectedRecords } from '../types';
 import type {
   RegisterUserData,
-  PartialUserData,
+  User,
   UserDataUpdate,
   UserList,
   Email,
@@ -27,7 +27,7 @@ export default (
    * @permission Everyone can use this endpoint
    * @returns {UserData} UserData
    */
-  async me(): Promise<PartialUserData> {
+  async me(): Promise<User> {
     return (await userClient.get(httpWithAuth, '/me')).data;
   },
 
@@ -42,7 +42,7 @@ export default (
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async findById(userId: string): Promise<PartialUserData> {
+  async findById(userId: string): Promise<User> {
     return (await userClient.get(httpWithAuth, `/${userId}`)).data;
   },
 
@@ -55,10 +55,7 @@ export default (
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async update(
-    userId: string,
-    userData: UserDataUpdate
-  ): Promise<PartialUserData> {
+  async update(userId: string, userData: UserDataUpdate): Promise<User> {
     return (await userClient.put(httpWithAuth, `/${userId}`, userData)).data;
   },
 
@@ -157,10 +154,7 @@ export default (
    * @throws {EmailUsedError}
    * @throws {ResourceUnknownError}
    */
-  async updateEmail(
-    userId: ObjectId,
-    requestBody: Email
-  ): Promise<PartialUserData> {
+  async updateEmail(userId: ObjectId, requestBody: Email): Promise<User> {
     return (await userClient.put(httpWithAuth, `/${userId}/email`, requestBody))
       .data;
   },
@@ -224,7 +218,7 @@ export default (
    * @returns FullUser Success
    * @throws {EmailUsedError}
    */
-  async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
+  async createAccount(requestBody: RegisterUserData): Promise<User> {
     return (await userClient.post(http, '/register', requestBody)).data;
   },
 
@@ -238,7 +232,7 @@ export default (
    * @returns FullUser Success
    * @throws {PasswordError}
    */
-  async changePassword(requestBody: ChangePassword): Promise<PartialUserData> {
+  async changePassword(requestBody: ChangePassword): Promise<User> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
   },
 
@@ -255,7 +249,7 @@ export default (
    * @throws {LoginFreezeError}
    * @throws {TooManyFailedAttemptsError}
    */
-  async authenticate(requestBody: Authenticate): Promise<PartialUserData> {
+  async authenticate(requestBody: Authenticate): Promise<User> {
     return (await userClient.post(http, '/authenticate', requestBody)).data;
   },
 
@@ -391,10 +385,7 @@ export default (
    * @returns FullUser Success
    * @throws {ApiError}
    */
-  async updateProfileImage(
-    userId: ObjectId,
-    requestBody: Hash
-  ): Promise<PartialUserData> {
+  async updateProfileImage(userId: ObjectId, requestBody: Hash): Promise<User> {
     return (
       await userClient.put(
         httpWithAuth,
@@ -415,7 +406,7 @@ export default (
    * @returns FullUser Success
    * @throws {ApiError}
    */
-  async deleteProfileImage(userId: ObjectId): Promise<PartialUserData> {
+  async deleteProfileImage(userId: ObjectId): Promise<User> {
     return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`))
       .data;
   },

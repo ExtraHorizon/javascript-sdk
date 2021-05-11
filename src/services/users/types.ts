@@ -2,9 +2,9 @@ import { ObjectId, PagedResult, LanguageCode, TimeZone } from '../types';
 
 export interface UserData {
   id: string;
-  firstName?: string;
-  lastName?: string;
-  language?: LanguageCode;
+  firstName: string;
+  lastName: string;
+  language: LanguageCode;
   timeZone: TimeZone;
   email: string;
   phoneNumber: string;
@@ -19,7 +19,7 @@ export interface UserData {
   updateTimestamp: Date;
 }
 
-export type PartialUserData = Partial<UserData>;
+export type User = Partial<UserData>;
 
 export type UserDataUpdate = Partial<
   Pick<
@@ -100,7 +100,7 @@ export enum Gender {
 }
 
 export interface UserList extends PagedResult {
-  data?: PartialUserData[];
+  data?: User[];
 }
 
 export interface Email {
