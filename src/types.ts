@@ -43,12 +43,12 @@ interface ParamsBase {
   freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
 }
 
-interface ParamsOauth1 extends ParamsBase {
+export interface ParamsOauth1 extends ParamsBase {
   consumerKey: string;
   consumerSecret: string;
 }
 
-interface ParamsOauth2 extends ParamsBase {
+export interface ParamsOauth2 extends ParamsBase {
   clientId: string;
 }
 

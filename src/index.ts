@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { ClientParams, AuthParams } from './types';
+import { AuthParams, ParamsOauth1, ParamsOauth2 } from './types';
 
 import {
   usersService,
@@ -34,53 +34,63 @@ export { rqlBuilder } from './rql';
 export * from './errors';
 export * from './services/users/models/GlobalPermissionName';
 
-export interface Client {
+interface OAuth1Authenticate {
+  /**
+   * Use OAuth1 Token authentication
+   * @example
+   * await sdk.auth.authenticate({
+   *  token: '',
+   *  tokenSecret: '',
+   * });
+   */
+  authenticate(oauth: { token: string; tokenSecret: string }): Promise<void>;
+  /**
+   * Use OAuth1 Password authentication
+   * @example
+   * await sdk.auth.authenticate({
+   *  email: '',
+   *  password: '',
+   * });
+   */
+  authenticate(oauth: { email: string; password: string }): Promise<void>;
+}
+
+interface OAuth2Authenticate {
+  /**
+   * Use OAuth2 Authorization Code Grant flow with callback
+   * @example
+   * await sdk.auth.authenticate({
+   *  code: '',
+   *  redirectUri: '',
+   * });
+   */
+  authenticate(oauth: { code: string; redirectUri: string }): Promise<void>;
+  /**
+   * Use OAuth2 Password Grant flow
+   * @example
+   * await sdk.auth.authenticate({
+   *  password: '',
+   *  username: '',
+   * });
+   */
+  authenticate(oauth: { username: string; password: string }): Promise<void>;
+  /**
+   * Use OAuth2 Refresh Token Grant flow
+   * @example
+   * await sdk.auth.authenticate({
+   *  refreshToken: '',
+   * });
+   */
+  authenticate(oauth: { refreshToken: string }): Promise<void>;
+}
+
+type Authenticate<
+  T extends ParamsOauth1 | ParamsOauth2 = ParamsOauth1
+> = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
+
+export interface Client<T extends ParamsOauth1 | ParamsOauth2> {
   users: ReturnType<typeof usersService>;
-  auth: ReturnType<typeof authService> & {
-    /**
-     * Use OAuth1 Token authentication
-     * @example
-     * await sdk.auth.authenticate({
-     *  token: '',
-     *  tokenSecret: '',
-     * });
-     */
-    authenticate(oauth: { token: string; tokenSecret: string }): Promise<void>;
-    /**
-     * Use OAuth1 Password authentication
-     * @example
-     * await sdk.auth.authenticate({
-     *  email: '',
-     *  password: '',
-     * });
-     */
-    authenticate(oauth: { email: string; password: string }): Promise<void>;
-    /**
-     * Use OAuth2 Authorization Code Grant flow with callback
-     * @example
-     * await sdk.auth.authenticate({
-     *  code: '',
-     *  redirectUri: '',
-     * });
-     */
-    authenticate(oauth: { code: string; redirectUri: string }): Promise<void>;
-    /**
-     * Use OAuth2 Password Grant flow
-     * @example
-     * await sdk.auth.authenticate({
-     *  password: '',
-     *  username: '',
-     * });
-     */
-    authenticate(oauth: { username: string; password: string }): Promise<void>;
-    /**
-     * Use OAuth2 Refresh Token Grant flow
-     * @example
-     * await sdk.auth.authenticate({
-     *  refreshToken: '',
-     * });
-     */
-    authenticate(oauth: { refreshToken: string }): Promise<void>;
+  auth: {
     /**
      *  Confirm MFA method with token, methodId and code
      *  @example
@@ -109,7 +119,7 @@ export interface Client {
       methodId: string;
       code: string;
     }) => Promise<void>;
-  };
+  } & Authenticate<T>;
   data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
   tasks: ReturnType<typeof tasksService>;
@@ -129,7 +139,9 @@ export interface Client {
  *   password: 'string',
  * });
  */
-export function client(rawConfig: ClientParams): Client {
+export function client<T extends ParamsOauth1 | ParamsOauth2>(
+  rawConfig: T
+): Client<T> {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 
@@ -148,12 +160,12 @@ export function client(rawConfig: ClientParams): Client {
     get users() {
       return usersService(httpWithAuth);
     },
-    get auth() {
+    // I can't get it to work without it
+    get auth(): any {
       return {
         ...authService(httpWithAuth),
         authenticate,
         confirmMfa(mfa: MfaConfig) {
-          console.log('confirm', !httpWithAuth);
           if (!httpWithAuth) {
             throw new Error(
               'First call authenticate. See README for more info how to use MFA.'
