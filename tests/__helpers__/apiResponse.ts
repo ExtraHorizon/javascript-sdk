@@ -2,7 +2,6 @@ import { userData, permissionData, roleData } from './user';
 import { fileData } from './file';
 
 export const emptyPagedResult = {
-  query: {},
   page: {
     total: 0,
     offset: 0,
@@ -12,7 +11,6 @@ export const emptyPagedResult = {
 };
 
 export const userResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,
@@ -35,7 +33,6 @@ export const permissionResponse = {
 };
 
 export const roleResponse = {
-  query: {},
   page: {
     total: 1,
     offset: 0,
@@ -45,7 +42,6 @@ export const roleResponse = {
 };
 
 export const filesResponse = {
-  query: {},
   page: {
     total: 1,
     offset: 0,
