@@ -48,6 +48,14 @@ await sdk.authenticate({
 ### Changes
 
 - Removed `query` from list results
+- `PartialUserData` is renamed to `User`
+- Changes to the `UserData` interface
+  - `language` type is changed from `string` to `LanguageCode`
+  - `timeZone` type is changed from `string` to `TimeZone`
+  - `lastFailedTimestamp` type is changed from `number` to `Date`
+  - added `creationTimestamp` and `updateTimestamp`
+- Change to the `RegisterUserData` interface
+  - `phoneNumber` is now required
 
 ## [1.0.1] - 2021-05-05
 
