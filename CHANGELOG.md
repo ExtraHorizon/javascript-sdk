@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0] - 2021-05-12?
+## [2.0.0] - 2021-05-12
 
 ### Breaking changes
 
@@ -44,6 +44,10 @@ await sdk.authenticate({
   email: ''
 });
 ```
+
+### Changes
+
+- Removed `query` from list results
 
 ## [1.0.1] - 2021-05-05
 
