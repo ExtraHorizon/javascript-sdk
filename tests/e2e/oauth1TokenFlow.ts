@@ -9,47 +9,47 @@ describe('OAuth1 Token Flow', () => {
   beforeAll(async () => {
     sdk = client({
       apiHost: process.env.API_HOST,
-    });
-    await sdk.auth.authenticate({
       consumerKey: process.env.CONSUMER_KEY,
       consumerSecret: process.env.CONSUMER_SECRET,
+    });
+    await sdk.auth.authenticate({
       token: process.env.TOKEN,
       tokenSecret: process.env.TOKEN_SECRET,
     });
   });
 
   // health service
-  it('users.health()', async () => {
+  it('Can call the users.health', async () => {
     const res = await sdk.users.health();
     expect(res).toBe(true);
   });
 
   // users service
-  it('users.me()', async () => {
+  it('Can call users.me', async () => {
     const user = await sdk.users.me();
     expect(user.id).toBeDefined();
     console.log(user);
     expect(user.firstName).toBeDefined();
   });
 
-  it('users.find()', async () => {
+  it('Can call users.find', async () => {
     const res = await sdk.users.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   // group roles service
-  it('users.getGroupsPermissions()', async () => {
+  it('Can call users.getGroupsPermissions', async () => {
     const res = await sdk.users.getGroupsPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   // global roles service
-  it('users.getPermissions()', async () => {
+  it('Can call users.getPermissions', async () => {
     const res = await sdk.users.getPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('users.getRoles()', async () => {
+  it('Can call users.getRoles', async () => {
     expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
@@ -61,14 +61,14 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // auth service
-  it('auth.getApplications()', async () => {
+  it('Can call auth.getApplications', async () => {
     const rql = rqlBuilder().select('name').build();
     const res = await sdk.auth.getApplications(rql);
     expect(res).toBeDefined();
   });
 
   // files service
-  it('files.find()', async () => {
+  it('Can call files.find', async () => {
     expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
     try {
@@ -80,13 +80,13 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // data infrastructure service
-  it('data.health()', async () => {
+  it('Can call data.health', async () => {
     const res = await sdk.data.health();
     expect(res).toBe(true);
   });
 
   // data schemas service
-  it('data.createSchema()', async () => {
+  it('Can call data.createSchema', async () => {
     try {
       const schema = await sdk.data.createSchema(newSchemaInput);
       expect(schema.creationTransition).toBeDefined();
@@ -96,7 +96,7 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // tasks service
-  it('tasks.find()', async () => {
+  it('Can call tasks.find', async () => {
     expect.assertions(1);
     try {
       const res = await sdk.tasks.find();

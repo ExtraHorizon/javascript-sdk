@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import * as OAuth from 'oauth-1.0a';
 import { TokenDataOauth1, TokenDataOauth2 } from './http/types';
 
 export * from './http/types';
@@ -12,29 +13,22 @@ export * from './services/users/types';
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
 
-export interface ParamsOauth1Base {
-  consumerKey: string;
-  consumerSecret: string;
-}
-
-export interface ParamsOauth1WithEmail extends ParamsOauth1Base {
+export interface ParamsOauth1WithEmail {
   email: string;
   password: string;
 }
 
-export interface ParamsOauth1WithToken extends ParamsOauth1Base {
+export interface ParamsOauth1WithToken {
   token: string;
   tokenSecret: string;
 }
 
 export interface ParamsOauth2AuthorizationCode {
-  clientId: string;
   code: string;
   redirectUri: string;
 }
 
 export interface ParamsOauth2Password {
-  clientId: string;
   username: string;
   password: string;
 }
@@ -50,15 +44,34 @@ export type AuthParams =
   | ParamsOauth2Password
   | ParamsOauth2Refresh;
 
-export interface Config {
+interface ParamsBase {
   apiHost: string;
   responseLogger?: (response: AxiosResponse | Error) => unknown;
   requestLogger?: (request: AxiosRequestConfig | Error) => unknown;
   freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
 }
 
-export interface MfaConfig {
-  token: string;
-  methodId: string;
-  code: string;
+export interface ParamsOauth1 extends ParamsBase {
+  consumerKey: string;
+  consumerSecret: string;
 }
+
+export interface ParamsOauth2 extends ParamsBase {
+  clientId: string;
+}
+
+export interface ConfigOauth1 extends ParamsBase {
+  path: string;
+  oauth1: OAuth;
+}
+
+export interface ConfigOauth2 extends ParamsBase {
+  path: string;
+  params: {
+    // eslint-disable-next-line camelcase
+    client_id: string;
+  };
+}
+
+export type ClientParams = ParamsOauth1 | ParamsOauth2;
+export type ClientConfig = ConfigOauth1 | ConfigOauth2;

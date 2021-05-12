@@ -17,11 +17,7 @@ import type {
 } from './types';
 import type { RQLString } from '../../rql';
 
-export default (
-  userClient,
-  http: HttpInstance,
-  httpWithAuth: HttpInstance
-) => ({
+export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
    * Retrieve the current logged in user
    * @permission Everyone can use this endpoint
@@ -225,7 +221,7 @@ export default (
    * @throws {EmailUsedError}
    */
   async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
-    return (await userClient.post(http, '/register', requestBody)).data;
+    return (await userClient.post(httpWithAuth, '/register', requestBody)).data;
   },
 
   /**
@@ -256,7 +252,8 @@ export default (
    * @throws {TooManyFailedAttemptsError}
    */
   async authenticate(requestBody: Authenticate): Promise<PartialUserData> {
-    return (await userClient.post(http, '/authenticate', requestBody)).data;
+    return (await userClient.post(httpWithAuth, '/authenticate', requestBody))
+      .data;
   },
 
   /**
@@ -273,7 +270,7 @@ export default (
   async requestEmailActivation(email: string): Promise<boolean> {
     return (
       (
-        await userClient.get(http, '/activation', {
+        await userClient.get(httpWithAuth, '/activation', {
           params: {
             email,
           },
@@ -294,8 +291,8 @@ export default (
    */
   async validateEmailActivation(requestBody: Hash): Promise<boolean> {
     return (
-      (await userClient.post(http, '/activation', requestBody)).status ===
-      Results.Success
+      (await userClient.post(httpWithAuth, '/activation', requestBody))
+        .status === Results.Success
     );
   },
 
@@ -312,7 +309,7 @@ export default (
   async requestPasswordReset(email: string): Promise<boolean> {
     return (
       (
-        await userClient.get(http, '/forgot_password', {
+        await userClient.get(httpWithAuth, '/forgot_password', {
           params: {
             email,
           },
@@ -333,8 +330,8 @@ export default (
    */
   async validatePasswordReset(requestBody: PasswordReset): Promise<boolean> {
     return (
-      (await userClient.post(http, '/forgot_password', requestBody)).status ===
-      Results.Success
+      (await userClient.post(httpWithAuth, '/forgot_password', requestBody))
+        .status === Results.Success
     );
   },
 
@@ -371,7 +368,7 @@ export default (
     emailAvailable: boolean;
   }> {
     return (
-      await userClient.get(http, '/email_available', {
+      await userClient.get(httpWithAuth, '/email_available', {
         params: {
           email,
         },
