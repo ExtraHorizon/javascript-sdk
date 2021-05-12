@@ -1,7 +1,7 @@
 import nock from 'nock';
 import * as fs from 'fs';
 import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import { Client, client, rqlBuilder } from '../../../src/index';
+import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
 import { fileData } from '../../__helpers__/file';
 import { filesResponse } from '../../__helpers__/apiResponse';
 
@@ -11,20 +11,20 @@ describe('Files Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const token = '5a0b2adc265ced65a8cab861';
 
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({
       apiHost,
+      clientId: '',
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
     await sdk.auth.authenticate({
-      clientId: '',
       username: '',
       password: '',
     });

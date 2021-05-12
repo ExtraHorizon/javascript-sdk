@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { Config } from '../types';
-import { AuthConfig, TokenDataOauth2 } from './types';
+import { ConfigOauth2 } from '../types';
+import { MfaConfig, OAuth2Config, OAuthClient, TokenDataOauth2 } from './types';
 import {
   camelizeResponseData,
   transformKeysResponseData,
@@ -9,9 +9,12 @@ import {
 } from './interceptors';
 import { typeReceivedError } from '../errorHandler';
 
-export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
+export function createOAuth2HttpClient(
+  http: AxiosInstance,
+  options: ConfigOauth2
+): OAuthClient {
   let tokenData: TokenDataOauth2;
-  let authConfig;
+  let authConfig: OAuth2Config;
   const httpWithAuth = axios.create({ ...http.defaults });
 
   const { requestLogger, responseLogger } = options;
@@ -42,7 +45,7 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
   }
 
   const refreshTokens = async () => {
-    const tokenResult = await http.post(authConfig.path, {
+    const tokenResult = await http.post(options.path, {
       grant_type: 'refresh_token',
       refresh_token: tokenData.refreshToken,
     });
@@ -54,7 +57,9 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
     ...config,
     headers: {
       ...config.headers,
-      Authorization: `Bearer ${tokenData && tokenData.accessToken}`,
+      ...(tokenData && tokenData.accessToken
+        ? { Authorization: `Bearer ${tokenData.accessToken}` }
+        : {}),
     },
   }));
 
@@ -103,9 +108,12 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
     tokenData = data;
   }
 
-  async function authenticate(data: AuthConfig) {
+  async function authenticate(data: OAuth2Config): Promise<void> {
     authConfig = data;
-    const tokenResult = await http.post(authConfig.path, authConfig.params);
+    const tokenResult = await http.post(options.path, {
+      ...options.params,
+      ...authConfig.params,
+    });
     setTokenData(tokenResult.data);
   }
 
@@ -113,12 +121,9 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
     token,
     methodId,
     code,
-  }: {
-    token: string;
-    methodId: string;
-    code: string;
-  }) {
-    const tokenResult = await http.post(authConfig.path, {
+  }: MfaConfig): Promise<void> {
+    const tokenResult = await http.post(options.path, {
+      ...options.params,
       ...authConfig.params,
       grant_type: 'mfa',
       token,
@@ -128,5 +133,5 @@ export function createOAuth2HttpClient(http: AxiosInstance, options: Config) {
     setTokenData(tokenResult.data);
   }
 
-  return { ...httpWithAuth, authenticate, confirmMfa };
+  return Object.assign(httpWithAuth, { authenticate, confirmMfa });
 }

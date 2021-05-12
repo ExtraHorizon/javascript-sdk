@@ -1,26 +1,25 @@
-import { ObjectId } from '../models/ObjectId';
-import { PagedResult } from '../models/Responses';
+import { ObjectId, PagedResult, LanguageCode, TimeZone } from '../types';
 
 export interface UserData {
   id: string;
   firstName: string;
   lastName: string;
-  language: string;
-  timeZone: string;
+  language: LanguageCode;
+  timeZone: TimeZone;
   email: string;
   phoneNumber: string;
   activation: boolean;
-  patientEnlistments: Array<PatientEnlistment>;
-  roles: Array<Role>;
-  staffEnlistments: Array<StaffEnlistment>;
-  lastFailedTimestamp: number;
+  patientEnlistments: PatientEnlistment[];
+  roles: Role[];
+  staffEnlistments: StaffEnlistment[];
+  lastFailedTimestamp: Date;
   failedCount: number;
-  creationTimestamp: number;
-  updateTimestamp: number;
   profileImage: string;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
-export type PartialUserData = Partial<UserData>;
+export type User = Partial<UserData>;
 
 export type UserDataUpdate = Partial<
   Pick<
@@ -29,7 +28,7 @@ export type UserDataUpdate = Partial<
   >
 >;
 
-interface PatientEnlistment {
+export interface PatientEnlistment {
   groupId: string;
   expiryTimestamp: Date;
   expired: boolean;
@@ -40,7 +39,7 @@ export interface Role {
   id: string;
   name: string;
   description: string;
-  permissions: Array<Permission>;
+  permissions: Permission[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
@@ -50,14 +49,15 @@ export interface Permission {
   description: string;
 }
 
-interface StaffEnlistment {
+export interface StaffEnlistment {
   groupId: string;
-  roles: Array<GroupRole>;
+  roles: GroupRole[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
 
-interface GroupRole {
+export interface GroupRole {
+  id: ObjectId;
   groupId: string;
   name: string;
   description: string;
@@ -66,16 +66,12 @@ interface GroupRole {
   updateTimestamp: Date;
 }
 
-export interface UserDataList extends PagedResult {
-  data: Array<UserData>;
-}
-
 export interface RegisterUserData {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   birthday: string;
   gender: Gender;
   country: string;
@@ -85,11 +81,11 @@ export interface RegisterUserData {
 }
 
 export interface PermissionDataList extends PagedResult {
-  data: Array<Permission>;
+  data: Permission[];
 }
 
 export interface RolesDataList extends PagedResult {
-  data: Array<Role>;
+  data: Role[];
 }
 
 export enum Gender {
@@ -100,7 +96,7 @@ export enum Gender {
 }
 
 export interface UserList extends PagedResult {
-  data?: PartialUserData[];
+  data?: User[];
 }
 
 export interface Email {
@@ -129,4 +125,128 @@ export interface PasswordReset {
 
 export interface ConfirmPassword {
   password: string;
+}
+
+export interface GlobalPermission {
+  name?: GlobalPermissionName;
+  description?: string;
+}
+
+export interface GlobalPermissionsList extends PagedResult {
+  data?: GlobalPermission[];
+}
+
+export enum GlobalPermissionName {
+  VIEW_PRESCRIPTIONS = 'VIEW_PRESCRIPTIONS',
+  CREATE_PRESCRIPTIONS = 'CREATE_PRESCRIPTIONS',
+  DELETE_PRESCRIPTIONS = 'DELETE_PRESCRIPTIONS',
+  VIEW_BALANCE = 'VIEW_BALANCE',
+  VIEW_CREDIT_TRANSACTION = 'VIEW_CREDIT_TRANSACTION',
+  UPDATE_GROUP = 'UPDATE_GROUP',
+  DELETE_GROUP = 'DELETE_GROUP',
+  VIEW_PATIENTS = 'VIEW_PATIENTS',
+  ADD_PATIENT = 'ADD_PATIENT',
+  REMOVE_PATIENT = 'REMOVE_PATIENT',
+  VIEW_STAFF = 'VIEW_STAFF',
+  ADD_STAFF = 'ADD_STAFF',
+  REMOVE_STAFF = 'REMOVE_STAFF',
+  CREATE_GROUP_ROLE = 'CREATE_GROUP_ROLE',
+  UPDATE_GROUP_ROLE = 'UPDATE_GROUP_ROLE',
+  DELETE_GROUP_ROLE = 'DELETE_GROUP_ROLE',
+  ADD_GROUP_ROLE_PERMISSION = 'ADD_GROUP_ROLE_PERMISSION',
+  REMOVE_GROUP_ROLE_PERMISSION = 'REMOVE_GROUP_ROLE_PERMISSION',
+  ADD_GROUP_ROLE_TO_STAFF = 'ADD_GROUP_ROLE_TO_STAFF',
+  REMOVE_GROUP_ROLE_FROM_STAFF = 'REMOVE_GROUP_ROLE_FROM_STAFF',
+  VIEW_MEASUREMENTS = 'VIEW_MEASUREMENTS',
+  UPDATE_MEASUREMENTS = 'UPDATE_MEASUREMENTS',
+  TRANSITION_MEASUREMENTS = 'TRANSITION_MEASUREMENTS',
+  DELETE_MEASUREMENTS = 'DELETE_MEASUREMENTS',
+  CREATE_MEASUREMENT_COMMENTS = 'CREATE_MEASUREMENT_COMMENTS',
+  VIEW_MEASUREMENT_COMMENTS = 'VIEW_MEASUREMENT_COMMENTS',
+  UPDATE_PROFILES = 'UPDATE_PROFILES',
+  DELETE_PROFILES = 'DELETE_PROFILES',
+  CREATE_PROFILE_LOG_ENTRIES = 'CREATE_PROFILE_LOG_ENTRIES',
+  VIEW_PROFILE_LOG_ENTRIES = 'VIEW_PROFILE_LOG_ENTRIES',
+  UPDATE_GROUPS = 'UPDATE_GROUPS',
+  CREATE_REPORTS = 'CREATE_REPORTS',
+  VIEW_REPORTS = 'VIEW_REPORTS',
+  UPDATE_REPORTS = 'UPDATE_REPORTS',
+  DELETE_REPORTS = 'DELETE_REPORTS',
+  VIEW_GROUP_REPORT_CONFIGURATIONS = 'VIEW_GROUP_REPORT_CONFIGURATIONS',
+  VIEW_PATIENT_REPORT_CONFIGURATIONS = 'VIEW_PATIENT_REPORT_CONFIGURATIONS',
+  UPDATE_GROUP_REPORT_CONFIGURATIONS = 'UPDATE_GROUP_REPORT_CONFIGURATIONS',
+  UPDATE_PATIENT_REPORT_CONFIGURATIONS = 'UPDATE_PATIENT_REPORT_CONFIGURATIONS',
+  CREATE_REPORT_SHARES = 'CREATE_REPORT_SHARES',
+  DELETE_REPORT_SHARES = 'DELETE_REPORT_SHARES',
+}
+
+export interface GroupRolePermissions {
+  permissions: GlobalPermissionName[];
+}
+
+export interface Hash {
+  hash: string;
+}
+
+export interface Patient {
+  id?: ObjectId;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  activation?: boolean;
+  phoneNumber?: string;
+  profileImage?: string;
+  language?: LanguageCode;
+  timeZone?: TimeZone;
+  patientEnlistments?: PatientEnlistment[];
+}
+
+export interface RoleCreation {
+  name: string;
+  description: string;
+}
+
+export interface RoleUpdate {
+  name?: string;
+  description?: string;
+}
+
+export interface RoleList extends PagedResult {
+  data: Role[];
+}
+
+export interface GroupRoleList extends PagedResult {
+  data: GroupRole[];
+}
+
+export interface AddRole {
+  name: string;
+  description: string;
+}
+
+export interface RolePermissions {
+  permissions: GlobalPermissionName[];
+}
+
+export interface StaffGroups {
+  groups: ObjectId[];
+}
+
+export interface StaffMember {
+  id?: ObjectId;
+  firstName?: string;
+  lastName?: string;
+  profileImage?: string;
+  email?: string;
+  phoneNumber?: string;
+  timeZone?: TimeZone;
+  staffEnlistments?: StaffEnlistment[];
+}
+
+export interface StaffRoles {
+  roles: ObjectId[];
+}
+
+export interface UserRoles {
+  roles: ObjectId[];
 }

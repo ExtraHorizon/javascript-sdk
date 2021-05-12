@@ -10,6 +10,8 @@ import documents from './documents';
 import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
 
+export * from './types';
+
 export type DataService = ReturnType<typeof infrastructure> &
   ReturnType<typeof schemas> &
   ReturnType<typeof indexes> &
@@ -19,15 +21,12 @@ export type DataService = ReturnType<typeof infrastructure> &
   ReturnType<typeof documents> &
   ReturnType<typeof transitions>;
 
-export const dataService = (
-  http: HttpInstance,
-  httpWithAuth: HttpInstance
-): DataService => {
+export const dataService = (httpWithAuth: HttpInstance): DataService => {
   const client = httpClient({
     basePath: DATA_BASE,
   });
 
-  const infrastructureMethods = infrastructure(client, http);
+  const infrastructureMethods = infrastructure(client, httpWithAuth);
   const schemasMethods = schemas(client, httpWithAuth);
   const indexesMethods = indexes(client, httpWithAuth);
   const statusesMethods = statuses(client, httpWithAuth);

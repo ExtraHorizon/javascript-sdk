@@ -1,21 +1,24 @@
 import nock from 'nock';
+import { validateConfig } from '../utils';
 import { AUTH_BASE, USER_BASE } from '../constants';
 import { ApiError, AuthenticationError, OauthTokenError } from '../errors';
 import { createHttpClient } from './client';
 import { createOAuth1HttpClient } from './oauth1';
 import { parseAuthParams } from './utils';
+import { ConfigOauth1 } from '../types';
 
 const mockParams = {
   apiHost: 'https://api.test.com',
-  oauth: {
-    email: '',
-    password: '',
-    consumerKey: '',
-    consumerSecret: '',
-  },
+  consumerKey: '',
+  consumerSecret: '',
 };
 
-const oauthTokenMoken = {
+const oauthEmailMock = {
+  email: '',
+  password: '',
+};
+
+const oauthTokenMock = {
   token: '',
   tokenSecret: '',
   consumerKey: '',
@@ -23,13 +26,14 @@ const oauthTokenMoken = {
 };
 
 describe('http client', () => {
-  const http = createHttpClient(mockParams);
-  const authConfig = parseAuthParams(mockParams.oauth);
+  const config = validateConfig(mockParams) as ConfigOauth1;
+  const http = createHttpClient(config);
+  const authConfig = parseAuthParams(oauthEmailMock);
   let httpWithAuth;
 
   beforeEach(() => {
     nock.cleanAll();
-    httpWithAuth = createOAuth1HttpClient(http, mockParams);
+    httpWithAuth = createOAuth1HttpClient(http, config);
   });
 
   it('Create Axios client', async () => {
@@ -97,7 +101,7 @@ describe('http client', () => {
     nock(mockParams.apiHost).get(`${USER_BASE}/me`).reply(200, {});
 
     try {
-      await httpWithAuth.authenticate(parseAuthParams(oauthTokenMoken));
+      await httpWithAuth.authenticate(parseAuthParams(oauthTokenMock));
       expect(true).toBe(true);
     } catch (error) {
       console.log(error);
@@ -113,7 +117,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(parseAuthParams(oauthTokenMoken));
+      await httpWithAuth.authenticate(parseAuthParams(oauthTokenMock));
     } catch (error) {
       expect(error).toBeInstanceOf(OauthTokenError);
     }

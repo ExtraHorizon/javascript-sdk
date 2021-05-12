@@ -10,6 +10,8 @@ To get started with the Contentful Management JS SDK you'll need to install it, 
 - [RQLBuilder](#RQLBuilder)
 - [Interceptors](#interceptors)
 - [Raw queries](#Raw-queries)
+- [Logging](#logging)
+- [TypeScript for your schemas](#typescript-for-your-schemas)
 
 ## Installation
 
@@ -35,11 +37,11 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: 'dev.fibricheck.com',
+  consumerKey: '',
+  consumerSecret: '',
 });
 
 await sdk.auth.authenticate({
-  consumerKey: '',
-  consumerSecret: '',
   token: '',
   tokenSecret: '',
 });
@@ -55,11 +57,11 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: 'dev.fibricheck.com',
+  consumerKey: '',
+  consumerSecret: '',
 });
 
 await sdk.auth.authenticate({
-  consumerKey: '',
-  consumerSecret: '',
   email: '',
   password: '',
 });
@@ -75,10 +77,10 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
+  clientId: '',
 });
 
 await sdk.auth.authenticate({
-  clientId: '',
   password: '',
   username: '',
 });
@@ -94,13 +96,13 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
+  clientId: '',
   freshTokensCallback: tokenData => {
     localStorage.setItem('tokenData', tokenData);
   },
 });
 
 await sdk.auth.authenticate({
-  clientId: '',
   code: '',
   redirectUri: '',
 });
@@ -116,6 +118,7 @@ import { client } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
+  clientId: '',
 });
 
 await sdk.auth.authenticate({
@@ -133,11 +136,11 @@ import { client, MfaRequiredError } from '@extrahorizon/javascript-sdk';
 
 const sdk = client({
   apiHost: '',
+  clientId: '',
 });
 
 try {
   await sdk.auth.authenticate({
-    clientId: '',
     password: '',
     username: '',
   });
@@ -171,10 +174,10 @@ import { client } from '@extrahorizon/javascript-sdk';
 (async () => {
   const sdk = client({
     apiHost: '',
+    clientId: '',
   });
 
   await sdk.auth.authenticate({
-    clientId: '',
     password: '',
     username: '',
   });
@@ -213,10 +216,10 @@ import { client } from '@extrahorizon/javascript-sdk';
 (async () => {
   const sdk = client({
     apiHost: '',
+    clientId: '',
   });
 
   await sdk.auth.authenticate({
-    clientId: '',
     password: '',
     username: '',
   });
@@ -226,17 +229,7 @@ import { client } from '@extrahorizon/javascript-sdk';
 })();
 ```
 
-### Tests
-
-To run the unit tests: `yarn start`
-
-To run them in watch mode: `yarn start:watch`
-
-To run e2e tests, copy `.env.example` to `.env` and set up the credentials
-
-Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
-
-### Logging
+## Logging
 
 You can pass in two logger function that will be called by Axios on every request/response respectively.
 
@@ -245,6 +238,7 @@ import AxiosLogger from "axios-logger";
 
 const sdk = client({
   apiHost: "https://api.dev.fibricheck.com",
+  clientId: '',
   requestLogger: AxiosLogger.requestLogger,
   responseLogger: AxiosLogger.responseLogger,
 });
@@ -263,7 +257,7 @@ await sdk.users.health();
 
 ```
 
-### Typescript for your Schemas
+## Typescript for your Schemas
 
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
 
@@ -313,32 +307,15 @@ interface CustomDocument extends DocumentBase {
 const document = await sdk.data.findDocuments<CustomDocument>();
 ```
 
-### Logging
+## Tests
 
-You can pass in two logger function that will be called by Axios on every request/response respectively.
+To run the unit tests: `yarn start`
 
-```ts
-import AxiosLogger from "axios-logger";
+To run them in watch mode: `yarn start:watch`
 
-const sdk = client({
-  apiHost: "https://api.dev.fibricheck.com",
-  requestLogger: AxiosLogger.requestLogger,
-  responseLogger: AxiosLogger.responseLogger,
-});
+To run e2e tests, copy `.env.example` to `.env` and set up the credentials
 
-await sdk.auth.authenticate({
-  refreshToken: 'refreshToken'
-})
-
-await sdk.users.health();
-
-[Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"refreshToken"}
-[Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"accessToken","token_type":"bearer","expires_in":299.999,"refresh_token":"refreshToken","user_id":"userId","application_id":"applicationId"}
-
-[Axios][Request] GET /auth/v2/health
-[Axios][Response] GET /auth/v2/health 200:OK
-
-```
+Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
 
 ## 📚 Docs --> TODO
 
