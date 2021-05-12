@@ -4,22 +4,22 @@ export interface UserData {
   id: string;
   firstName: string;
   lastName: string;
-  language: string;
-  timeZone: string;
+  language: LanguageCode;
+  timeZone: TimeZone;
   email: string;
   phoneNumber: string;
   activation: boolean;
   patientEnlistments: PatientEnlistment[];
   roles: Role[];
   staffEnlistments: StaffEnlistment[];
-  lastFailedTimestamp: number;
+  lastFailedTimestamp: Date;
   failedCount: number;
-  creationTimestamp: number;
-  updateTimestamp: number;
   profileImage: string;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
-export type PartialUserData = Partial<UserData>;
+export type User = Partial<UserData>;
 
 export type UserDataUpdate = Partial<
   Pick<
@@ -66,16 +66,12 @@ export interface GroupRole {
   updateTimestamp: Date;
 }
 
-export interface UserDataList extends PagedResult {
-  data: UserData[];
-}
-
 export interface RegisterUserData {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   birthday: string;
   gender: Gender;
   country: string;
@@ -100,7 +96,7 @@ export enum Gender {
 }
 
 export interface UserList extends PagedResult {
-  data?: PartialUserData[];
+  data?: User[];
 }
 
 export interface Email {
