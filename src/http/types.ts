@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
-import * as OAuth from 'oauth-1.0a';
+
+import { AxiosInstance } from 'axios';
 
 export interface TokenDataOauth2 {
   accessToken: string;
@@ -28,40 +29,32 @@ export interface TokenResponseOauth2 {
   clientId: string;
 }
 
-interface OauthConfigBase {
-  path: string;
-}
-
-export interface Oauth1Token extends OauthConfigBase {
-  oauth1: OAuth;
+export interface Oauth1Token {
   tokenData: TokenDataOauth1;
 }
 
-export interface Oauth1Password extends OauthConfigBase {
+export interface Oauth1Password {
   params: {
     email: string;
     password: string;
   };
-  oauth1: OAuth;
 }
 
-interface Oauth2ConfigPassword extends OauthConfigBase {
+interface Oauth2ConfigPassword {
   params: {
     grant_type: string;
-    client_id: string;
     username: string;
     password: string;
   };
 }
 
-interface Oauth2ConfigCode extends OauthConfigBase {
+interface Oauth2ConfigCode {
   params: {
     grant_type: string;
-    client_id: string;
   };
 }
 
-interface Oauth2Refresh extends OauthConfigBase {
+interface Oauth2Refresh {
   params: {
     grant_type: string;
     refresh_token: string;
@@ -76,3 +69,14 @@ export type OAuth2Config =
   | Oauth2Refresh;
 
 export type AuthConfig = OAuth1Config | OAuth2Config;
+
+export interface OAuthClient extends AxiosInstance {
+  authenticate: (data: AuthConfig) => Promise<void>;
+  confirmMfa: (data: MfaConfig) => Promise<void>;
+}
+
+export interface MfaConfig {
+  token: string;
+  methodId: string;
+  code: string;
+}

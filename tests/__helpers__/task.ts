@@ -19,7 +19,6 @@ export const taskData = {
 };
 
 export const tasksResponse = {
-  query: '{}',
   page: {
     total: 1,
     offset: 0,

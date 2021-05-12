@@ -11,6 +11,7 @@ describe('Auth - Health', () => {
   beforeAll(async () => {
     sdk = client({
       apiHost,
+      clientId: '',
     });
   });
 
