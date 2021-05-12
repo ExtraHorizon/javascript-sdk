@@ -123,6 +123,7 @@ export function createOAuth2HttpClient(
     code,
   }: MfaConfig): Promise<void> {
     const tokenResult = await http.post(options.path, {
+      ...options.params,
       ...authConfig.params,
       grant_type: 'mfa',
       token,

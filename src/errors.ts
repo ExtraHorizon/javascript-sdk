@@ -55,7 +55,11 @@ const cleanHeaders = (headers: Record<string, unknown>) =>
   typeof headers.Authorization === 'string'
     ? {
         ...headers,
-        Authorization: `Bearer ${`...${headers.Authorization.substr(-5)}`}`,
+        Authorization: `${
+          headers.Authorization.startsWith('Bearer')
+            ? ''
+            : headers.Authorization.substr(0, 75)
+        } ... ${headers.Authorization.substr(-20)}}`,
       }
     : headers;
 
