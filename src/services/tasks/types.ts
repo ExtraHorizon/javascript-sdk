@@ -1,4 +1,4 @@
-import type { ObjectId, PagedResult } from '../types';
+import type { ObjectId } from '../types';
 
 export enum TaskStatus {
   NEW = 'new',

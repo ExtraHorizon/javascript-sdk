@@ -1,4 +1,4 @@
-import { ObjectId, PagedResult, LanguageCode, TimeZone } from '../types';
+import { ObjectId, LanguageCode, TimeZone } from '../types';
 
 export interface UserData {
   id: string;

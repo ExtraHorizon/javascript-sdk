@@ -1,5 +1,5 @@
 import type { JSONSchema7 } from './json-schema';
-import type { ObjectId, PagedResult } from '../types';
+import type { ObjectId } from '../types';
 
 export enum JSONSchemaType {
   OBJECT = 'object',

@@ -1,5 +1,3 @@
-import type { PagedResult } from '../types';
-
 interface Timestamp {
   updateTimestamp: Date;
   creationTimestamp: Date;

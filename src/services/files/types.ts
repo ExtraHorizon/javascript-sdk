@@ -1,5 +1,5 @@
 import { ReadStream } from 'fs';
-import type { ObjectId, PagedResult } from '../types';
+import type { ObjectId } from '../types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
