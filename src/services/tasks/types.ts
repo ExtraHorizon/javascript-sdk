@@ -8,10 +8,6 @@ export enum TaskStatus {
   CANCELED = 'canceled',
 }
 
-export interface TasksList extends PagedResult {
-  data: Array<Task>;
-}
-
 export interface Task {
   id?: ObjectId;
   status?: TaskStatus;

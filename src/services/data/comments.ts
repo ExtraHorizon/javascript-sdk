@@ -1,7 +1,7 @@
 import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import { CommentsList, Comment, CommentText } from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import { Comment, CommentText } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -45,7 +45,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
-   * @returns {Promise<CommentsList>}
+   * @returns {Promise<PagedResult<Comment>>}
    * @throws {ApiError}
    */
   async findComments(
@@ -54,7 +54,7 @@ export default (client, httpAuth: HttpInstance) => ({
     options?: {
       rql?: RQLString;
     }
-  ): Promise<CommentsList> {
+  ): Promise<PagedResult<Comment>> {
     return (
       await client.get(
         httpAuth,

@@ -80,23 +80,11 @@ export interface RegisterUserData {
   timeZone?: string;
 }
 
-export interface PermissionDataList extends PagedResult {
-  data: Permission[];
-}
-
-export interface RolesDataList extends PagedResult {
-  data: Role[];
-}
-
 export enum Gender {
   Unknown = 0,
   Male = 1,
   Female = 2,
   NotApplicable = 9,
-}
-
-export interface UserList extends PagedResult {
-  data?: User[];
 }
 
 export interface Email {
@@ -130,10 +118,6 @@ export interface ConfirmPassword {
 export interface GlobalPermission {
   name?: GlobalPermissionName;
   description?: string;
-}
-
-export interface GlobalPermissionsList extends PagedResult {
-  data?: GlobalPermission[];
 }
 
 export enum GlobalPermissionName {
@@ -209,14 +193,6 @@ export interface RoleCreation {
 export interface RoleUpdate {
   name?: string;
   description?: string;
-}
-
-export interface RoleList extends PagedResult {
-  data: Role[];
-}
-
-export interface GroupRoleList extends PagedResult {
-  data: GroupRole[];
 }
 
 export interface AddRole {

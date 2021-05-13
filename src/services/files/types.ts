@@ -27,10 +27,6 @@ export interface FileDetails {
   tags?: Array<string>;
 }
 
-export interface FilesList extends PagedResult {
-  data: Array<FileDetails>;
-}
-
 export interface CreateTokenRequest {
   accessLevel?: TokenPermission;
 }

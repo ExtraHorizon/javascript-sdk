@@ -1,10 +1,9 @@
 import type { HttpInstance } from '../../types';
-import { ObjectId, Results, AffectedRecords } from '../types';
+import { ObjectId, Results, AffectedRecords, PagedResult } from '../types';
 import type {
   RegisterUserData,
   User,
   UserDataUpdate,
-  UserList,
   Email,
   AddPatientEnlistment,
   ChangePassword,
@@ -67,7 +66,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<UserList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<User>> {
     return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
   },
 
