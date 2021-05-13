@@ -69,10 +69,6 @@ export type ApplicationUpdate =
   | OAuth1ApplicationUpdateSchema
   | OAuth2ApplicationUpdateSchema;
 
-export interface ApplicationList extends PagedResult {
-  data: Application[];
-}
-
 export interface ApplicationVersionCreation {
   name: string;
 }
@@ -95,9 +91,6 @@ export interface OAuth2Authorization extends Timestamp {
   clientId: string;
   authorizationCode: string;
   state: string;
-}
-export interface OAuth2AuthorizationList extends PagedResult {
-  data: OAuth2Authorization[];
 }
 
 interface RecoveryCodesMethod extends Timestamp {

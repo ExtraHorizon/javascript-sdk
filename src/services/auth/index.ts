@@ -3,13 +3,11 @@ import type { HttpInstance } from '../../types';
 import type {
   Application,
   ApplicationCreation,
-  ApplicationList,
   ApplicationUpdate,
   ApplicationVersionCreation,
   ApplicationVersion,
   OAuth2Authorization,
   OAuth2AuthorizationCreation,
-  OAuth2AuthorizationList,
   MfaSetting,
   Presence,
   MfaMethodCreation,
@@ -18,7 +16,7 @@ import type {
   MfaMethod,
 } from './types';
 import httpClient from '../http-client';
-import { AffectedRecords, Results } from '../types';
+import { AffectedRecords, Results, PagedResult } from '../types';
 import { AUTH_BASE } from '../../constants';
 
 export * from './types';
@@ -48,7 +46,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
      * */
     async getApplications(options?: {
       rql?: RQLString;
-    }): Promise<ApplicationList> {
+    }): Promise<PagedResult<Application>> {
       return (
         await authClient.get(httpWithAuth, `/applications${options?.rql || ''}`)
       ).data;
@@ -149,7 +147,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
      */
     async getOauth2Authorizations(options?: {
       rql?: RQLString;
-    }): Promise<OAuth2AuthorizationList> {
+    }): Promise<PagedResult<OAuth2Authorization>> {
       return (
         await authClient.get(
           httpWithAuth,
