@@ -1,8 +1,4 @@
-import { ObjectId, LanguageCode, PagedResult } from '../types';
-
-export interface MailList extends PagedResult {
-  data: Mail[];
-}
+import { ObjectId, LanguageCode } from '../types';
 
 export interface Mail {
   id?: ObjectId;
@@ -58,10 +54,6 @@ export interface Attachment {
    * MIME Type of the file
    */
   type?: string;
-}
-
-export interface QueuedMailList extends PagedResult {
-  data: QueuedMail[];
 }
 
 export interface QueuedMail {
