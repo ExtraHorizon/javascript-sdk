@@ -1,9 +1,5 @@
-import { ObjectId, PagedResult } from '../types';
+import { ObjectId } from '../types';
 import { TypeConfiguration } from '../data/types';
-
-export interface TemplateList extends PagedResult {
-  data: TemplateOut[];
-}
 
 export interface TemplateOut {
   id?: ObjectId;

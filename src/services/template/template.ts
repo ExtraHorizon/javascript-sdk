@@ -1,12 +1,12 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, ResultResponse, Results } from '../types';
+import {
+  AffectedRecords,
+  PagedResult,
+  ResultResponse,
+  Results,
+} from '../types';
 import { RQLString } from '../../rql';
-import type {
-  TemplateList,
-  TemplateIn,
-  TemplateOut,
-  CreateFileBean,
-} from './types';
+import type { TemplateIn, TemplateOut, CreateFileBean } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -29,7 +29,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<TemplateList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<TemplateOut>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
