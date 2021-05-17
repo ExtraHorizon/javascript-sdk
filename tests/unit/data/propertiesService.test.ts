@@ -1,26 +1,26 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import { ConfigurationType } from '../../../src/services/data/types';
 import { newSchemaCreated } from '../../__helpers__/data';
 
 describe('Properties Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const schemaId = newSchemaCreated.id;
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({
       apiHost,
+      clientId: '',
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
     await sdk.auth.authenticate({
-      clientId: '',
       username: '',
       password: '',
     });

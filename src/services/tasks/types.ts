@@ -1,4 +1,4 @@
-import type { ObjectId, PagedResult } from '../types';
+import type { ObjectId } from '../types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -6,10 +6,6 @@ export enum TaskStatus {
   COMPLETE = 'complete',
   FAILED = 'failed',
   CANCELED = 'canceled',
-}
-
-export interface TasksList extends PagedResult {
-  data: Array<Task>;
 }
 
 export interface Task {

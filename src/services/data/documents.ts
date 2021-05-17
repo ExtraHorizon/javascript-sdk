@@ -1,7 +1,7 @@
 import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import { Document, DocumentsList } from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import { Document } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -54,7 +54,7 @@ export default (client, httpAuth: HttpInstance) => ({
       rql?: RQLString;
     }
   ): Promise<
-    DocumentsList<CustomDocument extends null ? Document : CustomDocument>
+    PagedResult<CustomDocument extends null ? Document : CustomDocument>
   > {
     return (
       await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)

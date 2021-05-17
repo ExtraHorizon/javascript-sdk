@@ -1,10 +1,9 @@
 import type { HttpInstance } from '../../types';
-import { ObjectId, Results, AffectedRecords } from '../types';
+import { ObjectId, Results, AffectedRecords, PagedResult } from '../types';
 import type {
   RegisterUserData,
-  PartialUserData,
+  User,
   UserDataUpdate,
-  UserList,
   Email,
   AddPatientEnlistment,
   ChangePassword,
@@ -17,17 +16,13 @@ import type {
 } from './types';
 import type { RQLString } from '../../rql';
 
-export default (
-  userClient,
-  http: HttpInstance,
-  httpWithAuth: HttpInstance
-) => ({
+export default (userClient, httpWithAuth: HttpInstance) => ({
   /**
    * Retrieve the current logged in user
    * @permission Everyone can use this endpoint
    * @returns {UserData} UserData
    */
-  async me(): Promise<PartialUserData> {
+  async me(): Promise<User> {
     return (await userClient.get(httpWithAuth, '/me')).data;
   },
 
@@ -42,7 +37,7 @@ export default (
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async findById(userId: string): Promise<PartialUserData> {
+  async findById(userId: string): Promise<User> {
     return (await userClient.get(httpWithAuth, `/${userId}`)).data;
   },
 
@@ -55,10 +50,7 @@ export default (
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  async update(
-    userId: string,
-    userData: UserDataUpdate
-  ): Promise<PartialUserData> {
+  async update(userId: string, userData: UserDataUpdate): Promise<User> {
     return (await userClient.put(httpWithAuth, `/${userId}`, userData)).data;
   },
 
@@ -74,7 +66,7 @@ export default (
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<UserList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<User>> {
     return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
   },
 
@@ -157,10 +149,7 @@ export default (
    * @throws {EmailUsedError}
    * @throws {ResourceUnknownError}
    */
-  async updateEmail(
-    userId: ObjectId,
-    requestBody: Email
-  ): Promise<PartialUserData> {
+  async updateEmail(userId: ObjectId, requestBody: Email): Promise<User> {
     return (await userClient.put(httpWithAuth, `/${userId}/email`, requestBody))
       .data;
   },
@@ -224,8 +213,8 @@ export default (
    * @returns FullUser Success
    * @throws {EmailUsedError}
    */
-  async createAccount(requestBody: RegisterUserData): Promise<PartialUserData> {
-    return (await userClient.post(http, '/register', requestBody)).data;
+  async createAccount(requestBody: RegisterUserData): Promise<User> {
+    return (await userClient.post(httpWithAuth, '/register', requestBody)).data;
   },
 
   /**
@@ -238,7 +227,7 @@ export default (
    * @returns FullUser Success
    * @throws {PasswordError}
    */
-  async changePassword(requestBody: ChangePassword): Promise<PartialUserData> {
+  async changePassword(requestBody: ChangePassword): Promise<User> {
     return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
   },
 
@@ -255,8 +244,9 @@ export default (
    * @throws {LoginFreezeError}
    * @throws {TooManyFailedAttemptsError}
    */
-  async authenticate(requestBody: Authenticate): Promise<PartialUserData> {
-    return (await userClient.post(http, '/authenticate', requestBody)).data;
+  async authenticate(requestBody: Authenticate): Promise<User> {
+    return (await userClient.post(httpWithAuth, '/authenticate', requestBody))
+      .data;
   },
 
   /**
@@ -273,7 +263,7 @@ export default (
   async requestEmailActivation(email: string): Promise<boolean> {
     return (
       (
-        await userClient.get(http, '/activation', {
+        await userClient.get(httpWithAuth, '/activation', {
           params: {
             email,
           },
@@ -294,8 +284,8 @@ export default (
    */
   async validateEmailActivation(requestBody: Hash): Promise<boolean> {
     return (
-      (await userClient.post(http, '/activation', requestBody)).status ===
-      Results.Success
+      (await userClient.post(httpWithAuth, '/activation', requestBody))
+        .status === Results.Success
     );
   },
 
@@ -312,7 +302,7 @@ export default (
   async requestPasswordReset(email: string): Promise<boolean> {
     return (
       (
-        await userClient.get(http, '/forgot_password', {
+        await userClient.get(httpWithAuth, '/forgot_password', {
           params: {
             email,
           },
@@ -333,8 +323,8 @@ export default (
    */
   async validatePasswordReset(requestBody: PasswordReset): Promise<boolean> {
     return (
-      (await userClient.post(http, '/forgot_password', requestBody)).status ===
-      Results.Success
+      (await userClient.post(httpWithAuth, '/forgot_password', requestBody))
+        .status === Results.Success
     );
   },
 
@@ -371,7 +361,7 @@ export default (
     emailAvailable: boolean;
   }> {
     return (
-      await userClient.get(http, '/email_available', {
+      await userClient.get(httpWithAuth, '/email_available', {
         params: {
           email,
         },
@@ -391,10 +381,7 @@ export default (
    * @returns FullUser Success
    * @throws {ApiError}
    */
-  async updateProfileImage(
-    userId: ObjectId,
-    requestBody: Hash
-  ): Promise<PartialUserData> {
+  async updateProfileImage(userId: ObjectId, requestBody: Hash): Promise<User> {
     return (
       await userClient.put(
         httpWithAuth,
@@ -415,7 +402,7 @@ export default (
    * @returns FullUser Success
    * @throws {ApiError}
    */
-  async deleteProfileImage(userId: ObjectId): Promise<PartialUserData> {
+  async deleteProfileImage(userId: ObjectId): Promise<User> {
     return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`))
       .data;
   },

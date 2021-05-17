@@ -1,8 +1,8 @@
 import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
-import { ResultResponse, Results } from '../types';
-import type { FilesList, FileDetails, Token, CreateFile } from './types';
+import { ResultResponse, Results, PagedResult } from '../types';
+import type { FileDetails, Token, CreateFile } from './types';
 import { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -16,7 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<FilesList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 

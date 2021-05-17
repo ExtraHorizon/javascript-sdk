@@ -1,14 +1,13 @@
 import type { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type {
-  GlobalPermissionsList,
   GroupRolePermissions,
   StaffRoles,
   StaffGroups,
   AddRole,
   GroupRole,
-  GroupRoleList,
+  GlobalPermission,
 } from './types';
 
 export default (userClient, httpWithAuth: HttpInstance) => ({
@@ -21,7 +20,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async getGroupsPermissions(): Promise<GlobalPermissionsList> {
+  async getGroupsPermissions(): Promise<PagedResult<GlobalPermission>> {
     return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
   },
 
@@ -42,7 +41,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
     options?: {
       rql?: RQLString;
     }
-  ): Promise<GroupRoleList> {
+  ): Promise<PagedResult<GroupRole>> {
     return (
       await userClient.get(
         httpWithAuth,

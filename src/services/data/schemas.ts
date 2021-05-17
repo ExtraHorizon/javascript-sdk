@@ -1,11 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  Schema,
-  SchemaInput,
-  SchemasList,
-  UpdateSchemaInput,
-} from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
 import { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -32,7 +27,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<SchemasList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 

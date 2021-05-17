@@ -14,17 +14,14 @@ export type UsersService = ReturnType<typeof users> &
   ReturnType<typeof globalRoles> &
   ReturnType<typeof groupRoles>;
 
-export const usersService = (
-  http: HttpInstance,
-  httpWithAuth: HttpInstance
-): UsersService => {
+export const usersService = (httpWithAuth: HttpInstance): UsersService => {
   const userClient = httpClient({
     basePath: USER_BASE,
     transformRequestData: decamelizeKeys,
   });
 
-  const healthMethods = health(userClient, http);
-  const usersMethods = users(userClient, http, httpWithAuth);
+  const healthMethods = health(userClient, httpWithAuth);
+  const usersMethods = users(userClient, httpWithAuth);
   const groupRolesMethods = groupRoles(userClient, httpWithAuth);
   const globalRolesMethods = globalRoles(userClient, httpWithAuth);
 
