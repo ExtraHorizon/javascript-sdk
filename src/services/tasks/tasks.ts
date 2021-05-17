@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type { TasksList, Task, TaskInput } from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { Task, TaskInput } from './types';
 import type { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -13,7 +13,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<TasksList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Task>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 

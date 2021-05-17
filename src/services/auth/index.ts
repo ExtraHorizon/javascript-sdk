@@ -3,13 +3,11 @@ import type { HttpInstance } from '../../types';
 import type {
   Application,
   ApplicationCreation,
-  ApplicationList,
   ApplicationUpdate,
   ApplicationVersionCreation,
   ApplicationVersion,
   OAuth2Authorization,
   OAuth2AuthorizationCreation,
-  OAuth2AuthorizationList,
   MfaSetting,
   Presence,
   MfaMethodCreation,
@@ -18,12 +16,12 @@ import type {
   MfaMethod,
 } from './types';
 import httpClient from '../http-client';
-import { AffectedRecords, Results } from '../types';
+import { AffectedRecords, Results, PagedResult } from '../types';
 import { AUTH_BASE } from '../../constants';
 
 export * from './types';
 
-export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
+export const authService = (httpWithAuth: HttpInstance) => {
   const authClient = httpClient({
     basePath: AUTH_BASE,
   });
@@ -48,7 +46,7 @@ export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * */
     async getApplications(options?: {
       rql?: RQLString;
-    }): Promise<ApplicationList> {
+    }): Promise<PagedResult<Application>> {
       return (
         await authClient.get(httpWithAuth, `/applications${options?.rql || ''}`)
       ).data;
@@ -149,7 +147,7 @@ export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
      */
     async getOauth2Authorizations(options?: {
       rql?: RQLString;
-    }): Promise<OAuth2AuthorizationList> {
+    }): Promise<PagedResult<OAuth2Authorization>> {
       return (
         await authClient.get(
           httpWithAuth,
@@ -310,7 +308,10 @@ export const authService = (http: HttpInstance, httpWithAuth: HttpInstance) => {
      * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
      * */
     async health(): Promise<boolean> {
-      return (await authClient.get(http, '/health')).status === Results.Success;
+      return (
+        (await authClient.get(httpWithAuth, '/health')).status ===
+        Results.Success
+      );
     },
   };
 };

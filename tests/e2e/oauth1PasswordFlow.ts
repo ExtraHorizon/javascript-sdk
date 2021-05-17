@@ -9,10 +9,10 @@ describe('OAuth1 Password Flow', () => {
   beforeAll(async () => {
     sdk = client({
       apiHost: process.env.API_HOST,
-    });
-    await sdk.auth.authenticate({
       consumerKey: process.env.CONSUMER_KEY,
       consumerSecret: process.env.CONSUMER_SECRET,
+    });
+    await sdk.auth.authenticate({
       email: process.env.API_USERNAME,
       password: process.env.API_PASSWORD,
     });

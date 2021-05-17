@@ -1,29 +1,33 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client } from '../../../src/index';
+import { Client, client, ParamsOauth2 } from '../../../src/index';
 import { transitionInput, newTransition } from '../../__helpers__/data';
 
 describe('Transitions Service', () => {
   const schemaId = '2e9fff9d90135a2a9a718e2f';
   const transitionId = '1e9fff9d90135a2a9a718e2f';
   const apiHost = 'https://api.xxx.fibricheck.com';
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
-    });
+    try {
+      sdk = client({
+        apiHost,
+        clientId: '',
+      });
 
-    const mockToken = 'mockToken';
-    nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
-      .reply(200, { access_token: mockToken });
+      const mockToken = 'mockToken';
+      nock(apiHost)
+        .post(`${AUTH_BASE}/oauth2/tokens`)
+        .reply(200, { access_token: mockToken });
 
-    await sdk.auth.authenticate({
-      clientId: '',
-      username: '',
-      password: '',
-    });
+      await sdk.auth.authenticate({
+        username: '',
+        password: '',
+      });
+    } catch (error) {
+      console.log('before', error);
+    }
   });
 
   afterEach(() => {
@@ -32,14 +36,19 @@ describe('Transitions Service', () => {
   });
 
   it('Update the creation transition', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
-      .put(`/${schemaId}/creationTransition`)
-      .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.updateCreationTransition(
-      schemaId,
-      transitionInput
-    );
-    expect(res.affectedRecords).toBe(1);
+    try {
+      nock(`${apiHost}${DATA_BASE}`)
+        .put(`/${schemaId}/creationTransition`)
+        .reply(200, { affectedRecords: 1 });
+      const res = await sdk.data.updateCreationTransition(
+        schemaId,
+        transitionInput
+      );
+
+      expect(res.affectedRecords).toBe(1);
+    } catch (error) {
+      console.log('error', error);
+    }
   });
 
   it('Create a transition', async () => {

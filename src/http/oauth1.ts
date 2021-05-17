@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { Config } from '../types';
-import { TokenDataOauth1, OAuth1Config } from './types';
+import { ConfigOauth1 } from '../types';
+import { TokenDataOauth1, OAuth1Config, OAuthClient, MfaConfig } from './types';
 import {
   camelizeResponseData,
   transformKeysResponseData,
@@ -9,13 +9,17 @@ import {
 import { typeReceivedError } from '../errorHandler';
 import { USER_BASE } from '../constants';
 
-export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
+export function createOAuth1HttpClient(
+  http: AxiosInstance,
+  options: ConfigOauth1
+): OAuthClient {
   let tokenData: TokenDataOauth1;
-  let authConfig;
+  let authConfig: OAuth1Config;
 
   const httpWithAuth = axios.create({ ...http.defaults });
 
   const { requestLogger, responseLogger } = options;
+
   if (requestLogger) {
     httpWithAuth.interceptors.request.use(
       config => {
@@ -54,8 +58,8 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
     headers: {
       ...config.headers,
       'Content-Type': 'application/json',
-      ...authConfig.oauth1.toHeader(
-        authConfig.oauth1.authorize(
+      ...options.oauth1.toHeader(
+        options.oauth1.authorize(
           {
             url: config.baseURL + config.url,
             method: config.method,
@@ -81,18 +85,18 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
-  async function authenticate(data: OAuth1Config) {
+  async function authenticate(data: OAuth1Config): Promise<void> {
     // If the user has passed in a token/tokenSecret combination.
     // Validate it against /users/me on the unauthenticated Axios client
     authConfig = data;
-    if ('tokenData' in data) {
-      tokenData = data.tokenData;
+    if ('tokenData' in authConfig) {
+      tokenData = authConfig.tokenData;
       const path = `${USER_BASE}/me`;
       await http.get(path, {
         headers: {
           'Content-Type': 'application/json',
-          ...authConfig.oauth1.toHeader(
-            authConfig.oauth1.authorize(
+          ...options.oauth1.toHeader(
+            options.oauth1.authorize(
               {
                 url: options.apiHost + path,
                 method: 'get',
@@ -103,12 +107,12 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
         },
       });
     } else {
-      const tokenResult = await http.post(authConfig.path, authConfig.params, {
+      const tokenResult = await http.post(options.path, authConfig.params, {
         headers: {
           'Content-Type': 'application/json',
-          ...authConfig.oauth1.toHeader(
-            authConfig.oauth1.authorize({
-              url: options.apiHost + authConfig.path,
+          ...options.oauth1.toHeader(
+            options.oauth1.authorize({
+              url: options.apiHost + options.path,
               method: 'POST',
             })
           ),
@@ -126,13 +130,9 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
     token,
     methodId,
     code,
-  }: {
-    token: string;
-    methodId: string;
-    code: string;
-  }) {
+  }: MfaConfig): Promise<void> {
     const tokenResult = await http.post(
-      `${authConfig.path}/mfa`,
+      `${options.path}/mfa`,
       {
         token,
         code,
@@ -141,9 +141,9 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
       {
         headers: {
           'Content-Type': 'application/json',
-          ...authConfig.oauth1.toHeader(
-            authConfig.oauth1.authorize({
-              url: `${options.apiHost}${authConfig.path}/mfa`,
+          ...options.oauth1.toHeader(
+            options.oauth1.authorize({
+              url: `${options.apiHost}${options.path}/mfa`,
               method: 'POST',
             })
           ),
@@ -157,5 +157,5 @@ export function createOAuth1HttpClient(http: AxiosInstance, options: Config) {
     });
   }
 
-  return { ...httpWithAuth, authenticate, confirmMfa };
+  return Object.assign(httpWithAuth, { authenticate, confirmMfa });
 }
