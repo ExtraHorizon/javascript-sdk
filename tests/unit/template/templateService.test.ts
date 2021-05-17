@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, TEMPLATE_BASE } from '../../../src/constants';
-import { Client, client, rqlBuilder } from '../../../src/index';
+import { Client, client, rqlBuilder, ParamsOauth2 } from '../../../src/index';
 import {
   templateData,
   templateResponse,
@@ -11,28 +11,23 @@ describe('Template Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const templateId = templateData.id;
 
-  let sdk: Client;
+  let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = client({
       apiHost,
+      clientId: '',
     });
 
     const mockToken = 'mockToken';
     nock(apiHost)
-      .post(`${AUTH_BASE}/oauth2/token`)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
     await sdk.auth.authenticate({
-      clientId: '',
       username: '',
       password: '',
     });
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
-    nock.enableNetConnect();
   });
 
   it('Perform a health check', async () => {
