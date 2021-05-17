@@ -19,8 +19,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Update Package Version
-        run: yarn install
-        run: yarn add-suffix
+        run: yarn install && yarn add-suffix
 
       - name: Extract version
         id: extract_version
