@@ -1,5 +1,5 @@
 import type { JSONSchema7 } from './json-schema';
-import type { ObjectId, PagedResult } from '../types';
+import type { ObjectId } from '../types';
 
 export enum JSONSchemaType {
   OBJECT = 'object',
@@ -278,10 +278,6 @@ export type UpdateSchemaInput = Pick<
   'name' | 'description' | 'defaultLimit' | 'maximumLimit'
 >;
 
-export interface SchemasList extends PagedResult {
-  data: Schema[];
-}
-
 export type IndexFieldsName = string;
 
 export enum IndexFieldsType {
@@ -329,10 +325,6 @@ export interface Document extends DocumentBase {
   data?: Record<string, any>;
 }
 
-export interface DocumentsList<CustomDocument> extends PagedResult {
-  data: CustomDocument[];
-}
-
 export type CommentText = string;
 
 export interface Comment {
@@ -343,8 +335,4 @@ export interface Comment {
   text?: CommentText;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
-}
-
-export interface CommentsList extends PagedResult {
-  data: Comment[];
 }

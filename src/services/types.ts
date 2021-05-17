@@ -8,12 +8,13 @@ export interface ErrorResponse {
   message?: string;
 }
 
-export interface PagedResult {
+export interface PagedResult<T> {
   page: {
     total: number;
     offset: number;
     limit: number;
   };
+  data: T[];
 }
 
 export interface AffectedRecords {

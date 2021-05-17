@@ -1,5 +1,5 @@
 import { ReadStream } from 'fs';
-import type { ObjectId, PagedResult } from '../types';
+import type { ObjectId } from '../types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
@@ -25,10 +25,6 @@ export interface FileDetails {
   mimetype?: string;
   size?: number;
   tags?: Array<string>;
-}
-
-export interface FilesList extends PagedResult {
-  data: Array<FileDetails>;
 }
 
 export interface CreateTokenRequest {
