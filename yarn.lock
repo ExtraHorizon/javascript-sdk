@@ -3616,7 +3616,7 @@ npm-run-path@^4.0.0:
 
 npm-version-suffix@galmail/npm-version-suffix:
   version "0.2.0"
-  resolved "https://codeload.github.com/galmail/npm-version-suffix/tar.gz/a1c2a8a6853bd87e20bdb415069e50af3e9c0d58"
+  resolved "https://codeload.github.com/galmail/npm-version-suffix/tar.gz/a7e62b03254d81a2d12099539c488383223bdd31"
   dependencies:
     escape-string-regexp "^2.0.0"
     execa "^1.0.0"
