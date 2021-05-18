@@ -1,4 +1,4 @@
-import { ObjectId } from '../types';
+import { ObjectId, LanguageCode, TimeZone } from '../types';
 import { TypeConfiguration } from '../data/types';
 
 export interface TemplateOut {
@@ -48,14 +48,14 @@ export enum ObjectMaxBytesOptionType {
   MAX_BYTES = 'max_bytes',
 }
 
-export interface CreateFileBean {
+export interface CreateFile {
   /**
    * If not present (or empty) we will first check the configured language in the users-service. If that is not present it will default to 'EN'
    */
-  language?: string;
+  language?: LanguageCode;
   /**
    * If not present (or empty) we will first check the configured time_zone in the users-service. If that is not present it will default to 'Europe/Brussels'
    */
-  timeZone?: string;
+  timeZone?: TimeZone;
   content: Record<string, any>;
 }

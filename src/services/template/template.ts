@@ -6,7 +6,7 @@ import {
   Results,
 } from '../types';
 import { RQLString } from '../../rql';
-import type { TemplateIn, TemplateOut, CreateFileBean } from './types';
+import type { TemplateIn, TemplateOut, CreateFile } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -27,7 +27,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<TemplateOut>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -41,7 +40,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns TemplateOut Success
-   * @throws {ApiError}
    */
   async createTemplate(requestBody: TemplateIn): Promise<TemplateOut> {
     return (await client.post(httpAuth, '/', requestBody)).data;
@@ -94,7 +92,7 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async resolveTemplateAsPdf(
     templateId: string,
-    requestBody: CreateFileBean
+    requestBody: CreateFile
   ): Promise<any> {
     return (await client.post(httpAuth, `/${templateId}/pdf`, requestBody))
       .data;
@@ -118,7 +116,7 @@ export default (client, httpAuth: HttpInstance) => ({
   async resolveTemplateAsPdfUsingCode(
     templateId: string,
     localizationCode: string,
-    requestBody: CreateFileBean
+    requestBody: CreateFile
   ): Promise<any> {
     return (
       await client.post(
@@ -144,7 +142,7 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async resolveTemplateAsJson(
     templateId: string,
-    requestBody: CreateFileBean
+    requestBody: CreateFile
   ): Promise<Record<string, string>> {
     return (await client.post(httpAuth, `/${templateId}/resolve`, requestBody))
       .data;
@@ -168,7 +166,7 @@ export default (client, httpAuth: HttpInstance) => ({
   async resolveTemplateAsJsonUsingCode(
     templateId: string,
     localizationCode: string,
-    requestBody: CreateFileBean
+    requestBody: CreateFile
   ): Promise<Record<string, string>> {
     return (
       await client.post(
