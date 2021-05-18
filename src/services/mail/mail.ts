@@ -18,7 +18,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * Perform a health check for mail service
    * @permission Everyone can use this endpoint
    * @returns {boolean} success
-   * @throws {ApiError}
    */
   async health(): Promise<boolean> {
     const result: ResultResponse = await client.get(httpAuth, '/health');
@@ -33,7 +32,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Mail>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -65,7 +63,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param trackingHash
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async trackMail(trackingHash: string): Promise<AffectedRecords> {
     return (await client.get(httpAuth, `/${trackingHash}/open`)).data;
@@ -79,7 +76,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async findOutboundMails(options?: {
     rql?: string;
