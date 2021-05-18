@@ -8,6 +8,7 @@ import {
   tasksService,
   filesService,
   templateService,
+  mailService,
 } from './services';
 
 import {
@@ -81,6 +82,7 @@ type Authenticate<
 export interface Client<T extends ClientParams> {
   rawAxios: AxiosInstance;
   template: ReturnType<typeof templateService>;
+  mail: ReturnType<typeof mailService>;
   data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
   tasks: ReturnType<typeof tasksService>;
@@ -160,6 +162,9 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
     },
     get template() {
       return templateService(httpWithAuth);
+    },
+    get mail() {
+      return mailService(httpWithAuth);
     },
     get auth(): any {
       return {
