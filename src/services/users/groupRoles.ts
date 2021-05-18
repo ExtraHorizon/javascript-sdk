@@ -18,7 +18,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * none |  | Everyone can use this endpoint
    *
    * @returns any Success
-   * @throws {ApiError}
    */
   async getGroupsPermissions(): Promise<PagedResult<GlobalPermission>> {
     return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
@@ -34,7 +33,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async getGroupsRoles(
     groupId: ObjectId,
@@ -60,7 +58,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param groupId Id of the targeted group
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async addRoleToGroup(
     groupId: ObjectId,
@@ -250,7 +247,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async addUsersToStaff(
     requestBody: StaffGroups,
@@ -277,7 +274,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async removeUsersFromStaff(
     requestBody: StaffGroups,

@@ -46,7 +46,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
    * @returns {Promise<PagedResult<Comment>>}
-   * @throws {ApiError}
    */
   async findComments(
     schemaId: ObjectId,
@@ -74,7 +73,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
-   * @throws {ApiError}
    */
 
   async updateComment(
@@ -106,7 +104,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
-   * @throws {ApiError}
    */
   async deleteComment(
     commentId: ObjectId,

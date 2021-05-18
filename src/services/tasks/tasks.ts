@@ -11,7 +11,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
    *
    * @returns any Success
-   * @throws {ApiError}
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Task>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -25,7 +24,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns Task Success
-   * @throws {ApiError}
    */
   async createTask(requestBody: TaskInput): Promise<Task> {
     return (await client.post(httpAuth, '/', requestBody)).data;
