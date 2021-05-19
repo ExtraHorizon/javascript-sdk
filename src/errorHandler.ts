@@ -40,7 +40,7 @@ import {
   OauthKeyError,
   LocalizationKeyMissingError,
   TemplateFillingError,
-  NotActivatedError,
+  ApplicationUnknownError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -53,6 +53,7 @@ export const ErrorClassDefinitionsMap = {
   17: ResourceAlreadyExistsError,
   26: IllegalArgumentError,
   27: IllegalStateError,
+  103: ApplicationUnknownError,
   104: UserNotAuthenticatedError,
   106: AuthenticationError,
   107: OauthKeyError,
