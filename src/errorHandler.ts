@@ -40,7 +40,6 @@ import {
   OauthKeyError,
   LocalizationKeyMissingError,
   TemplateFillingError,
-  NotActivatedError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
