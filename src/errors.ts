@@ -163,3 +163,4 @@ export class OauthTokenError extends ApiError {}
 export class OauthKeyError extends ApiError {}
 export class LocalizationKeyMissingError extends ApiError {}
 export class TemplateFillingError extends ApiError {}
+export class ApplicationUnknownError extends ApiError {}
