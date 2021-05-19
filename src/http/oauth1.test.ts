@@ -36,11 +36,7 @@ describe('http client', () => {
     httpWithAuth = createOAuth1HttpClient(http, config);
   });
 
-  it('Create Axios client', async () => {
-    expect(httpWithAuth).toBeDefined();
-  });
-
-  it('Make call with authorization', async () => {
+  it('should authorize', async () => {
     const mockToken = 'test';
     nock(mockParams.apiHost)
       .post(`${AUTH_BASE}/oauth1/tokens`)
@@ -56,7 +52,7 @@ describe('http client', () => {
     );
   });
 
-  it('Make call with authorization but with wrong password', async () => {
+  it('throws on authorization with wrong password', async () => {
     expect.assertions(1);
     nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
       code: 106,
@@ -71,7 +67,7 @@ describe('http client', () => {
     }
   });
 
-  it('Make call with authorization but reply twice with unknown token', async () => {
+  it('throws on authorization with unknown token', async () => {
     const mockToken = 'unknown access token';
     nock(mockParams.apiHost)
       .post(`${AUTH_BASE}/oauth1/tokens`)
@@ -96,7 +92,7 @@ describe('http client', () => {
     }
   });
 
-  it('Make call with valid token/tokenSecret', async () => {
+  it('should authorize with valid token/tokenSecret', async () => {
     expect.assertions(1);
     nock(mockParams.apiHost).get(`${USER_BASE}/me`).reply(200, {});
 
@@ -108,7 +104,7 @@ describe('http client', () => {
     }
   });
 
-  it('Make call with invalid token/tokenSecret', async () => {
+  it('throws on authorization with invalid token/tokenSecret', async () => {
     expect.assertions(1);
     nock(mockParams.apiHost).get(`${USER_BASE}/me`).reply(400, {
       code: 108,

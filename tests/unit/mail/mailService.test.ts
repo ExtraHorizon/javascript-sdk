@@ -35,7 +35,7 @@ describe('Mail Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Check health', async () => {
+  it('should check health', async () => {
     nock(`${apiHost}${MAIL_BASE}`).get('/health').reply(200);
 
     const endpointIsAvailable = await sdk.mail.health();
@@ -43,7 +43,7 @@ describe('Mail Service', () => {
     expect(endpointIsAvailable).toBe(true);
   });
 
-  it('Retrieve a list of mails', async () => {
+  it('should retrieve a list of mails', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${MAIL_BASE}`).get(`/${rql}`).reply(200, mailsResponse);
 
@@ -52,7 +52,7 @@ describe('Mail Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Send a mail', async () => {
+  it('should send a mail', async () => {
     nock(`${apiHost}${MAIL_BASE}`).post('/').reply(200, mailData);
 
     const mail = await sdk.mail.sendMail(mailInput);
@@ -60,7 +60,7 @@ describe('Mail Service', () => {
     expect(mail.subject).toBe(mailData.subject);
   });
 
-  it('Register a mail being opened', async () => {
+  it('should register a mail being opened', async () => {
     const trackingHash = 'abcdefg12345';
     nock(`${apiHost}${MAIL_BASE}`).get(`/${trackingHash}/open`).reply(200, {
       affectedRecords: 1,
@@ -71,7 +71,7 @@ describe('Mail Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Retrieve the list of mails that are not sent yet', async () => {
+  it('should retrieve the list of mails that are not sent yet', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${MAIL_BASE}`)
       .get(`/queued${rql}`)

@@ -31,7 +31,7 @@ describe('Statuses Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a status', async () => {
+  it('should create a status', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/statuses`)
       .reply(200, { affectedRecords: 1 });
@@ -39,7 +39,7 @@ describe('Statuses Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Update a status', async () => {
+  it('should update a status', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/statuses/${statusName}`)
       .reply(200, {
@@ -53,7 +53,7 @@ describe('Statuses Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a status', async () => {
+  it('should delete a status', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/statuses/${statusName}`)
       .reply(200, {

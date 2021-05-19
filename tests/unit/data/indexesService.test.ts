@@ -35,7 +35,7 @@ describe('Indexes Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create an index', async () => {
+  it('should create an index', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/indexes`)
       .reply(200, newIndexCreated);
@@ -43,7 +43,7 @@ describe('Indexes Service', () => {
     expect(index.id).toBe(newIndexCreated.id);
   });
 
-  it('Delete an index', async () => {
+  it('should delete an index', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/indexes/${indexId}`)
       .reply(200, {

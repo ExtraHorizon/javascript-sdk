@@ -35,7 +35,7 @@ describe('Comments Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a comment', async () => {
+  it('should create a comment', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, newCommentCreated);
@@ -45,7 +45,7 @@ describe('Comments Service', () => {
     expect(comment.id).toBe(newCommentCreated.id);
   });
 
-  it('Request a list of comments', async () => {
+  it('should request a list of comments', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .get(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, commentsListResponse);
@@ -53,7 +53,7 @@ describe('Comments Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Update a comment', async () => {
+  it('should update a comment', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
@@ -63,7 +63,7 @@ describe('Comments Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a comment', async () => {
+  it('should delete a comment', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
