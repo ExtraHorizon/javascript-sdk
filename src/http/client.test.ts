@@ -8,12 +8,12 @@ const mockParams = {
 };
 
 describe('http client', () => {
-  it('Create Axios client', async () => {
+  it('should create an http client', async () => {
     const http = createHttpClient(validateConfig(mockParams));
     expect(http).toBeDefined();
   });
 
-  it('Create Axios client + request', async () => {
+  it('should create an http client and makes a GET request', async () => {
     nock(mockParams.apiHost).get('/test').reply(200, '');
 
     const http = createHttpClient(validateConfig(mockParams));

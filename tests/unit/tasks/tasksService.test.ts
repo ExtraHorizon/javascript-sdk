@@ -31,7 +31,7 @@ describe('Tasks Service', () => {
     nock.enableNetConnect();
   });
 
-  it('View a list of tasks', async () => {
+  it('should view a list of tasks', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
@@ -40,7 +40,7 @@ describe('Tasks Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Create a task', async () => {
+  it('should create a task', async () => {
     nock(`${apiHost}${TASKS_BASE}`).post('/').reply(200, taskData);
 
     const task = await sdk.tasks.createTask({
@@ -51,7 +51,7 @@ describe('Tasks Service', () => {
     expect(task.functionName).toBeDefined();
   });
 
-  it('Cancel a task', async () => {
+  it('should cancel a task', async () => {
     nock(`${apiHost}${TASKS_BASE}`).post(`/${taskId}/cancel`).reply(200, {
       affectedRecords: 1,
     });

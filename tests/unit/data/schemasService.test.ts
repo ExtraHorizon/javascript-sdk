@@ -34,19 +34,19 @@ describe('Schemas Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a schema', async () => {
+  it('should create a schema', async () => {
     nock(`${apiHost}${DATA_BASE}`).post('/').reply(200, newSchemaCreated);
     const schema = await sdk.data.createSchema(newSchemaInput);
     expect(schema.creationTransition).toBeDefined();
   });
 
-  it('Request a list of schemas', async () => {
+  it('should request a list of schemas', async () => {
     nock(`${apiHost}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
     const res = await sdk.data.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Update a schema', async () => {
+  it('should update a schema', async () => {
     const newSchemaData = { name: 'schemaA', description: 'schema desc' };
     nock(`${apiHost}${DATA_BASE}`).put(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
@@ -55,7 +55,7 @@ describe('Schemas Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a schema', async () => {
+  it('should delete a schema', async () => {
     nock(`${apiHost}${DATA_BASE}`).delete(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
     });
@@ -63,7 +63,7 @@ describe('Schemas Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Disable a schema', async () => {
+  it('should disable a schema', async () => {
     nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/disable`).reply(200, {
       affectedRecords: 1,
     });
@@ -71,7 +71,7 @@ describe('Schemas Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Enable a schema', async () => {
+  it('should enable a schema', async () => {
     nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/enable`).reply(200, {
       affectedRecords: 1,
     });

@@ -31,7 +31,7 @@ describe('Properties Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a property', async () => {
+  it('should create a property', async () => {
     nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/properties`).reply(200, {
       affectedRecords: 1,
     });
@@ -46,7 +46,7 @@ describe('Properties Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Update a property', async () => {
+  it('should update a property', async () => {
     const propertyPath = 'username';
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/properties/${propertyPath}`)
@@ -61,7 +61,7 @@ describe('Properties Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a property', async () => {
+  it('should delete a property', async () => {
     const propertyPath = 'username';
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/properties/${propertyPath}`)

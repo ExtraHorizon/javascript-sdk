@@ -30,7 +30,7 @@ describe('Template Service', () => {
     });
   });
 
-  it('Perform a health check', async () => {
+  it('should perform a health check', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`).get('/health').reply(200);
 
     const serviceIsAvailable = await sdk.template.health();
@@ -38,7 +38,7 @@ describe('Template Service', () => {
     expect(serviceIsAvailable).toBe(true);
   });
 
-  it('Get all templates the service has to offer', async () => {
+  it('should get all templates the service has to offer', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${TEMPLATE_BASE}`)
       .get(`/${rql}`)
@@ -49,7 +49,7 @@ describe('Template Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Create a new template', async () => {
+  it('should create a new template', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`).post('/').reply(200, templateData);
 
     const template = await sdk.template.createTemplate(templateInput);
@@ -57,7 +57,7 @@ describe('Template Service', () => {
     expect(template.name).toBe(templateData.name);
   });
 
-  it('Update an existing template', async () => {
+  it('should update an existing template', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`)
       .put(`/${templateId}`)
       .reply(200, templateData);
@@ -70,7 +70,7 @@ describe('Template Service', () => {
     expect(template.name).toBe(templateData.name);
   });
 
-  it('Delete a template', async () => {
+  it('should delete a template', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`)
       .delete(`/${templateId}`)
       .reply(200, { affectedRecords: 1 });
@@ -80,7 +80,7 @@ describe('Template Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Resolve a template as a pdf file', async () => {
+  it('should resolve a template as a pdf file', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`)
       .post(`/${templateId}/pdf`)
       .reply(200, 'string');
@@ -99,7 +99,7 @@ describe('Template Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('Resolves a template with code as a pdf file', async () => {
+  it('should resolve a template with code as a pdf file', async () => {
     const localizationCode = 'EN';
     nock(`${apiHost}${TEMPLATE_BASE}`)
       .post(`/${templateId}/pdf/${localizationCode}`)
@@ -123,7 +123,7 @@ describe('Template Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('Resolve a template as a json response', async () => {
+  it('should resolve a template as a json response', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`)
       .post(`/${templateId}/resolve`)
       .reply(200, {
@@ -145,7 +145,7 @@ describe('Template Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('Resolve a template with code as a json response', async () => {
+  it('should resolve a template with code as a json response', async () => {
     const localizationCode = 'EN';
     nock(`${apiHost}${TEMPLATE_BASE}`)
       .post(`/${templateId}/resolve/${localizationCode}`)
