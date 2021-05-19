@@ -64,7 +64,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<User>> {
     return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
@@ -80,7 +79,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async removeUsers(rql: RQLString): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
@@ -95,7 +93,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns Patient Success
-   * @throws {ApiError}
    */
   async patients(options?: { rql?: RQLString }): Promise<Patient[]> {
     return (
@@ -112,7 +109,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns StaffMember Success
-   * @throws {ApiError}
    */
   async staff(options?: { rql?: RQLString }): Promise<StaffMember[]> {
     return (await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`))
@@ -297,7 +293,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param email
    * @returns {boolean} Success
-   * @throws {ApiError}
+   * @throws {EmailUnknownError}
+   * @throws {NotActivatedError}
    */
   async requestPasswordReset(email: string): Promise<boolean> {
     return (
@@ -319,7 +316,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
+   * @throws {NotActivatedError}
+   * @throws {NewPasswordHashUnknownError}
    */
   async validatePasswordReset(requestBody: PasswordReset): Promise<boolean> {
     return (
@@ -336,7 +334,10 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
    */
   async confirmPassword(requestBody: ConfirmPassword): Promise<boolean> {
     return (
@@ -353,7 +354,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param email
    * @returns any Success
-   * @throws {ApiError}
    */
   async isEmailAvailable(
     email: string
@@ -379,7 +379,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async updateProfileImage(userId: ObjectId, requestBody: Hash): Promise<User> {
     return (
@@ -400,7 +400,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param userId Id of the targeted user
    * @returns FullUser Success
-   * @throws {ApiError}
+   * @throws {ResourceUnknownError}
    */
   async deleteProfileImage(userId: ObjectId): Promise<User> {
     return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`))

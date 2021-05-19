@@ -46,7 +46,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async findDocuments<CustomDocument = null>(
     schemaId: ObjectId,
@@ -74,7 +73,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async updateDocument(
     schemaId: ObjectId,
@@ -109,7 +107,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns any Success
-   * @throws ApiError
    */
   async deleteDocument(
     schemaId: ObjectId,
@@ -133,7 +130,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async deleteFieldsFromDocument(
     schemaId: ObjectId,
@@ -203,7 +199,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async linkGroupsToDocument(
     schemaId: ObjectId,
@@ -236,7 +231,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async unlinkGroupsFromDocument(
     schemaId: ObjectId,
@@ -267,7 +261,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async linkUsersToDocument(
     schemaId: ObjectId,
@@ -302,7 +295,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async unlinkUsersFromDocument(
     schemaId: ObjectId,
