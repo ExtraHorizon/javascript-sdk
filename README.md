@@ -1,5 +1,15 @@
 # Extrahorizon Javascript SDK
 
+## Features
+
+- [Auth][auth]: Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
+- [Users][users]: The user service stands in for managing users themselves, as well as roles related to users and groups of users.
+- [Data][data]: A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
+- [Files][files]: A service that handles file storage, metadata & file retrieval based on tokens.
+- [Tasks][tasks]: Start functions on demand, directly or at a future moment.
+- [Templates][templates]: The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
+- [Mail][mail]: Provides mail functionality for other services.
+
 ## Getting started
 
 To get started with the Contentful Management JS SDK you'll need to install it, and then get credentials which will allow you to access your content in Contentful.
@@ -328,3 +338,11 @@ You can check the changelog on the [releases](https://github.com/ExtraHorizon/ja
 ## 🔑 License
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
+
+[auth]: https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/
+[users]: https://developers.extrahorizon.io/services/users-service/1.1.7/
+[data]: https://developers.extrahorizon.io/services/data-service/1.0.9/
+[files]: https://developers.extrahorizon.io/services/files-service/1.0.1-dev/
+[tasks]: https://developers.extrahorizon.io/services/tasks-service/1.0.4/
+[templates]: https://developers.extrahorizon.io/services/templates-service/1.0.13/
+[mail]: https://developers.extrahorizon.io/services/mail-service/1.0.8-dev/
