@@ -11,7 +11,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @returns any Success
-   * @throws {ApiError}
    */
   async getGeneralConfig(): Promise<GeneralConfiguration> {
     return (await client.get(httpAuth, '/general')).data;
@@ -26,7 +25,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async updateGeneralConfig(
     requestBody: GeneralConfigurationInput,
@@ -48,7 +46,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async removeFieldsFromGeneralConfig(
     requestBody: {

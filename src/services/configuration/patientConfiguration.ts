@@ -18,7 +18,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param userId The id of the targeted user
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async updatePatientConfig(
     groupId: ObjectId,
@@ -46,7 +45,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param userId The id of the targeted user
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async removeFieldsFromPatientConfig(
     groupId: ObjectId,

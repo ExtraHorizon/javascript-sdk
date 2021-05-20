@@ -20,7 +20,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param groupId The id of the targeted group
    * @returns any Success
-   * @throws {ApiError}
    */
   async getGroupsConfig(
     groupId: ObjectId
@@ -41,7 +40,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async updateGroupsConfig(
     groupId: ObjectId,
@@ -72,7 +70,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async removeFieldsFromGroupsConfig(
     groupId: ObjectId,

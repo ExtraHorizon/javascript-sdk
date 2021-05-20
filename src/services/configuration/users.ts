@@ -23,7 +23,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param userId The id of the targeted user
    * @returns any Success
-   * @throws {ApiError}
    */
   async getUsersConfig(
     userId: ObjectId
@@ -44,7 +43,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async updateUsersConfig(
     userId: ObjectId,
@@ -75,7 +73,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async removeFieldsFromUsersConfig(
     userId: ObjectId,
