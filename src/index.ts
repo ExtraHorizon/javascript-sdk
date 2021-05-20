@@ -7,6 +7,7 @@ import {
   dataService,
   tasksService,
   filesService,
+  configurationService,
 } from './services';
 
 import {
@@ -82,6 +83,7 @@ export interface Client<T extends ClientParams> {
   data: ReturnType<typeof dataService>;
   files: ReturnType<typeof filesService>;
   tasks: ReturnType<typeof tasksService>;
+  configuration: ReturnType<typeof configurationService>;
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService> & {
     /**
@@ -155,6 +157,9 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
     },
     get tasks() {
       return tasksService(httpWithAuth);
+    },
+    get configuration() {
+      return configurationService(httpWithAuth);
     },
     get auth(): any {
       return {
