@@ -1,10 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
-import {
-  userConfigResponse,
-  // groupConfigInput,
-} from '../../__helpers__/configuration';
+import { userConfigResponse } from '../../__helpers__/configuration';
 
 describe('Configuration: Users Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
