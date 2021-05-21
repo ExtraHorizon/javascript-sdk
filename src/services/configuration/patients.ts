@@ -1,9 +1,6 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-// import type {  } from './types';
-
-// FIXME replace the missing types
-type UserConfiguration = unknown;
+import type { UserConfiguration } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**

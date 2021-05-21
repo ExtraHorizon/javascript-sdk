@@ -21,3 +21,7 @@ export type GeneralConfiguration = GeneralConfigurationInput &
   Timestamps;
 
 export type GroupConfiguration = GroupConfigurationInput & Entity & Timestamps;
+
+export interface UserConfiguration {
+  data?: Configuration;
+}
