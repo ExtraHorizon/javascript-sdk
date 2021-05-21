@@ -31,14 +31,14 @@ describe('Configuration: Patients Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should update a patient configuration for a group of a user', async () => {
+  it('should update a staff configuration for a group of a user', async () => {
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .put(`/users/${userId}/patientConfigurations/${groupId}`)
+      .put(`/users/${userId}/staffConfigurations/${groupId}`)
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.updatePatientConfig(groupId, userId, {
+    const res = await sdk.configuration.updateStaffConfig(groupId, userId, {
       data: {
         epicFeatureEnabled: true,
       },
@@ -47,14 +47,14 @@ describe('Configuration: Patients Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a patient configuration for a group of a user', async () => {
+  it('should delete fields from a staff configuration for a group of a user', async () => {
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .post(`/users/${userId}/patientConfigurations/${groupId}/deleteFields`)
+      .post(`/users/${userId}/staffConfigurations/${groupId}/deleteFields`)
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromPatientConfig(
+    const res = await sdk.configuration.removeFieldsFromStaffConfig(
       groupId,
       userId,
       {
