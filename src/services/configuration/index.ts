@@ -3,8 +3,8 @@ import httpClient from '../http-client';
 import general from './general';
 import groups from './groups';
 import users from './users';
-import patientConfiguration from './patientConfiguration';
-import staffConfiguration from './staffConfiguration';
+import patients from './patients';
+import staff from './staff';
 import { CONFIGURATION_BASE } from '../../constants';
 
 export * from './types';
@@ -12,8 +12,8 @@ export * from './types';
 export type ConfigurationService = ReturnType<typeof general> &
   ReturnType<typeof groups> &
   ReturnType<typeof users> &
-  ReturnType<typeof patientConfiguration> &
-  ReturnType<typeof staffConfiguration>;
+  ReturnType<typeof patients> &
+  ReturnType<typeof staff>;
 
 export const configurationService = (
   httpWithAuth: HttpInstance
@@ -25,17 +25,14 @@ export const configurationService = (
   const generalMethods = general(client, httpWithAuth);
   const groupsMethods = groups(client, httpWithAuth);
   const usersMethods = users(client, httpWithAuth);
-  const patientConfigurationMethods = patientConfiguration(
-    client,
-    httpWithAuth
-  );
-  const staffConfigurationMethods = staffConfiguration(client, httpWithAuth);
+  const patientMethods = patients(client, httpWithAuth);
+  const staffMethods = staff(client, httpWithAuth);
 
   return {
     ...generalMethods,
     ...groupsMethods,
     ...usersMethods,
-    ...patientConfigurationMethods,
-    ...staffConfigurationMethods,
+    ...patientMethods,
+    ...staffMethods,
   };
 };
