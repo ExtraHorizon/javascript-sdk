@@ -10,6 +10,14 @@ export interface GeneralConfigurationInput {
   patientConfiguration?: Configuration;
 }
 
+export interface GroupConfigurationInput {
+  data?: Configuration;
+  staffConfiguration?: Configuration;
+  patientConfiguration?: Configuration;
+}
+
 export type GeneralConfiguration = GeneralConfigurationInput &
   Entity &
   Timestamps;
+
+export type GroupConfiguration = GroupConfigurationInput & Entity & Timestamps;

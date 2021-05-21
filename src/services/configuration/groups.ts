@@ -1,12 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-// import type {  } from './types';
+import type { GroupConfigurationInput, GroupConfiguration } from './types';
 import type { RQLString } from '../../rql';
-
-// FIXME replace the missing types
-type Entity = unknown;
-type GroupConfiguration = unknown;
-type Timestamps = unknown;
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -19,11 +14,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_CONFIGURATIONS` | `global` | View any group its full configuration
    *
    * @param groupId The id of the targeted group
-   * @returns any Success
+   * @returns GroupConfiguration
    */
-  async getGroupsConfig(
-    groupId: ObjectId
-  ): Promise<Entity & GroupConfiguration & Timestamps> {
+  async getGroupsConfig(groupId: ObjectId): Promise<GroupConfiguration> {
     return (await client.get(httpAuth, `/groups/${groupId}`)).data;
   },
 
@@ -37,13 +30,13 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_CONFIGURATIONS` | `global` | Update any group its full configuration
    *
    * @param groupId The id of the targeted group
+   * @param requestBody the GroupConfigurationInput
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @returns AffectedRecords
    */
   async updateGroupsConfig(
     groupId: ObjectId,
-    requestBody: GroupConfiguration,
+    requestBody: GroupConfigurationInput,
     options?: {
       rql?: RQLString;
     }
