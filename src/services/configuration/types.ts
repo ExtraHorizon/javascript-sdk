@@ -1,4 +1,4 @@
-import { Entity, Timestamps } from '../types';
+import { Entity, Timestamps, ObjectId } from '../types';
 
 export type Configuration = Record<string, any>;
 
@@ -10,18 +10,33 @@ export interface GeneralConfigurationInput {
   patientConfiguration?: Configuration;
 }
 
+export type GeneralConfiguration = GeneralConfigurationInput &
+  Entity &
+  Timestamps;
+
 export interface GroupConfigurationInput {
   data?: Configuration;
   staffConfiguration?: Configuration;
   patientConfiguration?: Configuration;
 }
 
-export type GeneralConfiguration = GeneralConfigurationInput &
-  Entity &
-  Timestamps;
-
 export type GroupConfiguration = GroupConfigurationInput & Entity & Timestamps;
 
-export interface UserConfiguration {
+export interface UserConfigurationInput {
   data?: Configuration;
 }
+
+export interface UserEnlistments {
+  staffConfigurations?: Array<EnlistmentConfiguration>;
+  patientConfigurations?: Array<EnlistmentConfiguration>;
+}
+
+export interface EnlistmentConfiguration {
+  groupId?: ObjectId;
+  data?: Configuration;
+}
+
+export type UserConfiguration = UserConfigurationInput &
+  UserEnlistments &
+  Entity &
+  Timestamps;

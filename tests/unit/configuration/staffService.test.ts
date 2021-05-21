@@ -2,7 +2,7 @@ import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2 } from '../../../src/index';
 
-describe('Configuration: Patients Service', () => {
+describe('Configuration: Staff Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const userId = '52adef123456789abcdef123';
   const groupId = 'abcdef123456789abcdef123';

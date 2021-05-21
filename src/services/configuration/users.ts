@@ -2,13 +2,7 @@ import { RQLString } from '../../rql';
 
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-// import type {  } from './types';
-
-// FIXME replace the missing types
-type Entity = unknown;
-type UserConfiguration = unknown;
-type UserEnlistments = unknown;
-type Timestamps = unknown;
+import type { UserConfiguration } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -24,9 +18,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param userId The id of the targeted user
    * @returns any Success
    */
-  async getUsersConfig(
-    userId: ObjectId
-  ): Promise<Entity & UserConfiguration & UserEnlistments & Timestamps> {
+  async getUsersConfig(userId: ObjectId): Promise<UserConfiguration> {
     return (await client.get(httpAuth, `/users/${userId}`)).data;
   },
 
