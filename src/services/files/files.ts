@@ -14,7 +14,6 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;

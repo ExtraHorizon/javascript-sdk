@@ -18,7 +18,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * none |  | Everyone can use this endpoint
    *
    * @returns any Success
-   * @throws {ApiError}
    */
   async getPermissions(): Promise<PagedResult<GlobalPermission>> {
     return (await userClient.get(httpWithAuth, '/permissions')).data;
@@ -32,7 +31,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
   async getRoles(options?: { rql?: RQLString }): Promise<PagedResult<Role>> {
     return (await userClient.get(httpWithAuth, `/roles${options?.rql || ''}`))
@@ -47,7 +45,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
   async createRole(requestBody: RoleCreation): Promise<Role> {
     return (await userClient.post(httpWithAuth, `/roles`, requestBody)).data;
@@ -76,7 +73,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param id Id of the targeted role
    * @param requestBody
    * @returns Role Success
-   * @throws {ApiError}
    */
   async updateRole(id: ObjectId, requestBody: RoleUpdate): Promise<Role> {
     return (await userClient.put(httpWithAuth, `/roles${id}`, requestBody))
@@ -138,7 +134,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async addRolesToUsers(
     rql: RQLString,
@@ -158,7 +153,6 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Operation successful
-   * @throws {ApiError}
    */
   async removeRolesFromUsers(
     rql: RQLString,

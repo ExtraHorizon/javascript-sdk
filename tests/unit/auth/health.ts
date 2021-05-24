@@ -19,7 +19,7 @@ describe('Auth - Health', () => {
     nock.cleanAll();
   });
 
-  it('Can get health', async () => {
+  it('should get health', async () => {
     nock(`${apiHost}${AUTH_BASE}`).get('/health').reply(200);
 
     const health = await sdk.auth.health();

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0]
+
+### Added
+
+- Mail Service
+- Template Service
+
+### Changes
+
+- PagedResults are now using generics
+- Every merge into dev will create a tag and package with the current version number suffixed with `-dev.X` where X auto-increments
+- Removed `* @throws {ApiError}` in JSDoc comments, only specific errors are mentioned when mentioned in the Swagger documentation
+
 ## [Unreleased]
 
 ## [2.0.0] - 2021-05-12

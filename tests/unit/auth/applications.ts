@@ -34,7 +34,7 @@ describe('Auth - Applications', () => {
     nock.cleanAll();
   });
 
-  it('Can create applications', async () => {
+  it('should create an application', async () => {
     nock(`${apiHost}${AUTH_BASE}`)
       .post('/applications')
       .reply(200, newApplication);
@@ -48,7 +48,7 @@ describe('Auth - Applications', () => {
     expect(createdResult.id).toEqual(newApplication.id);
   });
 
-  it('Can get applications', async () => {
+  it('should get applications', async () => {
     nock(`${apiHost}${AUTH_BASE}`)
       .get('/applications')
       .reply(200, applicationDataList);
@@ -59,7 +59,7 @@ describe('Auth - Applications', () => {
     expect(applications.data[0].name).toEqual(applicationDataList.data[0].name);
   });
 
-  it('Can update applications', async () => {
+  it('sould update an pplication', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(apiHost)
@@ -79,7 +79,7 @@ describe('Auth - Applications', () => {
     expect(updatedResult.id).toEqual(newApplication.id);
   });
 
-  it('Can delete applications versions', async () => {
+  it('should delete an application version', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     const versionId = '456';
@@ -101,7 +101,7 @@ describe('Auth - Applications', () => {
     expect(deleteResult.affectedRecords).toEqual(1);
   });
 
-  it('Can create application versions', async () => {
+  it('should create an application versions', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(apiHost)

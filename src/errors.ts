@@ -146,6 +146,8 @@ export class MissingRequiredFieldsError extends ApiError {}
 export class PasswordError extends ApiError {}
 export class EmailUsedError extends ApiError {}
 export class EmailUnknownError extends ApiError {}
+export class NotActivatedError extends ApiError {}
+export class NewPasswordHashUnknownError extends ApiError {}
 export class AlreadyActivatedError extends ApiError {}
 export class ActivationUnknownError extends ApiError {}
 export class InvalidTokenError extends ApiError {}
@@ -159,3 +161,6 @@ export class MfaReattemptDelayError extends ApiError {}
 export class LockedDocumentError extends ApiError {}
 export class OauthTokenError extends ApiError {}
 export class OauthKeyError extends ApiError {}
+export class LocalizationKeyMissingError extends ApiError {}
+export class TemplateFillingError extends ApiError {}
+export class ApplicationUnknownError extends ApiError {}

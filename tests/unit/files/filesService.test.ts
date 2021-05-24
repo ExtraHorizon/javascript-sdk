@@ -35,7 +35,7 @@ describe('Files Service', () => {
     nock.enableNetConnect();
   });
 
-  it('List all files', async () => {
+  it('should list all files', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${FILES_BASE}`).get(`/${rql}`).reply(200, filesResponse);
 
@@ -44,7 +44,7 @@ describe('Files Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Add a new file', async () => {
+  it('should add a new file', async () => {
     jest.spyOn(fs, 'readFileSync').mockImplementation(() => ``);
     const newFile = {
       name: 'testfile',
@@ -57,7 +57,7 @@ describe('Files Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('Delete a file', async () => {
+  it('should delete a file', async () => {
     nock(`${apiHost}${FILES_BASE}`).delete(`/${token}`).reply(200);
 
     const res = await sdk.files.deleteFile(token);
@@ -65,7 +65,7 @@ describe('Files Service', () => {
     expect(res).toBe(true);
   });
 
-  it('Retrieve a file', async () => {
+  it('should retrieve a file', async () => {
     nock(`${apiHost}${FILES_BASE}`)
       .get(`/${token}/file`)
       .reply(200, 'some text');
@@ -75,7 +75,7 @@ describe('Files Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('Get file details', async () => {
+  it('should get file details', async () => {
     nock(`${apiHost}${FILES_BASE}`)
       .get(`/${token}/details`)
       .reply(200, fileData);
