@@ -30,7 +30,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_CONFIGURATIONS` | `global` | Update any group its full configuration
    *
    * @param groupId The id of the targeted group
-   * @param requestBody the GroupConfigurationInput
+   * @param requestBody GroupConfigurationInput
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
@@ -60,9 +60,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_CONFIGURATIONS` | `global` | Update any group its full configuration
    *
    * @param groupId The id of the targeted group
+   * @param requestBody the list of fields to remove
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @returns AffectedRecords
    */
   async removeFieldsFromGroupsConfig(
     groupId: ObjectId,

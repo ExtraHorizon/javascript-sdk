@@ -2,7 +2,7 @@ import { RQLString } from '../../rql';
 
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { UserConfiguration } from './types';
+import type { UserConfiguration, UserConfigurationInput } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -16,7 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_CONFIGURATIONS` | `global` | View any user its full configuration
    *
    * @param userId The id of the targeted user
-   * @returns any Success
+   * @returns UserConfiguration
    */
   async getUsersConfig(userId: ObjectId): Promise<UserConfiguration> {
     return (await client.get(httpAuth, `/users/${userId}`)).data;
@@ -32,13 +32,13 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Update your own configuration
    *
    * @param userId The id of the targeted user
+   * @param requestBody UserConfigurationInput
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @returns AffectedRecords
    */
   async updateUsersConfig(
     userId: ObjectId,
-    requestBody: UserConfiguration,
+    requestBody: UserConfigurationInput,
     options?: {
       rql?: RQLString;
     }
@@ -62,9 +62,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Update your own configuration
    *
    * @param userId The id of the targeted user
-   * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody the list of fields to remove
+   * @param rql Add filters to the requested list
+   * @returns AffectedRecords
    */
   async removeFieldsFromUsersConfig(
     userId: ObjectId,

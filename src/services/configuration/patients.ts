@@ -13,8 +13,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param groupId The id of the targeted group
    * @param userId The id of the targeted user
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody UserConfigurationInput
+   * @returns AffectedRecords
    */
   async updatePatientConfig(
     groupId: ObjectId,
@@ -40,8 +40,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param groupId The id of the targeted group
    * @param userId The id of the targeted user
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody the list of fields to remove
+   * @returns AffectedRecords
    */
   async removeFieldsFromPatientConfig(
     groupId: ObjectId,

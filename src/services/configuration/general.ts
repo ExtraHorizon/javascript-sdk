@@ -10,7 +10,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none | | Everyone can use this endpoint
    *
-   * @returns any Success
+   * @returns GeneralConfiguration
    */
   async getGeneralConfig(): Promise<GeneralConfiguration> {
     return (await client.get(httpAuth, '/general')).data;
@@ -22,9 +22,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `UPDATE_CONFIGURATIONS` | `global` | Required for this endpoint
    *
+   * @param requestBody GeneralConfigurationInput
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @returns AffectedRecords
    */
   async updateGeneralConfig(
     requestBody: GeneralConfigurationInput,
@@ -43,9 +43,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `UPDATE_CONFIGURATIONS` | `global` | Required for this endpoint
    *
+   * @param requestBody list of fields to remove
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @returns AffectedRecords
    */
   async removeFieldsFromGeneralConfig(
     requestBody: {
