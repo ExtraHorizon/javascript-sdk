@@ -9,9 +9,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
-   * @param requestBody
-   * @returns Action Success
-   * @throws ApiError
+   * @param requestBody ActionCreation
+   * @returns Action
    */
   async createAction(
     dispatcherId: ObjectId,
@@ -29,9 +28,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param actionId The id of the targeted action
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody ActionUpdate
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async updateAction(
     dispatcherId: ObjectId,
@@ -54,8 +53,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param actionId The id of the targeted action
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async deleteAction(
     dispatcherId: ObjectId,

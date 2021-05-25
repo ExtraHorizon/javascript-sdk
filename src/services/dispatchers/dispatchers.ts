@@ -10,8 +10,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `VIEW_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param rql Add filters to the requested list.
-   * @returns any Succes
-   * @throws ApiError
+   * @returns PagedResult<Dispatcher>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Dispatcher>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -24,7 +23,6 @@ export default (client, httpAuth: HttpInstance) => ({
    * `CREATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param requestBody Dispatcher
    * @returns Dispatcher
-   * @throws ApiError
    */
   async createDispatcher(requestBody: Dispatcher): Promise<Dispatcher> {
     return (await client.post(httpAuth, '/', requestBody)).data;
@@ -37,7 +35,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @returns AffectedRecords
-   * @throws ApiError
+   * @throws {ResourceUnknownError}
    */
   async removeDispatcher(dispatcherId: ObjectId): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${dispatcherId}`)).data;
