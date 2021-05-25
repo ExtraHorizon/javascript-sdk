@@ -2,6 +2,15 @@ export type LanguageCode = string;
 
 export type ObjectId = string;
 
+export interface Entity {
+  id?: ObjectId;
+}
+
+export interface Timestamps {
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
 export interface ErrorResponse {
   code?: number;
   name?: string;
