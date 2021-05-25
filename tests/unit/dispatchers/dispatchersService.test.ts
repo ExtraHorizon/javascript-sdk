@@ -2,13 +2,13 @@ import nock from 'nock';
 import { AUTH_BASE, DISPATCHERS_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
 import {
-  // dispatcherData,
+  dispatcherData,
   dispatchersResponse,
 } from '../../__helpers__/dispatcher';
 
 describe('Dispatchers Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  // const dispatcherId = dispatcherData.id;
+  const dispatcherId = dispatcherData.id;
 
   let sdk: Client<ParamsOauth2>;
 
@@ -40,8 +40,28 @@ describe('Dispatchers Service', () => {
       .get('/')
       .reply(200, dispatchersResponse);
 
-    const res = await sdk.tasks.find({ rql });
+    const res = await sdk.dispatchers.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should create a dispatcher', async () => {
+    nock(`${apiHost}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
+
+    const res = await sdk.dispatchers.createDispatcher(dispatcherData);
+
+    expect(res.id).toBe(dispatcherData.id);
+  });
+
+  it('should delete a dispatcher', async () => {
+    nock(`${apiHost}${DISPATCHERS_BASE}`)
+      .delete(`/${dispatcherId}`)
+      .reply(200, {
+        affectedRecords: 1,
+      });
+
+    const res = await sdk.dispatchers.removeDispatcher(dispatcherId);
+
+    expect(res.affectedRecords).toBe(1);
   });
 });
