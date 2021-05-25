@@ -1,10 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-// import type { Task, TaskInput } from './types';
+import type { Dispatcher } from './types';
 import type { RQLString } from '../../rql';
-
-// FIXME add these types
-type Dispatcher = unknown;
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -25,8 +22,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_DISPATCHERS` | `global` | **Required** for this endpoint
-   * @param requestBody
-   * @returns Dispatcher Success
+   * @param requestBody Dispatcher
+   * @returns Dispatcher
    * @throws ApiError
    */
   async createDispatcher(requestBody: Dispatcher): Promise<Dispatcher> {
@@ -39,7 +36,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
-   * @returns any Operation successful
+   * @returns AffectedRecords
    * @throws ApiError
    */
   async removeDispatcher(dispatcherId: ObjectId): Promise<AffectedRecords> {

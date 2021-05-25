@@ -1,12 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-// import type { Task, TaskInput } from './types';
+import type { Action, ActionCreation, ActionUpdate } from './types';
 // import type { RQLString } from '../../rql';
-
-// FIXME add these types
-type Action = unknown;
-type ActionCreation = unknown;
-type ActionUpdate = unknown;
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
