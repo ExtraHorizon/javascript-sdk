@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Configuration Service
 
+### Changes
+
+- Error now not only extend from the `ApiError` class but also from their respective HTTP error code error. Possible errors are
+  - 400: `BadRequestError`
+  - 401: `UnauthorizedError`
+  - 403: `ForbiddenError`
+  - 404: `NotFoundError`
+  - 500: `ServerError`
+
 ## [2.1.0]
 
 ### Added
