@@ -10,6 +10,7 @@ import {
   configurationService,
   templateService,
   mailService,
+  dispatchersService,
 } from './services';
 
 import {
@@ -87,6 +88,7 @@ export interface Client<T extends ClientParams> {
   files: ReturnType<typeof filesService>;
   tasks: ReturnType<typeof tasksService>;
   configuration: ReturnType<typeof configurationService>;
+  dispatchers: ReturnType<typeof dispatchersService>;
   users: ReturnType<typeof usersService>;
   auth: ReturnType<typeof authService> & {
     /**
@@ -150,6 +152,7 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
     template: templateService(httpWithAuth),
     mail: mailService(httpWithAuth),
     configuration: configurationService(httpWithAuth),
+    dispatchers: dispatchersService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
       authenticate: (oauth: AuthParams): Promise<void> =>
