@@ -18,7 +18,6 @@ import {
   createOAuth2HttpClient,
 } from './http';
 import { validateConfig } from './utils';
-import { MfaConfig } from './http/types';
 
 export { rqlBuilder } from './rql';
 
@@ -141,52 +140,19 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
       ? createOAuth1HttpClient(http, config)
       : createOAuth2HttpClient(http, config);
 
-  async function authenticate(oauth: AuthParams) {
-    const authConfig = parseAuthParams(oauth);
-
-    await httpWithAuth.authenticate(authConfig);
-  }
-
   return {
-    get users() {
-      return usersService(httpWithAuth);
-    },
-    get data() {
-      return dataService(httpWithAuth);
-    },
-    get files() {
-      return filesService(httpWithAuth);
-    },
-    get tasks() {
-      return tasksService(httpWithAuth);
-    },
-    get template() {
-      return templateService(httpWithAuth);
-    },
-    get mail() {
-      return mailService(httpWithAuth);
-    },
-    get auth(): any {
-      return {
-        ...authService(httpWithAuth),
-        authenticate,
-        confirmMfa(mfa: MfaConfig) {
-          if (!httpWithAuth) {
-            throw new Error(
-              'First call authenticate. See README for more info how to use MFA.'
-            );
-          }
-          return httpWithAuth.confirmMfa(mfa);
-        },
-      };
-    },
-    get rawAxios() {
-      if (!httpWithAuth) {
-        throw new Error(
-          'First call authenticate. See README for more info how to use rawAxios.'
-        );
-      }
-      return httpWithAuth;
-    },
+    users: usersService(httpWithAuth),
+    data: dataService(httpWithAuth),
+    files: filesService(httpWithAuth),
+    tasks: tasksService(httpWithAuth),
+    template: templateService(httpWithAuth),
+    mail: mailService(httpWithAuth),
+    auth: {
+      ...authService(httpWithAuth),
+      authenticate: (oauth: AuthParams): Promise<void> =>
+        httpWithAuth.authenticate(parseAuthParams(oauth)),
+      confirmMfa: httpWithAuth.confirmMfa,
+    } as any,
+    rawAxios: httpWithAuth,
   };
 }
