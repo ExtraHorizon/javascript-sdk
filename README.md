@@ -9,6 +9,7 @@
 - [Tasks][tasks]: Start functions on demand, directly or at a future moment.
 - [Templates][templates]: The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
 - [Mail][mail]: Provides mail functionality for other services.
+- [Configuration][configuration]: Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
 
 ## Getting started
 
@@ -346,3 +347,4 @@ The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 [tasks]: https://developers.extrahorizon.io/services/tasks-service/1.0.4/
 [templates]: https://developers.extrahorizon.io/services/templates-service/1.0.13/
 [mail]: https://developers.extrahorizon.io/services/mail-service/1.0.8-dev/
+[configuration]: https://developers.extrahorizon.io/services/configurations-service/2.0.2-dev/
