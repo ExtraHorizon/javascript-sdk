@@ -64,54 +64,106 @@ const cleanHeaders = (headers: Record<string, unknown>) =>
     : headers;
 
 export class ApiError extends Error {
-  public qName: string;
-
-  public readonly error?: string;
-
   public readonly message: string;
 
-  public readonly status?: number;
-
-  public readonly statusText?: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public readonly request?: Record<string, any>;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public readonly response?: Record<string, any>;
-
-  constructor(error: HttpError) {
-    const { config, response } = error;
-    const message = response?.data?.description || response?.data?.message;
+  constructor(
+    message: string,
+    protected qName?: string,
+    protected status?: number,
+    protected statusText?: string,
+    protected error?: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    protected request?: Record<string, any>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    protected response?: Record<string, any>
+  ) {
     super(message);
-    this.qName = response?.data?.name;
-    this.status = response?.status;
-    this.statusText = response?.statusText;
-    this.error = response?.data?.error || response?.data?.name;
-    this.response = {
-      ...response?.data,
-    };
-    this.request = config
-      ? {
-          url: config.url,
-          headers: cleanHeaders(config.headers), // Obscure the Authorization token
-          method: config.method,
-          payloadData: config.data,
-        }
-      : {};
+  }
+
+  public static createFromHttpError(error: HttpError): ApiError {
+    const { config, response } = error;
+    return new this(
+      response?.data?.description ||
+        response?.data?.message ||
+        'Received an error without a message',
+      response?.data?.name || response?.data?.error,
+      response?.status,
+      response?.statusText,
+      response?.data?.error || response?.data?.name,
+      config
+        ? {
+            url: config.url,
+            headers: cleanHeaders(config.headers), // Obscure the Authorization token
+            method: config.method,
+            payloadData: config.data,
+          }
+        : {},
+      {
+        ...response?.data,
+      }
+    );
   }
 }
 
-export class ServerError extends ApiError {}
+// HTTP status code error
 
-export class ResourceUnknownError extends ApiError {}
-export class ResourceAlreadyExistsError extends ApiError {}
+// 400 Bad Request
+export class BadRequestError extends ApiError {}
+export class ResourceAlreadyExistsError extends BadRequestError {}
+export class IllegalArgumentError extends BadRequestError {}
+export class ApplicationUnknownError extends BadRequestError {}
+export class CallbackNotValidError extends BadRequestError {}
+export class UnsupportedResponseTypeError extends BadRequestError {}
+export class InvalidRequestError extends BadRequestError {}
+export class InvalidGrantError extends BadRequestError {}
+export class UnsupportedGrantTypeError extends BadRequestError {}
+export class MfaRequiredError extends BadRequestError {}
 
-export class FieldFormatError extends ApiError {}
-export class UnsupportedResponseTypeError extends ApiError {}
-export class NoPermissionError extends ApiError {}
-export class CallbackNotValidError extends ApiError {}
-export class UserNotAuthenticatedError extends Error {
+export class InvalidMfaCodeError extends BadRequestError {}
+export class InvalidMfaTokenError extends BadRequestError {}
+export class MfaReattemptDelayError extends BadRequestError {}
+
+export class NotEnoughMfaMethodsError extends BadRequestError {}
+export class InvalidPresenceTokenError extends BadRequestError {}
+
+export class EmailUsedError extends BadRequestError {}
+export class PasswordError extends BadRequestError {}
+export class AlreadyActivatedError extends BadRequestError {}
+export class EmailUnknownError extends BadRequestError {}
+export class ActivationUnknownError extends BadRequestError {}
+export class NotActivatedError extends BadRequestError {}
+export class EmptyBodyError extends BadRequestError {}
+
+export class NewPasswordHashUnknownError extends BadRequestError {}
+export class IllegalStateError extends BadRequestError {}
+export class StatusInUseError extends BadRequestError {}
+export class LockedDocumentError extends BadRequestError {}
+export class FileTooLargeError extends BadRequestError {}
+export class InvalidTokenError extends BadRequestError {}
+export class LocalizationKeyMissingError extends BadRequestError {}
+export class TemplateFillingError extends BadRequestError {}
+export class MissingRequiredFieldsError extends BadRequestError {}
+
+// 401 Unauthorized
+export class UnauthorizedError extends ApiError {}
+export class InvalidClientError extends UnauthorizedError {}
+export class ApplicationNotAuthenticatedError extends UnauthorizedError {}
+export class AuthenticationError extends UnauthorizedError {}
+export class LoginTimeoutError extends UnauthorizedError {}
+export class LoginFreezeError extends UnauthorizedError {}
+export class TooManyFailedAttemptsError extends UnauthorizedError {}
+
+export class OauthKeyError extends UnauthorizedError {}
+export class OauthTokenError extends UnauthorizedError {}
+export class OauthSignatureError extends UnauthorizedError {}
+export class DuplicateRequestError extends UnauthorizedError {}
+export class AccessTokenUnknownError extends UnauthorizedError {}
+export class AccessTokenExpiredError extends UnauthorizedError {}
+
+export class NoPermissionError extends UnauthorizedError {}
+export class UnauthorizedTokenError extends UnauthorizedError {}
+
+export class UserNotAuthenticatedError extends UnauthorizedError {
   constructor(error: HttpError) {
     const { config } = error;
     super(`
@@ -132,35 +184,16 @@ await sdk.auth.authenticate({
 `);
   }
 }
-export class EmptyBodyError extends ApiError {}
-export class NotEnoughMfaMethodsError extends ApiError {}
-export class InvalidMfaCodeError extends ApiError {}
-export class AuthenticationError extends ApiError {}
-export class LoginTimeoutError extends ApiError {}
-export class LoginFreezeError extends ApiError {}
-export class TooManyFailedAttemptsError extends ApiError {}
-export class InvalidPresenceTokenError extends ApiError {}
-export class IllegalArgumentError extends ApiError {}
-export class IllegalStateError extends ApiError {}
-export class MissingRequiredFieldsError extends ApiError {}
-export class PasswordError extends ApiError {}
-export class EmailUsedError extends ApiError {}
-export class EmailUnknownError extends ApiError {}
-export class NotActivatedError extends ApiError {}
-export class NewPasswordHashUnknownError extends ApiError {}
-export class AlreadyActivatedError extends ApiError {}
-export class ActivationUnknownError extends ApiError {}
-export class InvalidTokenError extends ApiError {}
-export class UnauthorizedTokenError extends ApiError {}
-export class TokenNotDeleteableError extends ApiError {}
-export class FileTooLargeError extends ApiError {}
-export class InvalidGrantError extends ApiError {}
-export class MfaRequiredError extends ApiError {}
-export class StatusInUseError extends ApiError {}
-export class MfaReattemptDelayError extends ApiError {}
-export class LockedDocumentError extends ApiError {}
-export class OauthTokenError extends ApiError {}
-export class OauthKeyError extends ApiError {}
-export class LocalizationKeyMissingError extends ApiError {}
-export class TemplateFillingError extends ApiError {}
-export class ApplicationUnknownError extends ApiError {}
+
+// 403 Forbidden
+export class ForbiddenError extends ApiError {}
+export class TokenNotDeleteableError extends ForbiddenError {}
+
+// 404 Not Found
+export class NotFoundError extends ApiError {}
+export class ResourceUnknownError extends NotFoundError {}
+
+// 500
+export class ServerError extends ApiError {}
+
+export class FieldFormatError extends ApiError {}
