@@ -14,5 +14,20 @@ module.exports = {
     '/tests/e2e/',
     '/build/',
   ],
-  reporters: ['default', 'jest-junit'],
+  coverage: true,
+  // reporters: ['default', 'jest-junit'],
+  reporters: [
+    'default',
+    [
+      'jest-stare',
+      {
+        resultDir: 'test-report',
+        reportTitle: 'Test report generated with jest-stare!',
+        additionalResultsProcessors: ['jest-junit'],
+        coverageLink: '../coverage/lcov-report/index.html',
+        jestStareConfigJson: 'jest-stare.json',
+        jestGlobalConfigJson: 'globalStuff.json',
+      },
+    ],
+  ],
 };

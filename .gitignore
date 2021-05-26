@@ -31,6 +31,8 @@ build/
 
 # Test results
 test-results/
+test-report/
+coverage/
 
 # misc
 .DS_Store
