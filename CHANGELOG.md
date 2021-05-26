@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- Types are now exposed within modules, so the usage will be:
+
+```
+import type { FilesServicesTypes: { CreateFile } }  from "@extrahorizon/javascript-sdk";
+const inputFile: CreateFile = {}
+```
+
 - Error now not only extend from the `ApiError` class but also from their respective HTTP error code error. Possible errors are
   - 400: `BadRequestError`
   - 401: `UnauthorizedError`
