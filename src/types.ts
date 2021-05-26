@@ -4,13 +4,15 @@ import { TokenDataOauth1, TokenDataOauth2 } from './http/types';
 
 export * from './http/types';
 export * from './services/types';
-export * from './services/auth/types';
-export * from './services/data/types';
-export * from './services/files/types';
-export * from './services/tasks/types';
-export * from './services/users/types';
-export * from './services/configuration/types';
-export * from './services/dispatchers/types';
+export * as auth from './services/auth/types';
+export * as data from './services/data/types';
+export * as files from './services/files/types';
+export * as tasks from './services/tasks/types';
+export * as users from './services/users/types';
+export * as mail from './services/mail/types';
+export * as template from './services/template/types';
+export * as configuration from './services/configuration/types';
+export * as dispatchers from './services/dispatchers/types';
 
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
