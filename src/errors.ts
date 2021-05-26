@@ -64,18 +64,16 @@ const cleanHeaders = (headers: Record<string, unknown>) =>
     : headers;
 
 export class ApiError extends Error {
-  public readonly message: string;
-
   constructor(
     message: string,
-    protected qName?: string,
-    protected status?: number,
-    protected statusText?: string,
-    protected error?: string,
+    public qName?: string,
+    public status?: number,
+    public statusText?: string,
+    public error?: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    protected request?: Record<string, any>,
+    public request?: Record<string, any>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    protected response?: Record<string, any>
+    public response?: Record<string, any>
   ) {
     super(message);
   }
