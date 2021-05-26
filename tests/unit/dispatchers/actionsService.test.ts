@@ -1,7 +1,11 @@
 import nock from 'nock';
 import { AUTH_BASE, DISPATCHERS_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2 } from '../../../src/index';
-import { dispatcherData, mailAction } from '../../__helpers__/dispatcher';
+import {
+  dispatcherData,
+  mailAction,
+  mailActionInput,
+} from '../../__helpers__/dispatcher';
 
 describe('Actions Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
@@ -37,7 +41,10 @@ describe('Actions Service', () => {
       .post(`/${dispatcherId}/actions`)
       .reply(200, mailAction);
 
-    const res = await sdk.dispatchers.createAction(dispatcherId, mailAction);
+    const res = await sdk.dispatchers.createAction(
+      dispatcherId,
+      mailActionInput
+    );
 
     expect(res.id).toBe(mailAction.id);
   });
@@ -52,7 +59,7 @@ describe('Actions Service', () => {
     const res = await sdk.dispatchers.updateAction(
       dispatcherId,
       actionId,
-      mailAction
+      mailActionInput
     );
 
     expect(res.affectedRecords).toBe(1);

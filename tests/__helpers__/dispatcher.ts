@@ -1,4 +1,8 @@
-import { Dispatcher, ActionType } from '../../src/services/dispatchers/types';
+import {
+  Dispatcher,
+  ActionType,
+  ActionCreation,
+} from '../../src/services/dispatchers/types';
 
 export const mailAction = {
   id: '5e9fff9d90135a2a9a718e2f',
@@ -7,6 +11,14 @@ export const mailAction = {
     to: ['someone@example.com'],
     cc: ['someone@example.com'],
     bcc: ['someone@example.com'],
+  },
+  templateId: '5e9fff9d90135a2a9a718e2f',
+};
+
+export const mailActionInput: ActionCreation = {
+  type: ActionType.MAIL,
+  recipients: {
+    to: ['someone@example.com'],
   },
   templateId: '5e9fff9d90135a2a9a718e2f',
 };
