@@ -276,13 +276,11 @@ If you know the type info of your schemas, you can pass in the Typescript info w
 As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
 
 ```ts
-import type {
-  Schema,
+import type { DataServicesTypes: { Schema,
   DocumentBase,
   JSONSchemaObject,
   JSONSchemaArray,
-  JSONSchemaNumber,
-} from '@extrahorizon/javascript-sdk';
+  JSONSchemaNumber } }  from "@extrahorizon/javascript-sdk";
 
 interface MySchema extends Schema {
   statuses?: Record<'start', never>;
