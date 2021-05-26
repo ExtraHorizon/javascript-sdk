@@ -36,24 +36,23 @@ describe('OAuth1 Token Flow', () => {
     const res = await sdk.users.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
-
   // group roles service
-  it('should fetch users.getGroupsPermissions', async () => {
-    const res = await sdk.users.getGroupsPermissions();
+  it('should fetch users.groupRoles.getPermissions', async () => {
+    const res = await sdk.users.groupRoles.getPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   // global roles service
-  it('should fetch users.getPermissions', async () => {
-    const res = await sdk.users.getPermissions();
+  it('should fetch users.globalRoles.getPermissions', async () => {
+    const res = await sdk.users.globalRoles.getPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should fetch users.getRoles', async () => {
+  it('should fetch users.globalRoles.get', async () => {
     expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
-      const res = await sdk.users.getRoles(rql);
+      const res = await sdk.users.globalRoles.get({ rql });
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);
@@ -61,9 +60,9 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // auth service
-  it('should fetch auth.getApplications', async () => {
+  it('should fetch auth.applications.get', async () => {
     const rql = rqlBuilder().select('name').build();
-    const res = await sdk.auth.getApplications(rql);
+    const res = await sdk.auth.applications.get({ rql });
     expect(res).toBeDefined();
   });
 
@@ -72,7 +71,7 @@ describe('OAuth1 Token Flow', () => {
     expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
     try {
-      const res = await sdk.files.find(rql);
+      const res = await sdk.files.find({ rql });
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);
@@ -86,9 +85,9 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // data schemas service
-  it('should fetch data.createSchema', async () => {
+  it('should fetch data.schemas.create', async () => {
     try {
-      const schema = await sdk.data.createSchema(newSchemaInput);
+      const schema = await sdk.data.schemas.create(newSchemaInput);
       expect(schema.creationTransition).toBeDefined();
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);

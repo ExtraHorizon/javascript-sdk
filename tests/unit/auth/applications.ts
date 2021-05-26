@@ -39,7 +39,7 @@ describe('Auth - Applications', () => {
       .post('/applications')
       .reply(200, newApplication);
 
-    const createdResult = await sdk.auth.createApplication({
+    const createdResult = await sdk.auth.applications.create({
       type: newApplication.type,
       name: newApplication.name,
       description: newApplication.description,
@@ -53,7 +53,7 @@ describe('Auth - Applications', () => {
       .get('/applications')
       .reply(200, applicationDataList);
 
-    const applications = await sdk.auth.getApplications();
+    const applications = await sdk.auth.applications.get();
 
     expect(applications.data).toBeDefined();
     expect(applications.data[0].name).toEqual(applicationDataList.data[0].name);
@@ -70,7 +70,7 @@ describe('Auth - Applications', () => {
       .put(`/applications/${applicationId}`)
       .reply(200, newApplication);
 
-    const updatedResult = await sdk.auth.updateApplication(applicationId, {
+    const updatedResult = await sdk.auth.applications.update(applicationId, {
       type: newApplication.type,
       name: newApplication.name,
       description: newApplication.description,
@@ -93,7 +93,7 @@ describe('Auth - Applications', () => {
         affectedRecords: 1,
       });
 
-    const deleteResult = await sdk.auth.deleteApplicationVersion(
+    const deleteResult = await sdk.auth.applications.deleteVersion(
       applicationId,
       versionId
     );
@@ -112,7 +112,7 @@ describe('Auth - Applications', () => {
       .post(`/applications/${applicationId}/versions`)
       .reply(200, newApplicationVersion);
 
-    const createdResult = await sdk.auth.createApplicationVersion(
+    const createdResult = await sdk.auth.applications.createVersion(
       applicationId,
       {
         name: newApplicationVersion.name,

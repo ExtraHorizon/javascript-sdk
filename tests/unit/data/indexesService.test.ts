@@ -39,7 +39,7 @@ describe('Indexes Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/indexes`)
       .reply(200, newIndexCreated);
-    const index = await sdk.data.createIndex(schemaId, newIndexInput);
+    const index = await sdk.data.indexes.create(schemaId, newIndexInput);
     expect(index.id).toBe(newIndexCreated.id);
   });
 
@@ -49,7 +49,7 @@ describe('Indexes Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.deleteIndex(indexId, schemaId);
+    const res = await sdk.data.indexes.delete(indexId, schemaId);
     expect(res.affectedRecords).toBe(1);
   });
 });

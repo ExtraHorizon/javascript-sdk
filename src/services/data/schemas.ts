@@ -12,7 +12,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns Schema successful operation
    */
-  async createSchema(requestBody: SchemaInput): Promise<Schema> {
+  async create(requestBody: SchemaInput): Promise<Schema> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -38,7 +38,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async updateSchema(
+  async update(
     schemaId: ObjectId,
     requestBody: UpdateSchemaInput
   ): Promise<AffectedRecords> {
@@ -54,7 +54,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {IllegalStateError}
    */
-  async deleteSchema(schemaId: ObjectId): Promise<AffectedRecords> {
+  async delete(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${schemaId}`)).data;
   },
 
@@ -66,7 +66,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @returns any Success
    */
-  async disableSchema(schemaId: ObjectId): Promise<AffectedRecords> {
+  async disable(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${schemaId}/disable`)).data;
   },
 
@@ -78,7 +78,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @returns any Success
    */
-  async enableSchema(schemaId: ObjectId): Promise<AffectedRecords> {
+  async enable(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${schemaId}/enable`)).data;
   },
 });

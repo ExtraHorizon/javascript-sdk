@@ -53,14 +53,14 @@ describe('Files Service', () => {
 
     nock(`${apiHost}${FILES_BASE}`).post('/').reply(200, fileData);
 
-    const res = await sdk.files.createFile(newFile);
+    const res = await sdk.files.create(newFile);
     expect(res).toBeDefined();
   });
 
   it('should delete a file', async () => {
     nock(`${apiHost}${FILES_BASE}`).delete(`/${token}`).reply(200);
 
-    const res = await sdk.files.deleteFile(token);
+    const res = await sdk.files.delete(token);
 
     expect(res).toBe(true);
   });
@@ -70,7 +70,7 @@ describe('Files Service', () => {
       .get(`/${token}/file`)
       .reply(200, 'some text');
 
-    const res = await sdk.files.retrieveFile(token);
+    const res = await sdk.files.retrieve(token);
 
     expect(res).toBeDefined();
   });
@@ -80,7 +80,7 @@ describe('Files Service', () => {
       .get(`/${token}/details`)
       .reply(200, fileData);
 
-    const res = await sdk.files.getFileDetails(token);
+    const res = await sdk.files.getDetails(token);
 
     expect(res.name).toBe(fileData.name);
   });

@@ -36,7 +36,7 @@ describe('Global Roles Service', () => {
       .get('/permissions')
       .reply(200, permissionResponse);
 
-    const permissions = await sdk.users.getPermissions();
+    const permissions = await sdk.users.globalRoles.getPermissions();
 
     expect(permissions.data.length).toBeGreaterThan(0);
   });
@@ -45,7 +45,7 @@ describe('Global Roles Service', () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${USER_BASE}`).get(`/roles${rql}`).reply(200, roleResponse);
 
-    const roles = await sdk.users.getRoles({ rql });
+    const roles = await sdk.users.globalRoles.get({ rql });
 
     expect(roles.data.length).toBeGreaterThan(0);
   });
@@ -62,7 +62,7 @@ describe('Global Roles Service', () => {
         id: roleId,
       });
 
-    const res = await sdk.users.createRole(newRole);
+    const res = await sdk.users.globalRoles.create(newRole);
 
     expect(res.id).toBe(roleId);
     expect(res.name).toBe(newRole.name);
@@ -74,7 +74,7 @@ describe('Global Roles Service', () => {
       affectedRecords: 1,
     });
 
-    const res = await sdk.users.deleteRole(rql);
+    const res = await sdk.users.globalRoles.delete(rql);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -87,7 +87,7 @@ describe('Global Roles Service', () => {
     };
     nock(`${apiHost}${USER_BASE}`).put(`/roles${id}`).reply(200, roleData);
 
-    const res = await sdk.users.updateRole(id, requestBody);
+    const res = await sdk.users.globalRoles.update(id, requestBody);
 
     expect(res.id).toBe(roleData.id);
   });
@@ -101,7 +101,7 @@ describe('Global Roles Service', () => {
       .post(`/roles/add_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.addPermissionsToRole(rql, requestBody);
+    const res = await sdk.users.globalRoles.addPermissions(rql, requestBody);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -115,7 +115,7 @@ describe('Global Roles Service', () => {
       .post(`/roles/remove_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.removePermissionsFromRole(rql, requestBody);
+    const res = await sdk.users.globalRoles.removePermissions(rql, requestBody);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -129,7 +129,7 @@ describe('Global Roles Service', () => {
       .post(`/add_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.addRolesToUsers(rql, requestBody);
+    const res = await sdk.users.globalRoles.addToUsers(rql, requestBody);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -143,7 +143,7 @@ describe('Global Roles Service', () => {
       .post(`/remove_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.removeRolesFromUsers(rql, requestBody);
+    const res = await sdk.users.globalRoles.removeFromUser(rql, requestBody);
 
     expect(res.affectedRecords).toBe(1);
   });

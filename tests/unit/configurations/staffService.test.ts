@@ -38,7 +38,7 @@ describe('Configuration: Staff Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.updateStaffConfig(groupId, userId, {
+    const res = await sdk.configurations.staff.update(groupId, userId, {
       data: {
         epicFeatureEnabled: true,
       },
@@ -54,13 +54,9 @@ describe('Configuration: Staff Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromStaffConfig(
-      groupId,
-      userId,
-      {
-        fields: ['data.enableEpicFeature'],
-      }
-    );
+    const res = await sdk.configurations.staff.removeFields(groupId, userId, {
+      fields: ['data.enableEpicFeature'],
+    });
 
     expect(res.affectedRecords).toBe(1);
   });

@@ -39,7 +39,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents`)
       .reply(200, newDocumentCreated);
-    const document = await sdk.data.createDocument(schemaId, {
+    const document = await sdk.data.documents.create(schemaId, {
       additionalProp1: {},
       additionalProp2: {},
       additionalProp3: {},
@@ -51,7 +51,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .get(`/${schemaId}/documents`)
       .reply(200, documentsListResponse);
-    const res = await sdk.data.findDocuments(schemaId);
+    const res = await sdk.data.documents.find(schemaId);
     expect(res.data.length).toBeGreaterThan(0);
   });
 
@@ -59,7 +59,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.updateDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.update(schemaId, documentId, {
       additionalProp1: {},
       additionalProp2: {},
       additionalProp3: {},
@@ -71,7 +71,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.deleteDocument(schemaId, documentId);
+    const res = await sdk.data.documents.delete(schemaId, documentId);
     expect(res.affectedRecords).toBe(1);
   });
 
@@ -79,7 +79,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/deleteFields`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.deleteFieldsFromDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.deleteFields(schemaId, documentId, {
       fields: ['location.latitude'],
     });
     expect(res.affectedRecords).toBe(1);
@@ -89,7 +89,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/transition`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.transitionDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.transition(schemaId, documentId, {
       id: '5e9fff9d90135a2a9a718e2f',
       data: {
         location: {
@@ -105,7 +105,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkGroups`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.linkGroupsToDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.linkGroups(schemaId, documentId, {
       groupIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);
@@ -115,7 +115,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.unlinkGroupsFromDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.unlinkGroups(schemaId, documentId, {
       groupIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);
@@ -125,7 +125,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkUsers`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.linkUsersToDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.linkUsers(schemaId, documentId, {
       userIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);
@@ -135,7 +135,7 @@ describe('Documents Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/unlinkUsers`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.unlinkUsersFromDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, {
       userIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);

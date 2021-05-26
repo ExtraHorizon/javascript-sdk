@@ -41,7 +41,7 @@ describe('Actions Service', () => {
       .post(`/${dispatcherId}/actions`)
       .reply(200, mailAction);
 
-    const res = await sdk.dispatchers.createAction(
+    const res = await sdk.dispatchers.actions.create(
       dispatcherId,
       mailActionInput
     );
@@ -56,7 +56,7 @@ describe('Actions Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.dispatchers.updateAction(
+    const res = await sdk.dispatchers.actions.update(
       dispatcherId,
       actionId,
       mailActionInput
@@ -72,7 +72,7 @@ describe('Actions Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.dispatchers.deleteAction(dispatcherId, actionId);
+    const res = await sdk.dispatchers.actions.delete(dispatcherId, actionId);
 
     expect(res.affectedRecords).toBe(1);
   });

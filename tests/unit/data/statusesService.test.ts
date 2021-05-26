@@ -35,7 +35,7 @@ describe('Statuses Service', () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/statuses`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.createStatus(schemaId, { name: statusName });
+    const res = await sdk.data.statuses.create(schemaId, { name: statusName });
     expect(res.affectedRecords).toBe(1);
   });
 
@@ -45,7 +45,7 @@ describe('Statuses Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.updateStatus(schemaId, statusName, {
+    const res = await sdk.data.statuses.update(schemaId, statusName, {
       additionalProp1: 'string',
       additionalProp2: 'string',
       additionalProp3: 'string',
@@ -59,7 +59,7 @@ describe('Statuses Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.deleteStatus(schemaId, statusName);
+    const res = await sdk.data.statuses.delete(schemaId, statusName);
     expect(res.affectedRecords).toBe(1);
   });
 });

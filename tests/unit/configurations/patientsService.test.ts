@@ -38,7 +38,7 @@ describe('Configuration: Patients Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.updatePatientConfig(groupId, userId, {
+    const res = await sdk.configurations.patients.update(groupId, userId, {
       data: {
         epicFeatureEnabled: true,
       },
@@ -54,7 +54,7 @@ describe('Configuration: Patients Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromPatientConfig(
+    const res = await sdk.configurations.patients.removeFields(
       groupId,
       userId,
       {

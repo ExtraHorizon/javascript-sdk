@@ -2,13 +2,12 @@ import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
 import {
-  groupConfigResponse,
-  groupConfigInput,
+  generalConfig,
+  generalConfigResponse,
 } from '../../__helpers__/configuration';
 
-describe('Configuration: Groups Service', () => {
+describe('Configuration: General Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  const groupId = 'abcdef123456789abcdef123';
 
   let sdk: Client<ParamsOauth2>;
 
@@ -34,45 +33,41 @@ describe('Configuration: Groups Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should view a group configuration', async () => {
+  it('should get the general configuration', async () => {
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .get(`/groups/${groupId}`)
-      .reply(200, groupConfigResponse);
+      .get('/general')
+      .reply(200, generalConfigResponse);
 
-    const res = await sdk.configuration.getGroupsConfig(groupId);
+    const res = await sdk.configurations.general.get();
 
-    expect(res.data).toBeDefined();
+    expect(res.userConfiguration).toBeDefined();
+    expect(res.groupConfiguration).toBeDefined();
     expect(res.staffConfiguration).toBeDefined();
     expect(res.patientConfiguration).toBeDefined();
   });
 
-  it('should update a group configuration', async () => {
+  it('should update the general configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .put(`/groups/${groupId}`)
-      .reply(200, {
-        affectedRecords: 1,
-      });
+    nock(`${apiHost}${CONFIGURATION_BASE}`).put('/general').reply(200, {
+      affectedRecords: 1,
+    });
 
-    const res = await sdk.configuration.updateGroupsConfig(
-      groupId,
-      groupConfigInput,
-      { rql }
-    );
+    const res = await sdk.configurations.general.update(generalConfig, {
+      rql,
+    });
 
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a group configuration', async () => {
+  it('should delete fields from the general configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .post(`/groups/${groupId}/deleteFields`)
+      .post('/general/deleteFields')
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromGroupsConfig(
-      groupId,
+    const res = await sdk.configurations.general.removeFields(
       {
         fields: ['data.enableEpicFeature'],
       },

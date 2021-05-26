@@ -43,7 +43,7 @@ describe('Tasks Service', () => {
   it('should create a task', async () => {
     nock(`${apiHost}${TASKS_BASE}`).post('/').reply(200, taskData);
 
-    const task = await sdk.tasks.createTask({
+    const task = await sdk.tasks.create({
       functionName: 'test function',
       priority: 5,
     });
@@ -56,7 +56,7 @@ describe('Tasks Service', () => {
       affectedRecords: 1,
     });
 
-    const res = await sdk.tasks.cancelTask(taskId);
+    const res = await sdk.tasks.cancel(taskId);
 
     expect(res.affectedRecords).toBe(1);
   });

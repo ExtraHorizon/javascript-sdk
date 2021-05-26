@@ -18,7 +18,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param userId The id of the targeted user
    * @returns UserConfiguration
    */
-  async getUsersConfig(userId: ObjectId): Promise<UserConfiguration> {
+  async get(userId: ObjectId): Promise<UserConfiguration> {
     return (await client.get(httpAuth, `/users/${userId}`)).data;
   },
 
@@ -36,7 +36,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async updateUsersConfig(
+  async update(
     userId: ObjectId,
     requestBody: UserConfigurationInput,
     options?: {
@@ -66,7 +66,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list
    * @returns AffectedRecords
    */
-  async removeFieldsFromUsersConfig(
+  async removeFields(
     userId: ObjectId,
     requestBody: {
       fields: Array<string>;

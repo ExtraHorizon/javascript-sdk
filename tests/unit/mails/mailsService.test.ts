@@ -38,7 +38,7 @@ describe('Mail Service', () => {
   it('should check health', async () => {
     nock(`${apiHost}${MAIL_BASE}`).get('/health').reply(200);
 
-    const endpointIsAvailable = await sdk.mail.health();
+    const endpointIsAvailable = await sdk.mails.health();
 
     expect(endpointIsAvailable).toBe(true);
   });
@@ -47,7 +47,7 @@ describe('Mail Service', () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${MAIL_BASE}`).get(`/${rql}`).reply(200, mailsResponse);
 
-    const res = await sdk.mail.find({ rql });
+    const res = await sdk.mails.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
   });
@@ -55,7 +55,7 @@ describe('Mail Service', () => {
   it('should send a mail', async () => {
     nock(`${apiHost}${MAIL_BASE}`).post('/').reply(200, mailData);
 
-    const mail = await sdk.mail.sendMail(mailInput);
+    const mail = await sdk.mails.send(mailInput);
 
     expect(mail.subject).toBe(mailData.subject);
   });
@@ -66,7 +66,7 @@ describe('Mail Service', () => {
       affectedRecords: 1,
     });
 
-    const res = await sdk.mail.trackMail(trackingHash);
+    const res = await sdk.mails.track(trackingHash);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -77,7 +77,7 @@ describe('Mail Service', () => {
       .get(`/queued${rql}`)
       .reply(200, queuedMailsResponse);
 
-    const res = await sdk.mail.findOutboundMails({ rql });
+    const res = await sdk.mails.findOutbound({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
   });

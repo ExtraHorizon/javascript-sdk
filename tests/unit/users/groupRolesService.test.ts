@@ -33,7 +33,7 @@ describe('Group Roles Service', () => {
       .get('/groups/permissions')
       .reply(200, permissionResponse);
 
-    const permissions = await sdk.users.getGroupsPermissions();
+    const permissions = await sdk.users.groupRoles.getPermissions();
 
     expect(permissions.data.length).toBeGreaterThan(0);
   });
@@ -44,7 +44,7 @@ describe('Group Roles Service', () => {
       .get(`/groups/${groupId}/roles${rql}`)
       .reply(200, roleResponse);
 
-    const roles = await sdk.users.getGroupsRoles(groupId, { rql });
+    const roles = await sdk.users.groupRoles.get(groupId, { rql });
 
     expect(roles.data.length).toBeGreaterThan(0);
   });
@@ -62,7 +62,7 @@ describe('Group Roles Service', () => {
         groupId,
       });
 
-    const res = await sdk.users.addRoleToGroup(groupId, newRole);
+    const res = await sdk.users.groupRoles.add(groupId, newRole);
 
     expect(res.id).toBe(roleId);
     expect(res.name).toBe(newRole.name);
@@ -81,7 +81,7 @@ describe('Group Roles Service', () => {
         groupId,
       });
 
-    const res = await sdk.users.updateGroupsRole(groupId, roleId, newRoleData);
+    const res = await sdk.users.groupRoles.update(groupId, roleId, newRoleData);
 
     expect(res.id).toBe(roleId);
     expect(res.name).toBe(newRoleData.name);
@@ -93,7 +93,7 @@ describe('Group Roles Service', () => {
       .delete(`/groups/${groupId}/roles/${roleId}${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.removeRoleFromGroup(groupId, roleId, rql);
+    const res = await sdk.users.groupRoles.remove(groupId, roleId, rql);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -105,7 +105,7 @@ describe('Group Roles Service', () => {
       .post(`/groups/${groupId}/roles/add_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.addPermissionsToGroupRoles(
+    const res = await sdk.users.groupRoles.addPermissions(
       groupId,
       {
         permissions,
@@ -123,7 +123,7 @@ describe('Group Roles Service', () => {
       .post(`/groups/${groupId}/roles/remove_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.removePermissionsFromGroupRoles(
+    const res = await sdk.users.groupRoles.removePermissions(
       groupId,
       {
         permissions,
@@ -141,7 +141,11 @@ describe('Group Roles Service', () => {
       .post(`/groups/${groupId}/staff/add_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.assignRolesToStaff(groupId, { roles }, { rql });
+    const res = await sdk.users.groupRoles.assignToStaff(
+      groupId,
+      { roles },
+      { rql }
+    );
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -153,7 +157,11 @@ describe('Group Roles Service', () => {
       .post(`/groups/${groupId}/staff/remove_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.removeRolesFromStaff(groupId, { roles }, rql);
+    const res = await sdk.users.groupRoles.removeFromStaff(
+      groupId,
+      { roles },
+      rql
+    );
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -165,7 +173,7 @@ describe('Group Roles Service', () => {
       .post(`/add_to_staff${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.addUsersToStaff({ groups }, { rql });
+    const res = await sdk.users.groupRoles.addUsersToStaff({ groups }, { rql });
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -177,7 +185,10 @@ describe('Group Roles Service', () => {
       .post(`/remove_from_staff${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.removeUsersFromStaff({ groups }, rql);
+    const res = await sdk.users.groupRoles.removeUsersFromStaff(
+      { groups },
+      rql
+    );
 
     expect(res.affectedRecords).toBe(1);
   });
