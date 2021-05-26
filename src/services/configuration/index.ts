@@ -7,8 +7,6 @@ import patients from './patients';
 import staff from './staff';
 import { CONFIGURATION_BASE } from '../../constants';
 
-export * from './types';
-
 export type ConfigurationService = ReturnType<typeof general> &
   ReturnType<typeof groups> &
   ReturnType<typeof users> &

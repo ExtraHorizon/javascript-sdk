@@ -10,6 +10,7 @@
 - [Templates][templates]: The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
 - [Mail][mail]: Provides mail functionality for other services.
 - [Configuration][configuration]: Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
+- [Dispatchers][dispatchers]: Configure actions that need to be invoked when a specific event is/was triggered.
 
 ## Getting started
 
@@ -348,3 +349,4 @@ The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 [templates]: https://developers.extrahorizon.io/services/templates-service/1.0.13/
 [mail]: https://developers.extrahorizon.io/services/mail-service/1.0.8-dev/
 [configuration]: https://developers.extrahorizon.io/services/configurations-service/2.0.2-dev/
+[dispatchers]: https://developers.extrahorizon.io/services/dispatchers-service/1.0.3-dev/

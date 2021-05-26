@@ -4,8 +4,6 @@ import httpClient from '../http-client';
 import files from './files';
 import tokens from './tokens';
 
-export * from './types';
-
 export type FilesService = ReturnType<typeof files> & ReturnType<typeof tokens>;
 
 export const filesService = (httpWithAuth: HttpInstance): FilesService => {

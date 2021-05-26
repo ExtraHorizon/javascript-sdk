@@ -3,8 +3,6 @@ import httpClient from '../http-client';
 import tasks from './tasks';
 import { TASKS_BASE } from '../../constants';
 
-export * from './types';
-
 export type TasksService = ReturnType<typeof tasks>;
 
 export const tasksService = (httpWithAuth: HttpInstance): TasksService => {

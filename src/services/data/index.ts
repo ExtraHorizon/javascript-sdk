@@ -10,8 +10,6 @@ import documents from './documents';
 import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
 
-export * from './types';
-
 export type DataService = ReturnType<typeof infrastructure> &
   ReturnType<typeof schemas> &
   ReturnType<typeof indexes> &
