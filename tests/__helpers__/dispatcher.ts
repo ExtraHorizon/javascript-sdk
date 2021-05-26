@@ -1,12 +1,8 @@
-import {
-  Dispatcher,
-  MailActionType,
-  TaskActionType,
-} from '../../src/services/dispatchers/types';
+import { Dispatcher, ActionType } from '../../src/services/dispatchers/types';
 
 export const mailAction = {
   id: '5e9fff9d90135a2a9a718e2f',
-  type: MailActionType.MAIL,
+  type: ActionType.MAIL,
   recipients: {
     to: ['someone@example.com'],
     cc: ['someone@example.com'],
@@ -17,7 +13,7 @@ export const mailAction = {
 
 export const taskAction = {
   id: '5e9fff9d90135a2a9a718e2f',
-  type: TaskActionType.TASK,
+  type: ActionType.TASK,
   functionName: 'string',
   data: {
     additionalProp1: 'string',
