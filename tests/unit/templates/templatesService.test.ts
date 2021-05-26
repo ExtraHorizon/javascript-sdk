@@ -33,7 +33,7 @@ describe('Template Service', () => {
   it('should perform a health check', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`).get('/health').reply(200);
 
-    const serviceIsAvailable = await sdk.template.health();
+    const serviceIsAvailable = await sdk.templates.health();
 
     expect(serviceIsAvailable).toBe(true);
   });
@@ -44,7 +44,7 @@ describe('Template Service', () => {
       .get(`/${rql}`)
       .reply(200, templateResponse);
 
-    const res = await sdk.template.find({ rql });
+    const res = await sdk.templates.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
   });
@@ -52,7 +52,7 @@ describe('Template Service', () => {
   it('should create a new template', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`).post('/').reply(200, templateData);
 
-    const template = await sdk.template.createTemplate(templateInput);
+    const template = await sdk.templates.create(templateInput);
 
     expect(template.name).toBe(templateData.name);
   });
@@ -62,10 +62,7 @@ describe('Template Service', () => {
       .put(`/${templateId}`)
       .reply(200, templateData);
 
-    const template = await sdk.template.updateTemplate(
-      templateId,
-      templateInput
-    );
+    const template = await sdk.templates.update(templateId, templateInput);
 
     expect(template.name).toBe(templateData.name);
   });
@@ -75,7 +72,7 @@ describe('Template Service', () => {
       .delete(`/${templateId}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.template.deleteTemplate(templateId);
+    const res = await sdk.templates.delete(templateId);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -85,7 +82,7 @@ describe('Template Service', () => {
       .post(`/${templateId}/pdf`)
       .reply(200, 'string');
 
-    const res = await sdk.template.resolveTemplateAsPdf(templateId, {
+    const res = await sdk.templates.resolveAsPdf(templateId, {
       language: 'NL',
       timeZone: 'Europe/Brussels',
       content: {
@@ -105,7 +102,7 @@ describe('Template Service', () => {
       .post(`/${templateId}/pdf/${localizationCode}`)
       .reply(200, 'string');
 
-    const res = await sdk.template.resolveTemplateAsPdfUsingCode(
+    const res = await sdk.templates.resolveAsPdfUsingCode(
       templateId,
       localizationCode,
       {
@@ -131,7 +128,7 @@ describe('Template Service', () => {
         body: 'Hey, John',
       });
 
-    const res = await sdk.template.resolveTemplateAsJson(templateId, {
+    const res = await sdk.templates.resolveAsJson(templateId, {
       language: 'NL',
       timeZone: 'Europe/Brussels',
       content: {
@@ -154,7 +151,7 @@ describe('Template Service', () => {
         body: 'Hey, John',
       });
 
-    const res = await sdk.template.resolveTemplateAsJsonUsingCode(
+    const res = await sdk.templates.resolveAsJsonUsingCode(
       templateId,
       localizationCode,
       {

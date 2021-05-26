@@ -25,7 +25,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns Task Success
    */
-  async createTask(requestBody: TaskInput): Promise<Task> {
+  async create(requestBody: TaskInput): Promise<Task> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -42,7 +42,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalStateException}
    * @throws {ResourceUnknownException}
    */
-  async cancelTask(taskId: ObjectId): Promise<AffectedRecords> {
+  async cancel(taskId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${taskId}/cancel`)).data;
   },
 });

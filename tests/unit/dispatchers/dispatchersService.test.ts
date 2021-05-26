@@ -48,7 +48,7 @@ describe('Dispatchers Service', () => {
   it('should create a dispatcher', async () => {
     nock(`${apiHost}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
 
-    const res = await sdk.dispatchers.createDispatcher(dispatcherData);
+    const res = await sdk.dispatchers.create(dispatcherData);
 
     expect(res.id).toBe(dispatcherData.id);
   });
@@ -60,7 +60,7 @@ describe('Dispatchers Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.dispatchers.removeDispatcher(dispatcherId);
+    const res = await sdk.dispatchers.remove(dispatcherId);
 
     expect(res.affectedRecords).toBe(1);
   });

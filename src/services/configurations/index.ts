@@ -7,7 +7,7 @@ import patients from './patients';
 import staff from './staff';
 import { CONFIGURATION_BASE } from '../../constants';
 
-export type ConfigurationService = {
+export type ConfigurationsService = {
   general: ReturnType<typeof general>;
   groups: ReturnType<typeof groups>;
   users: ReturnType<typeof users>;
@@ -15,9 +15,9 @@ export type ConfigurationService = {
   staff: ReturnType<typeof staff>;
 };
 
-export const configurationService = (
+export const configurationsService = (
   httpWithAuth: HttpInstance
-): ConfigurationService => {
+): ConfigurationsService => {
   const client = httpClient({
     basePath: CONFIGURATION_BASE,
   });

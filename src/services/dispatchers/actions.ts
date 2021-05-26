@@ -12,7 +12,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody ActionCreation
    * @returns Action
    */
-  async createAction(
+  async create(
     dispatcherId: ObjectId,
     requestBody: ActionCreation
   ): Promise<Action> {
@@ -32,7 +32,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async updateAction(
+  async update(
     dispatcherId: ObjectId,
     actionId: ObjectId,
     requestBody: ActionUpdate
@@ -56,7 +56,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async deleteAction(
+  async delete(
     dispatcherId: ObjectId,
     actionId: ObjectId
   ): Promise<AffectedRecords> {

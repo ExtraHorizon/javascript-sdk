@@ -1,14 +1,11 @@
 import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
-import {
-  groupConfigResponse,
-  groupConfigInput,
-} from '../../__helpers__/configuration';
+import { userConfigResponse } from '../../__helpers__/configuration';
 
-describe('Configuration: Groups Service', () => {
+describe('Configuration: Users Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
-  const groupId = 'abcdef123456789abcdef123';
+  const userId = '52adef123456789abcdef123';
 
   let sdk: Client<ParamsOauth2>;
 
@@ -34,51 +31,51 @@ describe('Configuration: Groups Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should view a group configuration', async () => {
+  it('should retrieve a user configuration', async () => {
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .get(`/groups/${groupId}`)
-      .reply(200, groupConfigResponse);
+      .get(`/users/${userId}`)
+      .reply(200, userConfigResponse);
 
-    const res = await sdk.configuration.groups.get(groupId);
+    const res = await sdk.configurations.users.get(userId);
 
     expect(res.data).toBeDefined();
-    expect(res.staffConfiguration).toBeDefined();
-    expect(res.patientConfiguration).toBeDefined();
+    expect(res.staffConfigurations).toBeDefined();
+    expect(res.patientConfigurations).toBeDefined();
   });
 
-  it('should update a group configuration', async () => {
+  it('should update a user configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .put(`/groups/${groupId}`)
-      .reply(200, {
-        affectedRecords: 1,
-      });
+    nock(`${apiHost}${CONFIGURATION_BASE}`).put(`/users/${userId}`).reply(200, {
+      affectedRecords: 1,
+    });
 
-    const res = await sdk.configuration.groups.update(
-      groupId,
-      groupConfigInput,
+    const res = await sdk.configurations.users.update(
+      userId,
+      {
+        data: {
+          epicFeatureEnabled: true,
+        },
+      },
       { rql }
     );
 
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a group configuration', async () => {
+  it('should delete fields from a user configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .post(`/groups/${groupId}/deleteFields`)
+      .post(`/users/${userId}/deleteFields`)
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.groups.removeFields(
-      groupId,
+    const res = await sdk.configurations.users.removeFields(
+      userId,
       {
         fields: ['data.enableEpicFeature'],
       },
-      {
-        rql,
-      }
+      { rql }
     );
 
     expect(res.affectedRecords).toBe(1);

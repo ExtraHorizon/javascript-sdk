@@ -2,7 +2,7 @@ import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2 } from '../../../src/index';
 
-describe('Configuration: Patients Service', () => {
+describe('Configuration: Staff Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
   const userId = '52adef123456789abcdef123';
   const groupId = 'abcdef123456789abcdef123';
@@ -31,14 +31,14 @@ describe('Configuration: Patients Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should update a patient configuration for a group of a user', async () => {
+  it('should update a staff configuration for a group of a user', async () => {
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .put(`/users/${userId}/patientConfigurations/${groupId}`)
+      .put(`/users/${userId}/staffConfigurations/${groupId}`)
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.patients.update(groupId, userId, {
+    const res = await sdk.configurations.staff.update(groupId, userId, {
       data: {
         epicFeatureEnabled: true,
       },
@@ -47,14 +47,14 @@ describe('Configuration: Patients Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a patient configuration for a group of a user', async () => {
+  it('should delete fields from a staff configuration for a group of a user', async () => {
     nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .post(`/users/${userId}/patientConfigurations/${groupId}/deleteFields`)
+      .post(`/users/${userId}/staffConfigurations/${groupId}/deleteFields`)
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.patients.removeFields(groupId, userId, {
+    const res = await sdk.configurations.staff.removeFields(groupId, userId, {
       fields: ['data.enableEpicFeature'],
     });
 

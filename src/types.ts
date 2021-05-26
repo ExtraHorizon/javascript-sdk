@@ -9,7 +9,7 @@ export * from './services/data/types';
 export * from './services/files/types';
 export * from './services/tasks/types';
 export * from './services/users/types';
-export * from './services/configuration/types';
+export * from './services/configurations/types';
 export * from './services/dispatchers/types';
 
 export type HttpInstance = AxiosInstance;

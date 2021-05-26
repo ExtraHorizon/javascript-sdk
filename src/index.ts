@@ -7,9 +7,9 @@ import {
   dataService,
   tasksService,
   filesService,
-  configurationService,
-  templateService,
-  mailService,
+  configurationsService,
+  templatesService,
+  mailsService,
   dispatchersService,
 } from './services';
 
@@ -86,12 +86,12 @@ export interface Client<T extends ClientParams> {
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
    */
-  template: ReturnType<typeof templateService>;
+  templates: ReturnType<typeof templatesService>;
   /**
    * Provides mail functionality for other services.
    * @see https://developers.extrahorizon.io/services/mail-service/1.0.8-dev/
    */
-  mail: ReturnType<typeof mailService>;
+  mails: ReturnType<typeof mailsService>;
   /**
    * A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
    * @see https://developers.extrahorizon.io/services/data-service/1.0.9/
@@ -111,7 +111,7 @@ export interface Client<T extends ClientParams> {
    * Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
    * @see https://developers.extrahorizon.io/services/configurations-service/2.0.2-dev/
    */
-  configuration: ReturnType<typeof configurationService>;
+  configurations: ReturnType<typeof configurationsService>;
   /**
    * Configure actions that need to be invoked when a specific event is/was triggered.
    * @see https://developers.extrahorizon.io/services/dispatchers-service/1.0.3-dev/
@@ -185,9 +185,9 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
     data: dataService(httpWithAuth),
     files: filesService(httpWithAuth),
     tasks: tasksService(httpWithAuth),
-    template: templateService(httpWithAuth),
-    mail: mailService(httpWithAuth),
-    configuration: configurationService(httpWithAuth),
+    templates: templatesService(httpWithAuth),
+    mails: mailsService(httpWithAuth),
+    configurations: configurationsService(httpWithAuth),
     dispatchers: dispatchersService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
