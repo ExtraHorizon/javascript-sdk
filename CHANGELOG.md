@@ -53,7 +53,6 @@ auth: {
 + }
 },
 data: {
-  health(),
 - createSchema(),
 - updateSchema(),
 - deleteSchema(),
