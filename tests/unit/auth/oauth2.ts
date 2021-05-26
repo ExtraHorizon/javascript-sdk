@@ -36,7 +36,7 @@ describe('Auth - OAuth2', () => {
       .post('/oauth2/authorizations')
       .reply(200, newAuthorization);
 
-    const createdResult = await sdk.auth.createOauth2Authorization({
+    const createdResult = await sdk.auth.oauth2.createAuthorization({
       responseType: 'code',
       clientId: '507f191e810c19729de860ea',
       state: '',
@@ -52,7 +52,7 @@ describe('Auth - OAuth2', () => {
       .get('/oauth2/authorizations')
       .reply(200, authorizationList);
 
-    const applications = await sdk.auth.getOauth2Authorizations();
+    const applications = await sdk.auth.oauth2.getAuthorizations();
 
     expect(applications.data).toBeDefined();
     expect(applications.data[0].id).toEqual(authorizationList.data[0].id);
@@ -67,7 +67,7 @@ describe('Auth - OAuth2', () => {
         affectedRecords: 1,
       });
 
-    const deleteResult = await sdk.auth.deleteOauth2Authorization(
+    const deleteResult = await sdk.auth.oauth2.deleteAuthorization(
       authorizationId
     );
 
@@ -87,7 +87,7 @@ describe('Auth - OAuth2', () => {
       });
 
     try {
-      await sdk.auth.deleteOauth2Authorization(authorizationId);
+      await sdk.auth.oauth2.deleteAuthorization(authorizationId);
     } catch (error) {
       expect(error).toBeInstanceOf(ResourceUnknownError);
     }
