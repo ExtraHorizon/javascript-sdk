@@ -11,15 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking Changes
 
-- Consistent services naming, always plural except `auth` :
-
-```diff
--sdk.template.find
-+sdk.templates.find
--sdk.mail.find
-+sdk.mails.find
-```
-
 - Services scoping:
 
 ```diff
@@ -130,6 +121,10 @@ data: {
 +   linkUsers(),
 +   unlinkUsers(),
 +  },
+- updateCreationTransition(),
+- createTransition(),
+- updateTransition(),
+- deleteTransition()
 + transitions: {
 +   updateCreation(),
 +   create(),
@@ -205,10 +200,10 @@ users: {
 
 ### Added
 
-- Configuration Service
+- Configurations Service
 - Dispatchers Service
-- Mail Service
-- Template Service
+- Mails Service
+- Templates Service
 
 ### Changes
 
