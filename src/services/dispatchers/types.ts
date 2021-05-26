@@ -8,18 +8,31 @@ export interface Dispatcher {
   updateTimestamp?: Date;
 }
 
-export type Action = MailAction | TaskAction;
-
-export interface MailAction {
+interface ActionBase {
   id?: ObjectId;
-  type?: MailActionType;
+  type?: ActionType;
+}
+
+export enum ActionType {
+  MAIL = 'mail',
+  TASK = 'task',
+}
+
+export interface MailAction extends ActionBase {
+  type?: ActionType.MAIL;
   recipients?: MailRecipients;
   templateId?: ObjectId;
 }
 
-export enum MailActionType {
-  MAIL = 'mail',
+export interface TaskAction extends ActionBase {
+  type?: ActionType.TASK;
+  functionName?: string;
+  data?: Record<string, string>;
+  tags?: Array<string>;
+  startTimestamp?: Date;
 }
+
+export type Action = MailAction | TaskAction;
 
 export type MailRecipients = {
   to?: MailList;
@@ -31,29 +44,16 @@ export type MailList = Array<MailAddress>;
 
 export type MailAddress = string;
 
-export interface TaskAction {
-  id?: ObjectId;
-  type?: TaskActionType;
-  functionName?: string;
-  data?: Record<string, string>;
-  tags?: Array<string>;
-  startTimestamp?: Date;
-}
-
-export enum TaskActionType {
-  TASK = 'task',
-}
-
 export type ActionCreation = MailActionCreation | TaskActionCreation;
 
 export interface MailActionCreation {
-  type: MailActionType;
+  type?: ActionType.MAIL;
   recipients: MailRecipients;
   templateId: ObjectId;
 }
 
 export interface TaskActionCreation {
-  type: TaskActionType;
+  type?: ActionType.TASK;
   functionName: string;
   data?: Record<string, string>;
   tags?: Array<string>;
