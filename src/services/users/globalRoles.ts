@@ -32,7 +32,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns any Success
    */
-  async getRoles(options?: { rql?: RQLString }): Promise<PagedResult<Role>> {
+  async get(options?: { rql?: RQLString }): Promise<PagedResult<Role>> {
     return (await userClient.get(httpWithAuth, `/roles${options?.rql || ''}`))
       .data;
   },
@@ -46,7 +46,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async createRole(requestBody: RoleCreation): Promise<Role> {
+  async create(requestBody: RoleCreation): Promise<Role> {
     return (await userClient.post(httpWithAuth, `/roles`, requestBody)).data;
   },
 
@@ -60,7 +60,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async deleteRole(rql: RQLString): Promise<AffectedRecords> {
+  async delete(rql: RQLString): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
   },
 
@@ -74,7 +74,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param requestBody
    * @returns Role Success
    */
-  async updateRole(id: ObjectId, requestBody: RoleUpdate): Promise<Role> {
+  async update(id: ObjectId, requestBody: RoleUpdate): Promise<Role> {
     return (await userClient.put(httpWithAuth, `/roles${id}`, requestBody))
       .data;
   },
@@ -89,7 +89,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async addPermissionsToRole(
+  async addPermissions(
     rql: RQLString,
     requestBody: RolePermissions
   ): Promise<AffectedRecords> {
@@ -113,7 +113,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async removePermissionsFromRole(
+  async removePermissions(
     rql: RQLString,
     requestBody: RolePermissions
   ): Promise<AffectedRecords> {
@@ -135,7 +135,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Operation successful
    */
-  async addRolesToUsers(
+  async addToUsers(
     rql: RQLString,
     requestBody: UserRoles
   ): Promise<AffectedRecords> {
@@ -154,7 +154,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Operation successful
    */
-  async removeRolesFromUsers(
+  async removeFromUser(
     rql: RQLString,
     requestBody: UserRoles
   ): Promise<AffectedRecords> {

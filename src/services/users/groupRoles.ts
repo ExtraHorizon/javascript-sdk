@@ -19,7 +19,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @returns any Success
    */
-  async getGroupsPermissions(): Promise<PagedResult<GlobalPermission>> {
+  async getPermissions(): Promise<PagedResult<GlobalPermission>> {
     return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
   },
 
@@ -34,7 +34,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns any Success
    */
-  async getGroupsRoles(
+  async get(
     groupId: ObjectId,
     options?: {
       rql?: RQLString;
@@ -59,10 +59,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async addRoleToGroup(
-    groupId: ObjectId,
-    requestBody: AddRole
-  ): Promise<GroupRole> {
+  async add(groupId: ObjectId, requestBody: AddRole): Promise<GroupRole> {
     return (
       await userClient.post(
         httpWithAuth,
@@ -85,7 +82,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ResourceUnknownError}
    */
-  async updateGroupsRole(
+  async update(
     groupId: ObjectId,
     roleId: ObjectId,
     requestBody: AddRole
@@ -112,7 +109,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async removeRoleFromGroup(
+  async remove(
     groupId: ObjectId,
     roleId: ObjectId,
     rql: RQLString
@@ -138,7 +135,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async addPermissionsToGroupRoles(
+  async addPermissions(
     groupId: ObjectId,
     requestBody: GroupRolePermissions,
     options?: {
@@ -167,7 +164,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async removePermissionsFromGroupRoles(
+  async removePermissions(
     groupId: ObjectId,
     requestBody: GroupRolePermissions,
     rql: RQLString
@@ -194,7 +191,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async assignRolesToStaff(
+  async assignToStaff(
     groupId: ObjectId,
     requestBody: StaffRoles,
     options?: {
@@ -223,7 +220,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async removeRolesFromStaff(
+  async removeFromStaff(
     groupId: ObjectId,
     requestBody: StaffRoles,
     rql: RQLString
