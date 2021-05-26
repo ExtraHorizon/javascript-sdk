@@ -38,7 +38,7 @@ describe('Configuration: General Service', () => {
       .get('/general')
       .reply(200, generalConfigResponse);
 
-    const res = await sdk.configuration.getGeneralConfig();
+    const res = await sdk.configuration.general.get();
 
     expect(res.userConfiguration).toBeDefined();
     expect(res.groupConfiguration).toBeDefined();
@@ -52,7 +52,7 @@ describe('Configuration: General Service', () => {
       affectedRecords: 1,
     });
 
-    const res = await sdk.configuration.updateGeneralConfig(generalConfig, {
+    const res = await sdk.configuration.general.update(generalConfig, {
       rql,
     });
 
@@ -67,7 +67,7 @@ describe('Configuration: General Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromGeneralConfig(
+    const res = await sdk.configuration.general.removeFields(
       {
         fields: ['data.enableEpicFeature'],
       },

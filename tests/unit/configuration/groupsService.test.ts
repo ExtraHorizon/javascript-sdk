@@ -39,7 +39,7 @@ describe('Configuration: Groups Service', () => {
       .get(`/groups/${groupId}`)
       .reply(200, groupConfigResponse);
 
-    const res = await sdk.configuration.getGroupsConfig(groupId);
+    const res = await sdk.configuration.groups.get(groupId);
 
     expect(res.data).toBeDefined();
     expect(res.staffConfiguration).toBeDefined();
@@ -54,7 +54,7 @@ describe('Configuration: Groups Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.updateGroupsConfig(
+    const res = await sdk.configuration.groups.update(
       groupId,
       groupConfigInput,
       { rql }
@@ -71,7 +71,7 @@ describe('Configuration: Groups Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromGroupsConfig(
+    const res = await sdk.configuration.groups.removeFields(
       groupId,
       {
         fields: ['data.enableEpicFeature'],

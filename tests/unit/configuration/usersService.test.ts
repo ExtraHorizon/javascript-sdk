@@ -36,7 +36,7 @@ describe('Configuration: Users Service', () => {
       .get(`/users/${userId}`)
       .reply(200, userConfigResponse);
 
-    const res = await sdk.configuration.getUsersConfig(userId);
+    const res = await sdk.configuration.users.get(userId);
 
     expect(res.data).toBeDefined();
     expect(res.staffConfigurations).toBeDefined();
@@ -49,7 +49,7 @@ describe('Configuration: Users Service', () => {
       affectedRecords: 1,
     });
 
-    const res = await sdk.configuration.updateUsersConfig(
+    const res = await sdk.configuration.users.update(
       userId,
       {
         data: {
@@ -70,7 +70,7 @@ describe('Configuration: Users Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromUsersConfig(
+    const res = await sdk.configuration.users.removeFields(
       userId,
       {
         fields: ['data.enableEpicFeature'],

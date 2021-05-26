@@ -38,7 +38,7 @@ describe('Configuration: Patients Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.updatePatientConfig(groupId, userId, {
+    const res = await sdk.configuration.patients.update(groupId, userId, {
       data: {
         epicFeatureEnabled: true,
       },
@@ -54,13 +54,9 @@ describe('Configuration: Patients Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromPatientConfig(
-      groupId,
-      userId,
-      {
-        fields: ['data.enableEpicFeature'],
-      }
-    );
+    const res = await sdk.configuration.patients.removeFields(groupId, userId, {
+      fields: ['data.enableEpicFeature'],
+    });
 
     expect(res.affectedRecords).toBe(1);
   });
