@@ -100,7 +100,7 @@ export const ErrorClassDefinitionsMap = {
   2610: FileTooLargeError,
 };
 
-const ErrorClassDifinitionsByErrorMap = {
+const ErrorClassDefinitionsByErrorMap = {
   invalid_grant: InvalidGrantError,
   invalid_request: InvalidRequestError,
   unsupported_grant_type: UnsupportedGrantTypeError,
@@ -117,7 +117,7 @@ export function typeReceivedError(error: HttpError) {
   }
 
   const ErrorClassDefinitionByCode =
-    ErrorClassDifinitionsByErrorMap[error?.response?.data?.error];
+    ErrorClassDefinitionsByErrorMap[error?.response?.data?.error];
 
   if (ErrorClassDefinitionByCode) {
     return ErrorClassDefinitionByCode.createFromHttpError(error);
