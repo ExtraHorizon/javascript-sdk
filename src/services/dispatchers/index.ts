@@ -4,8 +4,6 @@ import dispatchers from './dispatchers';
 import actions from './actions';
 import { DISPATCHERS_BASE } from '../../constants';
 
-export * from './types';
-
 export type DispatchersService = ReturnType<typeof dispatchers> &
   ReturnType<typeof actions>;
 

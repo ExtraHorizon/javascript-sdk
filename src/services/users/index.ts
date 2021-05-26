@@ -7,8 +7,6 @@ import globalRoles from './globalRoles';
 import { USER_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
 
-export * from './types';
-
 export type UsersService = ReturnType<typeof users> &
   ReturnType<typeof health> &
   ReturnType<typeof globalRoles> &
