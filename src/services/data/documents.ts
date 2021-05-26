@@ -15,7 +15,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<Document>}
    * @throws {IllegalArgumentError}
    */
-  async createDocument(
+  async create(
     schemaId: ObjectId,
     requestBody: Record<string, any>
   ): Promise<Document> {
@@ -47,7 +47,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns any Success
    */
-  async findDocuments<CustomDocument = null>(
+  async find<CustomDocument = null>(
     schemaId: ObjectId,
     options?: {
       rql?: RQLString;
@@ -74,7 +74,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async updateDocument(
+  async update(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: Record<string, any>,
@@ -108,7 +108,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @returns any Success
    */
-  async deleteDocument(
+  async delete(
     schemaId: ObjectId,
     documentId: ObjectId
   ): Promise<AffectedRecords> {
@@ -131,7 +131,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async deleteFieldsFromDocument(
+  async deleteFields(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -168,7 +168,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async transitionDocument(
+  async transition(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -200,7 +200,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async linkGroupsToDocument(
+  async linkGroups(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -232,7 +232,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async unlinkGroupsFromDocument(
+  async unlinkGroups(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -262,7 +262,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async linkUsersToDocument(
+  async linkUsers(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -296,7 +296,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async unlinkUsersFromDocument(
+  async unlinkUsers(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {

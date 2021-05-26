@@ -35,7 +35,7 @@ describe('Properties Service', () => {
     nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/properties`).reply(200, {
       affectedRecords: 1,
     });
-    const res = await sdk.data.createProperty(schemaId, {
+    const res = await sdk.data.properties.create(schemaId, {
       name: 'username',
       configuration: {
         type: ConfigurationType.STRING,
@@ -53,7 +53,7 @@ describe('Properties Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.updateProperty(schemaId, propertyPath, {
+    const res = await sdk.data.properties.update(schemaId, propertyPath, {
       type: ConfigurationType.STRING,
       minLength: 3,
       maxLength: 20,
@@ -68,7 +68,7 @@ describe('Properties Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.deleteProperty(schemaId, propertyPath);
+    const res = await sdk.data.properties.delete(schemaId, propertyPath);
     expect(res.affectedRecords).toBe(1);
   });
 });

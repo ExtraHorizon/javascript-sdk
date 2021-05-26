@@ -10,37 +10,28 @@ import documents from './documents';
 import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
 
-export type DataService = ReturnType<typeof infrastructure> &
-  ReturnType<typeof schemas> &
-  ReturnType<typeof indexes> &
-  ReturnType<typeof statuses> &
-  ReturnType<typeof properties> &
-  ReturnType<typeof comments> &
-  ReturnType<typeof documents> &
-  ReturnType<typeof transitions>;
-
+export type DataService = ReturnType<typeof infrastructure> & {
+  schemas: ReturnType<typeof schemas>;
+  indexes: ReturnType<typeof indexes>;
+  statuses: ReturnType<typeof statuses>;
+  properties: ReturnType<typeof properties>;
+  comments: ReturnType<typeof comments>;
+  documents: ReturnType<typeof documents>;
+  transitions: ReturnType<typeof transitions>;
+};
 export const dataService = (httpWithAuth: HttpInstance): DataService => {
   const client = httpClient({
     basePath: DATA_BASE,
   });
 
-  const infrastructureMethods = infrastructure(client, httpWithAuth);
-  const schemasMethods = schemas(client, httpWithAuth);
-  const indexesMethods = indexes(client, httpWithAuth);
-  const statusesMethods = statuses(client, httpWithAuth);
-  const propertiesMethods = properties(client, httpWithAuth);
-  const commentsMethods = comments(client, httpWithAuth);
-  const documentsMethods = documents(client, httpWithAuth);
-  const transitionsMethods = transitions(client, httpWithAuth);
-
   return {
-    ...infrastructureMethods,
-    ...schemasMethods,
-    ...indexesMethods,
-    ...statusesMethods,
-    ...propertiesMethods,
-    ...commentsMethods,
-    ...documentsMethods,
-    ...transitionsMethods,
+    ...infrastructure(client, httpWithAuth),
+    schemas: schemas(client, httpWithAuth),
+    indexes: indexes(client, httpWithAuth),
+    statuses: statuses(client, httpWithAuth),
+    properties: properties(client, httpWithAuth),
+    comments: comments(client, httpWithAuth),
+    documents: documents(client, httpWithAuth),
+    transitions: transitions(client, httpWithAuth),
   };
 };

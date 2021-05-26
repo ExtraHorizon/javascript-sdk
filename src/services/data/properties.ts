@@ -16,7 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalStateException}
    * @throws {ResourceUnknownException}
    */
-  async createProperty(
+  async create(
     schemaId: ObjectId,
     requestBody: {
       name: string;
@@ -38,7 +38,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async deleteProperty(
+  async delete(
     schemaId: ObjectId,
     propertyPath: string
   ): Promise<AffectedRecords> {
@@ -59,7 +59,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async updateProperty(
+  async update(
     schemaId: ObjectId,
     propertyPath: string,
     requestBody: TypeConfiguration
