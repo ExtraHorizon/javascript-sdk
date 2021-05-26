@@ -5,12 +5,210 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2.0]
+## [Unreleased]
+
+## [3.0.0]
+
+### Breaking Changes
+
+- Consistent services naming, always plural except `auth` :
+
+```diff
+-sdk.template.find
++sdk.templates.find
+-sdk.mail.find
++sdk.mails.find
+```
+
+- Services scoping:
+
+```diff
+auth: {
+- createApplication(),
+- getApplications(),
+- updateApplication(),
+- deleteApplication(),
+- createApplicationVersion(),
+- deleteApplicationVersion(),
++ applications: {
++   create(),
++   get(),
++   update(),
++   delete(),
++   createVersion(),
++   deleteVersion(),
++ },
+- createOauth2Authorization(),
+- getOauth2Authorizations(),
+- deleteOauth2Authorization(),
++ oauth2: {
++   createAuthorization(),
++   getAuthorizations(),
++   deleteAuthorization()
++ },
+- getMfaSetting(),
+- enableMfa(),
+- disableMfa(),
+- addMfaSetting(),
+- confirmMfaMethodVerification(),
+- removeMfaMethod(),
++ users: {
++   getMfaSetting(),
++   enableMfa(),
++   disableMfa(),
++   addMfaSetting(),
++   confirmMfaMethodVerification(),
++   removeMfaMethod()
++ }
+},
+data: {
+  health(),
+- createSchema(),
+- updateSchema(),
+- deleteSchema(),
+- enableSchema(),
+- disableSchema(),
++ schemas: {
++   create(),
++   find(),
++   update(),
++   delete(),
++   enable(),
++   disable(),
++ },
+- createIndex(),
+- deleteIndex(),
++ indexes: {
++   create(),
++   delete(),
++ },
+- createStatus(),
+- updateStatus(),
+- deleteStatus(),
++ statuses: {
++   create(),
++   update(),
++   delete(),
++ },
+- createProperty(),
+- deleteProperty(),
+- updateProperty(),
++ properties: {
++   create(),
++   update(),
++   delete(),
++ },
+- createComment(),
+- findComments(),
+- updateComment(),
+- deleteComment(),
++ comments: {
++   create(),
++   find(),
++   update(),
++   delete(),
++ },
+- createDocument(),
+- findDocuments(),
+- updateDocument(),
+- deleteDocument(),
+- deleteFieldsFromDocument(),
+- transitionDocument(),
+- linkGroupsToDocument(),
+- unlinkGroupsFromDocument(),
+- linkUsersToDocument(),
+- unlinkUsersFromDocument(),
++ documents: {
++   create(),
++   find(),
++   update(),
++   delete(),
++   deleteFields(),
++   transition(),
++   linkGroups(),
++   unlinkGroups(),
++   linkUsers(),
++   unlinkUsers(),
++  },
++ transitions: {
++   updateCreation(),
++   create(),
++   update(),
++   delete(),
++ }
+},
+files: {
+- createFile(),
+- deleteFile(),
+- retrieveFile(),
+- retrieveFileStream(),
+- getFileDetails(),
++ create(),
++ delete(),
++ retrieve(),
++ retrieveStream(),
++ getDetails(),
+},
+tasks: {
+- createTask(),
+- cancelTask(),
++ create(),
++ cancel(),
+},
+users: {
+- getPermissions(),
+- getRoles(),
+- createRole(),
+- deleteRole(),
+- updateRole(),
+- addPermissionsToRole(),
+- removePermissionsFromRole(),
+- addRolesToUsers(),
+- removeRolesFromUsers(),
++ globalRoles: {
++   getPermissions(),
++   get(),
++   create(),
++   delete(),
++   update(),
++   addPermissions(),
++   removePermissions(),
++   addToUsers(),
++   removeFromUsers(),
++ },
+- getGroupsPermissions(),
+- getGroupsRoles(),
+- addRoleToGroup(),
+- updateGroupsRole(),
+- removeRoleFromGroup(),
+- addPermissionsToGroupRoles(),
+- removePermissionsFromGroupRoles(),
+- assignRolesToStaff(),
+- removeRolesFromStaff(),
+- addUsersToStaff(),
+- removeUsersFromStaff(),
++ groupRoles: {
++   getPermissions(),
++   get(),
++   addRole(),
++   update(),
++   removeRole(),
++   addPermissions(),
++   removePermissions(),
++   assignToStaff(),
++   removeFromStaff(),
++   addUsersToStaff(),
++   removeUsersFromStaff(),
++ },
+}
+```
 
 ### Added
 
 - Configuration Service
 - Dispatchers Service
+- Mail Service
+- Template Service
 
 ### Changes
 
@@ -20,21 +218,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 403: `ForbiddenError`
   - 404: `NotFoundError`
   - 500: `ServerError`
-
-## [2.1.0]
-
-### Added
-
-- Mail Service
-- Template Service
-
-### Changes
-
 - PagedResults are now using generics
 - Every merge into dev will create a tag and package with the current version number suffixed with `-dev.X` where X auto-increments
 - Removed `* @throws {ApiError}` in JSDoc comments, only specific errors are mentioned when mentioned in the Swagger documentation
-
-## [Unreleased]
 
 ## [2.0.0] - 2021-05-12
 
