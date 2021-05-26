@@ -12,7 +12,7 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @returns GeneralConfiguration
    */
-  async getGeneralConfig(): Promise<GeneralConfiguration> {
+  async get(): Promise<GeneralConfiguration> {
     return (await client.get(httpAuth, '/general')).data;
   },
 
@@ -26,7 +26,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async updateGeneralConfig(
+  async update(
     requestBody: GeneralConfigurationInput,
     options?: {
       rql?: RQLString;
@@ -47,7 +47,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async removeFieldsFromGeneralConfig(
+  async removeFields(
     requestBody: {
       fields: Array<string>;
     },

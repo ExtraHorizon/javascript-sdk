@@ -16,7 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody UserConfigurationInput
    * @returns AffectedRecords
    */
-  async updateStaffConfig(
+  async update(
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: UserConfigurationInput
@@ -43,7 +43,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody the list of fields to remove
    * @returns AffectedRecords
    */
-  async removeFieldsFromStaffConfig(
+  async removeFields(
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: {

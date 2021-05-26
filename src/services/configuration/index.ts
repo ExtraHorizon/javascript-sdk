@@ -7,11 +7,13 @@ import patients from './patients';
 import staff from './staff';
 import { CONFIGURATION_BASE } from '../../constants';
 
-export type ConfigurationService = ReturnType<typeof general> &
-  ReturnType<typeof groups> &
-  ReturnType<typeof users> &
-  ReturnType<typeof patients> &
-  ReturnType<typeof staff>;
+export type ConfigurationService = {
+  general: ReturnType<typeof general>;
+  groups: ReturnType<typeof groups>;
+  users: ReturnType<typeof users>;
+  patients: ReturnType<typeof patients>;
+  staff: ReturnType<typeof staff>;
+};
 
 export const configurationService = (
   httpWithAuth: HttpInstance
@@ -20,17 +22,11 @@ export const configurationService = (
     basePath: CONFIGURATION_BASE,
   });
 
-  const generalMethods = general(client, httpWithAuth);
-  const groupsMethods = groups(client, httpWithAuth);
-  const usersMethods = users(client, httpWithAuth);
-  const patientMethods = patients(client, httpWithAuth);
-  const staffMethods = staff(client, httpWithAuth);
-
   return {
-    ...generalMethods,
-    ...groupsMethods,
-    ...usersMethods,
-    ...patientMethods,
-    ...staffMethods,
+    general: general(client, httpWithAuth),
+    groups: groups(client, httpWithAuth),
+    users: users(client, httpWithAuth),
+    patients: patients(client, httpWithAuth),
+    staff: staff(client, httpWithAuth),
   };
 };

@@ -16,7 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param groupId The id of the targeted group
    * @returns GroupConfiguration
    */
-  async getGroupsConfig(groupId: ObjectId): Promise<GroupConfiguration> {
+  async get(groupId: ObjectId): Promise<GroupConfiguration> {
     return (await client.get(httpAuth, `/groups/${groupId}`)).data;
   },
 
@@ -34,7 +34,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async updateGroupsConfig(
+  async update(
     groupId: ObjectId,
     requestBody: GroupConfigurationInput,
     options?: {
@@ -64,7 +64,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async removeFieldsFromGroupsConfig(
+  async removeFields(
     groupId: ObjectId,
     requestBody: {
       fields: Array<string>;
