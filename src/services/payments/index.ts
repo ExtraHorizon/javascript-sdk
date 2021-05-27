@@ -1,9 +1,13 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import products from './products';
+import orders from './orders';
 import { PAYMENTS_BASE } from '../../constants';
 
-export type PaymentsService = ReturnType<typeof products>;
+export type PaymentsService = {
+  products: ReturnType<typeof products>;
+  orders: ReturnType<typeof orders>;
+};
 
 export const paymentsService = (
   httpWithAuth: HttpInstance
@@ -12,9 +16,8 @@ export const paymentsService = (
     basePath: PAYMENTS_BASE,
   });
 
-  const productsMethods = products(client, httpWithAuth);
-
   return {
-    ...productsMethods,
+    products: products(client, httpWithAuth),
+    orders: orders(client, httpWithAuth),
   };
 };
