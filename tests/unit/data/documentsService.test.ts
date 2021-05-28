@@ -35,11 +35,11 @@ describe('Documents Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a document', async () => {
+  it('should create a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents`)
       .reply(200, newDocumentCreated);
-    const document = await sdk.data.createDocument(schemaId, {
+    const document = await sdk.data.documents.create(schemaId, {
       additionalProp1: {},
       additionalProp2: {},
       additionalProp3: {},
@@ -47,19 +47,19 @@ describe('Documents Service', () => {
     expect(document.id).toBe(newDocumentCreated.id);
   });
 
-  it('Request a list of documents', async () => {
+  it('should request a list of documents', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .get(`/${schemaId}/documents`)
       .reply(200, documentsListResponse);
-    const res = await sdk.data.findDocuments(schemaId);
+    const res = await sdk.data.documents.find(schemaId);
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Update a document', async () => {
+  it('should update a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.updateDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.update(schemaId, documentId, {
       additionalProp1: {},
       additionalProp2: {},
       additionalProp3: {},
@@ -67,29 +67,29 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a document', async () => {
+  it('should delete a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.deleteDocument(schemaId, documentId);
+    const res = await sdk.data.documents.delete(schemaId, documentId);
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete fields from a document', async () => {
+  it('should delete fields from a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/deleteFields`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.deleteFieldsFromDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.deleteFields(schemaId, documentId, {
       fields: ['location.latitude'],
     });
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Transition a document', async () => {
+  it('should transition a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/transition`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.transitionDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.transition(schemaId, documentId, {
       id: '5e9fff9d90135a2a9a718e2f',
       data: {
         location: {
@@ -101,41 +101,41 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Link groups to a document', async () => {
+  it('should link groups to a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkGroups`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.linkGroupsToDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.linkGroups(schemaId, documentId, {
       groupIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Unlink groups from a document', async () => {
+  it('should unlink groups from a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.unlinkGroupsFromDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.unlinkGroups(schemaId, documentId, {
       groupIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Link users to a document', async () => {
+  it('should link users to a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkUsers`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.linkUsersToDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.linkUsers(schemaId, documentId, {
       userIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Unlink users from a document', async () => {
+  it('should unlink users from a document', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/unlinkUsers`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.unlinkUsersFromDocument(schemaId, documentId, {
+    const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, {
       userIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);

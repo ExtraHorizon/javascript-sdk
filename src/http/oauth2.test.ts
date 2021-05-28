@@ -29,11 +29,7 @@ describe('http client', () => {
     httpWithAuth = createOAuth2HttpClient(http, config);
   });
 
-  it('Create Axios client', async () => {
-    expect(httpWithAuth).toBeDefined();
-  });
-
-  it('Make call with authorization', async () => {
+  it('should authorize', async () => {
     const mockToken = 'test';
     nock(mockParams.apiHost)
       .post(`${AUTH_BASE}/oauth2/tokens`)
@@ -47,7 +43,7 @@ describe('http client', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
   });
 
-  it('Make call with authorization but with wrong password', async () => {
+  it('throws on authorization with wrong password', async () => {
     expect.assertions(1);
     nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
       error: 'invalid_grant',
@@ -61,7 +57,7 @@ describe('http client', () => {
     }
   });
 
-  it('Make call with authorization but first reply with expired token, but then valid refresh', async () => {
+  it('should authorize but first reply with expired token, but then valid refresh', async () => {
     const mockToken = 'expired access token';
     nock(mockParams.apiHost)
       .post(`${AUTH_BASE}/oauth2/tokens`)
@@ -85,7 +81,7 @@ describe('http client', () => {
     expect(result.data).toBeDefined();
   });
 
-  it('Make call with authorization but first reply with expired token, but then fail refresh', async () => {
+  it('throws with authorization but first reply with expired token, but then fail refresh', async () => {
     expect.assertions(2);
     const mockToken = 'expired access token';
     nock(mockParams.apiHost)
@@ -114,7 +110,7 @@ describe('http client', () => {
     }
   });
 
-  it('Make call with authorization but reply twice with unknown token', async () => {
+  it('throws on authorization with reply twice with unknown token', async () => {
     /*  Authenticate => returns unknown access token
      *  The get call fails because 117 is returned
      *  this trigger the sdk to try and refresh the token
@@ -144,7 +140,7 @@ describe('http client', () => {
     }
   });
 
-  it('Initialize with RefreshToken', async () => {
+  it('should authorize with a refreshToken', async () => {
     expect.assertions(2);
     const mockToken = 'access token';
     nock(mockParams.apiHost)
@@ -168,7 +164,7 @@ describe('http client', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
   });
 
-  it('Initialize with MFA Enabled', async () => {
+  it('should authorize with MFA Enabled', async () => {
     expect.assertions(2);
     const mockToken = 'access token';
     nock(mockParams.apiHost)

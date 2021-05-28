@@ -1,11 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  Schema,
-  SchemaInput,
-  SchemasList,
-  UpdateSchemaInput,
-} from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
 import { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -16,9 +11,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `CREATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param requestBody
    * @returns Schema successful operation
-   * @throws {ApiError}
    */
-  async createSchema(requestBody: SchemaInput): Promise<Schema> {
+  async create(requestBody: SchemaInput): Promise<Schema> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -30,9 +24,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<SchemasList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
@@ -44,9 +37,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
-  async updateSchema(
+  async update(
     schemaId: ObjectId,
     requestBody: UpdateSchemaInput
   ): Promise<AffectedRecords> {
@@ -62,7 +54,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {IllegalStateError}
    */
-  async deleteSchema(schemaId: ObjectId): Promise<AffectedRecords> {
+  async delete(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${schemaId}`)).data;
   },
 
@@ -73,9 +65,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns any Success
-   * @throws {ApiError}
    */
-  async disableSchema(schemaId: ObjectId): Promise<AffectedRecords> {
+  async disable(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${schemaId}/disable`)).data;
   },
 
@@ -86,9 +77,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns any Success
-   * @throws {ApiError}
    */
-  async enableSchema(schemaId: ObjectId): Promise<AffectedRecords> {
+  async enable(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${schemaId}/enable`)).data;
   },
 });

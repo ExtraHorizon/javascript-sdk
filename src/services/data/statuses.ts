@@ -13,7 +13,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ResourceAlreadyExistsError}
    */
-  async createStatus(
+  async create(
     schemaId: ObjectId,
     requestBody: {
       name: string;
@@ -35,7 +35,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    * @throws {ResourceUnknownError}
    */
-  async updateStatus(
+  async update(
     schemaId: ObjectId,
     name: string,
     requestBody: StatusData
@@ -56,10 +56,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {StatusInUseError}
    * @throws {ResourceUnknownError}
    */
-  async deleteStatus(
-    schemaId: ObjectId,
-    name: string
-  ): Promise<AffectedRecords> {
+  async delete(schemaId: ObjectId, name: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${schemaId}/statuses/${name}`))
       .data;
   },

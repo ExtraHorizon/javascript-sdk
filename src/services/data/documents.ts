@@ -1,7 +1,7 @@
 import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import { Document, DocumentsList } from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import { Document } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -15,7 +15,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<Document>}
    * @throws {IllegalArgumentError}
    */
-  async createDocument(
+  async create(
     schemaId: ObjectId,
     requestBody: Record<string, any>
   ): Promise<Document> {
@@ -46,15 +46,14 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
-  async findDocuments<CustomDocument = null>(
+  async find<CustomDocument = null>(
     schemaId: ObjectId,
     options?: {
       rql?: RQLString;
     }
   ): Promise<
-    DocumentsList<CustomDocument extends null ? Document : CustomDocument>
+    PagedResult<CustomDocument extends null ? Document : CustomDocument>
   > {
     return (
       await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
@@ -74,9 +73,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
-  async updateDocument(
+  async update(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: Record<string, any>,
@@ -109,9 +107,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns any Success
-   * @throws ApiError
    */
-  async deleteDocument(
+  async delete(
     schemaId: ObjectId,
     documentId: ObjectId
   ): Promise<AffectedRecords> {
@@ -133,9 +130,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
-  async deleteFieldsFromDocument(
+  async deleteFields(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -172,7 +168,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async transitionDocument(
+  async transition(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -203,9 +199,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
-  async linkGroupsToDocument(
+  async linkGroups(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -236,9 +231,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
-  async unlinkGroupsFromDocument(
+  async unlinkGroups(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -267,9 +261,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
-  async linkUsersToDocument(
+  async linkUsers(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -302,9 +295,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns any Success
-   * @throws {ApiError}
    */
-  async unlinkUsersFromDocument(
+  async unlinkUsers(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {

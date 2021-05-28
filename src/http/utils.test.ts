@@ -2,13 +2,13 @@ import {
   camelize,
   camelizeKeys,
   decamelize,
-  mapObjIndexed,
+  decamelizeKeys,
   recursiveMap,
   recursiveRenameKeys,
 } from './utils';
 
-describe('recursiveMap', () => {
-  it('simple object mapEntriesRecursive', () => {
+describe('recursiveMap function', () => {
+  it('should recursively map with simple object', () => {
     const result = recursiveMap(value => `-> ${value}`)({
       test: 'value',
     });
@@ -16,7 +16,7 @@ describe('recursiveMap', () => {
     expect(result.test).toBe('-> value');
   });
 
-  it('complex object', () => {
+  it('should recursively map with object with arrays', () => {
     const result = recursiveMap((value, key) => {
       if (key.includes('stamp')) {
         return new Date(value);
@@ -47,7 +47,7 @@ describe('recursiveMap', () => {
     );
   });
 
-  it('complex array', () => {
+  it('should recursively map an array containing object with arrays', () => {
     const result = recursiveMap((value, key) => {
       if (key.includes('stamp')) {
         return new Date(value).toISOString();
@@ -82,8 +82,8 @@ describe('recursiveMap', () => {
   });
 });
 
-describe('recursiveRenameKeys', () => {
-  it('simple object', () => {
+describe('recursiveRenameKeys function', () => {
+  it('should map keys for simple object', () => {
     const result = recursiveRenameKeys(value => `test_${value}`, {
       test: 'value',
     });
@@ -91,7 +91,7 @@ describe('recursiveRenameKeys', () => {
     expect(Object.keys(result)).toStrictEqual(['test_test']);
   });
 
-  it('complex object', () => {
+  it('should map keys recursively for object containing array', () => {
     const result = recursiveRenameKeys(
       key => {
         if (key === 'phone_number') {
@@ -125,7 +125,7 @@ describe('recursiveRenameKeys', () => {
     expect(result.patientEnlistments[0].expiry_ts).toBe(1543240753289);
   });
 
-  it('complex array', () => {
+  it('should map keys recursively for an array containing objects with arrays', () => {
     const result = recursiveRenameKeys(
       key => {
         if (key === 'phone_number') {
@@ -162,12 +162,15 @@ describe('recursiveRenameKeys', () => {
   });
 });
 
-describe('camelize', () => {
-  it('easystring', () => {
+describe('camelize function', () => {
+  it('should camelize a string', () => {
     const result = camelize('easy_string_to_test');
     expect(result).toBe('easyStringToTest');
   });
-  it('camelizeKeys', () => {
+});
+
+describe('camelizeKeys function', () => {
+  it('should camelize keys of an object', () => {
     const result = camelizeKeys({
       easy_string_to_test: 'test',
     });
@@ -175,16 +178,18 @@ describe('camelize', () => {
   });
 });
 
-describe('decamelize', () => {
-  it('easystring', () => {
+describe('decamelize function', () => {
+  it('should decamlize a string', () => {
     const result = decamelize('easyStringTo_test');
     expect(result).toBe('easy_string_to_test');
   });
 });
 
-describe('mapObjIndexed', () => {
-  it('easy object', () => {
-    const result = mapObjIndexed(value => `-> ${value}`, { test: 'test' });
-    expect(result.test).toBe('-> test');
+describe('decamelizeKeys function', () => {
+  it('should decamelize keys of an object', () => {
+    const result = decamelizeKeys({
+      easyStringTo_test: 'test',
+    });
+    expect(result.easy_string_to_test).toBeDefined();
   });
 });

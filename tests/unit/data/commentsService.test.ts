@@ -35,39 +35,44 @@ describe('Comments Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a comment', async () => {
+  it('should create a comment', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, newCommentCreated);
-    const comment = await sdk.data.createComment(schemaId, documentId, {
+    const comment = await sdk.data.comments.create(schemaId, documentId, {
       text: 'Your comment here',
     });
     expect(comment.id).toBe(newCommentCreated.id);
   });
 
-  it('Request a list of comments', async () => {
+  it('should request a list of comments', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .get(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, commentsListResponse);
-    const res = await sdk.data.findComments(schemaId, documentId);
+    const res = await sdk.data.comments.find(schemaId, documentId);
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Update a comment', async () => {
+  it('should update a comment', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.updateComment(commentId, schemaId, documentId, {
-      text: 'My updated comment',
-    });
+    const res = await sdk.data.comments.update(
+      commentId,
+      schemaId,
+      documentId,
+      {
+        text: 'My updated comment',
+      }
+    );
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a comment', async () => {
+  it('should delete a comment', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.deleteComment(commentId, schemaId, documentId);
+    const res = await sdk.data.comments.delete(commentId, schemaId, documentId);
     expect(res.affectedRecords).toBe(1);
   });
 });

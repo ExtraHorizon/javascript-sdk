@@ -31,11 +31,11 @@ describe('Properties Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a property', async () => {
+  it('should create a property', async () => {
     nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/properties`).reply(200, {
       affectedRecords: 1,
     });
-    const res = await sdk.data.createProperty(schemaId, {
+    const res = await sdk.data.properties.create(schemaId, {
       name: 'username',
       configuration: {
         type: ConfigurationType.STRING,
@@ -46,14 +46,14 @@ describe('Properties Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Update a property', async () => {
+  it('should update a property', async () => {
     const propertyPath = 'username';
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/properties/${propertyPath}`)
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.updateProperty(schemaId, propertyPath, {
+    const res = await sdk.data.properties.update(schemaId, propertyPath, {
       type: ConfigurationType.STRING,
       minLength: 3,
       maxLength: 20,
@@ -61,14 +61,14 @@ describe('Properties Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a property', async () => {
+  it('should delete a property', async () => {
     const propertyPath = 'username';
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/properties/${propertyPath}`)
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.deleteProperty(schemaId, propertyPath);
+    const res = await sdk.data.properties.delete(schemaId, propertyPath);
     expect(res.affectedRecords).toBe(1);
   });
 });

@@ -1,7 +1,7 @@
 import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import { CommentsList, Comment, CommentText } from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import { Comment, CommentText } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -18,7 +18,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<Comment>}
    * @throws {LockedDocumentError}
    */
-  async createComment(
+  async create(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -45,16 +45,15 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
-   * @returns {Promise<CommentsList>}
-   * @throws {ApiError}
+   * @returns {Promise<PagedResult<Comment>>}
    */
-  async findComments(
+  async find(
     schemaId: ObjectId,
     documentId: ObjectId,
     options?: {
       rql?: RQLString;
     }
-  ): Promise<CommentsList> {
+  ): Promise<PagedResult<Comment>> {
     return (
       await client.get(
         httpAuth,
@@ -74,10 +73,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
-   * @throws {ApiError}
    */
 
-  async updateComment(
+  async update(
     commentId: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
@@ -106,9 +104,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
-   * @throws {ApiError}
    */
-  async deleteComment(
+  async delete(
     commentId: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId

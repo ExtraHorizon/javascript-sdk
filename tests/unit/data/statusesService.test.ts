@@ -31,21 +31,21 @@ describe('Statuses Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create a status', async () => {
+  it('should create a status', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/statuses`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.createStatus(schemaId, { name: statusName });
+    const res = await sdk.data.statuses.create(schemaId, { name: statusName });
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Update a status', async () => {
+  it('should update a status', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/statuses/${statusName}`)
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.updateStatus(schemaId, statusName, {
+    const res = await sdk.data.statuses.update(schemaId, statusName, {
       additionalProp1: 'string',
       additionalProp2: 'string',
       additionalProp3: 'string',
@@ -53,13 +53,13 @@ describe('Statuses Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a status', async () => {
+  it('should delete a status', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/statuses/${statusName}`)
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.deleteStatus(schemaId, statusName);
+    const res = await sdk.data.statuses.delete(schemaId, statusName);
     expect(res.affectedRecords).toBe(1);
   });
 });

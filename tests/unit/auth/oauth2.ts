@@ -31,12 +31,12 @@ describe('Auth - OAuth2', () => {
     nock.cleanAll();
   });
 
-  it('Can create authorizations', async () => {
+  it('should create an authorization', async () => {
     nock(`${apiHost}${AUTH_BASE}`)
       .post('/oauth2/authorizations')
       .reply(200, newAuthorization);
 
-    const createdResult = await sdk.auth.createOauth2Authorization({
+    const createdResult = await sdk.auth.oauth2.createAuthorization({
       responseType: 'code',
       clientId: '507f191e810c19729de860ea',
       state: '',
@@ -47,18 +47,18 @@ describe('Auth - OAuth2', () => {
     expect(createdResult.id).toEqual(newAuthorization.id);
   });
 
-  it('Can get authorizations', async () => {
+  it('should get authorizations', async () => {
     nock(`${apiHost}${AUTH_BASE}`)
       .get('/oauth2/authorizations')
       .reply(200, authorizationList);
 
-    const applications = await sdk.auth.getOauth2Authorizations();
+    const applications = await sdk.auth.oauth2.getAuthorizations();
 
     expect(applications.data).toBeDefined();
     expect(applications.data[0].id).toEqual(authorizationList.data[0].id);
   });
 
-  it('Can delete authorization', async () => {
+  it('should delete an authorization', async () => {
     const authorizationId = '123';
 
     nock(`${apiHost}${AUTH_BASE}`)
@@ -67,14 +67,14 @@ describe('Auth - OAuth2', () => {
         affectedRecords: 1,
       });
 
-    const deleteResult = await sdk.auth.deleteOauth2Authorization(
+    const deleteResult = await sdk.auth.oauth2.deleteAuthorization(
       authorizationId
     );
 
     expect(deleteResult.affectedRecords).toEqual(1);
   });
 
-  it('Can not delete unknown resource authorization', async () => {
+  it('throws on deleting unknown authorization', async () => {
     const authorizationId = '123';
     expect.assertions(1);
 
@@ -87,7 +87,7 @@ describe('Auth - OAuth2', () => {
       });
 
     try {
-      await sdk.auth.deleteOauth2Authorization(authorizationId);
+      await sdk.auth.oauth2.deleteAuthorization(authorizationId);
     } catch (error) {
       expect(error).toBeInstanceOf(ResourceUnknownError);
     }

@@ -2,18 +2,28 @@ export type LanguageCode = string;
 
 export type ObjectId = string;
 
+export interface Entity {
+  id?: ObjectId;
+}
+
+export interface Timestamps {
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
 export interface ErrorResponse {
   code?: number;
   name?: string;
   message?: string;
 }
 
-export interface PagedResult {
+export interface PagedResult<T> {
   page: {
     total: number;
     offset: number;
     limit: number;
   };
+  data: T[];
 }
 
 export interface AffectedRecords {

@@ -1,8 +1,3 @@
-// import { FileDetails, TokenPermission } from '../../src/services/files/types';
-
-// const token = '5a0b2adc265ced65a8cab865';
-// const now = new Date();
-
 export const taskData = {
   id: '757f191a810c19729de860ae',
   status: 'new',

@@ -35,21 +35,21 @@ describe('Indexes Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Create an index', async () => {
+  it('should create an index', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/indexes`)
       .reply(200, newIndexCreated);
-    const index = await sdk.data.createIndex(schemaId, newIndexInput);
+    const index = await sdk.data.indexes.create(schemaId, newIndexInput);
     expect(index.id).toBe(newIndexCreated.id);
   });
 
-  it('Delete an index', async () => {
+  it('should delete an index', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/indexes/${indexId}`)
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.deleteIndex(indexId, schemaId);
+    const res = await sdk.data.indexes.delete(indexId, schemaId);
     expect(res.affectedRecords).toBe(1);
   });
 });

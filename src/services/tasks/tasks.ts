@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type { TasksList, Task, TaskInput } from './types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { Task, TaskInput } from './types';
 import type { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -11,9 +11,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
    *
    * @returns any Success
-   * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<TasksList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Task>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
@@ -25,9 +24,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param requestBody
    * @returns Task Success
-   * @throws {ApiError}
    */
-  async createTask(requestBody: TaskInput): Promise<Task> {
+  async create(requestBody: TaskInput): Promise<Task> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -44,7 +42,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalStateException}
    * @throws {ResourceUnknownException}
    */
-  async cancelTask(taskId: ObjectId): Promise<AffectedRecords> {
+  async cancel(taskId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${taskId}/cancel`)).data;
   },
 });

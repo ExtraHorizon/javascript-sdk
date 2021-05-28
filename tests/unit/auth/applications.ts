@@ -34,12 +34,12 @@ describe('Auth - Applications', () => {
     nock.cleanAll();
   });
 
-  it('Can create applications', async () => {
+  it('should create an application', async () => {
     nock(`${apiHost}${AUTH_BASE}`)
       .post('/applications')
       .reply(200, newApplication);
 
-    const createdResult = await sdk.auth.createApplication({
+    const createdResult = await sdk.auth.applications.create({
       type: newApplication.type,
       name: newApplication.name,
       description: newApplication.description,
@@ -48,18 +48,18 @@ describe('Auth - Applications', () => {
     expect(createdResult.id).toEqual(newApplication.id);
   });
 
-  it('Can get applications', async () => {
+  it('should get applications', async () => {
     nock(`${apiHost}${AUTH_BASE}`)
       .get('/applications')
       .reply(200, applicationDataList);
 
-    const applications = await sdk.auth.getApplications();
+    const applications = await sdk.auth.applications.get();
 
     expect(applications.data).toBeDefined();
     expect(applications.data[0].name).toEqual(applicationDataList.data[0].name);
   });
 
-  it('Can update applications', async () => {
+  it('sould update an pplication', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(apiHost)
@@ -70,7 +70,7 @@ describe('Auth - Applications', () => {
       .put(`/applications/${applicationId}`)
       .reply(200, newApplication);
 
-    const updatedResult = await sdk.auth.updateApplication(applicationId, {
+    const updatedResult = await sdk.auth.applications.update(applicationId, {
       type: newApplication.type,
       name: newApplication.name,
       description: newApplication.description,
@@ -79,7 +79,7 @@ describe('Auth - Applications', () => {
     expect(updatedResult.id).toEqual(newApplication.id);
   });
 
-  it('Can delete applications versions', async () => {
+  it('should delete an application version', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     const versionId = '456';
@@ -93,7 +93,7 @@ describe('Auth - Applications', () => {
         affectedRecords: 1,
       });
 
-    const deleteResult = await sdk.auth.deleteApplicationVersion(
+    const deleteResult = await sdk.auth.applications.deleteVersion(
       applicationId,
       versionId
     );
@@ -101,7 +101,7 @@ describe('Auth - Applications', () => {
     expect(deleteResult.affectedRecords).toEqual(1);
   });
 
-  it('Can create application versions', async () => {
+  it('should create an application versions', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(apiHost)
@@ -112,7 +112,7 @@ describe('Auth - Applications', () => {
       .post(`/applications/${applicationId}/versions`)
       .reply(200, newApplicationVersion);
 
-    const createdResult = await sdk.auth.createApplicationVersion(
+    const createdResult = await sdk.auth.applications.createVersion(
       applicationId,
       {
         name: newApplicationVersion.name,

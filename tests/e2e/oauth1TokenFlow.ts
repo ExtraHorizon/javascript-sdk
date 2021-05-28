@@ -19,41 +19,40 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // health service
-  it('Can call the users.health', async () => {
+  it('should fetch users.health', async () => {
     const res = await sdk.users.health();
     expect(res).toBe(true);
   });
 
   // users service
-  it('Can call users.me', async () => {
+  it('should fetch users.me', async () => {
     const user = await sdk.users.me();
     expect(user.id).toBeDefined();
     console.log(user);
     expect(user.firstName).toBeDefined();
   });
 
-  it('Can call users.find', async () => {
+  it('should fetch users.find', async () => {
     const res = await sdk.users.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
-
   // group roles service
-  it('Can call users.getGroupsPermissions', async () => {
-    const res = await sdk.users.getGroupsPermissions();
+  it('should fetch users.groupRoles.getPermissions', async () => {
+    const res = await sdk.users.groupRoles.getPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   // global roles service
-  it('Can call users.getPermissions', async () => {
-    const res = await sdk.users.getPermissions();
+  it('should fetch users.globalRoles.getPermissions', async () => {
+    const res = await sdk.users.globalRoles.getPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Can call users.getRoles', async () => {
+  it('should fetch users.globalRoles.get', async () => {
     expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
-      const res = await sdk.users.getRoles(rql);
+      const res = await sdk.users.globalRoles.get({ rql });
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);
@@ -61,18 +60,18 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // auth service
-  it('Can call auth.getApplications', async () => {
+  it('should fetch auth.applications.get', async () => {
     const rql = rqlBuilder().select('name').build();
-    const res = await sdk.auth.getApplications(rql);
+    const res = await sdk.auth.applications.get({ rql });
     expect(res).toBeDefined();
   });
 
   // files service
-  it('Can call files.find', async () => {
+  it('should fetch files.find', async () => {
     expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
     try {
-      const res = await sdk.files.find(rql);
+      const res = await sdk.files.find({ rql });
       expect(res.data.length).toBeGreaterThan(0);
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);
@@ -80,15 +79,15 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // data infrastructure service
-  it('Can call data.health', async () => {
+  it('should fetch data.health', async () => {
     const res = await sdk.data.health();
     expect(res).toBe(true);
   });
 
   // data schemas service
-  it('Can call data.createSchema', async () => {
+  it('should fetch data.schemas.create', async () => {
     try {
-      const schema = await sdk.data.createSchema(newSchemaInput);
+      const schema = await sdk.data.schemas.create(newSchemaInput);
       expect(schema.creationTransition).toBeDefined();
     } catch (err) {
       expect(err).toBeInstanceOf(NoPermissionError);
@@ -96,7 +95,7 @@ describe('OAuth1 Token Flow', () => {
   });
 
   // tasks service
-  it('Can call tasks.find', async () => {
+  it('should fetch tasks.find', async () => {
     expect.assertions(1);
     try {
       const res = await sdk.tasks.find();

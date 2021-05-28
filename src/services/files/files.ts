@@ -1,8 +1,8 @@
 import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
-import { ResultResponse, Results } from '../types';
-import type { FilesList, FileDetails, Token, CreateFile } from './types';
+import { ResultResponse, Results, PagedResult } from '../types';
+import type { FileDetails, Token, CreateFile } from './types';
 import { RQLString } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -14,9 +14,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param rql Add filters to the requested list.
    * @returns any Success
-   * @throws {ApiError}
    */
-  async find(options?: { rql?: RQLString }): Promise<FilesList> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
@@ -30,7 +29,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  async createFile({ name, file, tags }: CreateFile): Promise<FileDetails> {
+  async create({ name, file, tags }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
     form.append('name', name);
     form.append('file', file);
@@ -58,7 +57,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async deleteFile(token: Token): Promise<boolean> {
+  async delete(token: Token): Promise<boolean> {
     const result: ResultResponse = await client.delete(httpAuth, `/${token}`);
     return result.status === Results.Success;
   },
@@ -74,7 +73,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async retrieveFile(token: Token): Promise<Buffer> {
+  async retrieve(token: Token): Promise<Buffer> {
     return (
       await client.get(httpAuth, `/${token}/file`, {
         responseType: 'arraybuffer',
@@ -93,7 +92,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async retrieveFileStream(token: Token): Promise<{ data: ReadStream }> {
+  async retrieveStream(token: Token): Promise<{ data: ReadStream }> {
     return await client.get(httpAuth, `/${token}/file`, {
       responseType: 'stream',
     });
@@ -115,7 +114,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async getFileDetails(token: Token): Promise<FileDetails> {
+  async getDetails(token: Token): Promise<FileDetails> {
     return (await client.get(httpAuth, `/${token}/details`)).data;
   },
 });

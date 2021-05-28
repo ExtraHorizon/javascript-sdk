@@ -35,12 +35,12 @@ describe('Transitions Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Update the creation transition', async () => {
+  it('should update the creation transition', async () => {
     try {
       nock(`${apiHost}${DATA_BASE}`)
         .put(`/${schemaId}/creationTransition`)
         .reply(200, { affectedRecords: 1 });
-      const res = await sdk.data.updateCreationTransition(
+      const res = await sdk.data.transitions.updateCreation(
         schemaId,
         transitionInput
       );
@@ -51,22 +51,22 @@ describe('Transitions Service', () => {
     }
   });
 
-  it('Create a transition', async () => {
+  it('should create a transition', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .post(`/${schemaId}/transitions`)
       .reply(200, { ...newTransition, id: transitionId });
-    const createdTransition = await sdk.data.createTransition(
+    const createdTransition = await sdk.data.transitions.create(
       schemaId,
       newTransition
     );
     expect(createdTransition.id).toBe(transitionId);
   });
 
-  it('Update a transition', async () => {
+  it('should update a transition', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .put(`/${schemaId}/transitions/${transitionId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.updateTransition(
+    const res = await sdk.data.transitions.update(
       schemaId,
       transitionId,
       newTransition
@@ -74,11 +74,11 @@ describe('Transitions Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('Delete a transition', async () => {
+  it('should delete a transition', async () => {
     nock(`${apiHost}${DATA_BASE}`)
       .delete(`/${schemaId}/transitions/${transitionId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.deleteTransition(schemaId, transitionId);
+    const res = await sdk.data.transitions.delete(schemaId, transitionId);
     expect(res.affectedRecords).toBe(1);
   });
 });
