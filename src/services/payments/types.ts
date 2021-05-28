@@ -112,3 +112,83 @@ export interface OrderCreationSchema {
 export interface OrderUpdateSchema {
   status?: string;
 }
+
+export interface SubscriptionEntitlement {
+  id?: ObjectId;
+  userId?: ObjectId;
+  source?: SubscriptionEntitlementSource;
+  sourceProductId?: ObjectId;
+  subscriptionGroup?: string;
+  subscriptionTier?: string;
+  status?: SubscriptionEntitlementStatus;
+  statusCategory?: SubscriptionEntitlementStatusCategory;
+  expireTimestamp?: string;
+  newProductId?: ObjectId;
+  creationTimestamp?: string;
+}
+
+export enum SubscriptionEntitlementSource {
+  APP_STORE = 'appStore',
+}
+
+export enum SubscriptionEntitlementStatus {
+  USING_FREE_TRIAL = 'using_free_trial',
+  USING_INTRODUCTORY_PRICING = 'using_introductory_pricing',
+  ACTIVE_WITH_RENEWAL = 'active_with_renewal',
+  ACTIVE_WITHOUT_RENEWAL = 'active_without_renewal',
+  EXPIRED_VOLUNTARILY = 'expired_voluntarily',
+  SWITCHING_PRODUCT = 'switching_product',
+  SWITCHED_PRODUCT = 'switched_product',
+  IN_GRACE_PERIOD = 'in_grace_period',
+  IN_BILLING_RETRY = 'in_billing_retry',
+  EXPIRED_FROM_BILLING = 'expired_from_billing',
+  AWAITING_PRICE_CHANGE_CONFIRMATION = 'awaiting_price_change_confirmation',
+  FAILED_TO_CONFIRM_PRICE_CHANGE = 'failed_to_confirm_price_change',
+  REVOKED = 'revoked',
+  REFUNDED = 'refunded',
+  REFUNDED_FOR_ISSUE = 'refunded_for_issue',
+}
+
+export enum SubscriptionEntitlementStatusCategory {
+  ACQUIRING = 'acquiring',
+  ENGAGED = 'engaged',
+  ACTIVE_BUT_LOSING = 'active_but_losing',
+  INACTIVE_AND_LOSING = 'inactive_and_losing',
+  LOST = 'lost',
+}
+
+export interface SubscriptionEvent {
+  id?: ObjectId;
+  userId: ObjectId;
+  creationTimestamp?: string;
+  source: SubscriptionEventSource;
+  sourceProductId: ObjectId;
+  subscriptionGroup: string;
+  subscriptionTier: string;
+  type?: SubscriptionEventType;
+  expireTimestamp?: string;
+}
+
+export enum SubscriptionEventSource {
+  APP_STORE = 'appStore',
+}
+
+export enum SubscriptionEventType {
+  STARTED = 'started',
+  STARTED_WITH_FREE_TRIAL = 'started_with_free_trial',
+  STARTED_WITH_INTRODUCTORY_PRICING = 'started_with_introductory_pricing',
+  RENEWED = 'renewed',
+  RENEWAL_DISABLED = 'renewal_disabled',
+  RENEWAL_ENABLED = 'renewal_enabled',
+  EXPIRED_VOLUNTARILY = 'expired_voluntarily',
+  SWITCHING_PRODUCT = 'switching_product',
+  SWITCHED_PRODUCT = 'switched_product',
+  GRACE_PERIOD_STARTED = 'grace_period_started',
+  BILLING_RETRY_STARTED = 'billing_retry_started',
+  EXPIRED_FROM_BILLING = 'expired_from_billing',
+  PRICE_CHANGE_CONFIRMATION_REQUESTED = 'price_change_confirmation_requested',
+  FAILED_TO_CONFIRM_PRICE_CHANGE = 'failed_to_confirm_price_change',
+  REVOKED = 'revoked',
+  REFUNDED = 'refunded',
+  REFUNDED_FOR_ISSUE = 'refunded_for_issue',
+}

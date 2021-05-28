@@ -1,0 +1,33 @@
+import type { HttpInstance } from '../../types';
+import type { PagedResult } from '../types';
+import type { SubscriptionEntitlement, SubscriptionEvent } from './types';
+
+export default (client, httpAuth: HttpInstance) => ({
+  /**
+   * Get a list of subscription entitlements
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | List entitlements related to you
+   * `VIEW_SUBSCRIPTION_ENTITLEMENTS` | `global` | List entitlements related to all users
+   *
+   * @returns any Success
+   * @throws ApiError
+   */
+  async getEntitlements(): Promise<PagedResult<SubscriptionEntitlement>> {
+    return (await client.get(httpAuth, '/subscriptions/entitlements')).data;
+  },
+
+  /**
+   * Get a list of subscription events
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | List events related to you
+   * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
+   *
+   * @returns any Success
+   * @throws ApiError
+   */
+  async getSubscriptionsService1(): Promise<PagedResult<SubscriptionEvent>> {
+    return (await client.get(httpAuth, '/subscriptions/events')).data;
+  },
+});
