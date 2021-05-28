@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import type { ObjectId } from '../types';
 
 export interface ProductCreationSchema {
@@ -191,4 +192,84 @@ export enum SubscriptionEventType {
   REVOKED = 'revoked',
   REFUNDED = 'refunded',
   REFUNDED_FOR_ISSUE = 'refunded_for_issue',
+}
+
+export interface TransactionCompletionDataSchema {
+  /**
+   * Base 64 encoded App Store receipt
+   */
+  receiptData: string;
+  /**
+   * The id of the transition inside the receipt to complete
+   */
+  transactionId: string;
+}
+
+// The data can be found here: https://developer.apple.com/documentation/appstorereceipts/responsebody
+export type AppleReceiptExampleSchema = any;
+
+export interface ReceiptVerificationDataSchema {
+  /**
+   * Base 64 encoded App Store receipt
+   */
+  receiptData: string;
+}
+
+export interface AppleNotification {
+  auto_renew_product_id?: string;
+  auto_renew_status?: string;
+  auto_renew_status_change_date_ms?: string;
+  environment?: string;
+  notification_type?: string;
+  password?: string;
+  unified_receipt?: {
+    environment?: string;
+    latest_receipt?: string;
+    latest_receipt_info?: Array<{
+      expires_date?: string;
+      expires_date_ms?: string;
+      expires_date_pst?: string;
+      is_in_intro_offer_period?: string;
+      is_trial_period?: string;
+      original_purchase_date?: string;
+      original_purchase_date_ms?: string;
+      original_purchase_date_pst?: string;
+      original_transaction_id?: string;
+      product_id?: string;
+      purchase_date?: string;
+      purchase_date_ms?: string;
+      purchase_date_pst?: string;
+      quantity?: string;
+      subscription_group_identifier?: string;
+      transaction_id?: string;
+      web_order_line_item_id?: string;
+    }>;
+    pending_renewal_info?: Array<{
+      auto_renew_product_id?: string;
+      auto_renew_status?: string;
+      expiration_intent?: string;
+      is_in_billing_retry_period?: string;
+      original_transaction_id?: string;
+      product_id?: string;
+    }>;
+    status?: number;
+  };
+  bid?: string;
+  bvrs?: string;
+}
+
+export interface AppStoreNotification {
+  id?: ObjectId;
+  data?: AppleNotification;
+  creationTimestamp?: Date;
+  updateTimestamp?: Date;
+}
+
+export interface AppStoreReceipt {
+  id?: ObjectId;
+  userId?: ObjectId;
+  transactionId?: string;
+  receiptResponse?: AppleReceiptExampleSchema;
+  creationTimestamp?: Date;
+  updateTimestamp?: Date;
 }
