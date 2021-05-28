@@ -273,3 +273,44 @@ export interface AppStoreReceipt {
   creationTimestamp?: Date;
   updateTimestamp?: Date;
 }
+
+export interface AppStoreSubscription {
+  id?: ObjectId;
+  userId: ObjectId;
+  productId: string;
+  bundleId: string;
+  originalPurchaseDate: string;
+  originalTransactionId: string;
+  lastPurchaseDate: string;
+  expiresDate: string;
+  autoRenewStatus: boolean;
+  autoRenewStatusChange: string;
+  latestReceipt: string;
+  lastTransactionId?: string;
+  state?: string;
+  reevaluateDate?: string;
+  newProductId?: string;
+}
+
+export interface AppStoreSubscriptionProduct {
+  id?: ObjectId;
+  name?: string;
+  appStoreAppBundleId?: string;
+  appStoreProductId?: string;
+  subscriptionGroup?: string;
+  subscriptionTier?: string;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface AppStoreSubscriptionProductCreation {
+  name?: string;
+  appStoreAppBundleId?: string;
+  appStoreProductId?: string;
+  subscriptionGroup?: string;
+  subscriptionTier?: string;
+}
+
+export interface AppStoreSubscriptionProductUpdateSchema {
+  name?: string;
+}
