@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs';
 import type { HttpInstance } from '../../types';
 import {
   AffectedRecords,
