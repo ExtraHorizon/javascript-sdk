@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   applicationDataList,
   newApplication,
@@ -14,7 +14,7 @@ describe('Auth - Applications', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

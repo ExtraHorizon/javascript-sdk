@@ -1,4 +1,4 @@
-import { client } from '../../src';
+import { createClient } from '../../src';
 import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
 import { newSchemaInput } from '../__helpers__/data';
@@ -7,7 +7,7 @@ describe('OAuth1 Token Flow', () => {
   let sdk;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost: process.env.API_HOST,
       consumerKey: process.env.CONSUMER_KEY,
       consumerSecret: process.env.CONSUMER_SECRET,

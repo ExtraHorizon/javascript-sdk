@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Templates basepath fix
 - Templates `resolveAsPdf` will return a `Buffer`
+- `client` is renamed to `createClient`
+
+```diff
+- import { client } from '@extrahorizon/javascript-sdk';
++ import { createClient } from '@extrahorizon/javascript-sdk';
+```
 
 ## [3.0.0]
 

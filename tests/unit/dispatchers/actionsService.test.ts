@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DISPATCHERS_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   dispatcherData,
   mailAction,
@@ -15,7 +15,7 @@ describe('Actions Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

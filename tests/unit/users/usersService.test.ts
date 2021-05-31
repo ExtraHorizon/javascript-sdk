@@ -1,7 +1,12 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import {
   userData,
   newUserData,
@@ -27,7 +32,7 @@ describe('Users Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

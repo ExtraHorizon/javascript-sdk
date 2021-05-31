@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { newSchemaCreated } from '../../__helpers__/data';
 
 describe('Statuses Service', () => {
@@ -10,7 +10,7 @@ describe('Statuses Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

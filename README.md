@@ -45,9 +45,9 @@ yarn add @extrahorizon/javascript-sdk
     <summary>OAuth1 Token authentication</summary>
 
 ```js
-import { client } from '@extrahorizon/javascript-sdk';
+import { createClient } from '@extrahorizon/javascript-sdk';
 
-const sdk = client({
+const sdk = createClient({
   apiHost: 'dev.fibricheck.com',
   consumerKey: '',
   consumerSecret: '',
@@ -65,9 +65,9 @@ await sdk.auth.authenticate({
     <summary>OAuth1 Email authentication</summary>
 
 ```js
-import { client } from '@extrahorizon/javascript-sdk';
+import { createClient } from '@extrahorizon/javascript-sdk';
 
-const sdk = client({
+const sdk = createClient({
   apiHost: 'dev.fibricheck.com',
   consumerKey: '',
   consumerSecret: '',
@@ -85,9 +85,9 @@ await sdk.auth.authenticate({
     <summary>OAuth2 Password Grant flow</summary>
 
 ```js
-import { client } from '@extrahorizon/javascript-sdk';
+import { createClient } from '@extrahorizon/javascript-sdk';
 
-const sdk = client({
+const sdk = createClient({
   apiHost: '',
   clientId: '',
 });
@@ -104,9 +104,9 @@ await sdk.auth.authenticate({
     <summary>OAuth2 Authorization Code Grant flow with callback</summary>
 
 ```js
-import { client } from '@extrahorizon/javascript-sdk';
+import { createClient } from '@extrahorizon/javascript-sdk';
 
-const sdk = client({
+const sdk = createClient({
   apiHost: '',
   clientId: '',
   freshTokensCallback: tokenData => {
@@ -126,9 +126,9 @@ await sdk.auth.authenticate({
     <summary>OAuth2 Refresh Token Grant flow</summary>
 
 ```js
-import { client } from '@extrahorizon/javascript-sdk';
+import { createClient } from '@extrahorizon/javascript-sdk';
 
-const sdk = client({
+const sdk = createClient({
   apiHost: '',
   clientId: '',
 });
@@ -144,9 +144,9 @@ await sdk.auth.authenticate({
     <summary>OAuth2 password grant flow with two-step MFA in try / catch</summary>
 
 ```js
-import { client, MfaRequiredError } from '@extrahorizon/javascript-sdk';
+import { createClient, MfaRequiredError } from '@extrahorizon/javascript-sdk';
 
-const sdk = client({
+const sdk = createClient({
   apiHost: '',
   clientId: '',
 });
@@ -181,10 +181,10 @@ try {
 With es6 imports
 
 ```js
-import { client } from '@extrahorizon/javascript-sdk';
+import { createClient } from '@extrahorizon/javascript-sdk';
 
 (async () => {
-  const sdk = client({
+  const sdk = createClient({
     apiHost: '',
     clientId: '',
   });
@@ -223,10 +223,10 @@ The data returned from the backend is mapped using interceptors:
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
 
 ```ts
-import { client } from '@extrahorizon/javascript-sdk';
+import { createClient } from '@extrahorizon/javascript-sdk';
 
 (async () => {
-  const sdk = client({
+  const sdk = createClient({
     apiHost: '',
     clientId: '',
   });
@@ -248,7 +248,7 @@ You can pass in two logger function that will be called by Axios on every reques
 ```ts
 import AxiosLogger from "axios-logger";
 
-const sdk = client({
+const sdk = createClient({
   apiHost: "https://api.dev.fibricheck.com",
   clientId: '',
   requestLogger: AxiosLogger.requestLogger,
@@ -298,7 +298,7 @@ interface MySchema extends Schema {
   };
 }
 
-const sdk = client({
+const sdk = createClient({
   apiHost: 'https://api.dev.fibricheck.com',
 });
 

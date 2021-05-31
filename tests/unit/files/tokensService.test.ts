@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { TokenPermission } from '../../../src/services/files/types';
 
 jest.mock('fs');
@@ -12,7 +12,7 @@ describe('Token Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

@@ -1,6 +1,11 @@
 import nock from 'nock';
 import { AUTH_BASE, TEMPLATE_BASE } from '../../../src/constants';
-import { Client, client, rqlBuilder, ParamsOauth2 } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  rqlBuilder,
+  ParamsOauth2,
+} from '../../../src/index';
 import {
   templateData,
   templateResponse,
@@ -14,7 +19,7 @@ describe('Template Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

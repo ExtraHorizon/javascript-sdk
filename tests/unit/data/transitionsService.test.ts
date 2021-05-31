@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { transitionInput, newTransition } from '../../__helpers__/data';
 
 describe('Transitions Service', () => {
@@ -11,7 +11,7 @@ describe('Transitions Service', () => {
 
   beforeAll(async () => {
     try {
-      sdk = client({
+      sdk = createClient({
         apiHost,
         clientId: '',
       });

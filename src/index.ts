@@ -162,7 +162,7 @@ export interface Client<T extends ClientParams> {
  * Create ExtraHorizon client.
  *
  * @example
- * const sdk = client({
+ * const sdk = createClient({
  *   apiHost: 'xxx.fibricheck.com',
  *   clientId: 'string',
  * });
@@ -171,7 +171,7 @@ export interface Client<T extends ClientParams> {
  *   password: 'string',
  * });
  */
-export function client<T extends ClientParams>(rawConfig: T): Client<T> {
+export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 

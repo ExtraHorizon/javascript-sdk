@@ -1,7 +1,12 @@
 import nock from 'nock';
 import * as fs from 'fs';
 import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import { fileData } from '../../__helpers__/file';
 import { filesResponse } from '../../__helpers__/apiResponse';
 
@@ -14,7 +19,7 @@ describe('Files Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

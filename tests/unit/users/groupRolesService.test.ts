@@ -1,6 +1,11 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import {
   permissionResponse,
   roleResponse,
@@ -13,7 +18,7 @@ describe('Group Roles Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });

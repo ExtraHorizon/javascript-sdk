@@ -1,6 +1,11 @@
 import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import { userConfigResponse } from '../../__helpers__/configuration';
 
 describe('Configuration: Users Service', () => {
@@ -10,7 +15,7 @@ describe('Configuration: Users Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
+    sdk = createClient({
       apiHost,
       clientId: '',
     });
