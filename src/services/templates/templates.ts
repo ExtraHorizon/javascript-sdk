@@ -103,30 +103,6 @@ export default (client, httpAuth: HttpInstance) => ({
   },
 
   /**
-   * Resolves a template and presents the result as a pdf file
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param templateId Id of the targeted template
-   * @param requestBody
-   * @returns any Success
-   * @throws {LocalizationKeyMissingError}
-   * @throws {TemplateFillingError}
-   * @throws {ResourceUnknownError}
-   */
-  async resolveAsPdfStream(
-    templateId: string,
-    requestBody: CreateFile
-  ): Promise<{ data: ReadStream }> {
-    return (
-      await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
-        responseType: 'stream',
-      })
-    ).data;
-  },
-
-  /**
    * @deprecated
    * Resolves a template and presents the result as a pdf file
    * Permission | Scope | Effect
