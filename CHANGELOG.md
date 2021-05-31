@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.0.1]
 
 - Templates basepath fix
+- Templates `resolveAsPdf` will return a `Buffer`
 
 ## [3.0.0]
 
