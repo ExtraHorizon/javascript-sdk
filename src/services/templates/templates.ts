@@ -1,3 +1,4 @@
+import { ReadStream } from 'fs';
 import type { HttpInstance } from '../../types';
 import {
   AffectedRecords,
@@ -93,9 +94,36 @@ export default (client, httpAuth: HttpInstance) => ({
   async resolveAsPdf(
     templateId: string,
     requestBody: CreateFile
-  ): Promise<any> {
-    return (await client.post(httpAuth, `/${templateId}/pdf`, requestBody))
-      .data;
+  ): Promise<Buffer> {
+    return (
+      await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
+        responseType: 'arraybuffer',
+      })
+    ).data;
+  },
+
+  /**
+   * Resolves a template and presents the result as a pdf file
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   *
+   * @param templateId Id of the targeted template
+   * @param requestBody
+   * @returns any Success
+   * @throws {LocalizationKeyMissingError}
+   * @throws {TemplateFillingError}
+   * @throws {ResourceUnknownError}
+   */
+  async resolveAsPdfStream(
+    templateId: string,
+    requestBody: CreateFile
+  ): Promise<{ data: ReadStream }> {
+    return (
+      await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
+        responseType: 'stream',
+      })
+    ).data;
   },
 
   /**
@@ -117,12 +145,15 @@ export default (client, httpAuth: HttpInstance) => ({
     templateId: string,
     localizationCode: string,
     requestBody: CreateFile
-  ): Promise<any> {
+  ): Promise<Buffer> {
     return (
       await client.post(
         httpAuth,
         `/${templateId}/pdf/${localizationCode}`,
-        requestBody
+        requestBody,
+        {
+          responseType: 'arraybuffer',
+        }
       )
     ).data;
   },
