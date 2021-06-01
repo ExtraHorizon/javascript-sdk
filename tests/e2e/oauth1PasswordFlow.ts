@@ -5,7 +5,7 @@ import { newSchemaInput } from '../__helpers__/data';
 
 describe('OAuth1 Password Flow', () => {
   const sdk = createClient({
-    apiHost: process.env.API_HOST,
+    host: process.env.API_HOST,
     consumerKey: process.env.CONSUMER_KEY,
     consumerSecret: process.env.CONSUMER_SECRET,
   });

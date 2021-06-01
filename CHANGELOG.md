@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.1]
 
+### Breaking Changes
+
+- `apiHost` has been renamed to `host` and should not include the protocol or `api` subdomain. Example `
+
+```diff
++ const sdk = createClient({
++   host: 'dev.fibricheck.com',
++   consumerKey: '',
++   consumerSecret: '',
++ });
+```
+
 - Templates basepath fix
 - Templates `resolveAsPdf` will return a `Buffer`
 - `client` is renamed to `createClient`

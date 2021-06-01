@@ -12,19 +12,19 @@ import {
 } from '../../__helpers__/dispatcher';
 
 describe('Dispatchers Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const dispatcherId = dispatcherData.id;
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -41,9 +41,7 @@ describe('Dispatchers Service', () => {
 
   it('should find a list of dispatchers', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${DISPATCHERS_BASE}`)
-      .get('/')
-      .reply(200, dispatchersResponse);
+    nock(`${host}${DISPATCHERS_BASE}`).get('/').reply(200, dispatchersResponse);
 
     const res = await sdk.dispatchers.find({ rql });
 
@@ -51,7 +49,7 @@ describe('Dispatchers Service', () => {
   });
 
   it('should create a dispatcher', async () => {
-    nock(`${apiHost}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
+    nock(`${host}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
 
     const res = await sdk.dispatchers.create(dispatcherData);
 
@@ -59,11 +57,9 @@ describe('Dispatchers Service', () => {
   });
 
   it('should delete a dispatcher', async () => {
-    nock(`${apiHost}${DISPATCHERS_BASE}`)
-      .delete(`/${dispatcherId}`)
-      .reply(200, {
-        affectedRecords: 1,
-      });
+    nock(`${host}${DISPATCHERS_BASE}`).delete(`/${dispatcherId}`).reply(200, {
+      affectedRecords: 1,
+    });
 
     const res = await sdk.dispatchers.remove(dispatcherId);
 

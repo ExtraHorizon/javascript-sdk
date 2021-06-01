@@ -163,7 +163,7 @@ export interface Client<T extends ClientParams> {
  *
  * @example
  * const sdk = createClient({
- *   apiHost: 'xxx.fibricheck.com',
+ *   host: 'xxx.fibricheck.com',
  *   clientId: 'string',
  * });
  * await sdk.auth.authenticate({

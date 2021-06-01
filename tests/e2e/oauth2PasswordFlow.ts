@@ -8,7 +8,7 @@ describe('OAuth2 Password Flow', () => {
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost: process.env.API_HOST,
+      host: process.env.API_HOST,
       clientId: process.env.CLIENT_ID,
     });
     await sdk.auth.authenticate({

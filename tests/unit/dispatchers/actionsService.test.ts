@@ -8,7 +8,7 @@ import {
 } from '../../__helpers__/dispatcher';
 
 describe('Actions Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const dispatcherId = dispatcherData.id;
   const actionId = mailAction.id;
 
@@ -16,12 +16,12 @@ describe('Actions Service', () => {
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -37,7 +37,7 @@ describe('Actions Service', () => {
   });
 
   it('should add an action to the dispatcher', async () => {
-    nock(`${apiHost}${DISPATCHERS_BASE}`)
+    nock(`${host}${DISPATCHERS_BASE}`)
       .post(`/${dispatcherId}/actions`)
       .reply(200, mailAction);
 
@@ -50,7 +50,7 @@ describe('Actions Service', () => {
   });
 
   it('should update an action for the specified dispatcher', async () => {
-    nock(`${apiHost}${DISPATCHERS_BASE}`)
+    nock(`${host}${DISPATCHERS_BASE}`)
       .put(`/${dispatcherId}/actions/${actionId}`)
       .reply(200, {
         affectedRecords: 1,
@@ -66,7 +66,7 @@ describe('Actions Service', () => {
   });
 
   it('should delete an action from the specified dispatcher', async () => {
-    nock(`${apiHost}${DISPATCHERS_BASE}`)
+    nock(`${host}${DISPATCHERS_BASE}`)
       .delete(`/${dispatcherId}/actions/${actionId}`)
       .reply(200, {
         affectedRecords: 1,

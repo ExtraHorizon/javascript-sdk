@@ -8,18 +8,19 @@ function hmacSha1Hash(baseString: string, key: string) {
 }
 
 export function validateConfig({
-  apiHost: rawApiHost,
+  host: rawHost,
   ...params
 }: ClientParams): ClientConfig {
-  const validApiHostEnd = rawApiHost.endsWith('/')
-    ? rawApiHost.substr(0, rawApiHost.length - 1)
-    : rawApiHost;
+  const validHostEnd = rawHost.endsWith('/')
+    ? rawHost.substr(0, rawHost.length - 1)
+    : rawHost;
 
   const configBase = {
     ...params,
-    apiHost: validApiHostEnd.startsWith('https://')
-      ? validApiHostEnd
-      : `https://${validApiHostEnd}`,
+    host: `https://api.${validHostEnd
+      .replace('https://', '')
+      .replace('http://', '')
+      .replace('api.', '')}`,
   };
 
   if ('consumerKey' in params) {

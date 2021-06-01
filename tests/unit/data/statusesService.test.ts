@@ -6,17 +6,17 @@ import { newSchemaCreated } from '../../__helpers__/data';
 describe('Statuses Service', () => {
   const schemaId = newSchemaCreated.id;
   const statusName = 'pending';
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -32,7 +32,7 @@ describe('Statuses Service', () => {
   });
 
   it('should create a status', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/statuses`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.statuses.create(schemaId, { name: statusName });
@@ -40,7 +40,7 @@ describe('Statuses Service', () => {
   });
 
   it('should update a status', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .put(`/${schemaId}/statuses/${statusName}`)
       .reply(200, {
         affectedRecords: 1,
@@ -54,7 +54,7 @@ describe('Statuses Service', () => {
   });
 
   it('should delete a status', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/statuses/${statusName}`)
       .reply(200, {
         affectedRecords: 1,

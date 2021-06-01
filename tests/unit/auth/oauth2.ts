@@ -6,18 +6,18 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { authorizationList, newAuthorization } from '../../__helpers__/auth';
 
 describe('Auth - OAuth2', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -32,7 +32,7 @@ describe('Auth - OAuth2', () => {
   });
 
   it('should create an authorization', async () => {
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .post('/oauth2/authorizations')
       .reply(200, newAuthorization);
 
@@ -48,7 +48,7 @@ describe('Auth - OAuth2', () => {
   });
 
   it('should get authorizations', async () => {
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/authorizations')
       .reply(200, authorizationList);
 
@@ -61,7 +61,7 @@ describe('Auth - OAuth2', () => {
   it('should delete an authorization', async () => {
     const authorizationId = '123';
 
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)
       .reply(200, {
         affectedRecords: 1,
@@ -78,7 +78,7 @@ describe('Auth - OAuth2', () => {
     const authorizationId = '123';
     expect.assertions(1);
 
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .delete(`/oauth2/authorizations/${authorizationId}`)
       .reply(404, {
         code: 16,

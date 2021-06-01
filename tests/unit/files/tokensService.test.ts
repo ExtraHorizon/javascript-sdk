@@ -6,19 +6,19 @@ import { TokenPermission } from '../../../src/services/files/types';
 jest.mock('fs');
 
 describe('Token Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const token = '5a0b2adc265ced65a8cab861';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -35,7 +35,7 @@ describe('Token Service', () => {
 
   it('should delete a token', async () => {
     const tokenToAccess = '5a0b2adc265ced65a8cab862';
-    nock(`${apiHost}${FILES_BASE}`)
+    nock(`${host}${FILES_BASE}`)
       .delete(`/${token}/tokens/${tokenToAccess}`)
       .reply(200);
 
@@ -48,7 +48,7 @@ describe('Token Service', () => {
     const tokenData = {
       accessLevel: TokenPermission.FULL,
     };
-    nock(`${apiHost}${FILES_BASE}`)
+    nock(`${host}${FILES_BASE}`)
       .post(`/${token}/tokens`)
       .reply(200, {
         ...tokenData,

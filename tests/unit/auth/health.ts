@@ -4,13 +4,13 @@ import { AUTH_BASE } from '../../../src/constants';
 import { createClient } from '../../../src/index';
 
 describe('Auth - Health', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
 
   let sdk: ReturnType<typeof createClient>;
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
   });
@@ -20,7 +20,7 @@ describe('Auth - Health', () => {
   });
 
   it('should get health', async () => {
-    nock(`${apiHost}${AUTH_BASE}`).get('/health').reply(200);
+    nock(`${host}${AUTH_BASE}`).get('/health').reply(200);
 
     const health = await sdk.auth.health();
 

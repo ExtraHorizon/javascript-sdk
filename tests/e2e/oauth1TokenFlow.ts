@@ -8,7 +8,7 @@ describe('OAuth1 Token Flow', () => {
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost: process.env.API_HOST,
+      host: process.env.API_HOST,
       consumerKey: process.env.CONSUMER_KEY,
       consumerSecret: process.env.CONSUMER_SECRET,
     });

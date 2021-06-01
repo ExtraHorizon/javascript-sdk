@@ -48,7 +48,7 @@ yarn add @extrahorizon/javascript-sdk
 import { createClient } from '@extrahorizon/javascript-sdk';
 
 const sdk = createClient({
-  apiHost: 'dev.fibricheck.com',
+  host: 'dev.fibricheck.com',
   consumerKey: '',
   consumerSecret: '',
 });
@@ -68,7 +68,7 @@ await sdk.auth.authenticate({
 import { createClient } from '@extrahorizon/javascript-sdk';
 
 const sdk = createClient({
-  apiHost: 'dev.fibricheck.com',
+  host: 'dev.fibricheck.com',
   consumerKey: '',
   consumerSecret: '',
 });
@@ -88,7 +88,7 @@ await sdk.auth.authenticate({
 import { createClient } from '@extrahorizon/javascript-sdk';
 
 const sdk = createClient({
-  apiHost: '',
+  host: '',
   clientId: '',
 });
 
@@ -107,7 +107,7 @@ await sdk.auth.authenticate({
 import { createClient } from '@extrahorizon/javascript-sdk';
 
 const sdk = createClient({
-  apiHost: '',
+  host: '',
   clientId: '',
   freshTokensCallback: tokenData => {
     localStorage.setItem('tokenData', tokenData);
@@ -129,7 +129,7 @@ await sdk.auth.authenticate({
 import { createClient } from '@extrahorizon/javascript-sdk';
 
 const sdk = createClient({
-  apiHost: '',
+  host: '',
   clientId: '',
 });
 
@@ -147,7 +147,7 @@ await sdk.auth.authenticate({
 import { createClient, MfaRequiredError } from '@extrahorizon/javascript-sdk';
 
 const sdk = createClient({
-  apiHost: '',
+  host: '',
   clientId: '',
 });
 
@@ -185,7 +185,7 @@ import { createClient } from '@extrahorizon/javascript-sdk';
 
 (async () => {
   const sdk = createClient({
-    apiHost: '',
+    host: '',
     clientId: '',
   });
 
@@ -227,7 +227,7 @@ import { createClient } from '@extrahorizon/javascript-sdk';
 
 (async () => {
   const sdk = createClient({
-    apiHost: '',
+    host: '',
     clientId: '',
   });
 
@@ -249,7 +249,7 @@ You can pass in two logger function that will be called by Axios on every reques
 import AxiosLogger from "axios-logger";
 
 const sdk = createClient({
-  apiHost: "https://api.dev.fibricheck.com",
+  host: "https://api.dev.fibricheck.com",
   clientId: '',
   requestLogger: AxiosLogger.requestLogger,
   responseLogger: AxiosLogger.responseLogger,
@@ -299,7 +299,7 @@ interface MySchema extends Schema {
 }
 
 const sdk = createClient({
-  apiHost: 'https://api.dev.fibricheck.com',
+  host: 'dev.fibricheck.com',
 });
 
 const { data: schemas } = await sdk.data.find();

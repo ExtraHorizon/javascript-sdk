@@ -9,19 +9,19 @@ import {
 import { userConfigResponse } from '../../__helpers__/configuration';
 
 describe('Configuration: Users Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const userId = '52adef123456789abcdef123';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -37,7 +37,7 @@ describe('Configuration: Users Service', () => {
   });
 
   it('should retrieve a user configuration', async () => {
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/users/${userId}`)
       .reply(200, userConfigResponse);
 
@@ -50,7 +50,7 @@ describe('Configuration: Users Service', () => {
 
   it('should update a user configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`).put(`/users/${userId}`).reply(200, {
+    nock(`${host}${CONFIGURATION_BASE}`).put(`/users/${userId}`).reply(200, {
       affectedRecords: 1,
     });
 
@@ -69,7 +69,7 @@ describe('Configuration: Users Service', () => {
 
   it('should delete fields from a user configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/users/${userId}/deleteFields`)
       .reply(200, {
         affectedRecords: 1,

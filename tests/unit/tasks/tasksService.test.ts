@@ -9,19 +9,19 @@ import {
 import { taskData, tasksResponse } from '../../__helpers__/task';
 
 describe('Tasks Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const taskId = taskData.id;
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     sdk = createClient({
-      apiHost,
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -38,7 +38,7 @@ describe('Tasks Service', () => {
 
   it('should view a list of tasks', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
+    nock(`${host}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
     const res = await sdk.tasks.find({ rql });
 
@@ -46,7 +46,7 @@ describe('Tasks Service', () => {
   });
 
   it('should create a task', async () => {
-    nock(`${apiHost}${TASKS_BASE}`).post('/').reply(200, taskData);
+    nock(`${host}${TASKS_BASE}`).post('/').reply(200, taskData);
 
     const task = await sdk.tasks.create({
       functionName: 'test function',
@@ -57,7 +57,7 @@ describe('Tasks Service', () => {
   });
 
   it('should cancel a task', async () => {
-    nock(`${apiHost}${TASKS_BASE}`).post(`/${taskId}/cancel`).reply(200, {
+    nock(`${host}${TASKS_BASE}`).post(`/${taskId}/cancel`).reply(200, {
       affectedRecords: 1,
     });
 
