@@ -34,6 +34,12 @@ interface OAuth1Authenticate {
    *  token: '',
    *  tokenSecret: '',
    * });
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
+   * @throws {MfaRequiredError}
    */
   authenticate(oauth: { token: string; tokenSecret: string }): Promise<void>;
   /**
@@ -43,6 +49,12 @@ interface OAuth1Authenticate {
    *  email: '',
    *  password: '',
    * });
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
+   * @throws {MfaRequiredError}
    */
   authenticate(oauth: { email: string; password: string }): Promise<void>;
 }
@@ -55,6 +67,11 @@ interface OAuth2Authenticate {
    *  code: '',
    *  redirectUri: '',
    * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
    */
   authenticate(oauth: { code: string; redirectUri: string }): Promise<void>;
   /**
@@ -64,6 +81,11 @@ interface OAuth2Authenticate {
    *  password: '',
    *  username: '',
    * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
    */
   authenticate(oauth: { username: string; password: string }): Promise<void>;
   /**
@@ -72,6 +94,11 @@ interface OAuth2Authenticate {
    * await sdk.auth.authenticate({
    *  refreshToken: '',
    * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
    */
   authenticate(oauth: { refreshToken: string }): Promise<void>;
 }
