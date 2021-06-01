@@ -54,6 +54,7 @@ describe('Files Service', () => {
     const newFile = {
       name: 'testfile',
       file: fs.readFileSync('test'),
+      extension: 'pdf',
     };
 
     nock(`${host}${FILES_BASE}`).post('/').reply(200, fileData);

@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Templates `resolveAsPdf` will return a `Buffer`
 - `sdk.authenticate` now includes possible error responses in the JSDoc annotations
 - `rqlBuilder` now has JSDoc annotations
+- Fix for results with arrays containing strings
+- File creation now correctly set the file name on the form-data. Accepts extra parameter `extension` which defaults to `pdf`
 
 ## [3.0.0]
 
