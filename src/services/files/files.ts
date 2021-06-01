@@ -33,7 +33,7 @@ export default (client, httpAuth: HttpInstance) => ({
     name,
     file,
     tags,
-    extension,
+    extension = 'pdf',
   }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
     form.append('name', name);

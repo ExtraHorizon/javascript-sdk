@@ -33,7 +33,7 @@ export interface CreateTokenRequest {
 
 export interface CreateFile {
   name: string;
-  extension: string;
+  extension?: string;
   file: Buffer | ReadStream;
   tags?: string[];
 }
