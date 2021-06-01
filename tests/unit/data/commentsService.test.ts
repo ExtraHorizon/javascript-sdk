@@ -1,6 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { rqlBuilder } from '../../../src/rql';
 import {
   newCommentCreated,
   commentsListResponse,
@@ -46,10 +47,11 @@ describe('Comments Service', () => {
   });
 
   it('should request a list of comments', async () => {
+    const rql = rqlBuilder().build();
     nock(`${apiHost}${DATA_BASE}`)
       .get(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, commentsListResponse);
-    const res = await sdk.data.comments.find(schemaId, documentId);
+    const res = await sdk.data.comments.find(schemaId, documentId, { rql });
     expect(res.data.length).toBeGreaterThan(0);
   });
 
