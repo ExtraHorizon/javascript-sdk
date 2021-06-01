@@ -32,7 +32,7 @@ export default (client, httpAuth: HttpInstance) => ({
   async create({ name, file, tags }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
     form.append('name', name);
-    form.append('file', file);
+    form.append('file', file, `${file}.pdf`);
     if (tags) {
       form.append('tags', tags);
     }
