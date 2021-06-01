@@ -314,3 +314,56 @@ export interface AppStoreSubscriptionProductCreation {
 export interface AppStoreSubscriptionProductUpdateSchema {
   name?: string;
 }
+
+export interface StripeUser {
+  id?: ObjectId;
+  stripeId?: string;
+  paymentMethods?: Array<StripePaymentMethod>;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface StripePaymentMethod {
+  id?: ObjectId;
+  stripeId?: string;
+  brand?: string;
+  expirationYear?: number;
+  expirationMonth?: number;
+  last4Digits?: string;
+  tags?: Array<string>;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
+}
+
+export interface StripePaymentMethodCreation {
+  stripeId?: string;
+  tags?: Array<string>;
+}
+
+export interface PaymentIntentCreationSchema extends OrderCreationSchema {
+  setupPaymentMethodReuse?: PaymentIntentCreationSchemaSetupPaymentMethodReuse;
+  targetUserId?: ObjectId;
+  paymentMethodId?: ObjectId;
+  offSession?: boolean;
+  paymentMethodType?: PaymentIntentCreationSchemaPaymentMethodType;
+}
+
+export enum PaymentIntentCreationSchemaSetupPaymentMethodReuse {
+  OFF_SESSION = 'offSession',
+  ON_SESSION = 'onSession',
+}
+
+export enum PaymentIntentCreationSchemaPaymentMethodType {
+  CARD = 'card',
+  BANCONTACT = 'bancontact',
+  IDEAL = 'ideal',
+  GIROPAY = 'giropay',
+}
+
+export interface SetupIntentCreationSchema {
+  setupPaymentMethodReuse?: PaymentIntentCreationSchemaSetupPaymentMethodReuse;
+}
+
+export interface StripeSetupIntentSchema {
+  stripeClientSecret?: string;
+}
