@@ -1,5 +1,6 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
+import health from './health';
 import products from './products';
 import orders from './orders';
 import subscriptions from './subscriptions';
@@ -8,7 +9,7 @@ import appStoreSubscriptions from './appStoreSubscriptions';
 import stripe from './stripe';
 import { PAYMENTS_BASE } from '../../constants';
 
-export type PaymentsService = {
+export type PaymentsService = ReturnType<typeof health> & {
   products: ReturnType<typeof products>;
   orders: ReturnType<typeof orders>;
   subscriptions: ReturnType<typeof subscriptions>;
@@ -25,6 +26,7 @@ export const paymentsService = (
   });
 
   return {
+    ...health(client, httpWithAuth),
     products: products(client, httpWithAuth),
     orders: orders(client, httpWithAuth),
     subscriptions: subscriptions(client, httpWithAuth),
