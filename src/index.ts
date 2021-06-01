@@ -108,7 +108,7 @@ type Authenticate<
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  rawAxios: AxiosInstance;
+  raw: AxiosInstance;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
@@ -222,6 +222,6 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
         httpWithAuth.authenticate(parseAuthParams(oauth)),
       confirmMfa: httpWithAuth.confirmMfa,
     } as any,
-    rawAxios: httpWithAuth,
+    raw: httpWithAuth,
   };
 }

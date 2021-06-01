@@ -236,7 +236,7 @@ import { createClient } from '@extrahorizon/javascript-sdk';
     username: '',
   });
 
-  const me = await sdk.rawAxios.get('/users/v1/me').data;
+  const me = await sdk.raw.get('/users/v1/me').data;
   console.log('Me', me);
 })();
 ```

@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 + import { createClient } from '@extrahorizon/javascript-sdk';
 ```
 
+- `rawAxios` is renamed to `raw`
+
 ### Changes
 
 - Templates basepath fix
