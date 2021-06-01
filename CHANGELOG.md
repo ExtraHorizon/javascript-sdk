@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Templates basepath fix
 - Templates `resolveAsPdf` will return a `Buffer`
 - Fix for results with arrays containing strings
+- File creation now correctly set the file name on the form-data. Accepts extra parameter `extension` which defaults to `pdf`
 
 ## [3.0.0]
 
