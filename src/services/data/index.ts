@@ -11,12 +11,22 @@ import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
 
 export type DataService = ReturnType<typeof infrastructure> & {
+  /**
+   * A schema defines both the data contained and the behavior (in the form of a state machine) of the documents it holds.
+   * @see https://developers.extrahorizon.io/services/data-service/1.0.9/schemas.html
+   */
   schemas: ReturnType<typeof schemas>;
   indexes: ReturnType<typeof indexes>;
   statuses: ReturnType<typeof statuses>;
   properties: ReturnType<typeof properties>;
   comments: ReturnType<typeof comments>;
+  /**
+   * A document is an instance of such a "structured data". Each schema is separated from other schemas and their documents.
+   */
   documents: ReturnType<typeof documents>;
+  /**
+   * Transitions determine the possible ways the status of a document can change from one value (a value in the fromStatuses field) to another (the value of the toStatus field).
+   */
   transitions: ReturnType<typeof transitions>;
 };
 export const dataService = (httpWithAuth: HttpInstance): DataService => {
