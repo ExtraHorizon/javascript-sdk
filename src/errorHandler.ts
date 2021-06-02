@@ -51,6 +51,10 @@ import {
   AccessTokenUnknownError,
   DuplicateRequestError,
   InvalidCurrencyForProductPrice,
+  InvalidReceiptDataError,
+  UnknownReceiptTransactionError,
+  AppStoreTransactionAlreadyLinked,
+  NoConfiguredAppStoreProduct,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -99,7 +103,11 @@ export const ErrorClassDefinitionsMap = {
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,
   2610: FileTooLargeError,
+  2707: InvalidReceiptDataError,
+  2708: UnknownReceiptTransactionError,
   2714: InvalidCurrencyForProductPrice,
+  2716: NoConfiguredAppStoreProduct,
+  2717: AppStoreTransactionAlreadyLinked,
 };
 
 const ErrorClassDefinitionsByErrorMap = {

@@ -1,5 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { PagedResult } from '../types';
+import type { PagedResult, ResultResponse } from '../types';
+import { Results } from '../types';
 import type {
   TransactionCompletionDataSchema,
   AppleReceiptExampleSchema,
@@ -16,12 +17,15 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none |  | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns AppleReceiptExampleSchema Success
+   * @param requestBody TransactionCompletionDataSchema
+   * @returns AppleReceiptExampleSchema
    *
    * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
    *
-   * @throws ApiError
+   * @throws {InvalidReceiptDataError}
+   * @throws {UnknownReceiptTransactionError}
+   * @throws {AppStoreTransactionAlreadyLinked}
+   * @throws {NoConfiguredAppStoreProduct}
    */
   async createTransaction(
     requestBody: TransactionCompletionDataSchema
@@ -37,12 +41,12 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none |  | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns AppleReceiptExampleSchema Success
+   * @param requestBody ReceiptVerificationDataSchema
+   * @returns AppleReceiptExampleSchema
    *
    * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
    *
-   * @throws ApiError
+   * @throws {InvalidReceiptDataError}
    */
   async verifyTransaction(
     requestBody: ReceiptVerificationDataSchema
@@ -53,18 +57,16 @@ export default (client, httpAuth: HttpInstance) => ({
 
   /**
    * Processes an App Store Server notification
-   * @param requestBody
-   * @returns any Notification successfully processed
-   * @throws ApiError
+   * @param requestBody AppleNotification
+   * @returns true if the notification was successfully processed
    */
-  async processNotification(requestBody?: AppleNotification): Promise<any> {
-    return (
-      await client.post(
-        httpAuth,
-        '/appStore/processServerNotification',
-        requestBody
-      )
-    ).data;
+  async processNotification(requestBody: AppleNotification): Promise<boolean> {
+    const result: ResultResponse = await client.post(
+      httpAuth,
+      '/appStore/processServerNotification',
+      requestBody
+    );
+    return result.status === Results.Success;
   },
 
   /**
@@ -76,8 +78,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `VIEW_APP_STORE_NOTIFICATIONS` | `global` | **Required** for this endpoint
    *
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<AppStoreNotification>
    */
   async getNotifications(): Promise<PagedResult<AppStoreNotification>> {
     return (await client.get(httpAuth, '/appStore/receivedNotifications')).data;
@@ -92,8 +93,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `VIEW_APP_STORE_RECEIPTS` | `global` | **Required** for this endpoint
    *
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<AppStoreReceipt>
    */
   async getReceipts(): Promise<PagedResult<AppStoreReceipt>> {
     return (await client.get(httpAuth, '/appStore/receivedReceipts')).data;
