@@ -15,10 +15,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * `CREATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
    *
    * @param requestBody
-   * @returns ProductSchema Success
-   * @throws ApiError
+   * @returns ProductSchema
    */
-  async create(requestBody?: ProductCreationSchema): Promise<ProductSchema> {
+  async create(requestBody: ProductCreationSchema): Promise<ProductSchema> {
     return (await client.post(httpAuth, '/products', requestBody)).data;
   },
 
@@ -29,8 +28,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * none |  | Everyone can use this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<ProductSchema>
    */
   async find(options?: {
     rql?: RQLString;
@@ -45,9 +43,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list, **required**.
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
    */
   async addTagsToProduct(
     rql: RQLString,
@@ -65,9 +62,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list, **required**.
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
    */
   async removeTagsFromProduct(
     rql: string,
@@ -89,9 +85,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
    *
    * @param productId ID of the Product
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody ProductCreationSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async update(
     productId: ObjectId,
@@ -108,8 +104,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DELETE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
    *
    * @param productId ID of the Product
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async remove(productId: ObjectId): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/products/${productId}`)).data;
