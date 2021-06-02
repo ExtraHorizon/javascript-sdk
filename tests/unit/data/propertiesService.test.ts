@@ -1,22 +1,22 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { ConfigurationType } from '../../../src/services/data/types';
 import { newSchemaCreated } from '../../__helpers__/data';
 
 describe('Properties Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const schemaId = newSchemaCreated.id;
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -32,7 +32,7 @@ describe('Properties Service', () => {
   });
 
   it('should create a property', async () => {
-    nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/properties`).reply(200, {
+    nock(`${host}${DATA_BASE}`).post(`/${schemaId}/properties`).reply(200, {
       affectedRecords: 1,
     });
     const res = await sdk.data.properties.create(schemaId, {
@@ -48,7 +48,7 @@ describe('Properties Service', () => {
 
   it('should update a property', async () => {
     const propertyPath = 'username';
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .put(`/${schemaId}/properties/${propertyPath}`)
       .reply(200, {
         affectedRecords: 1,
@@ -63,7 +63,7 @@ describe('Properties Service', () => {
 
   it('should delete a property', async () => {
     const propertyPath = 'username';
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/properties/${propertyPath}`)
       .reply(200, {
         affectedRecords: 1,

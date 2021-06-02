@@ -1,24 +1,29 @@
 import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import {
   generalConfig,
   generalConfigResponse,
 } from '../../__helpers__/configuration';
 
 describe('Configuration: General Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -34,7 +39,7 @@ describe('Configuration: General Service', () => {
   });
 
   it('should get the general configuration', async () => {
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')
       .reply(200, generalConfigResponse);
 
@@ -48,7 +53,7 @@ describe('Configuration: General Service', () => {
 
   it('should update the general configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`).put('/general').reply(200, {
+    nock(`${host}${CONFIGURATION_BASE}`).put('/general').reply(200, {
       affectedRecords: 1,
     });
 
@@ -61,7 +66,7 @@ describe('Configuration: General Service', () => {
 
   it('should delete fields from the general configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .post('/general/deleteFields')
       .reply(200, {
         affectedRecords: 1,
