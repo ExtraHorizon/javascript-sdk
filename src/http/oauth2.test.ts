@@ -20,7 +20,7 @@ const mockOAuth = {
 
 describe('http client', () => {
   const config = validateConfig(mockParams) as ConfigOauth2;
-  const http = createHttpClient(config);
+  const http = createHttpClient({ ...config, packageVersion: '' });
   const authConfig = parseAuthParams(mockOAuth);
   let httpWithAuth: ReturnType<typeof createOAuth2HttpClient>;
 

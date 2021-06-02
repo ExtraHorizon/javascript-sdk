@@ -64,6 +64,10 @@ export interface ParamsOauth2 extends ParamsBase {
   clientId: string;
 }
 
+interface HttpClientBase {
+  packageVersion: string;
+}
+
 export interface ConfigOauth1 extends ParamsBase {
   path: string;
   oauth1: OAuth;
@@ -79,3 +83,4 @@ export interface ConfigOauth2 extends ParamsBase {
 
 export type ClientParams = ParamsOauth1 | ParamsOauth2;
 export type ClientConfig = ConfigOauth1 | ConfigOauth2;
+export type HttpClientConfig = HttpClientBase & ClientConfig;

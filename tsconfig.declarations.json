@@ -4,5 +4,6 @@
     "emitDeclarationOnly": true,
     "declaration": true,
     "declarationDir": "build/types"
-  }
+  },
+  "resolveJsonModule": true
 }

@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { AuthParams, ClientParams, ParamsOauth1 } from './types';
+import { version as packageVersion } from '../package.json';
 
 import {
   usersService,
@@ -173,7 +174,7 @@ export interface Client<T extends ClientParams> {
  */
 export function client<T extends ClientParams>(rawConfig: T): Client<T> {
   const config = validateConfig(rawConfig);
-  const http = createHttpClient(config);
+  const http = createHttpClient({ ...config, packageVersion });
 
   const httpWithAuth =
     'oauth1' in config

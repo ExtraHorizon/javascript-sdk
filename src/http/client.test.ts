@@ -9,14 +9,20 @@ const mockParams = {
 
 describe('http client', () => {
   it('should create an http client', async () => {
-    const http = createHttpClient(validateConfig(mockParams));
+    const http = createHttpClient({
+      ...validateConfig(mockParams),
+      packageVersion: '',
+    });
     expect(http).toBeDefined();
   });
 
   it('should create an http client and makes a GET request', async () => {
     nock(mockParams.apiHost).get('/test').reply(200, '');
 
-    const http = createHttpClient(validateConfig(mockParams));
+    const http = createHttpClient({
+      ...validateConfig(mockParams),
+      packageVersion: '',
+    });
 
     const test = await http.get('test');
 
