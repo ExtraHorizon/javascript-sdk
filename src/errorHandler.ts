@@ -50,6 +50,7 @@ import {
   AccessTokenExpiredError,
   AccessTokenUnknownError,
   DuplicateRequestError,
+  InvalidCurrencyForProductPrice,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -98,6 +99,7 @@ export const ErrorClassDefinitionsMap = {
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,
   2610: FileTooLargeError,
+  2714: InvalidCurrencyForProductPrice,
 };
 
 const ErrorClassDefinitionsByErrorMap = {

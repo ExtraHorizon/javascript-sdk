@@ -17,8 +17,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_STRIPE_ORDERS` | `global` | List orders created by all users
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<OrderSchema>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<OrderSchema>> {
     return (await client.get(httpAuth, `/orders${options?.rql || ''}`)).data;
@@ -27,8 +26,9 @@ export default (client, httpAuth: HttpInstance) => ({
   /**
    * Create an order
    * @param requestBody
-   * @returns OrderSchema Success
-   * @throws ApiError
+   * @returns OrderSchema
+   * @throws {ResourceAlreadyExistsError}
+   * @throws {InvalidCurrencyForProductPrice}
    */
   async create(requestBody: OrderCreationSchema): Promise<OrderSchema> {
     return (await client.post(httpAuth, '/orders', requestBody)).data;
@@ -40,10 +40,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
    *
-   * @param orderId
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param orderId The order Id
+   * @param requestBody OrderUpdateSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async update(
     orderId: ObjectId,
@@ -59,9 +59,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list, **required**.
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
    */
   async addTagsToOrder(
     rql: string,
@@ -79,9 +78,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list, **required**.
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
    */
   async removeTagsFromOrder(
     rql: string,

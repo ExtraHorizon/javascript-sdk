@@ -141,6 +141,7 @@ export class InvalidTokenError extends BadRequestError {}
 export class LocalizationKeyMissingError extends BadRequestError {}
 export class TemplateFillingError extends BadRequestError {}
 export class MissingRequiredFieldsError extends BadRequestError {}
+export class InvalidCurrencyForProductPrice extends BadRequestError {}
 
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
