@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `rqlBuilder` now has JSDoc annotations
 - Fix for results with arrays containing strings
 - File creation now correctly set the file name on the form-data. Accepts extra parameter `extension` which defaults to `pdf`
+- The MailsService now correctly decamelizes the keys in the request
 
 ## [3.0.0]
 
