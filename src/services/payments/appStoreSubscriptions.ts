@@ -15,8 +15,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * none |  | List App Store subscriptions related to you
    * `VIEW_APP_STORE_SUBSCRIPTIONS` | `global` | List App Store subscriptions related to all users
    *
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<AppStoreSubscription>
    */
   async getSubscriptions(): Promise<PagedResult<AppStoreSubscription>> {
     return (await client.get(httpAuth, '/appStore/subscriptions')).data;
@@ -28,8 +27,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none |  | Everyone can use this endpoint
    *
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<AppStoreSubscriptionProduct>
    */
   async getSubscriptionsProducts(): Promise<
     PagedResult<AppStoreSubscriptionProduct>
@@ -44,9 +42,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `CREATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
    *
-   * @param requestBody
-   * @returns AppStoreSubscriptionProduct Success
-   * @throws ApiError
+   * @param requestBody AppStoreSubscriptionProductCreation
+   * @returns AppStoreSubscriptionProduct
+   * @throws {ResourceAlreadyExistsError}
    */
   async createSubscriptionsProduct(
     requestBody: AppStoreSubscriptionProductCreation
@@ -67,8 +65,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DELETE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
    *
    * @param productId
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async removeSubscriptionsProduct(
     productId: ObjectId
@@ -88,9 +86,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
    *
    * @param productId
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody AppStoreSubscriptionProductUpdateSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async updateSubscriptionsProduct(
     productId: ObjectId,
