@@ -55,6 +55,8 @@ import {
   UnknownReceiptTransactionError,
   AppStoreTransactionAlreadyLinked,
   NoConfiguredAppStoreProduct,
+  StripePaymentMethodError,
+  StripeRequestError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -105,6 +107,8 @@ export const ErrorClassDefinitionsMap = {
   2610: FileTooLargeError,
   2707: InvalidReceiptDataError,
   2708: UnknownReceiptTransactionError,
+  2712: StripeRequestError,
+  2713: StripePaymentMethodError,
   2714: InvalidCurrencyForProductPrice,
   2716: NoConfiguredAppStoreProduct,
   2717: AppStoreTransactionAlreadyLinked,

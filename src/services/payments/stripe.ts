@@ -20,8 +20,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_STRIPE_USERS` | `global` | Get the saved Stripe data for all users
    *
    * @param userId
-   * @returns StripeUser Success
-   * @throws ApiError
+   * @returns StripeUser
    */
   async getUser(userId: ObjectId): Promise<StripeUser> {
     return (await client.get(httpAuth, `/stripe/users/${userId}`)).data;
@@ -35,9 +34,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_STRIPE_USERS` | `global` | Save a payment method for any users
    *
    * @param userId
-   * @param requestBody
-   * @returns StripePaymentMethod Success
-   * @throws ApiError
+   * @param requestBody StripePaymentMethodCreation
+   * @returns StripePaymentMethod
+   * @throws {StripePaymentMethodError}
+   * @throws {StripeRequestError}
    */
   async savePaymentMethod(
     userId: ObjectId,
@@ -61,9 +61,9 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param userId
    * @param paymentMethodId
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async addTagsToPaymentMethod(
     userId: ObjectId,
@@ -88,9 +88,9 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param userId
    * @param paymentMethodId
-   * @param requestBody
-   * @returns any Operation successful
-   * @throws ApiError
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async removeTagsToPaymentMethod(
     userId: ObjectId,
@@ -115,8 +115,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param userId
    * @param paymentMethodId
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
    */
   async removePaymentMethod(
     userId: ObjectId,
@@ -137,9 +137,13 @@ export default (client, httpAuth: HttpInstance) => ({
    * none |  | Create an order linked to a Stripe Payment Intent for your user
    * `CREATE_PAYMENT_INTENTS` | `global` | Create an order linked to a Stripe Payment Intent for any users
    *
-   * @param requestBody
-   * @returns OrderSchema Success
-   * @throws ApiError
+   * @param requestBody PaymentIntentCreationSchema
+   * @returns OrderSchema
+   * @throws {ResourceAlreadyExistsError}
+   * @throws {IllegalArgumentError}
+   * @throws {StripePaymentMethodError}
+   * @throws {InvalidCurrencyForProductPrice}
+   * @throws {ResourceUnknownError}
    */
   async createPaymentIntent(
     requestBody: PaymentIntentCreationSchema
@@ -150,9 +154,9 @@ export default (client, httpAuth: HttpInstance) => ({
 
   /**
    * Create a Stripe Setup Intent for capturing payment details without initial payment
-   * @param requestBody
-   * @returns StripeSetupIntentSchema Success
-   * @throws ApiError
+   * @param requestBody SetupIntentCreationSchema
+   * @returns StripeSetupIntentSchema
+   * @throws {StripePaymentMethodError}
    */
   async createSetupIntent(
     requestBody: SetupIntentCreationSchema
@@ -176,7 +180,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - 'payment_intent.succeeded'
    *
    * @returns any Success
-   * @throws ApiError
+   * @throws {BadRequestError}
    */
   async subscribeToEvents(): Promise<any> {
     return (await client.post(httpAuth, '/stripe/events')).data;

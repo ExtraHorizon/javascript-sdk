@@ -145,6 +145,7 @@ export class InvalidCurrencyForProductPrice extends BadRequestError {}
 export class InvalidReceiptDataError extends BadRequestError {}
 export class UnknownReceiptTransactionError extends BadRequestError {}
 export class AppStoreTransactionAlreadyLinked extends BadRequestError {}
+export class StripePaymentMethodError extends BadRequestError {}
 
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
@@ -196,7 +197,10 @@ export class NotFoundError extends ApiError {}
 export class ResourceUnknownError extends NotFoundError {}
 export class NoConfiguredAppStoreProduct extends NotFoundError {}
 
-// 500
+// 500 Server Error
 export class ServerError extends ApiError {}
+export class FieldFormatError extends ServerError {}
 
-export class FieldFormatError extends ApiError {}
+// 502 Bad Gateway Server Error
+export class BadGatewayServerError extends ApiError {}
+export class StripeRequestError extends BadGatewayServerError {}
