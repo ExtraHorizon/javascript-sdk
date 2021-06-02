@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AuthParams, ClientParams, ParamsOauth1 } from './types';
+import { AuthParams, ClientParams, ParamsOauth1, ParamsOauth2 } from './types';
 
 import {
   usersService,
@@ -225,3 +225,38 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     raw: httpWithAuth,
   };
 }
+
+export type OAuth1Client = Client<ParamsOauth1>;
+/**
+ * Create ExtraHorizon OAuth1 client.
+ *
+ * @example
+ * const sdk = createClient({
+ *   host: 'dev.fibricheck.com',
+ *   consumerKey: 'string',
+ *   consumerSecret: 'string',
+ * });
+ * await sdk.auth.authenticate({
+ *   email: 'string',
+ *   password: 'string',
+ * });
+ */
+export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client =>
+  createClient(rawConfig);
+
+export type OAuth2Client = Client<ParamsOauth2>;
+/**
+ * Create ExtraHorizon OAuth2 client.
+ *
+ * @example
+ * const sdk = createClient({
+ *   host: 'dev.fibricheck.com',
+ *   clientId: 'string',
+ * });
+ * await sdk.auth.authenticate({
+ *   username: 'string',
+ *   password: 'string',
+ * });
+ */
+export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
+  createClient(rawConfig);
