@@ -1,12 +1,11 @@
 import { recursiveMap } from './http/utils';
-import { createClient } from './index';
+import { Client, createClient } from './client';
+import { ClientParams } from './types';
 
 const { raw: _raw, ...sdk } = createClient({ host: '' } as any);
 
-export const mockSdk = {
-  ...recursiveMap(value => (typeof value === 'function' ? jest.fn() : value))(
-    sdk
-  ),
+export const getMockSdk = (fn): Client<ClientParams> => ({
+  ...recursiveMap(value => (typeof value === 'function' ? fn : value))(sdk),
   raw: [
     'get',
     'post',
@@ -20,14 +19,8 @@ export const mockSdk = {
   ].reduce(
     (memo, verb) => ({
       ...memo,
-      [verb]: jest.fn(),
+      [verb]: fn,
     }),
     {}
   ),
-};
-
-function client() {
-  return mockSdk;
-}
-
-export default client;
+});

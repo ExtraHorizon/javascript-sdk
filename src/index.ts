@@ -26,7 +26,7 @@ export { rqlBuilder } from './rql';
 export * from './errors';
 export * from './types';
 
-export { default as mockCreateClient, mockSdk } from './mock';
+export { getMockSdk } from './mock';
 
 interface OAuth1Authenticate {
   /**
