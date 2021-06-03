@@ -9,6 +9,7 @@ const { raw: _raw, ...sdk } = createClient({ host: '' } as any);
  * @param fn
  * @returns {Client<ClientParams>} mockSdk
  * @example
+ * import { getMockSdk } from "@extrahorizon/javascript-sdk";
  * describe("mock SDK", () => {
  *   const sdk = getMockSdk(jest.fn);
  *   it("should be valid mock", async () => {

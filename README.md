@@ -319,12 +319,26 @@ const document = await sdk.data.findDocuments<CustomDocument>();
 
 ## Tests
 
+### Mock
+
+The package also exports a mockSdk you can use in your tests. In this example `jest` is used as testing library.
+
+```ts
+import { getMockSdk } from '@extrahorizon/javascript-sdk';
+
+describe('mock SDK', () => {
+  const sdk = getMockSdk(jest.fn);
+  it('should be valid mock', async () => {
+    expect(sdk.data).toBeDefined();
+  });
+});
+```
+
+### Library
+
 To run the unit tests: `yarn start`
-
 To run them in watch mode: `yarn start:watch`
-
 To run e2e tests, copy `.env.example` to `.env` and set up the credentials
-
 Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
 
 ## 📚 Docs --> TODO
