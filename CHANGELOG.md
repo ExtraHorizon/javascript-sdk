@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- Templates `resolveAsPdf` will return a `Buffer`
 - `sdk.authenticate` now includes possible error responses in the JSDoc annotations
 - `rqlBuilder` now has JSDoc annotations
 - Fix for results with arrays containing strings
@@ -43,7 +44,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 - Templates basepath fix
-- Templates `resolveAsPdf` will return a `Buffer`
 
 ## [3.0.0]
 
