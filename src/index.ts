@@ -231,7 +231,7 @@ export type OAuth1Client = Client<ParamsOauth1>;
  * Create ExtraHorizon OAuth1 client.
  *
  * @example
- * const sdk = createClient({
+ * const sdk = createOAuth1Client({
  *   host: 'dev.fibricheck.com',
  *   consumerKey: 'string',
  *   consumerSecret: 'string',
@@ -249,7 +249,7 @@ export type OAuth2Client = Client<ParamsOauth2>;
  * Create ExtraHorizon OAuth2 client.
  *
  * @example
- * const sdk = createClient({
+ * const sdk = createOAuth2Client({
  *   host: 'dev.fibricheck.com',
  *   clientId: 'string',
  * });
