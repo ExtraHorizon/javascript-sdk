@@ -1,22 +1,22 @@
 import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 
 describe('Configuration: Staff Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const userId = '52adef123456789abcdef123';
   const groupId = 'abcdef123456789abcdef123';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -32,7 +32,7 @@ describe('Configuration: Staff Service', () => {
   });
 
   it('should update a staff configuration for a group of a user', async () => {
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .put(`/users/${userId}/staffConfigurations/${groupId}`)
       .reply(200, {
         affectedRecords: 1,
@@ -48,7 +48,7 @@ describe('Configuration: Staff Service', () => {
   });
 
   it('should delete fields from a staff configuration for a group of a user', async () => {
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/users/${userId}/staffConfigurations/${groupId}/deleteFields`)
       .reply(200, {
         affectedRecords: 1,

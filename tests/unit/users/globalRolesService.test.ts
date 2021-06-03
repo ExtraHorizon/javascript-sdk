@@ -1,6 +1,11 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import { GlobalPermissionName } from '../../../src/services/users/types';
 import {
   permissionResponse,
@@ -9,19 +14,19 @@ import {
 import { roleData } from '../../__helpers__/user';
 
 describe('Global Roles Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const roleId = '5bfbfc3146e0fb321rsa4b21';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -32,7 +37,7 @@ describe('Global Roles Service', () => {
   });
 
   it('should retrieve a list of permissions', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .get('/permissions')
       .reply(200, permissionResponse);
 
@@ -43,7 +48,7 @@ describe('Global Roles Service', () => {
 
   it('should retrieve a list of roles', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${USER_BASE}`).get(`/roles${rql}`).reply(200, roleResponse);
+    nock(`${host}${USER_BASE}`).get(`/roles${rql}`).reply(200, roleResponse);
 
     const roles = await sdk.users.globalRoles.get({ rql });
 
@@ -55,7 +60,7 @@ describe('Global Roles Service', () => {
       name: 'newRole',
       description: 'this is a new role',
     };
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post(`/roles`)
       .reply(200, {
         ...newRole,
@@ -70,7 +75,7 @@ describe('Global Roles Service', () => {
 
   it('should delete a role', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${USER_BASE}`).delete(`/roles${rql}`).reply(200, {
+    nock(`${host}${USER_BASE}`).delete(`/roles${rql}`).reply(200, {
       affectedRecords: 1,
     });
 
@@ -85,7 +90,7 @@ describe('Global Roles Service', () => {
       name: 'newRoleName',
       description: 'this is a new role desc',
     };
-    nock(`${apiHost}${USER_BASE}`).put(`/roles${id}`).reply(200, roleData);
+    nock(`${host}${USER_BASE}`).put(`/roles${id}`).reply(200, roleData);
 
     const res = await sdk.users.globalRoles.update(id, requestBody);
 
@@ -97,7 +102,7 @@ describe('Global Roles Service', () => {
     const requestBody = {
       permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post(`/roles/add_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
@@ -111,7 +116,7 @@ describe('Global Roles Service', () => {
     const requestBody = {
       permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
     };
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post(`/roles/remove_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
@@ -125,7 +130,7 @@ describe('Global Roles Service', () => {
     const requestBody = {
       roles: [roleId],
     };
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post(`/add_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
@@ -139,7 +144,7 @@ describe('Global Roles Service', () => {
     const requestBody = {
       roles: [roleId],
     };
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post(`/remove_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 

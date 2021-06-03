@@ -5,13 +5,13 @@ import { camelizeResponseData } from './interceptors';
 import { composeUserAgent } from './utils';
 
 export function createHttpClient({
-  apiHost,
   packageVersion,
+  host,
   requestLogger,
   responseLogger,
 }: HttpClientConfig): AxiosInstance {
   const http = axios.create({
-    baseURL: apiHost,
+    baseURL: host,
     headers: {
       'X-User-Agent': composeUserAgent(packageVersion),
     },

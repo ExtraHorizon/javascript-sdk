@@ -8,7 +8,7 @@ import { parseAuthParams } from './utils';
 import { ConfigOauth1 } from '../types';
 
 const mockParams = {
-  apiHost: 'https://api.test.com',
+  host: 'https://api.test.com',
   consumerKey: '',
   consumerSecret: '',
 };
@@ -38,12 +38,12 @@ describe('http client', () => {
 
   it('should authorize', async () => {
     const mockToken = 'test';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, { access_token: mockToken });
 
     await httpWithAuth.authenticate(authConfig);
-    nock(mockParams.apiHost).get('/test').reply(200, '');
+    nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
 
@@ -54,7 +54,7 @@ describe('http client', () => {
 
   it('throws on authorization with wrong password', async () => {
     expect.assertions(1);
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
+    nock(mockParams.host).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
       code: 106,
       name: 'AUTHENTICATION_EXCEPTION',
       message: 'this password email combination is unknown',
@@ -69,17 +69,17 @@ describe('http client', () => {
 
   it('throws on authorization with unknown token', async () => {
     const mockToken = 'unknown access token';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, { access_token: mockToken });
 
-    nock(mockParams.apiHost).get('/test').reply(400, {
+    nock(mockParams.host).get('/test').reply(400, {
       code: 117,
       name: 'ACCESS_TOKEN_UNKNOWN_EXCEPTION',
       message: 'The access token is unknown',
     });
 
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
+    nock(mockParams.host).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
       error: 'invalid_grant',
       description: 'this password email combination is unknown',
     });
@@ -94,7 +94,7 @@ describe('http client', () => {
 
   it('should authorize with valid token/tokenSecret', async () => {
     expect.assertions(1);
-    nock(mockParams.apiHost).get(`${USER_BASE}/me`).reply(200, {});
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, {});
 
     try {
       await httpWithAuth.authenticate(parseAuthParams(oauthTokenMock));
@@ -106,7 +106,7 @@ describe('http client', () => {
 
   it('throws on authorization with invalid token/tokenSecret', async () => {
     expect.assertions(1);
-    nock(mockParams.apiHost).get(`${USER_BASE}/me`).reply(400, {
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(400, {
       code: 108,
       name: 'OAUTH_TOKEN_EXCEPTION',
       message: 'The consumer key and token combination is unknown',

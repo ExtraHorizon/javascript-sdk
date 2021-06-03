@@ -49,7 +49,7 @@ export type AuthParams =
   | ParamsOauth2Refresh;
 
 interface ParamsBase {
-  apiHost: string;
+  host: string;
   responseLogger?: (response: AxiosResponse | Error) => unknown;
   requestLogger?: (request: AxiosRequestConfig | Error) => unknown;
   freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
