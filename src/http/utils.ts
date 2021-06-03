@@ -130,8 +130,8 @@ export function decamelizeKeys(
 }
 
 /**
- * Composes a `User-Agent` header value which looks something like
- * `'Node/10.0.0 SDK/3.0.0 react/17.0.0'`.
+ * Composes a `User-Agent` like header value which looks something like
+ * `'Node/14.4.0 SDK/3.0.0'`.
  */
 export function composeUserAgent(packageVersion: string): string {
   return [
