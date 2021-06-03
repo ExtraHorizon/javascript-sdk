@@ -1,5 +1,5 @@
 import { recursiveMap } from './http/utils';
-import { Client, createClient } from './client';
+import { Client, createClient } from './index';
 import { ClientParams } from './types';
 
 const { raw: _raw, ...sdk } = createClient({ host: '' } as any);
