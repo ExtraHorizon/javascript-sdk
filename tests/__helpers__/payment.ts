@@ -16,6 +16,11 @@ import {
   AppStoreReceipt,
   AppStoreSubscription,
   AppStoreSubscriptionProduct,
+  StripeUser,
+  StripePaymentMethod,
+  PaymentIntentCreationSchema,
+  PaymentIntentCreationSchemaSetupPaymentMethodReuse,
+  PaymentIntentCreationSchemaPaymentMethodType,
 } from '../../src/services/payments/types';
 
 export const newProductData: ProductCreationSchema = {
@@ -369,4 +374,52 @@ export const appStoreSubscriptionProductResponse = {
     limit: 20,
   },
   data: [appStoreSubscriptionProduct],
+};
+
+export const stripeUser: StripeUser = {
+  id: '507f191e810c19729de860ea',
+  stripeId: 'cus_FuYumWZQCG1MDp',
+  paymentMethods: [
+    {
+      id: '507f191e810c19729de860ea',
+      stripeId: 'pm_1FOjoNI6N8mPcPA7zqbR5wZ7',
+      brand: 'visa',
+      expirationYear: 2044,
+      expirationMonth: 4,
+      last4Digits: '4321',
+      tags: ['default'],
+      updateTimestamp: new Date('2021-06-04T13:15:20.802Z'),
+      creationTimestamp: new Date('2021-06-04T13:15:20.802Z'),
+    },
+  ],
+  updateTimestamp: new Date('2021-06-04T13:15:20.802Z'),
+  creationTimestamp: new Date('2021-06-04T13:15:20.802Z'),
+};
+
+export const stripePaymentMethod: StripePaymentMethod = {
+  id: '507f191e810c19729de860ea',
+  stripeId: 'pm_1FOjoNI6N8mPcPA7zqbR5wZ7',
+  brand: 'visa',
+  expirationYear: 2044,
+  expirationMonth: 4,
+  last4Digits: '4321',
+  tags: ['default'],
+  updateTimestamp: new Date('2021-06-04T13:15:20.807Z'),
+  creationTimestamp: new Date('2021-06-04T13:15:20.807Z'),
+};
+
+export const paymentIntent: PaymentIntentCreationSchema = {
+  productId: '507f191e810c19729de860ea',
+  currency: 'eur',
+  tags: ['tag1'],
+  data: {
+    color: 'blue',
+    secondaryColor: 'red',
+  },
+  setupPaymentMethodReuse:
+    PaymentIntentCreationSchemaSetupPaymentMethodReuse.OFF_SESSION,
+  targetUserId: '507f191e810c19729de860ea',
+  paymentMethodId: '507f191e810c19729de860ea',
+  offSession: true,
+  paymentMethodType: PaymentIntentCreationSchemaPaymentMethodType.CARD,
 };
