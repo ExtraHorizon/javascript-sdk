@@ -3,6 +3,13 @@ import {
   OrderSchema,
   OrderSchemaStatus,
   OrderCreationSchema,
+  SubscriptionEntitlement,
+  SubscriptionEntitlementSource,
+  SubscriptionEntitlementStatus,
+  SubscriptionEntitlementStatusCategory,
+  SubscriptionEvent,
+  SubscriptionEventSource,
+  SubscriptionEventType,
 } from '../../src/services/payments/types';
 
 export const newProductData: ProductCreationSchema = {
@@ -123,4 +130,48 @@ export const newOrder: OrderCreationSchema = {
     color: 'blue',
     secondaryColor: 'red',
   },
+};
+
+export const subscriptionEntitlementData: SubscriptionEntitlement = {
+  id: '507f191e810c19729de860ea',
+  userId: '507f191e810c19729de860ea',
+  source: SubscriptionEntitlementSource.APP_STORE,
+  sourceProductId: '507f191e810c19729de860ea',
+  subscriptionGroup: 'fibricheck',
+  subscriptionTier: 'premium',
+  status: SubscriptionEntitlementStatus.USING_FREE_TRIAL,
+  statusCategory: SubscriptionEntitlementStatusCategory.ACQUIRING,
+  expireTimestamp: new Date('2021-06-04T12:01:02.782Z'),
+  newProductId: '507f191e810c19729de860ea',
+  creationTimestamp: new Date('2021-06-04T12:01:02.782Z'),
+};
+
+export const subscriptionEntitlementResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [subscriptionEntitlementData],
+};
+
+export const subscriptionEventData: SubscriptionEvent = {
+  id: '507f191e810c19729de860ea',
+  userId: '507f191e810c19729de860ea',
+  creationTimestamp: new Date('2021-06-04T12:01:02.786Z'),
+  source: SubscriptionEventSource.APP_STORE,
+  sourceProductId: '507f191e810c19729de860ea',
+  subscriptionGroup: 'fibricheck',
+  subscriptionTier: 'premium',
+  type: SubscriptionEventType.STARTED,
+  expireTimestamp: new Date('2021-06-04T12:01:02.786Z'),
+};
+
+export const subscriptionEventResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [subscriptionEventData],
 };

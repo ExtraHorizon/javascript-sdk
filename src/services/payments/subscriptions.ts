@@ -25,7 +25,7 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @returns PagedResult<SubscriptionEvent>
    */
-  async getSubscriptionsService1(): Promise<PagedResult<SubscriptionEvent>> {
+  async getEvents(): Promise<PagedResult<SubscriptionEvent>> {
     return (await client.get(httpAuth, '/subscriptions/events')).data;
   },
 });

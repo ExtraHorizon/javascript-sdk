@@ -123,9 +123,9 @@ export interface SubscriptionEntitlement {
   subscriptionTier?: string;
   status?: SubscriptionEntitlementStatus;
   statusCategory?: SubscriptionEntitlementStatusCategory;
-  expireTimestamp?: string;
+  expireTimestamp?: Date;
   newProductId?: ObjectId;
-  creationTimestamp?: string;
+  creationTimestamp?: Date;
 }
 
 export enum SubscriptionEntitlementSource {
@@ -161,13 +161,13 @@ export enum SubscriptionEntitlementStatusCategory {
 export interface SubscriptionEvent {
   id?: ObjectId;
   userId: ObjectId;
-  creationTimestamp?: string;
+  creationTimestamp?: Date;
   source: SubscriptionEventSource;
   sourceProductId: ObjectId;
   subscriptionGroup: string;
   subscriptionTier: string;
   type?: SubscriptionEventType;
-  expireTimestamp?: string;
+  expireTimestamp?: Date;
 }
 
 export enum SubscriptionEventSource {
