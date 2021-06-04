@@ -279,16 +279,16 @@ export interface AppStoreSubscription {
   userId: ObjectId;
   productId: string;
   bundleId: string;
-  originalPurchaseDate: string;
+  originalPurchaseDate: Date;
   originalTransactionId: string;
-  lastPurchaseDate: string;
-  expiresDate: string;
+  lastPurchaseDate: Date;
+  expiresDate: Date;
   autoRenewStatus: boolean;
-  autoRenewStatusChange: string;
+  autoRenewStatusChange: Date;
   latestReceipt: string;
   lastTransactionId?: string;
   state?: string;
-  reevaluateDate?: string;
+  reevaluateDate?: Date;
   newProductId?: string;
 }
 

@@ -28,6 +28,11 @@ const mapDateValues = (value, key) => {
       'statusChangedTimestamp',
       'startTimestamp',
       'timestamp',
+      'originalPurchaseDate',
+      'lastPurchaseDate',
+      'expiresDate',
+      'reevaluateDate',
+      'autoRenewStatusChange',
     ].includes(key)
   ) {
     return new Date(value);

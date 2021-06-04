@@ -14,6 +14,8 @@ import {
   AppleNotification,
   AppStoreNotification,
   AppStoreReceipt,
+  AppStoreSubscription,
+  AppStoreSubscriptionProduct,
 } from '../../src/services/payments/types';
 
 export const newProductData: ProductCreationSchema = {
@@ -320,4 +322,51 @@ export const appStoreReceiptResponse = {
     limit: 20,
   },
   data: [appStoreReceipt],
+};
+
+export const appStoreSubscription: AppStoreSubscription = {
+  id: '507f191e810c19729de860ea',
+  userId: '507f191e810c19729de860ea',
+  productId: 'string',
+  bundleId: 'string',
+  originalPurchaseDate: new Date('2021-06-04T12:56:57.318Z'),
+  originalTransactionId: 'string',
+  lastPurchaseDate: new Date('2021-06-04T12:56:57.318Z'),
+  expiresDate: new Date('2021-06-04T12:56:57.318Z'),
+  autoRenewStatus: true,
+  autoRenewStatusChange: new Date('2021-06-04T12:56:57.318Z'),
+  latestReceipt: 'string',
+  lastTransactionId: 'string',
+  state: 'string',
+  reevaluateDate: new Date('2021-06-04T12:56:57.318Z'),
+  newProductId: 'string',
+};
+
+export const appStoreSubscriptionResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [appStoreSubscription],
+};
+
+export const appStoreSubscriptionProduct: AppStoreSubscriptionProduct = {
+  id: '507f191e810c19729de860ea',
+  name: 'FibriCheck Premium Monthly',
+  appStoreAppBundleId: 'com.qompium.fibricheck',
+  appStoreProductId: 'fibricheck-premium-monthly',
+  subscriptionGroup: 'fibricheck',
+  subscriptionTier: 'premium',
+  updateTimestamp: new Date('2021-06-04T13:15:20.862Z'),
+  creationTimestamp: new Date('2021-06-04T13:15:20.862Z'),
+};
+
+export const appStoreSubscriptionProductResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [appStoreSubscriptionProduct],
 };
