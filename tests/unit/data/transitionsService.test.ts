@@ -1,7 +1,12 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { transitionInput, newTransition } from '../../__helpers__/data';
+import {
+  transitionInput,
+  newTransition,
+  newSchemaCreated,
+  schemasListResponse,
+} from '../../__helpers__/data';
 
 describe('Transitions Service', () => {
   const schemaId = '2e9fff9d90135a2a9a718e2f';
@@ -33,6 +38,27 @@ describe('Transitions Service', () => {
   afterEach(() => {
     nock.cleanAll();
     nock.enableNetConnect();
+  });
+
+  it('should find a transition by name given a schema', async () => {
+    const transition = await sdk.data.transitions.findByName(
+      newSchemaCreated,
+      'move'
+    );
+    expect(transition.name).toBe('move');
+  });
+
+  it('should find a transition by name given a schemaId', async () => {
+    const newSchemaId = '5e9fff9d90135a2a9a718e2f';
+    const transitionName = 'move';
+    nock(`${host}${DATA_BASE}`)
+      .get(`/?eq(id,${newSchemaId})`)
+      .reply(200, schemasListResponse);
+    const transition = await sdk.data.transitions.findByName(
+      newSchemaId,
+      transitionName
+    );
+    expect(transition.name).toBe(transitionName);
   });
 
   it('should update the creation transition', async () => {
