@@ -12,6 +12,8 @@ import schemas from './schemas';
 const findTransition = (schema: Schema, name: string) =>
   schema.transitions.find(transition => transition.name === name);
 
+const schemasMap: Map<ObjectId, Schema> = new Map();
+
 export default (client, httpAuth: HttpInstance) => ({
   /**
    * Find a transition by name, given a schema
@@ -24,11 +26,16 @@ export default (client, httpAuth: HttpInstance) => ({
       return Promise.resolve(findTransition(<Schema>schema, name));
     }
     const schemaId = <ObjectId>schema;
+    if (schemasMap.has(schemaId)) {
+      return Promise.resolve(findTransition(schemasMap.get(schemaId), name));
+    }
     const rql = rqlBuilder().eq('id', schemaId).build();
     const schemasService = schemas(client, httpAuth);
     const foundSchema: Schema = await schemasService
       .find({ rql })
       .then(res => res.data[0]);
+    if (!foundSchema) return null;
+    schemasMap.set(schemaId, foundSchema);
     return findTransition(foundSchema, name);
   },
 
