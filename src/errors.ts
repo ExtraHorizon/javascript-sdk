@@ -171,8 +171,8 @@ export class UserNotAuthenticatedError extends UnauthorizedError {
 Looks like you forgot to authenticate. Please check the README file to get started.  
 As example if you want to use the Oauth2 Password Grant Flow you can authenticate using this snippet:
 
-const sdk = client({
-  apiHost: '${config.baseURL}',
+const sdk = createClient({
+  host: '${config.baseURL}',
   clientId: '',
 });
 

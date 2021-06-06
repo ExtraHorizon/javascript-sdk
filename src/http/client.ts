@@ -4,12 +4,12 @@ import { ClientConfig } from '../types';
 import { camelizeResponseData } from './interceptors';
 
 export function createHttpClient({
-  apiHost,
+  host,
   requestLogger,
   responseLogger,
 }: ClientConfig): AxiosInstance {
   const http = axios.create({
-    baseURL: apiHost,
+    baseURL: host,
   });
 
   if (requestLogger) {

@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   newDocumentCreated,
   documentData,
@@ -11,17 +11,17 @@ describe('Documents Service', () => {
   const schemaId = '1e9fff9d90135a2a9a718e2f';
   const documentId = documentData.id;
 
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -37,7 +37,7 @@ describe('Documents Service', () => {
   });
 
   it('should create a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents`)
       .reply(200, newDocumentCreated);
     const document = await sdk.data.documents.create(schemaId, {
@@ -49,7 +49,7 @@ describe('Documents Service', () => {
   });
 
   it('should request a list of documents', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents`)
       .reply(200, documentsListResponse);
     const res = await sdk.data.documents.find(schemaId);
@@ -77,7 +77,7 @@ describe('Documents Service', () => {
   });
 
   it('should update a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.update(schemaId, documentId, {
@@ -89,7 +89,7 @@ describe('Documents Service', () => {
   });
 
   it('should delete a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.delete(schemaId, documentId);
@@ -97,7 +97,7 @@ describe('Documents Service', () => {
   });
 
   it('should delete fields from a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/deleteFields`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.deleteFields(schemaId, documentId, {
@@ -107,7 +107,7 @@ describe('Documents Service', () => {
   });
 
   it('should transition a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/transition`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.transition(schemaId, documentId, {
@@ -123,7 +123,7 @@ describe('Documents Service', () => {
   });
 
   it('should link groups to a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkGroups`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.linkGroups(schemaId, documentId, {
@@ -133,7 +133,7 @@ describe('Documents Service', () => {
   });
 
   it('should unlink groups from a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.unlinkGroups(schemaId, documentId, {
@@ -143,7 +143,7 @@ describe('Documents Service', () => {
   });
 
   it('should link users to a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkUsers`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.linkUsers(schemaId, documentId, {
@@ -153,7 +153,7 @@ describe('Documents Service', () => {
   });
 
   it('should unlink users from a document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/unlinkUsers`)
       .reply(200, { affectedRecords: 1 });
     const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, {

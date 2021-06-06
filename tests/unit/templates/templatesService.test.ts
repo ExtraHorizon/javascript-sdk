@@ -1,6 +1,11 @@
 import nock from 'nock';
 import { AUTH_BASE, TEMPLATE_BASE } from '../../../src/constants';
-import { Client, client, rqlBuilder, ParamsOauth2 } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  rqlBuilder,
+  ParamsOauth2,
+} from '../../../src/index';
 import {
   templateData,
   templateResponse,
@@ -8,19 +13,19 @@ import {
 } from '../../__helpers__/template';
 
 describe('Template Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const templateId = templateData.id;
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -31,7 +36,7 @@ describe('Template Service', () => {
   });
 
   it('should perform a health check', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`).get('/health').reply(200);
+    nock(`${host}${TEMPLATE_BASE}`).get('/health').reply(200);
 
     const serviceIsAvailable = await sdk.templates.health();
 
@@ -40,9 +45,7 @@ describe('Template Service', () => {
 
   it('should get all templates the service has to offer', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${TEMPLATE_BASE}`)
-      .get(`/${rql}`)
-      .reply(200, templateResponse);
+    nock(`${host}${TEMPLATE_BASE}`).get(`/${rql}`).reply(200, templateResponse);
 
     const res = await sdk.templates.find({ rql });
 
@@ -79,7 +82,7 @@ describe('Template Service', () => {
   });
 
   it('should create a new template', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`).post('/').reply(200, templateData);
+    nock(`${host}${TEMPLATE_BASE}`).post('/').reply(200, templateData);
 
     const template = await sdk.templates.create(templateInput);
 
@@ -87,7 +90,7 @@ describe('Template Service', () => {
   });
 
   it('should update an existing template', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`)
+    nock(`${host}${TEMPLATE_BASE}`)
       .put(`/${templateId}`)
       .reply(200, templateData);
 
@@ -97,7 +100,7 @@ describe('Template Service', () => {
   });
 
   it('should delete a template', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`)
+    nock(`${host}${TEMPLATE_BASE}`)
       .delete(`/${templateId}`)
       .reply(200, { affectedRecords: 1 });
 
@@ -107,7 +110,7 @@ describe('Template Service', () => {
   });
 
   it('should resolve a template as a pdf file', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`)
+    nock(`${host}${TEMPLATE_BASE}`)
       .post(`/${templateId}/pdf`)
       .reply(200, 'string');
 
@@ -127,7 +130,7 @@ describe('Template Service', () => {
 
   it('should resolve a template with code as a pdf file', async () => {
     const localizationCode = 'EN';
-    nock(`${apiHost}${TEMPLATE_BASE}`)
+    nock(`${host}${TEMPLATE_BASE}`)
       .post(`/${templateId}/pdf/${localizationCode}`)
       .reply(200, 'string');
 
@@ -150,12 +153,10 @@ describe('Template Service', () => {
   });
 
   it('should resolve a template as a json response', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`)
-      .post(`/${templateId}/resolve`)
-      .reply(200, {
-        subject: 'Order for Doe',
-        body: 'Hey, John',
-      });
+    nock(`${host}${TEMPLATE_BASE}`).post(`/${templateId}/resolve`).reply(200, {
+      subject: 'Order for Doe',
+      body: 'Hey, John',
+    });
 
     const res = await sdk.templates.resolveAsJson(templateId, {
       language: 'NL',
@@ -173,7 +174,7 @@ describe('Template Service', () => {
 
   it('should resolve a template with code as a json response', async () => {
     const localizationCode = 'EN';
-    nock(`${apiHost}${TEMPLATE_BASE}`)
+    nock(`${host}${TEMPLATE_BASE}`)
       .post(`/${templateId}/resolve/${localizationCode}`)
       .reply(200, {
         subject: 'Order for Doe',

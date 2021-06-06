@@ -1,26 +1,31 @@
 import nock from 'nock';
 import * as fs from 'fs';
 import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import { fileData } from '../../__helpers__/file';
 import { filesResponse } from '../../__helpers__/apiResponse';
 
 jest.mock('fs');
 
 describe('Files Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const token = '5a0b2adc265ced65a8cab861';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -37,7 +42,7 @@ describe('Files Service', () => {
 
   it('should list all files', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${FILES_BASE}`).get(`/${rql}`).reply(200, filesResponse);
+    nock(`${host}${FILES_BASE}`).get(`/${rql}`).reply(200, filesResponse);
 
     const res = await sdk.files.find({ rql });
 
@@ -68,16 +73,17 @@ describe('Files Service', () => {
     const newFile = {
       name: 'testfile',
       file: fs.readFileSync('test'),
+      extension: 'pdf',
     };
 
-    nock(`${apiHost}${FILES_BASE}`).post('/').reply(200, fileData);
+    nock(`${host}${FILES_BASE}`).post('/').reply(200, fileData);
 
     const res = await sdk.files.create(newFile);
     expect(res).toBeDefined();
   });
 
   it('should delete a file', async () => {
-    nock(`${apiHost}${FILES_BASE}`).delete(`/${token}`).reply(200);
+    nock(`${host}${FILES_BASE}`).delete(`/${token}`).reply(200);
 
     const res = await sdk.files.delete(token);
 
@@ -85,9 +91,7 @@ describe('Files Service', () => {
   });
 
   it('should retrieve a file', async () => {
-    nock(`${apiHost}${FILES_BASE}`)
-      .get(`/${token}/file`)
-      .reply(200, 'some text');
+    nock(`${host}${FILES_BASE}`).get(`/${token}/file`).reply(200, 'some text');
 
     const res = await sdk.files.retrieve(token);
 
@@ -95,9 +99,7 @@ describe('Files Service', () => {
   });
 
   it('should get file details', async () => {
-    nock(`${apiHost}${FILES_BASE}`)
-      .get(`/${token}/details`)
-      .reply(200, fileData);
+    nock(`${host}${FILES_BASE}`).get(`/${token}/details`).reply(200, fileData);
 
     const res = await sdk.files.getDetails(token);
 

@@ -1,4 +1,4 @@
-import { Client, client, ParamsOauth2 } from '../../src';
+import { Client, createClient, ParamsOauth2 } from '../../src';
 import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
 import { newSchemaInput } from '../__helpers__/data';
@@ -7,8 +7,8 @@ describe('OAuth2 Password Flow', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost: process.env.API_HOST,
+    sdk = createClient({
+      host: process.env.API_HOST,
       clientId: process.env.CLIENT_ID,
     });
     await sdk.auth.authenticate({

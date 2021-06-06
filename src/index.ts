@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { AuthParams, ClientParams, ParamsOauth1 } from './types';
+import { AuthParams, ClientParams, ParamsOauth1, ParamsOauth2 } from './types';
 
 import {
   usersService,
@@ -34,6 +34,12 @@ interface OAuth1Authenticate {
    *  token: '',
    *  tokenSecret: '',
    * });
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
+   * @throws {MfaRequiredError}
    */
   authenticate(oauth: { token: string; tokenSecret: string }): Promise<void>;
   /**
@@ -43,6 +49,12 @@ interface OAuth1Authenticate {
    *  email: '',
    *  password: '',
    * });
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
+   * @throws {MfaRequiredError}
    */
   authenticate(oauth: { email: string; password: string }): Promise<void>;
 }
@@ -55,6 +67,11 @@ interface OAuth2Authenticate {
    *  code: '',
    *  redirectUri: '',
    * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
    */
   authenticate(oauth: { code: string; redirectUri: string }): Promise<void>;
   /**
@@ -64,6 +81,11 @@ interface OAuth2Authenticate {
    *  password: '',
    *  username: '',
    * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
    */
   authenticate(oauth: { username: string; password: string }): Promise<void>;
   /**
@@ -72,6 +94,11 @@ interface OAuth2Authenticate {
    * await sdk.auth.authenticate({
    *  refreshToken: '',
    * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
    */
   authenticate(oauth: { refreshToken: string }): Promise<void>;
 }
@@ -81,7 +108,7 @@ type Authenticate<
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  rawAxios: AxiosInstance;
+  raw: AxiosInstance;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
@@ -162,8 +189,8 @@ export interface Client<T extends ClientParams> {
  * Create ExtraHorizon client.
  *
  * @example
- * const sdk = client({
- *   apiHost: 'xxx.fibricheck.com',
+ * const sdk = createClient({
+ *   host: 'xxx.fibricheck.com',
  *   clientId: 'string',
  * });
  * await sdk.auth.authenticate({
@@ -171,7 +198,7 @@ export interface Client<T extends ClientParams> {
  *   password: 'string',
  * });
  */
-export function client<T extends ClientParams>(rawConfig: T): Client<T> {
+export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
   const config = validateConfig(rawConfig);
   const http = createHttpClient(config);
 
@@ -195,6 +222,41 @@ export function client<T extends ClientParams>(rawConfig: T): Client<T> {
         httpWithAuth.authenticate(parseAuthParams(oauth)),
       confirmMfa: httpWithAuth.confirmMfa,
     } as any,
-    rawAxios: httpWithAuth,
+    raw: httpWithAuth,
   };
 }
+
+export type OAuth1Client = Client<ParamsOauth1>;
+/**
+ * Create ExtraHorizon OAuth1 client.
+ *
+ * @example
+ * const sdk = createOAuth1Client({
+ *   host: 'dev.fibricheck.com',
+ *   consumerKey: 'string',
+ *   consumerSecret: 'string',
+ * });
+ * await sdk.auth.authenticate({
+ *   email: 'string',
+ *   password: 'string',
+ * });
+ */
+export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client =>
+  createClient(rawConfig);
+
+export type OAuth2Client = Client<ParamsOauth2>;
+/**
+ * Create ExtraHorizon OAuth2 client.
+ *
+ * @example
+ * const sdk = createOAuth2Client({
+ *   host: 'dev.fibricheck.com',
+ *   clientId: 'string',
+ * });
+ * await sdk.auth.authenticate({
+ *   username: 'string',
+ *   password: 'string',
+ * });
+ */
+export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
+  createClient(rawConfig);
