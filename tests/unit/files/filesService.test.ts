@@ -51,7 +51,7 @@ describe('Files Service', () => {
 
   it('should find a file by name', async () => {
     const { name } = fileData;
-    nock(`${apiHost}${FILES_BASE}`)
+    nock(`${host}${FILES_BASE}`)
       .get(`/?eq(name,${name})`)
       .reply(200, filesResponse);
 
@@ -61,7 +61,7 @@ describe('Files Service', () => {
   });
 
   it('should find the first file', async () => {
-    nock(`${apiHost}${FILES_BASE}`).get('/').reply(200, filesResponse);
+    nock(`${host}${FILES_BASE}`).get('/').reply(200, filesResponse);
 
     const file = await sdk.files.findFirst();
 

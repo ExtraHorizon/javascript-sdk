@@ -49,7 +49,7 @@ describe('Dispatchers Service', () => {
   });
 
   it('should find a dispatcher by id', async () => {
-    nock(`${apiHost}${DISPATCHERS_BASE}`)
+    nock(`${host}${DISPATCHERS_BASE}`)
       .get(`/?eq(id,${dispatcherId})`)
       .reply(200, dispatchersResponse);
 
@@ -59,9 +59,7 @@ describe('Dispatchers Service', () => {
   });
 
   it('should find the first dispatcher', async () => {
-    nock(`${apiHost}${DISPATCHERS_BASE}`)
-      .get('/')
-      .reply(200, dispatchersResponse);
+    nock(`${host}${DISPATCHERS_BASE}`).get('/').reply(200, dispatchersResponse);
 
     const dispatcher = await sdk.dispatchers.findFirst();
 

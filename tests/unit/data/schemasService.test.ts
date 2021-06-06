@@ -48,7 +48,7 @@ describe('Schemas Service', () => {
   });
 
   it('should find a schema by id', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .get(`/?eq(id,${schemaId})`)
       .reply(200, schemasListResponse);
 
@@ -59,7 +59,7 @@ describe('Schemas Service', () => {
 
   it('should find a schema by name', async () => {
     const { name } = schemaData;
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .get(`/?eq(name,${name})`)
       .reply(200, schemasListResponse);
 
@@ -69,7 +69,7 @@ describe('Schemas Service', () => {
   });
 
   it('should find the first schema', async () => {
-    nock(`${apiHost}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
+    nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
 
     const schema = await sdk.data.schemas.findFirst();
 

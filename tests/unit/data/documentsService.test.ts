@@ -57,7 +57,7 @@ describe('Documents Service', () => {
   });
 
   it('should find a document by id', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, documentsListResponse);
 
@@ -67,7 +67,7 @@ describe('Documents Service', () => {
   });
 
   it('should find the first document', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents`)
       .reply(200, documentsListResponse);
 

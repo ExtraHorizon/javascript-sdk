@@ -53,7 +53,7 @@ describe('Template Service', () => {
   });
 
   it('should find a template by id', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`)
+    nock(`${host}${TEMPLATE_BASE}`)
       .get(`/?eq(id,${templateId})`)
       .reply(200, templateResponse);
 
@@ -64,7 +64,7 @@ describe('Template Service', () => {
 
   it('should find a template by name', async () => {
     const { name } = templateData;
-    nock(`${apiHost}${TEMPLATE_BASE}`)
+    nock(`${host}${TEMPLATE_BASE}`)
       .get(`/?eq(name,${name})`)
       .reply(200, templateResponse);
 
@@ -74,7 +74,7 @@ describe('Template Service', () => {
   });
 
   it('should find the first template', async () => {
-    nock(`${apiHost}${TEMPLATE_BASE}`).get('/').reply(200, templateResponse);
+    nock(`${host}${TEMPLATE_BASE}`).get('/').reply(200, templateResponse);
 
     const template = await sdk.templates.findFirst();
 

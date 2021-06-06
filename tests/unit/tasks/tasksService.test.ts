@@ -46,7 +46,7 @@ describe('Tasks Service', () => {
   });
 
   it('should find a task by id', async () => {
-    nock(`${apiHost}${TASKS_BASE}`)
+    nock(`${host}${TASKS_BASE}`)
       .get(`/?eq(id,${taskId})`)
       .reply(200, tasksResponse);
 
@@ -56,7 +56,7 @@ describe('Tasks Service', () => {
   });
 
   it('should find the first task', async () => {
-    nock(`${apiHost}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
+    nock(`${host}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
     const task = await sdk.tasks.findFirst();
 
