@@ -1,9 +1,10 @@
 import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
-import { ResultResponse, Results, PagedResult } from '../types';
+import { ResultResponse, Results, PagedResult, ObjectId } from '../types';
 import type { FileDetails, Token, CreateFile } from './types';
-import { RQLString } from '../../rql';
+import type { RQLString, RQLBuilder } from '../../rql';
+import { getRql } from '../helpers';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -17,6 +18,27 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Name
+   * @param name the name to search for
+   * @returns the first element found
+   */
+  async findByName(name: string, builder?: RQLBuilder): Promise<FileDetails> {
+    const rql = getRql({ name }, builder);
+    const res = (await client.get(httpAuth, `/${rql}`)).data;
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param name the name to search for
+   * @returns the first element found
+   */
+  async findFirst(rql?: RQLString): Promise<FileDetails> {
+    const res = (await client.get(httpAuth, `/${rql || ''}`)).data;
+    return res.data[0];
   },
 
   /**

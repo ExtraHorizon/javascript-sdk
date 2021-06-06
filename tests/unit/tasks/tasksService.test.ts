@@ -40,6 +40,24 @@ describe('Tasks Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a task by id', async () => {
+    nock(`${apiHost}${TASKS_BASE}`)
+      .get(`/?eq(id,${taskId})`)
+      .reply(200, tasksResponse);
+
+    const task = await sdk.tasks.findById(taskId);
+
+    expect(task.id).toBe(taskId);
+  });
+
+  it('should find the first task', async () => {
+    nock(`${apiHost}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
+
+    const task = await sdk.tasks.findFirst();
+
+    expect(task.id).toBe(taskId);
+  });
+
   it('should create a task', async () => {
     nock(`${apiHost}${TASKS_BASE}`).post('/').reply(200, taskData);
 

@@ -1,6 +1,5 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import { withFindMethods } from '../helpers';
 import infrastructure from './infrastructure';
 import schemas from './schemas';
 import indexes from './indexes';
@@ -12,12 +11,12 @@ import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
 
 export type DataService = ReturnType<typeof infrastructure> & {
-  schemas: ReturnType<typeof schemas> & ReturnType<typeof withFindMethods>;
+  schemas: ReturnType<typeof schemas>;
   indexes: ReturnType<typeof indexes>;
   statuses: ReturnType<typeof statuses>;
   properties: ReturnType<typeof properties>;
-  comments: ReturnType<typeof comments> & ReturnType<typeof withFindMethods>;
-  documents: ReturnType<typeof documents> & ReturnType<typeof withFindMethods>;
+  comments: ReturnType<typeof comments>;
+  documents: ReturnType<typeof documents>;
   transitions: ReturnType<typeof transitions>;
 };
 export const dataService = (httpWithAuth: HttpInstance): DataService => {
@@ -25,23 +24,14 @@ export const dataService = (httpWithAuth: HttpInstance): DataService => {
     basePath: DATA_BASE,
   });
 
-  const schemasMethods = schemas(client, httpWithAuth);
-  const schemasFindMethods = withFindMethods(schemasMethods.find);
-
-  const commentsMethods = comments(client, httpWithAuth);
-  const commentsFindMethods = withFindMethods(commentsMethods.find);
-
-  const documentsMethods = documents(client, httpWithAuth);
-  const documentsFindMethods = withFindMethods(documentsMethods.find);
-
   return {
     ...infrastructure(client, httpWithAuth),
-    schemas: { ...schemasMethods, ...schemasFindMethods },
+    schemas: schemas(client, httpWithAuth),
     indexes: indexes(client, httpWithAuth),
     statuses: statuses(client, httpWithAuth),
     properties: properties(client, httpWithAuth),
-    comments: { ...commentsMethods, ...commentsFindMethods },
-    documents: { ...documentsMethods, ...documentsFindMethods },
+    comments: comments(client, httpWithAuth),
+    documents: documents(client, httpWithAuth),
     transitions: transitions(client, httpWithAuth),
   };
 };

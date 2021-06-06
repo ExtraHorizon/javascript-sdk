@@ -1,7 +1,8 @@
-import { RQLString } from '../../rql';
+import type { RQLString, RQLBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import { Document } from './types';
+import { getRql } from '../helpers';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -58,6 +59,37 @@ export default (client, httpAuth: HttpInstance) => ({
     return (
       await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
     ).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @returns the first element found
+   */
+  async findById<CustomDocument = null>(
+    id: ObjectId,
+    schemaId: ObjectId,
+    builder?: RQLBuilder
+  ): Promise<CustomDocument extends null ? Document : CustomDocument> {
+    const rql = getRql({ id }, builder);
+    const res = (await client.get(httpAuth, `/${schemaId}/documents${rql}`))
+      .data;
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param name the name to search for
+   * @returns the first element found
+   */
+  async findFirst<CustomDocument = null>(
+    schemaId: ObjectId,
+    rql?: RQLString
+  ): Promise<CustomDocument extends null ? Document : CustomDocument> {
+    const res = (
+      await client.get(httpAuth, `/${schemaId}/documents${rql || ''}`)
+    ).data;
+    return res.data[0];
   },
 
   /**

@@ -44,6 +44,25 @@ describe('Files Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a file by name', async () => {
+    const { name } = fileData;
+    nock(`${apiHost}${FILES_BASE}`)
+      .get(`/?eq(name,${name})`)
+      .reply(200, filesResponse);
+
+    const file = await sdk.files.findByName(name);
+
+    expect(file.name).toBe(name);
+  });
+
+  it('should find the first file', async () => {
+    nock(`${apiHost}${FILES_BASE}`).get('/').reply(200, filesResponse);
+
+    const file = await sdk.files.findFirst();
+
+    expect(file.name).toBe(fileData.name);
+  });
+
   it('should add a new file', async () => {
     jest.spyOn(fs, 'readFileSync').mockImplementation(() => ``);
     const newFile = {

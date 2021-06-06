@@ -1,7 +1,8 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type { Dispatcher } from './types';
-import type { RQLString } from '../../rql';
+import type { RQLString, RQLBuilder } from '../../rql';
+import { getRql } from '../helpers';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -14,6 +15,27 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Dispatcher>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @returns the first element found
+   */
+  async findById(id: ObjectId, builder?: RQLBuilder): Promise<Dispatcher> {
+    const rql = getRql({ id }, builder);
+    const res = (await client.get(httpAuth, `/${rql}`)).data;
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param name the name to search for
+   * @returns the first element found
+   */
+  async findFirst(rql?: RQLString): Promise<Dispatcher> {
+    const res = (await client.get(httpAuth, `/${rql || ''}`)).data;
+    return res.data[0];
   },
 
   /**

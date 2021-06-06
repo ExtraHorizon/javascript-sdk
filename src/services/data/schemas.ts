@@ -1,7 +1,8 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
-import { RQLString } from '../../rql';
+import type { RQLString, RQLBuilder } from '../../rql';
+import { getRql } from '../helpers';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -27,6 +28,38 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @returns the first element found
+   */
+  async findById(id: ObjectId, builder?: RQLBuilder): Promise<Schema> {
+    const rql = getRql({ id }, builder);
+    const res = (await client.get(httpAuth, `/${rql}`)).data;
+    return res.data[0];
+  },
+
+  /**
+   * Find By Name
+   * @param name the name to search for
+   * @returns the first element found
+   */
+  async findByName(name: string, builder?: RQLBuilder): Promise<Schema> {
+    const rql = getRql({ name }, builder);
+    const res = (await client.get(httpAuth, `/${rql}`)).data;
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param name the name to search for
+   * @returns the first element found
+   */
+  async findFirst(rql?: RQLString): Promise<Schema> {
+    const res = (await client.get(httpAuth, `/${rql || ''}`)).data;
+    return res.data[0];
   },
 
   /**

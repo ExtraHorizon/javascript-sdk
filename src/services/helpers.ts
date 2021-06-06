@@ -1,38 +1,20 @@
 // method helpers and extensions
 
-import { RQLString } from '../rql';
-import { rqlBuilder } from '../index';
+import { RQLString, RQLBuilder, rqlBuilder } from '../rql';
 
-export const withFindMethods = (find: (...any) => Promise<any>) => ({
-  /**
-   * Find By Id
-   * @param id the Id to search for
-   * @returns the first element found
-   */
-  findById: async (id: string, ...args) => {
-    const rql = rqlBuilder().eq('id', id).build();
-    const res = await find(...args, { rql });
-    return res.data[0];
-  },
-
-  /**
-   * Find By Name
-   * @param name the name to search for
-   * @returns the first element found
-   */
-  findByName: async (name: string, ...args) => {
-    const rql = rqlBuilder().eq('name', name).build();
-    const res = await find(...args, { rql });
-    return res.data[0];
-  },
-
-  /**
-   * Find First
-   * @param rql the rql string
-   * @returns the first element found
-   */
-  findFirst: async (options?: { rql?: RQLString }, ...args) => {
-    const res = await find(...args, options);
-    return res.data[0];
-  },
-});
+/**
+ * getRql will construct an rql with the given filters
+ * @param eqObj key,value object to filter. for example { id: 'someId', name: 'someName' }
+ * @param builder a partial rqlbuilder. For example rqlBuilder().select(['name', 'id'])
+ * @returns
+ */
+export const getRql = (
+  eqObj: Record<string, string>,
+  builder?: RQLBuilder
+): RQLString => {
+  const rql = Object.entries(eqObj).reduce(
+    (acc: RQLBuilder, [key, value]) => acc.eq(key, value),
+    builder || rqlBuilder()
+  );
+  return rql.build();
+};

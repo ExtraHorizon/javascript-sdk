@@ -4,14 +4,16 @@ import {
   PagedResult,
   ResultResponse,
   Results,
+  ObjectId,
 } from '../types';
-import { RQLString } from '../../rql';
+import type { RQLString, RQLBuilder } from '../../rql';
 import {
   Mail,
   QueuedMail,
   PlainMailCreation,
   TemplateBasedMailCreation,
 } from './types';
+import { getRql } from '../helpers';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -35,6 +37,27 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Mail>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @returns the first element found
+   */
+  async findById(id: ObjectId, builder?: RQLBuilder): Promise<Mail> {
+    const rql = getRql({ id }, builder);
+    const res = (await client.get(httpAuth, `/${rql}`)).data;
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param name the name to search for
+   * @returns the first element found
+   */
+  async findFirst(rql?: RQLString): Promise<Mail> {
+    const res = (await client.get(httpAuth, `/${rql || ''}`)).data;
+    return res.data[0];
   },
 
   /**

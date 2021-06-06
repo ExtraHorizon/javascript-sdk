@@ -1,40 +1,27 @@
-import { withFindMethods } from '../../src/services/helpers';
+import { rqlBuilder } from '../../src/rql';
+import { getRql } from '../../src/services/helpers';
 
 describe('Helpers', () => {
-  const find = jest.fn(() => Promise.resolve({ data: ['first', 'second'] }));
-  let findMethods;
-
-  beforeEach(() => {
-    findMethods = withFindMethods(find);
+  it('should get rql string filtered by id without builder', () => {
+    const rql = getRql({ id: 'someId' });
+    expect(rql).toBe('?eq(id,someId)');
   });
 
-  it('should return findById, findByName and findFirst methods', () => {
-    expect(findMethods.findById).toBeDefined();
-    expect(findMethods.findByName).toBeDefined();
-    expect(findMethods.findFirst).toBeDefined();
+  it('should get rql string filtered by id', () => {
+    const rql = getRql({ id: 'someId' }, rqlBuilder().select('name'));
+    expect(rql).toBe('?select(name)&eq(id,someId)');
   });
 
-  it('findById should call find with given params', async () => {
-    const res = await findMethods.findById('someId', 'arg1', 'arg2');
-    expect(find).toHaveBeenCalledWith('arg1', 'arg2', {
-      rql: '?eq(id,someId)',
-    });
-    expect(res).toBe('first');
+  it('should get rql string filtered by name', () => {
+    const rql = getRql({ name: 'someName' }, rqlBuilder().select('name'));
+    expect(rql).toBe('?select(name)&eq(name,someName)');
   });
 
-  it('findByName should call find with given params', async () => {
-    const res = await findMethods.findByName('someName', 'arg1', 'arg2');
-    expect(find).toHaveBeenCalledWith('arg1', 'arg2', {
-      rql: '?eq(name,someName)',
-    });
-    expect(res).toBe('first');
-  });
-
-  it('findFirst should call find with given params', async () => {
-    const res = await findMethods.findFirst({ rql: "?select('name')" });
-    expect(find).toHaveBeenCalledWith({
-      rql: "?select('name')",
-    });
-    expect(res).toBe('first');
+  it('should get rql string filtered by id and name', () => {
+    const rql = getRql(
+      { id: 'someId', name: 'someName' },
+      rqlBuilder().select(['id', 'name'])
+    );
+    expect(rql).toBe('?select(id,name)&eq(id,someId)&eq(name,someName)');
   });
 });

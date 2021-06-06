@@ -10,6 +10,7 @@ import {
 
 describe('Mail Service', () => {
   const apiHost = 'https://api.xxx.fibricheck.com';
+  const mailId = mailData.id;
 
   let sdk: Client<ParamsOauth2>;
 
@@ -50,6 +51,24 @@ describe('Mail Service', () => {
     const res = await sdk.mails.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should find a mail by id', async () => {
+    nock(`${apiHost}${MAIL_BASE}`)
+      .get(`/?eq(id,${mailId})`)
+      .reply(200, mailsResponse);
+
+    const mail = await sdk.mails.findById(mailId);
+
+    expect(mail.id).toBe(mailId);
+  });
+
+  it('should find the first mail', async () => {
+    nock(`${apiHost}${MAIL_BASE}`).get('/').reply(200, mailsResponse);
+
+    const mail = await sdk.mails.findFirst();
+
+    expect(mail.id).toBe(mailId);
   });
 
   it('should send a mail', async () => {

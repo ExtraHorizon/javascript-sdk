@@ -49,6 +49,35 @@ describe('Template Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a template by id', async () => {
+    nock(`${apiHost}${TEMPLATE_BASE}`)
+      .get(`/?eq(id,${templateId})`)
+      .reply(200, templateResponse);
+
+    const template = await sdk.templates.findById(templateId);
+
+    expect(template.id).toBe(templateId);
+  });
+
+  it('should find a template by name', async () => {
+    const { name } = templateData;
+    nock(`${apiHost}${TEMPLATE_BASE}`)
+      .get(`/?eq(name,${name})`)
+      .reply(200, templateResponse);
+
+    const template = await sdk.templates.findByName(name);
+
+    expect(template.name).toBe(name);
+  });
+
+  it('should find the first template', async () => {
+    nock(`${apiHost}${TEMPLATE_BASE}`).get('/').reply(200, templateResponse);
+
+    const template = await sdk.templates.findFirst();
+
+    expect(template.id).toBe(templateId);
+  });
+
   it('should create a new template', async () => {
     nock(`${apiHost}${TEMPLATE_BASE}`).post('/').reply(200, templateData);
 

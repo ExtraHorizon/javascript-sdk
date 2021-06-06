@@ -3,12 +3,13 @@ import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
 import { Client, client, ParamsOauth2 } from '../../../src/index';
 import {
   newDocumentCreated,
+  documentData,
   documentsListResponse,
 } from '../../__helpers__/data';
 
 describe('Documents Service', () => {
   const schemaId = '1e9fff9d90135a2a9a718e2f';
-  const documentId = '2e9fff9d90135a2a9a718e2f';
+  const documentId = documentData.id;
 
   const apiHost = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
@@ -53,6 +54,26 @@ describe('Documents Service', () => {
       .reply(200, documentsListResponse);
     const res = await sdk.data.documents.find(schemaId);
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should find a document by id', async () => {
+    nock(`${apiHost}${DATA_BASE}`)
+      .get(`/${schemaId}/documents?eq(id,${documentId})`)
+      .reply(200, documentsListResponse);
+
+    const document = await sdk.data.documents.findById(documentId, schemaId);
+
+    expect(document.id).toBe(documentId);
+  });
+
+  it('should find the first document', async () => {
+    nock(`${apiHost}${DATA_BASE}`)
+      .get(`/${schemaId}/documents`)
+      .reply(200, documentsListResponse);
+
+    const document = await sdk.data.documents.findFirst(schemaId);
+
+    expect(document.id).toBe(documentId);
   });
 
   it('should update a document', async () => {
