@@ -1,7 +1,7 @@
 import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
-import { ResultResponse, Results, PagedResult, ObjectId } from '../types';
+import { ResultResponse, Results, PagedResult } from '../types';
 import type { FileDetails, Token, CreateFile } from './types';
 import type { RQLString, RQLBuilder } from '../../rql';
 import { getRql } from '../helpers';
