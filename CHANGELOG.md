@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.1]
+## [3.0.2]
 
 ### Breaking Changes
 
@@ -30,15 +30,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `rawAxios` is renamed to `raw`
 
+### Added
+
+- `createOAuth1Client` and `createOAuth2Client` are now exported as more specifically typed versions of `createClient`
+
 ### Changes
 
-- Templates basepath fix
 - Templates `resolveAsPdf` will return a `Buffer`
 - `sdk.authenticate` now includes possible error responses in the JSDoc annotations
 - `rqlBuilder` now has JSDoc annotations
 - Fix for results with arrays containing strings
 - File creation now correctly set the file name on the form-data. Accepts extra parameter `extension` which defaults to `pdf`
 - The MailsService now correctly decamelizes the keys in the request
+
+## [3.0.1]
+
+### Changes
+
+- Templates basepath fix
 
 ## [3.0.0]
 
