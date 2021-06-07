@@ -1,23 +1,23 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { transitionInput, newTransition } from '../../__helpers__/data';
 
 describe('Transitions Service', () => {
   const schemaId = '2e9fff9d90135a2a9a718e2f';
   const transitionId = '1e9fff9d90135a2a9a718e2f';
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
     try {
-      sdk = client({
-        apiHost,
+      sdk = createClient({
+        host,
         clientId: '',
       });
 
       const mockToken = 'mockToken';
-      nock(apiHost)
+      nock(host)
         .post(`${AUTH_BASE}/oauth2/tokens`)
         .reply(200, { access_token: mockToken });
 
@@ -37,10 +37,10 @@ describe('Transitions Service', () => {
 
   it('should update the creation transition', async () => {
     try {
-      nock(`${apiHost}${DATA_BASE}`)
+      nock(`${host}${DATA_BASE}`)
         .put(`/${schemaId}/creationTransition`)
         .reply(200, { affectedRecords: 1 });
-      const res = await sdk.data.updateCreationTransition(
+      const res = await sdk.data.transitions.updateCreation(
         schemaId,
         transitionInput
       );
@@ -52,10 +52,10 @@ describe('Transitions Service', () => {
   });
 
   it('should create a transition', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/transitions`)
       .reply(200, { ...newTransition, id: transitionId });
-    const createdTransition = await sdk.data.createTransition(
+    const createdTransition = await sdk.data.transitions.create(
       schemaId,
       newTransition
     );
@@ -63,10 +63,10 @@ describe('Transitions Service', () => {
   });
 
   it('should update a transition', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .put(`/${schemaId}/transitions/${transitionId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.updateTransition(
+    const res = await sdk.data.transitions.update(
       schemaId,
       transitionId,
       newTransition
@@ -75,10 +75,10 @@ describe('Transitions Service', () => {
   });
 
   it('should delete a transition', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/transitions/${transitionId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.deleteTransition(schemaId, transitionId);
+    const res = await sdk.data.transitions.delete(schemaId, transitionId);
     expect(res.affectedRecords).toBe(1);
   });
 });

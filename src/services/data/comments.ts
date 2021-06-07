@@ -18,7 +18,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<Comment>}
    * @throws {LockedDocumentError}
    */
-  async createComment(
+  async create(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -47,7 +47,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns {Promise<PagedResult<Comment>>}
    */
-  async findComments(
+  async find(
     schemaId: ObjectId,
     documentId: ObjectId,
     options?: {
@@ -75,7 +75,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<AffectedRecords>}
    */
 
-  async updateComment(
+  async update(
     commentId: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
@@ -105,7 +105,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
    */
-  async deleteComment(
+  async delete(
     commentId: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId

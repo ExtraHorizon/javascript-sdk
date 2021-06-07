@@ -41,7 +41,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns TemplateOut Success
    */
-  async createTemplate(requestBody: TemplateIn): Promise<TemplateOut> {
+  async create(requestBody: TemplateIn): Promise<TemplateOut> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -56,7 +56,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns TemplateOut Success
    * @throws {ResourceUnknownError}
    */
-  async updateTemplate(
+  async update(
     templateId: string,
     requestBody: TemplateIn
   ): Promise<TemplateOut> {
@@ -73,7 +73,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async deleteTemplate(templateId: string): Promise<AffectedRecords> {
+  async delete(templateId: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${templateId}`)).data;
   },
 
@@ -90,12 +90,15 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}
    */
-  async resolveTemplateAsPdf(
+  async resolveAsPdf(
     templateId: string,
     requestBody: CreateFile
-  ): Promise<any> {
-    return (await client.post(httpAuth, `/${templateId}/pdf`, requestBody))
-      .data;
+  ): Promise<Buffer> {
+    return (
+      await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
+        responseType: 'arraybuffer',
+      })
+    ).data;
   },
 
   /**
@@ -113,16 +116,19 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}
    */
-  async resolveTemplateAsPdfUsingCode(
+  async resolveAsPdfUsingCode(
     templateId: string,
     localizationCode: string,
     requestBody: CreateFile
-  ): Promise<any> {
+  ): Promise<Buffer> {
     return (
       await client.post(
         httpAuth,
         `/${templateId}/pdf/${localizationCode}`,
-        requestBody
+        requestBody,
+        {
+          responseType: 'arraybuffer',
+        }
       )
     ).data;
   },
@@ -140,7 +146,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}
    */
-  async resolveTemplateAsJson(
+  async resolveAsJson(
     templateId: string,
     requestBody: CreateFile
   ): Promise<Record<string, string>> {
@@ -163,7 +169,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}
    */
-  async resolveTemplateAsJsonUsingCode(
+  async resolveAsJsonUsingCode(
     templateId: string,
     localizationCode: string,
     requestBody: CreateFile

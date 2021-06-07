@@ -13,7 +13,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
-  async updateCreationTransition(
+  async updateCreation(
     schemaId: ObjectId,
     requestBody: CreationTransition
   ): Promise<AffectedRecords> {
@@ -32,7 +32,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
-  async createTransition(
+  async create(
     schemaId: ObjectId,
     requestBody: Transition
   ): Promise<TransitionInput> {
@@ -53,7 +53,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async updateTransition(
+  async update(
     schemaId: ObjectId,
     transitionId: ObjectId,
     requestBody: Transition
@@ -77,7 +77,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {ResourceUnknownError}
    */
-  async deleteTransition(
+  async delete(
     schemaId: ObjectId,
     transitionId: ObjectId
   ): Promise<AffectedRecords> {

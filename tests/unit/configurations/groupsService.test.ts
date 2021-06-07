@@ -1,25 +1,30 @@
 import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import {
   groupConfigResponse,
   groupConfigInput,
 } from '../../__helpers__/configuration';
 
 describe('Configuration: Groups Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const groupId = 'abcdef123456789abcdef123';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -35,11 +40,11 @@ describe('Configuration: Groups Service', () => {
   });
 
   it('should view a group configuration', async () => {
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/groups/${groupId}`)
       .reply(200, groupConfigResponse);
 
-    const res = await sdk.configuration.getGroupsConfig(groupId);
+    const res = await sdk.configurations.groups.get(groupId);
 
     expect(res.data).toBeDefined();
     expect(res.staffConfiguration).toBeDefined();
@@ -48,13 +53,11 @@ describe('Configuration: Groups Service', () => {
 
   it('should update a group configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
-      .put(`/groups/${groupId}`)
-      .reply(200, {
-        affectedRecords: 1,
-      });
+    nock(`${host}${CONFIGURATION_BASE}`).put(`/groups/${groupId}`).reply(200, {
+      affectedRecords: 1,
+    });
 
-    const res = await sdk.configuration.updateGroupsConfig(
+    const res = await sdk.configurations.groups.update(
       groupId,
       groupConfigInput,
       { rql }
@@ -65,13 +68,13 @@ describe('Configuration: Groups Service', () => {
 
   it('should delete fields from a group configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/groups/${groupId}/deleteFields`)
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromGroupsConfig(
+    const res = await sdk.configurations.groups.removeFields(
       groupId,
       {
         fields: ['data.enableEpicFeature'],

@@ -16,10 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {IllegalArgumentError}
    * @throws {IllegalStateError}
    */
-  async createIndex(
-    schemaId: ObjectId,
-    requestBody: IndexInput
-  ): Promise<Index> {
+  async create(schemaId: ObjectId, requestBody: IndexInput): Promise<Index> {
     return (await client.post(httpAuth, `/${schemaId}/indexes`, requestBody))
       .data;
   },
@@ -36,7 +33,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {NoPermissionError}
    * @throws {ResourceUnknownError}
    */
-  async deleteIndex(
+  async delete(
     indexId: ObjectId,
     schemaId: ObjectId
   ): Promise<AffectedRecords> {

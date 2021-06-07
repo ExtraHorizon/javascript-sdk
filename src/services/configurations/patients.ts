@@ -4,11 +4,11 @@ import type { UserConfigurationInput } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
-   * Update a staff configuration for a group of a user.
+   * Update a patient configuration for a group of a user.
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_STAFF_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
-   * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
+   * `UPDATE_PATIENT_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
+   * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user its staff configuration
    *
    * @param groupId The id of the targeted group
@@ -16,7 +16,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody UserConfigurationInput
    * @returns AffectedRecords
    */
-  async updateStaffConfig(
+  async update(
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: UserConfigurationInput
@@ -24,18 +24,18 @@ export default (client, httpAuth: HttpInstance) => ({
     return (
       await client.put(
         httpAuth,
-        `/users/${userId}/staffConfigurations/${groupId}`,
+        `/users/${userId}/patientConfigurations/${groupId}`,
         requestBody
       )
     ).data;
   },
 
   /**
-   * Delete fields from a staff configuration for a group of a user.
+   * Delete fields from a patient configuration for a group of a user.
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_STAFF_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
-   * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
+   * `UPDATE_PATIENT_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
+   * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user its staff configuration
    *
    * @param groupId The id of the targeted group
@@ -43,7 +43,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody the list of fields to remove
    * @returns AffectedRecords
    */
-  async removeFieldsFromStaffConfig(
+  async removeFields(
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: {
@@ -53,7 +53,7 @@ export default (client, httpAuth: HttpInstance) => ({
     return (
       await client.post(
         httpAuth,
-        `/users/${userId}/staffConfigurations/${groupId}/deleteFields`,
+        `/users/${userId}/patientConfigurations/${groupId}/deleteFields`,
         requestBody
       )
     ).data;

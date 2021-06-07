@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   newSchemaCreated,
   newIndexCreated,
@@ -10,17 +10,17 @@ import {
 describe('Indexes Service', () => {
   const schemaId = newSchemaCreated.id;
   const indexId = newIndexCreated.id;
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -36,20 +36,20 @@ describe('Indexes Service', () => {
   });
 
   it('should create an index', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/indexes`)
       .reply(200, newIndexCreated);
-    const index = await sdk.data.createIndex(schemaId, newIndexInput);
+    const index = await sdk.data.indexes.create(schemaId, newIndexInput);
     expect(index.id).toBe(newIndexCreated.id);
   });
 
   it('should delete an index', async () => {
-    nock(`${apiHost}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/indexes/${indexId}`)
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.deleteIndex(indexId, schemaId);
+    const res = await sdk.data.indexes.delete(indexId, schemaId);
     expect(res.affectedRecords).toBe(1);
   });
 });

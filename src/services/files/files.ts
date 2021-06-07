@@ -29,10 +29,15 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  async createFile({ name, file, tags }: CreateFile): Promise<FileDetails> {
+  async create({
+    name,
+    file,
+    tags,
+    extension = 'pdf',
+  }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
     form.append('name', name);
-    form.append('file', file);
+    form.append('file', file, `${name}.${extension}`);
     if (tags) {
       form.append('tags', tags);
     }
@@ -57,7 +62,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async deleteFile(token: Token): Promise<boolean> {
+  async delete(token: Token): Promise<boolean> {
     const result: ResultResponse = await client.delete(httpAuth, `/${token}`);
     return result.status === Results.Success;
   },
@@ -73,7 +78,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async retrieveFile(token: Token): Promise<Buffer> {
+  async retrieve(token: Token): Promise<Buffer> {
     return (
       await client.get(httpAuth, `/${token}/file`, {
         responseType: 'arraybuffer',
@@ -92,7 +97,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async retrieveFileStream(token: Token): Promise<{ data: ReadStream }> {
+  async retrieveStream(token: Token): Promise<{ data: ReadStream }> {
     return await client.get(httpAuth, `/${token}/file`, {
       responseType: 'stream',
     });
@@ -114,7 +119,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async getFileDetails(token: Token): Promise<FileDetails> {
+  async getDetails(token: Token): Promise<FileDetails> {
     return (await client.get(httpAuth, `/${token}/details`)).data;
   },
 });

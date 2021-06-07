@@ -1,20 +1,20 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import template from './template';
+import templates from './templates';
 import { TEMPLATE_BASE } from '../../constants';
 
-export type TemplateService = ReturnType<typeof template>;
+export type TemplatesService = ReturnType<typeof templates>;
 
-export const templateService = (
+export const templatesService = (
   httpWithAuth: HttpInstance
-): TemplateService => {
+): TemplatesService => {
   const client = httpClient({
     basePath: TEMPLATE_BASE,
   });
 
-  const templateMethods = template(client, httpWithAuth);
+  const templatesMethods = templates(client, httpWithAuth);
 
   return {
-    ...templateMethods,
+    ...templatesMethods,
   };
 };

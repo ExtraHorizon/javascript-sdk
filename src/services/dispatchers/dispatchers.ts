@@ -24,7 +24,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody Dispatcher
    * @returns Dispatcher
    */
-  async createDispatcher(requestBody: Dispatcher): Promise<Dispatcher> {
+  async create(requestBody: Dispatcher): Promise<Dispatcher> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -37,7 +37,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async removeDispatcher(dispatcherId: ObjectId): Promise<AffectedRecords> {
+  async remove(dispatcherId: ObjectId): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${dispatcherId}`)).data;
   },
 });

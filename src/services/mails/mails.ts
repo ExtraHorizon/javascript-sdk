@@ -49,7 +49,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Mail Success
    * @throws {NotActivatedError}
    */
-  async sendMail(
+  async send(
     requestBody?: PlainMailCreation | TemplateBasedMailCreation
   ): Promise<Mail> {
     return (await client.post(httpAuth, '/', requestBody)).data;
@@ -64,7 +64,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param trackingHash
    * @returns any Operation successful
    */
-  async trackMail(trackingHash: string): Promise<AffectedRecords> {
+  async track(trackingHash: string): Promise<AffectedRecords> {
     return (await client.get(httpAuth, `/${trackingHash}/open`)).data;
   },
 
@@ -77,7 +77,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns any Success
    */
-  async findOutboundMails(options?: {
+  async findOutbound(options?: {
     rql?: string;
   }): Promise<PagedResult<QueuedMail>> {
     return (await client.get(httpAuth, `/queued${options?.rql || ''}`)).data;

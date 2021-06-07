@@ -8,9 +8,10 @@ import { USER_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
 
 export type UsersService = ReturnType<typeof users> &
-  ReturnType<typeof health> &
-  ReturnType<typeof globalRoles> &
-  ReturnType<typeof groupRoles>;
+  ReturnType<typeof health> & {
+    globalRoles: ReturnType<typeof globalRoles>;
+    groupRoles: ReturnType<typeof groupRoles>;
+  };
 
 export const usersService = (httpWithAuth: HttpInstance): UsersService => {
   const userClient = httpClient({
@@ -26,7 +27,7 @@ export const usersService = (httpWithAuth: HttpInstance): UsersService => {
   return {
     ...healthMethods,
     ...usersMethods,
-    ...groupRolesMethods,
-    ...globalRolesMethods,
+    groupRoles: groupRolesMethods,
+    globalRoles: globalRolesMethods,
   };
 };

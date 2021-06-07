@@ -1,22 +1,27 @@
 import nock from 'nock';
 import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import { userConfigResponse } from '../../__helpers__/configuration';
 
 describe('Configuration: Users Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const userId = '52adef123456789abcdef123';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -32,11 +37,11 @@ describe('Configuration: Users Service', () => {
   });
 
   it('should retrieve a user configuration', async () => {
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/users/${userId}`)
       .reply(200, userConfigResponse);
 
-    const res = await sdk.configuration.getUsersConfig(userId);
+    const res = await sdk.configurations.users.get(userId);
 
     expect(res.data).toBeDefined();
     expect(res.staffConfigurations).toBeDefined();
@@ -45,11 +50,11 @@ describe('Configuration: Users Service', () => {
 
   it('should update a user configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`).put(`/users/${userId}`).reply(200, {
+    nock(`${host}${CONFIGURATION_BASE}`).put(`/users/${userId}`).reply(200, {
       affectedRecords: 1,
     });
 
-    const res = await sdk.configuration.updateUsersConfig(
+    const res = await sdk.configurations.users.update(
       userId,
       {
         data: {
@@ -64,13 +69,13 @@ describe('Configuration: Users Service', () => {
 
   it('should delete fields from a user configuration', async () => {
     const rql = rqlBuilder().build();
-    nock(`${apiHost}${CONFIGURATION_BASE}`)
+    nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/users/${userId}/deleteFields`)
       .reply(200, {
         affectedRecords: 1,
       });
 
-    const res = await sdk.configuration.removeFieldsFromUsersConfig(
+    const res = await sdk.configurations.users.removeFields(
       userId,
       {
         fields: ['data.enableEpicFeature'],

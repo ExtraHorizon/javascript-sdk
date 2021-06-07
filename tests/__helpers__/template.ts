@@ -1,7 +1,7 @@
 import {
   TemplateIn,
   ObjectConfigurationType,
-} from '../../src/services/template/types';
+} from '../../src/services/templates/types';
 
 import { ConfigurationType } from '../../src/services/data/types';
 
