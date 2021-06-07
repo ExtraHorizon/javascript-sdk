@@ -69,8 +69,8 @@ export interface RQLBuilder {
  * @see https://developers.extrahorizon.io/guide/rql.html
  * @returns
  */
-export function rqlBuilder(): RQLBuilder {
-  let returnString = '';
+export function rqlBuilder(rql?: RQLString): RQLBuilder {
+  let returnString = rql || '';
 
   const api: RQLBuilder = {
     select(value) {
