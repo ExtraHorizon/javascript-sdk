@@ -128,3 +128,16 @@ export function decamelizeKeys(
 ): Record<string, unknown> {
   return recursiveRenameKeys(decamelize, object);
 }
+
+/**
+ * Composes a `User-Agent` like header value which looks something like
+ * `'Node/14.4.0 SDK/3.0.0'`.
+ */
+export function composeUserAgent(packageVersion: string): string {
+  return [
+    typeof process !== 'undefined' && process?.release?.name === 'node'
+      ? `Node/${process.version} OS/${process.platform}-${process.arch}`
+      : '',
+    `SDK/${packageVersion}`,
+  ].join(' ');
+}
