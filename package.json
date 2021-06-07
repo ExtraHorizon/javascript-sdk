@@ -13,7 +13,7 @@
   "scripts": {
     "clean": "rimraf build",
     "start": "yarn test",
-    "start:watch": "yarn test --watch",
+    "start:watch": "yarn test --watch --reporters=\"default\"",
     "build": "yarn clean && yarn build:library && yarn build:declarations",
     "build:library": "rollup --config rollup.config.js",
     "build:declarations": "tsc --project tsconfig.declarations.json",
@@ -68,6 +68,16 @@
   "jest-junit": {
     "outputDirectory": "test-results",
     "outputName": "jest-junit.xml"
+  },
+  "jest-stare": {
+    "resultDir": "test-results",
+    "reportTitle": "Test report generated with jest-stare!",
+    "additionalResultsProcessors": [
+      "jest-junit"
+    ],
+    "coverageLink": "coverage/lcov-report/index.html",
+    "jestStareConfigJson": "jest-stare.json",
+    "jestGlobalConfigJson": "globalStuff.json"
   },
   "lint-staged": {
     "*.ts": [
