@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.2]
 
-- Added Test Reports
-
 ### Breaking Changes
 
 - `apiHost` has been renamed to `host` and should not include the protocol or `api` subdomain. Example `
@@ -35,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `createOAuth1Client` and `createOAuth2Client` are now exported as more specifically typed versions of `createClient`
+- Added Test Reports
 
 ### Changes
 
