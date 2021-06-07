@@ -27,7 +27,7 @@ const oauthTokenMock = {
 
 describe('http client', () => {
   const config = validateConfig(mockParams) as ConfigOauth1;
-  const http = createHttpClient(config);
+  const http = createHttpClient({ ...config, packageVersion: '' });
   const authConfig = parseAuthParams(oauthEmailMock);
   let httpWithAuth;
 
