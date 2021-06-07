@@ -14,7 +14,7 @@ module.exports = {
     '/tests/e2e/',
     '/build/',
   ],
-  coverage: true,
+  collectCoverage: true,
   coverageDirectory: 'test-results/coverage',
   // reporters: ['default', 'jest-junit'],
   reporters: [
