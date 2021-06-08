@@ -14,7 +14,7 @@
     "clean": "rimraf build",
     "start": "yarn test",
     "start:watch": "yarn test --watch",
-    "create-version-file": "echo \"export const version = '$(node -p \"require('./package.json').version\")';\" >  src/version.ts",
+    "create-version-file": "echo \"export const version = '$(node -p \"require('./package.json').version\")';\" > src/version.ts",
     "build": "yarn create-version-file && yarn clean && yarn build:library && yarn build:declarations",
     "build:library": "rollup --config rollup.config.js",
     "build:declarations": "tsc --project tsconfig.declarations.json",
