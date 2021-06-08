@@ -39,9 +39,12 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(id: ObjectId, rql?: RQLString): Promise<TemplateOut> {
-    const rqlWithId = rqlBuilder(rql).eq('id', id).build();
-    const res = (await client.get(httpAuth, `/${rqlWithId}`)).data;
+  async findById(
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<TemplateOut> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ rql: rqlWithId });
     return res.data[0];
   },
 
@@ -51,9 +54,12 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findByName(name: string, rql?: RQLString): Promise<TemplateOut> {
-    const rqlWithName = rqlBuilder(rql).eq('name', name).build();
-    const res = (await client.get(httpAuth, `/${rqlWithName}`)).data;
+  async findByName(
+    name: string,
+    options?: { rql?: RQLString }
+  ): Promise<TemplateOut> {
+    const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
+    const res = await this.find({ rql: rqlWithName });
     return res.data[0];
   },
 
@@ -62,8 +68,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(rql?: RQLString): Promise<TemplateOut> {
-    const res = (await client.get(httpAuth, `/${rql || ''}`)).data;
+  async findFirst(options?: { rql?: RQLString }): Promise<TemplateOut> {
+    const res = await this.find(options);
     return res.data[0];
   },
 

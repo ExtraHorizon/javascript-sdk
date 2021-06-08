@@ -44,9 +44,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(id: ObjectId, rql?: RQLString): Promise<Mail> {
-    const rqlWithId = rqlBuilder(rql).eq('id', id).build();
-    const res = (await client.get(httpAuth, `/${rqlWithId}`)).data;
+  async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Mail> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ rql: rqlWithId });
     return res.data[0];
   },
 
@@ -55,8 +55,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(rql?: RQLString): Promise<Mail> {
-    const res = (await client.get(httpAuth, `/${rql || ''}`)).data;
+  async findFirst(options?: { rql?: RQLString }): Promise<Mail> {
+    const res = await this.find(options);
     return res.data[0];
   },
 

@@ -74,15 +74,10 @@ export default (client, httpAuth: HttpInstance) => ({
     id: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
-    rql?: RQLString
+    options?: { rql?: RQLString }
   ): Promise<Comment> {
-    const rqlWithId = rqlBuilder(rql).eq('id', id).build();
-    const res = (
-      await client.get(
-        httpAuth,
-        `/${schemaId}/documents/${documentId}/comments${rqlWithId}`
-      )
-    ).data;
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find(schemaId, documentId, { rql: rqlWithId });
     return res.data[0];
   },
 
@@ -96,14 +91,9 @@ export default (client, httpAuth: HttpInstance) => ({
   async findFirst(
     schemaId: ObjectId,
     documentId: ObjectId,
-    rql?: RQLString
+    options?: { rql?: RQLString }
   ): Promise<Comment> {
-    const res = (
-      await client.get(
-        httpAuth,
-        `/${schemaId}/documents/${documentId}/comments${rql || ''}`
-      )
-    ).data;
+    const res = await this.find(schemaId, documentId, options);
     return res.data[0];
   },
 

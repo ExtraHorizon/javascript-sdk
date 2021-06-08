@@ -70,12 +70,10 @@ export default (client, httpAuth: HttpInstance) => ({
   async findById<CustomDocument = null>(
     id: ObjectId,
     schemaId: ObjectId,
-    rql?: RQLString
+    options?: { rql?: RQLString }
   ): Promise<CustomDocument extends null ? Document : CustomDocument> {
-    const rqlWithId = rqlBuilder(rql).eq('id', id).build();
-    const res = (
-      await client.get(httpAuth, `/${schemaId}/documents${rqlWithId}`)
-    ).data;
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find(schemaId, { rql: rqlWithId });
     return res.data[0];
   },
 
@@ -87,11 +85,9 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async findFirst<CustomDocument = null>(
     schemaId: ObjectId,
-    rql?: RQLString
+    options?: { rql?: RQLString }
   ): Promise<CustomDocument extends null ? Document : CustomDocument> {
-    const res = (
-      await client.get(httpAuth, `/${schemaId}/documents${rql || ''}`)
-    ).data;
+    const res = await this.find(schemaId, options);
     return res.data[0];
   },
 
