@@ -15,10 +15,8 @@ export const dispatchersService = (
     basePath: DISPATCHERS_BASE,
   });
 
-  const dispatchersMethods = dispatchers(client, httpWithAuth);
-
   return {
-    ...dispatchersMethods,
+    ...dispatchers(client, httpWithAuth),
     actions: actions(client, httpWithAuth),
   };
 };
