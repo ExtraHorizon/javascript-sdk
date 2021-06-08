@@ -1,8 +1,7 @@
-import type { RQLString, RQLBuilder } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import { Document } from './types';
-import { getRql } from '../helpers';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -64,22 +63,26 @@ export default (client, httpAuth: HttpInstance) => ({
   /**
    * Find By Id
    * @param id the Id to search for
+   * @param schemaId the schema Id
+   * @param rql an optional rql string
    * @returns the first element found
    */
   async findById<CustomDocument = null>(
     id: ObjectId,
     schemaId: ObjectId,
-    builder?: RQLBuilder
+    rql?: RQLString
   ): Promise<CustomDocument extends null ? Document : CustomDocument> {
-    const rql = getRql({ id }, builder);
-    const res = (await client.get(httpAuth, `/${schemaId}/documents${rql}`))
-      .data;
+    const rqlWithId = rqlBuilder(rql).eq('id', id).build();
+    const res = (
+      await client.get(httpAuth, `/${schemaId}/documents${rqlWithId}`)
+    ).data;
     return res.data[0];
   },
 
   /**
    * Find First
-   * @param name the name to search for
+   * @param schemaId the schema Id
+   * @param rql an optional rql string
    * @returns the first element found
    */
   async findFirst<CustomDocument = null>(
