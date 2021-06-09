@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { AuthParams, ClientParams, ParamsOauth1, ParamsOauth2 } from './types';
-import { version as packageVersion } from '../package.json';
+import { version as packageVersion } from './version';
 
 import {
   usersService,

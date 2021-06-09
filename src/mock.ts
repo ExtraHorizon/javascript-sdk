@@ -18,7 +18,7 @@ const { raw: _raw, ...sdk } = createClient({ host: '' } as any);
  * });
  */
 export const getMockSdk = (fn): Client<ClientParams> => ({
-  ...recursiveMap(value => (typeof value === 'function' ? fn : value))(sdk),
+  ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(sdk),
   raw: [
     'get',
     'post',
@@ -32,7 +32,7 @@ export const getMockSdk = (fn): Client<ClientParams> => ({
   ].reduce(
     (memo, verb) => ({
       ...memo,
-      [verb]: fn,
+      [verb]: fn(),
     }),
     {}
   ),
