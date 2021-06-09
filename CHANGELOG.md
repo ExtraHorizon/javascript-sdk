@@ -19,14 +19,14 @@ const {
 const transition = schema.transitionsByName.lambda_to_review;
 ```
 
-- Added `transitionIdByName` function on `schema` objects to easily find the transitionId you need.
+- Added `findTransitionIdByName` function on `schema` objects to easily find the transitionId you need.
 
 ```ts
 const {
   data: [schema],
 } = await sdk.data.schemas.find();
 
-const transitionId = schema.transitionIdByName('lambda_to_review');
+const transitionId = schema.findTransitionIdByName('lambda_to_review');
 ```
 
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
