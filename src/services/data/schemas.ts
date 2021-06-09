@@ -3,6 +3,13 @@ import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
 import { RQLString } from '../../rql';
 
+const addTransitionByNameSchema = (schema: Schema) => ({
+  ...schema,
+  transitionByName(name: string) {
+    return schema.transitions.find(transition => transition.name === name);
+  },
+});
+
 export default (client, httpAuth: HttpInstance) => ({
   /**
    * Create a schema
@@ -13,7 +20,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Schema successful operation
    */
   async create(requestBody: SchemaInput): Promise<Schema> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+    return addTransitionByNameSchema(
+      (await client.post(httpAuth, '/', requestBody)).data
+    );
   },
 
   /**
@@ -26,7 +35,11 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+    return {
+      ...result,
+      data: result.data.map(addTransitionByNameSchema),
+    };
   },
 
   /**
