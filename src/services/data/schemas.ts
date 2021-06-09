@@ -6,7 +6,7 @@ import { RQLString } from '../../rql';
 const addTransitionByNameSchema = (schema: Schema) => ({
   ...schema,
   transitionByName(name: string) {
-    return this.transitions.find(transition => transition.name === name);
+    return schema.transitions.find(transition => transition.name === name);
   },
 });
 
