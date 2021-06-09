@@ -7,3 +7,4 @@ export const CONFIGURATION_BASE = '/configurations/v2';
 export const TEMPLATE_BASE = '/templates/v1';
 export const MAIL_BASE = '/mail/v1';
 export const DISPATCHERS_BASE = '/dispatchers/v1';
+export const PAYMENTS_BASE = '/payments/v1';

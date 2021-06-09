@@ -64,7 +64,7 @@ export function mapObjIndexed(fn, object): Record<string, unknown> {
 
 export const recursiveMap = fn => obj => {
   // needed for arrays with strings/numbers etc
-  if (typeof obj !== 'object') {
+  if (obj === null || typeof obj !== 'object') {
     return obj;
   }
   return Array.isArray(obj)

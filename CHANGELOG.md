@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `findByName` method to Data Transitions service.
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
+- Payments Service
 
 ## [3.0.2]
 
