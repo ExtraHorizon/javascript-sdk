@@ -31,7 +31,7 @@ export const newSchemaInput = {
   maximumLimit: 5,
 };
 
-export const newSchemaCreated: Schema = {
+export const newSchemaCreated: Partial<Schema> = {
   id: '5e9fff9d90135a2a9a718e2f',
   name: 'FibriCheck Measurement',
   description: 'The schema for holding FibriCheck measurements',
