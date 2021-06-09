@@ -336,7 +336,7 @@ export interface StripePaymentMethod {
 }
 
 export interface StripePaymentMethodCreation {
-  stripeId?: string;
+  stripeId: string;
   tags?: Array<string>;
 }
 
