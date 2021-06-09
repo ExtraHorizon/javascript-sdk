@@ -247,6 +247,7 @@ export const schemaData = {
   },
   transitions: [
     {
+      id: '5e9fff9d84820a2a9a718e2f',
       toStatus: 'start',
       type: 'manual',
       conditions: [

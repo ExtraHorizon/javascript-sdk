@@ -3,10 +3,16 @@ import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
-const addTransitionByNameSchema = (schema: Schema) => ({
+const addTransitionHelpersToSchema = (schema: Schema) => ({
   ...schema,
-  transitionByName(name: string) {
-    return schema.transitions.find(transition => transition.name === name);
+  findTransitionIdByName(name: string) {
+    return schema.transitions?.find(transition => transition.name === name)?.id;
+  },
+  get transitionsByName() {
+    return schema.transitions?.reduce(
+      (memo, transition) => ({ ...memo, [transition.name]: transition }),
+      {}
+    );
   },
 });
 
@@ -20,7 +26,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Schema successful operation
    */
   async create(requestBody: SchemaInput): Promise<Schema> {
-    return addTransitionByNameSchema(
+    return addTransitionHelpersToSchema(
       (await client.post(httpAuth, '/', requestBody)).data
     );
   },
@@ -38,7 +44,7 @@ export default (client, httpAuth: HttpInstance) => ({
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
     return {
       ...result,
-      data: result.data.map(addTransitionByNameSchema),
+      data: result.data.map(addTransitionHelpersToSchema),
     };
   },
 
