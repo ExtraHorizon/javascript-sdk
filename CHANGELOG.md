@@ -9,14 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0]
 
-- Added `transitionByName` function on `schema` objects to easily find the transition you need.
+- Added `transitionsByName` getter to easily get the transition you need.
 
 ```ts
 const {
   data: [schema],
 } = await sdk.data.schemas.find();
 
-const transition = schema.transitionByName('lambda_to_review');
+const transition = schema.transitionsByName.lambda_to_review;
+```
+
+- Added `transitionIdByName` function on `schema` objects to easily find the transitionId you need.
+
+```ts
+const {
+  data: [schema],
+} = await sdk.data.schemas.find();
+
+const transitionId = schema.transitionIdByName('lambda_to_review');
 ```
 
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
