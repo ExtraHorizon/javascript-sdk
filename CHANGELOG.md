@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `createOAuth1Client` and `createOAuth2Client` are now exported as more specifically typed versions of `createClient`
 - Additional http header is added with every request. Which includes the package version and when running in node the node version.
 - Added Test Reports
+- `getMockSdk` function to get back a mocked SDK. See README for more info
 
 ### Changes
 
