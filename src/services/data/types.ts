@@ -259,6 +259,7 @@ export interface Schema {
   maximumLimit?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
+  transitionByName: (name: string) => Transition;
 }
 
 export interface SchemaInput {

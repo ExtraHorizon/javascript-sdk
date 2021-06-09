@@ -1,44 +1,8 @@
-import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  Transition,
-  CreationTransition,
-  TransitionInput,
-  Schema,
-} from './types';
-import schemas from './schemas';
-
-const findTransition = (schema: Schema, name: string) =>
-  schema.transitions.find(transition => transition.name === name);
-
-const schemasMap: Map<ObjectId, Schema> = new Map();
+import type { Transition, CreationTransition, TransitionInput } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
-  /**
-   * Find a transition by name, given a schema
-   */
-  findByName: async (
-    schema: Schema | ObjectId,
-    name: string
-  ): Promise<Transition> => {
-    if ((<Schema>schema).transitions) {
-      return Promise.resolve(findTransition(<Schema>schema, name));
-    }
-    const schemaId = <ObjectId>schema;
-    if (schemasMap.has(schemaId)) {
-      return Promise.resolve(findTransition(schemasMap.get(schemaId), name));
-    }
-    const rql = rqlBuilder().eq('id', schemaId).build();
-    const schemasService = schemas(client, httpAuth);
-    const foundSchema: Schema = await schemasService
-      .find({ rql })
-      .then(res => res.data[0]);
-    if (!foundSchema) return null;
-    schemasMap.set(schemaId, foundSchema);
-    return findTransition(foundSchema, name);
-  },
-
   /**
    * Update the creation transition
    * Permission | Scope | Effect
