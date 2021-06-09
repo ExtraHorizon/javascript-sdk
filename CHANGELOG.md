@@ -9,7 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0]
 
-- Added `findByName` method to Data Transitions service.
+- Added `transitionByName` function on `schema` objects to easily find the transition you need.
+
+```ts
+const {
+  data: [schema],
+} = await sdk.data.schemas.find();
+
+const transition = schema.transitionByName('lambda_to_review');
+```
+
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
 - Payments Service
 
