@@ -93,9 +93,12 @@ export default (client, httpAuth: HttpInstance) => ({
   async resolveAsPdf(
     templateId: string,
     requestBody: CreateFile
-  ): Promise<any> {
-    return (await client.post(httpAuth, `/${templateId}/pdf`, requestBody))
-      .data;
+  ): Promise<Buffer> {
+    return (
+      await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
+        responseType: 'arraybuffer',
+      })
+    ).data;
   },
 
   /**
@@ -117,12 +120,15 @@ export default (client, httpAuth: HttpInstance) => ({
     templateId: string,
     localizationCode: string,
     requestBody: CreateFile
-  ): Promise<any> {
+  ): Promise<Buffer> {
     return (
       await client.post(
         httpAuth,
         `/${templateId}/pdf/${localizationCode}`,
-        requestBody
+        requestBody,
+        {
+          responseType: 'arraybuffer',
+        }
       )
     ).data;
   },

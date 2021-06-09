@@ -1,15 +1,20 @@
 import axios, { AxiosInstance } from 'axios';
 import { typeReceivedError } from '../errorHandler';
-import { ClientConfig } from '../types';
+import { HttpClientConfig } from '../types';
 import { camelizeResponseData } from './interceptors';
+import { composeUserAgent } from './utils';
 
 export function createHttpClient({
-  apiHost,
+  packageVersion,
+  host,
   requestLogger,
   responseLogger,
-}: ClientConfig): AxiosInstance {
+}: HttpClientConfig): AxiosInstance {
   const http = axios.create({
-    baseURL: apiHost,
+    baseURL: host,
+    headers: {
+      'X-User-Agent': composeUserAgent(packageVersion),
+    },
   });
 
   if (requestLogger) {

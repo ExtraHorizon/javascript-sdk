@@ -5,8 +5,8 @@
     "target": "ES2019",
     "moduleResolution": "node",
     "outDir": "./build",
-    "rootDir": "./src",
     "baseUrl": "./",
+    "rootDir": "./src",
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -15,7 +15,8 @@
     "typeRoots": ["node_modules/@types"],
     "paths": {
       "*": ["node_modules/*", "types/*"]
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"]
 }

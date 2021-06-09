@@ -1,14 +1,14 @@
 import nock from 'nock';
-import { validateConfig } from '../utils';
-import { AUTH_BASE } from '../constants';
-import { InvalidGrantError, MfaRequiredError } from '../errors';
-import { createHttpClient } from './client';
-import { createOAuth2HttpClient } from './oauth2';
-import { parseAuthParams } from './utils';
-import { ConfigOauth2 } from '../types';
+import { validateConfig } from '../../../src/utils';
+import { AUTH_BASE } from '../../../src/constants';
+import { InvalidGrantError, MfaRequiredError } from '../../../src/errors';
+import { createHttpClient } from '../../../src/http/client';
+import { createOAuth2HttpClient } from '../../../src/http/oauth2';
+import { parseAuthParams } from '../../../src/http/utils';
+import { ConfigOauth2 } from '../../../src/types';
 
 const mockParams = {
-  apiHost: 'https://api.test.com',
+  host: 'https://api.test.com',
   clientId: '',
 };
 
@@ -20,7 +20,7 @@ const mockOAuth = {
 
 describe('http client', () => {
   const config = validateConfig(mockParams) as ConfigOauth2;
-  const http = createHttpClient(config);
+  const http = createHttpClient({ ...config, packageVersion: '' });
   const authConfig = parseAuthParams(mockOAuth);
   let httpWithAuth: ReturnType<typeof createOAuth2HttpClient>;
 
@@ -31,12 +31,12 @@ describe('http client', () => {
 
   it('should authorize', async () => {
     const mockToken = 'test';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
     await httpWithAuth.authenticate(authConfig);
-    nock(mockParams.apiHost).get('/test').reply(200, '');
+    nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
 
@@ -45,7 +45,7 @@ describe('http client', () => {
 
   it('throws on authorization with wrong password', async () => {
     expect.assertions(1);
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
+    nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
       error: 'invalid_grant',
       description: 'this password email combination is unknown',
     });
@@ -59,22 +59,22 @@ describe('http client', () => {
 
   it('should authorize but first reply with expired token, but then valid refresh', async () => {
     const mockToken = 'expired access token';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
     await httpWithAuth.authenticate(authConfig);
-    nock(mockParams.apiHost).get('/test').reply(400, {
+    nock(mockParams.host).get('/test').reply(400, {
       code: 118,
       error: 'invalid_grant',
       description: 'the associated authorization is expired',
     });
 
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: 'access token' });
 
-    nock(mockParams.apiHost).get('/test').reply(200, {});
+    nock(mockParams.host).get('/test').reply(200, {});
 
     const result = await httpWithAuth.get('test');
 
@@ -84,22 +84,22 @@ describe('http client', () => {
   it('throws with authorization but first reply with expired token, but then fail refresh', async () => {
     expect.assertions(2);
     const mockToken = 'expired access token';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
+    nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
       error: 'invalid_grant',
       description: 'The refresh token is unknown',
     });
 
-    nock(mockParams.apiHost).get('/test').reply(400, {
+    nock(mockParams.host).get('/test').reply(400, {
       code: 118,
       error: 'invalid_grant',
       description: 'the associated authorization is expired',
     });
 
-    nock(mockParams.apiHost).get('/test').reply(200, {});
+    nock(mockParams.host).get('/test').reply(200, {});
 
     try {
       await httpWithAuth.authenticate(authConfig);
@@ -117,17 +117,17 @@ describe('http client', () => {
      *  the refresh token => returns invalid_grant
      */
     const mockToken = 'unknown access token';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    nock(mockParams.apiHost).get('/test').reply(400, {
+    nock(mockParams.host).get('/test').reply(400, {
       code: 117,
       name: 'ACCESS_TOKEN_UNKNOWN_EXCEPTION',
       message: 'The access token is unknown',
     });
 
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
+    nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
       error: 'invalid_grant',
       description: 'The refresh token is unknown',
     });
@@ -143,7 +143,7 @@ describe('http client', () => {
   it('should authorize with a refreshToken', async () => {
     expect.assertions(2);
     const mockToken = 'access token';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, (_uri, data) => {
         expect(data).toEqual({
@@ -157,7 +157,7 @@ describe('http client', () => {
 
     const refreshConfig = parseAuthParams({ refreshToken: 'test' });
     await httpWithAuth.authenticate(refreshConfig);
-    nock(mockParams.apiHost).get('/test').reply(200, '');
+    nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
 
@@ -167,7 +167,7 @@ describe('http client', () => {
   it('should authorize with MFA Enabled', async () => {
     expect.assertions(2);
     const mockToken = 'access token';
-    nock(mockParams.apiHost)
+    nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(400, {
         error: 'mfa_required',
@@ -186,11 +186,11 @@ describe('http client', () => {
         },
       });
 
-    nock(mockParams.apiHost).post(`${AUTH_BASE}/oauth2/tokens`).reply(200, {
+    nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(200, {
       accessToken: mockToken,
     });
 
-    nock(mockParams.apiHost).get('/test').reply(200, '');
+    nock(mockParams.host).get('/test').reply(200, '');
 
     try {
       await httpWithAuth.authenticate(authConfig);

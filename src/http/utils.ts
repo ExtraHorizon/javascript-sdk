@@ -62,14 +62,19 @@ export function mapObjIndexed(fn, object): Record<string, unknown> {
   );
 }
 
-export const recursiveMap = fn => obj =>
-  Array.isArray(obj)
+export const recursiveMap = fn => obj => {
+  // needed for arrays with strings/numbers etc
+  if (typeof obj !== 'object') {
+    return obj;
+  }
+  return Array.isArray(obj)
     ? obj.map(recursiveMap(fn))
     : mapObjIndexed(
         (value, key) =>
           typeof value !== 'object' ? fn(value, key) : recursiveMap(fn)(value),
         obj
       );
+};
 
 /**
  * See if an object (`val`) is an instance of the supplied constructor. This
@@ -122,4 +127,17 @@ export function decamelizeKeys(
   object: Record<string, unknown>
 ): Record<string, unknown> {
   return recursiveRenameKeys(decamelize, object);
+}
+
+/**
+ * Composes a `User-Agent` like header value which looks something like
+ * `'Node/14.4.0 SDK/3.0.0'`.
+ */
+export function composeUserAgent(packageVersion: string): string {
+  return [
+    typeof process !== 'undefined' && process?.release?.name === 'node'
+      ? `Node/${process.version} OS/${process.platform}-${process.arch}`
+      : '',
+    `SDK/${packageVersion}`,
+  ].join(' ');
 }

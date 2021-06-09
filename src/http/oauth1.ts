@@ -98,7 +98,7 @@ export function createOAuth1HttpClient(
           ...options.oauth1.toHeader(
             options.oauth1.authorize(
               {
-                url: options.apiHost + path,
+                url: options.host + path,
                 method: 'get',
               },
               tokenData
@@ -112,7 +112,7 @@ export function createOAuth1HttpClient(
           'Content-Type': 'application/json',
           ...options.oauth1.toHeader(
             options.oauth1.authorize({
-              url: options.apiHost + options.path,
+              url: options.host + options.path,
               method: 'POST',
             })
           ),
@@ -143,7 +143,7 @@ export function createOAuth1HttpClient(
           'Content-Type': 'application/json',
           ...options.oauth1.toHeader(
             options.oauth1.authorize({
-              url: `${options.apiHost}${options.path}/mfa`,
+              url: `${options.host}${options.path}/mfa`,
               method: 'POST',
             })
           ),

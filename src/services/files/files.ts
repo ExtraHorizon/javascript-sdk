@@ -29,10 +29,15 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  async create({ name, file, tags }: CreateFile): Promise<FileDetails> {
+  async create({
+    name,
+    file,
+    tags,
+    extension = 'pdf',
+  }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
     form.append('name', name);
-    form.append('file', file);
+    form.append('file', file, `${name}.${extension}`);
     if (tags) {
       form.append('tags', tags);
     }

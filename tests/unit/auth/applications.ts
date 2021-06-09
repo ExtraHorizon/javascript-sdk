@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   applicationDataList,
   newApplication,
@@ -9,18 +9,18 @@ import {
 } from '../../__helpers__/auth';
 
 describe('Auth - Applications', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
 
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -35,7 +35,7 @@ describe('Auth - Applications', () => {
   });
 
   it('should create an application', async () => {
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .post('/applications')
       .reply(200, newApplication);
 
@@ -49,7 +49,7 @@ describe('Auth - Applications', () => {
   });
 
   it('should get applications', async () => {
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .get('/applications')
       .reply(200, applicationDataList);
 
@@ -62,11 +62,11 @@ describe('Auth - Applications', () => {
   it('sould update an pplication', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .put(`/applications/${applicationId}`)
       .reply(200, newApplication);
 
@@ -83,11 +83,11 @@ describe('Auth - Applications', () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     const versionId = '456';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .delete(`/applications/${applicationId}/${versionId}`)
       .reply(200, {
         affectedRecords: 1,
@@ -104,11 +104,11 @@ describe('Auth - Applications', () => {
   it('should create an application versions', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    nock(`${apiHost}${AUTH_BASE}`)
+    nock(`${host}${AUTH_BASE}`)
       .post(`/applications/${applicationId}/versions`)
       .reply(200, newApplicationVersion);
 

@@ -1,7 +1,12 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
-import { Client, client, ParamsOauth2, rqlBuilder } from '../../../src/index';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
 import {
   userData,
   newUserData,
@@ -15,7 +20,7 @@ import {
 } from '../../__helpers__/apiResponse';
 
 describe('Users Service', () => {
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   const userId = '5a0b2adc265ced65a8cab865';
   const groupId = '5bfbfc3146e0fb321rsa4b28';
   // const oldEmail = 'old@bbb.ccc';
@@ -27,12 +32,12 @@ describe('Users Service', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -49,10 +54,10 @@ describe('Users Service', () => {
 
   it('should get me', async () => {
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
-    nock(`${apiHost}${USER_BASE}`).get('/me').reply(200, userData);
+    nock(`${host}${USER_BASE}`).get('/me').reply(200, userData);
 
     const user = await sdk.users.me();
 
@@ -60,7 +65,7 @@ describe('Users Service', () => {
   });
 
   it('should get user by id', async () => {
-    nock(`${apiHost}${USER_BASE}`).get(`/${userId}`).reply(200, userData);
+    nock(`${host}${USER_BASE}`).get(`/${userId}`).reply(200, userData);
 
     const user = await sdk.users.findById(userId);
 
@@ -69,7 +74,7 @@ describe('Users Service', () => {
 
   it('throws on find user by unknown id', async () => {
     expect.assertions(1);
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .get(`/${userId}`)
       .reply(404, resourceUnknownError);
 
@@ -86,7 +91,7 @@ describe('Users Service', () => {
       lastName: 'bbbbb',
     };
 
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .put(`/${userId}`)
       .reply(200, {
         ...updatedUserData,
@@ -100,7 +105,7 @@ describe('Users Service', () => {
   });
 
   it('should not update a user', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .put(`/${userId}`)
       .reply(404, resourceUnknownError);
 
@@ -116,7 +121,7 @@ describe('Users Service', () => {
       .select(['firstName', 'id'])
       .sort('-firstName')
       .build();
-    nock(`${apiHost}${USER_BASE}`).get(`/${rql}`).reply(200, userResponse);
+    nock(`${host}${USER_BASE}`).get(`/${rql}`).reply(200, userResponse);
 
     const users = await sdk.users.find({ rql });
 
@@ -124,9 +129,7 @@ describe('Users Service', () => {
   });
 
   it('should get patients list', async () => {
-    nock(`${apiHost}${USER_BASE}`)
-      .get('/patients')
-      .reply(200, patientsResponse);
+    nock(`${host}${USER_BASE}`).get('/patients').reply(200, patientsResponse);
 
     const patients = await sdk.users.patients();
 
@@ -134,7 +137,7 @@ describe('Users Service', () => {
   });
 
   it('should get staff list', async () => {
-    nock(`${apiHost}${USER_BASE}`).get('/staff').reply(200, staffResponse);
+    nock(`${host}${USER_BASE}`).get('/staff').reply(200, staffResponse);
 
     const staff = await sdk.users.staff();
 
@@ -142,7 +145,7 @@ describe('Users Service', () => {
   });
 
   it('should remove a user', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .delete(`/${userId}`)
       .reply(200, { affectedRecords: 1 });
 
@@ -152,7 +155,7 @@ describe('Users Service', () => {
   });
 
   it('should update a users email', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .put(`/${userId}/email`)
       .reply(200, {
         ...updatedUserData,
@@ -165,7 +168,7 @@ describe('Users Service', () => {
   });
 
   it('should add a patient enlistment to a user', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post(`/${userId}/patient_enlistments`)
       .reply(200, { affectedRecords: 1 });
 
@@ -175,7 +178,7 @@ describe('Users Service', () => {
   });
 
   it('should remove a patient enlistment from a user', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .delete(`/${userId}/patient_enlistments/${groupId}`)
       .reply(200, { affectedRecords: 1 });
 
@@ -185,7 +188,7 @@ describe('Users Service', () => {
   });
 
   it('should register a new user', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post('/register')
       .reply(200, {
         ...newUserData,
@@ -198,7 +201,7 @@ describe('Users Service', () => {
   });
 
   it('should update a users password', async () => {
-    nock(`${apiHost}${USER_BASE}`).put(`/password`).reply(200, userData);
+    nock(`${host}${USER_BASE}`).put(`/password`).reply(200, userData);
 
     const result = await sdk.users.changePassword({ oldPassword, newPassword });
 
@@ -206,7 +209,7 @@ describe('Users Service', () => {
   });
 
   it('should authenticate', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .post('/authenticate')
       .reply(200, {
         ...newUserData,
@@ -222,9 +225,7 @@ describe('Users Service', () => {
   });
 
   it('should request activation mail', async () => {
-    nock(`${apiHost}${USER_BASE}`)
-      .get(`/activation?email=${newEmail}`)
-      .reply(200);
+    nock(`${host}${USER_BASE}`).get(`/activation?email=${newEmail}`).reply(200);
 
     const result = await sdk.users.requestEmailActivation(newEmail);
 
@@ -232,7 +233,7 @@ describe('Users Service', () => {
   });
 
   it('should complete an email activation', async () => {
-    nock(`${apiHost}${USER_BASE}`).post('/activation').reply(200);
+    nock(`${host}${USER_BASE}`).post('/activation').reply(200);
 
     const result = await sdk.users.validateEmailActivation({ hash });
 
@@ -240,7 +241,7 @@ describe('Users Service', () => {
   });
 
   it('should request a password reset', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .get(`/forgot_password?email=${newEmail}`)
       .reply(200);
 
@@ -250,7 +251,7 @@ describe('Users Service', () => {
   });
 
   it('should complete a password reset', async () => {
-    nock(`${apiHost}${USER_BASE}`).post('/forgot_password').reply(200);
+    nock(`${host}${USER_BASE}`).post('/forgot_password').reply(200);
 
     const result = await sdk.users.validatePasswordReset({ hash, newPassword });
 
@@ -258,7 +259,7 @@ describe('Users Service', () => {
   });
 
   it('should confirm the password for the user making the request', async () => {
-    nock(`${apiHost}${USER_BASE}`).post('/confirm_password').reply(200);
+    nock(`${host}${USER_BASE}`).post('/confirm_password').reply(200);
 
     const result = await sdk.users.confirmPassword({ password: newPassword });
 
@@ -266,7 +267,7 @@ describe('Users Service', () => {
   });
 
   it('should check if email is available', async () => {
-    nock(`${apiHost}${USER_BASE}`)
+    nock(`${host}${USER_BASE}`)
       .get(`/email_available?email=${newEmail}`)
       .reply(200, {
         emailAvailable: true,

@@ -7,7 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.2]
+
+### Breaking Changes
+
+- `apiHost` has been renamed to `host` and should not include the protocol or `api` subdomain. Example `
+
+```diff
++ const sdk = createClient({
++   host: 'dev.fibricheck.com',
++   consumerKey: '',
++   consumerSecret: '',
++ });
+```
+
+- `client` is renamed to `createClient`
+
+```diff
+- import { client } from '@extrahorizon/javascript-sdk';
++ import { createClient } from '@extrahorizon/javascript-sdk';
+```
+
+- `rawAxios` is renamed to `raw`
+
+### Added
+
+- `createOAuth1Client` and `createOAuth2Client` are now exported as more specifically typed versions of `createClient`
+- Additional http header is added with every request. Which includes the package version and when running in node the node version.
+- Added Test Reports
+- `getMockSdk` function to get back a mocked SDK. See README for more info
+
+### Changes
+
+- Templates `resolveAsPdf` will return a `Buffer`
+- `sdk.authenticate` now includes possible error responses in the JSDoc annotations
+- `rqlBuilder` now has JSDoc annotations
+- Fix for results with arrays containing strings
+- File creation now correctly set the file name on the form-data. Accepts extra parameter `extension` which defaults to `pdf`
+- The MailsService now correctly decamelizes the keys in the request
+
 ## [3.0.1]
+
+### Changes
 
 - Templates basepath fix
 

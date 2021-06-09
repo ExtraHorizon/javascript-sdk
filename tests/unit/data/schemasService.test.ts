@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, client, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   newSchemaInput,
   newSchemaCreated,
@@ -9,17 +9,17 @@ import {
 
 describe('Schemas Service', () => {
   const schemaId = newSchemaCreated.id;
-  const apiHost = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = client({
-      apiHost,
+    sdk = createClient({
+      host,
       clientId: '',
     });
 
     const mockToken = 'mockToken';
-    nock(apiHost)
+    nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
@@ -35,20 +35,20 @@ describe('Schemas Service', () => {
   });
 
   it('should create a schema', async () => {
-    nock(`${apiHost}${DATA_BASE}`).post('/').reply(200, newSchemaCreated);
+    nock(`${host}${DATA_BASE}`).post('/').reply(200, newSchemaCreated);
     const schema = await sdk.data.schemas.create(newSchemaInput);
     expect(schema.creationTransition).toBeDefined();
   });
 
   it('should request a list of schemas', async () => {
-    nock(`${apiHost}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
+    nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
     const res = await sdk.data.schemas.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   it('should update a schema', async () => {
     const newSchemaData = { name: 'schemaA', description: 'schema desc' };
-    nock(`${apiHost}${DATA_BASE}`).put(`/${schemaId}`).reply(200, {
+    nock(`${host}${DATA_BASE}`).put(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
     });
     const res = await sdk.data.schemas.update(schemaId, newSchemaData);
@@ -56,7 +56,7 @@ describe('Schemas Service', () => {
   });
 
   it('should delete a schema', async () => {
-    nock(`${apiHost}${DATA_BASE}`).delete(`/${schemaId}`).reply(200, {
+    nock(`${host}${DATA_BASE}`).delete(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
     });
     const res = await sdk.data.schemas.delete(schemaId);
@@ -64,7 +64,7 @@ describe('Schemas Service', () => {
   });
 
   it('should disable a schema', async () => {
-    nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/disable`).reply(200, {
+    nock(`${host}${DATA_BASE}`).post(`/${schemaId}/disable`).reply(200, {
       affectedRecords: 1,
     });
     const res = await sdk.data.schemas.disable(schemaId);
@@ -72,7 +72,7 @@ describe('Schemas Service', () => {
   });
 
   it('should enable a schema', async () => {
-    nock(`${apiHost}${DATA_BASE}`).post(`/${schemaId}/enable`).reply(200, {
+    nock(`${host}${DATA_BASE}`).post(`/${schemaId}/enable`).reply(200, {
       affectedRecords: 1,
     });
     const res = await sdk.data.schemas.enable(schemaId);

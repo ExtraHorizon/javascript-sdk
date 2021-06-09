@@ -49,7 +49,7 @@ export type AuthParams =
   | ParamsOauth2Refresh;
 
 interface ParamsBase {
-  apiHost: string;
+  host: string;
   responseLogger?: (response: AxiosResponse | Error) => unknown;
   requestLogger?: (request: AxiosRequestConfig | Error) => unknown;
   freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
@@ -62,6 +62,10 @@ export interface ParamsOauth1 extends ParamsBase {
 
 export interface ParamsOauth2 extends ParamsBase {
   clientId: string;
+}
+
+interface HttpClientBase {
+  packageVersion: string;
 }
 
 export interface ConfigOauth1 extends ParamsBase {
@@ -79,3 +83,4 @@ export interface ConfigOauth2 extends ParamsBase {
 
 export type ClientParams = ParamsOauth1 | ParamsOauth2;
 export type ClientConfig = ConfigOauth1 | ConfigOauth2;
+export type HttpClientConfig = HttpClientBase & ClientConfig;

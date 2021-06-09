@@ -5,15 +5,16 @@ import {
   decamelizeKeys,
   recursiveMap,
   recursiveRenameKeys,
-} from './utils';
+} from '../../../src/http/utils';
 
 describe('recursiveMap function', () => {
   it('should recursively map with simple object', () => {
     const result = recursiveMap(value => `-> ${value}`)({
       test: 'value',
+      groupIds: ['testGroupIds'],
     });
-
     expect(result.test).toBe('-> value');
+    expect(result.groupIds[0]).toBe('testGroupIds');
   });
 
   it('should recursively map with object with arrays', () => {
