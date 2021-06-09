@@ -114,7 +114,7 @@ describe('Schemas Service', () => {
     const {
       data: [schema],
     } = await sdk.data.schemas.find();
-    const transition = schema.transitionByName('move');
-    expect(transition.name).toBe('move');
+    const transitionId = schema.findTransitionIdByName('move');
+    expect(transitionId).toBe('5e9fff9d90135a2a9a718e2f');
   });
 });
