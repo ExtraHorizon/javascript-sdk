@@ -259,7 +259,8 @@ export interface Schema {
   maximumLimit?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
-  transitionByName: (name: string) => Transition;
+  findTransitionIdByName: (name: string) => ObjectId;
+  transitionsByName: Record<string, Transition>;
 }
 
 export interface SchemaInput {
