@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.1]
+## [3.1.0]
+
+- Added `findByName` method to Data Transitions service.
+- Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
 
 ## [3.0.2]
 

@@ -108,4 +108,13 @@ describe('Schemas Service', () => {
     const res = await sdk.data.schemas.enable(schemaId);
     expect(res.affectedRecords).toBe(1);
   });
+
+  it('should find a transition by name given a schema', async () => {
+    nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
+    const {
+      data: [schema],
+    } = await sdk.data.schemas.find();
+    const transition = schema.transitionByName('move');
+    expect(transition.name).toBe('move');
+  });
 });

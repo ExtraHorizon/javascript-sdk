@@ -12,6 +12,11 @@ import {
   CreationTransitionAction,
   CreationTransitionAfterAction,
   CreationTransition,
+  Schema,
+  InitiatorHasRelationToUserInDataConditionType,
+  InitiatorHasRelationToUserInDataConditionRelation,
+  InitiatorHasRelationToGroupInDataConditionType,
+  InitiatorHasRelationToGroupInDataConditionRelation,
 } from '../../src/services/data/types';
 
 export const newSchemaInput = {
@@ -26,7 +31,7 @@ export const newSchemaInput = {
   maximumLimit: 5,
 };
 
-export const newSchemaCreated = {
+export const newSchemaCreated: Partial<Schema> = {
   id: '5e9fff9d90135a2a9a718e2f',
   name: 'FibriCheck Measurement',
   description: 'The schema for holding FibriCheck measurements',
@@ -56,107 +61,113 @@ export const newSchemaCreated = {
     },
   },
   statuses: {
-    start: {},
+    // start: {},
   },
   creationTransition: {
     toStatus: 'start',
-    type: 'manual',
+    type: CreationTransitionType.MANUAL,
     conditions: [
       {
-        type: 'input',
+        type: ConfigurationType.INPUT,
         configuration: {
-          type: 'number',
+          type: ConfigurationType.NUMBER,
           minimum: -180,
           maximum: 180,
         },
       },
       {
-        type: 'document',
+        type: ConfigurationType.DOCUMENT,
         configuration: {
-          type: 'number',
+          type: ConfigurationType.NUMBER,
           minimum: -180,
           maximum: 180,
         },
       },
       {
-        type: 'initiatorHasRelationToUserInData',
+        type:
+          InitiatorHasRelationToUserInDataConditionType.INITIATOR_HAS_RELATION_TO_USER_IN_DATA,
         userIdField: '5e9fff9d90135a2a9a718e2f',
-        relation: 'isStaffOfTargetPatient',
+        relation:
+          InitiatorHasRelationToUserInDataConditionRelation.IS_STAFF_OF_TARGET_PATIENT,
       },
       {
-        type: 'initiatorHasRelationToGroupInData',
+        type:
+          InitiatorHasRelationToGroupInDataConditionType.INITIATOR_HAS_RELATION_TO_GROUP_IN_DATA,
         groupIdField: '5e9fff9d90135a2a9a718e2f',
-        relation: 'staff',
+        relation: InitiatorHasRelationToGroupInDataConditionRelation.STAFF,
         requiredPermission: 'MY_PERMISSION',
       },
     ],
     actions: [
       {
-        type: 'algorithm',
+        type: CreationTransitionAction.ALGORITHM,
       },
     ],
     afterActions: [
       {
-        type: 'notifyAlgoQueueManager',
+        type: CreationTransitionAfterAction.NOTIFY_ALGO_QUEUE_MANAGER,
       },
     ],
   },
   transitions: [
     {
       toStatus: 'start',
-      type: 'manual',
+      type: CreationTransitionType.MANUAL,
       conditions: [
         {
-          type: 'input',
+          type: ConfigurationType.INPUT,
           configuration: {
-            type: 'number',
+            type: ConfigurationType.NUMBER,
             minimum: -180,
             maximum: 180,
           },
         },
         {
-          type: 'document',
+          type: ConfigurationType.DOCUMENT,
           configuration: {
-            type: 'number',
+            type: ConfigurationType.NUMBER,
             minimum: -180,
             maximum: 180,
           },
         },
         {
-          type: 'initiatorHasRelationToUserInData',
+          type:
+            InitiatorHasRelationToUserInDataConditionType.INITIATOR_HAS_RELATION_TO_USER_IN_DATA,
           userIdField: '5e9fff9d90135a2a9a718e2f',
-          relation: 'isStaffOfTargetPatient',
+          relation:
+            InitiatorHasRelationToUserInDataConditionRelation.IS_STAFF_OF_TARGET_PATIENT,
         },
         {
-          type: 'initiatorHasRelationToGroupInData',
+          type:
+            InitiatorHasRelationToGroupInDataConditionType.INITIATOR_HAS_RELATION_TO_GROUP_IN_DATA,
           groupIdField: '5e9fff9d90135a2a9a718e2f',
-          relation: 'staff',
+          relation: InitiatorHasRelationToGroupInDataConditionRelation.STAFF,
           requiredPermission: 'MY_PERMISSION',
         },
       ],
       actions: [
         {
-          type: 'algorithm',
+          type: CreationTransitionAction.ALGORITHM,
         },
       ],
       afterActions: [
         {
-          type: 'notifyAlgoQueueManager',
+          type: CreationTransitionAfterAction.NOTIFY_ALGO_QUEUE_MANAGER,
         },
       ],
       name: 'move',
       fromStatuses: ['start'],
     },
   ],
-  createMode: 'default',
-  readMode: 'allUsers',
-  updateMode: 'default',
-  deleteMode: 'permissionRequired',
-  groupSyncMode: 'disabled',
+  createMode: CreateMode.DEFAULT,
+  readMode: ReadMode.ALL_USERS,
+  updateMode: UpdateMode.DEFAULT,
+  deleteMode: DeleteMode.PERMISSION_REQUIRED,
+  groupSyncMode: GroupSyncMode.DISABLED,
   defaultLimit: 5,
   maximumLimit: 5,
-  updateTimestamp: '2021-04-20T07:34:08.358Z',
-  creationTimestamp: '2021-04-20T07:34:08.358Z',
+  updateTimestamp: new Date('2021-04-20T07:34:08.358Z'),
+  creationTimestamp: new Date('2021-04-20T07:34:08.358Z'),
 };
 
 export const schemaData = {
