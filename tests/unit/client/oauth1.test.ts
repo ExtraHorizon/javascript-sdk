@@ -1,11 +1,15 @@
 import nock from 'nock';
-import { validateConfig } from '../utils';
-import { AUTH_BASE, USER_BASE } from '../constants';
-import { ApiError, AuthenticationError, OauthTokenError } from '../errors';
-import { createHttpClient } from './client';
-import { createOAuth1HttpClient } from './oauth1';
-import { parseAuthParams } from './utils';
-import { ConfigOauth1 } from '../types';
+import { validateConfig } from '../../../src/utils';
+import { AUTH_BASE, USER_BASE } from '../../../src/constants';
+import {
+  ApiError,
+  AuthenticationError,
+  OauthTokenError,
+} from '../../../src/errors';
+import { createHttpClient } from '../../../src/http/client';
+import { createOAuth1HttpClient } from '../../../src/http/oauth1';
+import { parseAuthParams } from '../../../src/http/utils';
+import { ConfigOauth1 } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',
