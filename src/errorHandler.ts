@@ -57,11 +57,13 @@ import {
   NoConfiguredAppStoreProduct,
   StripePaymentMethodError,
   StripeRequestError,
+  IDFormatError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
   1: ServerError,
   10: NoPermissionError,
+  12: IDFormatError,
   13: EmptyBodyError,
   14: MissingRequiredFieldsError,
   15: FieldFormatError,

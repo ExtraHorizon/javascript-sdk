@@ -147,6 +147,8 @@ export class UnknownReceiptTransactionError extends BadRequestError {}
 export class AppStoreTransactionAlreadyLinked extends BadRequestError {}
 export class StripePaymentMethodError extends BadRequestError {}
 
+export class IDFormatError extends BadRequestError {}
+
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
 export class InvalidClientError extends UnauthorizedError {}

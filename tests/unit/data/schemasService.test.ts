@@ -4,6 +4,7 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   newSchemaInput,
   newSchemaCreated,
+  schemaData,
   schemasListResponse,
 } from '../../__helpers__/data';
 
@@ -46,6 +47,35 @@ describe('Schemas Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a schema by id', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .get(`/?eq(id,${schemaId})`)
+      .reply(200, schemasListResponse);
+
+    const schema = await sdk.data.schemas.findById(schemaId);
+
+    expect(schema.id).toBe(schemaId);
+  });
+
+  it('should find a schema by name', async () => {
+    const { name } = schemaData;
+    nock(`${host}${DATA_BASE}`)
+      .get(`/?eq(name,${name})`)
+      .reply(200, schemasListResponse);
+
+    const schema = await sdk.data.schemas.findByName(name);
+
+    expect(schema.name).toBe(name);
+  });
+
+  it('should find the first schema', async () => {
+    nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
+
+    const schema = await sdk.data.schemas.findFirst();
+
+    expect(schema.id).toBe(schemaId);
+  });
+
   it('should update a schema', async () => {
     const newSchemaData = { name: 'schemaA', description: 'schema desc' };
     nock(`${host}${DATA_BASE}`).put(`/${schemaId}`).reply(200, {
@@ -77,5 +107,14 @@ describe('Schemas Service', () => {
     });
     const res = await sdk.data.schemas.enable(schemaId);
     expect(res.affectedRecords).toBe(1);
+  });
+
+  it('should find a transition by name given a schema', async () => {
+    nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
+    const {
+      data: [schema],
+    } = await sdk.data.schemas.find();
+    const transition = schema.transitionByName('move');
+    expect(transition.name).toBe('move');
   });
 });
