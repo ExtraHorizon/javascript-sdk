@@ -1,15 +1,17 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
+import { rqlBuilder } from '../../../src/rql';
 import {
   newCommentCreated,
+  commentData,
   commentsListResponse,
 } from '../../__helpers__/data';
 
 describe('Comments Service', () => {
-  const schemaId = '1e9fff9d90135a2a9a718e2f';
+  const { schemaId } = commentData;
   const documentId = '2e9fff9d90135a2a9a718e2f';
-  const commentId = '3e9fff9d90135a2a9a718e2f';
+  const commentId = commentData.id;
   const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
 
@@ -46,11 +48,36 @@ describe('Comments Service', () => {
   });
 
   it('should request a list of comments', async () => {
+    const rql = rqlBuilder().build();
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, commentsListResponse);
-    const res = await sdk.data.comments.find(schemaId, documentId);
+    const res = await sdk.data.comments.find(schemaId, documentId, { rql });
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should find a comment by id', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents/${documentId}/comments?eq(id,${commentId})`)
+      .reply(200, commentsListResponse);
+
+    const comment = await sdk.data.comments.findById(
+      commentId,
+      schemaId,
+      documentId
+    );
+
+    expect(comment.id).toBe(commentId);
+  });
+
+  it('should find the first comment', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents/${documentId}/comments`)
+      .reply(200, commentsListResponse);
+
+    const comment = await sdk.data.comments.findFirst(schemaId, documentId);
+
+    expect(comment.id).toBe(commentId);
   });
 
   it('should update a comment', async () => {

@@ -4,6 +4,7 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   newSchemaInput,
   newSchemaCreated,
+  schemaData,
   schemasListResponse,
 } from '../../__helpers__/data';
 
@@ -44,6 +45,35 @@ describe('Schemas Service', () => {
     nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
     const res = await sdk.data.schemas.find();
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should find a schema by id', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .get(`/?eq(id,${schemaId})`)
+      .reply(200, schemasListResponse);
+
+    const schema = await sdk.data.schemas.findById(schemaId);
+
+    expect(schema.id).toBe(schemaId);
+  });
+
+  it('should find a schema by name', async () => {
+    const { name } = schemaData;
+    nock(`${host}${DATA_BASE}`)
+      .get(`/?eq(name,${name})`)
+      .reply(200, schemasListResponse);
+
+    const schema = await sdk.data.schemas.findByName(name);
+
+    expect(schema.name).toBe(name);
+  });
+
+  it('should find the first schema', async () => {
+    nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
+
+    const schema = await sdk.data.schemas.findFirst();
+
+    expect(schema.id).toBe(schemaId);
   });
 
   it('should update a schema', async () => {

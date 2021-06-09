@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
-import { RQLString } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
 
 const addTransitionByNameSchema = (schema: Schema) => ({
   ...schema,
@@ -40,6 +40,43 @@ export default (client, httpAuth: HttpInstance) => ({
       ...result,
       data: result.data.map(addTransitionByNameSchema),
     };
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Schema> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ rql: rqlWithId });
+    return res.data[0];
+  },
+
+  /**
+   * Find By Name
+   * @param name the name to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findByName(
+    name: string,
+    options?: { rql?: RQLString }
+  ): Promise<Schema> {
+    const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
+    const res = await this.find({ rql: rqlWithName });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(options?: { rql?: RQLString }): Promise<Schema> {
+    const res = await this.find(options);
+    return res.data[0];
   },
 
   /**

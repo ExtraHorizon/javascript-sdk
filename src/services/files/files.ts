@@ -3,7 +3,7 @@ import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
 import { ResultResponse, Results, PagedResult } from '../types';
 import type { FileDetails, Token, CreateFile } from './types';
-import { RQLString } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -17,6 +17,31 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Name
+   * @param name the name to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findByName(
+    name: string,
+    options?: { rql?: RQLString }
+  ): Promise<FileDetails> {
+    const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
+    const res = await this.find({ rql: rqlWithName });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(options?: { rql?: RQLString }): Promise<FileDetails> {
+    const res = await this.find(options);
+    return res.data[0];
   },
 
   /**

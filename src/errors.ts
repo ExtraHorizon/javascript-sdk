@@ -142,6 +142,8 @@ export class LocalizationKeyMissingError extends BadRequestError {}
 export class TemplateFillingError extends BadRequestError {}
 export class MissingRequiredFieldsError extends BadRequestError {}
 
+export class IDFormatError extends BadRequestError {}
+
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
 export class InvalidClientError extends UnauthorizedError {}
