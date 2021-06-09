@@ -1,6 +1,6 @@
 import nock from 'nock';
-import { validateConfig } from '../utils';
-import { createHttpClient } from './client';
+import { validateConfig } from '../../../src/utils';
+import { createHttpClient } from '../../../src/http/client';
 
 const mockParams = {
   host: 'https://api.test.com',

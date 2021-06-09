@@ -1,11 +1,11 @@
 import nock from 'nock';
-import { validateConfig } from '../utils';
-import { AUTH_BASE } from '../constants';
-import { InvalidGrantError, MfaRequiredError } from '../errors';
-import { createHttpClient } from './client';
-import { createOAuth2HttpClient } from './oauth2';
-import { parseAuthParams } from './utils';
-import { ConfigOauth2 } from '../types';
+import { validateConfig } from '../../../src/utils';
+import { AUTH_BASE } from '../../../src/constants';
+import { InvalidGrantError, MfaRequiredError } from '../../../src/errors';
+import { createHttpClient } from '../../../src/http/client';
+import { createOAuth2HttpClient } from '../../../src/http/oauth2';
+import { parseAuthParams } from '../../../src/http/utils';
+import { ConfigOauth2 } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',

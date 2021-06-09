@@ -5,7 +5,7 @@ import {
   decamelizeKeys,
   recursiveMap,
   recursiveRenameKeys,
-} from './utils';
+} from '../../../src/http/utils';
 
 describe('recursiveMap function', () => {
   it('should recursively map with simple object', () => {
