@@ -91,3 +91,17 @@ export interface Group {
   patientId?: string;
   customFields?: Record<string, string>;
 }
+
+export interface LogEntry {
+  id?: ObjectId;
+  profileId?: ObjectId;
+  groupId?: ObjectId;
+  userId?: ObjectId;
+  text?: string;
+  creationTimestamp?: Date;
+  updateTimestamp?: Date;
+}
+
+export interface CommentBean {
+  text: string;
+}
