@@ -8,12 +8,12 @@ import health from './health';
 import { PROFILES_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
 
-export type ProfilesService = ReturnType<typeof health> & {
-  profiles: ReturnType<typeof profiles>;
-  groups: ReturnType<typeof groups>;
-  logs: ReturnType<typeof logs>;
-  medications: ReturnType<typeof medications>;
-};
+export type ProfilesService = ReturnType<typeof health> &
+  ReturnType<typeof profiles> & {
+    groups: ReturnType<typeof groups>;
+    logs: ReturnType<typeof logs>;
+    medications: ReturnType<typeof medications>;
+  };
 
 export const profilesService = (
   httpWithAuth: HttpInstance
@@ -25,7 +25,7 @@ export const profilesService = (
 
   return {
     ...health(client, httpWithAuth),
-    profiles: profiles(client, httpWithAuth),
+    ...profiles(client, httpWithAuth),
     groups: groups(client, httpWithAuth),
     logs: logs(client, httpWithAuth),
     medications: medications(client, httpWithAuth),
