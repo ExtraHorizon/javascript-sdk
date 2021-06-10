@@ -13,6 +13,7 @@ import {
   mailsService,
   dispatchersService,
   paymentsService,
+  profilesService,
 } from './services';
 
 import {
@@ -147,6 +148,11 @@ export interface Client<T extends ClientParams> {
    */
   payments: ReturnType<typeof paymentsService>;
   /**
+   * Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
+   * @see https://developers.extrahorizon.io/services/profiles-service/1.1.3/
+   */
+  profiles: ReturnType<typeof profilesService>;
+  /**
    * The user service stands in for managing users themselves, as well as roles related to users and groups of users.
    * @see https://developers.extrahorizon.io/services/users-service/1.1.7/
    */
@@ -219,6 +225,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     configurations: configurationsService(httpWithAuth),
     dispatchers: dispatchersService(httpWithAuth),
     payments: paymentsService(httpWithAuth),
+    profiles: profilesService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
       authenticate: (oauth: AuthParams): Promise<void> =>
