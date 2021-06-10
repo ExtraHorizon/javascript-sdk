@@ -1,11 +1,15 @@
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import profiles from './profiles';
+import groups from './groups';
 import health from './health';
 import { PROFILES_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
 
-export type ProfilesService = ReturnType<typeof profiles>;
+export type ProfilesService = ReturnType<typeof health> & {
+  profiles: ReturnType<typeof profiles>;
+  groups: ReturnType<typeof groups>;
+};
 
 export const profilesService = (
   httpWithAuth: HttpInstance
@@ -15,10 +19,9 @@ export const profilesService = (
     basePath: PROFILES_BASE,
   });
 
-  const profilesMethods = profiles(client, httpWithAuth);
-
   return {
     ...health(client, httpWithAuth),
-    ...profilesMethods,
+    profiles: profiles(client, httpWithAuth),
+    groups: groups(client, httpWithAuth),
   };
 };
