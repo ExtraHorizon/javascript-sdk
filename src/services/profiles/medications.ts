@@ -1,5 +1,11 @@
 import type { HttpInstance } from '../../types';
-import { ObjectId, PagedResult, ResultResponse, Results } from '../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  PagedResult,
+  ResultResponse,
+  Results,
+} from '../types';
 import { Medication } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -45,17 +51,18 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param profileId Id of the targeted profile
    * @param medicationName Name of the targeted medication
-   * @returns true if the medication was removed from profile
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   async removeMedicationFromProfile(
     profileId: ObjectId,
     medicationName: string
-  ): Promise<boolean> {
-    const result: ResultResponse = await client.delete(
-      httpAuth,
-      `/${profileId}/medication/${medicationName}`
-    );
-    return result.status === Results.Success;
+  ): Promise<AffectedRecords> {
+    return (
+      await client.delete(
+        httpAuth,
+        `/${profileId}/medication/${medicationName}`
+      )
+    ).data;
   },
 });

@@ -95,7 +95,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param entryId Id of the targeted log entry
-   * @returns true if log was removed
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   async remove(

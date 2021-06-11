@@ -7,6 +7,7 @@ import {
   MedicationFrequency,
   Group,
   LogEntry,
+  Medication,
 } from '../../src/services/profiles/types';
 
 export const profileData: Profile = {
@@ -111,4 +112,23 @@ export const logsResponse = {
     limit: 20,
   },
   data: [logData],
+};
+
+export const medicationData: Medication = {
+  name: 'Xarelto',
+  dosis: {
+    number: 0,
+    unit: MedicationUnit.MG,
+  },
+  medicationFrequency: MedicationFrequency.AS_NEEDED,
+  count: 1,
+};
+
+export const medicationsResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [medicationData],
 };
