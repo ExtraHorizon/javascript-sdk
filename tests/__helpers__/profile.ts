@@ -5,6 +5,7 @@ import {
   Impediments,
   MedicationUnit,
   MedicationFrequency,
+  Group,
 } from '../../src/services/profiles/types';
 
 export const profileData: Profile = {
@@ -79,4 +80,15 @@ export const impedimentsResponse = {
     limit: 20,
   },
   data: [Impediments.TREMOR],
+};
+
+export const groupData: Group = {
+  reason: 'string',
+  patientId: 'string',
+  customFields: {
+    additionalProp1: 'string',
+    additionalProp2: 'string',
+    additionalProp3: 'string',
+  },
+  groupId: '58074804b2148f3b28ad759a',
 };
