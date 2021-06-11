@@ -1,11 +1,5 @@
 import type { HttpInstance } from '../../types';
-import {
-  AffectedRecords,
-  ObjectId,
-  PagedResult,
-  ResultResponse,
-  Results,
-} from '../types';
+import { AffectedRecords, ObjectId, PagedResult } from '../types';
 import { Medication } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
