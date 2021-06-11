@@ -1,18 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, PROFILES_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-} from '../../../src/index';
-import {
-  profileData,
-  profilesResponse,
-  comorbiditiesResponse,
-  impedimentsResponse,
-  groupData,
-} from '../../__helpers__/profile';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
+import { profileData, groupData } from '../../__helpers__/profile';
 
 describe('Groups Service', () => {
   const host = 'https://api.xxx.fibricheck.com';

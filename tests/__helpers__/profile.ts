@@ -6,6 +6,7 @@ import {
   MedicationUnit,
   MedicationFrequency,
   Group,
+  LogEntry,
 } from '../../src/services/profiles/types';
 
 export const profileData: Profile = {
@@ -91,4 +92,23 @@ export const groupData: Group = {
     additionalProp3: 'string',
   },
   groupId: '58074804b2148f3b28ad759a',
+};
+
+export const logData: LogEntry = {
+  id: '58074804b2148f3b28ad759a',
+  profileId: '58074804b2148f3b28ad759a',
+  groupId: '58074804b2148f3b28ad759a',
+  userId: '58074804b2148f3b28ad759a',
+  text: 'string',
+  creationTimestamp: new Date(),
+  updateTimestamp: new Date(),
+};
+
+export const logsResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [logData],
 };
