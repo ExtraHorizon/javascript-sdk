@@ -1,4 +1,4 @@
-import { ReadStream } from 'fs';
+import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
 import { ResultResponse, Results, PagedResult } from '../types';
