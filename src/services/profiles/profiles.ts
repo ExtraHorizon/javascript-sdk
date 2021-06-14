@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, PagedResult } from '../types';
-import { RQLString } from '../../rql';
+import { AffectedRecords, PagedResult, ObjectId } from '../types';
+import { RQLString, rqlBuilder } from '../../rql';
 import { Profile, ProfileCreation, Comorbidities, Impediments } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -17,6 +17,31 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Profile>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findById(
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Profile> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ rql: rqlWithId });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(options?: { rql?: RQLString }): Promise<Profile> {
+    const res = await this.find(options);
+    return res.data[0];
   },
 
   /**

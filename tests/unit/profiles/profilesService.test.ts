@@ -50,6 +50,24 @@ describe('Profiles Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a profile by id', async () => {
+    nock(`${host}${PROFILES_BASE}`)
+      .get(`/?eq(id,${profileId})`)
+      .reply(200, profilesResponse);
+
+    const profile = await sdk.profiles.findById(profileId);
+
+    expect(profile.id).toBe(profileId);
+  });
+
+  it('should find the first profile', async () => {
+    nock(`${host}${PROFILES_BASE}`).get('/').reply(200, profilesResponse);
+
+    const profile = await sdk.profiles.findFirst();
+
+    expect(profile.id).toBe(profilesResponse.data[0].id);
+  });
+
   it('should create a new profile', async () => {
     nock(`${host}${PROFILES_BASE}`).post('/').reply(200, profileData);
 
