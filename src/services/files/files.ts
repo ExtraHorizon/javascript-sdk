@@ -62,10 +62,19 @@ export default (client, httpAuth: HttpInstance) => ({
   }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
     form.append('name', name);
-    form.append('file', file, `${name}.${extension}`);
-    if (tags) {
+    if (typeof window !== 'undefined' && Buffer.isBuffer(file)) {
+      form.append(
+        'file',
+        new Blob([new Uint8Array(file)]),
+        `${name}.${extension}`
+      );
+    } else {
+      form.append('file', file, `${name}.${extension}`);
+    }
+    if (tags && tags.length > 0) {
       form.append('tags', tags);
     }
+
     return (
       await client.post(httpAuth, '/', form, {
         headers:
