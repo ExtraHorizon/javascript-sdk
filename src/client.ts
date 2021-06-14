@@ -13,6 +13,7 @@ import {
   mailsService,
   dispatchersService,
   paymentsService,
+  notificationsService,
 } from './services';
 
 import {
@@ -147,6 +148,11 @@ export interface Client<T extends ClientParams> {
    */
   payments: ReturnType<typeof paymentsService>;
   /**
+   * A service that handles push notifications.
+   * @see https://developers.extrahorizon.io/services/notifications-service/1.0.8/
+   */
+  notifications: ReturnType<typeof notificationsService>;
+  /**
    * The user service stands in for managing users themselves, as well as roles related to users and groups of users.
    * @see https://developers.extrahorizon.io/services/users-service/1.1.7/
    */
@@ -219,6 +225,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     configurations: configurationsService(httpWithAuth),
     dispatchers: dispatchersService(httpWithAuth),
     payments: paymentsService(httpWithAuth),
+    notifications: notificationsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
       authenticate: (oauth: AuthParams): Promise<void> =>
