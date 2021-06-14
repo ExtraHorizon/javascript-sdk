@@ -78,7 +78,7 @@ describe('Files Service', () => {
 
     nock(`${host}${FILES_BASE}`).post('/').reply(200, fileData);
 
-    const res = await sdk.files.create(newFile);
+    const res = await sdk.files.create(newFile.name, newFile.file);
     expect(res).toBeDefined();
   });
 

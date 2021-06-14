@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs';
 import type { ObjectId } from '../types';
 
 /**
