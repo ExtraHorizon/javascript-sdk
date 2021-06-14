@@ -1,4 +1,4 @@
-import type { ReadStream } from 'fs';
+import { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
 import { ResultResponse, Results, PagedResult } from '../types';
@@ -62,15 +62,9 @@ export default (client, httpAuth: HttpInstance) => ({
   }: CreateFile): Promise<FileDetails> {
     const form = new FormData();
     form.append('name', name);
-    if (typeof window !== 'undefined' && Buffer.isBuffer(file)) {
-      form.append(
-        'file',
-        new Blob([new Uint8Array(file)]),
-        `${name}.${extension}`
-      );
-    } else {
-      form.append('file', file, `${name}.${extension}`);
-    }
+
+    form.append('file', file, `${name}.${extension}`);
+
     if (tags && tags.length > 0) {
       form.append('tags', tags);
     }
