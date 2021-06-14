@@ -51,3 +51,11 @@ export enum FieldType {
   OBJECT_ID = 'OBJECT_ID',
   URL = 'URL',
 }
+
+export interface Setting {
+  id?: ObjectId;
+  key?: string;
+  preferences?: Record<string, boolean>;
+  creationTimestamp?: Date;
+  updateTimestamp?: Date;
+}
