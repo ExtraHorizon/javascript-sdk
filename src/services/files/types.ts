@@ -30,10 +30,3 @@ export interface FileDetails {
 export interface CreateTokenRequest {
   accessLevel?: TokenPermission;
 }
-
-export interface CreateFile {
-  name: string;
-  extension?: string;
-  file: Blob | Buffer | ReadStream;
-  tags?: string[];
-}
