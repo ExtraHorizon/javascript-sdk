@@ -2,7 +2,7 @@ import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
 import { ResultResponse, Results, PagedResult } from '../types';
-import type { FileDetails, Token, CreateFile } from './types';
+import type { FileDetails, Token } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -54,25 +54,22 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  async create({
-    name,
-    file,
-    tags,
-    extension = 'pdf',
-  }: CreateFile): Promise<FileDetails> {
+  async create(
+    fileName: string,
+    fileData: Blob | Buffer | ReadStream,
+    options?: { tags: [] }
+  ): Promise<FileDetails> {
     const form = new FormData();
-    form.append('name', name);
-    if (typeof window !== 'undefined' && Buffer.isBuffer(file)) {
-      form.append(
-        'file',
-        new Blob([new Uint8Array(file)]),
-        `${name}.${extension}`
+    if (typeof window !== 'undefined' && !(fileData instanceof Blob)) {
+      throw new Error(
+        'In the frontend you should use Blob. https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob'
       );
-    } else {
-      form.append('file', file, `${name}.${extension}`);
     }
-    if (tags && tags.length > 0) {
-      form.append('tags', tags);
+    form.append('name', fileName);
+    form.append('file', fileData, fileName);
+
+    if (options?.tags && options.tags.length > 0) {
+      form.append('tags', options.tags);
     }
 
     return (
