@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0]
 
+### Breaking Changes
+
+- `sdk.files.create` signature has changed.
+
+```diff
+- sdk.files.create({name: 'test.pdf', file: file, extension: 'pdf', tags: ['tag']);
++ sdk.files.create('test.pdf', file, {tags: ['tag]})
+```
+
+### Added
+
+- `sdk.files.createRaw` where you can pass in your FormData directly
+
 - Added `transitionsByName` getter to easily get the transition you need.
 
 ```ts
