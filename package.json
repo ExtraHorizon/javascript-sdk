@@ -2,7 +2,7 @@
   "name": "@extrahorizon/javascript-sdk",
   "version": "3.1.0",
   "description": "",
-  "main": "build/index.cjs",
+  "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
   "module": "build/index.mjs",
   "author": "Qompium",
