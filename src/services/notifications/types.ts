@@ -59,3 +59,5 @@ export interface Setting {
   creationTimestamp?: Date;
   updateTimestamp?: Date;
 }
+
+export type SettingCreation = Required<Pick<Setting, 'key' | 'preferences'>>;

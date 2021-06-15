@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords, PagedResult } from '../types';
 import { RQLString } from '../../rql';
-import type { Setting } from './types';
+import type { Setting, SettingCreation } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -12,8 +12,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notification settings
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<Setting>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Setting>> {
     return (await client.get(httpAuth, `/settings${options?.rql || ''}`)).data;
@@ -26,18 +25,11 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Update your own notification settings
    * `UPDATE_NOTIFICATION_SETTINGS` | `global` | Update all notification settings
    *
-   * @param userId
-   * @param requestBody
-   * @returns Setting Success
-   * @throws ApiError
+   * @param userId The User Id
+   * @param requestBody SettingCreation object
+   * @returns Setting
    */
-  async update(
-    userId: string,
-    requestBody: {
-      key?: string;
-      preferences?: Record<string, boolean>;
-    }
-  ): Promise<Setting> {
+  async update(userId: string, requestBody: SettingCreation): Promise<Setting> {
     return (await client.put(httpAuth, `/settings/${userId}`, requestBody))
       .data;
   },
@@ -49,8 +41,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_NOTIFICATION_SETTINGS` | `global` | **Required** for this endpoint
    *
    * @param userId
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
    */
   async remove(userId: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/settings/${userId}`)).data;

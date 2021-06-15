@@ -15,8 +15,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<Notification>
    */
   async findMyNotifications(options?: {
     rql?: RQLString;
@@ -31,9 +30,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Create a notification for yourself
    * `CREATE_NOTIFICATIONS` | `global` | Create a notification for another person
    *
-   * @param requestBody
-   * @returns Notification Success
-   * @throws ApiError
+   * @param requestBody CreateNotificationRequest
+   * @returns Notification
    */
   async create(requestBody: CreateNotificationRequest): Promise<Notification> {
     return (await client.post(httpAuth, '/', requestBody)).data;
@@ -47,8 +45,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_NOTIFICATIONS` | `global` | View all notifications
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<Notification>
    */
   async findNotifications(options?: {
     rql?: RQLString;
@@ -64,8 +61,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DELETE_NOTIFICATIONS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
    */
   async remove(options?: { rql?: RQLString }): Promise<AffectedRecords> {
     return (
@@ -80,8 +76,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
    */
   async markAsViewed(options?: { rql?: RQLString }): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/viewed${options?.rql || ''}`)).data;
@@ -93,8 +88,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none | | Everyone can use this endpoint
    *
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<NotifTypeDef>
    */
   async getTypes(): Promise<PagedResult<NotifTypeDef>> {
     return (await client.get(httpAuth, '/types')).data;
