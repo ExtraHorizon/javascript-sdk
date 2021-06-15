@@ -1,10 +1,10 @@
 import OAuth from 'oauth-1.0a';
-import crypto from 'crypto';
+import { enc, HmacSHA1 } from 'crypto-js';
 import { ClientConfig, ClientParams } from './types';
 import { AUTH_BASE } from './constants';
 
 function hmacSha1Hash(baseString: string, key: string) {
-  return crypto.createHmac('sha1', key).update(baseString).digest('base64');
+  return HmacSHA1(baseString, key).toString(enc.Base64);
 }
 
 export function validateConfig({
