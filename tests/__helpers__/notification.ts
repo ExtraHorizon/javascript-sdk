@@ -69,3 +69,28 @@ export const notificationTypesResponse = {
   },
   data: [notificationTypeData],
 };
+
+export const settingsInput = {
+  key: 'string',
+  preferences: {
+    additionalProp1: true,
+    additionalProp2: true,
+    additionalProp3: true,
+  },
+};
+
+export const settingsData = {
+  ...settingsInput,
+  id: '58074804b2148f3b28ad759a',
+  creationTimestamp: new Date(1550577829354),
+  updateTimestamp: new Date(1550577829354),
+};
+
+export const settingsResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [settingsData],
+};
