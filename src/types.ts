@@ -14,6 +14,7 @@ export * as TemplatesServicesTypes from './services/templates/types';
 export * as ConfigurationsServicesTypes from './services/configurations/types';
 export * as DispatchersServicesTypes from './services/dispatchers/types';
 export * as PaymentsServicesTypes from './services/payments/types';
+export * as NotificationsServicesTypes from './services/notifications/types';
 
 export type HttpInstance = AxiosInstance;
 export type HttpRequestConfig = AxiosRequestConfig;
