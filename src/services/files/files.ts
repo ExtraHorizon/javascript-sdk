@@ -44,16 +44,28 @@ export default (client, httpAuth: HttpInstance) => ({
     return res.data[0];
   },
 
-  async createRaw(form: FormData): Promise<FileDetails> {
+  /**
+   * Add a new file.
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   *
+   * @param FormData formData
+   * @returns FileDetails Success
+   * @throws {FileTooLargeError}
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async createRaw(formData: any): Promise<FileDetails> {
     return (
-      await client.post(httpAuth, '/', form, {
+      await client.post(httpAuth, '/', formData, {
         headers:
           typeof window === 'undefined'
-            ? form.getHeaders()
+            ? formData.getHeaders()
             : { 'Content-Type': 'multipart/form-data' },
       })
     ).data;
   },
+
   /**
    * Add a new file
    * Permission | Scope | Effect
