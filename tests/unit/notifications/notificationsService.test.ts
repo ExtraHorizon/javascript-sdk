@@ -47,7 +47,7 @@ describe('Notifications Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find your notification by id', async () => {
+  it('should find the users notification by id', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get(`/?eq(id,${notificationId})`)
       .reply(200, notificationResponse);
@@ -75,7 +75,25 @@ describe('Notifications Service', () => {
     expect(notification.type).toBe(notificationData.type);
   });
 
-  // ggggggggggggg
+  it('should find any notification by id', async () => {
+    nock(`${host}${NOTIFICATIONS_BASE}`)
+      .get(`/notifications?eq(id,${notificationId})`)
+      .reply(200, notificationResponse);
+
+    const notification = await sdk.notifications.findAllById(notificationId);
+
+    expect(notification.id).toBe(notificationId);
+  });
+
+  it('should find the first notification', async () => {
+    nock(`${host}${NOTIFICATIONS_BASE}`)
+      .get('/notifications')
+      .reply(200, notificationResponse);
+
+    const notification = await sdk.notifications.findAllFirst();
+
+    expect(notification.id).toBe(notificationId);
+  });
 
   it('should delete a notification', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
