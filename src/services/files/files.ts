@@ -44,6 +44,16 @@ export default (client, httpAuth: HttpInstance) => ({
     return res.data[0];
   },
 
+  async createRaw(form: FormData): Promise<FileDetails> {
+    return (
+      await client.post(httpAuth, '/', form, {
+        headers:
+          typeof window === 'undefined'
+            ? form.getHeaders()
+            : { 'Content-Type': 'multipart/form-data' },
+      })
+    ).data;
+  },
   /**
    * Add a new file
    * Permission | Scope | Effect
