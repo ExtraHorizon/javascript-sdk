@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, PagedResult } from '../types';
-import { RQLString } from '../../rql';
+import { AffectedRecords, PagedResult, ObjectId } from '../types';
+import { RQLString, rqlBuilder } from '../../rql';
 import type {
   Notification,
   CreateNotificationRequest,
@@ -17,10 +17,35 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Notification>
    */
-  async findMyNotifications(options?: {
+  async find(options?: {
     rql?: RQLString;
   }): Promise<PagedResult<Notification>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findById(
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Notification> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ rql: rqlWithId });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(options?: { rql?: RQLString }): Promise<Notification> {
+    const res = await this.find(options);
+    return res.data[0];
   },
 
   /**
@@ -47,11 +72,36 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Notification>
    */
-  async findNotifications(options?: {
+  async findAll(options?: {
     rql?: RQLString;
   }): Promise<PagedResult<Notification>> {
     return (await client.get(httpAuth, `/notifications${options?.rql || ''}`))
       .data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findAllById(
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Notification> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.findAll({ rql: rqlWithId });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findAllFirst(options?: { rql?: RQLString }): Promise<Notification> {
+    const res = await this.findAll(options);
+    return res.data[0];
   },
 
   /**
