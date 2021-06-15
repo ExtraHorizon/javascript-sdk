@@ -11,7 +11,7 @@ export default {
     ...Object.keys(require('./package.json').dependencies),
   ],
   output: [
-    { file: join('build', 'index.cjs'), format: 'cjs' },
+    { file: join('build', 'index.cjs.js'), format: 'cjs' },
     { file: join('build', 'index.mjs'), format: 'es' },
   ],
   plugins: [
