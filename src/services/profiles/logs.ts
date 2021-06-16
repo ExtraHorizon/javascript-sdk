@@ -1,5 +1,11 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, ObjectId, PagedResult } from '../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  PagedResult,
+  Results,
+  ResultResponse,
+} from '../types';
 import { LogEntry, CommentBean } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -97,11 +103,11 @@ export default (client, httpAuth: HttpInstance) => ({
     groupId: ObjectId,
     entryId: ObjectId
   ): Promise<AffectedRecords> {
-    return (
-      await client.delete(
-        httpAuth,
-        `/${profileId}/groups/${groupId}/logs/${entryId}`
-      )
-    ).data;
+    const result: ResultResponse = await client.delete(
+      httpAuth,
+      `/${profileId}/groups/${groupId}/logs/${entryId}`
+    );
+    const affectedRecords = result.status === Results.Success ? 1 : 0;
+    return { affectedRecords };
   },
 });

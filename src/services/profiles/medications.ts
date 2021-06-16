@@ -1,5 +1,11 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, ObjectId, PagedResult } from '../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  PagedResult,
+  Results,
+  ResultResponse,
+} from '../types';
 import { Medication } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -52,11 +58,11 @@ export default (client, httpAuth: HttpInstance) => ({
     profileId: ObjectId,
     medicationName: string
   ): Promise<AffectedRecords> {
-    return (
-      await client.delete(
-        httpAuth,
-        `/${profileId}/medication/${medicationName}`
-      )
-    ).data;
+    const result: ResultResponse = await client.delete(
+      httpAuth,
+      `/${profileId}/medication/${medicationName}`
+    );
+    const affectedRecords = result.status === Results.Success ? 1 : 0;
+    return { affectedRecords };
   },
 });
