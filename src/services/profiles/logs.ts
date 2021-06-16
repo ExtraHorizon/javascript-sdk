@@ -6,7 +6,7 @@ import {
   Results,
   ResultResponse,
 } from '../types';
-import { LogEntry, CommentBean } from './types';
+import { LogEntry, Comment } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -18,14 +18,14 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
-   * @param requestBody CommentBean
+   * @param requestBody Comment
    * @returns LogEntry
    * @throws {ResourceUnknownError}
    */
   async create(
     profileId: ObjectId,
     groupId: ObjectId,
-    requestBody: CommentBean
+    requestBody: Comment
   ): Promise<LogEntry> {
     return (
       await client.post(
@@ -66,7 +66,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param entryId Id of the targeted log entry
-   * @param requestBody CommentBean
+   * @param requestBody Comment
    * @returns LogEntry
    * @throws {ResourceUnknownError}
    */
@@ -74,7 +74,7 @@ export default (client, httpAuth: HttpInstance) => ({
     profileId: ObjectId,
     groupId: ObjectId,
     entryId: ObjectId,
-    requestBody: CommentBean
+    requestBody: Comment
   ): Promise<LogEntry> {
     return (
       await client.put(

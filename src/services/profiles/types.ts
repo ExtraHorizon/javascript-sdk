@@ -103,6 +103,6 @@ export interface LogEntry {
   updateTimestamp?: Date;
 }
 
-export interface CommentBean {
+export interface Comment {
   text: string;
 }
