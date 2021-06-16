@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, PROFILES_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { profileData, groupData } from '../../__helpers__/profile';
+import { profileData, groupData, groupInput } from '../../__helpers__/profile';
 
 describe('Groups Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -37,7 +37,7 @@ describe('Groups Service', () => {
       .post(`/${profileId}/groups`)
       .reply(200, groupData);
 
-    const group = await sdk.profiles.groups.addToProfile(profileId, groupData);
+    const group = await sdk.profiles.groups.addToProfile(profileId, groupInput);
 
     expect(group.patientId).toBe(groupData.patientId);
   });

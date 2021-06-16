@@ -93,6 +93,8 @@ export interface Group {
   customFields?: Record<string, string>;
 }
 
+export type GroupCreation = Object.Required<Group, 'groupId'>;
+
 export interface LogEntry {
   id?: ObjectId;
   profileId?: ObjectId;

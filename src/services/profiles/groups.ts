@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords, ObjectId } from '../types';
-import { Group } from './types';
+import { Group, GroupCreation } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -17,7 +17,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {ResourceAlreadyExistsError}
    * @throws {ResourceUnknownError}
    */
-  async addToProfile(profileId: ObjectId, requestBody: Group): Promise<Group> {
+  async addToProfile(
+    profileId: ObjectId,
+    requestBody: GroupCreation
+  ): Promise<Group> {
     return (await client.post(httpAuth, `/${profileId}/groups`, requestBody))
       .data;
   },

@@ -6,6 +6,7 @@ import {
   MedicationUnit,
   MedicationFrequency,
   Group,
+  GroupCreation,
   LogEntry,
   Medication,
 } from '../../src/services/profiles/types';
@@ -92,6 +93,10 @@ export const groupData: Group = {
     additionalProp2: 'string',
     additionalProp3: 'string',
   },
+};
+
+export const groupInput: GroupCreation = {
+  ...groupData,
   groupId: '58074804b2148f3b28ad759a',
 };
 
