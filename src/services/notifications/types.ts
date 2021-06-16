@@ -11,12 +11,75 @@ export interface Notification {
   updateTimestamp?: Date;
 }
 
-export interface CreateNotificationRequest {
+interface CreateNotificationRequestBase {
   userId?: ObjectId;
   type?: CreateNotificationRequestType;
-  fields?: Record<string, string>;
   important?: boolean;
 }
+
+interface CreateNotificationRequestMessage
+  extends CreateNotificationRequestBase {
+  type: CreateNotificationRequestType.MESSAGE;
+  fields: {
+    title: string;
+    body: string;
+    senderId: ObjectId;
+  };
+}
+
+interface CreateNotificationRequestLink extends CreateNotificationRequestBase {
+  type: CreateNotificationRequestType.LINK;
+  fields: {
+    title: string;
+    body: string;
+    url: string;
+  };
+}
+
+interface CreateNotificationRequestMeasurementComment
+  extends CreateNotificationRequestBase {
+  type: CreateNotificationRequestType.MEASUREMENT_COMMENT;
+  fields: {
+    commenterId: ObjectId;
+    measurementId: ObjectId;
+  };
+}
+
+interface CreateNotificationRequestMeasurementReviewed
+  extends CreateNotificationRequestBase {
+  type: CreateNotificationRequestType.MEASUREMENT_REVIEWED;
+  fields: {
+    measurementId: ObjectId;
+  };
+}
+
+interface CreateNotificationRequestMeasurementPrescriptionExpiry
+  extends CreateNotificationRequestBase {
+  type: CreateNotificationRequestType.MEASUREMENT_REVIEWED;
+  fields: {
+    groupId: ObjectId;
+    groupName: string;
+  };
+}
+
+interface CreateNotificationRequestActivated
+  extends CreateNotificationRequestBase {
+  type: CreateNotificationRequestType.ACTIVATED;
+}
+
+interface CreateNotificationRequestPasswordChanged
+  extends CreateNotificationRequestBase {
+  type: CreateNotificationRequestType.PASSWORD_CHANGED;
+}
+
+export type CreateNotificationRequest =
+  | CreateNotificationRequestMessage
+  | CreateNotificationRequestLink
+  | CreateNotificationRequestMeasurementComment
+  | CreateNotificationRequestMeasurementReviewed
+  | CreateNotificationRequestMeasurementPrescriptionExpiry
+  | CreateNotificationRequestActivated
+  | CreateNotificationRequestPasswordChanged;
 
 export enum CreateNotificationRequestType {
   PASSWORD_CHANGED = 'password_changed',
