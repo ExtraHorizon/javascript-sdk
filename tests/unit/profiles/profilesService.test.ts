@@ -74,6 +74,7 @@ describe('Profiles Service', () => {
     const profile = await sdk.profiles.create({
       id: profileId,
       country: 'BE',
+      birthday: '01/01/2000',
       region: 'string',
       gender: 1,
     });

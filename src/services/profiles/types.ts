@@ -1,3 +1,4 @@
+import { Object } from 'ts-toolbelt';
 import { ObjectId } from '../types';
 
 export interface Profile {
@@ -29,9 +30,9 @@ export interface Profile {
   updateTimestamp?: Date;
 }
 
-export type ProfileCreation = Pick<
-  Profile,
-  'id' | 'country' | 'region' | 'birthday' | 'gender'
+export type ProfileCreation = Object.Required<
+  Pick<Profile, 'id' | 'country' | 'region' | 'birthday' | 'gender'>,
+  'id' | 'country' | 'birthday' | 'gender'
 >;
 
 export enum ProfileActivity {
