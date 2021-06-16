@@ -17,10 +17,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {ResourceAlreadyExistsError}
    * @throws {ResourceUnknownError}
    */
-  async addGroupToProfile(
-    profileId: ObjectId,
-    requestBody: Group
-  ): Promise<Group> {
+  async addToProfile(profileId: ObjectId, requestBody: Group): Promise<Group> {
     return (await client.post(httpAuth, `/${profileId}/groups`, requestBody))
       .data;
   },

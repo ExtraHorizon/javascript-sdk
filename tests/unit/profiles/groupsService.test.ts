@@ -37,10 +37,7 @@ describe('Groups Service', () => {
       .post(`/${profileId}/groups`)
       .reply(200, groupData);
 
-    const group = await sdk.profiles.groups.addGroupToProfile(
-      profileId,
-      groupData
-    );
+    const group = await sdk.profiles.groups.addToProfile(profileId, groupData);
 
     expect(group.patientId).toBe(groupData.patientId);
   });
