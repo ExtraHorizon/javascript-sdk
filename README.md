@@ -284,7 +284,6 @@ As example the typing of the first schema in the example value from the get sche
 
 ```ts
 import type { DataServicesTypes: { Schema,
-  DocumentBase,
   JSONSchemaObject,
   JSONSchemaArray,
   JSONSchemaNumber } }  from "@extrahorizon/javascript-sdk";
@@ -312,7 +311,7 @@ const sdk = createOAuth2Client({
 const { data: schemas } = await sdk.data.find();
 const mySchema: CustomSchema = schemas[0];
 
-interface CustomDocument extends DocumentBase {
+interface MyData {
   data: {
     ppg: Number[];
     location: {
@@ -321,7 +320,7 @@ interface CustomDocument extends DocumentBase {
     };
   };
 }
-const document = await sdk.data.findDocuments<CustomDocument>();
+const document = await sdk.data.findDocuments<MyData>();
 ```
 
 ## Tests
