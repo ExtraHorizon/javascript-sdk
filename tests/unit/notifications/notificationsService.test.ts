@@ -36,37 +36,6 @@ describe('Notifications Service', () => {
     });
   });
 
-  it('should retrieve a list of your own notifications', async () => {
-    const rql = rqlBuilder().build();
-    nock(`${host}${NOTIFICATIONS_BASE}`)
-      .get(`/${rql}`)
-      .reply(200, notificationResponse);
-
-    const res = await sdk.notifications.find({ rql });
-
-    expect(res.data.length).toBeGreaterThan(0);
-  });
-
-  it('should find the users notification by id', async () => {
-    nock(`${host}${NOTIFICATIONS_BASE}`)
-      .get(`/?eq(id,${notificationId})`)
-      .reply(200, notificationResponse);
-
-    const notification = await sdk.notifications.findById(notificationId);
-
-    expect(notification.id).toBe(notificationId);
-  });
-
-  it('should find the first notification of the user', async () => {
-    nock(`${host}${NOTIFICATIONS_BASE}`)
-      .get('/')
-      .reply(200, notificationResponse);
-
-    const notification = await sdk.notifications.findFirst();
-
-    expect(notification.id).toBe(notificationId);
-  });
-
   it('should create a new notification', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`).post('/').reply(200, notificationData);
 
@@ -75,12 +44,23 @@ describe('Notifications Service', () => {
     expect(notification.type).toBe(notificationData.type);
   });
 
-  it('should find any notification by id', async () => {
+  it('should find a notification', async () => {
+    const rql = rqlBuilder().build();
+    nock(`${host}${NOTIFICATIONS_BASE}`)
+      .get('/notifications')
+      .reply(200, notificationResponse);
+
+    const res = await sdk.notifications.find({ rql });
+
+    expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should find a notification by id', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get(`/notifications?eq(id,${notificationId})`)
       .reply(200, notificationResponse);
 
-    const notification = await sdk.notifications.findAllById(notificationId);
+    const notification = await sdk.notifications.findById(notificationId);
 
     expect(notification.id).toBe(notificationId);
   });
@@ -90,7 +70,7 @@ describe('Notifications Service', () => {
       .get('/notifications')
       .reply(200, notificationResponse);
 
-    const notification = await sdk.notifications.findAllFirst();
+    const notification = await sdk.notifications.findFirst();
 
     expect(notification.id).toBe(notificationId);
   });

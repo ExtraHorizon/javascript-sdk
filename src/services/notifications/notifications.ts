@@ -9,10 +9,25 @@ import type {
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
-   * Retrieve a list of your own notifications
+   * Create a notification
    * Permission | Scope | Effect
    * - | - | -
-   * none | | Everyone can use this endpoint
+   * none | | Create a notification for yourself
+   * `CREATE_NOTIFICATIONS` | `global` | Create a notification for another person
+   *
+   * @param requestBody CreateNotificationRequest
+   * @returns Notification
+   */
+  async create(requestBody: CreateNotificationRequest): Promise<Notification> {
+    return (await client.post(httpAuth, '/', requestBody)).data;
+  },
+
+  /**
+   * Retrieve a list of notifications
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | View your own notifications
+   * `VIEW_NOTIFICATIONS` | `global` | View all notifications
    *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Notification>
@@ -20,7 +35,8 @@ export default (client, httpAuth: HttpInstance) => ({
   async find(options?: {
     rql?: RQLString;
   }): Promise<PagedResult<Notification>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+    return (await client.get(httpAuth, `/notifications${options?.rql || ''}`))
+      .data;
   },
 
   /**
@@ -45,62 +61,6 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async findFirst(options?: { rql?: RQLString }): Promise<Notification> {
     const res = await this.find(options);
-    return res.data[0];
-  },
-
-  /**
-   * Create a notification
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Create a notification for yourself
-   * `CREATE_NOTIFICATIONS` | `global` | Create a notification for another person
-   *
-   * @param requestBody CreateNotificationRequest
-   * @returns Notification
-   */
-  async create(requestBody: CreateNotificationRequest): Promise<Notification> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
-  },
-
-  /**
-   * Retrieve a list of notifications
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | View your own notifications
-   * `VIEW_NOTIFICATIONS` | `global` | View all notifications
-   *
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<Notification>
-   */
-  async findAll(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResult<Notification>> {
-    return (await client.get(httpAuth, `/notifications${options?.rql || ''}`))
-      .data;
-  },
-
-  /**
-   * Find By Id
-   * @param id the Id to search for
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
-  async findAllById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Notification> {
-    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.findAll({ rql: rqlWithId });
-    return res.data[0];
-  },
-
-  /**
-   * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
-  async findAllFirst(options?: { rql?: RQLString }): Promise<Notification> {
-    const res = await this.findAll(options);
     return res.data[0];
   },
 
