@@ -10,9 +10,9 @@ export const notificationInput: CreateNotificationRequest = {
   type: CreateNotificationRequestType.MESSAGE,
   userId: '58074804b2148f3b28ad759a',
   fields: {
-    additionalProp1: 'string',
-    additionalProp2: 'string',
-    additionalProp3: 'string',
+    title: 'string',
+    body: 'string',
+    senderId: '58074804b2148f3b28ad759a',
   },
   important: true,
 };
