@@ -307,12 +307,12 @@ export interface Index {
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
 
-export interface DocumentBase {
+export interface Document<CustomData = null> {
   id?: ObjectId;
   userIds?: ObjectId[];
   groupIds?: ObjectId[];
   status?: string;
-  data?: any;
+  data?: CustomData extends null ? Record<string, unknown> : CustomData;
   transitionLock?: {
     timestamp?: Date;
   };
@@ -321,10 +321,6 @@ export interface DocumentBase {
   creationTimestamp?: Date;
   statusChangedTimestamp?: Date;
   creatorId?: ObjectId;
-}
-
-export interface Document extends DocumentBase {
-  data?: Record<string, any>;
 }
 
 export type CommentText = string;

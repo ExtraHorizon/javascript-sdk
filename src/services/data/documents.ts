@@ -47,14 +47,12 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns any Success
    */
-  async find<CustomDocument = null>(
+  async find<CustomData>(
     schemaId: ObjectId,
     options?: {
       rql?: RQLString;
     }
-  ): Promise<
-    PagedResult<CustomDocument extends null ? Document : CustomDocument>
-  > {
+  ): Promise<PagedResult<Document<CustomData>>> {
     return (
       await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
     ).data;
@@ -67,11 +65,11 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById<CustomDocument = null>(
+  async findById<CustomData>(
     id: ObjectId,
     schemaId: ObjectId,
     options?: { rql?: RQLString }
-  ): Promise<CustomDocument extends null ? Document : CustomDocument> {
+  ): Promise<Document<CustomData>> {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
     const res = await this.find(schemaId, { rql: rqlWithId });
     return res.data[0];
@@ -83,10 +81,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst<CustomDocument = null>(
+  async findFirst<CustomData>(
     schemaId: ObjectId,
     options?: { rql?: RQLString }
-  ): Promise<CustomDocument extends null ? Document : CustomDocument> {
+  ): Promise<Document<CustomData>> {
     const res = await this.find(schemaId, options);
     return res.data[0];
   },

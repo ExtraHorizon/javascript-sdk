@@ -18,6 +18,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 + sdk.files.create('test.pdf', file, {tags: ['tag]})
 ```
 
+- Custom Document no longer need to extend from DocumentBase. You can just pass in the type for `data`
+
+```diff
+- interface CustomDocument extends DocumentBase {
+- data: {
+-    ppg: Number[];
+-    location: {
+-      longitude: Number;
+-      latitude: Number;
+-    };
+-  };
+- }
+- const document = await sdk.data.findDocuments<CustomDocument>();
+
++ interface MyData {
++   data: {
++     ppg: Number[];
++     location: {
++       longitude: Number;
++       latitude: Number;
++     };
++   };
++ }
++ const document = await sdk.data.findDocuments<MyData>();
+```
+
 ### Added
 
 - `sdk.files.createRaw` where you can pass in your FormData directly
