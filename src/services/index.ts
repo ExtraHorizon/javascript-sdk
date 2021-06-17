@@ -8,3 +8,4 @@ export * from './templates';
 export * from './mails';
 export * from './dispatchers';
 export * from './payments';
+export * from './localizations';
