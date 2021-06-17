@@ -1,7 +1,7 @@
-import { Buffer } from 'buffer'
+import { Buffer } from 'buffer';
 
 export function createCustomFormData(value: string, boundary: string): Buffer {
-  const chunks = []
+  const chunks = [];
 
   chunks.push(
     `--${boundary}\r\n`,
@@ -9,8 +9,8 @@ export function createCustomFormData(value: string, boundary: string): Buffer {
     'Content-Type: application/octet-stream\r\n\r\n',
     value,
     '\r\n',
-    `--${boundary}--`,
-  )
+    `--${boundary}--`
+  );
 
   return Buffer.from(chunks.join(''));
 }
@@ -18,9 +18,9 @@ export function createCustomFormData(value: string, boundary: string): Buffer {
 export function generateBoundary(): string {
   // This generates a 50 character boundary similar to those used by Firefox.
   // They are optimized for boyer-moore parsing.
-  let boundary = '--------------------------'
+  let boundary = '--------------------------';
   for (let i = 0; i < 24; i += 1) {
-    boundary += Math.floor(Math.random() * 10).toString(16)
+    boundary += Math.floor(Math.random() * 10).toString(16);
   }
-  return boundary
+  return boundary;
 }

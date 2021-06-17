@@ -60,13 +60,10 @@ export default (client, httpAuth: HttpInstance) => ({
     const formData = createCustomFormData(text, boundary);
 
     return (
-      await client.post(httpAuth, 
-        '/', 
-        formData, 
-        {
-          headers: {
-            'Content-Type': `multipart/form-data; boundary=${boundary}`,
-          },
+      await client.post(httpAuth, '/', formData, {
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${boundary}`,
+        },
       })
     ).data;
   },
