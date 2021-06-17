@@ -10,53 +10,81 @@ export interface RQLBuilder {
    * - Only return field1 and field2 from the records: select(field1, field2)
    */
   select: (value: string | string[]) => RQLBuilder;
+
   /**
    * - Only return 1 record: limit(1)
    * - Only return 10 records and skip the first 50: limit(10, 50)
    */
   limit: (limit: number, offset?: number) => RQLBuilder;
+
   /**
    * Sorts by the given property in order specified by the prefix
    * - \+ for ascending
    * - \- for descending
    */
   sort: (value: string | string[]) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is not in the provided array
    */
   out: (field: string, list: string[]) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is in the provided array
    */
   in: (field: string, list: string[]) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is greater than or equal to the provided value
    */
   ge: (field: string, value: string) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is equal to the provided value
    */
   eq: (field: string, value: string) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is less than or equal to the provided value
    */
   le: (field: string, value: string) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is not equal to the provided value
    */
   ne: (field: string, value: string) => RQLBuilder;
+
   /**
    * Only return records that don't have field1: contains(field1)
    */
   like: (field: string, value: string) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is less than the provided value
    */
   lt: (field: string, value: string) => RQLBuilder;
+
   /**
    * Filters for objects where the specified property's value is greater than the provided value
    */
   gt: (field: string, value: string) => RQLBuilder;
+
+  /**
+   * Allows combining results of 2 or more queries with the logical AND operator.
+   */
+  and: (field: string, list: string[]) => RQLBuilder;
+
+  /**
+   * Allows combining results of 2 or more queries with the logical OR operator.
+   */
+  or: (field: string, list: string[]) => RQLBuilder;
+
+  /**
+   * Filters for objects where the specified property's value is an array and the array contains 
+   * any value that equals the provided value or satisfies the provided expression.
+   */
+  contains: (field: string, value: string) => RQLBuilder;
+
   /**
    * Returns a valid rqlString you can pass in to function
    * @returns valid rqlString
@@ -72,7 +100,7 @@ export interface RQLBuilder {
 export function rqlBuilder(rql?: RQLString): RQLBuilder {
   let returnString = rql || '';
 
-  const api: RQLBuilder = {
+  const builder: RQLBuilder = {
     select(value) {
       return processQuery(
         'select',
@@ -93,6 +121,12 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     },
     in(field, list) {
       return processQuery('in', `${field},${list.join(',')}`);
+    },
+    or(field, list) {
+      return processQuery('or', `${field},${list.join(',')}`);
+    },
+    and(field, list) {
+      return processQuery('and', `${field},${list.join(',')}`);
     },
     ge(field, value) {
       return processQuery('ge', `${field},${value}`);
@@ -115,6 +149,9 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     gt(field, value) {
       return processQuery('gt', `${field},${value}`);
     },
+    contains(field, value) {
+      return processQuery('contains', `${field},${value}`);
+    },
     build(): RQLString {
       return returnString as RQLString;
     },
@@ -129,8 +166,8 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     returnString = returnString
       .concat(returnString.startsWith('?') ? '&' : '?')
       .concat(`${operation}(${value})`);
-    return api;
+    return builder;
   }
 
-  return api;
+  return builder;
 }
