@@ -33,7 +33,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Medication
    * @throws {ResourceUnknownError}
    */
-  async addMedicationToProfile(
+  async create(
     profileId: ObjectId,
     requestBody: Medication
   ): Promise<Medication> {
@@ -54,7 +54,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async removeMedicationFromProfile(
+  async remove(
     profileId: ObjectId,
     medicationName: string
   ): Promise<AffectedRecords> {

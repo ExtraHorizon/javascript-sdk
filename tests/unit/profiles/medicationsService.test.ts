@@ -51,7 +51,7 @@ describe('Medications Service', () => {
       .post(`/${profileId}/medication`)
       .reply(200, medicationData);
 
-    const medication = await sdk.profiles.medications.addMedicationToProfile(
+    const medication = await sdk.profiles.medications.create(
       profileId,
       medicationData
     );
@@ -64,7 +64,7 @@ describe('Medications Service', () => {
       .delete(`/${profileId}/medication/${medicationName}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.profiles.medications.removeMedicationFromProfile(
+    const res = await sdk.profiles.medications.remove(
       profileId,
       medicationName
     );

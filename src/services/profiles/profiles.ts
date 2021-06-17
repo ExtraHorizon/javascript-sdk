@@ -89,7 +89,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns AffectedRecords
    * @throws {RemoveFieldError}
    */
-  async removeFieldsFromProfile(
+  async removeFields(
     rql: RQLString,
     requestBody: {
       fields: Array<string>;

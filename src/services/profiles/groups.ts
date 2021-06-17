@@ -17,7 +17,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {ResourceAlreadyExistsError}
    * @throws {ResourceUnknownError}
    */
-  async addToProfile(
+  async create(
     profileId: ObjectId,
     requestBody: GroupCreation
   ): Promise<Group> {
@@ -38,7 +38,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Group
    * @throws {ResourceUnknownError}
    */
-  async updateGroupOnProfile(
+  async update(
     profileId: ObjectId,
     groupId: ObjectId,
     requestBody: Omit<Group, 'groupId'>
@@ -61,7 +61,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async removeGroupFromProfile(
+  async remove(
     profileId: ObjectId,
     groupId: ObjectId
   ): Promise<AffectedRecords> {
@@ -82,7 +82,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Group
    * @throws {ResourceUnknownError}
    */
-  async removeFieldsFromGroupsProfile(
+  async removeFields(
     profileId: ObjectId,
     groupId: ObjectId,
     requestBody: {

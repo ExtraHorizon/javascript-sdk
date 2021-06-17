@@ -99,7 +99,7 @@ describe('Profiles Service', () => {
       affectedRecords: 1,
     });
 
-    const res = await sdk.profiles.removeFieldsFromProfile(rql, {
+    const res = await sdk.profiles.removeFields(rql, {
       fields: ['string'],
     });
 

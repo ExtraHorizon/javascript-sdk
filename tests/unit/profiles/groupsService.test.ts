@@ -37,7 +37,7 @@ describe('Groups Service', () => {
       .post(`/${profileId}/groups`)
       .reply(200, groupData);
 
-    const group = await sdk.profiles.groups.addToProfile(profileId, groupInput);
+    const group = await sdk.profiles.groups.create(profileId, groupInput);
 
     expect(group.patientId).toBe(groupData.patientId);
   });
@@ -53,7 +53,7 @@ describe('Groups Service', () => {
       .put(`/${profileId}/groups/${groupId}`)
       .reply(200, { ...newGroupData, groupId });
 
-    const group = await sdk.profiles.groups.updateGroupOnProfile(
+    const group = await sdk.profiles.groups.update(
       profileId,
       groupId,
       newGroupData
@@ -67,10 +67,7 @@ describe('Groups Service', () => {
       .delete(`/${profileId}/groups/${groupId}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.profiles.groups.removeGroupFromProfile(
-      profileId,
-      groupId
-    );
+    const res = await sdk.profiles.groups.remove(profileId, groupId);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -80,13 +77,9 @@ describe('Groups Service', () => {
       .post(`/${profileId}/groups/${groupId}/remove_fields`)
       .reply(200, groupData);
 
-    const group = await sdk.profiles.groups.removeFieldsFromGroupsProfile(
-      profileId,
-      groupId,
-      {
-        fields: ['string'],
-      }
-    );
+    const group = await sdk.profiles.groups.removeFields(profileId, groupId, {
+      fields: ['string'],
+    });
 
     expect(group.groupId).toBe(groupId);
   });
