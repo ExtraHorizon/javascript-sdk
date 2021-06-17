@@ -80,7 +80,7 @@ export interface RQLBuilder {
   or: (field: string, list: string[]) => RQLBuilder;
 
   /**
-   * Filters for objects where the specified property's value is an array and the array contains 
+   * Filters for objects where the specified property's value is an array and the array contains
    * any value that equals the provided value or satisfies the provided expression.
    */
   contains: (field: string, value: string) => RQLBuilder;
