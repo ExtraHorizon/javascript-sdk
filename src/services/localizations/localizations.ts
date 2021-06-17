@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords, PagedResult } from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
+import { RQLString } from '../../rql';
 import type {
   Localization,
   BulkLocalizationBean,
