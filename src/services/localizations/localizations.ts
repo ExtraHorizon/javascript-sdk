@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords, PagedResult } from '../types';
-import { RQLString } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
 import type {
   Localization,
   BulkLocalizationBean,
@@ -8,6 +8,7 @@ import type {
   BulkUpdateResponseBean,
   LocalizationRequestBean,
   MappedText,
+  Key,
 } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -25,6 +26,31 @@ export default (client, httpAuth: HttpInstance) => ({
     rql?: RQLString;
   }): Promise<PagedResult<Localization>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Key
+   * @param key the key to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findByKey(
+    key: Key,
+    options?: { rql?: RQLString }
+  ): Promise<Localization> {
+    const rqlWithKey = rqlBuilder(options?.rql).eq('key', key).build();
+    const res = await this.find({ rql: rqlWithKey });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(options?: { rql?: RQLString }): Promise<Localization> {
+    const res = await this.find(options);
+    return res.data[0];
   },
 
   /**
