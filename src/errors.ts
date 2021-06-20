@@ -146,6 +146,7 @@ export class InvalidReceiptDataError extends BadRequestError {}
 export class UnknownReceiptTransactionError extends BadRequestError {}
 export class AppStoreTransactionAlreadyLinked extends BadRequestError {}
 export class StripePaymentMethodError extends BadRequestError {}
+export class DefaultLocalizationMissingError extends BadRequestError {}
 
 export class IDFormatError extends BadRequestError {}
 

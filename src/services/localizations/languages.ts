@@ -9,8 +9,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none | | Everyone can use this endpoint
    *
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<SupportedLanguageCodes>
    */
   async getLanguages(): Promise<PagedResult<SupportedLanguageCodes>> {
     return (await client.get(httpAuth, '/languages')).data;

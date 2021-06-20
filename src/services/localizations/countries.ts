@@ -8,8 +8,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none | | Everyone can use this endpoint
    *
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<string>
    */
   async getCountries(): Promise<PagedResult<string>> {
     return (await client.get(httpAuth, '/countries')).data;
@@ -22,8 +21,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param country The country code (as defined in ISO 3166-1)
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<string>
+   * @throws {ResourceUnknownError}
    */
   async getRegions(country: string): Promise<PagedResult<string>> {
     return (await client.get(httpAuth, `/countries/${country}/regions`)).data;

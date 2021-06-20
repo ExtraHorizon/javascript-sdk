@@ -19,8 +19,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<Localization>
    */
   async find(options?: {
     rql?: RQLString;
@@ -59,9 +58,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `CREATE_LOCALIZATIONS` | global | **Required** for this endpoint
    *
-   * @param requestBody
-   * @returns BulkCreationResponseBean Success
-   * @throws ApiError
+   * @param requestBody BulkLocalizationBean
+   * @returns BulkCreationResponseBean
+   * @throws {DefaultLocalizationMissingError}
    */
   async create(
     requestBody: BulkLocalizationBean
@@ -75,9 +74,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `UPDATE_LOCALIZATIONS` | global | **Required** for this endpoint
    *
-   * @param requestBody
-   * @returns BulkUpdateResponseBean Success
-   * @throws ApiError
+   * @param requestBody BulkLocalizationBean
+   * @returns BulkUpdateResponseBean
    */
   async update(
     requestBody: BulkLocalizationBean
@@ -92,8 +90,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DELETE_LOCALIZATIONS` | global | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list, **required**.
-   * @returns any Operation successful
-   * @throws ApiError
+   * @returns AffectedRecords
    */
   async remove(rql: RQLString): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${rql || ''}`)).data;
@@ -107,9 +104,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none | | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns MappedText Success
-   * @throws ApiError
+   * @param requestBody LocalizationRequestBean
+   * @returns Record<string, MappedText>
    */
   async getByKeys(
     requestBody: LocalizationRequestBean

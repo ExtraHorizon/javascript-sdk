@@ -58,6 +58,7 @@ import {
   StripePaymentMethodError,
   StripeRequestError,
   IDFormatError,
+  DefaultLocalizationMissingError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -101,6 +102,7 @@ export const ErrorClassDefinitionsMap = {
   213: TooManyFailedAttemptsError,
   414: StatusInUseError,
   415: LockedDocumentError,
+  801: DefaultLocalizationMissingError,
   1002: LocalizationKeyMissingError,
   1003: TemplateFillingError,
   2605: InvalidTokenError,
