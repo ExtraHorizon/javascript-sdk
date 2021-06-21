@@ -70,6 +70,7 @@ const transitionId = schema.findTransitionIdByName('lambda_to_review');
 
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
 - Payments Service
+- Added `or`, `and` and `contains` operators to the RQL builder.
 
 ## [3.0.2]
 
