@@ -42,3 +42,13 @@ export enum Results {
  * Supported timezones from [Java.time.zoneId](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneId.html#of-java.lang.String-)
  */
 export type TimeZone = string;
+
+export type MailAddress = string;
+
+export type MailAddressList = MailAddress[];
+
+export interface MailRecipients {
+  to: MailAddressList;
+  cc?: MailAddressList;
+  bcc?: MailAddressList;
+}
