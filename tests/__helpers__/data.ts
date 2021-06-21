@@ -400,6 +400,21 @@ export const documentData = {
     additionalProp2: {},
     additionalProp3: {},
   },
+  commentCount: 5,
+  updateTimestamp: '2021-04-29T21:07:45.551Z',
+  creationTimestamp: '2021-04-29T21:07:45.551Z',
+};
+
+export const lockedDocumentData = {
+  id: '5e9fff9d90135a2a9a718e2f',
+  userId: '5e9fff9d90135a2a9a718e2f',
+  groupIds: ['5e9fff9d90135a2a9a718e2f'],
+  status: 'start',
+  data: {
+    additionalProp1: {},
+    additionalProp2: {},
+    additionalProp3: {},
+  },
   transitionLock: {
     timestamp: '2021-04-29T21:07:45.551Z',
   },
@@ -415,6 +430,15 @@ export const documentsListResponse = {
     limit: 20,
   },
   data: [documentData],
+};
+
+export const lockedDocumentsListResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [lockedDocumentData],
 };
 
 const inputCondition: Condition = {
