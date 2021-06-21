@@ -1,11 +1,11 @@
-import { ObjectId, LanguageCode, TimeZone } from '../types';
-import { TypeConfiguration } from '../data/types';
+import { ObjectId, LanguageCode, TimeZone } from "../types";
+import { TypeConfiguration } from "../data/types";
 
 export interface TemplateOut {
   id?: ObjectId;
   name?: string;
   description?: string;
-  schema?: ObjectConfiguration;
+  schema?: TemplateObjectConfiguration;
   fields?: Record<string, string>;
   creationTimestamp?: Date;
   updateTimestamp?: Date;
@@ -14,18 +14,18 @@ export interface TemplateOut {
 export interface TemplateIn {
   name: string;
   description: string;
-  schema: ObjectConfiguration;
+  schema: TemplateObjectConfiguration;
   fields: Record<string, string>;
 }
 
-export interface ObjectConfiguration {
+export interface TemplateObjectConfiguration {
   type?: ObjectConfigurationType;
   options?: Array<ObjectOption>;
   fields?: Record<string, TypeConfiguration>;
 }
 
 export enum ObjectConfigurationType {
-  OBJECT = 'object',
+  OBJECT = "object",
 }
 
 export type ObjectOption = ObjectMinBytesOption | ObjectMaxBytesOption;
@@ -36,7 +36,7 @@ export interface ObjectMinBytesOption {
 }
 
 export enum ObjectMinBytesOptionType {
-  MIN_BYTES = 'min_bytes',
+  MIN_BYTES = "min_bytes",
 }
 
 export interface ObjectMaxBytesOption {
@@ -45,7 +45,7 @@ export interface ObjectMaxBytesOption {
 }
 
 export enum ObjectMaxBytesOptionType {
-  MAX_BYTES = 'max_bytes',
+  MAX_BYTES = "max_bytes",
 }
 
 export interface CreateFile {
