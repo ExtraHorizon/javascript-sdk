@@ -86,10 +86,16 @@ export interface RQLBuilder {
   contains: (field: string, value: string) => RQLBuilder;
 
   /**
-   * Returns a valid rqlString you can pass in to function
+   * Returns a valid rqlString
    * @returns valid rqlString
    */
   build: () => RQLString;
+
+  /**
+   * Returns an intermediate rqlString you can combine in or/and statements
+   * @returns valid rqlString
+   */
+  intermediate: () => RQLString;
 }
 
 /**
@@ -153,6 +159,9 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
       return processQuery('contains', `${field},${value}`);
     },
     build(): RQLString {
+      return `?${returnString}` as RQLString;
+    },
+    intermediate(): RQLString {
       return returnString as RQLString;
     },
   };
@@ -164,7 +173,7 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
       );
     }
     returnString = returnString
-      .concat(returnString.startsWith('?') ? '&' : '?')
+      .concat(returnString.length > 0 ? '&' : '')
       .concat(`${operation}(${value})`);
     return builder;
   }
