@@ -276,17 +276,20 @@ await sdk.users.health();
 
 ```
 
-## Typescript for your Schemas
+## Typescript for your Schemas and Documents
 
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
 
 As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
 
 ```ts
-import type { DataServicesTypes: { Schema,
+import {
+  createOAuth2Client,
+  Schema,
   JSONSchemaObject,
   JSONSchemaArray,
-  JSONSchemaNumber } }  from "@extrahorizon/javascript-sdk";
+  JSONSchemaNumber,
+} from '@extrahorizon/javascript-sdk';
 
 interface MySchema extends Schema {
   statuses?: Record<'start', never>;
@@ -306,10 +309,11 @@ interface MySchema extends Schema {
 
 const sdk = createOAuth2Client({
   host: 'dev.fibricheck.com',
+  clientId: '',
 });
 
-const { data: schemas } = await sdk.data.find();
-const mySchema: CustomSchema = schemas[0];
+const { data: schemas } = await sdk.data.schemas.find();
+const mySchema: MySchema = schemas[0];
 
 interface MyData {
   data: {
