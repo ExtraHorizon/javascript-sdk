@@ -3,10 +3,10 @@ import { AffectedRecords, PagedResult } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import type {
   Localization,
-  BulkLocalizationBean,
-  BulkCreationResponseBean,
-  BulkUpdateResponseBean,
-  LocalizationRequestBean,
+  BulkLocalization,
+  BulkCreationResponse,
+  BulkUpdateResponse,
+  LocalizationRequest,
   MappedText,
   Key,
 } from './types';
@@ -58,13 +58,11 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `CREATE_LOCALIZATIONS` | global | **Required** for this endpoint
    *
-   * @param requestBody BulkLocalizationBean
-   * @returns BulkCreationResponseBean
+   * @param requestBody BulkLocalization
+   * @returns BulkCreationResponse
    * @throws {DefaultLocalizationMissingError}
    */
-  async create(
-    requestBody: BulkLocalizationBean
-  ): Promise<BulkCreationResponseBean> {
+  async create(requestBody: BulkLocalization): Promise<BulkCreationResponse> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
@@ -74,12 +72,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * `UPDATE_LOCALIZATIONS` | global | **Required** for this endpoint
    *
-   * @param requestBody BulkLocalizationBean
-   * @returns BulkUpdateResponseBean
+   * @param requestBody BulkLocalization
+   * @returns BulkUpdateResponse
    */
-  async update(
-    requestBody: BulkLocalizationBean
-  ): Promise<BulkUpdateResponseBean> {
+  async update(requestBody: BulkLocalization): Promise<BulkUpdateResponse> {
     return (await client.put(httpAuth, '/', requestBody)).data;
   },
 
@@ -104,11 +100,11 @@ export default (client, httpAuth: HttpInstance) => ({
    * - | - | -
    * none | | Everyone can use this endpoint
    *
-   * @param requestBody LocalizationRequestBean
+   * @param requestBody LocalizationRequest
    * @returns Record<string, MappedText>
    */
   async getByKeys(
-    requestBody: LocalizationRequestBean
+    requestBody: LocalizationRequest
   ): Promise<Record<string, MappedText>> {
     return (await client.post(httpAuth, '/request', requestBody)).data;
   },
