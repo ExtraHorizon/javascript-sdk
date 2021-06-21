@@ -72,12 +72,12 @@ export interface RQLBuilder {
   /**
    * Allows combining results of 2 or more queries with the logical AND operator.
    */
-  and: (field: string, list: string[]) => RQLBuilder;
+  and: (...list: RQLString[]) => RQLBuilder;
 
   /**
    * Allows combining results of 2 or more queries with the logical OR operator.
    */
-  or: (field: string, list: string[]) => RQLBuilder;
+  or: (...list: RQLString[]) => RQLBuilder;
 
   /**
    * Filters for objects where the specified property's value is an array and the array contains
@@ -128,11 +128,11 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     in(field, list) {
       return processQuery('in', `${field},${list.join(',')}`);
     },
-    or(field, list) {
-      return processQuery('or', `${field},${list.join(',')}`);
+    or(...list) {
+      return processQuery('or', `${list.join(',')}`);
     },
-    and(field, list) {
-      return processQuery('and', `${field},${list.join(',')}`);
+    and(...list) {
+      return processQuery('and', `${list.join(',')}`);
     },
     ge(field, value) {
       return processQuery('ge', `${field},${value}`);
@@ -159,7 +159,9 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
       return processQuery('contains', `${field},${value}`);
     },
     build(): RQLString {
-      return `?${returnString}` as RQLString;
+      return `${
+        returnString.length > 0 ? '?' : ''
+      }${returnString}` as RQLString;
     },
     intermediate(): RQLString {
       return returnString as RQLString;
