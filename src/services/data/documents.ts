@@ -62,7 +62,7 @@ export default (client, httpAuth: HttpInstance) => ({
   /**
    * Shortcut method to find a document by id
    * Same Permissions as the find() method
-   * 
+   *
    * @param schemaId the schema Id
    * @param documentId the Id to search for
    * @param rql an optional rql string
@@ -82,7 +82,7 @@ export default (client, httpAuth: HttpInstance) => ({
   /**
    * Returns the first document that is found with the applied filter
    * Same Permissions as the find() method
-   * 
+   *
    * @param schemaId the schema Id
    * @param rql an optional rql string
    * @returns {Document} document
@@ -95,16 +95,15 @@ export default (client, httpAuth: HttpInstance) => ({
     return res.data[0];
   },
 
-
   /**
    * Check if the document is not in a locked state
    * Actions cannot be performed if the document has a transitionLock
-   * 
+   *
    * @param schemaId the schema Id
    * @param documentId the document Id
    * @returns boolean success
    */
-   async assertNonLockedState(
+  async assertNonLockedState(
     schemaId: ObjectId,
     documentId: ObjectId,
     tries = 5,
@@ -113,15 +112,20 @@ export default (client, httpAuth: HttpInstance) => ({
     if (tries < 1) {
       throw new Error('Document is in a locked state');
     }
-    
+
     const res = await this.findById(schemaId, documentId);
     if (!res.transitionLock) {
       return true;
     }
 
     await delay(retryTimeInMs);
-    
-    return this.assertNonLockedState(schemaId, documentId, (tries - 1), retryTimeInMs)
+
+    return this.assertNonLockedState(
+      schemaId,
+      documentId,
+      tries - 1,
+      retryTimeInMs
+    );
   },
 
   /**
