@@ -4,7 +4,7 @@ import {
   MailAddress,
   MailAddressList,
   MailRecipients,
-} from "../types";
+} from '../types';
 
 export interface Mail {
   id?: ObjectId;
@@ -86,7 +86,7 @@ export interface QueuedMailAttachment {
 }
 
 export enum QueuedMailStatus {
-  QUEUED = "queued",
-  SENDING = "sending",
-  FAILED = "failed",
+  QUEUED = 'queued',
+  SENDING = 'sending',
+  FAILED = 'failed',
 }
