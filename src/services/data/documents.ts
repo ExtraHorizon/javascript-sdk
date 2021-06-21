@@ -48,7 +48,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns {Document} document
    */
-  async find<CustomData>(
+  async find<CustomData = null>(
     schemaId: ObjectId,
     options?: {
       rql?: RQLString;
@@ -68,7 +68,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns {Document} document
    */
-  async findById<CustomData>(
+  async findById<CustomData = null>(
     schemaId: ObjectId,
     documentId: ObjectId,
     options?: { rql?: RQLString }
@@ -87,7 +87,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param rql an optional rql string
    * @returns {Document} document
    */
-  async findFirst<CustomData>(
+  async findFirst<CustomData = null>(
     schemaId: ObjectId,
     options?: { rql?: RQLString }
   ): Promise<Document<CustomData>> {
