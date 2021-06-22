@@ -202,31 +202,105 @@ export enum CreationTransitionType {
   AUTOMATIC = 'automatic',
 }
 
-export enum CreationTransitionAction {
-  ALGORITHM = 'algorithm',
-  DELAY = 'delay',
-  TASK = 'task',
-  LINK_CREATOR = 'linkCreator',
-  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
-  LINK_USER_FROM_DATA = 'linkUserFromData',
-  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
-  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
+export enum TransitionActionTypeEnum {
   SET = 'set',
   UNSET = 'unset',
   ADD_ITEMS = 'addItems',
   REMOVE_ITEMS = 'removeItems',
+  TASK = 'task',
+  LINK_CREATOR = 'linkCreator',
+  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
+  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
+  LINK_USER_FROM_DATA = 'linkUserFromData',
+  DELAY = 'delay',
+  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
 }
 
-export enum CreationTransitionAfterAction {
+export interface TransitionActionSet {
+  type: TransitionActionTypeEnum.SET;
+  field: string;
+  value: unknown;
+}
+
+export interface TransitionActionUnset {
+  type: TransitionActionTypeEnum.UNSET;
+  field: string[];
+}
+
+export interface TransitionActionAddItems {
+  type: TransitionActionTypeEnum.ADD_ITEMS;
+  field: string;
+  values: string[];
+}
+
+export interface TransitionActionRemoveItems {
+  type: TransitionActionTypeEnum.REMOVE_ITEMS;
+  field: string;
+  values: string[];
+}
+
+export interface TransitionActionTask {
+  type: TransitionActionTypeEnum.TASK;
+  functioName: string;
+  data: Record<string, unknown>;
+}
+
+export interface TransitionActionLinkCreator {
+  type: TransitionActionTypeEnum.LINK_CREATOR;
+}
+
+export interface TransitionActionLinkEnlistedGroups {
+  type: TransitionActionTypeEnum.LINK_ENLISTED_GROUPS;
+  onlyActive: boolean;
+}
+
+export interface TransitionActionLinkUserFromData {
+  type: TransitionActionTypeEnum.LINK_USER_FROM_DATA;
+  userIdField: string;
+}
+export interface TransitionActionLinkGroupFromData {
+  type: TransitionActionTypeEnum.LINK_USER_FROM_DATA;
+  groupIdField: string;
+}
+
+export interface TransitionActionDelay {
+  type: TransitionActionTypeEnum.DELAY;
+  time: number;
+}
+
+export interface TransitionActionMeasurementReviewedNotification {
+  type: TransitionActionTypeEnum.MEASUREMENT_REVIEWED_NOTIFICATION;
+}
+
+export type TransitionAction =
+  | TransitionActionSet
+  | TransitionActionUnset
+  | TransitionActionAddItems
+  | TransitionActionRemoveItems
+  | TransitionActionTask
+  | TransitionActionLinkCreator
+  | TransitionActionLinkEnlistedGroups
+  | TransitionActionLinkUserFromData
+  | TransitionActionLinkGroupFromData
+  | TransitionActionDelay
+  | TransitionActionMeasurementReviewedNotification;
+
+export enum TransitionAfterActionTypeEnum {
   NOTIFY_ALGO_QUEUE_MANAGER = 'notifyAlgoQueueManager',
+}
+
+export interface TransitionAfterAction {
+  type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER;
+  id: string;
+  version: string;
 }
 
 export interface CreationTransition {
   toStatus: string;
   type?: CreationTransitionType;
   conditions?: Condition[];
-  actions?: { type: CreationTransitionAction }[];
-  afterActions?: { type: CreationTransitionAfterAction }[];
+  actions?: TransitionAction[];
+  afterActions?: TransitionAfterAction[];
 }
 
 export type StatusData = Record<string, string>;
@@ -259,8 +333,8 @@ export interface Schema {
   maximumLimit?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
-  findTransitionIdByName: (name: string) => ObjectId;
-  transitionsByName: Record<string, Transition>;
+  findTransitionIdByName?: (name: string) => ObjectId;
+  transitionsByName?: Record<string, Transition>;
 }
 
 export interface SchemaInput {

@@ -9,8 +9,8 @@ import {
   ConfigurationType,
   Condition,
   Transition,
-  CreationTransitionAction,
-  CreationTransitionAfterAction,
+  TransitionActionTypeEnum,
+  TransitionAfterActionTypeEnum,
   CreationTransition,
   Schema,
   InitiatorHasRelationToUserInDataConditionType,
@@ -100,12 +100,16 @@ export const newSchemaCreated: Partial<Schema> = {
     ],
     actions: [
       {
-        type: CreationTransitionAction.ALGORITHM,
+        type: TransitionActionTypeEnum.TASK,
+        functioName: 'test',
+        data: {},
       },
     ],
     afterActions: [
       {
-        type: CreationTransitionAfterAction.NOTIFY_ALGO_QUEUE_MANAGER,
+        type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER,
+        id: 'id',
+        version: 'version',
       },
     ],
   },
@@ -147,12 +151,14 @@ export const newSchemaCreated: Partial<Schema> = {
       ],
       actions: [
         {
-          type: CreationTransitionAction.ALGORITHM,
+          type: TransitionActionTypeEnum.LINK_CREATOR,
         },
       ],
       afterActions: [
         {
-          type: CreationTransitionAfterAction.NOTIFY_ALGO_QUEUE_MANAGER,
+          type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER,
+          id: 'id',
+          version: 'string',
         },
       ],
       name: 'move',
@@ -471,12 +477,14 @@ export const newTransition: Transition = {
   conditions: [inputCondition, documentCondition],
   actions: [
     {
-      type: CreationTransitionAction.ALGORITHM,
+      type: TransitionActionTypeEnum.LINK_CREATOR,
     },
   ],
   afterActions: [
     {
-      type: CreationTransitionAfterAction.NOTIFY_ALGO_QUEUE_MANAGER,
+      type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER,
+      id: 'id',
+      version: 'version',
     },
   ],
   name: 'move',
