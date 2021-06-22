@@ -64,3 +64,12 @@ export const regionsResponse = {
   },
   data: ['BE-VLI'],
 };
+
+export const languagesResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: ['NL'],
+};
