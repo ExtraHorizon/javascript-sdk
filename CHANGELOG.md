@@ -70,6 +70,19 @@ const transitionId = schema.findTransitionIdByName('lambda_to_review');
 
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
 - Payments Service
+- Gzip option on POST calls
+
+```ts
+await client.post(
+  httpAuth,
+  `/${schemaId}/documents`,
+  requestBody,
+  {},
+  {
+    gzip: true,
+  }
+);
+```
 
 ## [3.0.2]
 
