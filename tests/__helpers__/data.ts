@@ -1,6 +1,7 @@
 import {
   Condition,
   CreationTransition,
+  Index,
   Schema,
   SchemaInput,
   TransitionInput,
@@ -312,7 +313,7 @@ export const newIndexCreated = {
   system: true,
 };
 
-export const newIndexInput = {
+export const newIndexInput: Index = {
   fields: [
     {
       name: 'PropertyNameToIndex',
