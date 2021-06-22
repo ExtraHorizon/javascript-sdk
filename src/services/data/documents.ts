@@ -1,5 +1,6 @@
-import { RQLString } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
+import { delay } from '../../utils';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import { Document } from './types';
 
@@ -12,7 +13,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `CREATE_DOCUMENTS` | `global` | When the schema.createMode is set to permissionRequired then this permission is required to make a group
    * @param schemaId The id of the targeted schema.
    * @param requestBody
-   * @returns {Promise<Document>}
+   * @returns {Document} document
    * @throws {IllegalArgumentError}
    */
   async create(
@@ -45,19 +46,86 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_DOCUMENTS` | `global` | See any document
    * @param schemaId The id of the targeted schema.
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns {Document} document
    */
-  async find<CustomDocument = null>(
+  async find<CustomData = null>(
     schemaId: ObjectId,
     options?: {
       rql?: RQLString;
     }
-  ): Promise<
-    PagedResult<CustomDocument extends null ? Document : CustomDocument>
-  > {
+  ): Promise<PagedResult<Document<CustomData>>> {
     return (
       await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
     ).data;
+  },
+
+  /**
+   * Shortcut method to find a document by id
+   * Same Permissions as the find() method
+   *
+   * @param schemaId the schema Id
+   * @param documentId the Id to search for
+   * @param rql an optional rql string
+   * @returns {Document} document
+   */
+  async findById<CustomData = null>(
+    schemaId: ObjectId,
+    documentId: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Document<CustomData>> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
+    const res = await this.find(schemaId, { rql: rqlWithId });
+
+    return res.data[0];
+  },
+
+  /**
+   * Returns the first document that is found with the applied filter
+   * Same Permissions as the find() method
+   *
+   * @param schemaId the schema Id
+   * @param rql an optional rql string
+   * @returns {Document} document
+   */
+  async findFirst<CustomData = null>(
+    schemaId: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Document<CustomData>> {
+    const res = await this.find(schemaId, options);
+    return res.data[0];
+  },
+
+  /**
+   * Check if the document is not in a locked state
+   * Actions cannot be performed if the document has a transitionLock
+   *
+   * @param schemaId the schema Id
+   * @param documentId the document Id
+   * @returns boolean success
+   */
+  async assertNonLockedState(
+    schemaId: ObjectId,
+    documentId: ObjectId,
+    tries = 5,
+    retryTimeInMs = 300
+  ): Promise<boolean> {
+    if (tries < 1) {
+      throw new Error('Document is in a locked state');
+    }
+
+    const res = await this.findById(schemaId, documentId);
+    if (!res.transitionLock) {
+      return true;
+    }
+
+    await delay(retryTimeInMs);
+
+    return this.assertNonLockedState(
+      schemaId,
+      documentId,
+      tries - 1,
+      retryTimeInMs
+    );
   },
 
   /**

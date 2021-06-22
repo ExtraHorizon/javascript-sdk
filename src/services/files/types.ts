@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs';
 import type { ObjectId } from '../types';
 
 /**
@@ -29,11 +28,4 @@ export interface FileDetails {
 
 export interface CreateTokenRequest {
   accessLevel?: TokenPermission;
-}
-
-export interface CreateFile {
-  name: string;
-  extension?: string;
-  file: Buffer | ReadStream;
-  tags?: string[];
 }

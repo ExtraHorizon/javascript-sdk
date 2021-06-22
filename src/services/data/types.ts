@@ -57,61 +57,41 @@ export type JSONSchemaBoolean = {
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema
  */
-export enum CreateMode {
-  DEFAULT = 'default',
-  PERMISSION_REQUIRED = 'permissionRequired',
-}
+
+export type CreateMode = 'default' | 'permissionRequired';
 
 /**
  * Specifies the conditions to be met in order to be able to view a document for a schema
  */
-export enum ReadMode {
-  ALL_USERS = 'allUsers',
-  DEFAULT = 'default',
-  ENLISTED_IN_LINKED_GROUPS = 'enlistedInLinkedGroups',
-}
+export type ReadMode = 'allUsers' | 'default' | 'enlistedInLinkedGroups';
 
 /**
  * Specifies the conditions to be met in order to be able to update a document for a schema
  */
-export enum UpdateMode {
-  DEFAULT = 'default',
-  CREATOR_ONLY = 'creatorOnly',
-  DISABLED = 'disabled',
-  LINKED_GROUPS_STAFF_ONLY = 'linkedGroupsStaffOnly',
-}
+
+export type UpdateMode =
+  | 'default'
+  | 'creatorOnly'
+  | 'disabled'
+  | 'linkedGroupsStaffOnly';
 
 /**
  * Specifies the conditions to be met in order to be able to delete a document for a schema
  */
-export enum DeleteMode {
-  PERMISSION_REQUIRED = 'permissionRequired',
-  LINKED_USERS_ONLY = 'linkedUsersOnly',
-}
 
-export enum GroupSyncMode {
-  DISABLED = 'disabled',
-  CREATOR_PATIENT_ENLISTMENTS = 'creatorPatientEnlistments',
-  LINKED_USERS_PATIENT_ENLISTMENTS = 'linkedUsersPatientEnlistments',
-}
+export type DeleteMode = 'permissionRequired' | 'linkedUsersOnly';
 
-export enum ConfigurationType {
-  STRING = 'string',
-  NUMBER = 'number',
-  BOOLEAN = 'boolean',
-  OBJECT = 'object',
-  ARRAY = 'array',
-  DATE_TIME = 'date-time',
-  DOCUMENT = 'document',
-  INPUT = 'input',
-}
+export type GroupSyncMode =
+  | 'disabled'
+  | 'creatorPatientEnlistments'
+  | 'linkedUsersPatientEnlistments';
 
 interface BaseConfiguration {
   queryable?: boolean;
 }
 
 export interface ArrayConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.ARRAY;
+  type?: 'array';
   items?: TypeConfiguration;
   minItems?: number;
   maxItems?: number;
@@ -119,29 +99,29 @@ export interface ArrayConfiguration extends BaseConfiguration {
 }
 
 export interface ObjectConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.OBJECT;
+  type?: 'object';
   properties?: Record<string, TypeConfiguration>;
   required?: string[];
 }
 
 export interface StringConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.STRING;
+  type?: 'string';
   minLength?: number;
   maxLength?: number;
   enum?: string[];
   pattern?: string;
-  format?: ConfigurationType.DATE_TIME;
+  format?: 'date-time';
 }
 
 export interface NumberConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.NUMBER;
+  type?: 'number';
   minimum?: number;
   maximum?: number;
   enum?: number[];
 }
 
 export interface BooleanConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.BOOLEAN;
+  type?: 'boolean';
 }
 
 export type TypeConfiguration =
@@ -152,40 +132,27 @@ export type TypeConfiguration =
   | BooleanConfiguration;
 
 export interface DocumentCondition {
-  type?: ConfigurationType.DOCUMENT;
+  type?: 'document';
   configuration?: TypeConfiguration;
 }
 
 export interface InputCondition {
-  type?: ConfigurationType.INPUT;
+  type?: 'input';
   configuration?: TypeConfiguration;
 }
 
-export enum InitiatorHasRelationToUserInDataConditionType {
-  INITIATOR_HAS_RELATION_TO_USER_IN_DATA = 'initiatorHasRelationToUserInData',
-}
-
-export enum InitiatorHasRelationToUserInDataConditionRelation {
-  IS_STAFF_OF_TARGET_PATIENT = 'isStaffOfTargetPatient',
-}
-
 export interface InitiatorHasRelationToUserInDataCondition {
-  type?: InitiatorHasRelationToUserInDataConditionType;
+  type?: 'initiatorHasRelationToUserInData';
   userIdField?: ObjectId;
-  relation?: InitiatorHasRelationToUserInDataConditionRelation;
+  relation?: 'isStaffOfTargetPatient';
 }
 
-export enum InitiatorHasRelationToGroupInDataConditionType {
-  INITIATOR_HAS_RELATION_TO_GROUP_IN_DATA = 'initiatorHasRelationToGroupInData',
-}
-
-export enum InitiatorHasRelationToGroupInDataConditionRelation {
-  STAFF = 'staff',
-  PATIENT = 'patient',
-}
+export type InitiatorHasRelationToGroupInDataConditionRelation =
+  | 'staff'
+  | 'patient';
 
 export interface InitiatorHasRelationToGroupInDataCondition {
-  type?: InitiatorHasRelationToGroupInDataConditionType;
+  type?: 'initiatorHasRelationToGroupInData';
   groupIdField?: ObjectId;
   relation?: InitiatorHasRelationToGroupInDataConditionRelation;
   requiredPermission?: string;
@@ -197,50 +164,101 @@ export type Condition =
   | InitiatorHasRelationToUserInDataCondition
   | InitiatorHasRelationToGroupInDataCondition;
 
-export enum CreationTransitionType {
-  MANUAL = 'manual',
-  AUTOMATIC = 'automatic',
+export type CreationTransitionType = 'manual' | 'automatic';
+
+export interface TransitionActionSet {
+  type: 'set';
+  field: string;
+  value: unknown;
 }
 
-export enum CreationTransitionAction {
-  ALGORITHM = 'algorithm',
-  DELAY = 'delay',
-  TASK = 'task',
-  LINK_CREATOR = 'linkCreator',
-  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
-  LINK_USER_FROM_DATA = 'linkUserFromData',
-  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
-  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
-  SET = 'set',
-  UNSET = 'unset',
-  ADD_ITEMS = 'addItems',
-  REMOVE_ITEMS = 'removeItems',
+export interface TransitionActionUnset {
+  type: 'unset';
+  field: string[];
 }
 
-export enum CreationTransitionAfterAction {
-  NOTIFY_ALGO_QUEUE_MANAGER = 'notifyAlgoQueueManager',
+export interface TransitionActionAddItems {
+  type: 'addItems';
+  field: string;
+  values: string[];
+}
+
+export interface TransitionActionRemoveItems {
+  type: 'removeItems';
+  field: string;
+  values: string[];
+}
+
+export interface TransitionActionTask {
+  type: 'task';
+  functioName: string;
+  data: Record<string, unknown>;
+}
+
+export interface TransitionActionLinkCreator {
+  type: 'linkCreator';
+}
+
+export interface TransitionActionLinkEnlistedGroups {
+  type: 'linkEnlistedGroups';
+  onlyActive: boolean;
+}
+
+export interface TransitionActionLinkUserFromData {
+  type: 'linkGroupFromData';
+  userIdField: string;
+}
+export interface TransitionActionLinkGroupFromData {
+  type: 'linkUserFromData';
+  groupIdField: string;
+}
+
+export interface TransitionActionDelay {
+  type: 'delay';
+  time: number;
+}
+
+export interface TransitionActionMeasurementReviewedNotification {
+  type: 'measurementReviewedNotification';
+}
+
+export type TransitionAction =
+  | TransitionActionSet
+  | TransitionActionUnset
+  | TransitionActionAddItems
+  | TransitionActionRemoveItems
+  | TransitionActionTask
+  | TransitionActionLinkCreator
+  | TransitionActionLinkEnlistedGroups
+  | TransitionActionLinkUserFromData
+  | TransitionActionLinkGroupFromData
+  | TransitionActionDelay
+  | TransitionActionMeasurementReviewedNotification;
+
+export interface TransitionAfterAction {
+  type: 'notifyAlgoQueueManager';
+  id: string;
+  version: string;
 }
 
 export interface CreationTransition {
   toStatus: string;
-  type?: CreationTransitionType;
+  type: CreationTransitionType;
   conditions?: Condition[];
-  actions?: { type: CreationTransitionAction }[];
-  afterActions?: { type: CreationTransitionAfterAction }[];
+  actions?: TransitionAction[];
+  afterActions?: TransitionAfterAction[];
 }
 
 export type StatusData = Record<string, string>;
 
-export interface BaseTransition {
+export type TransitionInput = CreationTransition & {
   id?: ObjectId;
-  name?: string;
-  fromStatuses?: string[];
-}
+  name: string;
+  fromStatuses: string[];
+};
 
-export type Transition = CreationTransition & BaseTransition;
-
-export type TransitionInput = Transition &
-  Required<Pick<BaseTransition, 'name' | 'fromStatuses'>>;
+export type Transition = TransitionInput &
+  Required<Pick<TransitionInput, 'id'>>;
 
 export interface Schema {
   id?: ObjectId;
@@ -259,6 +277,8 @@ export interface Schema {
   maximumLimit?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
+  findTransitionIdByName?: (name: string) => ObjectId;
+  transitionsByName?: Record<string, Transition>;
 }
 
 export interface SchemaInput {
@@ -280,11 +300,7 @@ export type UpdateSchemaInput = Pick<
 
 export type IndexFieldsName = string;
 
-export enum IndexFieldsType {
-  ASC = 'asc',
-  DESC = 'desc',
-  TEXT = 'text',
-}
+export type IndexFieldsType = 'asc' | 'desc' | 'text';
 
 export interface IndexOptions {
   background?: boolean;
@@ -305,12 +321,12 @@ export interface Index {
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
 
-export interface DocumentBase {
+export interface Document<CustomData = null> {
   id?: ObjectId;
   userIds?: ObjectId[];
   groupIds?: ObjectId[];
   status?: string;
-  data?: any;
+  data?: CustomData extends null ? Record<string, unknown> : CustomData;
   transitionLock?: {
     timestamp?: Date;
   };
@@ -319,10 +335,6 @@ export interface DocumentBase {
   creationTimestamp?: Date;
   statusChangedTimestamp?: Date;
   creatorId?: ObjectId;
-}
-
-export interface Document extends DocumentBase {
-  data?: Record<string, any>;
 }
 
 export type CommentText = string;

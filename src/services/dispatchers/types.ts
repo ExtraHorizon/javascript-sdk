@@ -1,4 +1,4 @@
-import type { ObjectId } from '../types';
+import type { MailRecipients, ObjectId } from '../types';
 
 export interface Dispatcher {
   id?: ObjectId;
@@ -33,16 +33,6 @@ export interface TaskAction extends ActionBase {
 }
 
 export type Action = MailAction | TaskAction;
-
-export type MailRecipients = {
-  to?: MailList;
-  cc?: MailList;
-  bcc?: MailList;
-};
-
-export type MailList = Array<MailAddress>;
-
-export type MailAddress = string;
 
 export type ActionCreation = MailActionCreation | TaskActionCreation;
 

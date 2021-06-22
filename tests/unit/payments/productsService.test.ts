@@ -1,0 +1,109 @@
+import nock from 'nock';
+import { AUTH_BASE, PAYMENTS_BASE } from '../../../src/constants';
+import {
+  Client,
+  createClient,
+  ParamsOauth2,
+  rqlBuilder,
+} from '../../../src/index';
+import {
+  newProductData,
+  productData,
+  productResponse,
+} from '../../__helpers__/payment';
+
+describe('Products Service', () => {
+  const host = 'https://api.xxx.fibricheck.com';
+  const productId = productData.id;
+
+  let sdk: Client<ParamsOauth2>;
+
+  beforeAll(async () => {
+    sdk = createClient({
+      host,
+      clientId: '',
+    });
+
+    const mockToken = 'mockToken';
+    nock(host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: mockToken });
+
+    await sdk.auth.authenticate({
+      username: '',
+      password: '',
+    });
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    nock.enableNetConnect();
+  });
+
+  it('should create a product', async () => {
+    nock(`${host}${PAYMENTS_BASE}`).post('/products').reply(200, productData);
+
+    const productSchema = await sdk.payments.products.create(newProductData);
+
+    expect(productSchema.id).toBe(productId);
+  });
+
+  it('should get a list of products', async () => {
+    const rql = rqlBuilder().build();
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/products')
+      .reply(200, productResponse);
+
+    const res = await sdk.payments.products.find({ rql });
+
+    expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should add tags to a product', async () => {
+    const rql = rqlBuilder().build();
+    nock(`${host}${PAYMENTS_BASE}`).post('/products/addTags').reply(200, {
+      affectedRecords: 1,
+    });
+
+    const res = await sdk.payments.products.addTagsToProduct(rql, {
+      tags: ['tags1'],
+    });
+
+    expect(res.affectedRecords).toBe(1);
+  });
+
+  it('should remove tags to a product', async () => {
+    const rql = rqlBuilder().build();
+    nock(`${host}${PAYMENTS_BASE}`).post('/products/removeTags').reply(200, {
+      affectedRecords: 1,
+    });
+
+    const res = await sdk.payments.products.removeTagsFromProduct(rql, {
+      tags: ['tags1'],
+    });
+
+    expect(res.affectedRecords).toBe(1);
+  });
+
+  it('should update a product', async () => {
+    nock(`${host}${PAYMENTS_BASE}`).put(`/products/${productId}`).reply(200, {
+      affectedRecords: 1,
+    });
+
+    const res = await sdk.payments.products.update(productId, productData);
+
+    expect(res.affectedRecords).toBe(1);
+  });
+
+  it('should delete a product', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .delete(`/products/${productId}`)
+      .reply(200, {
+        affectedRecords: 1,
+      });
+
+    const res = await sdk.payments.products.remove(productId);
+
+    expect(res.affectedRecords).toBe(1);
+  });
+});

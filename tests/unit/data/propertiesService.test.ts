@@ -1,7 +1,6 @@
 import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { ConfigurationType } from '../../../src/services/data/types';
 import { newSchemaCreated } from '../../__helpers__/data';
 
 describe('Properties Service', () => {
@@ -38,7 +37,7 @@ describe('Properties Service', () => {
     const res = await sdk.data.properties.create(schemaId, {
       name: 'username',
       configuration: {
-        type: ConfigurationType.STRING,
+        type: 'string',
         minLength: 3,
         maxLength: 20,
       },
@@ -54,7 +53,7 @@ describe('Properties Service', () => {
         affectedRecords: 1,
       });
     const res = await sdk.data.properties.update(schemaId, propertyPath, {
-      type: ConfigurationType.STRING,
+      type: 'string',
       minLength: 3,
       maxLength: 20,
     });

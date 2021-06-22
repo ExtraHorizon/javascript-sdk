@@ -7,6 +7,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0]
+
+### Breaking Changes
+
+- `sdk.files.create` signature has changed.
+
+```diff
+- sdk.files.create({name: 'test.pdf', file: file, extension: 'pdf', tags: ['tag']);
++ sdk.files.create('test.pdf', file, {tags: ['tag]})
+```
+
+- Custom Document no longer need to extend from DocumentBase. You can just pass in the type for `data`
+
+```diff
+- interface CustomDocument extends DocumentBase {
+- data: {
+-    ppg: Number[];
+-    location: {
+-      longitude: Number;
+-      latitude: Number;
+-    };
+-  };
+- }
+- const document = await sdk.data.documents.find<CustomDocument>();
+
++ interface MyData {
++   data: {
++     ppg: Number[];
++     location: {
++       longitude: Number;
++       latitude: Number;
++     };
++   };
++ }
++ const document = await sdk.data.documents.find<MyData>();
+```
+
+### Added
+
+- `sdk.files.createFromText` where you can pass in your text directly.
+
+```ts
+await sdk.files.createFromText('this-is-a-string');
+```
+
+- Added `transitionsByName` getter to easily get the transition you need.
+
+```ts
+const {
+  data: [schema],
+} = await sdk.data.schemas.find();
+
+const transition = schema.transitionsByName.lambda_to_review;
+```
+
+- Added `findTransitionIdByName` function on `schema` objects to easily find the transitionId you need.
+
+```ts
+const {
+  data: [schema],
+} = await sdk.data.schemas.find();
+
+const transitionId = schema.findTransitionIdByName('lambda_to_review');
+```
+
+- Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
+- Payments Service
+- Added `or`, `and` and `contains` operators to the RQL builder.
+
 ## [3.0.2]
 
 ### Breaking Changes

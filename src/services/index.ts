@@ -7,3 +7,4 @@ export * from './configurations';
 export * from './templates';
 export * from './mails';
 export * from './dispatchers';
+export * from './payments';

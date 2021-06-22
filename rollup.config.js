@@ -2,6 +2,7 @@ import { join } from 'path';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
+import {terser} from 'rollup-plugin-terser';
 
 export default {
   input: join('src', 'index.ts'),
@@ -11,7 +12,7 @@ export default {
     ...Object.keys(require('./package.json').dependencies),
   ],
   output: [
-    { file: join('build', 'index.cjs'), format: 'cjs' },
+    { file: join('build', 'index.cjs.js'), format: 'cjs' },
     { file: join('build', 'index.mjs'), format: 'es' },
   ],
   plugins: [
@@ -24,5 +25,6 @@ export default {
     }),
     typescript(),
     json(),
+    terser(),
   ],
 };

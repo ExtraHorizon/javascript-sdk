@@ -1,7 +1,20 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
-import { RQLString } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
+
+const addTransitionHelpersToSchema = (schema: Schema) => ({
+  ...schema,
+  findTransitionIdByName(name: string) {
+    return schema.transitions?.find(transition => transition.name === name)?.id;
+  },
+  get transitionsByName() {
+    return schema.transitions?.reduce(
+      (memo, transition) => ({ ...memo, [transition.name]: transition }),
+      {}
+    );
+  },
+});
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -13,7 +26,9 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Schema successful operation
    */
   async create(requestBody: SchemaInput): Promise<Schema> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+    return addTransitionHelpersToSchema(
+      (await client.post(httpAuth, '/', requestBody)).data
+    );
   },
 
   /**
@@ -26,7 +41,48 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+    return {
+      ...result,
+      data: result.data.map(addTransitionHelpersToSchema),
+    };
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Schema> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ rql: rqlWithId });
+    return res.data[0];
+  },
+
+  /**
+   * Find By Name
+   * @param name the name to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findByName(
+    name: string,
+    options?: { rql?: RQLString }
+  ): Promise<Schema> {
+    const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
+    const res = await this.find({ rql: rqlWithName });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(options?: { rql?: RQLString }): Promise<Schema> {
+    const res = await this.find(options);
+    return res.data[0];
   },
 
   /**

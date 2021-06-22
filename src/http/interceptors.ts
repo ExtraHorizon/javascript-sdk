@@ -22,11 +22,17 @@ const mapDateValues = (value, key) => {
     [
       'creationTimestamp',
       'expiryTimestamp',
+      'expireTimestamp',
       'updateTimestamp',
       'lastFailedTimestamp',
       'statusChangedTimestamp',
       'startTimestamp',
       'timestamp',
+      'originalPurchaseDate',
+      'lastPurchaseDate',
+      'expiresDate',
+      'reevaluateDate',
+      'autoRenewStatusChange',
     ].includes(key)
   ) {
     return new Date(value);

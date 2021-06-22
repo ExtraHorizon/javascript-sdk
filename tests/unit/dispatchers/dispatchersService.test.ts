@@ -48,6 +48,24 @@ describe('Dispatchers Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a dispatcher by id', async () => {
+    nock(`${host}${DISPATCHERS_BASE}`)
+      .get(`/?eq(id,${dispatcherId})`)
+      .reply(200, dispatchersResponse);
+
+    const dispatcher = await sdk.dispatchers.findById(dispatcherId);
+
+    expect(dispatcher.id).toBe(dispatcherId);
+  });
+
+  it('should find the first dispatcher', async () => {
+    nock(`${host}${DISPATCHERS_BASE}`).get('/').reply(200, dispatchersResponse);
+
+    const dispatcher = await sdk.dispatchers.findFirst();
+
+    expect(dispatcher.id).toBe(dispatcherId);
+  });
+
   it('should create a dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
 

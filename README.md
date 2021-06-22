@@ -1,3 +1,6 @@
+[![Quality assurance](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml)
+[![Code style](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml)
+
 # Extrahorizon Javascript SDK
 
 ## Features
@@ -11,6 +14,7 @@
 - [Mails][mails]: Provides mail functionality for other services.
 - [Configurations][configurations]: Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
 - [Dispatchers][dispatchers]: Configure actions that need to be invoked when a specific event is/was triggered.
+- [Payments][payments]: A service that provides payment functionality.
 
 ## Getting started
 
@@ -272,18 +276,20 @@ await sdk.users.health();
 
 ```
 
-## Typescript for your Schemas
+## Typescript for your Schemas and Documents
 
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
 
 As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
 
 ```ts
-import type { DataServicesTypes: { Schema,
-  DocumentBase,
+import {
+  createOAuth2Client,
+  Schema,
   JSONSchemaObject,
   JSONSchemaArray,
-  JSONSchemaNumber } }  from "@extrahorizon/javascript-sdk";
+  JSONSchemaNumber,
+} from '@extrahorizon/javascript-sdk';
 
 interface MySchema extends Schema {
   statuses?: Record<'start', never>;
@@ -303,12 +309,13 @@ interface MySchema extends Schema {
 
 const sdk = createOAuth2Client({
   host: 'dev.fibricheck.com',
+  clientId: '',
 });
 
-const { data: schemas } = await sdk.data.find();
-const mySchema: CustomSchema = schemas[0];
+const { data: schemas } = await sdk.data.schemas.find();
+const mySchema: MySchema = schemas[0];
 
-interface CustomDocument extends DocumentBase {
+interface MyData {
   data: {
     ppg: Number[];
     location: {
@@ -317,7 +324,7 @@ interface CustomDocument extends DocumentBase {
     };
   };
 }
-const document = await sdk.data.findDocuments<CustomDocument>();
+const document = await sdk.data.documents.find<MyData>();
 ```
 
 ## Tests
@@ -330,7 +337,7 @@ The package also exports a mockSdk you can use in your tests. In this example `j
 import { getMockSdk } from '@extrahorizon/javascript-sdk';
 
 describe('mock SDK', () => {
-  const sdk = getMockSdk(jest.fn);
+  const sdk = getMockSdk<jest.Mock>(jest.fn);
   it('should be valid mock', async () => {
     expect(sdk.data).toBeDefined();
   });
@@ -365,3 +372,4 @@ The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 [mails]: https://developers.extrahorizon.io/services/mail-service/1.0.8-dev/
 [configurations]: https://developers.extrahorizon.io/services/configurations-service/2.0.2-dev/
 [dispatchers]: https://developers.extrahorizon.io/services/dispatchers-service/1.0.3-dev/
+[payments]: https://developers.extrahorizon.io/services/payments-service/1.1.0-dev/

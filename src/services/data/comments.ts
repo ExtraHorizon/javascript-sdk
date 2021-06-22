@@ -1,4 +1,4 @@
-import { RQLString } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import { Comment, CommentText } from './types';
@@ -60,6 +60,41 @@ export default (client, httpAuth: HttpInstance) => ({
         `/${schemaId}/documents/${documentId}/comments${options?.rql || ''}`
       )
     ).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param schemaId the schema Id
+   * @param documentId the document Id
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findById(
+    id: ObjectId,
+    schemaId: ObjectId,
+    documentId: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Comment> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find(schemaId, documentId, { rql: rqlWithId });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param schemaId the schema Id
+   * @param documentId the document Id
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(
+    schemaId: ObjectId,
+    documentId: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Comment> {
+    const res = await this.find(schemaId, documentId, options);
+    return res.data[0];
   },
 
   /**

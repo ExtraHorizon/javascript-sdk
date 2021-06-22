@@ -49,6 +49,25 @@ describe('Files Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a file by name', async () => {
+    const { name } = fileData;
+    nock(`${host}${FILES_BASE}`)
+      .get(`/?eq(name,${name})`)
+      .reply(200, filesResponse);
+
+    const file = await sdk.files.findByName(name);
+
+    expect(file.name).toBe(name);
+  });
+
+  it('should find the first file', async () => {
+    nock(`${host}${FILES_BASE}`).get('/').reply(200, filesResponse);
+
+    const file = await sdk.files.findFirst();
+
+    expect(file.name).toBe(fileData.name);
+  });
+
   it('should add a new file', async () => {
     jest.spyOn(fs, 'readFileSync').mockImplementation(() => ``);
     const newFile = {
@@ -59,7 +78,7 @@ describe('Files Service', () => {
 
     nock(`${host}${FILES_BASE}`).post('/').reply(200, fileData);
 
-    const res = await sdk.files.create(newFile);
+    const res = await sdk.files.create(newFile.name, newFile.file);
     expect(res).toBeDefined();
   });
 

@@ -16,9 +16,15 @@ module.exports = {
   ],
   collectCoverage: true,
   coverageDirectory: 'test-results/coverage',
-  // reporters: ['default', 'jest-junit'],
   reporters: [
     'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'test-results',
+        outputName: 'jest-junit.xml',
+      },
+    ],
     [
       'jest-stare',
       {
