@@ -10,13 +10,13 @@ import {
   Condition,
   Transition,
   TransitionActionTypeEnum,
+  TransitionAfterActionTypeEnum,
   CreationTransition,
   Schema,
   InitiatorHasRelationToUserInDataConditionType,
   InitiatorHasRelationToUserInDataConditionRelation,
   InitiatorHasRelationToGroupInDataConditionType,
   InitiatorHasRelationToGroupInDataConditionRelation,
-  TransitionAfterActionTypeEnum,
 } from '../../src/services/data/types';
 
 export const newSchemaInput = {
