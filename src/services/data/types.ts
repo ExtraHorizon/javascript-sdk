@@ -243,7 +243,7 @@ export interface TransitionAfterAction {
 
 export interface CreationTransition {
   toStatus: string;
-  type?: CreationTransitionType;
+  type: CreationTransitionType;
   conditions?: Condition[];
   actions?: TransitionAction[];
   afterActions?: TransitionAfterAction[];
