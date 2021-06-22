@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer';
+import BufferModule from 'buffer';
 
 export function createCustomFormData(value: string, boundary: string): Buffer {
   const chunks = [];
@@ -12,7 +12,7 @@ export function createCustomFormData(value: string, boundary: string): Buffer {
     `--${boundary}--`
   );
 
-  return Buffer.from(chunks.join(''));
+  return BufferModule.Buffer.from(chunks.join(''));
 }
 
 export function generateBoundary(): string {
