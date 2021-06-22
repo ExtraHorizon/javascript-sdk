@@ -5,7 +5,7 @@ export interface TemplateOut {
   id?: ObjectId;
   name?: string;
   description?: string;
-  schema?: ObjectConfiguration;
+  schema?: TemplateObjectConfiguration;
   fields?: Record<string, string>;
   creationTimestamp?: Date;
   updateTimestamp?: Date;
@@ -14,11 +14,11 @@ export interface TemplateOut {
 export interface TemplateIn {
   name: string;
   description: string;
-  schema: ObjectConfiguration;
+  schema: TemplateObjectConfiguration;
   fields: Record<string, string>;
 }
 
-export interface ObjectConfiguration {
+export interface TemplateObjectConfiguration {
   type?: ObjectConfigurationType;
   options?: Array<ObjectOption>;
   fields?: Record<string, TypeConfiguration>;
