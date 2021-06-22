@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from 'axios';
-import pako from 'pako';
 import { typeReceivedError } from '../errorHandler';
 import { HttpClientConfig } from '../types';
 import { camelizeResponseData } from './interceptors';
@@ -16,20 +15,6 @@ export function createHttpClient({
     headers: {
       'X-User-Agent': composeUserAgent(packageVersion),
     },
-    transformRequest: [
-      ...(Array.isArray(axios.defaults.transformRequest)
-        ? axios.defaults.transformRequest
-        : [axios.defaults.transformRequest]),
-      (data, headers) => {
-        if (typeof data === 'string' && data.length > 1024) {
-          // eslint-disable-next-line no-param-reassign
-          headers['Content-Encoding'] = 'gzip';
-          return pako.gzip(data);
-        }
-
-        return data;
-      },
-    ],
   });
 
   if (requestLogger) {

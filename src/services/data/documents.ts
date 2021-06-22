@@ -19,8 +19,17 @@ export default (client, httpAuth: HttpInstance) => ({
     schemaId: ObjectId,
     requestBody: Record<string, any>
   ): Promise<Document> {
-    return (await client.post(httpAuth, `/${schemaId}/documents`, requestBody))
-      .data;
+    return (
+      await client.post(
+        httpAuth,
+        `/${schemaId}/documents`,
+        requestBody,
+        {},
+        {
+          gzip: true,
+        }
+      )
+    ).data;
   },
 
   /**
