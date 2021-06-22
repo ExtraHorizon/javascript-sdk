@@ -46,3 +46,21 @@ export const localizationRequest: LocalizationRequest = {
   localizationCodes: [SupportedLanguageCodes.NL],
   localizations: ['mail_subject'],
 };
+
+export const countriesResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: ['BE'],
+};
+
+export const regionsResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: ['BE-VLI'],
+};
