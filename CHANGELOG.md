@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -    };
 -  };
 - }
-- const document = await sdk.data.findDocuments<CustomDocument>();
+- const document = await sdk.data.documents.find<CustomDocument>();
 
 + interface MyData {
 +   data: {
@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 +     };
 +   };
 + }
-+ const document = await sdk.data.findDocuments<MyData>();
++ const document = await sdk.data.documents.find<MyData>();
 ```
 
 ### Added
