@@ -19,13 +19,9 @@ export interface TemplateIn {
 }
 
 export interface TemplateObjectConfiguration {
-  type?: ObjectConfigurationType;
+  type?: 'object';
   options?: Array<ObjectOption>;
   fields?: Record<string, TypeConfiguration>;
-}
-
-export enum ObjectConfigurationType {
-  OBJECT = 'object',
 }
 
 export type ObjectOption = ObjectMinBytesOption | ObjectMaxBytesOption;
