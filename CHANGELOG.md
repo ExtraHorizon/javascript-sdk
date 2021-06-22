@@ -46,7 +46,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `sdk.files.createRaw` where you can pass in your FormData directly
+- `sdk.files.createFromText` where you can pass in your text directly.
+
+```ts
+await sdk.files.createFromText('this-is-a-string');
+```
 
 - Added `transitionsByName` getter to easily get the transition you need.
 
