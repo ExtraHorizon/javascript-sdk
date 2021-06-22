@@ -4,6 +4,7 @@ import type { HttpInstance } from '../../types';
 import { ResultResponse, Results, PagedResult } from '../types';
 import type { FileDetails, Token } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
+import { createCustomFormData, generateBoundary } from './formHelpers';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -42,6 +43,29 @@ export default (client, httpAuth: HttpInstance) => ({
   async findFirst(options?: { rql?: RQLString }): Promise<FileDetails> {
     const res = await this.find(options);
     return res.data[0];
+  },
+
+  /**
+   * Add a new file from a plain text source
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   *
+   * @param string text
+   * @returns FileDetails Success
+   * @throws {FileTooLargeError}
+   */
+  async createFromText(text: string): Promise<FileDetails> {
+    const boundary = generateBoundary();
+    const formData = createCustomFormData(text, boundary);
+
+    return (
+      await client.post(httpAuth, '/', formData, {
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${boundary}`,
+        },
+      })
+    ).data;
   },
 
   /**
