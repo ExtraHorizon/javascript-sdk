@@ -324,7 +324,7 @@ interface MyData {
     };
   };
 }
-const document = await sdk.data.findDocuments<MyData>();
+const document = await sdk.data.documents.find<MyData>();
 ```
 
 ## Tests
