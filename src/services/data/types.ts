@@ -202,31 +202,105 @@ export enum CreationTransitionType {
   AUTOMATIC = 'automatic',
 }
 
-export enum CreationTransitionAction {
-  ALGORITHM = 'algorithm',
-  DELAY = 'delay',
-  TASK = 'task',
-  LINK_CREATOR = 'linkCreator',
-  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
-  LINK_USER_FROM_DATA = 'linkUserFromData',
-  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
-  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
+export enum CreationTransitionActionTypeEnum {
   SET = 'set',
   UNSET = 'unset',
   ADD_ITEMS = 'addItems',
   REMOVE_ITEMS = 'removeItems',
+  TASK = 'task',
+  LINK_CREATOR = 'linkCreator',
+  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
+  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
+  LINK_USER_FROM_DATA = 'linkUserFromData',
+  DELAY = 'delay',
+  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
 }
 
-export enum CreationTransitionAfterAction {
+export interface CreationTransitionActionSet {
+  type: CreationTransitionActionTypeEnum.SET;
+  field: string;
+  value: unknown;
+}
+
+export interface CreationTransitionActionUnset {
+  type: CreationTransitionActionTypeEnum.SET;
+  field: string[];
+}
+
+export interface CreationTransitionActionAddItems {
+  type: CreationTransitionActionTypeEnum.ADD_ITEMS;
+  field: string;
+  values: string[];
+}
+
+export interface CreationTransitionActionRemoveItems {
+  type: CreationTransitionActionTypeEnum.REMOVE_ITEMS;
+  field: string;
+  values: string[];
+}
+
+export interface CreationTransitionActionTask {
+  type: CreationTransitionActionTypeEnum.TASK;
+  functioName: string;
+  data: Record<string, unknown>;
+}
+
+export interface CreationTransitionActionLinkCreator {
+  type: CreationTransitionActionTypeEnum.LINK_CREATOR;
+}
+
+export interface CreationTransitionActionLinkEnlistedGroups {
+  type: CreationTransitionActionTypeEnum.LINK_ENLISTED_GROUPS;
+  onlyActive: boolean;
+}
+
+export interface CreationTransitionActionLinkUserFromData {
+  type: CreationTransitionActionTypeEnum.LINK_USER_FROM_DATA;
+  userIdField: string;
+}
+export interface CreationTransitionActionLinkGroupFromData {
+  type: CreationTransitionActionTypeEnum.LINK_USER_FROM_DATA;
+  groupIdField: string;
+}
+
+export interface CreationTransitionActionDelay {
+  type: CreationTransitionActionTypeEnum.DELAY;
+  time: number;
+}
+
+export interface CreationTransitionActionMeasurementReviewedNotification {
+  type: CreationTransitionActionTypeEnum.MEASUREMENT_REVIEWED_NOTIFICATION;
+}
+
+export type CreationTransitionAction =
+  | CreationTransitionActionSet
+  | CreationTransitionActionUnset
+  | CreationTransitionActionAddItems
+  | CreationTransitionActionRemoveItems
+  | CreationTransitionActionTask
+  | CreationTransitionActionLinkCreator
+  | CreationTransitionActionLinkEnlistedGroups
+  | CreationTransitionActionLinkUserFromData
+  | CreationTransitionActionLinkGroupFromData
+  | CreationTransitionActionDelay
+  | CreationTransitionActionMeasurementReviewedNotification;
+
+export enum CreationTransitionAfterActionTypeEnum {
   NOTIFY_ALGO_QUEUE_MANAGER = 'notifyAlgoQueueManager',
+}
+
+export interface CreationTransitionAfterAction {
+  type: CreationTransitionActionTypeEnum.MEASUREMENT_REVIEWED_NOTIFICATION;
+  id: string;
+  version: string;
 }
 
 export interface CreationTransition {
   toStatus: string;
   type?: CreationTransitionType;
   conditions?: Condition[];
-  actions?: { type: CreationTransitionAction }[];
-  afterActions?: { type: CreationTransitionAfterAction }[];
+  actions?: CreationTransitionAction[];
+  afterActions?: CreationTransitionAfterAction[];
 }
 
 export type StatusData = Record<string, string>;
