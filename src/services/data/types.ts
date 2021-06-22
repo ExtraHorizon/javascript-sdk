@@ -202,7 +202,7 @@ export enum CreationTransitionType {
   AUTOMATIC = 'automatic',
 }
 
-export enum CreationTransitionActionTypeEnum {
+export enum TransitionActionTypeEnum {
   SET = 'set',
   UNSET = 'unset',
   ADD_ITEMS = 'addItems',
@@ -216,81 +216,81 @@ export enum CreationTransitionActionTypeEnum {
   MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
 }
 
-export interface CreationTransitionActionSet {
-  type: CreationTransitionActionTypeEnum.SET;
+export interface TransitionActionSet {
+  type: TransitionActionTypeEnum.SET;
   field: string;
   value: unknown;
 }
 
-export interface CreationTransitionActionUnset {
-  type: CreationTransitionActionTypeEnum.SET;
+export interface TransitionActionUnset {
+  type: TransitionActionTypeEnum.SET;
   field: string[];
 }
 
-export interface CreationTransitionActionAddItems {
-  type: CreationTransitionActionTypeEnum.ADD_ITEMS;
+export interface TransitionActionAddItems {
+  type: TransitionActionTypeEnum.ADD_ITEMS;
   field: string;
   values: string[];
 }
 
-export interface CreationTransitionActionRemoveItems {
-  type: CreationTransitionActionTypeEnum.REMOVE_ITEMS;
+export interface TransitionActionRemoveItems {
+  type: TransitionActionTypeEnum.REMOVE_ITEMS;
   field: string;
   values: string[];
 }
 
-export interface CreationTransitionActionTask {
-  type: CreationTransitionActionTypeEnum.TASK;
+export interface TransitionActionTask {
+  type: TransitionActionTypeEnum.TASK;
   functioName: string;
   data: Record<string, unknown>;
 }
 
-export interface CreationTransitionActionLinkCreator {
-  type: CreationTransitionActionTypeEnum.LINK_CREATOR;
+export interface TransitionActionLinkCreator {
+  type: TransitionActionTypeEnum.LINK_CREATOR;
 }
 
-export interface CreationTransitionActionLinkEnlistedGroups {
-  type: CreationTransitionActionTypeEnum.LINK_ENLISTED_GROUPS;
+export interface TransitionActionLinkEnlistedGroups {
+  type: TransitionActionTypeEnum.LINK_ENLISTED_GROUPS;
   onlyActive: boolean;
 }
 
-export interface CreationTransitionActionLinkUserFromData {
-  type: CreationTransitionActionTypeEnum.LINK_USER_FROM_DATA;
+export interface TransitionActionLinkUserFromData {
+  type: TransitionActionTypeEnum.LINK_USER_FROM_DATA;
   userIdField: string;
 }
-export interface CreationTransitionActionLinkGroupFromData {
-  type: CreationTransitionActionTypeEnum.LINK_USER_FROM_DATA;
+export interface TransitionActionLinkGroupFromData {
+  type: TransitionActionTypeEnum.LINK_USER_FROM_DATA;
   groupIdField: string;
 }
 
-export interface CreationTransitionActionDelay {
-  type: CreationTransitionActionTypeEnum.DELAY;
+export interface TransitionActionDelay {
+  type: TransitionActionTypeEnum.DELAY;
   time: number;
 }
 
-export interface CreationTransitionActionMeasurementReviewedNotification {
-  type: CreationTransitionActionTypeEnum.MEASUREMENT_REVIEWED_NOTIFICATION;
+export interface TransitionActionMeasurementReviewedNotification {
+  type: TransitionActionTypeEnum.MEASUREMENT_REVIEWED_NOTIFICATION;
 }
 
-export type CreationTransitionAction =
-  | CreationTransitionActionSet
-  | CreationTransitionActionUnset
-  | CreationTransitionActionAddItems
-  | CreationTransitionActionRemoveItems
-  | CreationTransitionActionTask
-  | CreationTransitionActionLinkCreator
-  | CreationTransitionActionLinkEnlistedGroups
-  | CreationTransitionActionLinkUserFromData
-  | CreationTransitionActionLinkGroupFromData
-  | CreationTransitionActionDelay
-  | CreationTransitionActionMeasurementReviewedNotification;
+export type TransitionAction =
+  | TransitionActionSet
+  | TransitionActionUnset
+  | TransitionActionAddItems
+  | TransitionActionRemoveItems
+  | TransitionActionTask
+  | TransitionActionLinkCreator
+  | TransitionActionLinkEnlistedGroups
+  | TransitionActionLinkUserFromData
+  | TransitionActionLinkGroupFromData
+  | TransitionActionDelay
+  | TransitionActionMeasurementReviewedNotification;
 
-export enum CreationTransitionAfterActionTypeEnum {
+export enum TransitionAfterActionTypeEnum {
   NOTIFY_ALGO_QUEUE_MANAGER = 'notifyAlgoQueueManager',
 }
 
-export interface CreationTransitionAfterAction {
-  type: CreationTransitionActionTypeEnum.MEASUREMENT_REVIEWED_NOTIFICATION;
+export interface TransitionAfterAction {
+  type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER;
   id: string;
   version: string;
 }
@@ -299,8 +299,8 @@ export interface CreationTransition {
   toStatus: string;
   type?: CreationTransitionType;
   conditions?: Condition[];
-  actions?: CreationTransitionAction[];
-  afterActions?: CreationTransitionAfterAction[];
+  actions?: TransitionAction[];
+  afterActions?: TransitionAfterAction[];
 }
 
 export type StatusData = Record<string, string>;
