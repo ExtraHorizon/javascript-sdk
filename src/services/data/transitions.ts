@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { Transition, CreationTransition, TransitionInput } from './types';
+import type { CreationTransition, TransitionInput } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
