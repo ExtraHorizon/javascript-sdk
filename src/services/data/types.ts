@@ -57,43 +57,34 @@ export type JSONSchemaBoolean = {
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema
  */
-export enum CreateMode {
-  DEFAULT = 'default',
-  PERMISSION_REQUIRED = 'permissionRequired',
-}
+
+type CreateMode = 'default' | 'permissionRequired';
 
 /**
  * Specifies the conditions to be met in order to be able to view a document for a schema
  */
-export enum ReadMode {
-  ALL_USERS = 'allUsers',
-  DEFAULT = 'default',
-  ENLISTED_IN_LINKED_GROUPS = 'enlistedInLinkedGroups',
-}
+type ReadMode = 'allUsers' | 'default' | 'enlistedInLinkedGroups';
 
 /**
  * Specifies the conditions to be met in order to be able to update a document for a schema
  */
-export enum UpdateMode {
-  DEFAULT = 'default',
-  CREATOR_ONLY = 'creatorOnly',
-  DISABLED = 'disabled',
-  LINKED_GROUPS_STAFF_ONLY = 'linkedGroupsStaffOnly',
-}
+
+type UpdateMode =
+  | 'default'
+  | 'creatorOnly'
+  | 'disabled'
+  | 'linkedGroupsStaffOnly';
 
 /**
  * Specifies the conditions to be met in order to be able to delete a document for a schema
  */
-export enum DeleteMode {
-  PERMISSION_REQUIRED = 'permissionRequired',
-  LINKED_USERS_ONLY = 'linkedUsersOnly',
-}
 
-export enum GroupSyncMode {
-  DISABLED = 'disabled',
-  CREATOR_PATIENT_ENLISTMENTS = 'creatorPatientEnlistments',
-  LINKED_USERS_PATIENT_ENLISTMENTS = 'linkedUsersPatientEnlistments',
-}
+type DeleteMode = 'permissionRequired' | 'linkedUsersOnly';
+
+type GroupSyncMode =
+  | 'disabled'
+  | 'creatorPatientEnlistments'
+  | 'linkedUsersPatientEnlistments';
 
 export enum ConfigurationType {
   STRING = 'string',
@@ -161,31 +152,18 @@ export interface InputCondition {
   configuration?: TypeConfiguration;
 }
 
-export enum InitiatorHasRelationToUserInDataConditionType {
-  INITIATOR_HAS_RELATION_TO_USER_IN_DATA = 'initiatorHasRelationToUserInData',
-}
-
-export enum InitiatorHasRelationToUserInDataConditionRelation {
-  IS_STAFF_OF_TARGET_PATIENT = 'isStaffOfTargetPatient',
-}
-
 export interface InitiatorHasRelationToUserInDataCondition {
-  type?: InitiatorHasRelationToUserInDataConditionType;
+  type?: 'initiatorHasRelationToUserInData';
   userIdField?: ObjectId;
-  relation?: InitiatorHasRelationToUserInDataConditionRelation;
+  relation?: 'isStaffOfTargetPatient';
 }
 
-export enum InitiatorHasRelationToGroupInDataConditionType {
-  INITIATOR_HAS_RELATION_TO_GROUP_IN_DATA = 'initiatorHasRelationToGroupInData',
-}
-
-export enum InitiatorHasRelationToGroupInDataConditionRelation {
-  STAFF = 'staff',
-  PATIENT = 'patient',
-}
+export type InitiatorHasRelationToGroupInDataConditionRelation =
+  | 'staff'
+  | 'patient';
 
 export interface InitiatorHasRelationToGroupInDataCondition {
-  type?: InitiatorHasRelationToGroupInDataConditionType;
+  type?: 'initiatorHasRelationToGroupInData';
   groupIdField?: ObjectId;
   relation?: InitiatorHasRelationToGroupInDataConditionRelation;
   requiredPermission?: string;
@@ -197,79 +175,62 @@ export type Condition =
   | InitiatorHasRelationToUserInDataCondition
   | InitiatorHasRelationToGroupInDataCondition;
 
-export enum CreationTransitionType {
-  MANUAL = 'manual',
-  AUTOMATIC = 'automatic',
-}
-
-export enum TransitionActionTypeEnum {
-  SET = 'set',
-  UNSET = 'unset',
-  ADD_ITEMS = 'addItems',
-  REMOVE_ITEMS = 'removeItems',
-  TASK = 'task',
-  LINK_CREATOR = 'linkCreator',
-  LINK_ENLISTED_GROUPS = 'linkEnlistedGroups',
-  LINK_GROUP_FROM_DATA = 'linkGroupFromData',
-  LINK_USER_FROM_DATA = 'linkUserFromData',
-  DELAY = 'delay',
-  MEASUREMENT_REVIEWED_NOTIFICATION = 'measurementReviewedNotification',
-}
+type CreationTransitionType = 'manual' | 'automatic';
 
 export interface TransitionActionSet {
-  type: TransitionActionTypeEnum.SET;
+  type: 'set';
   field: string;
   value: unknown;
 }
 
 export interface TransitionActionUnset {
-  type: TransitionActionTypeEnum.UNSET;
+  type: 'unset';
   field: string[];
 }
 
 export interface TransitionActionAddItems {
-  type: TransitionActionTypeEnum.ADD_ITEMS;
+  type: 'addItems';
   field: string;
   values: string[];
 }
 
 export interface TransitionActionRemoveItems {
-  type: TransitionActionTypeEnum.REMOVE_ITEMS;
+  type: 'removeItems';
   field: string;
   values: string[];
 }
 
 export interface TransitionActionTask {
-  type: TransitionActionTypeEnum.TASK;
+  type: 'task';
   functioName: string;
   data: Record<string, unknown>;
 }
 
 export interface TransitionActionLinkCreator {
-  type: TransitionActionTypeEnum.LINK_CREATOR;
+  type: 'linkCreator';
 }
 
 export interface TransitionActionLinkEnlistedGroups {
-  type: TransitionActionTypeEnum.LINK_ENLISTED_GROUPS;
+  type: 'linkEnlistedGroups';
   onlyActive: boolean;
 }
 
 export interface TransitionActionLinkUserFromData {
-  type: TransitionActionTypeEnum.LINK_USER_FROM_DATA;
+  type: 'linkGroupFromData';
   userIdField: string;
 }
 export interface TransitionActionLinkGroupFromData {
-  type: TransitionActionTypeEnum.LINK_USER_FROM_DATA;
+  type: 'linkUserFromData';
   groupIdField: string;
 }
 
 export interface TransitionActionDelay {
-  type: TransitionActionTypeEnum.DELAY;
+  type: 'delay';
   time: number;
 }
 
 export interface TransitionActionMeasurementReviewedNotification {
-  type: TransitionActionTypeEnum.MEASUREMENT_REVIEWED_NOTIFICATION;
+  type: 'measurementReviewedNotification';
 }
 
 export type TransitionAction =
@@ -285,12 +246,8 @@ export type TransitionAction =
   | TransitionActionDelay
   | TransitionActionMeasurementReviewedNotification;
 
-export enum TransitionAfterActionTypeEnum {
-  NOTIFY_ALGO_QUEUE_MANAGER = 'notifyAlgoQueueManager',
-}
-
 export interface TransitionAfterAction {
-  type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER;
+  type: 'notifyAlgoQueueManager';
   id: string;
   version: string;
 }
@@ -305,16 +262,13 @@ export interface CreationTransition {
 
 export type StatusData = Record<string, string>;
 
-export interface BaseTransition {
-  id?: ObjectId;
-  name?: string;
-  fromStatuses?: string[];
-}
+export type Transition = CreationTransition & {
+  id: ObjectId;
+  name: string;
+  fromStatuses: string[];
+};
 
-export type Transition = CreationTransition & BaseTransition;
-
-export type TransitionInput = Transition &
-  Required<Pick<BaseTransition, 'name' | 'fromStatuses'>>;
+export type TransitionInput = Transition & Partial<Pick<Transition, 'id'>>;
 
 export interface Schema {
   id?: ObjectId;
@@ -356,11 +310,7 @@ export type UpdateSchemaInput = Pick<
 
 export type IndexFieldsName = string;
 
-export enum IndexFieldsType {
-  ASC = 'asc',
-  DESC = 'desc',
-  TEXT = 'text',
-}
+export type IndexFieldsType = 'asc' | 'desc' | 'text';
 
 export interface IndexOptions {
   background?: boolean;
