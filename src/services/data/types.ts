@@ -58,18 +58,18 @@ export type JSONSchemaBoolean = {
  * Specifies the conditions to be met in order to be able to create a document for a schema
  */
 
-type CreateMode = 'default' | 'permissionRequired';
+export type CreateMode = 'default' | 'permissionRequired';
 
 /**
  * Specifies the conditions to be met in order to be able to view a document for a schema
  */
-type ReadMode = 'allUsers' | 'default' | 'enlistedInLinkedGroups';
+export type ReadMode = 'allUsers' | 'default' | 'enlistedInLinkedGroups';
 
 /**
  * Specifies the conditions to be met in order to be able to update a document for a schema
  */
 
-type UpdateMode =
+export type UpdateMode =
   | 'default'
   | 'creatorOnly'
   | 'disabled'
@@ -79,30 +79,19 @@ type UpdateMode =
  * Specifies the conditions to be met in order to be able to delete a document for a schema
  */
 
-type DeleteMode = 'permissionRequired' | 'linkedUsersOnly';
+export type DeleteMode = 'permissionRequired' | 'linkedUsersOnly';
 
-type GroupSyncMode =
+export type GroupSyncMode =
   | 'disabled'
   | 'creatorPatientEnlistments'
   | 'linkedUsersPatientEnlistments';
-
-export enum ConfigurationType {
-  STRING = 'string',
-  NUMBER = 'number',
-  BOOLEAN = 'boolean',
-  OBJECT = 'object',
-  ARRAY = 'array',
-  DATE_TIME = 'date-time',
-  DOCUMENT = 'document',
-  INPUT = 'input',
-}
 
 interface BaseConfiguration {
   queryable?: boolean;
 }
 
 export interface ArrayConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.ARRAY;
+  type?: 'array';
   items?: TypeConfiguration;
   minItems?: number;
   maxItems?: number;
@@ -110,29 +99,29 @@ export interface ArrayConfiguration extends BaseConfiguration {
 }
 
 export interface ObjectConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.OBJECT;
+  type?: 'object';
   properties?: Record<string, TypeConfiguration>;
   required?: string[];
 }
 
 export interface StringConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.STRING;
+  type?: 'string';
   minLength?: number;
   maxLength?: number;
   enum?: string[];
   pattern?: string;
-  format?: ConfigurationType.DATE_TIME;
+  format?: 'date-time';
 }
 
 export interface NumberConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.NUMBER;
+  type?: 'number';
   minimum?: number;
   maximum?: number;
   enum?: number[];
 }
 
 export interface BooleanConfiguration extends BaseConfiguration {
-  type?: ConfigurationType.BOOLEAN;
+  type?: 'boolean';
 }
 
 export type TypeConfiguration =
@@ -143,12 +132,12 @@ export type TypeConfiguration =
   | BooleanConfiguration;
 
 export interface DocumentCondition {
-  type?: ConfigurationType.DOCUMENT;
+  type?: 'document';
   configuration?: TypeConfiguration;
 }
 
 export interface InputCondition {
-  type?: ConfigurationType.INPUT;
+  type?: 'input';
   configuration?: TypeConfiguration;
 }
 
@@ -175,7 +164,7 @@ export type Condition =
   | InitiatorHasRelationToUserInDataCondition
   | InitiatorHasRelationToGroupInDataCondition;
 
-type CreationTransitionType = 'manual' | 'automatic';
+export type CreationTransitionType = 'manual' | 'automatic';
 
 export interface TransitionActionSet {
   type: 'set';
@@ -262,13 +251,14 @@ export interface CreationTransition {
 
 export type StatusData = Record<string, string>;
 
-export type Transition = CreationTransition & {
-  id: ObjectId;
+export type TransitionInput = CreationTransition & {
+  id?: ObjectId;
   name: string;
   fromStatuses: string[];
 };
 
-export type TransitionInput = Transition & Partial<Pick<Transition, 'id'>>;
+export type Transition = TransitionInput &
+  Required<Pick<TransitionInput, 'id'>>;
 
 export interface Schema {
   id?: ObjectId;

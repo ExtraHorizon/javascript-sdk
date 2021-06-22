@@ -1,32 +1,19 @@
 import {
-  CreateMode,
-  ReadMode,
-  UpdateMode,
-  DeleteMode,
-  GroupSyncMode,
-  IndexFieldsType,
-  CreationTransitionType,
-  ConfigurationType,
   Condition,
-  Transition,
-  TransitionActionTypeEnum,
-  TransitionAfterActionTypeEnum,
   CreationTransition,
   Schema,
-  InitiatorHasRelationToUserInDataConditionType,
-  InitiatorHasRelationToUserInDataConditionRelation,
-  InitiatorHasRelationToGroupInDataConditionType,
-  InitiatorHasRelationToGroupInDataConditionRelation,
+  SchemaInput,
+  TransitionInput,
 } from '../../src/services/data/types';
 
-export const newSchemaInput = {
+export const newSchemaInput: SchemaInput = {
   name: 'Fibricheck measurement',
   description: 'The schema for holding FibriCheck measurements',
-  createMode: CreateMode.DEFAULT,
-  readMode: ReadMode.ALL_USERS,
-  updateMode: UpdateMode.DEFAULT,
-  deleteMode: DeleteMode.PERMISSION_REQUIRED,
-  groupSyncMode: GroupSyncMode.DISABLED,
+  createMode: 'default',
+  readMode: 'allUsers',
+  updateMode: 'default',
+  deleteMode: 'permissionRequired',
+  groupSyncMode: 'disabled',
   defaultLimit: 5,
   maximumLimit: 5,
 };
@@ -65,49 +52,46 @@ export const newSchemaCreated: Partial<Schema> = {
   },
   creationTransition: {
     toStatus: 'start',
-    type: CreationTransitionType.MANUAL,
+    type: 'manual',
     conditions: [
       {
-        type: ConfigurationType.INPUT,
+        type: 'input',
         configuration: {
-          type: ConfigurationType.NUMBER,
+          type: 'number',
           minimum: -180,
           maximum: 180,
         },
       },
       {
-        type: ConfigurationType.DOCUMENT,
+        type: 'document',
         configuration: {
-          type: ConfigurationType.NUMBER,
+          type: 'number',
           minimum: -180,
           maximum: 180,
         },
       },
       {
-        type:
-          InitiatorHasRelationToUserInDataConditionType.INITIATOR_HAS_RELATION_TO_USER_IN_DATA,
+        type: 'initiatorHasRelationToUserInData',
         userIdField: '5e9fff9d90135a2a9a718e2f',
-        relation:
-          InitiatorHasRelationToUserInDataConditionRelation.IS_STAFF_OF_TARGET_PATIENT,
+        relation: 'isStaffOfTargetPatient',
       },
       {
-        type:
-          InitiatorHasRelationToGroupInDataConditionType.INITIATOR_HAS_RELATION_TO_GROUP_IN_DATA,
+        type: 'initiatorHasRelationToGroupInData',
         groupIdField: '5e9fff9d90135a2a9a718e2f',
-        relation: InitiatorHasRelationToGroupInDataConditionRelation.STAFF,
+        relation: 'staff',
         requiredPermission: 'MY_PERMISSION',
       },
     ],
     actions: [
       {
-        type: TransitionActionTypeEnum.TASK,
+        type: 'task',
         functioName: 'test',
         data: {},
       },
     ],
     afterActions: [
       {
-        type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER,
+        type: 'notifyAlgoQueueManager',
         id: 'id',
         version: 'version',
       },
@@ -115,61 +99,53 @@ export const newSchemaCreated: Partial<Schema> = {
   },
   transitions: [
     {
+      id: '1',
       toStatus: 'start',
-      type: CreationTransitionType.MANUAL,
+      type: 'manual',
       conditions: [
         {
-          type: ConfigurationType.INPUT,
+          type: 'input',
           configuration: {
-            type: ConfigurationType.NUMBER,
+            type: 'number',
             minimum: -180,
             maximum: 180,
           },
         },
         {
-          type: ConfigurationType.DOCUMENT,
+          type: 'document',
           configuration: {
-            type: ConfigurationType.NUMBER,
+            type: 'number',
             minimum: -180,
             maximum: 180,
           },
         },
         {
-          type:
-            InitiatorHasRelationToUserInDataConditionType.INITIATOR_HAS_RELATION_TO_USER_IN_DATA,
+          type: 'initiatorHasRelationToUserInData',
           userIdField: '5e9fff9d90135a2a9a718e2f',
-          relation:
-            InitiatorHasRelationToUserInDataConditionRelation.IS_STAFF_OF_TARGET_PATIENT,
+          relation: 'isStaffOfTargetPatient',
         },
         {
-          type:
-            InitiatorHasRelationToGroupInDataConditionType.INITIATOR_HAS_RELATION_TO_GROUP_IN_DATA,
+          type: 'initiatorHasRelationToGroupInData',
           groupIdField: '5e9fff9d90135a2a9a718e2f',
-          relation: InitiatorHasRelationToGroupInDataConditionRelation.STAFF,
+          relation: 'staff',
           requiredPermission: 'MY_PERMISSION',
         },
       ],
       actions: [
         {
-          type: TransitionActionTypeEnum.LINK_CREATOR,
+          type: 'linkCreator',
         },
       ],
-      afterActions: [
-        {
-          type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER,
-          id: 'id',
-          version: 'string',
-        },
-      ],
+      afterActions: [],
       name: 'move',
       fromStatuses: ['start'],
     },
   ],
-  createMode: CreateMode.DEFAULT,
-  readMode: ReadMode.ALL_USERS,
-  updateMode: UpdateMode.DEFAULT,
-  deleteMode: DeleteMode.PERMISSION_REQUIRED,
-  groupSyncMode: GroupSyncMode.DISABLED,
+  createMode: 'default',
+  readMode: 'allUsers',
+  updateMode: 'default',
+  deleteMode: 'permissionRequired',
+  groupSyncMode: 'disabled',
   defaultLimit: 5,
   maximumLimit: 5,
   updateTimestamp: new Date('2021-04-20T07:34:08.358Z'),
@@ -340,7 +316,7 @@ export const newIndexInput = {
   fields: [
     {
       name: 'PropertyNameToIndex',
-      type: IndexFieldsType.ASC,
+      type: 'asc',
     },
   ],
   options: {
@@ -448,18 +424,18 @@ export const lockedDocumentsListResponse = {
 };
 
 const inputCondition: Condition = {
-  type: ConfigurationType.INPUT,
+  type: 'input',
   configuration: {
-    type: ConfigurationType.NUMBER,
+    type: 'number',
     minimum: -180,
     maximum: 180,
   },
 };
 
 const documentCondition: Condition = {
-  type: ConfigurationType.DOCUMENT,
+  type: 'document',
   configuration: {
-    type: ConfigurationType.NUMBER,
+    type: 'number',
     minimum: -180,
     maximum: 180,
   },
@@ -467,22 +443,22 @@ const documentCondition: Condition = {
 
 export const transitionInput: CreationTransition = {
   toStatus: 'start',
-  type: CreationTransitionType.MANUAL,
+  type: 'manual',
   conditions: [inputCondition, documentCondition],
 };
 
-export const newTransition: Transition = {
+export const newTransition: TransitionInput = {
   toStatus: 'start',
-  type: CreationTransitionType.MANUAL,
+  type: 'manual',
   conditions: [inputCondition, documentCondition],
   actions: [
     {
-      type: TransitionActionTypeEnum.LINK_CREATOR,
+      type: 'linkCreator',
     },
   ],
   afterActions: [
     {
-      type: TransitionAfterActionTypeEnum.NOTIFY_ALGO_QUEUE_MANAGER,
+      type: 'notifyAlgoQueueManager',
       id: 'id',
       version: 'version',
     },
