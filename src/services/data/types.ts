@@ -223,7 +223,7 @@ export interface TransitionActionSet {
 }
 
 export interface TransitionActionUnset {
-  type: TransitionActionTypeEnum.SET;
+  type: TransitionActionTypeEnum.UNSET;
   field: string[];
 }
 
