@@ -5,6 +5,7 @@ import {
   newDocumentCreated,
   documentData,
   documentsListResponse,
+  lockedDocumentsListResponse,
 } from '../../__helpers__/data';
 
 describe('Documents Service', () => {
@@ -61,7 +62,7 @@ describe('Documents Service', () => {
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, documentsListResponse);
 
-    const document = await sdk.data.documents.findById(documentId, schemaId);
+    const document = await sdk.data.documents.findById(schemaId, documentId);
 
     expect(document.id).toBe(documentId);
   });
@@ -160,5 +161,37 @@ describe('Documents Service', () => {
       userIds: ['5e9fff9d90135a2a9a718e2f'],
     });
     expect(res.affectedRecords).toBe(1);
+  });
+
+  it('should return true if the document is not in a locked state', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents?eq(id,${documentId})`)
+      .reply(200, lockedDocumentsListResponse);
+
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents?eq(id,${documentId})`)
+      .reply(200, documentsListResponse);
+
+    const res = await sdk.data.documents.assertNonLockedState(
+      schemaId,
+      documentId,
+      2,
+      10
+    );
+    expect(res).toBe(true);
+  });
+
+  it('should throw if the document is in a locked state', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents?eq(id,${documentId})`)
+      .reply(200, lockedDocumentsListResponse);
+
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents?eq(id,${documentId})`)
+      .reply(200, lockedDocumentsListResponse);
+
+    await expect(
+      sdk.data.documents.assertNonLockedState(schemaId, documentId, 2, 10)
+    ).rejects.toThrow(new Error('Document is in a locked state'));
   });
 });

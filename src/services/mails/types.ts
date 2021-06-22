@@ -1,4 +1,10 @@
-import { ObjectId, LanguageCode } from '../types';
+import {
+  ObjectId,
+  LanguageCode,
+  MailAddress,
+  MailAddressList,
+  MailRecipients,
+} from '../types';
 
 export interface Mail {
   id?: ObjectId;
@@ -16,15 +22,6 @@ export interface Mail {
   creationTimestamp?: Date;
   updateTimestamp?: Date;
 }
-
-export interface MailRecipients {
-  to: MailAddressList;
-  cc?: MailAddressList;
-  bcc?: MailAddressList;
-}
-
-export type MailAddressList = MailAddress[];
-export type MailAddress = string;
 
 export type PlainMailCreation = {
   subject: string;

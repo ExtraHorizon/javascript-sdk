@@ -61,4 +61,39 @@ describe('rql string builder', () => {
       .build();
     expect(result).toBe('?select(name,id)&like(name,fitbit)');
   });
+
+  it('should build a valid rql with or operator  with a name like fitbit or bitfit', async () => {
+    const likeFitbit = rqlBuilder().like('name', 'fitbit').intermediate();
+    const likeBitFit = rqlBuilder().like('name', 'bitfit').intermediate();
+    const result = rqlBuilder().or(likeBitFit, likeFitbit).build();
+    expect(result).toBe('?or(like(name,bitfit),like(name,fitbit))');
+  });
+
+  it('should build a valid rql with contains and or operator', async () => {
+    const groupId = '2313232';
+    const filterValue = 'Test';
+    const pageSize = 20;
+    const pageIndex = 1;
+
+    const eqGroupId = rqlBuilder().eq('group_id', groupId).intermediate();
+    const containsStaff = rqlBuilder()
+      .contains('staff_enlistments', eqGroupId)
+      .intermediate();
+    const firstNamelikeFilterValue = rqlBuilder()
+      .like('first_name', filterValue)
+      .intermediate();
+    const lastNamelikeFilterValue = rqlBuilder()
+      .like('last_name', filterValue)
+      .intermediate();
+    const result = rqlBuilder(containsStaff)
+      .or(firstNamelikeFilterValue, lastNamelikeFilterValue)
+      .limit(pageSize, pageSize * pageIndex)
+      .build();
+
+    expect(result).toBe(
+      `?contains(staff_enlistments,eq(group_id,${groupId}))&or(like(first_name,${filterValue}),like(last_name,${filterValue}))&limit(${pageSize},${
+        pageSize * pageIndex
+      })`
+    );
+  });
 });

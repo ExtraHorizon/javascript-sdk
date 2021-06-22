@@ -105,6 +105,6 @@ export interface LogEntry {
   updateTimestamp?: Date;
 }
 
-export interface Comment {
+export interface ProfileComment {
   text: string;
 }

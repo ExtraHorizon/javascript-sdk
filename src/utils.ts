@@ -1,10 +1,10 @@
 import OAuth from 'oauth-1.0a';
-import crypto from 'crypto';
+import CryptoJS from 'crypto-js';
 import { ClientConfig, ClientParams } from './types';
 import { AUTH_BASE } from './constants';
 
 function hmacSha1Hash(baseString: string, key: string) {
-  return crypto.createHmac('sha1', key).update(baseString).digest('base64');
+  return CryptoJS.HmacSHA1(baseString, key).toString(CryptoJS.enc.Base64);
 }
 
 export function validateConfig({
@@ -46,4 +46,8 @@ export function validateConfig({
       client_id: params.clientId,
     },
   };
+}
+
+export function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
