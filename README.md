@@ -337,7 +337,7 @@ The package also exports a mockSdk you can use in your tests. In this example `j
 import { getMockSdk } from '@extrahorizon/javascript-sdk';
 
 describe('mock SDK', () => {
-  const sdk = getMockSdk(jest.fn);
+  const sdk = getMockSdk<jest.Mock>(jest.fn);
   it('should be valid mock', async () => {
     expect(sdk.data).toBeDefined();
   });

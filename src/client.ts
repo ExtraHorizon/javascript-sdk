@@ -23,7 +23,7 @@ import {
 } from './http';
 import { validateConfig } from './utils';
 
-interface OAuth1Authenticate {
+export interface OAuth1Authenticate {
   /**
    * Use OAuth1 Token authentication
    * @example
@@ -56,7 +56,7 @@ interface OAuth1Authenticate {
   authenticate(oauth: { email: string; password: string }): Promise<void>;
 }
 
-interface OAuth2Authenticate {
+export interface OAuth2Authenticate {
   /**
    * Use OAuth2 Authorization Code Grant flow with callback
    * @example
