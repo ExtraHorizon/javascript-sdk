@@ -10,3 +10,4 @@ export const DISPATCHERS_BASE = '/dispatchers/v1';
 export const PAYMENTS_BASE = '/payments/v1';
 export const PROFILES_BASE = '/profiles/v1';
 export const NOTIFICATIONS_BASE = '/notifications/v1';
+export const LOCALIZATIONS_BASE = '/localizations/v1';

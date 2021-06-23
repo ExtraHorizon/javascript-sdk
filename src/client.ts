@@ -12,6 +12,7 @@ import {
   mailsService,
   dispatchersService,
   paymentsService,
+  localizationsService,
   profilesService,
   notificationsService,
 } from './services';
@@ -23,7 +24,7 @@ import {
   createOAuth2HttpClient,
 } from './http';
 import { validateConfig } from './utils';
-import { HttpInstance } from './http/types';
+import { OAuthClient } from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -107,7 +108,7 @@ type Authenticate<
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  raw: HttpInstance;
+  raw: OAuthClient;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
@@ -148,6 +149,11 @@ export interface Client<T extends ClientParams> {
    * @see https://developers.extrahorizon.io/services/payments-service/1.1.0-dev/
    */
   payments: ReturnType<typeof paymentsService>;
+  /**
+   * Storage and retrieval of text snippets, translated into multiple languages.
+   * @see https://developers.extrahorizon.io/services/localizations-service/1.1.6-dev/
+   */
+  localizations: ReturnType<typeof localizationsService>;
   /**
    * Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
    * @see https://developers.extrahorizon.io/services/profiles-service/1.1.3/
@@ -231,6 +237,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     configurations: configurationsService(httpWithAuth),
     dispatchers: dispatchersService(httpWithAuth),
     payments: paymentsService(httpWithAuth),
+    localizations: localizationsService(httpWithAuth),
     profiles: profilesService(httpWithAuth),
     notifications: notificationsService(httpWithAuth),
     auth: {

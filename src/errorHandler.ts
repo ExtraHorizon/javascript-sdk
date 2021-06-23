@@ -58,6 +58,7 @@ import {
   StripePaymentMethodError,
   StripeRequestError,
   IDFormatError,
+  DefaultLocalizationMissingError,
   ProfileAlreadyExistsError,
   RemoveFieldError,
 } from './errors';
@@ -105,6 +106,7 @@ export const ErrorClassDefinitionsMap = {
   301: ProfileAlreadyExistsError,
   414: StatusInUseError,
   415: LockedDocumentError,
+  801: DefaultLocalizationMissingError,
   1002: LocalizationKeyMissingError,
   1003: TemplateFillingError,
   2605: InvalidTokenError,
