@@ -41,7 +41,11 @@ export interface OAuth1Authenticate {
    * @throws {TooManyFailedAttemptsError}
    * @throws {MfaRequiredError}
    */
-  authenticate(oauth: { token: string; tokenSecret: string }): Promise<void>;
+  authenticate(oauth: {
+    token: string;
+    tokenSecret: string;
+    skipTokenCheck?: boolean;
+  }): Promise<void>;
   /**
    * Use OAuth1 Password authentication
    * @example

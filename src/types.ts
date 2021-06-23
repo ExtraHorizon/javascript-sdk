@@ -30,6 +30,7 @@ export interface ParamsOauth1WithEmail {
 export interface ParamsOauth1WithToken {
   token: string;
   tokenSecret: string;
+  skipTokenCheck?: boolean;
 }
 
 export interface ParamsOauth2AuthorizationCode {
