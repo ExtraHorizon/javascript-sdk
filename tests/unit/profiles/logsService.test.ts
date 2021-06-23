@@ -55,7 +55,7 @@ describe('Logs Service', () => {
       .get(`/${profileId}/groups/${groupId}/logs`)
       .reply(200, logsResponse);
 
-    const res = await sdk.profiles.logs.getLogs(profileId, groupId);
+    const res = await sdk.profiles.logs.find(profileId, groupId);
 
     expect(res.data.length).toBeGreaterThan(0);
   });
