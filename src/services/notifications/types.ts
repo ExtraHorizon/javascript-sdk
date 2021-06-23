@@ -13,22 +13,20 @@ export interface Notification {
 
 interface CreateNotificationRequestBase {
   userId?: ObjectId;
-  type?: CreateNotificationRequestType;
   important?: boolean;
 }
 
 interface CreateNotificationRequestMessage
   extends CreateNotificationRequestBase {
-  type: CreateNotificationRequestType.MESSAGE;
+  type: 'message';
   fields: {
     title: string;
     body: string;
-    senderId: ObjectId;
   };
 }
 
 interface CreateNotificationRequestLink extends CreateNotificationRequestBase {
-  type: CreateNotificationRequestType.LINK;
+  type: 'link';
   fields: {
     title: string;
     body: string;
@@ -38,7 +36,7 @@ interface CreateNotificationRequestLink extends CreateNotificationRequestBase {
 
 interface CreateNotificationRequestMeasurementComment
   extends CreateNotificationRequestBase {
-  type: CreateNotificationRequestType.MEASUREMENT_COMMENT;
+  type: 'measurement_comment';
   fields: {
     commenterId: ObjectId;
     measurementId: ObjectId;
@@ -47,7 +45,7 @@ interface CreateNotificationRequestMeasurementComment
 
 interface CreateNotificationRequestMeasurementReviewed
   extends CreateNotificationRequestBase {
-  type: CreateNotificationRequestType.MEASUREMENT_REVIEWED;
+  type: 'measurement_reviewed';
   fields: {
     measurementId: ObjectId;
   };
@@ -55,7 +53,7 @@ interface CreateNotificationRequestMeasurementReviewed
 
 interface CreateNotificationRequestMeasurementPrescriptionExpiry
   extends CreateNotificationRequestBase {
-  type: CreateNotificationRequestType.MEASUREMENT_REVIEWED;
+  type: 'prescription_expiry';
   fields: {
     groupId: ObjectId;
     groupName: string;
@@ -64,12 +62,12 @@ interface CreateNotificationRequestMeasurementPrescriptionExpiry
 
 interface CreateNotificationRequestActivated
   extends CreateNotificationRequestBase {
-  type: CreateNotificationRequestType.ACTIVATED;
+  type: 'activated';
 }
 
 interface CreateNotificationRequestPasswordChanged
   extends CreateNotificationRequestBase {
-  type: CreateNotificationRequestType.PASSWORD_CHANGED;
+  type: 'password_changed';
 }
 
 export type CreateNotificationRequest =
@@ -80,16 +78,6 @@ export type CreateNotificationRequest =
   | CreateNotificationRequestMeasurementPrescriptionExpiry
   | CreateNotificationRequestActivated
   | CreateNotificationRequestPasswordChanged;
-
-export enum CreateNotificationRequestType {
-  PASSWORD_CHANGED = 'password_changed',
-  ACTIVATED = 'activated',
-  PRESCRIPTION_EXPIRY = 'prescription_expiry',
-  MEASUREMENT_COMMENT = 'measurement_comment',
-  MEASUREMENT_REVIEWED = 'measurement_reviewed',
-  MESSAGE = 'message',
-  LINK = 'link',
-}
 
 export interface NotifTypeDef {
   name?: string;

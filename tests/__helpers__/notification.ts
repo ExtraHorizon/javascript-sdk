@@ -1,18 +1,16 @@
 import {
   Notification,
   CreateNotificationRequest,
-  CreateNotificationRequestType,
   NotifTypeDef,
   FieldType,
 } from '../../src/services/notifications/types';
 
 export const notificationInput: CreateNotificationRequest = {
-  type: CreateNotificationRequestType.MESSAGE,
+  type: 'message',
   userId: '58074804b2148f3b28ad759a',
   fields: {
     title: 'string',
     body: 'string',
-    senderId: '58074804b2148f3b28ad759a',
   },
   important: true,
 };

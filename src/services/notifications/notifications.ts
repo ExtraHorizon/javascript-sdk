@@ -1,13 +1,9 @@
-import type { HttpInstance } from '../../types';
+import type { OAuthClient } from '../../types';
 import { AffectedRecords, PagedResult, ObjectId } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import type {
-  Notification,
-  CreateNotificationRequest,
-  NotifTypeDef,
-} from './types';
+import { Notification, CreateNotificationRequest, NotifTypeDef } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: OAuthClient) => ({
   /**
    * Create a notification
    * Permission | Scope | Effect
@@ -19,7 +15,14 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns Notification
    */
   async create(requestBody: CreateNotificationRequest): Promise<Notification> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+    return (
+      await client.post(httpAuth, '/', {
+        ...requestBody,
+        ...(requestBody.type === 'message'
+          ? { fields: { ...requestBody.fields, senderId: httpAuth.userId } }
+          : {}),
+      })
+    ).data;
   },
 
   /**

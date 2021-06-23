@@ -1,4 +1,4 @@
-import type { HttpInstance } from '../../types';
+import type { OAuthClient } from '../../types';
 import httpClient from '../http-client';
 import { decamelizeKeys } from '../../http/utils';
 import notifications from './notifications';
@@ -12,7 +12,7 @@ export type NotificationsService = ReturnType<typeof notifications> &
   };
 
 export const notificationsService = (
-  httpWithAuth: HttpInstance
+  httpWithAuth: OAuthClient
 ): NotificationsService => {
   const client = httpClient({
     basePath: NOTIFICATIONS_BASE,
