@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { AuthParams, ClientParams, ParamsOauth1, ParamsOauth2 } from './types';
 import { version as packageVersion } from './version';
 
@@ -23,6 +22,7 @@ import {
   createOAuth2HttpClient,
 } from './http';
 import { validateConfig } from './utils';
+import { HttpInstance } from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -106,7 +106,7 @@ type Authenticate<
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  raw: AxiosInstance;
+  raw: HttpInstance;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
