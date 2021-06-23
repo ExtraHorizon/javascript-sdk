@@ -35,7 +35,7 @@ describe('Countries Service', () => {
 
     const res = await sdk.localizations.getCountries();
 
-    expect(res.data.length).toBeGreaterThan(0);
+    expect(res.length).toBeGreaterThan(0);
   });
 
   it('should retrieve a list of all the defined regions for the specified country code', async () => {
@@ -46,6 +46,6 @@ describe('Countries Service', () => {
 
     const res = await sdk.localizations.getRegions(countryCode);
 
-    expect(res.data.length).toBeGreaterThan(0);
+    expect(res.length).toBeGreaterThan(0);
   });
 });

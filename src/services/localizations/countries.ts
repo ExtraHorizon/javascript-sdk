@@ -1,5 +1,4 @@
 import type { HttpInstance } from '../../types';
-import { PagedResult } from '../types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -10,8 +9,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @returns PagedResult<string>
    */
-  async getCountries(): Promise<PagedResult<string>> {
-    return (await client.get(httpAuth, '/countries')).data;
+  async getCountries(): Promise<string[]> {
+    return (await client.get(httpAuth, '/countries')).data.data;
   },
 
   /**
@@ -24,7 +23,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns PagedResult<string>
    * @throws {ResourceUnknownError}
    */
-  async getRegions(country: string): Promise<PagedResult<string>> {
-    return (await client.get(httpAuth, `/countries/${country}/regions`)).data;
+  async getRegions(country: string): Promise<string[]> {
+    return (await client.get(httpAuth, `/countries/${country}/regions`)).data
+      .data;
   },
 });

@@ -1,6 +1,4 @@
 import type { HttpInstance } from '../../types';
-import { PagedResult } from '../types';
-import { SupportedLanguageCodes } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -11,7 +9,7 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @returns PagedResult<SupportedLanguageCodes>
    */
-  async getLanguages(): Promise<PagedResult<SupportedLanguageCodes>> {
-    return (await client.get(httpAuth, '/languages')).data;
+  async getLanguages(): Promise<string[]> {
+    return (await client.get(httpAuth, '/languages')).data.data;
   },
 });

@@ -32,6 +32,6 @@ describe('Languages Service', () => {
 
     const res = await sdk.localizations.getLanguages();
 
-    expect(res.data.length).toBeGreaterThan(0);
+    expect(res.length).toBeGreaterThan(0);
   });
 });

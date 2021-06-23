@@ -8,7 +8,6 @@ import type {
   BulkUpdateResponse,
   LocalizationRequest,
   MappedText,
-  Key,
 } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
@@ -34,7 +33,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns the first element found
    */
   async findByKey(
-    key: Key,
+    key: string,
     options?: { rql?: RQLString }
   ): Promise<Localization> {
     const rqlWithKey = rqlBuilder(options?.rql).eq('key', key).build();

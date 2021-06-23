@@ -1,20 +1,22 @@
-export type Key = string;
-/**
- * Strings mapped to a language code
- */
-export type MappedText = Record<string, string>;
-export type StringArray = Array<Key>;
-
 export enum SupportedLanguageCodes {
-  NL = 'NL',
   EN = 'EN',
+  NL = 'NL',
   DE = 'DE',
   FR = 'FR',
+  DA = 'DA',
+  ES = 'ES',
+  IT = 'IT',
 }
 
+type SupportedLanguageCodesValues = keyof typeof SupportedLanguageCodes;
+
+export type MappedText = Record<SupportedLanguageCodesValues, string>;
+
 export interface Localization {
-  key?: Key;
-  text?: MappedText;
+  key: string;
+  text: {
+    [K in SupportedLanguageCodesValues]?: string;
+  };
   creationTimestamp?: Date;
   updateTimestamp?: Date;
 }
@@ -29,7 +31,7 @@ export interface BulkLocalization {
 export interface BulkCreationResponse {
   created?: number;
   existing?: number;
-  existingIds?: StringArray;
+  existingIds?: string[];
 }
 
 /**
@@ -38,10 +40,10 @@ export interface BulkCreationResponse {
 export interface BulkUpdateResponse {
   updated?: number;
   missing?: number;
-  missingIds?: StringArray;
+  missingIds?: string[];
 }
 
 export interface LocalizationRequest {
-  localizationCodes?: Array<SupportedLanguageCodes>;
-  localizations?: StringArray;
+  localizationCodes: SupportedLanguageCodesValues[];
+  localizations: string[];
 }
