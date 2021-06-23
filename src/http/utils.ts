@@ -19,6 +19,7 @@ export function parseAuthParams(options: AuthParams): AuthConfig {
         key: options.token,
         secret: options.tokenSecret,
       },
+      skipTokenCheck: options.skipTokenCheck || false,
     };
   }
 

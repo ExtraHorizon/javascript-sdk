@@ -81,6 +81,7 @@ export interface TokenResponseOauth2 {
 
 export interface Oauth1Token {
   tokenData: TokenDataOauth1;
+  skipTokenCheck: boolean;
 }
 
 export interface Oauth1Password {
