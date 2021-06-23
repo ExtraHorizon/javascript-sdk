@@ -168,28 +168,30 @@ describe('Documents Service', () => {
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, lockedDocumentsListResponse);
 
-      nock(`${host}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, documentsListResponse);
 
-      const res = await sdk.data.documents.assertNonLockedState(schemaId, documentId, 2, 10);
-      expect(res).toBe(true);
+    const res = await sdk.data.documents.assertNonLockedState(
+      schemaId,
+      documentId,
+      2,
+      10
+    );
+    expect(res).toBe(true);
   });
-
 
   it('should throw if the document is in a locked state', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, lockedDocumentsListResponse);
 
-      nock(`${host}${DATA_BASE}`)
+    nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, lockedDocumentsListResponse);
 
-
-      await expect(sdk.data.documents.assertNonLockedState(schemaId, documentId, 2, 10))
-      .rejects
-      .toThrow(new Error('Document is in a locked state'));
-
+    await expect(
+      sdk.data.documents.assertNonLockedState(schemaId, documentId, 2, 10)
+    ).rejects.toThrow(new Error('Document is in a locked state'));
   });
 });

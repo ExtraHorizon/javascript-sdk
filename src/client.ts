@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { AuthParams, ClientParams, ParamsOauth1, ParamsOauth2 } from './types';
 import { version as packageVersion } from './version';
 
@@ -13,6 +12,7 @@ import {
   mailsService,
   dispatchersService,
   paymentsService,
+  notificationsService,
 } from './services';
 
 import {
@@ -22,6 +22,7 @@ import {
   createOAuth2HttpClient,
 } from './http';
 import { validateConfig } from './utils';
+import { HttpInstance } from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -105,7 +106,7 @@ type Authenticate<
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  raw: AxiosInstance;
+  raw: HttpInstance;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
@@ -146,6 +147,11 @@ export interface Client<T extends ClientParams> {
    * @see https://developers.extrahorizon.io/services/payments-service/1.1.0-dev/
    */
   payments: ReturnType<typeof paymentsService>;
+  /**
+   * A service that handles push notifications.
+   * @see https://developers.extrahorizon.io/services/notifications-service/1.0.8/
+   */
+  notifications: ReturnType<typeof notificationsService>;
   /**
    * The user service stands in for managing users themselves, as well as roles related to users and groups of users.
    * @see https://developers.extrahorizon.io/services/users-service/1.1.7/
@@ -219,6 +225,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     configurations: configurationsService(httpWithAuth),
     dispatchers: dispatchersService(httpWithAuth),
     payments: paymentsService(httpWithAuth),
+    notifications: notificationsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
       authenticate: (oauth: AuthParams): Promise<void> =>
