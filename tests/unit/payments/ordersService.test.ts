@@ -45,6 +45,24 @@ describe('Orders Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find an order by id', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get(`/orders?eq(id,${orderId})`)
+      .reply(200, orderResponse);
+
+    const order = await sdk.payments.orders.findById(orderId);
+
+    expect(order.id).toBe(orderId);
+  });
+
+  it('should find the first order', async () => {
+    nock(`${host}${PAYMENTS_BASE}`).get('/orders').reply(200, orderResponse);
+
+    const order = await sdk.payments.orders.findFirst();
+
+    expect(order.id).toBe(orderResponse.data[0].id);
+  });
+
   it('should create an order', async () => {
     nock(`${host}${PAYMENTS_BASE}`).post('/orders').reply(200, orderData);
 

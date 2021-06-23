@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { AuthParams, ClientParams, ParamsOauth1, ParamsOauth2 } from './types';
 import { version as packageVersion } from './version';
 
@@ -14,6 +13,8 @@ import {
   dispatchersService,
   paymentsService,
   localizationsService,
+  profilesService,
+  notificationsService,
 } from './services';
 
 import {
@@ -23,8 +24,9 @@ import {
   createOAuth2HttpClient,
 } from './http';
 import { validateConfig } from './utils';
+import { HttpInstance } from './http/types';
 
-interface OAuth1Authenticate {
+export interface OAuth1Authenticate {
   /**
    * Use OAuth1 Token authentication
    * @example
@@ -57,7 +59,7 @@ interface OAuth1Authenticate {
   authenticate(oauth: { email: string; password: string }): Promise<void>;
 }
 
-interface OAuth2Authenticate {
+export interface OAuth2Authenticate {
   /**
    * Use OAuth2 Authorization Code Grant flow with callback
    * @example
@@ -106,7 +108,7 @@ type Authenticate<
 > = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  raw: AxiosInstance;
+  raw: HttpInstance;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
@@ -152,6 +154,16 @@ export interface Client<T extends ClientParams> {
    * @see https://developers.extrahorizon.io/services/localizations-service/1.1.6-dev/
    */
   localizations: ReturnType<typeof localizationsService>;
+  /**
+   * Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
+   * @see https://developers.extrahorizon.io/services/profiles-service/1.1.3/
+   */
+  profiles: ReturnType<typeof profilesService>;
+  /**
+   * A service that handles push notifications.
+   * @see https://developers.extrahorizon.io/services/notifications-service/1.0.8/
+   */
+  notifications: ReturnType<typeof notificationsService>;
   /**
    * The user service stands in for managing users themselves, as well as roles related to users and groups of users.
    * @see https://developers.extrahorizon.io/services/users-service/1.1.7/
@@ -226,6 +238,8 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     dispatchers: dispatchersService(httpWithAuth),
     payments: paymentsService(httpWithAuth),
     localizations: localizationsService(httpWithAuth),
+    profiles: profilesService(httpWithAuth),
+    notifications: notificationsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
       authenticate: (oauth: AuthParams): Promise<void> =>

@@ -157,5 +157,12 @@ export function createOAuth1HttpClient(
     });
   }
 
-  return Object.assign(httpWithAuth, { authenticate, confirmMfa });
+  return {
+    ...httpWithAuth,
+    authenticate,
+    confirmMfa,
+    get userId() {
+      return tokenData?.userId;
+    },
+  };
 }
