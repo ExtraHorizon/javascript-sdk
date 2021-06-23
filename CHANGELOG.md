@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.2.0]
 
 - Added Profiles Service
+- Added Notifications Service
 
 ## [3.1.0]
 

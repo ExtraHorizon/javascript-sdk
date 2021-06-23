@@ -1,6 +1,10 @@
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import * as OAuth from 'oauth-1.0a';
-import { TokenDataOauth1, TokenDataOauth2 } from './http/types';
+import {
+  TokenDataOauth1,
+  TokenDataOauth2,
+  HttpRequestConfig,
+} from './http/types';
 
 export * from './http/types';
 export * from './services/types';
@@ -15,9 +19,7 @@ export * from './services/configurations/types';
 export * from './services/dispatchers/types';
 export * from './services/payments/types';
 export * from './services/profiles/types';
-
-export type HttpInstance = AxiosInstance;
-export type HttpRequestConfig = AxiosRequestConfig;
+export * from './services/notifications/types';
 
 export interface ParamsOauth1WithEmail {
   email: string;
@@ -53,7 +55,7 @@ export type AuthParams =
 interface ParamsBase {
   host: string;
   responseLogger?: (response: AxiosResponse | Error) => unknown;
-  requestLogger?: (request: AxiosRequestConfig | Error) => unknown;
+  requestLogger?: (request: HttpRequestConfig | Error) => unknown;
   freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
 }
 

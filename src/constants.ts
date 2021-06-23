@@ -9,3 +9,4 @@ export const MAIL_BASE = '/mail/v1';
 export const DISPATCHERS_BASE = '/dispatchers/v1';
 export const PAYMENTS_BASE = '/payments/v1';
 export const PROFILES_BASE = '/profiles/v1';
+export const NOTIFICATIONS_BASE = '/notifications/v1';
