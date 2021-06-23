@@ -1,3 +1,4 @@
+import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
 import {
   AffectedRecords,
@@ -45,15 +46,21 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
+   * @param rql Add filters to the requested list.
    * @returns PagedResult<LogEntry>
    * @throws {ResourceUnknownError}
    */
-  async getLogs(
+  async find(
     profileId: ObjectId,
-    groupId: ObjectId
+    groupId: ObjectId,
+    options?: { rql?: RQLString }
   ): Promise<PagedResult<LogEntry>> {
-    return (await client.get(httpAuth, `/${profileId}/groups/${groupId}/logs`))
-      .data;
+    return (
+      await client.get(
+        httpAuth,
+        `/${profileId}/groups/${groupId}/logs${options?.rql || ''}`
+      )
+    ).data;
   },
 
   /**
