@@ -1,5 +1,6 @@
 // TypeScript Does not allow custom error on type errors. This is a hackish work around.
-type NotAnRQLStringError = 'Please use rqlBuilder to construct valid RQL. See README for an example.';
+type NotAnRQLStringError =
+  'Please use rqlBuilder to construct valid RQL. See README for an example.';
 type RQLCheck<T> = T extends any ? NotAnRQLStringError : T;
 
 export type RQLString = RQLCheck<string>;

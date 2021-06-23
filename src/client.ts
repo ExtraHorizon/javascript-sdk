@@ -103,9 +103,8 @@ export interface OAuth2Authenticate {
   authenticate(oauth: { refreshToken: string }): Promise<void>;
 }
 
-type Authenticate<
-  T extends ClientParams = ParamsOauth1
-> = T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
+type Authenticate<T extends ClientParams = ParamsOauth1> =
+  T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
   raw: OAuthClient;

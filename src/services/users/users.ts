@@ -355,9 +355,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param email
    * @returns any Success
    */
-  async isEmailAvailable(
-    email: string
-  ): Promise<{
+  async isEmailAvailable(email: string): Promise<{
     emailAvailable: boolean;
   }> {
     return (
