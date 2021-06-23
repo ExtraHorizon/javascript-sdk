@@ -25,6 +25,6 @@ export default {
     }),
     typescript(),
     json(),
-    terser(),
+    // terser(),
   ],
 };
