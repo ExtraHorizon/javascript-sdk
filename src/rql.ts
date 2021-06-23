@@ -151,7 +151,7 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
       return processQuery('like', `${field},${value}`);
     },
     lt(field, value) {
-      return processQuery('gt', `${field},${value}`);
+      return processQuery('lt', `${field},${value}`);
     },
     gt(field, value) {
       return processQuery('gt', `${field},${value}`);
