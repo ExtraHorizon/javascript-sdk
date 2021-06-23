@@ -59,6 +59,26 @@ describe('Products Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find a product by id', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get(`/products?eq(id,${productId})`)
+      .reply(200, productResponse);
+
+    const product = await sdk.payments.products.findById(productId);
+
+    expect(product.id).toBe(productId);
+  });
+
+  it('should find the first product', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/products')
+      .reply(200, productResponse);
+
+    const product = await sdk.payments.products.findFirst();
+
+    expect(product.id).toBe(productResponse.data[0].id);
+  });
+
   it('should add tags to a product', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PAYMENTS_BASE}`).post('/products/addTags').reply(200, {

@@ -18,6 +18,7 @@ export * from './services/templates/types';
 export * from './services/configurations/types';
 export * from './services/dispatchers/types';
 export * from './services/payments/types';
+export * from './services/profiles/types';
 export * from './services/notifications/types';
 
 export interface ParamsOauth1WithEmail {

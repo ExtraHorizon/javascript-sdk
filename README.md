@@ -15,7 +15,10 @@
 - [Configurations][configurations]: Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
 - [Dispatchers][dispatchers]: Configure actions that need to be invoked when a specific event is/was triggered.
 - [Payments][payments]: A service that provides payment functionality.
+  <<<<<<< HEAD
+- # [Profiles][profiles]: Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
 - [Notifications][notifications]: A service that handles push notifications.
+  > > > > > > > dev
 
 ## Getting started
 
@@ -374,4 +377,5 @@ The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 [configurations]: https://developers.extrahorizon.io/services/configurations-service/2.0.2-dev/
 [dispatchers]: https://developers.extrahorizon.io/services/dispatchers-service/1.0.3-dev/
 [payments]: https://developers.extrahorizon.io/services/payments-service/1.1.0-dev/
+[profiles]: https://developers.extrahorizon.io/services/profiles-service/1.1.3/
 [notifications]: https://developers.extrahorizon.io/services/notifications-service/1.0.8/
