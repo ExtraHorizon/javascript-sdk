@@ -11,8 +11,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_EVENTS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<Event>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Event>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -25,8 +24,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `CREATE_EVENTS` | `global` | **Required** for this endpoint
    *
    * @param requestBody
-   * @returns Event Success
-   * @throws ApiError
+   * @returns Event
    */
   async create(requestBody: CreateEventBean): Promise<Event> {
     return (await client.post(httpAuth, '/', requestBody)).data;

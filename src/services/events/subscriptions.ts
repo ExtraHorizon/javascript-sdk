@@ -11,8 +11,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
-   * @throws ApiError
+   * @returns PagedResult<Subscription>
    */
   async find(options?: {
     rql?: RQLString;
@@ -28,8 +27,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `CREATE_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
    *
    * @param requestBody
-   * @returns Subscription Success
-   * @throws ApiError
+   * @returns Subscription
    */
   async create(requestBody: CreateSubscriptionBean): Promise<Subscription> {
     return (await client.post(httpAuth, '/subscriptions', requestBody)).data;
