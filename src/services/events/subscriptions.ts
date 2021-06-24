@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import { PagedResult } from '../types';
 import { RQLString } from '../../rql';
-import type { Subscription, CreateSubscriptionBean } from './types';
+import type { Subscription, CreateSubscription } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -29,7 +29,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns Subscription
    */
-  async create(requestBody: CreateSubscriptionBean): Promise<Subscription> {
+  async create(requestBody: CreateSubscription): Promise<Subscription> {
     return (await client.post(httpAuth, '/subscriptions', requestBody)).data;
   },
 });

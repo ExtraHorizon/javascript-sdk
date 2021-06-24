@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import { PagedResult } from '../types';
 import { RQLString } from '../../rql';
-import type { CreateEventBean } from './types';
+import type { CreateEvent } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -26,7 +26,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns Event
    */
-  async create(requestBody: CreateEventBean): Promise<Event> {
+  async create(requestBody: CreateEvent): Promise<Event> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 });

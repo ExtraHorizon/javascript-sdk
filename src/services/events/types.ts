@@ -1,7 +1,7 @@
 import { ObjectId } from '../types';
 // import { TypeConfiguration } from '../data/types';
 
-export interface CreateEventBean {
+export interface CreateEvent {
   type: string;
   content?: Record<string, any>;
 }
@@ -25,7 +25,7 @@ export interface Version {
   patch: number;
 }
 
-export interface CreateSubscriptionBean {
+export interface CreateSubscription {
   service: Service;
   eventTypes: Array<string>;
 }
