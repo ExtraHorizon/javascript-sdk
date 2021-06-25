@@ -1,4 +1,4 @@
-import { ObjectId, Entity, Timestamps } from '../types';
+import { Entity, Timestamps } from '../types';
 
 export interface CreateEvent {
   type: string;
