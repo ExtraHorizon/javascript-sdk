@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import { PagedResult } from '../types';
 import { RQLString } from '../../rql';
-import type { CreateEvent } from './types';
+import type { CreateEvent, Event } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
