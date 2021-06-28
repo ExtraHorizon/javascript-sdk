@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
+
 ## [3.2.0]
 
 - Added Localizations Service

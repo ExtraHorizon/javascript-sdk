@@ -94,7 +94,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns Patient Success
    */
-  async patients(options?: { rql?: RQLString }): Promise<Patient[]> {
+  async patients(options?: { rql?: RQLString }): Promise<PagedResult<Patient>> {
     return (
       await userClient.get(httpWithAuth, `/patients${options?.rql || ''}`)
     ).data;
@@ -110,7 +110,9 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns StaffMember Success
    */
-  async staff(options?: { rql?: RQLString }): Promise<StaffMember[]> {
+  async staff(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResult<StaffMember>> {
     return (await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`))
       .data;
   },
