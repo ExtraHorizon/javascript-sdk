@@ -5,6 +5,40 @@ import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import { Document } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
+  // TypeScript limitation. Function using optional generic with fallback can not be first function.
+  /**
+   * Check if the document is not in a locked state
+   * Actions cannot be performed if the document has a transitionLock
+   *
+   * @param schemaId the schema Id
+   * @param documentId the document Id
+   * @returns boolean success
+   */
+  async assertNonLockedState(
+    schemaId: ObjectId,
+    documentId: ObjectId,
+    tries = 5,
+    retryTimeInMs = 300
+  ): Promise<boolean> {
+    if (tries < 1) {
+      throw new Error('Document is in a locked state');
+    }
+
+    const res = await this.findById(schemaId, documentId);
+    if (!res.transitionLock) {
+      return true;
+    }
+
+    await delay(retryTimeInMs);
+
+    return this.assertNonLockedState(
+      schemaId,
+      documentId,
+      tries - 1,
+      retryTimeInMs
+    );
+  },
+
   /**
    * Create a document
    * Permission | Scope | Effect
@@ -16,10 +50,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Document} document
    * @throws {IllegalArgumentError}
    */
-  async create(
+  async create<CustomData = null>(
     schemaId: ObjectId,
     requestBody: Record<string, any>
-  ): Promise<Document> {
+  ): Promise<Document<CustomData>> {
     return (await client.post(httpAuth, `/${schemaId}/documents`, requestBody))
       .data;
   },
@@ -93,39 +127,6 @@ export default (client, httpAuth: HttpInstance) => ({
   ): Promise<Document<CustomData>> {
     const res = await this.find(schemaId, options);
     return res.data[0];
-  },
-
-  /**
-   * Check if the document is not in a locked state
-   * Actions cannot be performed if the document has a transitionLock
-   *
-   * @param schemaId the schema Id
-   * @param documentId the document Id
-   * @returns boolean success
-   */
-  async assertNonLockedState(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    tries = 5,
-    retryTimeInMs = 300
-  ): Promise<boolean> {
-    if (tries < 1) {
-      throw new Error('Document is in a locked state');
-    }
-
-    const res = await this.findById(schemaId, documentId);
-    if (!res.transitionLock) {
-      return true;
-    }
-
-    await delay(retryTimeInMs);
-
-    return this.assertNonLockedState(
-      schemaId,
-      documentId,
-      tries - 1,
-      retryTimeInMs
-    );
   },
 
   /**
