@@ -38,7 +38,7 @@ describe('Subscriptions Service', () => {
   it('should get a list of subscriptions', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${EVENTS_BASE}`)
-      .get(`/${rql}`)
+      .get(`/subscriptions${rql}`)
       .reply(200, subscriptionsResponse);
 
     const res = await sdk.events.subscriptions.find({ rql });
@@ -48,7 +48,7 @@ describe('Subscriptions Service', () => {
 
   it('should find an subscription by id', async () => {
     nock(`${host}${EVENTS_BASE}`)
-      .get(`/?eq(id,${subscriptionId})`)
+      .get(`/subscriptions?eq(id,${subscriptionId})`)
       .reply(200, subscriptionsResponse);
 
     const subscription = await sdk.events.subscriptions.findById(
@@ -59,7 +59,9 @@ describe('Subscriptions Service', () => {
   });
 
   it('should find the first subscription', async () => {
-    nock(`${host}${EVENTS_BASE}`).get('/').reply(200, subscriptionsResponse);
+    nock(`${host}${EVENTS_BASE}`)
+      .get('/subscriptions')
+      .reply(200, subscriptionsResponse);
 
     const subscription = await sdk.events.subscriptions.findFirst();
 
@@ -67,7 +69,9 @@ describe('Subscriptions Service', () => {
   });
 
   it('should create a new subscription', async () => {
-    nock(`${host}${EVENTS_BASE}`).post('/').reply(200, subscriptionsData);
+    nock(`${host}${EVENTS_BASE}`)
+      .post('/subscriptions')
+      .reply(200, subscriptionsData);
 
     const subscription = await sdk.events.subscriptions.create(
       subscriptionsInput
