@@ -46,10 +46,4 @@ const transitionResult = await sdk.data.documents.transition(
 if (transitionResult.affectedRecords === 1) {
   console.log('transition succesful');
 }
-
-/*await sdk.data
-  .schema(schemaId)
-  .document(documentId)
-  .transition({ id: transsitionId, data: { result: 'true' } });
-*/
 ```
