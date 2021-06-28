@@ -1,4 +1,6 @@
-# OAuth1 Token authentication
+## OAuth1
+
+### Token authentication
 
 ```js
 import { createOAuth1Client } from '@extrahorizon/javascript-sdk';
@@ -15,7 +17,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-# OAuth1 Email authentication
+### Email authentication
 
 ```js
 import { createOAuth1Client } from '@extrahorizon/javascript-sdk';
@@ -32,7 +34,9 @@ await sdk.auth.authenticate({
 });
 ```
 
-# OAuth2 Password Grant flow
+## OAuth2
+
+### Password Grant flow
 
 ```js
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
@@ -48,7 +52,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-# OAuth2 Authorization Code Grant flow with callback
+### Authorization Code Grant flow with callback
 
 ```js
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
@@ -67,7 +71,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-# OAuth2 Refresh Token Grant flow
+### Refresh Token Grant flow
 
 ```js
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
@@ -82,7 +86,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-# OAuth2 password grant flow with two-step MFA in try / catch
+### password grant flow with two-step MFA in try / catch
 
 ```js
 import {
@@ -116,11 +120,11 @@ try {
 }
 ```
 
-# Snippet for authentication flow in Browser
+## Snippet for authentication flow in Browser
 
 Each time the SDK refreshes the `accessToken` the `freshTokensCallback` is called with the response. You can store this data in `localStorage` or any other persistant data store. When you restart your application, you can check the data store for a `refreshToken` and use that to authenticate with the SDK.
 
-```typescript
+```js
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 
 const sdk = createOAuth2Client({
