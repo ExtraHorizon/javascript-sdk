@@ -14,11 +14,17 @@
       href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
     />
   </head>
+  <style>
+    .app-name-link > img {
+      max-width: 80%;
+    }
+  </style>
   <body>
     <div id="app"></div>
     <script>
       window.$docsify = {
         name: 'ExtraHorizon SDK',
+        logo: 'docs/assets/logo.webp',
         repo: 'https://github.com/ExtraHorizon/javascript-sdk',
         loadSidebar: 'docsify/_sidebar.md',
         auto2top: true,
