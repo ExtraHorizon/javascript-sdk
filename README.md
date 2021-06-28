@@ -37,11 +37,7 @@ Using yarn:
 yarn add @extrahorizon/javascript-sdk
 ```
 
-<br>
-
-## Your first request
-
-With es6 imports
+## Quick Start
 
 ```js
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
@@ -69,57 +65,6 @@ The data returned from the backend is mapped using interceptors:
 - Timestamps will be of type Date
 - Keys in objects will be camelCased
 - `records_affected` will be replaced by `affected_records`
-
-## Typescript for your Schemas and Documents
-
-If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
-
-As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
-
-```js
-import {
-  createOAuth2Client,
-  Schema,
-  JSONSchemaObject,
-  JSONSchemaArray,
-  JSONSchemaNumber,
-} from '@extrahorizon/javascript-sdk';
-
-interface MySchema extends Schema {
-  statuses?: Record<'start', never>;
-  properties?: {
-    ppg: JSONSchemaArray & {
-      maxItems: 2000;
-      items: JSONSchemaNumber & { maximum: 255 }[];
-    };
-    location: JSONSchemaObject & {
-      properties: {
-        longitutde: JSONSchemaNumber & { minium: -180; maximum: 180 };
-        latitude: JSONSchemaNumber & { minium: -90; maximum: 90 };
-      };
-    };
-  };
-}
-
-const sdk = createOAuth2Client({
-  host: 'dev.fibricheck.com',
-  clientId: '',
-});
-
-const { data: schemas } = await sdk.data.schemas.find();
-const mySchema: MySchema = schemas[0];
-
-interface MyData {
-  data: {
-    ppg: Number[];
-    location: {
-      longitude: Number;
-      latitude: Number;
-    };
-  };
-}
-const document = await sdk.data.documents.find<MyData>();
-```
 
 ## 🔑 License
 
