@@ -1,4 +1,3 @@
-import { isArgumentsObject } from 'util/types';
 import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { delay } from '../../utils';
@@ -6,6 +5,7 @@ import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import { Document } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
+  // TypeScript limitation. Function using optional generic with fallback can not be first function.
   /**
    * Check if the document is not in a locked state
    * Actions cannot be performed if the document has a transitionLock
