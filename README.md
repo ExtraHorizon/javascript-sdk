@@ -66,6 +66,10 @@ The data returned from the backend is mapped using interceptors:
 - Keys in objects will be camelCased
 - `records_affected` will be replaced by `affected_records`
 
+## Documentation
+
+- [https://extrahorizon.github.io/javascript-sdk](https://extrahorizon.github.io/javascript-sdk)
+
 ## 🔑 License
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
