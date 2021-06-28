@@ -133,7 +133,7 @@ describe('Users Service', () => {
 
     const patients = await sdk.users.patients();
 
-    expect(patients.length).toBeGreaterThan(0);
+    expect(patients.data.length).toBeGreaterThan(0);
   });
 
   it('should get staff list', async () => {
@@ -141,7 +141,7 @@ describe('Users Service', () => {
 
     const staff = await sdk.users.staff();
 
-    expect(staff.length).toBeGreaterThan(0);
+    expect(staff.data.length).toBeGreaterThan(0);
   });
 
   it('should remove a user', async () => {
