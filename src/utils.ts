@@ -1,11 +1,11 @@
 import OAuth from 'oauth-1.0a';
-import { HmacSHA1 } from 'crypto-es/lib/sha1.js';
-import { Base64 } from 'crypto-es/lib/enc-base64.js';
+
+import CryptoES from 'crypto-es';
 import { ClientConfig, ClientParams } from './types';
 import { AUTH_BASE } from './constants';
 
 function hmacSha1Hash(baseString: string, key: string) {
-  return HmacSHA1(baseString, key).toString(Base64);
+  return CryptoES.HmacSHA1(baseString, key).toString(CryptoES.enc.Base64);
 }
 
 export function validateConfig({
