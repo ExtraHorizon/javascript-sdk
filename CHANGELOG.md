@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.3.0]
 
 - Added Events Service
+- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
 
 ## [3.2.0]
 
