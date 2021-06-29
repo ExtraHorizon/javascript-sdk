@@ -77,7 +77,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {ResourceUnknownError}
    */
-  async delete(
+  async remove(
     schemaId: ObjectId,
     transitionId: ObjectId
   ): Promise<AffectedRecords> {

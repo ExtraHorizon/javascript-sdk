@@ -56,7 +56,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {StatusInUseError}
    * @throws {ResourceUnknownError}
    */
-  async delete(schemaId: ObjectId, name: string): Promise<AffectedRecords> {
+  async remove(schemaId: ObjectId, name: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${schemaId}/statuses/${name}`))
       .data;
   },

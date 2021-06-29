@@ -177,7 +177,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @returns any Success
    */
-  async delete(
+  async remove(
     schemaId: ObjectId,
     documentId: ObjectId
   ): Promise<AffectedRecords> {

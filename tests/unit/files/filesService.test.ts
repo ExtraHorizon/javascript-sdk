@@ -85,9 +85,9 @@ describe('Files Service', () => {
   it('should delete a file', async () => {
     nock(`${host}${FILES_BASE}`).delete(`/${token}`).reply(200);
 
-    const res = await sdk.files.delete(token);
+    const res = await sdk.files.remove(token);
 
-    expect(res).toBe(true);
+    expect(res.affectedRecords).toBe(1);
   });
 
   it('should retrieve a file', async () => {

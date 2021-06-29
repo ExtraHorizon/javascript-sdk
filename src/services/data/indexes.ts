@@ -33,7 +33,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @throws {NoPermissionError}
    * @throws {ResourceUnknownError}
    */
-  async delete(
+  async remove(
     indexId: ObjectId,
     schemaId: ObjectId
   ): Promise<AffectedRecords> {

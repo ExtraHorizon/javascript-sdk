@@ -93,7 +93,7 @@ describe('Documents Service', () => {
     nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.documents.delete(schemaId, documentId);
+    const res = await sdk.data.documents.remove(schemaId, documentId);
     expect(res.affectedRecords).toBe(1);
   });
 

@@ -99,7 +99,7 @@ describe('Comments Service', () => {
     nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.comments.delete(commentId, schemaId, documentId);
+    const res = await sdk.data.comments.remove(commentId, schemaId, documentId);
     expect(res.affectedRecords).toBe(1);
   });
 });

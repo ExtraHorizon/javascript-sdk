@@ -89,7 +89,7 @@ describe('Schemas Service', () => {
     nock(`${host}${DATA_BASE}`).delete(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
     });
-    const res = await sdk.data.schemas.delete(schemaId);
+    const res = await sdk.data.schemas.remove(schemaId);
     expect(res.affectedRecords).toBe(1);
   });
 

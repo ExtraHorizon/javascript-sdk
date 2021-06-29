@@ -56,7 +56,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async delete(
+  async remove(
     dispatcherId: ObjectId,
     actionId: ObjectId
   ): Promise<AffectedRecords> {
