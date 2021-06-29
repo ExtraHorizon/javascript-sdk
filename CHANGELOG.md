@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
 - Updated docs links
 
+### Breaking Changes
+
+- Renamed all methods from `delete` to `remove` and all of them returning `AffectedRecords`
+- Renamed all methods from `deleteFields` to `removeFields`
+
 ## [3.2.0]
 
 - Added Localizations Service
