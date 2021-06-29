@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Profiles Service
 - Added Notifications Service
 - Added optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
+- Added Events Service
+- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
 
 ## [3.1.0]
 

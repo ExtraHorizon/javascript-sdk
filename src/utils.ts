@@ -20,9 +20,8 @@ export function validateConfig({
   const configBase = {
     ...params,
     host: `https://api.${validHostEnd
-      .replace('https://', '')
-      .replace('http://', '')
-      .replace('api.', '')}`,
+      .replace(/^https?:\/\//, '')
+      .replace(/^api\./, '')}`,
   };
 
   if ('consumerKey' in params) {
