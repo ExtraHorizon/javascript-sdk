@@ -117,7 +117,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-### password grant flow with two-step MFA in try / catch
+### Password Grant flow with two-step MFA in try / catch
 
 ```js
 import {
