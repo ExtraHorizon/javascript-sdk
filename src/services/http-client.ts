@@ -1,6 +1,7 @@
 import pako from 'pako';
 import BufferModule from 'buffer';
 import { HttpInstance, HttpRequestConfig } from '../http/types';
+import { Environment, environment } from '../utils';
 
 interface HttpClient {
   basePath: string;
@@ -39,6 +40,7 @@ export default ({
 
               (dataInTransform, headers) => {
                 if (
+                  [Environment.Web, Environment.Node].includes(environment()) &&
                   typeof dataInTransform === 'string' &&
                   dataInTransform.length > 1024
                 ) {
