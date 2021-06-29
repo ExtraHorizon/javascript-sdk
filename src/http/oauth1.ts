@@ -14,7 +14,6 @@ export function createOAuth1HttpClient(
   options: ConfigOauth1
 ): OAuthClient {
   let tokenData: TokenDataOauth1;
-  let authConfig: OAuth1Config;
 
   const httpWithAuth = axios.create({ ...http.defaults });
 
@@ -87,27 +86,29 @@ export function createOAuth1HttpClient(
 
   async function authenticate(data: OAuth1Config): Promise<void> {
     // If the user has passed in a token/tokenSecret combination.
-    // Validate it against /users/me on the unauthenticated Axios client
-    authConfig = data;
-    if ('tokenData' in authConfig) {
-      tokenData = authConfig.tokenData;
-      const path = `${USER_BASE}/me`;
-      await http.get(path, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.oauth1.toHeader(
-            options.oauth1.authorize(
-              {
-                url: options.host + path,
-                method: 'get',
-              },
-              tokenData
-            )
-          ),
-        },
-      });
+    // Validate it against /users/me on the unauthenticated Axios client unless skipTokenCheck is true
+
+    if ('tokenData' in data) {
+      tokenData = data.tokenData;
+      if (!data.skipTokenCheck) {
+        const path = `${USER_BASE}/me`;
+        await http.get(path, {
+          headers: {
+            'Content-Type': 'application/json',
+            ...options.oauth1.toHeader(
+              options.oauth1.authorize(
+                {
+                  url: options.host + path,
+                  method: 'get',
+                },
+                tokenData
+              )
+            ),
+          },
+        });
+      }
     } else {
-      const tokenResult = await http.post(options.path, authConfig.params, {
+      const tokenResult = await http.post(options.path, data.params, {
         headers: {
           'Content-Type': 'application/json',
           ...options.oauth1.toHeader(
@@ -157,5 +158,12 @@ export function createOAuth1HttpClient(
     });
   }
 
-  return Object.assign(httpWithAuth, { authenticate, confirmMfa });
+  return {
+    ...httpWithAuth,
+    authenticate,
+    confirmMfa,
+    get userId() {
+      return tokenData?.userId;
+    },
+  };
 }

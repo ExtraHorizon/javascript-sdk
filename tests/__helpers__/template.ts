@@ -1,24 +1,19 @@
-import {
-  TemplateIn,
-  ObjectConfigurationType,
-} from '../../src/services/templates/types';
-
-import { ConfigurationType } from '../../src/services/data/types';
+import { TemplateIn } from '../../src/services/templates/types';
 
 export const templateInput: TemplateIn = {
   name: 'order_confirm_email',
   description: 'Confirmation email after an order',
   schema: {
-    type: ObjectConfigurationType.OBJECT,
+    type: 'object',
     fields: {
       shippingInfo: {
-        type: ConfigurationType.OBJECT,
+        type: 'object',
         properties: {
           firstName: {
-            type: ConfigurationType.STRING,
+            type: 'string',
           },
           lastName: {
-            type: ConfigurationType.STRING,
+            type: 'string',
           },
         },
       },

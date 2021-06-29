@@ -1,22 +1,27 @@
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import * as OAuth from 'oauth-1.0a';
-import { TokenDataOauth1, TokenDataOauth2 } from './http/types';
+import {
+  TokenDataOauth1,
+  TokenDataOauth2,
+  HttpRequestConfig,
+} from './http/types';
 
 export * from './http/types';
 export * from './services/types';
-export * as AuthServicesTypes from './services/auth/types';
-export * as DataServicesTypes from './services/data/types';
-export * as FilesServicesTypes from './services/files/types';
-export * as TasksServicesTypes from './services/tasks/types';
-export * as UsersServicesTypes from './services/users/types';
-export * as MailsServicesTypes from './services/mails/types';
-export * as TemplatesServicesTypes from './services/templates/types';
-export * as ConfigurationsServicesTypes from './services/configurations/types';
-export * as DispatchersServicesTypes from './services/dispatchers/types';
-export * as PaymentsServicesTypes from './services/payments/types';
-
-export type HttpInstance = AxiosInstance;
-export type HttpRequestConfig = AxiosRequestConfig;
+export * from './services/auth/types';
+export * from './services/data/types';
+export * from './services/files/types';
+export * from './services/tasks/types';
+export * from './services/users/types';
+export * from './services/mails/types';
+export * from './services/templates/types';
+export * from './services/configurations/types';
+export * from './services/dispatchers/types';
+export * from './services/payments/types';
+export * from './services/localizations/types';
+export * from './services/profiles/types';
+export * from './services/notifications/types';
+export * from './services/events/types';
 
 export interface ParamsOauth1WithEmail {
   email: string;
@@ -26,6 +31,7 @@ export interface ParamsOauth1WithEmail {
 export interface ParamsOauth1WithToken {
   token: string;
   tokenSecret: string;
+  skipTokenCheck?: boolean;
 }
 
 export interface ParamsOauth2AuthorizationCode {
@@ -52,7 +58,7 @@ export type AuthParams =
 interface ParamsBase {
   host: string;
   responseLogger?: (response: AxiosResponse | Error) => unknown;
-  requestLogger?: (request: AxiosRequestConfig | Error) => unknown;
+  requestLogger?: (request: HttpRequestConfig | Error) => unknown;
   freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
 }
 

@@ -1,5 +1,5 @@
 import pako from 'pako';
-import { HttpInstance, HttpRequestConfig } from '../types';
+import { HttpInstance, HttpRequestConfig } from '../http/types';
 
 interface HttpClient {
   basePath: string;

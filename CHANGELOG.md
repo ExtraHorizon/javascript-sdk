@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.0]
+
+- Added Events Service
+- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
+- Gzip option on POST calls
+```ts
+await client.post(
+  httpAuth,
+  `/${schemaId}/documents`,
+  requestBody,
+  {},
+  {
+    gzip: true,
+  }
+);
+```
+
+## [3.2.0]
+
+- Added Localizations Service
+- Added Profiles Service
+- Added Notifications Service
+- Added optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
+
 ## [3.1.0]
 
 ### Breaking Changes
@@ -30,7 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -    };
 -  };
 - }
-- const document = await sdk.data.findDocuments<CustomDocument>();
+- const document = await sdk.data.documents.find<CustomDocument>();
 
 + interface MyData {
 +   data: {
@@ -41,12 +65,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 +     };
 +   };
 + }
-+ const document = await sdk.data.findDocuments<MyData>();
++ const document = await sdk.data.documents.find<MyData>();
 ```
 
 ### Added
 
-- `sdk.files.createRaw` where you can pass in your FormData directly
+- `sdk.files.createFromText` where you can pass in your text directly.
+
+```ts
+await sdk.files.createFromText('this-is-a-string');
+```
 
 - Added `transitionsByName` getter to easily get the transition you need.
 
@@ -70,19 +98,7 @@ const transitionId = schema.findTransitionIdByName('lambda_to_review');
 
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
 - Payments Service
-- Gzip option on POST calls
-
-```ts
-await client.post(
-  httpAuth,
-  `/${schemaId}/documents`,
-  requestBody,
-  {},
-  {
-    gzip: true,
-  }
-);
-```
+- Added `or`, `and` and `contains` operators to the RQL builder.
 
 ## [3.0.2]
 

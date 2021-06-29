@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { Transition, CreationTransition, TransitionInput } from './types';
+import type { CreationTransition, TransitionInput } from './types';
 
 export default (client, httpAuth: HttpInstance) => ({
   /**
@@ -34,8 +34,8 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async create(
     schemaId: ObjectId,
-    requestBody: Transition
-  ): Promise<TransitionInput> {
+    requestBody: TransitionInput
+  ): Promise<AffectedRecords> {
     return (
       await client.post(httpAuth, `/${schemaId}/transitions`, requestBody)
     ).data;
@@ -56,7 +56,7 @@ export default (client, httpAuth: HttpInstance) => ({
   async update(
     schemaId: ObjectId,
     transitionId: ObjectId,
-    requestBody: Transition
+    requestBody: TransitionInput
   ): Promise<AffectedRecords> {
     return (
       await client.put(

@@ -8,3 +8,7 @@ export const TEMPLATE_BASE = '/templates/v1';
 export const MAIL_BASE = '/mail/v1';
 export const DISPATCHERS_BASE = '/dispatchers/v1';
 export const PAYMENTS_BASE = '/payments/v1';
+export const PROFILES_BASE = '/profiles/v1';
+export const NOTIFICATIONS_BASE = '/notifications/v1';
+export const LOCALIZATIONS_BASE = '/localizations/v1';
+export const EVENTS_BASE = '/events/v1';
