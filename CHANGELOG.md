@@ -7,17 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.3.0]
-
-- Added Events Service
-- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
-
 ## [3.2.0]
 
 - Added Localizations Service
 - Added Profiles Service
 - Added Notifications Service
 - Added optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
+- Added Events Service
+- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
 
 ## [3.1.0]
 
