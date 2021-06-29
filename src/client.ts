@@ -115,72 +115,72 @@ export interface Client<T extends ClientParams> {
   raw: OAuthClient;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
-   * @see https://developers.extrahorizon.io/services/templates-service/1.0.13/
+   * @see https://developers.extrahorizon.io/services/?service=templates-service&redirectToVersion=1
    */
   templates: ReturnType<typeof templatesService>;
   /**
    * Provides mail functionality for other services.
-   * @see https://developers.extrahorizon.io/services/mail-service/1.0.8-dev/
+   * @see https://developers.extrahorizon.io/services/?service=mail-service&redirectToVersion=1
    */
   mails: ReturnType<typeof mailsService>;
   /**
    * A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
-   * @see https://developers.extrahorizon.io/services/data-service/1.0.9/
+   * @see https://developers.extrahorizon.io/services/?service=data-service&redirectToVersion=1
    */
   data: ReturnType<typeof dataService>;
   /**
    * A service that handles file storage, metadata & file retrieval based on tokens.
-   * @see https://developers.extrahorizon.io/services/files-service/1.0.1-dev/
+   * @see https://developers.extrahorizon.io/services/?service=files-service&redirectToVersion=1
    */
   files: ReturnType<typeof filesService>;
   /**
    * Start functions on demand, directly or at a future moment.
-   * @see https://developers.extrahorizon.io/services/tasks-service/1.0.4/
+   * @see https://developers.extrahorizon.io/services/?service=tasks-service&redirectToVersion=1
    */
   tasks: ReturnType<typeof tasksService>;
   /**
    * Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
-   * @see https://developers.extrahorizon.io/services/configurations-service/2.0.2-dev/
+   * @see https://developers.extrahorizon.io/services/?service=configurations-service&redirectToVersion=2
    */
   configurations: ReturnType<typeof configurationsService>;
   /**
    * Configure actions that need to be invoked when a specific event is/was triggered.
-   * @see https://developers.extrahorizon.io/services/dispatchers-service/1.0.3-dev/
+   * @see https://developers.extrahorizon.io/services/?service=dispatchers-service&redirectToVersion=1
    */
   dispatchers: ReturnType<typeof dispatchersService>;
   /**
    * A service that provides payment functionality.
-   * @see https://developers.extrahorizon.io/services/payments-service/1.1.0-dev/
+   * @see https://developers.extrahorizon.io/services/?service=payments-service&redirectToVersion=1
    */
   payments: ReturnType<typeof paymentsService>;
   /**
    * Storage and retrieval of text snippets, translated into multiple languages.
-   * @see https://developers.extrahorizon.io/services/localizations-service/1.1.6-dev/
+   * @see https://developers.extrahorizon.io/services/?service=localizations-service&redirectToVersion=1
    */
   localizations: ReturnType<typeof localizationsService>;
   /**
    * Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
-   * @see https://developers.extrahorizon.io/services/profiles-service/1.1.3/
+   * @see https://developers.extrahorizon.io/services/?service=profiles-service&redirectToVersion=1
    */
   profiles: ReturnType<typeof profilesService>;
   /**
    * A service that handles push notifications.
-   * @see https://developers.extrahorizon.io/services/notifications-service/1.0.8/
+   * @see https://developers.extrahorizon.io/services/?service=notifications-service&redirectToVersion=1
    */
   notifications: ReturnType<typeof notificationsService>;
   /**
    * Service that provides event (publish/subscribe) functionality for other services.
-   * @see https://developers.extrahorizon.io/services/notifications-service/1.0.8/
+   * @see https://developers.extrahorizon.io/services/?service=events-service&redirectToVersion=1
    */
   events: ReturnType<typeof eventsService>;
   /**
    * The user service stands in for managing users themselves, as well as roles related to users and groups of users.
-   * @see https://developers.extrahorizon.io/services/users-service/1.1.7/
+   * @see https://developers.extrahorizon.io/services/?service=users-service&redirectToVersion=1
    */
   users: ReturnType<typeof usersService>;
   /**
    * Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
-   * @see https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/
+   * @see https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
    */
   auth: ReturnType<typeof authService> & {
     /**
