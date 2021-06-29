@@ -200,7 +200,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param requestBody
    * @returns any Success
    */
-  async deleteFields(
+  async removeFields(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
