@@ -1,4 +1,5 @@
 import pako from 'pako';
+import BufferModule from 'buffer';
 import { HttpInstance, HttpRequestConfig } from '../http/types';
 
 interface HttpClient {
@@ -43,7 +44,7 @@ export default ({
                 ) {
                   // eslint-disable-next-line no-param-reassign
                   headers['Content-Encoding'] = 'gzip';
-                  return pako.gzip(dataInTransform);
+                  return BufferModule.Buffer.from(pako.gzip(dataInTransform));
                 }
                 return dataInTransform;
               },
