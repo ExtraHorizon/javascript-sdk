@@ -15,6 +15,7 @@ import {
   localizationsService,
   profilesService,
   notificationsService,
+  eventsService,
 } from './services';
 
 import {
@@ -168,6 +169,11 @@ export interface Client<T extends ClientParams> {
    */
   notifications: ReturnType<typeof notificationsService>;
   /**
+   * Service that provides event (publish/subscribe) functionality for other services.
+   * @see https://developers.extrahorizon.io/services/notifications-service/1.0.8/
+   */
+  events: ReturnType<typeof eventsService>;
+  /**
    * The user service stands in for managing users themselves, as well as roles related to users and groups of users.
    * @see https://developers.extrahorizon.io/services/users-service/1.1.7/
    */
@@ -243,6 +249,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     localizations: localizationsService(httpWithAuth),
     profiles: profilesService(httpWithAuth),
     notifications: notificationsService(httpWithAuth),
+    events: eventsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
       authenticate: (oauth: AuthParams): Promise<void> =>

@@ -11,3 +11,4 @@ export * from './payments';
 export * from './localizations';
 export * from './profiles';
 export * from './notifications';
+export * from './events';

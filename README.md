@@ -18,6 +18,7 @@
 - [Profiles][profiles]: Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
 - [Notifications][notifications]: A service that handles push notifications.
 - [Localizations][localizations]: Storage and retrieval of text snippets, translated into multiple languages.
+- [Events][events]: Service that provides event (publish/subscribe) functionality for other services.
 
 ## Getting started
 
@@ -379,3 +380,4 @@ The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 [profiles]: https://developers.extrahorizon.io/services/profiles-service/1.1.3/
 [notifications]: https://developers.extrahorizon.io/services/notifications-service/1.0.8/
 [localizations]: https://developers.extrahorizon.io/services/localizations-service/1.1.6-dev/
+[events]: https://developers.extrahorizon.io/services/events-service/1.0.6/

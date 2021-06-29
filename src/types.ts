@@ -21,6 +21,7 @@ export * from './services/payments/types';
 export * from './services/localizations/types';
 export * from './services/profiles/types';
 export * from './services/notifications/types';
+export * from './services/events/types';
 
 export interface ParamsOauth1WithEmail {
   email: string;
