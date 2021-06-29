@@ -8,5 +8,6 @@
 
   - [Authentication](docs/examples/authentication.md)
   - [Data](docs/examples/data.md)
+  - [Users](docs/examples/users.md)
 
 - [Changelog](CHANGELOG.md)
