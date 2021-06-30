@@ -2,11 +2,11 @@ import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
 import { ResultResponse, Results, PagedResult } from '../types';
-import type { FileDetails, Token } from './types';
+import type { FileDetails, FilesService, Token } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 import { createCustomFormData, generateBoundary } from './formHelpers';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): FilesService => ({
   /**
    * List all files
    * Permission | Scope | Effect
@@ -17,6 +17,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @returns any Success
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
+    console.log('this', this);
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 

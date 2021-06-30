@@ -26,6 +26,7 @@ import {
 } from './http';
 import { validateConfig } from './utils';
 import { OAuthClient } from './http/types';
+import { MailsService } from './services/mails/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -122,7 +123,7 @@ export interface Client<T extends ClientParams> {
    * Provides mail functionality for other services.
    * @see https://developers.extrahorizon.io/services/?service=mail-service&redirectToVersion=1
    */
-  mails: ReturnType<typeof mailsService>;
+  mails: MailsService;
   /**
    * A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
    * @see https://developers.extrahorizon.io/services/?service=data-service&redirectToVersion=1

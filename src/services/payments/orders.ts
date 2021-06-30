@@ -5,10 +5,11 @@ import type {
   OrderCreationSchema,
   OrderUpdateSchema,
   UpdateTagsSchema,
+  PaymentsOrdersService,
 } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): PaymentsOrdersService => ({
   /**
    * Get a list of orders
    * Permission | Scope | Effect

@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
-import type { ObjectId } from '../types';
+import { RQLString } from '../../rql';
+import type { AffectedRecords, ObjectId, PagedResult } from '../types';
 
 export interface ProductCreationSchema {
   name?: string;
@@ -366,4 +367,157 @@ export interface SetupIntentCreationSchema {
 
 export interface StripeSetupIntentSchema {
   stripeClientSecret?: string;
+}
+
+export interface PaymentsAppStoreService {
+  createTransaction(
+    this: PaymentsAppStoreService,
+    requestBody: TransactionCompletionDataSchema
+  ): Promise<AppleReceiptExampleSchema>;
+  verifyTransaction(
+    this: PaymentsAppStoreService,
+    requestBody: ReceiptVerificationDataSchema
+  ): Promise<AppleReceiptExampleSchema>;
+  processNotification(
+    this: PaymentsAppStoreService,
+    requestBody: AppleNotification
+  ): Promise<boolean>;
+  getNotifications(
+    this: PaymentsAppStoreService
+  ): Promise<PagedResult<AppStoreNotification>>;
+  getReceipts(
+    this: PaymentsAppStoreService
+  ): Promise<PagedResult<AppStoreReceipt>>;
+}
+
+export interface PaymentsAppStoreSubscriptionsService {
+  getSubscriptions(
+    this: PaymentsAppStoreSubscriptionsService
+  ): Promise<PagedResult<AppStoreSubscription>>;
+  getSubscriptionsProducts(
+    this: PaymentsAppStoreSubscriptionsService
+  ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
+  createSubscriptionsProduct(
+    this: PaymentsAppStoreSubscriptionsService,
+    requestBody: AppStoreSubscriptionProductCreation
+  ): Promise<AppStoreSubscriptionProduct>;
+  removeSubscriptionsProduct(
+    this: PaymentsAppStoreSubscriptionsService,
+    productId: ObjectId
+  ): Promise<AffectedRecords>;
+  updateSubscriptionsProduct(
+    this: PaymentsAppStoreSubscriptionsService,
+    productId: ObjectId,
+    requestBody: AppStoreSubscriptionProductUpdateSchema
+  ): Promise<AffectedRecords>;
+}
+
+export interface PaymentsOrdersService {
+  find(
+    this: PaymentsOrdersService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<OrderSchema>>;
+  findById(
+    this: PaymentsOrdersService,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<OrderSchema>;
+  findFirst(
+    this: PaymentsOrdersService,
+    options?: { rql?: RQLString }
+  ): Promise<OrderSchema>;
+  update(
+    this: PaymentsOrdersService,
+    orderId: ObjectId,
+    requestBody: OrderUpdateSchema
+  ): Promise<AffectedRecords>;
+  addTagsToOrder(
+    this: PaymentsOrdersService,
+    rql: string,
+    requestBody: UpdateTagsSchema
+  ): Promise<AffectedRecords>;
+  removeTagsFromOrder(
+    this: PaymentsOrdersService,
+    rql: string,
+    requestBody: UpdateTagsSchema
+  ): Promise<AffectedRecords>;
+}
+export interface PaymentsProductsService {
+  create(requestBody: ProductCreationSchema): Promise<ProductSchema>;
+  find(
+    this: PaymentsProductsService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<ProductSchema>>;
+  findById(
+    this: PaymentsProductsService,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<ProductSchema>;
+  findFirst(
+    this: PaymentsProductsService,
+    options?: { rql?: RQLString }
+  ): Promise<ProductSchema>;
+  addTagsToProduct(
+    this: PaymentsProductsService,
+    rql: string,
+    requestBody: UpdateTagsSchema
+  ): Promise<AffectedRecords>;
+  removeTagsFromProduct(
+    this: PaymentsProductsService,
+    rql: string,
+    requestBody: UpdateTagsSchema
+  ): Promise<AffectedRecords>;
+  update(
+    this: PaymentsProductsService,
+    orderId: ObjectId,
+    requestBody: ProductCreationSchema
+  ): Promise<AffectedRecords>;
+  remove(
+    this: PaymentsProductsService,
+    productId: ObjectId
+  ): Promise<AffectedRecords>;
+}
+
+export interface PaymentsStripeService {
+  getUser(this: PaymentsStripeService, userId: ObjectId): Promise<StripeUser>;
+  savePaymentMethod(
+    this: PaymentsStripeService,
+    userId: ObjectId,
+    requestBody: StripePaymentMethodCreation
+  ): Promise<StripePaymentMethod>;
+  addTagsToPaymentMethod(
+    this: PaymentsStripeService,
+    userId: ObjectId,
+    paymentMethodId: ObjectId,
+    requestBody: UpdateTagsSchema
+  ): Promise<AffectedRecords>;
+  removeTagsToPaymentMethod(
+    this: PaymentsStripeService,
+    userId: ObjectId,
+    paymentMethodId: ObjectId,
+    requestBody: UpdateTagsSchema
+  ): Promise<AffectedRecords>;
+  removePaymentMethod(
+    this: PaymentsStripeService,
+    userId: ObjectId,
+    paymentMethodId: ObjectId
+  ): Promise<AffectedRecords>;
+  createPaymentIntent(
+    this: PaymentsStripeService,
+    requestBody: PaymentIntentCreationSchema
+  ): Promise<OrderSchema>;
+  createSetupIntent(
+    this: PaymentsStripeService,
+    requestBody: SetupIntentCreationSchema
+  ): Promise<StripeSetupIntentSchema>;
+  subscribeToEvents(this: PaymentsStripeService): Promise<any>;
+}
+
+export interface PaymentsSubscriptionsService {
+  getEntitlements(
+    this: PaymentsSubscriptionsService
+  ): Promise<PagedResult<SubscriptionEntitlement>>;
+  getEvents(
+    this: PaymentsSubscriptionsService
+  ): Promise<PagedResult<SubscriptionEvent>>;
 }

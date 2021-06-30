@@ -1,8 +1,15 @@
 import type { HttpInstance } from '../../types';
 import type { PagedResult } from '../types';
-import type { SubscriptionEntitlement, SubscriptionEvent } from './types';
+import type {
+  PaymentsSubscriptionsService,
+  SubscriptionEntitlement,
+  SubscriptionEvent,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (
+  client,
+  httpAuth: HttpInstance
+): PaymentsSubscriptionsService => ({
   /**
    * Get a list of subscription entitlements
    * Permission | Scope | Effect
