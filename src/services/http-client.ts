@@ -36,17 +36,21 @@ export default ({
               ...(Array.isArray(axios.defaults.transformRequest)
                 ? axios.defaults.transformRequest
                 : [axios.defaults.transformRequest]),
-
               (dataInTransform, headers) => {
                 if (typeof dataInTransform === 'string') {
                   // eslint-disable-next-line no-param-reassign
                   headers['Content-Encoding'] = 'gzip';
+
+                  // React Native on Android gzips the data implicitly.
                   if (platform.platform === 'android') {
                     return dataInTransform;
                   }
+                  // Nodejs uses the http adapter in Axios. Needs a Buffer with the gzip data
                   if (platform.platform === 'nodejs') {
                     return Buffer.from(pako.gzip(dataInTransform));
                   }
+
+                  // In Browser and React Native on Ios, pako is used.
                   return pako.gzip(dataInTransform);
                 }
                 return dataInTransform;
