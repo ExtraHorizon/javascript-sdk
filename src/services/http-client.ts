@@ -41,10 +41,10 @@ export default ({
                 if (typeof dataInTransform === 'string') {
                   // eslint-disable-next-line no-param-reassign
                   headers['Content-Encoding'] = 'gzip';
-                  if (platform.platform === 'ios') {
-                    return pako.gzip(dataInTransform);
+                  if (platform.platform === 'android') {
+                    return dataInTransform;
                   }
-                  return dataInTransform;
+                  return pako.gzip(dataInTransform);
                 }
                 return dataInTransform;
               },
