@@ -408,7 +408,8 @@ export interface DataDocumentsService {
   create<CustomData = null>(
     this: DataDocumentsService,
     schemaId: ObjectId,
-    requestBody: Record<string, any>
+    requestBody: Record<string, any>,
+    options?: { gzip?: boolean }
   ): Promise<Document<CustomData>>;
   find<CustomData = null>(
     this: DataDocumentsService,
