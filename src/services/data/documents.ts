@@ -141,7 +141,7 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
    * @param requestBody
-   * @returns any Success
+   * @returns AffectedRecords
    */
   async update(
     schemaId: ObjectId,
@@ -175,7 +175,7 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * `DELETE_DOCUMENTS` | `global` | Delete the document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @returns any Success
+   * @returns AffectedRecords
    */
   async delete(
     schemaId: ObjectId,
@@ -197,8 +197,8 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of fields
+   * @returns AffectedRecords
    */
   async deleteFields(
     schemaId: ObjectId,
@@ -233,7 +233,7 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
    * @param requestBody
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
@@ -266,8 +266,8 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of groupIds
+   * @returns AffectedRecords
    */
   async linkGroups(
     schemaId: ObjectId,
@@ -298,8 +298,8 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of groupIds
+   * @returns AffectedRecords
    */
   async unlinkGroups(
     schemaId: ObjectId,
@@ -328,8 +328,8 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be added to the document.
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of userIds
+   * @returns AffectedRecords
    */
   async linkUsers(
     schemaId: ObjectId,
@@ -362,8 +362,8 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of userIds
+   * @returns AffectedRecords
    */
   async unlinkUsers(
     schemaId: ObjectId,
