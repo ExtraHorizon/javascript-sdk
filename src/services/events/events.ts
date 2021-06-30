@@ -1,9 +1,9 @@
 import type { HttpInstance } from '../../types';
 import { PagedResult, ObjectId } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import type { CreateEvent, Event } from './types';
+import type { CreateEvent, Event, EventsService } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): EventsService => ({
   /**
    * Returns a list of events
    * Permission | Scope | Effect

@@ -7,9 +7,14 @@ import {
   Results,
 } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import type { TemplateIn, TemplateOut, CreateFile } from './types';
+import type {
+  TemplateIn,
+  TemplateOut,
+  CreateFile,
+  TemplatesService,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): TemplatesService => ({
   /**
    * Perform a health check
    * @permission Everyone can use this endpoint

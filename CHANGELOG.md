@@ -7,29 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.3.0]
+## [3.2.0]
 
 - Added Events Service
 - Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
-- Gzip option on POST calls
+
+### Added
+
+- Localizations Service
+- Profiles Service
+- Notifications Service
+- optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
+- Events Service
+
+### Changes
+
+- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
+- Updated docs links
+- Gzip option `sdk.data.documents.create`
+
 ```ts
-await client.post(
-  httpAuth,
-  `/${schemaId}/documents`,
-  requestBody,
-  {},
-  {
-    gzip: true,
-  }
-);
+await sdk.data.documents.create('schemaId', document, {
+  gzip: true,
+});
 ```
-
-## [3.2.0]
-
-- Added Localizations Service
-- Added Profiles Service
-- Added Notifications Service
-- Added optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
 
 ## [3.1.0]
 

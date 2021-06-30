@@ -12,9 +12,10 @@ import {
   QueuedMail,
   PlainMailCreation,
   TemplateBasedMailCreation,
+  MailsService,
 } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): MailsService => ({
   /**
    * Perform a health check for mail service
    * @permission Everyone can use this endpoint

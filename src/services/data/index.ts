@@ -9,15 +9,24 @@ import comments from './comments';
 import documents from './documents';
 import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
+import {
+  DataCommentsService,
+  DataDocumentsService,
+  DataIndexesService,
+  DataPropertiesService,
+  DataSchemasService,
+  DataStatusesService,
+  DataTransitionsService,
+} from './types';
 
 export type DataService = ReturnType<typeof infrastructure> & {
-  schemas: ReturnType<typeof schemas>;
-  indexes: ReturnType<typeof indexes>;
-  statuses: ReturnType<typeof statuses>;
-  properties: ReturnType<typeof properties>;
-  comments: ReturnType<typeof comments>;
-  documents: ReturnType<typeof documents>;
-  transitions: ReturnType<typeof transitions>;
+  schemas: DataSchemasService;
+  indexes: DataIndexesService;
+  statuses: DataStatusesService;
+  properties: DataPropertiesService;
+  comments: DataCommentsService;
+  documents: DataDocumentsService;
+  transitions: DataTransitionsService;
 };
 export const dataService = (httpWithAuth: HttpInstance): DataService => {
   const client = httpClient({

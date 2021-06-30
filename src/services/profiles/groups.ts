@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords, ObjectId } from '../types';
-import { Group, GroupCreation } from './types';
+import { Group, GroupCreation, ProfilesGroupsService } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): ProfilesGroupsService => ({
   /**
    * Add a group enlistment to a profile
    * Permission | Scope | Effect

@@ -1,9 +1,12 @@
+import { RQLString } from '../../rql';
 import {
   ObjectId,
   LanguageCode,
   MailAddress,
   MailAddressList,
   MailRecipients,
+  AffectedRecords,
+  PagedResult,
 } from '../types';
 
 export interface Mail {
@@ -89,4 +92,27 @@ export enum QueuedMailStatus {
   QUEUED = 'queued',
   SENDING = 'sending',
   FAILED = 'failed',
+}
+
+export interface MailsService {
+  health(this: MailsService): Promise<boolean>;
+  find: (
+    this: MailsService,
+    options?: { rql?: RQLString }
+  ) => Promise<PagedResult<Mail>>;
+  findById: (
+    this: MailsService,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ) => Promise<Mail>;
+  findFirst(this: MailsService, options?: { rql?: RQLString }): Promise<Mail>;
+  send(
+    this: MailsService,
+    requestBody?: PlainMailCreation | TemplateBasedMailCreation
+  ): Promise<Mail>;
+  track(this: MailsService, trackingHash: string): Promise<AffectedRecords>;
+  findOutbound(
+    this: MailsService,
+    options?: { rql?: string }
+  ): Promise<PagedResult<QueuedMail>>;
 }

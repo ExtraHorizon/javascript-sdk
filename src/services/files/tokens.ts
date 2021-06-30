@@ -1,7 +1,12 @@
 import type { HttpInstance } from '../../types';
-import type { TokenObject, CreateTokenRequest, Token } from './types';
+import type {
+  TokenObject,
+  CreateTokenRequest,
+  Token,
+  FileTokensService,
+} from './types';
 
-export default (userClient, httpAuth: HttpInstance) => ({
+export default (userClient, httpAuth: HttpInstance): FileTokensService => ({
   /**
    * Delete a token
    * Permission | Scope | Effect

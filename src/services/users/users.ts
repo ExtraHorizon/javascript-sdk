@@ -13,10 +13,11 @@ import type {
   Patient,
   StaffMember,
   Hash,
+  UsersService,
 } from './types';
 import type { RQLString } from '../../rql';
 
-export default (userClient, httpWithAuth: HttpInstance) => ({
+export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
   /**
    * Retrieve the current logged in user
    * @permission Everyone can use this endpoint

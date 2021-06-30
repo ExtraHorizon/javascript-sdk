@@ -4,10 +4,11 @@ import type {
   ProductSchema,
   ProductCreationSchema,
   UpdateTagsSchema,
+  PaymentsProductsService,
 } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
   /**
    * Create a product
    * Permission | Scope | Effect
