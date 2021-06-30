@@ -1,8 +1,12 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { CreationTransition, TransitionInput } from './types';
+import type {
+  CreationTransition,
+  DataTransitionsService,
+  TransitionInput,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
   /**
    * Update the creation transition
    * Permission | Scope | Effect

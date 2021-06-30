@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { TypeConfiguration } from './types';
+import type { DataPropertiesService, TypeConfiguration } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
   /**
    * Create a property
    * Permission | Scope | Effect

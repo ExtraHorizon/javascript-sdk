@@ -1,9 +1,9 @@
 import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import { Comment, CommentText } from './types';
+import { Comment, CommentText, DataCommentsService } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataCommentsService => ({
   /**
    * Create a comment
    * Comment on the specified document.
