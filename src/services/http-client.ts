@@ -44,6 +44,9 @@ export default ({
                   if (platform.platform === 'android') {
                     return dataInTransform;
                   }
+                  if (platform.platform === 'nodejs') {
+                    return Buffer.from(pako.gzip(dataInTransform));
+                  }
                   return pako.gzip(dataInTransform);
                 }
                 return dataInTransform;
