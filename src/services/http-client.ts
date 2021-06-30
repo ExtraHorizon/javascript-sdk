@@ -41,10 +41,11 @@ export default ({
                   // eslint-disable-next-line no-param-reassign
                   headers['Content-Encoding'] = 'gzip';
 
-                  // React Native on Android gzips the data implicitly.
+                  // React Native on Android gzips the data implicitly. DO NOT TOUCH!
                   if (platform.platform === 'android') {
                     return dataInTransform;
                   }
+
                   // Nodejs uses the http adapter in Axios. Needs a Buffer with the gzip data
                   if (platform.platform === 'nodejs') {
                     return Buffer.from(pako.gzip(dataInTransform));
