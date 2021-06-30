@@ -426,6 +426,10 @@ export interface PaymentsOrdersService {
     this: PaymentsOrdersService,
     options?: { rql?: RQLString }
   ): Promise<OrderSchema>;
+  create(
+    this: PaymentsOrdersService,
+    requestBody: OrderCreationSchema
+  ): Promise<OrderSchema>;
   update(
     this: PaymentsOrdersService,
     orderId: ObjectId,
@@ -442,6 +446,7 @@ export interface PaymentsOrdersService {
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
 }
+
 export interface PaymentsProductsService {
   create(requestBody: ProductCreationSchema): Promise<ProductSchema>;
   find(
