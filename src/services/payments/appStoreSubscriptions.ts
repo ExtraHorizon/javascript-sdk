@@ -5,9 +5,13 @@ import type {
   AppStoreSubscriptionProduct,
   AppStoreSubscriptionProductCreation,
   AppStoreSubscriptionProductUpdateSchema,
+  PaymentsAppStoreSubscriptionsService,
 } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (
+  client,
+  httpAuth: HttpInstance
+): PaymentsAppStoreSubscriptionsService => ({
   /**
    * Get a list of App Store subscriptions
    * Permission | Scope | Effect

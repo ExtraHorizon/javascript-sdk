@@ -8,9 +8,10 @@ import type {
   AppleNotification,
   AppStoreNotification,
   AppStoreReceipt,
+  PaymentsAppStoreService,
 } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): PaymentsAppStoreService => ({
   /**
    * Complete a transaction
    * Permission | Scope | Effect

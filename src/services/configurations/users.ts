@@ -2,9 +2,16 @@ import { RQLString } from '../../rql';
 
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { UserConfiguration, UserConfigurationInput } from './types';
+import type {
+  ConfigurationsUsersService,
+  UserConfiguration,
+  UserConfigurationInput,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (
+  client,
+  httpAuth: HttpInstance
+): ConfigurationsUsersService => ({
   /**
    * Get a user configuration
    * Permission | Scope | Effect

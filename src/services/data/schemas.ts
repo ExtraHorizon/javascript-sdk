@@ -1,6 +1,11 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type { Schema, SchemaInput, UpdateSchemaInput } from './types';
+import type {
+  DataSchemasService,
+  Schema,
+  SchemaInput,
+  UpdateSchemaInput,
+} from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
 const addTransitionHelpersToSchema = (schema: Schema) => ({
@@ -16,7 +21,7 @@ const addTransitionHelpersToSchema = (schema: Schema) => ({
   },
 });
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataSchemasService => ({
   /**
    * Create a schema
    * Permission | Scope | Effect

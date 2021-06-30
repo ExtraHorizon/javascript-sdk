@@ -1,6 +1,7 @@
 import type { HttpInstance } from '../../types';
+import type { CountriesService } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): CountriesService => ({
   /**
    * Retrieve a list of all the defined countries
    * Permission | Scope | Effect

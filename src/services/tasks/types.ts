@@ -1,4 +1,5 @@
-import type { ObjectId } from '../types';
+import { RQLString } from '../../rql';
+import type { AffectedRecords, ObjectId, PagedResult } from '../types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -31,3 +32,18 @@ export type TaskInput = Pick<
   Task,
   'functionName' | 'data' | 'startTimestamp' | 'priority' | 'tags'
 >;
+
+export interface TasksService {
+  find(
+    this: TasksService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<Task>>;
+  findById(
+    this: TasksService,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Task>;
+  findFirst(this: TasksService, options?: { rql?: RQLString }): Promise<Task>;
+  create(this: TasksService, requestBody: TaskInput): Promise<Task>;
+  cancel(this: TasksService, taskId: ObjectId): Promise<AffectedRecords>;
+}

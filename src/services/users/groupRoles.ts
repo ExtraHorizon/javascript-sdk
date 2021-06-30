@@ -8,9 +8,13 @@ import type {
   AddRole,
   GroupRole,
   GlobalPermission,
+  UsersGroupRolesService,
 } from './types';
 
-export default (userClient, httpWithAuth: HttpInstance) => ({
+export default (
+  userClient,
+  httpWithAuth: HttpInstance
+): UsersGroupRolesService => ({
   /**
    * Retrieve a list of group permissions
    * Permission | Scope | Effect

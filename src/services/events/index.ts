@@ -1,4 +1,8 @@
-import type { HttpInstance } from '../../types';
+import type {
+  EventsService,
+  HttpInstance,
+  SubscriptionsService,
+} from '../../types';
 import httpClient from '../http-client';
 import events from './events';
 import health from './health';
@@ -6,12 +10,10 @@ import subscriptions from './subscriptions';
 import { EVENTS_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
 
-export type EventsService = ReturnType<typeof health> &
-  ReturnType<typeof events> & {
-    subscriptions: ReturnType<typeof subscriptions>;
-  };
-
-export const eventsService = (httpWithAuth: HttpInstance): EventsService => {
+export const eventsService = (
+  httpWithAuth: HttpInstance
+): ReturnType<typeof health> &
+  EventsService & { subscriptions: SubscriptionsService } => {
   const client = httpClient({
     basePath: EVENTS_BASE,
     transformRequestData: decamelizeKeys,

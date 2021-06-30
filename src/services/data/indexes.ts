@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import { Index, IndexInput } from './types';
+import { DataIndexesService, Index, IndexInput } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataIndexesService => ({
   /**
    * Create an index
    * Set an index on a specific property in a schema.

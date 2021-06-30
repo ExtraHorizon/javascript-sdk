@@ -9,9 +9,10 @@ import type {
   OrderSchema,
   SetupIntentCreationSchema,
   StripeSetupIntentSchema,
+  PaymentsStripeService,
 } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): PaymentsStripeService => ({
   /**
    * Get the saved Stripe data for a user
    * Permission | Scope | Effect

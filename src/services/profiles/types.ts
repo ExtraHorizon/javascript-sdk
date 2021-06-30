@@ -1,5 +1,6 @@
 import { Object } from 'ts-toolbelt';
-import { ObjectId } from '../types';
+import { RQLString } from '../../rql';
+import { AffectedRecords, ObjectId, PagedResult } from '../types';
 
 export interface Profile {
   id?: ObjectId;
@@ -107,4 +108,90 @@ export interface LogEntry {
 
 export interface ProfileComment {
   text: string;
+}
+
+export interface ProfilesGroupsService {
+  create(
+    this: ProfilesGroupsService,
+    profileId: ObjectId,
+    requestBody: GroupCreation
+  ): Promise<Group>;
+  update(
+    this: ProfilesGroupsService,
+    profileId: ObjectId,
+    groupId: ObjectId,
+    requestBody: Omit<Group, 'groupId'>
+  ): Promise<Group>;
+  remove(
+    this: ProfilesGroupsService,
+    profileId: ObjectId,
+    groupId: ObjectId
+  ): Promise<AffectedRecords>;
+  removeFields(
+    this: ProfilesGroupsService,
+    profileId: ObjectId,
+    groupId: ObjectId,
+    requestBody: {
+      fields: Array<string>;
+    }
+  ): Promise<Group>;
+}
+
+export interface ProfilesLogsService {
+  create(
+    this: ProfilesLogsService,
+    profileId: ObjectId,
+    groupId: ObjectId,
+    requestBody: ProfileComment
+  ): Promise<LogEntry>;
+  find(
+    this: ProfilesLogsService,
+    profileId: ObjectId,
+    groupId: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<LogEntry>>;
+  update(
+    this: ProfilesLogsService,
+    profileId: ObjectId,
+    groupId: ObjectId,
+    entryId: ObjectId,
+    requestBody: ProfileComment
+  ): Promise<LogEntry>;
+  remove(
+    this: ProfilesLogsService,
+    profileId: ObjectId,
+    groupId: ObjectId,
+    entryId: ObjectId
+  ): Promise<AffectedRecords>;
+}
+
+export interface ProfilesService {
+  find(
+    this: ProfilesService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<Profile>>;
+  findById(
+    this: ProfilesService,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Profile>;
+  findFirst(
+    this: ProfilesService,
+    options?: { rql?: RQLString }
+  ): Promise<Profile>;
+  create(this: ProfilesService, requestBody: ProfileCreation): Promise<Profile>;
+  update(
+    this: ProfilesService,
+    rql: RQLString,
+    requestBody: Profile
+  ): Promise<AffectedRecords>;
+  removeFields(
+    this: ProfilesService,
+    rql: RQLString,
+    requestBody: {
+      fields: Array<string>;
+    }
+  ): Promise<AffectedRecords>;
+  getComorbidities(this: ProfilesService): Promise<PagedResult<Comorbidities>>;
+  getImpediments(this: ProfilesService): Promise<PagedResult<Impediments>>;
 }

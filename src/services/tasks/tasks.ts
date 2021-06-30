@@ -1,9 +1,9 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type { Task, TaskInput } from './types';
+import type { Task, TaskInput, TasksService } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): TasksService => ({
   /**
    * View a list of tasks
    * Permission | Scope | Effect

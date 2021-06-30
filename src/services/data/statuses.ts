@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { StatusData } from './types';
+import type { DataStatusesService, StatusData } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataStatusesService => ({
   /**
    * Create a status
    * Permission | Scope | Effect
