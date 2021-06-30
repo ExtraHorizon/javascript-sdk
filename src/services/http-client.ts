@@ -1,7 +1,6 @@
 import pako from 'pako';
 import platform from 'platform-specific';
 import { HttpInstance, HttpRequestConfig } from '../http/types';
-import { Environment, environment } from '../utils';
 
 interface HttpClient {
   basePath: string;
@@ -39,10 +38,7 @@ export default ({
                 : [axios.defaults.transformRequest]),
 
               (dataInTransform, headers) => {
-                if (
-                  [Environment.Web, Environment.Node].includes(environment()) &&
-                  typeof dataInTransform === 'string'
-                ) {
+                if (typeof dataInTransform === 'string') {
                   // eslint-disable-next-line no-param-reassign
                   headers['Content-Encoding'] = 'gzip';
                   if (platform.platform === 'ios') {

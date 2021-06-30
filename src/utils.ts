@@ -53,19 +53,3 @@ export function validateConfig({
 export function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-export enum Environment {
-  Web = 'web',
-  ReactNative = 'ReactNative',
-  Node = 'Node',
-}
-
-export function environment(): Environment {
-  if (typeof document !== 'undefined') {
-    return Environment.Web;
-  }
-  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
-    return Environment.ReactNative;
-  }
-  return Environment.Node;
-}
