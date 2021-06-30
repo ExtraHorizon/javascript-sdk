@@ -1,5 +1,5 @@
 import pako from 'pako';
-import BufferModule from 'buffer';
+import platform from 'platform-specific';
 import { HttpInstance, HttpRequestConfig } from '../http/types';
 import { Environment, environment } from '../utils';
 
@@ -41,12 +41,14 @@ export default ({
               (dataInTransform, headers) => {
                 if (
                   [Environment.Web, Environment.Node].includes(environment()) &&
-                  typeof dataInTransform === 'string' &&
-                  dataInTransform.length > 1024
+                  typeof dataInTransform === 'string'
                 ) {
                   // eslint-disable-next-line no-param-reassign
                   headers['Content-Encoding'] = 'gzip';
-                  return BufferModule.Buffer.from(pako.gzip(dataInTransform));
+                  if (platform.platform === 'ios') {
+                    return pako.gzip(dataInTransform);
+                  }
+                  return dataInTransform;
                 }
                 return dataInTransform;
               },
