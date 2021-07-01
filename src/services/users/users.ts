@@ -381,12 +381,14 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
    * none | | Update your own profile image
    * `UPDATE_PROFILE_IMAGE` | `global` | Update any user its profile image
    *
+   * @deprecated this method is deprecated in swagger
    * @param userId Id of the targeted user
    * @param requestBody
    * @returns FullUser Success
    * @throws {ResourceUnknownError}
    */
   async updateProfileImage(userId: ObjectId, requestBody: Hash): Promise<User> {
+    console.warn('updateProfileImage method is deprecated in swagger');
     return (
       await userClient.put(
         httpWithAuth,
