@@ -374,7 +374,7 @@ The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 [tasks]: https://developers.extrahorizon.io/services/?service=tasks-service&redirectToVersion=1
 [templates]: https://developers.extrahorizon.io/services/?service=templates-service&redirectToVersion=1
 [mails]: https://developers.extrahorizon.io/services/?service=mail-service&redirectToVersion=1
-[configurations]: https://developers.extrahorizon.io/services/?service=configurations-service&redirectToVersion=1
+[configurations]: https://developers.extrahorizon.io/services/?service=configurations-service&redirectToVersion=2
 [dispatchers]: https://developers.extrahorizon.io/services/?service=dispatchers-service&redirectToVersion=1
 [payments]: https://developers.extrahorizon.io/services/?service=payments-service&redirectToVersion=1
 [profiles]: https://developers.extrahorizon.io/services/?service=profiles-service&redirectToVersion=1
