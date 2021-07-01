@@ -8,7 +8,7 @@ console.log(
   JSON.stringify(
     {
       ...recursiveMap(value =>
-        typeof value === 'function' ? 'MockFn' : value
+        typeof value === 'function' ? 'MockFn;' : value
       )(sdk),
       raw: [
         'get',
@@ -23,12 +23,15 @@ console.log(
       ].reduce(
         (memo, verb) => ({
           ...memo,
-          [verb]: 'MockFn',
+          [verb]: 'MockFn;',
         }),
         {}
       ),
     },
     null,
     2
-  ).replace(/"/g, '')
+  )
+    .replace(/"/g, '')
+    .replace(/,/g, '')
+    .replace(/}/g, '};')
 );
