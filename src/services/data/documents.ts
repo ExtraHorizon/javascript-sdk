@@ -52,10 +52,18 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    */
   async create<CustomData = null>(
     schemaId: ObjectId,
-    requestBody: Record<string, any>
+    requestBody: Record<string, any>,
+    options?: { gzip?: boolean }
   ): Promise<Document<CustomData>> {
-    return (await client.post(httpAuth, `/${schemaId}/documents`, requestBody))
-      .data;
+    return (
+      await client.post(
+        httpAuth,
+        `/${schemaId}/documents`,
+        requestBody,
+        {},
+        options
+      )
+    ).data;
   },
 
   /**
