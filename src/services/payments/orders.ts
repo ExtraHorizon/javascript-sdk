@@ -89,7 +89,7 @@ export default (client, httpAuth: HttpInstance): PaymentsOrdersService => ({
    * @returns AffectedRecords
    */
   async addTagsToOrder(
-    rql: string,
+    rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords> {
     return (
@@ -108,7 +108,7 @@ export default (client, httpAuth: HttpInstance): PaymentsOrdersService => ({
    * @returns AffectedRecords
    */
   async removeTagsFromOrder(
-    rql: string,
+    rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords> {
     return (

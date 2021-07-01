@@ -92,7 +92,7 @@ export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
    * @returns AffectedRecords
    */
   async removeTagsFromProduct(
-    rql: string,
+    rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords> {
     return (

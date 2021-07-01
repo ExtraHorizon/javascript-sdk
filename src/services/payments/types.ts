@@ -437,12 +437,12 @@ export interface PaymentsOrdersService {
   ): Promise<AffectedRecords>;
   addTagsToOrder(
     this: PaymentsOrdersService,
-    rql: string,
+    rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
   removeTagsFromOrder(
     this: PaymentsOrdersService,
-    rql: string,
+    rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
 }
@@ -464,12 +464,12 @@ export interface PaymentsProductsService {
   ): Promise<ProductSchema>;
   addTagsToProduct(
     this: PaymentsProductsService,
-    rql: string,
+    rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
   removeTagsFromProduct(
     this: PaymentsProductsService,
-    rql: string,
+    rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
   update(
