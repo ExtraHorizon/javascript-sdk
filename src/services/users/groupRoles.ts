@@ -114,9 +114,9 @@ export default (
    * @throws {ResourceUnknownError}
    */
   async remove(
+    rql: RQLString,
     groupId: ObjectId,
-    roleId: ObjectId,
-    rql: RQLString
+    roleId: ObjectId
   ): Promise<AffectedRecords> {
     return (
       await userClient.delete(
@@ -169,9 +169,9 @@ export default (
    * @throws {ResourceUnknownError}
    */
   async removePermissions(
+    rql: RQLString,
     groupId: ObjectId,
-    requestBody: GroupRolePermissions,
-    rql: RQLString
+    requestBody: GroupRolePermissions
   ): Promise<AffectedRecords> {
     return (
       await userClient.post(
@@ -225,9 +225,9 @@ export default (
    * @throws {ResourceUnknownError}
    */
   async removeFromStaff(
+    rql: RQLString,
     groupId: ObjectId,
-    requestBody: StaffRoles,
-    rql: RQLString
+    requestBody: StaffRoles
   ): Promise<AffectedRecords> {
     return (
       await userClient.post(
@@ -278,8 +278,8 @@ export default (
    * @throws {ResourceUnknownError}
    */
   async removeUsersFromStaff(
-    requestBody: StaffGroups,
-    rql: RQLString
+    rql: RQLString,
+    requestBody: StaffGroups
   ): Promise<AffectedRecords> {
     return (
       await userClient.post(
