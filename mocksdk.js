@@ -1,5 +1,4 @@
-var createClient = require('./build/index.cjs.js').createClient;
-var recursiveMap = require('./build/index.cjs.js').recursiveMap;
+var { createClient, recursiveMap } = require('./build/index.cjs.js');
 
 const sdk = createClient({ host: '', clientId: '' });
 
