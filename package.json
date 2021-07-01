@@ -16,7 +16,7 @@
     "start:watch": "yarn test --watch --reporters=\"default\"",
     "create-version-file": "echo \"export const version = '$(node -p \"require('./package.json').version\")';\" > src/version.ts",
     "create-mock-sdk": "node mocksdk.js > src/mockType.ts",
-    "build": "yarn create-version-file && yarn create-mock-sdk && yarn clean && yarn build:library && yarn build:declarations",
+    "build": "yarn create-version-file && yarn clean && yarn build:library && yarn create-mock-sdk && yarn build:declarations",
     "build:library": "rollup --config rollup.config.js",
     "build:declarations": "tsc --project tsconfig.declarations.json",
     "watch": "yarn create-version-file && rollup --config rollup.config.js -w",
