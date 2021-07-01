@@ -33,7 +33,7 @@ export default (client, httpAuth: HttpInstance): MailsService => ({
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<Mail>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Mail>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -99,7 +99,7 @@ export default (client, httpAuth: HttpInstance): MailsService => ({
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<QueuedMail>
    */
   async findOutbound(options?: {
     rql?: string;

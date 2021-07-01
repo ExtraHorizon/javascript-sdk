@@ -14,7 +14,7 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * `VIEW_FILES` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<FileDetails>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
     console.log('this', this);

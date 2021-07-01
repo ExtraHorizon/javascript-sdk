@@ -43,7 +43,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * none | | Every one can use this endpoint
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<Schema>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -96,8 +96,8 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The schema input
+   * @returns AffectedRecords
    */
   async update(
     schemaId: ObjectId,
@@ -112,7 +112,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * - | - | -
    * `DELETE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {IllegalStateError}
    */
   async delete(schemaId: ObjectId): Promise<AffectedRecords> {
@@ -125,7 +125,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * - | - | -
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @returns any Success
+   * @returns AffectedRecords
    */
   async disable(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${schemaId}/disable`)).data;
@@ -137,7 +137,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * - | - | -
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @returns any Success
+   * @returns AffectedRecords
    */
   async enable(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.post(httpAuth, `/${schemaId}/enable`)).data;
