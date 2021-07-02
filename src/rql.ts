@@ -161,7 +161,7 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     },
     build(): RQLString {
       return `${
-        returnString.length > 0 ? '?' : ''
+        returnString.length > 0 && returnString.charAt(0) !== '?' ? '?' : ''
       }${returnString}` as RQLString;
     },
     intermediate(): RQLString {

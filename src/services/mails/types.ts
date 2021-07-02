@@ -8,6 +8,7 @@ import {
   AffectedRecords,
   PagedResult,
 } from '../types';
+import { PagedResultWithPager } from '../utils';
 
 export interface Mail {
   id?: ObjectId;
@@ -99,7 +100,7 @@ export interface MailsService {
   find: (
     this: MailsService,
     options?: { rql?: RQLString }
-  ) => Promise<PagedResult<Mail>>;
+  ) => Promise<PagedResultWithPager<Mail>>;
   findById: (
     this: MailsService,
     id: ObjectId,

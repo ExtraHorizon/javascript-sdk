@@ -14,6 +14,7 @@ import {
   TemplateBasedMailCreation,
   MailsService,
 } from './types';
+import { addPagers, PagedResultWithPager } from '../utils';
 
 export default (client, httpAuth: HttpInstance): MailsService => ({
   /**
@@ -35,8 +36,20 @@ export default (client, httpAuth: HttpInstance): MailsService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Mail>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Mail>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+    limit?: number;
+    offset?: number;
+  }): Promise<PagedResultWithPager<Mail>> {
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+
+    return addPagers.call(
+      this,
+      options?.rql,
+      options?.limit || 2,
+      options?.offset || 0,
+      result
+    );
   },
 
   /**
