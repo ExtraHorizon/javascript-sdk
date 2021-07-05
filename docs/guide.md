@@ -1,0 +1,136 @@
+## RQL Builder
+
+The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
+
+```js
+import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+
+const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
+// ?select(name)&eq(name,fitbit)
+```
+
+## Raw Queries
+
+You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
+
+```js
+import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
+
+(async () => {
+  const sdk = createOAuth2Client({
+    host: '',
+    clientId: '',
+  });
+
+  await sdk.auth.authenticate({
+    password: '',
+    username: '',
+  });
+
+  const me = await sdk.raw.get('/users/v1/me').data;
+  console.log('Me', me);
+})();
+```
+
+## Logging
+
+You can pass in two logger function that will be called by Axios on every request/response respectively.
+
+```js
+import AxiosLogger from "axios-logger";
+
+const sdk = createOAuth2Client({
+  host: "https://api.dev.fibricheck.com",
+  clientId: '',
+  requestLogger: AxiosLogger.requestLogger,
+  responseLogger: AxiosLogger.responseLogger,
+});
+
+await sdk.auth.authenticate({
+  refreshToken: 'refreshToken'
+})
+
+await sdk.users.health();
+
+[Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"refreshToken"}
+[Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"accessToken","token_type":"bearer","expires_in":299.999,"refresh_token":"refreshToken","user_id":"userId","application_id":"applicationId"}
+
+[Axios][Request] GET /auth/v2/health
+[Axios][Response] GET /auth/v2/health 200:OK
+
+```
+
+## Schema/Document Generics
+
+If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
+
+As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
+
+```js
+import {
+  createOAuth2Client,
+  Schema,
+  JSONSchemaObject,
+  JSONSchemaArray,
+  JSONSchemaNumber,
+} from '@extrahorizon/javascript-sdk';
+
+interface MySchema extends Schema {
+  statuses?: Record<'start', never>;
+  properties?: {
+    ppg: JSONSchemaArray & {
+      maxItems: 2000;
+      items: JSONSchemaNumber & { maximum: 255 }[];
+    };
+    location: JSONSchemaObject & {
+      properties: {
+        longitutde: JSONSchemaNumber & { minium: -180; maximum: 180 };
+        latitude: JSONSchemaNumber & { minium: -90; maximum: 90 };
+      };
+    };
+  };
+}
+
+const sdk = createOAuth2Client({
+  host: 'dev.fibricheck.com',
+  clientId: '',
+});
+
+const { data: schemas } = await sdk.data.schemas.find();
+const mySchema: MySchema = schemas[0];
+
+interface MyData {
+  data: {
+    ppg: Number[];
+    location: {
+      longitude: Number;
+      latitude: Number;
+    };
+  };
+}
+const document = await sdk.data.documents.find<MyData>();
+```
+
+## Tests
+
+### Mock
+
+The package also exports a mockSdk you can use in your tests. In this example `jest` is used as testing library.
+
+```js
+import { getMockSdk } from '@extrahorizon/javascript-sdk';
+
+describe('mock SDK', () => {
+  const sdk = getMockSdk < jest.Mock > jest.fn;
+  it('should be valid mock', async () => {
+    expect(sdk.data).toBeDefined();
+  });
+});
+```
+
+### Library
+
+To run the unit tests: `yarn start`
+To run them in watch mode: `yarn start:watch`
+To run e2e tests, copy `.env.example` to `.env` and set up the credentials
+Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
