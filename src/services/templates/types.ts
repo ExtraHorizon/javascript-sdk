@@ -89,7 +89,7 @@ export interface TemplatesService {
     templateId: string,
     requestBody: TemplateIn
   ): Promise<TemplateOut>;
-  delete(this: TemplatesService, templateId: string): Promise<AffectedRecords>;
+  remove(this: TemplatesService, templateId: string): Promise<AffectedRecords>;
   resolveAsPdf(
     this: TemplatesService,
     templateId: string,

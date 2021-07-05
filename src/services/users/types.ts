@@ -246,7 +246,7 @@ export interface UsersGlobalRolesService {
     this: UsersGlobalRolesService,
     requestBody: RoleCreation
   ): Promise<Role>;
-  delete(
+  remove(
     this: UsersGlobalRolesService,
     rql: RQLString
   ): Promise<AffectedRecords>;
