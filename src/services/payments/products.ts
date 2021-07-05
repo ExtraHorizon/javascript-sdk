@@ -4,10 +4,11 @@ import type {
   ProductSchema,
   ProductCreationSchema,
   UpdateTagsSchema,
+  PaymentsProductsService,
 } from './types';
-import type { RQLString } from '../../rql';
+import { RQLString, rqlBuilder } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
   /**
    * Create a product
    * Permission | Scope | Effect
@@ -34,6 +35,31 @@ export default (client, httpAuth: HttpInstance) => ({
     rql?: RQLString;
   }): Promise<PagedResult<ProductSchema>> {
     return (await client.get(httpAuth, `/products${options?.rql || ''}`)).data;
+  },
+
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findById(
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<ProductSchema> {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ rql: rqlWithId });
+    return res.data[0];
+  },
+
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  async findFirst(options?: { rql?: RQLString }): Promise<ProductSchema> {
+    const res = await this.find(options);
+    return res.data[0];
   },
 
   /**

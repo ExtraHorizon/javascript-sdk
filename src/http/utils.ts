@@ -19,6 +19,7 @@ export function parseAuthParams(options: AuthParams): AuthConfig {
         key: options.token,
         secret: options.tokenSecret,
       },
+      skipTokenCheck: options.skipTokenCheck || false,
     };
   }
 
@@ -111,10 +112,13 @@ export function camelize(string: string): string {
 }
 
 export function decamelize(string: string): string {
-  return string
-    .split(/(?=[A-Z])/)
-    .join('_')
-    .toLowerCase();
+  // If all characters are uppercase, no need to decamelize as this is very likely a language code
+  return string.toUpperCase() === string
+    ? string
+    : string
+        .split(/(?=[A-Z])/)
+        .join('_')
+        .toLowerCase();
 }
 
 export function camelizeKeys(

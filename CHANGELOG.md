@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0]
+
+### Added
+
+- Localizations Service
+- Profiles Service
+- Notifications Service
+- optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
+- Events Service
+
+### Changes
+
+- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
+- Updated docs links
+- Gzip option `sdk.data.documents.create`
+
+```ts
+await sdk.data.documents.create('schemaId', document, {
+  gzip: true,
+});
+```
+
 ## [3.1.0]
 
 ### Breaking Changes

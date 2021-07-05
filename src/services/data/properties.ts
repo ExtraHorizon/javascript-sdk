@@ -1,16 +1,16 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { TypeConfiguration } from './types';
+import type { DataPropertiesService, TypeConfiguration } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
   /**
    * Create a property
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The name and configuration
+   * @returns AffectedRecords
    * @throws {ResourceAlreadyExistsError}
    * @throws {IllegalArgumentError}
    * @throws {IllegalStateException}
@@ -34,7 +34,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
@@ -54,8 +54,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The configuration
+   * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */

@@ -1,13 +1,63 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
+import {
+  AxiosInterceptorManager,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from 'axios';
 
-import { AxiosInstance } from 'axios';
+export type HttpRequestConfig = AxiosRequestConfig;
 
+export interface HttpInstance {
+  defaults: AxiosRequestConfig;
+  interceptors: {
+    request: AxiosInterceptorManager<AxiosRequestConfig>;
+    response: AxiosInterceptorManager<AxiosResponse>;
+  };
+  getUri(config?: AxiosRequestConfig): string;
+  request<T = any, R = AxiosResponse<T>>(
+    config: AxiosRequestConfig
+  ): Promise<R>;
+  get<T = any, R = AxiosResponse<T>>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+  delete<T = any, R = AxiosResponse<T>>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+  head<T = any, R = AxiosResponse<T>>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+  options<T = any, R = AxiosResponse<T>>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+  post<T = any, R = AxiosResponse<T>>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+  put<T = any, R = AxiosResponse<T>>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+  patch<T = any, R = AxiosResponse<T>>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<R>;
+}
 export interface TokenDataOauth2 {
+  userId?: string;
   accessToken: string;
   refreshToken: string;
 }
 
 export interface TokenDataOauth1 {
+  userId?: string;
   key: string;
   secret: string;
 }
@@ -31,6 +81,7 @@ export interface TokenResponseOauth2 {
 
 export interface Oauth1Token {
   tokenData: TokenDataOauth1;
+  skipTokenCheck: boolean;
 }
 
 export interface Oauth1Password {
@@ -70,9 +121,10 @@ export type OAuth2Config =
 
 export type AuthConfig = OAuth1Config | OAuth2Config;
 
-export interface OAuthClient extends AxiosInstance {
+export interface OAuthClient extends HttpInstance {
   authenticate: (data: AuthConfig) => Promise<void>;
   confirmMfa: (data: MfaConfig) => Promise<void>;
+  userId: string;
 }
 
 export interface MfaConfig {

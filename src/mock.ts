@@ -209,6 +209,8 @@ export type MockClient<MockFn> = {
     products: {
       create: MockFn;
       find: MockFn;
+      findById: MockFn;
+      findFirst: MockFn;
       addTagsToProduct: MockFn;
       removeTagsFromProduct: MockFn;
       update: MockFn;
@@ -216,6 +218,8 @@ export type MockClient<MockFn> = {
     };
     orders: {
       find: MockFn;
+      findById: MockFn;
+      findFirst: MockFn;
       create: MockFn;
       update: MockFn;
       addTagsToOrder: MockFn;
@@ -248,6 +252,72 @@ export type MockClient<MockFn> = {
       createPaymentIntent: MockFn;
       createSetupIntent: MockFn;
       subscribeToEvents: MockFn;
+    };
+  };
+  localizations: {
+    health: MockFn;
+    find: MockFn;
+    findByKey: MockFn;
+    findFirst: MockFn;
+    create: MockFn;
+    update: MockFn;
+    remove: MockFn;
+    getByKeys: MockFn;
+    getCountries: MockFn;
+    getRegions: MockFn;
+    getLanguages: MockFn;
+  };
+  profiles: {
+    health: MockFn;
+    find: MockFn;
+    findById: MockFn;
+    findFirst: MockFn;
+    create: MockFn;
+    update: MockFn;
+    removeFields: MockFn;
+    getComorbidities: MockFn;
+    getImpediments: MockFn;
+    groups: {
+      create: MockFn;
+      update: MockFn;
+      remove: MockFn;
+      removeFields: MockFn;
+    };
+    logs: {
+      create: MockFn;
+      find: MockFn;
+      update: MockFn;
+      remove: MockFn;
+    };
+  };
+  notifications: {
+    health: MockFn;
+    create: MockFn;
+    find: MockFn;
+    findById: MockFn;
+    findFirst: MockFn;
+    remove: MockFn;
+    markAsViewed: MockFn;
+    getTypes: MockFn;
+    settings: {
+      find: MockFn;
+      findById: MockFn;
+      findFirst: MockFn;
+      update: MockFn;
+      remove: MockFn;
+    };
+  };
+  events: {
+    health: MockFn;
+    find: MockFn;
+    findById: MockFn;
+    findFirst: MockFn;
+    create: MockFn;
+    subscriptions: {
+      find: MockFn;
+      findById: MockFn;
+      findFirst: MockFn;
+      create: MockFn;
     };
   };
   auth: {
@@ -290,7 +360,7 @@ export type MockClient<MockFn> = {
   };
 };
 
-export const getMockSdk = <MockFn>(fn): MockClient<MockFn> => ({
+export const getMockSdk = <MockFn>(fn: () => MockFn): MockClient<MockFn> => ({
   ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(sdk),
   raw: [
     'get',

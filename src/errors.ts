@@ -80,6 +80,11 @@ export class ApiError extends Error {
 
   public static createFromHttpError(error: HttpError): ApiError {
     const { config, response } = error;
+
+    if (!error.response) {
+      // Something went wrong before the request. Return the error
+      return error;
+    }
     return new this(
       response?.data?.description ||
         response?.data?.message ||
@@ -146,8 +151,10 @@ export class InvalidReceiptDataError extends BadRequestError {}
 export class UnknownReceiptTransactionError extends BadRequestError {}
 export class AppStoreTransactionAlreadyLinked extends BadRequestError {}
 export class StripePaymentMethodError extends BadRequestError {}
+export class DefaultLocalizationMissingError extends BadRequestError {}
 
 export class IDFormatError extends BadRequestError {}
+export class ProfileAlreadyExistsError extends BadRequestError {}
 
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
@@ -193,6 +200,7 @@ await sdk.auth.authenticate({
 // 403 Forbidden
 export class ForbiddenError extends ApiError {}
 export class TokenNotDeleteableError extends ForbiddenError {}
+export class RemoveFieldError extends ForbiddenError {}
 
 // 404 Not Found
 export class NotFoundError extends ApiError {}

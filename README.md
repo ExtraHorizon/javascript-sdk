@@ -15,6 +15,10 @@
 - [Configurations][configurations]: Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
 - [Dispatchers][dispatchers]: Configure actions that need to be invoked when a specific event is/was triggered.
 - [Payments][payments]: A service that provides payment functionality.
+- [Profiles][profiles]: Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
+- [Notifications][notifications]: A service that handles push notifications.
+- [Localizations][localizations]: Storage and retrieval of text snippets, translated into multiple languages.
+- [Events][events]: Service that provides event (publish/subscribe) functionality for other services.
 
 ## Getting started
 
@@ -363,13 +367,17 @@ You can check the changelog on the [releases](https://github.com/ExtraHorizon/ja
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 
-[auth]: https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/
-[users]: https://developers.extrahorizon.io/services/users-service/1.1.7/
-[data]: https://developers.extrahorizon.io/services/data-service/1.0.9/
-[files]: https://developers.extrahorizon.io/services/files-service/1.0.1-dev/
-[tasks]: https://developers.extrahorizon.io/services/tasks-service/1.0.4/
-[templates]: https://developers.extrahorizon.io/services/templates-service/1.0.13/
-[mails]: https://developers.extrahorizon.io/services/mail-service/1.0.8-dev/
-[configurations]: https://developers.extrahorizon.io/services/configurations-service/2.0.2-dev/
-[dispatchers]: https://developers.extrahorizon.io/services/dispatchers-service/1.0.3-dev/
-[payments]: https://developers.extrahorizon.io/services/payments-service/1.1.0-dev/
+[auth]: https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
+[users]: https://developers.extrahorizon.io/services/?service=users-service&redirectToVersion=1
+[data]: https://developers.extrahorizon.io/services/?service=data-service&redirectToVersion=1
+[files]: https://developers.extrahorizon.io/services/?service=files-service&redirectToVersion=1
+[tasks]: https://developers.extrahorizon.io/services/?service=tasks-service&redirectToVersion=1
+[templates]: https://developers.extrahorizon.io/services/?service=templates-service&redirectToVersion=1
+[mails]: https://developers.extrahorizon.io/services/?service=mail-service&redirectToVersion=1
+[configurations]: https://developers.extrahorizon.io/services/?service=configurations-service&redirectToVersion=2
+[dispatchers]: https://developers.extrahorizon.io/services/?service=dispatchers-service&redirectToVersion=1
+[payments]: https://developers.extrahorizon.io/services/?service=payments-service&redirectToVersion=1
+[profiles]: https://developers.extrahorizon.io/services/?service=profiles-service&redirectToVersion=1
+[notifications]: https://developers.extrahorizon.io/services/?service=notifications-service&redirectToVersion=1
+[localizations]: https://developers.extrahorizon.io/services/?service=localizations-service&redirectToVersion=1
+[events]: https://developers.extrahorizon.io/services/?service=events-service&redirectToVersion=1

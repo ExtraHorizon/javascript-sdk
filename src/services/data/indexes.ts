@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import { Index, IndexInput } from './types';
+import { DataIndexesService, Index, IndexInput } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataIndexesService => ({
   /**
    * Create an index
    * Set an index on a specific property in a schema.
@@ -29,7 +29,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Delete an index
    * @param indexId The id of the targeted index.
    * @param schemaId The id of the targeted schema.
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {NoPermissionError}
    * @throws {ResourceUnknownError}
    */

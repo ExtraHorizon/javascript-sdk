@@ -1,5 +1,12 @@
-import { ObjectId, LanguageCode, TimeZone } from '../types';
+import {
+  ObjectId,
+  LanguageCode,
+  TimeZone,
+  PagedResult,
+  AffectedRecords,
+} from '../types';
 import { TypeConfiguration } from '../data/types';
+import { RQLString } from '../../rql';
 
 export interface TemplateOut {
   id?: ObjectId;
@@ -54,4 +61,55 @@ export interface CreateFile {
    */
   timeZone?: TimeZone;
   content: Record<string, any>;
+}
+
+export interface TemplatesService {
+  health(this: TemplatesService): Promise<boolean>;
+  find(
+    this: TemplatesService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<TemplateOut>>;
+  findById(
+    this: TemplatesService,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<TemplateOut>;
+  findByName(
+    this: TemplatesService,
+    name: string,
+    options?: { rql?: RQLString }
+  ): Promise<TemplateOut>;
+  findFirst(
+    this: TemplatesService,
+    options?: { rql?: RQLString }
+  ): Promise<TemplateOut>;
+  create(this: TemplatesService, requestBody: TemplateIn): Promise<TemplateOut>;
+  update(
+    this: TemplatesService,
+    templateId: string,
+    requestBody: TemplateIn
+  ): Promise<TemplateOut>;
+  delete(this: TemplatesService, templateId: string): Promise<AffectedRecords>;
+  resolveAsPdf(
+    this: TemplatesService,
+    templateId: string,
+    requestBody: CreateFile
+  ): Promise<Buffer>;
+  resolveAsPdfUsingCode(
+    this: TemplatesService,
+    templateId: string,
+    localizationCode: string,
+    requestBody: CreateFile
+  ): Promise<Buffer>;
+  resolveAsJson(
+    this: TemplatesService,
+    templateId: string,
+    requestBody: CreateFile
+  ): Promise<Record<string, string>>;
+  resolveAsJsonUsingCode(
+    this: TemplatesService,
+    templateId: string,
+    localizationCode: string,
+    requestBody: CreateFile
+  ): Promise<Record<string, string>>;
 }

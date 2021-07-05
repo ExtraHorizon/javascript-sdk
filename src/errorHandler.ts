@@ -58,11 +58,15 @@ import {
   StripePaymentMethodError,
   StripeRequestError,
   IDFormatError,
+  DefaultLocalizationMissingError,
+  ProfileAlreadyExistsError,
+  RemoveFieldError,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
   1: ServerError,
   10: NoPermissionError,
+  11: RemoveFieldError,
   12: IDFormatError,
   13: EmptyBodyError,
   14: MissingRequiredFieldsError,
@@ -99,8 +103,10 @@ export const ErrorClassDefinitionsMap = {
   211: LoginTimeoutError,
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
+  301: ProfileAlreadyExistsError,
   414: StatusInUseError,
   415: LockedDocumentError,
+  801: DefaultLocalizationMissingError,
   1002: LocalizationKeyMissingError,
   1003: TemplateFillingError,
   2605: InvalidTokenError,
