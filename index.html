@@ -13,6 +13,11 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.0.1/build/styles/base16/solarized-light.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.0.1/build/highlight.min.js"></script>
   </head>
   <style>
     .app-name-link > img {
@@ -30,6 +35,15 @@
         auto2top: true,
         subMaxLevel: 3,
         maxLevel: 3,
+        markdown: function (marked, renderer) {
+          marked.setOptions({
+            highlight: function highlight(code, lang) {
+              const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+              return hljs.highlight(code, { language }).value;
+            },
+          });
+          return marked;
+        },
       };
     </script>
     <!-- Docsify v4 -->
