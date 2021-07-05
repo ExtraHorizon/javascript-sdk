@@ -7,12 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.2.0]
+## [v3.3.0]
 
 ### Breaking Changes
 
+- Updated rql parameter type. Is always `rql: RQLString` now. Functions affected:
+  - sdk.payments.orders.addTagsToOrder
+  - sdk.payments.orders.removeTagsFromOrder
+  - sdk.payments.products.removeTagsFromProduct
+- Updated parameter position if rql is a required parameter, it is always the first parameter. Functions affected
+  - sdk.users.groupRoles.remove
+  - sdk.users.groupRoles.removePermissions
+  - sdk.users.groupRoles.removeFromStaff
+  - sdk.users.groupRoles.removeUsersFromStaff
 - Renamed all methods from `delete` to `remove` and all of them returning `AffectedRecords`
 - Renamed all methods from `deleteFields` to `removeFields`
+
+## [3.2.0]
 
 ### Added
 
