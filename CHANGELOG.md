@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.3.0]
+## [v3.3.0]
 
 ### Breaking Changes
 
@@ -20,13 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - sdk.users.groupRoles.removePermissions
   - sdk.users.groupRoles.removeFromStaff
   - sdk.users.groupRoles.removeUsersFromStaff
-
-## [3.2.0]
-
-### Breaking Changes
-
 - Renamed all methods from `delete` to `remove` and all of them returning `AffectedRecords`
 - Renamed all methods from `deleteFields` to `removeFields`
+
+## [3.2.0]
 
 ### Added
 
