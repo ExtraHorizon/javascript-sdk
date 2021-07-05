@@ -21,6 +21,23 @@ console.log(schema.transitionsByName);
 } */
 ```
 
+## Find a document with custom data typing:
+
+```ts
+const schema = await sdk.data.schemas.findFirst();
+
+interface MyData {
+  ppg: Number[];
+  location: {
+    longitude: Number;
+    latitude: Number;
+  };
+}
+const document = await sdk.data.documents.find<MyData>(schema.id);
+
+console.log(document.data.ppg);
+```
+
 ## Transition a document based on `data.deviceUid`
 
 ```js

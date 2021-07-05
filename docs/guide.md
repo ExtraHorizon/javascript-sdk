@@ -66,7 +66,7 @@ If you know the type info of your schemas, you can pass in the Typescript info w
 
 As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
 
-```js
+```ts
 import {
   createOAuth2Client,
   Schema,
@@ -100,15 +100,13 @@ const { data: schemas } = await sdk.data.schemas.find();
 const mySchema: MySchema = schemas[0];
 
 interface MyData {
-  data: {
-    ppg: Number[];
-    location: {
-      longitude: Number;
-      latitude: Number;
-    };
+  ppg: Number[];
+  location: {
+    longitude: Number;
+    latitude: Number;
   };
 }
-const document = await sdk.data.documents.find<MyData>();
+const document = await sdk.data.documents.find<MyData>(mySchema.id);
 ```
 
 ## Tests
