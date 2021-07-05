@@ -26,7 +26,8 @@
     "test": "jest",
     "test:e2e": "jest tests/e2e",
     "lint": "eslint src --ext .ts",
-    "prettier": "prettier src",
+    "prettier": "prettier src", 
+    "serve:website": "docsify serve .",
     "majestic": "majestic"
   },
   "files": [
@@ -38,6 +39,8 @@
     "crypto-es": "^1.2.7",
     "form-data": "^4.0.0",
     "oauth-1.0a": "^2.2.6",
+    "pako": "^2.0.3",
+    "platform-specific": "^1.1.0",
     "ts-toolbelt": "^9.6.0"
   },
   "devDependencies": {
@@ -53,6 +56,7 @@
     "@types/node": "^15.12.4",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
+    "docsify-cli": "^4.4.3",
     "dotenv": "^10.0.0",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",

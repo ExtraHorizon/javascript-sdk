@@ -6,16 +6,19 @@ import logs from './logs';
 import health from './health';
 import { PROFILES_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
-
-export type ProfilesService = ReturnType<typeof health> &
-  ReturnType<typeof profiles> & {
-    groups: ReturnType<typeof groups>;
-    logs: ReturnType<typeof logs>;
-  };
+import {
+  ProfilesGroupsService,
+  ProfilesLogsService,
+  ProfilesService,
+} from './types';
 
 export const profilesService = (
   httpWithAuth: HttpInstance
-): ProfilesService => {
+): ReturnType<typeof health> &
+  ProfilesService & {
+    groups: ProfilesGroupsService;
+    logs: ProfilesLogsService;
+  } => {
   const client = httpClient({
     transformRequestData: decamelizeKeys,
     basePath: PROFILES_BASE,

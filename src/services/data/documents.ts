@@ -2,9 +2,9 @@ import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { delay } from '../../utils';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import { Document } from './types';
+import { DataDocumentsService, Document } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
   // TypeScript limitation. Function using optional generic with fallback can not be first function.
   /**
    * Check if the document is not in a locked state
@@ -52,10 +52,18 @@ export default (client, httpAuth: HttpInstance) => ({
    */
   async create<CustomData = null>(
     schemaId: ObjectId,
-    requestBody: Record<string, any>
+    requestBody: Record<string, any>,
+    options?: { gzip?: boolean }
   ): Promise<Document<CustomData>> {
-    return (await client.post(httpAuth, `/${schemaId}/documents`, requestBody))
-      .data;
+    return (
+      await client.post(
+        httpAuth,
+        `/${schemaId}/documents`,
+        requestBody,
+        {},
+        options
+      )
+    ).data;
   },
 
   /**
@@ -141,7 +149,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
    * @param requestBody
-   * @returns any Success
+   * @returns AffectedRecords
    */
   async update(
     schemaId: ObjectId,
@@ -175,7 +183,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `DELETE_DOCUMENTS` | `global` | Delete the document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @returns any Success
+   * @returns AffectedRecords
    */
   async remove(
     schemaId: ObjectId,
@@ -197,8 +205,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of fields
+   * @returns AffectedRecords
    */
   async removeFields(
     schemaId: ObjectId,
@@ -233,7 +241,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
    * @param requestBody
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
@@ -266,8 +274,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of groupIds
+   * @returns AffectedRecords
    */
   async linkGroups(
     schemaId: ObjectId,
@@ -298,8 +306,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of groupIds
+   * @returns AffectedRecords
    */
   async unlinkGroups(
     schemaId: ObjectId,
@@ -328,8 +336,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be added to the document.
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of userIds
+   * @returns AffectedRecords
    */
   async linkUsers(
     schemaId: ObjectId,
@@ -362,8 +370,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody list of userIds
+   * @returns AffectedRecords
    */
   async unlinkUsers(
     schemaId: ObjectId,

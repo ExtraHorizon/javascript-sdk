@@ -1,9 +1,15 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords, PagedResult, ObjectId } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import { Profile, ProfileCreation, Comorbidities, Impediments } from './types';
+import {
+  Profile,
+  ProfileCreation,
+  Comorbidities,
+  Impediments,
+  ProfilesService,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): ProfilesService => ({
   /**
    * Get a list of profiles
    * Permission | Scope | Effect

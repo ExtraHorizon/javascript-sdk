@@ -7,9 +7,9 @@ import {
   Results,
   ResultResponse,
 } from '../types';
-import { LogEntry, ProfileComment } from './types';
+import { LogEntry, ProfileComment, ProfilesLogsService } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): ProfilesLogsService => ({
   /**
    * Create a profile log entry
    * Permission | Scope | Effect

@@ -1,9 +1,13 @@
 import type { HttpInstance } from '../../types';
 import { PagedResult, ObjectId } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import type { Subscription, CreateSubscription } from './types';
+import type {
+  Subscription,
+  CreateSubscription,
+  SubscriptionsService,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
   /**
    * Returns a list of event subscriptions
    * Permission | Scope | Effect

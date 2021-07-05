@@ -3,14 +3,13 @@ import httpClient from '../http-client';
 import dispatchers from './dispatchers';
 import actions from './actions';
 import { DISPATCHERS_BASE } from '../../constants';
-
-export type DispatchersService = ReturnType<typeof dispatchers> & {
-  actions: ReturnType<typeof actions>;
-};
+import { ActionsService, DispatchersService } from './types';
 
 export const dispatchersService = (
   httpWithAuth: HttpInstance
-): DispatchersService => {
+): DispatchersService & {
+  actions: ActionsService;
+} => {
   const client = httpClient({
     basePath: DISPATCHERS_BASE,
   });

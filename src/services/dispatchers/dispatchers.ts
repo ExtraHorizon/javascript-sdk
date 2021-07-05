@@ -1,9 +1,9 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type { Dispatcher } from './types';
+import type { Dispatcher, DispatchersService } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DispatchersService => ({
   /**
    * Request a list of dispatchers
    * Permission | Scope | Effect

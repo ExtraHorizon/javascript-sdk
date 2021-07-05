@@ -1,16 +1,16 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { StatusData } from './types';
+import type { DataStatusesService, StatusData } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): DataStatusesService => ({
   /**
    * Create a status
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The name and status data
+   * @returns AffectedRecords
    * @throws {ResourceAlreadyExistsError}
    */
   async create(
@@ -31,8 +31,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param name The name of the targeted status.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The status data
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   async update(
@@ -52,7 +52,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param name The name of the targeted status.
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {StatusInUseError}
    * @throws {ResourceUnknownError}
    */

@@ -1,3 +1,6 @@
+import { RQLString } from '../../rql';
+import { AffectedRecords, PagedResult } from '../types';
+
 export enum SupportedLanguageCodes {
   EN = 'EN',
   NL = 'NL',
@@ -46,4 +49,42 @@ export interface BulkUpdateResponse {
 export interface LocalizationRequest {
   localizationCodes: SupportedLanguageCodesValues[];
   localizations: string[];
+}
+
+export interface CountriesService {
+  getCountries(this: CountriesService): Promise<string[]>;
+  getRegions(this: CountriesService, country: string): Promise<string[]>;
+}
+
+export interface LanguagesService {
+  getLanguages(this: LanguagesService): Promise<string[]>;
+}
+
+export interface LocalizationsService {
+  find(
+    this: LocalizationsService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<Localization>>;
+  findByKey(
+    this: LocalizationsService,
+    key: string,
+    options?: { rql?: RQLString }
+  ): Promise<Localization>;
+  findFirst(
+    this: LocalizationsService,
+    options?: { rql?: RQLString }
+  ): Promise<Localization>;
+  create(
+    this: LocalizationsService,
+    requestBody: BulkLocalization
+  ): Promise<BulkCreationResponse>;
+  update(
+    this: LocalizationsService,
+    requestBody: BulkLocalization
+  ): Promise<BulkUpdateResponse>;
+  remove(this: LocalizationsService, rql: RQLString): Promise<AffectedRecords>;
+  getByKeys(
+    this: LocalizationsService,
+    requestBody: LocalizationRequest
+  ): Promise<Record<string, MappedText>>;
 }

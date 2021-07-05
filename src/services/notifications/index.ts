@@ -5,15 +5,14 @@ import notifications from './notifications';
 import settings from './settings';
 import health from './health';
 import { NOTIFICATIONS_BASE } from '../../constants';
-
-export type NotificationsService = ReturnType<typeof notifications> &
-  ReturnType<typeof health> & {
-    settings: ReturnType<typeof settings>;
-  };
+import { NotificationSettingsServices, NotificationsService } from './types';
 
 export const notificationsService = (
   httpWithAuth: OAuthClient
-): NotificationsService => {
+): NotificationsService &
+  ReturnType<typeof health> & {
+    settings: NotificationSettingsServices;
+  } => {
   const client = httpClient({
     basePath: NOTIFICATIONS_BASE,
     transformRequestData: decamelizeKeys,

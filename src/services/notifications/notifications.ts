@@ -1,9 +1,14 @@
 import type { OAuthClient } from '../../types';
 import { AffectedRecords, PagedResult, ObjectId } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import { Notification, CreateNotificationRequest, NotifTypeDef } from './types';
+import {
+  Notification,
+  CreateNotificationRequest,
+  NotifTypeDef,
+  NotificationsService,
+} from './types';
 
-export default (client, httpAuth: OAuthClient) => ({
+export default (client, httpAuth: OAuthClient): NotificationsService => ({
   /**
    * Create a notification
    * Permission | Scope | Effect

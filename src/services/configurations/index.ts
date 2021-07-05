@@ -6,13 +6,20 @@ import users from './users';
 import patients from './patients';
 import staff from './staff';
 import { CONFIGURATION_BASE } from '../../constants';
+import {
+  ConfigurationsGeneralService,
+  ConfigurationsGroupsService,
+  ConfigurationsPatientsService,
+  ConfigurationsStaffService,
+  ConfigurationsUsersService,
+} from './types';
 
 export type ConfigurationsService = {
-  general: ReturnType<typeof general>;
-  groups: ReturnType<typeof groups>;
-  users: ReturnType<typeof users>;
-  patients: ReturnType<typeof patients>;
-  staff: ReturnType<typeof staff>;
+  general: ConfigurationsGeneralService;
+  groups: ConfigurationsGroupsService;
+  users: ConfigurationsUsersService;
+  patients: ConfigurationsPatientsService;
+  staff: ConfigurationsStaffService;
 };
 
 export const configurationsService = (

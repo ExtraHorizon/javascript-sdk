@@ -3,8 +3,7 @@ import httpClient from '../http-client';
 import mails from './mails';
 import { MAIL_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
-
-export type MailsService = ReturnType<typeof mails>;
+import { MailsService } from './types';
 
 export const mailsService = (httpWithAuth: HttpInstance): MailsService => {
   const client = httpClient({

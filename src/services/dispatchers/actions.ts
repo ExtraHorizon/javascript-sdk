@@ -1,8 +1,13 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { Action, ActionCreation, ActionUpdate } from './types';
+import type {
+  Action,
+  ActionCreation,
+  ActionUpdate,
+  ActionsService,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): ActionsService => ({
   /**
    * Add an action to the dispatcher
    * Permission | Scope | Effect

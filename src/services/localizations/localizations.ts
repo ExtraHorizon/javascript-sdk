@@ -8,9 +8,10 @@ import type {
   BulkUpdateResponse,
   LocalizationRequest,
   MappedText,
+  LocalizationsService,
 } from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): LocalizationsService => ({
   /**
    * Returns all possible localizations stored in this service
    * Permission | Scope | Effect

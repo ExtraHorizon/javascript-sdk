@@ -7,25 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.3.0]
-
-- Added Events Service
-- Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
-- Updated docs links
+## [3.2.0]
 
 ### Breaking Changes
 
 - Renamed all methods from `delete` to `remove` and all of them returning `AffectedRecords`
 - Renamed all methods from `deleteFields` to `removeFields`
 
-## [3.2.0]
+### Added
 
-- Added Localizations Service
-- Added Profiles Service
-- Added Notifications Service
-- Added optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
-- Added Events Service
+- Localizations Service
+- Profiles Service
+- Notifications Service
+- optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
+- Events Service
+
+### Changes
+
 - Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
+- Updated docs links
+- `updateProfileImage` method is deprecated
+- Gzip option `sdk.data.documents.create`
+
+```ts
+await sdk.data.documents.create('schemaId', document, {
+  gzip: true,
+});
+```
 
 ## [3.1.0]
 

@@ -1,9 +1,16 @@
 import type { HttpInstance } from '../../types';
 import type { AffectedRecords } from '../types';
-import type { GeneralConfiguration, GeneralConfigurationInput } from './types';
+import type {
+  ConfigurationsGeneralService,
+  GeneralConfiguration,
+  GeneralConfigurationInput,
+} from './types';
 import type { RQLString } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (
+  client,
+  httpAuth: HttpInstance
+): ConfigurationsGeneralService => ({
   /**
    * View the general configuration.
    * Permission | Scope | Effect

@@ -7,11 +7,11 @@ import {
   PagedResult,
   AffectedRecords,
 } from '../types';
-import type { FileDetails, Token } from './types';
+import type { FileDetails, FilesService, Token } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 import { createCustomFormData, generateBoundary } from './formHelpers';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): FilesService => ({
   /**
    * List all files
    * Permission | Scope | Effect
@@ -19,9 +19,10 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_FILES` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<FileDetails>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
+    console.log('this', this);
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
