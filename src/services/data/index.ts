@@ -1,12 +1,12 @@
-import type { HttpInstance } from '../../types';
+import type { AffectedRecords, HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import infrastructure from './infrastructure';
-import schemas from './schemas';
+import schemasService from './schemas';
 import indexes from './indexes';
 import statuses from './statuses';
 import properties from './properties';
 import comments from './comments';
-import documents from './documents';
+import documentsService from './documents';
 import transitions from './transitions';
 import { DATA_BASE } from '../../constants';
 import {
@@ -20,7 +20,11 @@ import {
 } from './types';
 
 export type DataService = ReturnType<typeof infrastructure> & {
-  schemas: DataSchemasService;
+  schemas: (schemaId: any) => {
+    document: (documentId: any) => {
+      transition: (transitionData: any) => Promise<AffectedRecords>;
+    };
+  };
   indexes: DataIndexesService;
   statuses: DataStatusesService;
   properties: DataPropertiesService;
@@ -33,14 +37,27 @@ export const dataService = (httpWithAuth: HttpInstance): DataService => {
     basePath: DATA_BASE,
   });
 
+  const documents = documentsService(client, httpWithAuth);
+
+  const schemas = function (schemaId) {
+    return {
+      document: documentId => ({
+        transition: transitionData =>
+          documents.transition(schemaId, documentId, transitionData),
+      }),
+    };
+  };
+
+  Object.assign(schemas, schemasService(client, httpWithAuth));
+
   return {
     ...infrastructure(client, httpWithAuth),
-    schemas: schemas(client, httpWithAuth),
+    schemas,
     indexes: indexes(client, httpWithAuth),
     statuses: statuses(client, httpWithAuth),
     properties: properties(client, httpWithAuth),
     comments: comments(client, httpWithAuth),
-    documents: documents(client, httpWithAuth),
+    documents,
     transitions: transitions(client, httpWithAuth),
   };
 };
