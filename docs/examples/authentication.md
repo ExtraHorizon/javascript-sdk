@@ -31,10 +31,12 @@ try {
 
 ## OAuth1
 
-### Token authentication
+### Token authentication with optional skip
+
+The `skipTokenCheck` saves ~300ms by skipping validation on your `token` and `tokenSecret`.
 
 ```js
-import { createOAuth1Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth1Client } from '@extrahorion/javascript-sdk';
 
 const sdk = createOAuth1Client({
   host: 'dev.fibricheck.com',
@@ -45,6 +47,7 @@ const sdk = createOAuth1Client({
 await sdk.auth.authenticate({
   token: '',
   tokenSecret: '',
+  skipTokenCheck: true,
 });
 ```
 
