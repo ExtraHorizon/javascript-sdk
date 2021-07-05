@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
 - Updated docs links
 - Gzip option `sdk.data.documents.create`
+- `updateProfileImage` method is deprecated
 
 ```ts
 await sdk.data.documents.create('schemaId', document, {
