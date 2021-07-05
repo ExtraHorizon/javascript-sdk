@@ -67,7 +67,7 @@ describe('Properties Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.properties.delete(schemaId, propertyPath);
+    const res = await sdk.data.properties.remove(schemaId, propertyPath);
     expect(res.affectedRecords).toBe(1);
   });
 });

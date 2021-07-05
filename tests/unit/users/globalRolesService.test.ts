@@ -79,7 +79,7 @@ describe('Global Roles Service', () => {
       affectedRecords: 1,
     });
 
-    const res = await sdk.users.globalRoles.delete(rql);
+    const res = await sdk.users.globalRoles.remove(rql);
 
     expect(res.affectedRecords).toBe(1);
   });

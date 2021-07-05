@@ -56,7 +56,7 @@ export default (client, httpWithAuth: HttpInstance) => ({
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId_
    * @throws {ResourceUnknownError}
    */
-  async delete(applicationId: string): Promise<AffectedRecords> {
+  async remove(applicationId: string): Promise<AffectedRecords> {
     return (await client.delete(httpWithAuth, `/applications/${applicationId}`))
       .data;
   },

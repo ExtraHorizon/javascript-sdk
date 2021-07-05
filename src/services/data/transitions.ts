@@ -81,7 +81,7 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {ResourceUnknownError}
    */
-  async delete(
+  async remove(
     schemaId: ObjectId,
     transitionId: ObjectId
   ): Promise<AffectedRecords> {

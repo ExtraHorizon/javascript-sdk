@@ -185,7 +185,7 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @param documentId The id of the targeted document.
    * @returns AffectedRecords
    */
-  async delete(
+  async remove(
     schemaId: ObjectId,
     documentId: ObjectId
   ): Promise<AffectedRecords> {
@@ -208,7 +208,7 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @param requestBody list of fields
    * @returns AffectedRecords
    */
-  async deleteFields(
+  async removeFields(
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {

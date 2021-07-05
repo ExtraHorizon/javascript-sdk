@@ -104,7 +104,7 @@ describe('Template Service', () => {
       .delete(`/${templateId}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.templates.delete(templateId);
+    const res = await sdk.templates.remove(templateId);
 
     expect(res.affectedRecords).toBe(1);
   });
