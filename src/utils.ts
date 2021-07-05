@@ -1,10 +1,12 @@
 import OAuth from 'oauth-1.0a';
-import CryptoJS from 'crypto-js';
+
+import { HmacSHA1 } from 'crypto-es/lib/sha1';
+import { Base64 } from 'crypto-es/lib/enc-base64';
 import { ClientConfig, ClientParams } from './types';
 import { AUTH_BASE } from './constants';
 
 function hmacSha1Hash(baseString: string, key: string) {
-  return CryptoJS.HmacSHA1(baseString, key).toString(CryptoJS.enc.Base64);
+  return HmacSHA1(baseString, key).toString(Base64);
 }
 
 export function validateConfig({
@@ -18,9 +20,8 @@ export function validateConfig({
   const configBase = {
     ...params,
     host: `https://api.${validHostEnd
-      .replace('https://', '')
-      .replace('http://', '')
-      .replace('api.', '')}`,
+      .replace(/^https?:\/\//, '')
+      .replace(/^api\./, '')}`,
   };
 
   if ('consumerKey' in params) {

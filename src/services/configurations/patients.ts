@@ -1,8 +1,14 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { UserConfigurationInput } from './types';
+import type {
+  ConfigurationsPatientsService,
+  UserConfigurationInput,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (
+  client,
+  httpAuth: HttpInstance
+): ConfigurationsPatientsService => ({
   /**
    * Update a patient configuration for a group of a user.
    * Permission | Scope | Effect

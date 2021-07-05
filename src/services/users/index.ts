@@ -6,14 +6,19 @@ import groupRoles from './groupRoles';
 import globalRoles from './globalRoles';
 import { USER_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
+import {
+  UsersGlobalRolesService,
+  UsersGroupRolesService,
+  UsersService,
+} from './types';
 
-export type UsersService = ReturnType<typeof users> &
+export const usersService = (
+  httpWithAuth: HttpInstance
+): UsersService &
   ReturnType<typeof health> & {
-    globalRoles: ReturnType<typeof globalRoles>;
-    groupRoles: ReturnType<typeof groupRoles>;
-  };
-
-export const usersService = (httpWithAuth: HttpInstance): UsersService => {
+    globalRoles: UsersGlobalRolesService;
+    groupRoles: UsersGroupRolesService;
+  } => {
   const userClient = httpClient({
     basePath: USER_BASE,
     transformRequestData: decamelizeKeys,

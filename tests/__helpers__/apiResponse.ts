@@ -19,9 +19,23 @@ export const userResponse = {
   data: [userData],
 };
 
-export const patientsResponse = [userData];
+export const patientsResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [userData],
+};
 
-export const staffResponse = [userData];
+export const staffResponse = {
+  page: {
+    total: 1,
+    offset: 0,
+    limit: 20,
+  },
+  data: [userData],
+};
 
 export const permissionResponse = {
   page: {

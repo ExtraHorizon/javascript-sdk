@@ -1,9 +1,16 @@
 import type { HttpInstance } from '../../types';
 import { AffectedRecords, PagedResult, ObjectId } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import type { Setting, SettingCreation } from './types';
+import type {
+  NotificationSettingsServices,
+  Setting,
+  SettingCreation,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (
+  client,
+  httpAuth: HttpInstance
+): NotificationSettingsServices => ({
   /**
    * Retrieve a list of notifications settings
    * Permission | Scope | Effect

@@ -7,9 +7,14 @@ import {
   Results,
 } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
-import type { TemplateIn, TemplateOut, CreateFile } from './types';
+import type {
+  TemplateIn,
+  TemplateOut,
+  CreateFile,
+  TemplatesService,
+} from './types';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): TemplatesService => ({
   /**
    * Perform a health check
    * @permission Everyone can use this endpoint
@@ -27,7 +32,7 @@ export default (client, httpAuth: HttpInstance) => ({
    * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<TemplateOut>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<TemplateOut>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
@@ -125,8 +130,8 @@ export default (client, httpAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param templateId Id of the targeted template
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The file data
+   * @returns Buffer
    * @throws {LocalizationKeyMissingError}
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}
@@ -151,8 +156,8 @@ export default (client, httpAuth: HttpInstance) => ({
    *
    * @param templateId Id of the targeted template
    * @param localizationCode Specifies the language the template must be resolved in
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The file data
+   * @returns Buffer
    * @throws {LocalizationKeyMissingError}
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}

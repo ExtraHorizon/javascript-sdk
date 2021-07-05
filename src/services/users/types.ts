@@ -1,4 +1,11 @@
-import { ObjectId, LanguageCode, TimeZone } from '../types';
+import { RQLString } from '../../rql';
+import {
+  ObjectId,
+  LanguageCode,
+  TimeZone,
+  PagedResult,
+  AffectedRecords,
+} from '../types';
 
 export interface UserData {
   id: string;
@@ -225,4 +232,191 @@ export interface StaffRoles {
 
 export interface UserRoles {
   roles: ObjectId[];
+}
+
+export interface UsersGlobalRolesService {
+  getPermissions(
+    this: UsersGlobalRolesService
+  ): Promise<PagedResult<GlobalPermission>>;
+  get(
+    this: UsersGlobalRolesService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<Role>>;
+  create(
+    this: UsersGlobalRolesService,
+    requestBody: RoleCreation
+  ): Promise<Role>;
+  delete(
+    this: UsersGlobalRolesService,
+    rql: RQLString
+  ): Promise<AffectedRecords>;
+  update(
+    this: UsersGlobalRolesService,
+    id: ObjectId,
+    requestBody: RoleUpdate
+  ): Promise<Role>;
+  addPermissions(
+    this: UsersGlobalRolesService,
+    rql: RQLString,
+    requestBody: RolePermissions
+  ): Promise<AffectedRecords>;
+  removePermissions(
+    this: UsersGlobalRolesService,
+    rql: RQLString,
+    requestBody: RolePermissions
+  ): Promise<AffectedRecords>;
+  addToUsers(
+    this: UsersGlobalRolesService,
+    rql: RQLString,
+    requestBody: UserRoles
+  ): Promise<AffectedRecords>;
+  removeFromUser(
+    this: UsersGlobalRolesService,
+    rql: RQLString,
+    requestBody: UserRoles
+  ): Promise<AffectedRecords>;
+}
+
+export interface UsersGroupRolesService {
+  getPermissions(
+    this: UsersGroupRolesService
+  ): Promise<PagedResult<GlobalPermission>>;
+  get(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    options?: {
+      rql?: RQLString;
+    }
+  ): Promise<PagedResult<GroupRole>>;
+  add(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    requestBody: AddRole
+  ): Promise<GroupRole>;
+  update(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    roleId: ObjectId,
+    requestBody: AddRole
+  ): Promise<GroupRole>;
+  remove(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    roleId: ObjectId,
+    rql: RQLString
+  ): Promise<AffectedRecords>;
+  addPermissions(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    requestBody: GroupRolePermissions,
+    options?: {
+      rql?: RQLString;
+    }
+  ): Promise<AffectedRecords>;
+  removePermissions(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    requestBody: GroupRolePermissions,
+    rql: RQLString
+  ): Promise<AffectedRecords>;
+  assignToStaff(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    requestBody: StaffRoles,
+    options?: {
+      rql?: RQLString;
+    }
+  ): Promise<AffectedRecords>;
+  removeFromStaff(
+    this: UsersGroupRolesService,
+    groupId: ObjectId,
+    requestBody: StaffRoles,
+    rql: RQLString
+  ): Promise<AffectedRecords>;
+  addUsersToStaff(
+    this: UsersGroupRolesService,
+    requestBody: StaffGroups,
+    options?: {
+      rql?: RQLString;
+    }
+  ): Promise<AffectedRecords>;
+  removeUsersFromStaff(
+    this: UsersGroupRolesService,
+    requestBody: StaffGroups,
+    rql: RQLString
+  ): Promise<AffectedRecords>;
+}
+
+export interface UsersService {
+  me(this: UsersService): Promise<User>;
+  findById(this: UsersService, userId: string): Promise<User>;
+  update(
+    this: UsersService,
+    userId: string,
+    userData: UserDataUpdate
+  ): Promise<User>;
+  find(
+    this: UsersService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<User>>;
+  removeUsers(this: UsersService, rql: RQLString): Promise<AffectedRecords>;
+  patients(
+    this: UsersService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<Patient>>;
+  staff(
+    this: UsersService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<StaffMember>>;
+  remove(this: UsersService, userId: ObjectId): Promise<AffectedRecords>;
+  updateEmail(
+    this: UsersService,
+    userId: ObjectId,
+    requestBody: Email
+  ): Promise<User>;
+  addPatientEnlistment(
+    this: UsersService,
+    userId: ObjectId,
+    requestBody: AddPatientEnlistment
+  ): Promise<AffectedRecords>;
+  removePatientEnlistment(
+    this: UsersService,
+    userId: ObjectId,
+    groupId: ObjectId
+  ): Promise<AffectedRecords>;
+  createAccount(
+    this: UsersService,
+    requestBody: RegisterUserData
+  ): Promise<User>;
+  changePassword(
+    this: UsersService,
+    requestBody: ChangePassword
+  ): Promise<User>;
+  authenticate(this: UsersService, requestBody: Authenticate): Promise<User>;
+  requestEmailActivation(this: UsersService, email: string): Promise<boolean>;
+  validateEmailActivation(
+    this: UsersService,
+    requestBody: Hash
+  ): Promise<boolean>;
+  requestPasswordReset(this: UsersService, email: string): Promise<boolean>;
+  validatePasswordReset(
+    this: UsersService,
+    requestBody: PasswordReset
+  ): Promise<boolean>;
+  confirmPassword(
+    this: UsersService,
+    requestBody: ConfirmPassword
+  ): Promise<boolean>;
+  isEmailAvailable(
+    this: UsersService,
+    email: string
+  ): Promise<{
+    emailAvailable: boolean;
+  }>;
+  updateProfileImage(
+    this: UsersService,
+    userId: ObjectId,
+    requestBody: Hash
+  ): Promise<User>;
+  deleteProfileImage(this: UsersService, userId: ObjectId): Promise<User>;
 }

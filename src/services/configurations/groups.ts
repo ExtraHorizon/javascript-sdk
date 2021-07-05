@@ -1,9 +1,16 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords } from '../types';
-import type { GroupConfigurationInput, GroupConfiguration } from './types';
+import type {
+  GroupConfigurationInput,
+  GroupConfiguration,
+  ConfigurationsGroupsService,
+} from './types';
 import type { RQLString } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (
+  client,
+  httpAuth: HttpInstance
+): ConfigurationsGroupsService => ({
   /**
    * View a group configuration
    * Permission | Scope | Effect

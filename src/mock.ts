@@ -307,6 +307,19 @@ export type MockClient<MockFn> = {
       remove: MockFn;
     };
   };
+  events: {
+    health: MockFn;
+    find: MockFn;
+    findById: MockFn;
+    findFirst: MockFn;
+    create: MockFn;
+    subscriptions: {
+      find: MockFn;
+      findById: MockFn;
+      findFirst: MockFn;
+      create: MockFn;
+    };
+  };
   auth: {
     applications: {
       create: MockFn;
@@ -347,7 +360,7 @@ export type MockClient<MockFn> = {
   };
 };
 
-export const getMockSdk = <MockFn>(fn): MockClient<MockFn> => ({
+export const getMockSdk = <MockFn>(fn: () => MockFn): MockClient<MockFn> => ({
   ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(sdk),
   raw: [
     'get',

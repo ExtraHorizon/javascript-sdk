@@ -8,14 +8,22 @@ import appStore from './appStore';
 import appStoreSubscriptions from './appStoreSubscriptions';
 import stripe from './stripe';
 import { PAYMENTS_BASE } from '../../constants';
+import {
+  PaymentsAppStoreService,
+  PaymentsAppStoreSubscriptionsService,
+  PaymentsOrdersService,
+  PaymentsProductsService,
+  PaymentsStripeService,
+  PaymentsSubscriptionsService,
+} from './types';
 
 export type PaymentsService = ReturnType<typeof health> & {
-  products: ReturnType<typeof products>;
-  orders: ReturnType<typeof orders>;
-  subscriptions: ReturnType<typeof subscriptions>;
-  appStore: ReturnType<typeof appStore>;
-  appStoreSubscriptions: ReturnType<typeof appStoreSubscriptions>;
-  stripe: ReturnType<typeof stripe>;
+  products: PaymentsProductsService;
+  orders: PaymentsOrdersService;
+  subscriptions: PaymentsSubscriptionsService;
+  appStore: PaymentsAppStoreService;
+  appStoreSubscriptions: PaymentsAppStoreSubscriptionsService;
+  stripe: PaymentsStripeService;
 };
 
 export const paymentsService = (

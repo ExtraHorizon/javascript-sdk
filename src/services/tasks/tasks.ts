@@ -1,16 +1,16 @@
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type { Task, TaskInput } from './types';
+import type { Task, TaskInput, TasksService } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
-export default (client, httpAuth: HttpInstance) => ({
+export default (client, httpAuth: HttpInstance): TasksService => ({
   /**
    * View a list of tasks
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
    *
-   * @returns any Success
+   * @returns PagedResult<Task>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Task>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;

@@ -6,15 +6,18 @@ import countries from './countries';
 import languages from './languages';
 import { LOCALIZATIONS_BASE } from '../../constants';
 import { decamelizeKeys } from '../../http/utils';
-
-export type LocalizationsService = ReturnType<typeof health> &
-  ReturnType<typeof localizations> &
-  ReturnType<typeof countries> &
-  ReturnType<typeof languages>;
+import {
+  CountriesService,
+  LanguagesService,
+  LocalizationsService,
+} from './types';
 
 export const localizationsService = (
   httpWithAuth: HttpInstance
-): LocalizationsService => {
+): ReturnType<typeof health> &
+  LocalizationsService &
+  CountriesService &
+  LanguagesService => {
   const client = httpClient({
     transformRequestData: decamelizeKeys,
     basePath: LOCALIZATIONS_BASE,

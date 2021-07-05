@@ -4,7 +4,7 @@ import { ResultResponse, Results } from '../types';
 export default (client, http: HttpInstance) => ({
   /**
    * Perform a health check
-   * @returns any Success
+   * @returns true if the service is available
    * @throws {ServerError}
    */
   async health(): Promise<boolean> {

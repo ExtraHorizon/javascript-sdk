@@ -8,16 +8,20 @@ import type {
   AddRole,
   GroupRole,
   GlobalPermission,
+  UsersGroupRolesService,
 } from './types';
 
-export default (userClient, httpWithAuth: HttpInstance) => ({
+export default (
+  userClient,
+  httpWithAuth: HttpInstance
+): UsersGroupRolesService => ({
   /**
    * Retrieve a list of group permissions
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
    *
-   * @returns any Success
+   * @returns PagedResult<GlobalPermission>
    */
   async getPermissions(): Promise<PagedResult<GlobalPermission>> {
     return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
@@ -32,7 +36,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<GroupRole>
    */
   async get(
     groupId: ObjectId,
@@ -56,8 +60,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * `CREATE_GROUP_ROLE` | `global` | Create a role for the group
    *
    * @param groupId Id of the targeted group
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The role to add
+   * @returns GroupRole
    */
   async add(groupId: ObjectId, requestBody: AddRole): Promise<GroupRole> {
     return (
@@ -78,8 +82,8 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    *
    * @param groupId Id of the targeted group
    * @param roleId Id of the targeted role
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The role data to update
+   * @returns GroupRole
    * @throws {ResourceUnknownError}
    */
   async update(

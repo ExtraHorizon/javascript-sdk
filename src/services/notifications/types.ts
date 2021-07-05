@@ -1,4 +1,5 @@
-import { ObjectId } from '../types';
+import { RQLString } from '../../rql';
+import { AffectedRecords, ObjectId, PagedResult } from '../types';
 
 export interface Notification {
   id?: ObjectId;
@@ -112,3 +113,57 @@ export interface Setting {
 }
 
 export type SettingCreation = Required<Pick<Setting, 'key' | 'preferences'>>;
+
+export interface NotificationsService {
+  create(
+    this: NotificationsService,
+    requestBody: CreateNotificationRequest
+  ): Promise<Notification>;
+  find(
+    this: NotificationsService,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<Notification>>;
+  findById(
+    this: NotificationsService,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Notification>;
+  findFirst(
+    this: NotificationsService,
+    options?: { rql?: RQLString }
+  ): Promise<Notification>;
+  remove(
+    this: NotificationsService,
+    options?: { rql?: RQLString }
+  ): Promise<AffectedRecords>;
+  markAsViewed(
+    this: NotificationsService,
+    options?: { rql?: RQLString }
+  ): Promise<AffectedRecords>;
+  getTypes(this: NotificationsService): Promise<PagedResult<NotifTypeDef>>;
+}
+
+export interface NotificationSettingsServices {
+  find(
+    this: NotificationSettingsServices,
+    options?: { rql?: RQLString }
+  ): Promise<PagedResult<Setting>>;
+  findById(
+    this: NotificationSettingsServices,
+    id: ObjectId,
+    options?: { rql?: RQLString }
+  ): Promise<Setting>;
+  findFirst(
+    this: NotificationSettingsServices,
+    options?: { rql?: RQLString }
+  ): Promise<Setting>;
+  update(
+    this: NotificationSettingsServices,
+    userId: string,
+    requestBody: SettingCreation
+  ): Promise<Setting>;
+  remove(
+    this: NotificationSettingsServices,
+    userId: string
+  ): Promise<AffectedRecords>;
+}

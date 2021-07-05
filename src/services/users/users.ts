@@ -13,10 +13,11 @@ import type {
   Patient,
   StaffMember,
   Hash,
+  UsersService,
 } from './types';
 import type { RQLString } from '../../rql';
 
-export default (userClient, httpWithAuth: HttpInstance) => ({
+export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
   /**
    * Retrieve the current logged in user
    * @permission Everyone can use this endpoint
@@ -63,7 +64,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * `VIEW_USER` | `global` | See all fields of all users
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<User>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<User>> {
     return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
@@ -94,7 +95,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns Patient Success
    */
-  async patients(options?: { rql?: RQLString }): Promise<Patient[]> {
+  async patients(options?: { rql?: RQLString }): Promise<PagedResult<Patient>> {
     return (
       await userClient.get(httpWithAuth, `/patients${options?.rql || ''}`)
     ).data;
@@ -110,7 +111,9 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * @param rql Add filters to the requested list.
    * @returns StaffMember Success
    */
-  async staff(options?: { rql?: RQLString }): Promise<StaffMember[]> {
+  async staff(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResult<StaffMember>> {
     return (await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`))
       .data;
   },
@@ -315,15 +318,17 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * none |  | Everyone can use this endpoint
    *
    * @param requestBody
-   * @returns any Success
+   * @returns true if completed a password reset
    * @throws {NotActivatedError}
    * @throws {NewPasswordHashUnknownError}
    */
   async validatePasswordReset(requestBody: PasswordReset): Promise<boolean> {
-    return (
-      (await userClient.post(httpWithAuth, '/forgot_password', requestBody))
-        .status === Results.Success
+    const result = await userClient.post(
+      httpWithAuth,
+      '/forgot_password',
+      requestBody
     );
+    return result.status === Results.Success;
   },
 
   /**
@@ -332,18 +337,20 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * - | - | -
    * none |  | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody the password to confirm
+   * @returns true if password was confirmed
    * @throws {AuthenticationError}
    * @throws {LoginTimeoutError}
    * @throws {LoginFreezeError}
    * @throws {TooManyFailedAttemptsError}
    */
   async confirmPassword(requestBody: ConfirmPassword): Promise<boolean> {
-    return (
-      (await userClient.post(httpWithAuth, '/confirm_password', requestBody))
-        .status === Results.Success
+    const result = await userClient.post(
+      httpWithAuth,
+      '/confirm_password',
+      requestBody
     );
+    return result.status === Results.Success;
   },
 
   /**
@@ -353,7 +360,7 @@ export default (userClient, httpWithAuth: HttpInstance) => ({
    * none | | Everyone can use this endpoint
    *
    * @param email
-   * @returns any Success
+   * @returns emailAvailable will be true on success
    */
   async isEmailAvailable(email: string): Promise<{
     emailAvailable: boolean;
