@@ -1,7 +1,12 @@
 import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
-import { ResultResponse, Results, PagedResult } from '../types';
+import {
+  ResultResponse,
+  Results,
+  PagedResult,
+  AffectedRecords,
+} from '../types';
 import type { FileDetails, FilesService, Token } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 import { createCustomFormData, generateBoundary } from './formHelpers';
@@ -14,7 +19,7 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * `VIEW_FILES` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<FileDetails>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
     console.log('this', this);
@@ -114,13 +119,14 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * `full` | **Required** to be able to delete the file
    *
    * @param token
-   * @returns void
+   * @returns AffectedRecords
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async delete(token: Token): Promise<boolean> {
+  async remove(token: Token): Promise<AffectedRecords> {
     const result: ResultResponse = await client.delete(httpAuth, `/${token}`);
-    return result.status === Results.Success;
+    const affectedRecords = result.status === Results.Success ? 1 : 0;
+    return { affectedRecords };
   },
 
   /**

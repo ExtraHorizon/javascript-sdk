@@ -80,6 +80,11 @@ export class ApiError extends Error {
 
   public static createFromHttpError(error: HttpError): ApiError {
     const { config, response } = error;
+
+    if (!error.response) {
+      // Something went wrong before the request. Return the error
+      return error;
+    }
     return new this(
       response?.data?.description ||
         response?.data?.message ||

@@ -10,7 +10,7 @@ export default (client, httpAuth: HttpInstance): TasksService => ({
    * - | - | -
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
    *
-   * @returns any Success
+   * @returns PagedResult<Task>
    */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<Task>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;

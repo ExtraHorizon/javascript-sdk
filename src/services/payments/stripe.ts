@@ -180,7 +180,7 @@ export default (client, httpAuth: HttpInstance): PaymentsStripeService => ({
    * - 'payment_intent.payment_failed'
    * - 'payment_intent.succeeded'
    *
-   * @returns any Success
+   * @returns any
    * @throws {BadRequestError}
    */
   async subscribeToEvents(): Promise<any> {

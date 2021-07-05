@@ -21,7 +21,7 @@ export default (
    * - | - | -
    * none |  | Everyone can use this endpoint
    *
-   * @returns any Success
+   * @returns PagedResult<GlobalPermission>
    */
   async getPermissions(): Promise<PagedResult<GlobalPermission>> {
     return (await userClient.get(httpWithAuth, '/permissions')).data;
@@ -34,7 +34,7 @@ export default (
    * `VIEW_ROLE` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Success
+   * @returns PagedResult<Role>
    */
   async get(options?: { rql?: RQLString }): Promise<PagedResult<Role>> {
     return (await userClient.get(httpWithAuth, `/roles${options?.rql || ''}`))
@@ -47,8 +47,8 @@ export default (
    * - | - | -
    * `CREATE_ROLE` | `global` | **Required** for this endpoint
    *
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The role data
+   * @returns Role
    */
   async create(requestBody: RoleCreation): Promise<Role> {
     return (await userClient.post(httpWithAuth, `/roles`, requestBody)).data;
@@ -64,7 +64,7 @@ export default (
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async delete(rql: RQLString): Promise<AffectedRecords> {
+  async remove(rql: RQLString): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
   },
 

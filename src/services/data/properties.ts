@@ -9,8 +9,8 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The name and configuration
+   * @returns AffectedRecords
    * @throws {ResourceAlreadyExistsError}
    * @throws {IllegalArgumentError}
    * @throws {IllegalStateException}
@@ -34,11 +34,11 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async delete(
+  async remove(
     schemaId: ObjectId,
     propertyPath: string
   ): Promise<AffectedRecords> {
@@ -54,8 +54,8 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
-   * @param requestBody
-   * @returns any Success
+   * @param requestBody The configuration
+   * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */

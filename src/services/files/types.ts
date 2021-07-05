@@ -1,6 +1,6 @@
 import { ReadStream } from 'fs';
 import { RQLString } from '../../rql';
-import type { ObjectId, PagedResult } from '../types';
+import type { AffectedRecords, ObjectId, PagedResult } from '../types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
@@ -53,7 +53,7 @@ export interface FilesService {
     fileData: Blob | Buffer | ReadStream,
     options?: { tags: [] }
   ): Promise<FileDetails>;
-  delete(this: FilesService, token: Token): Promise<boolean>;
+  remove(this: FilesService, token: Token): Promise<AffectedRecords>;
   retrieve(this: FilesService, token: Token): Promise<Buffer>;
   retrieveStream(
     this: FilesService,

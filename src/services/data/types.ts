@@ -389,7 +389,7 @@ export interface DataCommentsService {
       text: CommentText;
     }
   ): Promise<AffectedRecords>;
-  delete(
+  remove(
     this: DataCommentsService,
     commentId: ObjectId,
     schemaId: ObjectId,
@@ -408,7 +408,8 @@ export interface DataDocumentsService {
   create<CustomData = null>(
     this: DataDocumentsService,
     schemaId: ObjectId,
-    requestBody: Record<string, any>
+    requestBody: Record<string, any>,
+    options?: { gzip?: boolean }
   ): Promise<Document<CustomData>>;
   find<CustomData = null>(
     this: DataDocumentsService,
@@ -437,12 +438,12 @@ export interface DataDocumentsService {
       rql?: RQLString;
     }
   ): Promise<AffectedRecords>;
-  delete(
+  remove(
     this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId
   ): Promise<AffectedRecords>;
-  deleteFields(
+  removeFields(
     this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
@@ -505,7 +506,7 @@ export interface DataIndexesService {
     schemaId: ObjectId,
     requestBody: IndexInput
   ): Promise<Index>;
-  delete(
+  remove(
     this: DataIndexesService,
     indexId: ObjectId,
     schemaId: ObjectId
@@ -521,7 +522,7 @@ export interface DataPropertiesService {
       configuration: TypeConfiguration;
     }
   ): Promise<AffectedRecords>;
-  delete(
+  remove(
     this: DataPropertiesService,
     schemaId: ObjectId,
     propertyPath: string
@@ -559,7 +560,7 @@ export interface DataSchemasService {
     schemaId: ObjectId,
     requestBody: UpdateSchemaInput
   ): Promise<AffectedRecords>;
-  delete(
+  remove(
     this: DataSchemasService,
     schemaId: ObjectId
   ): Promise<AffectedRecords>;
@@ -588,7 +589,7 @@ export interface DataStatusesService {
     name: string,
     requestBody: StatusData
   ): Promise<AffectedRecords>;
-  delete(
+  remove(
     this: DataStatusesService,
     schemaId: ObjectId,
     name: string
@@ -612,7 +613,7 @@ export interface DataTransitionsService {
     transitionId: ObjectId,
     requestBody: TransitionInput
   ): Promise<AffectedRecords>;
-  delete(
+  remove(
     this: DataTransitionsService,
     schemaId: ObjectId,
     transitionId: ObjectId

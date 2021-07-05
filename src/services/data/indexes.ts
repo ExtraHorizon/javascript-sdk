@@ -29,11 +29,11 @@ export default (client, httpAuth: HttpInstance): DataIndexesService => ({
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Delete an index
    * @param indexId The id of the targeted index.
    * @param schemaId The id of the targeted schema.
-   * @returns any Success
+   * @returns AffectedRecords
    * @throws {NoPermissionError}
    * @throws {ResourceUnknownError}
    */
-  async delete(
+  async remove(
     indexId: ObjectId,
     schemaId: ObjectId
   ): Promise<AffectedRecords> {

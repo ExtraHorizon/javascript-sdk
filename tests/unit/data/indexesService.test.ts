@@ -49,7 +49,7 @@ describe('Indexes Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.indexes.delete(indexId, schemaId);
+    const res = await sdk.data.indexes.remove(indexId, schemaId);
     expect(res.affectedRecords).toBe(1);
   });
 });
