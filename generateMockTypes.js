@@ -1,6 +1,6 @@
-var { recursiveMap, getMockSdk } = require('./build/index.cjs.js');
+var { recursiveMap, createClient } = require('./build/index.cjs.js');
 
-const sdk = getMockSdk({ host: '', clientId: '' });
+const sdk = createClient({ host: '', clientId: '' });
 
 console.log(
   'export type MockClient<MockFn> =',
