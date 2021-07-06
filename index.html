@@ -37,6 +37,7 @@
         maxLevel: 3,
         markdown: function (marked, renderer) {
           marked.setOptions({
+            renderer,
             highlight: function highlight(code, lang) {
               const language = hljs.getLanguage(lang) ? lang : 'plaintext';
               return hljs.highlight(code, { language }).value;
