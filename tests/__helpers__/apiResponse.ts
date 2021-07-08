@@ -1,4 +1,3 @@
-import { permissionData, roleData } from './user';
 import { fileData } from './file';
 
 export const emptyPagedResult = {
