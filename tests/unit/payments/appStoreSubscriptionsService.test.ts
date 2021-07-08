@@ -2,10 +2,10 @@ import nock from 'nock';
 import { AUTH_BASE, PAYMENTS_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
-  appStoreSubscriptionResponse,
+  appStoreSubscription,
   appStoreSubscriptionProduct,
-  appStoreSubscriptionProductResponse,
 } from '../../__helpers__/payment';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('App Store Subscriptions Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -38,7 +38,7 @@ describe('App Store Subscriptions Service', () => {
   it('should get a list of App Store subscriptions', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions')
-      .reply(200, appStoreSubscriptionResponse);
+      .reply(200, createPagedResponse(appStoreSubscription));
 
     const res = await sdk.payments.appStoreSubscriptions.getSubscriptions();
 
@@ -48,9 +48,10 @@ describe('App Store Subscriptions Service', () => {
   it('should get a list of configured App Store subscription products', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/products')
-      .reply(200, appStoreSubscriptionProductResponse);
+      .reply(200, createPagedResponse(appStoreSubscriptionProduct));
 
-    const res = await sdk.payments.appStoreSubscriptions.getSubscriptionsProducts();
+    const res =
+      await sdk.payments.appStoreSubscriptions.getSubscriptionsProducts();
 
     expect(res.data.length).toBeGreaterThan(0);
   });
@@ -60,15 +61,14 @@ describe('App Store Subscriptions Service', () => {
       .post('/appStore/subscriptions/products')
       .reply(200, appStoreSubscriptionProduct);
 
-    const subscriptionProduct = await sdk.payments.appStoreSubscriptions.createSubscriptionsProduct(
-      {
+    const subscriptionProduct =
+      await sdk.payments.appStoreSubscriptions.createSubscriptionsProduct({
         name: 'FibriCheck Premium Monthly',
         appStoreAppBundleId: 'com.qompium.fibricheck',
         appStoreProductId: 'fibricheck-premium-monthly',
         subscriptionGroup: 'fibricheck',
         subscriptionTier: 'premium',
-      }
-    );
+      });
 
     expect(subscriptionProduct.id).toBe(appStoreSubscriptionProductId);
   });
@@ -82,9 +82,10 @@ describe('App Store Subscriptions Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.payments.appStoreSubscriptions.removeSubscriptionsProduct(
-      appStoreSubscriptionProductId
-    );
+    const res =
+      await sdk.payments.appStoreSubscriptions.removeSubscriptionsProduct(
+        appStoreSubscriptionProductId
+      );
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -96,12 +97,13 @@ describe('App Store Subscriptions Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.payments.appStoreSubscriptions.updateSubscriptionsProduct(
-      appStoreSubscriptionProductId,
-      {
-        name: 'FibriCheck Premium Monthly',
-      }
-    );
+    const res =
+      await sdk.payments.appStoreSubscriptions.updateSubscriptionsProduct(
+        appStoreSubscriptionProductId,
+        {
+          name: 'FibriCheck Premium Monthly',
+        }
+      );
 
     expect(res.affectedRecords).toBe(1);
   });

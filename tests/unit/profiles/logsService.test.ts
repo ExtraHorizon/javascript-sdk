@@ -1,12 +1,8 @@
 import nock from 'nock';
 import { AUTH_BASE, PROFILES_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import {
-  profileData,
-  groupData,
-  logData,
-  logsResponse,
-} from '../../__helpers__/profile';
+import { profileData, groupData, logData } from '../../__helpers__/profile';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Logs Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -53,7 +49,7 @@ describe('Logs Service', () => {
   it('should retrieve all profile log entries', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get(`/${profileId}/groups/${groupId}/logs`)
-      .reply(200, logsResponse);
+      .reply(200, createPagedResponse(logData));
 
     const res = await sdk.profiles.logs.find(profileId, groupId);
 
