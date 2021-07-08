@@ -15,8 +15,7 @@ module.exports = {
     '/build/',
   ],
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.(t|j)s'],
-  coverageDirectory: 'coverage',
+  coverageDirectory: 'test-results/coverage',
   reporters: [
     'default',
     [
