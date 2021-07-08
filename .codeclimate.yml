@@ -1,6 +1,7 @@
 version: '2'
 exclude_patterns:
   - '**/types.ts'
+  - '**/*test.ts'
 plugins:
   duplication:
     enabled: true
