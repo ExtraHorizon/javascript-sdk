@@ -31,3 +31,6 @@ jobs:
       - run: yarn
       - name: Run tests
         run: yarn test
+      - uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
