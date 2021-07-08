@@ -9,13 +9,15 @@ import {
 import {
   notificationInput,
   notificationData,
-  notificationResponse,
-  notificationTypesResponse,
+  notificationTypeData,
 } from '../../__helpers__/notification';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Notifications Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const notificationId = notificationData.id;
+  const notificationResponse = createPagedResponse(notificationData);
+  const notificationTypesResponse = createPagedResponse(notificationTypeData);
 
   let sdk: Client<ParamsOauth2>;
 
