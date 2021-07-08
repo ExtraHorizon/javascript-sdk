@@ -5,4 +5,4 @@ plugins:
     config:
       languages:
         typescript:
-          mass_threshold: 100
+          mass_threshold: 125
