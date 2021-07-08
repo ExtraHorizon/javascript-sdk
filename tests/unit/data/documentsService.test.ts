@@ -4,11 +4,13 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   newDocumentCreated,
   documentData,
-  documentsListResponse,
-  lockedDocumentsListResponse,
+  lockedDocumentData,
 } from '../../__helpers__/data';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Documents Service', () => {
+  const documentsListResponse = createPagedResponse(documentData);
+  const lockedDocumentsListResponse = createPagedResponse(lockedDocumentData);
   const schemaId = '1e9fff9d90135a2a9a718e2f';
   const documentId = documentData.id;
 
