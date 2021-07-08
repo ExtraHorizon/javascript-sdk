@@ -21,15 +21,6 @@ export const localizationData: Localization = {
   updateTimestamp: new Date(1499430857362),
 };
 
-export const localizationResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [localizationData],
-};
-
 export const localizationCreatedResponse: BulkCreationResponse = {
   created: 0,
   existing: 1,
@@ -45,24 +36,6 @@ export const localizationUpdatedResponse: BulkUpdateResponse = {
 export const localizationRequest: LocalizationRequest = {
   localizationCodes: [SupportedLanguageCodes.NL],
   localizations: ['mail_subject'],
-};
-
-export const countriesResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: ['BE'],
-};
-
-export const regionsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: ['BE-VLI'],
 };
 
 export const languagesResponse = {
