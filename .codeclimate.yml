@@ -1,8 +1,10 @@
 version: '2'
+exclude_patterns:
+  - '**/types.ts'
 plugins:
   duplication:
     enabled: true
     config:
       languages:
         typescript:
-          mass_threshold: 200
+          mass_threshold: 250
