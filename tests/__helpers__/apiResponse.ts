@@ -10,24 +10,6 @@ export const emptyPagedResult = {
   data: [],
 };
 
-export const permissionResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 0,
-  },
-  data: [permissionData],
-};
-
-export const roleResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [roleData],
-};
-
 export const filesResponse = {
   page: {
     total: 1,

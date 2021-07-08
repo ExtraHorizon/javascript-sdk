@@ -7,11 +7,8 @@ import {
   rqlBuilder,
 } from '../../../src/index';
 import { GlobalPermissionName } from '../../../src/services/users/types';
-import {
-  permissionResponse,
-  roleResponse,
-} from '../../__helpers__/apiResponse';
-import { roleData } from '../../__helpers__/user';
+import { permissionData, roleData } from '../../__helpers__/user';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Global Roles Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -39,7 +36,7 @@ describe('Global Roles Service', () => {
   it('should retrieve a list of permissions', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/permissions')
-      .reply(200, permissionResponse);
+      .reply(200, createPagedResponse(permissionData));
 
     const permissions = await sdk.users.globalRoles.getPermissions();
 
@@ -48,7 +45,9 @@ describe('Global Roles Service', () => {
 
   it('should retrieve a list of roles', async () => {
     const rql = rqlBuilder().build();
-    nock(`${host}${USER_BASE}`).get(`/roles${rql}`).reply(200, roleResponse);
+    nock(`${host}${USER_BASE}`)
+      .get(`/roles${rql}`)
+      .reply(200, createPagedResponse(roleData));
 
     const roles = await sdk.users.globalRoles.get({ rql });
 

@@ -6,10 +6,8 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import {
-  permissionResponse,
-  roleResponse,
-} from '../../__helpers__/apiResponse';
+import { permissionData, roleData } from '../../__helpers__/user';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Group Roles Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -36,7 +34,7 @@ describe('Group Roles Service', () => {
   it('should retrieve a list of group permissions', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/groups/permissions')
-      .reply(200, permissionResponse);
+      .reply(200, createPagedResponse(permissionData));
 
     const permissions = await sdk.users.groupRoles.getPermissions();
 
@@ -47,7 +45,7 @@ describe('Group Roles Service', () => {
     const rql = rqlBuilder().build();
     nock(`${host}${USER_BASE}`)
       .get(`/groups/${groupId}/roles${rql}`)
-      .reply(200, roleResponse);
+      .reply(200, createPagedResponse(roleData));
 
     const roles = await sdk.users.groupRoles.get(groupId, { rql });
 
