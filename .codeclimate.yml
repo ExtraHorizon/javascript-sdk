@@ -1,0 +1,8 @@
+version: '2'
+plugins:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        typescript:
+          mass_threshold: 50
