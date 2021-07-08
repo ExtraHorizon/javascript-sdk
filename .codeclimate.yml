@@ -1,0 +1,12 @@
+version: '2'
+exclude_patterns:
+  - '**/types.ts'
+  - '**/*test.ts'
+  - '**/__helpers__/*.ts'
+plugins:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        typescript:
+          mass_threshold: 250
