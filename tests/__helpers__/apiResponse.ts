@@ -1,4 +1,4 @@
-import { userData, permissionData, roleData } from './user';
+import { permissionData, roleData } from './user';
 import { fileData } from './file';
 
 export const emptyPagedResult = {
@@ -8,33 +8,6 @@ export const emptyPagedResult = {
     limit: 20,
   },
   data: [],
-};
-
-export const userResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [userData],
-};
-
-export const patientsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [userData],
-};
-
-export const staffResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [userData],
 };
 
 export const permissionResponse = {
