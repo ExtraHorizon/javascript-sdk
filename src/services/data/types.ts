@@ -418,6 +418,13 @@ export interface DataDocumentsService {
       rql?: RQLString;
     }
   ): Promise<PagedResult<Document<CustomData>>>;
+  findAll<CustomData = null>(
+    this: DataDocumentsService,
+    schemaId: ObjectId,
+    options?: {
+      rql?: RQLString;
+    }
+  ): Promise<Document<CustomData>[]>;
   findById<CustomData = null>(
     this: DataDocumentsService,
     schemaId: ObjectId,
@@ -541,6 +548,7 @@ export interface DataSchemasService {
     this: DataSchemasService,
     options?: { rql?: RQLString }
   ): Promise<PagedResult<Schema>>;
+  findAll(options?: { rql?: RQLString }): Promise<Schema[]>;
   findById(
     this: DataSchemasService,
     id: ObjectId,

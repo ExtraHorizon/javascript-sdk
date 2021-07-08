@@ -54,6 +54,35 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
   },
 
   /**
+   * Request a list of all schemas
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Every one can use this endpoint
+   * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
+   * @param rql Add filters to the requested list.
+   * @returns Schema[]
+   */
+  async findAll(options?: { rql?: RQLString }): Promise<Schema[]> {
+    const result: PagedResult<Schema> = await this.find({
+      rql:
+        options.rql && options.rql.includes('limit(')
+          ? options.rql
+          : rqlBuilder(options.rql).limit(10).build(),
+    });
+
+    return result.page.total > result.page.offset + result.page.limit
+      ? [
+          ...result.data,
+          ...(await this.findAll({
+            rql: rqlBuilder(options.rql)
+              .limit(result.page.limit, result.page.offset + result.page.limit)
+              .build(),
+          })),
+        ]
+      : result.data;
+  },
+
+  /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
