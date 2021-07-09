@@ -15,6 +15,8 @@ describe('Auth - OAuth2', () => {
     sdk = createClient({
       host,
       clientId: '',
+      requestLogger: value => value,
+      responseLogger: value => value,
     });
 
     const mockToken = 'mockToken';

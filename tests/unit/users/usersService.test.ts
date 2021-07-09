@@ -279,4 +279,14 @@ describe('Users Service', () => {
 
     expect(result).toEqual({ emailAvailable: true });
   });
+
+  it('should upload profile image', async () => {
+    nock(`${host}${USER_BASE}`)
+      .put(`/${userId}/profile_image`)
+      .reply(200, userData);
+
+    const result = await sdk.users.updateProfileImage(userId, { hash: 'xxx' });
+
+    expect(result).toBeDefined();
+  });
 });
