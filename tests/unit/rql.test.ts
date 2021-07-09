@@ -28,6 +28,40 @@ describe('rql string builder', () => {
     expect(result).toBe('?select(name)&limit(10,15)');
   });
 
+  it('should build a valid greater equals', async () => {
+    const result = rqlBuilder().ge('value', '10').build();
+    expect(result).toBe('?ge(value,10)');
+  });
+
+  it('should build a valid lesser equals', async () => {
+    const result = rqlBuilder().le('value', '10').build();
+    expect(result).toBe('?le(value,10)');
+  });
+
+  it('should build a valid and with eq operator', async () => {
+    const result = rqlBuilder()
+      .and(rqlBuilder().eq('value', '10').intermediate())
+      .build();
+    expect(result).toBe('?and(eq(value,10))');
+  });
+
+  it('should build a valid and with eq operator', async () => {
+    const result = rqlBuilder()
+      .and(
+        rqlBuilder().lt('value', '20').intermediate(),
+        rqlBuilder().gt('value', '10').intermediate()
+      )
+      .build();
+    expect(result).toBe('?and(lt(value,20),gt(value,10))');
+  });
+
+  it('should build a valid and with ne operator', async () => {
+    const result = rqlBuilder()
+      .and(rqlBuilder().ne('value', '10').intermediate())
+      .build();
+    expect(result).toBe('?and(ne(value,10))');
+  });
+
   it('should build a valid select with in operator', async () => {
     const result = rqlBuilder()
       .select(['name', 'id'])
