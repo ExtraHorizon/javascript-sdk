@@ -78,7 +78,7 @@ describe('Transitions Service', () => {
     nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/transitions/${transitionId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.transitions.delete(schemaId, transitionId);
+    const res = await sdk.data.transitions.remove(schemaId, transitionId);
     expect(res.affectedRecords).toBe(1);
   });
 });

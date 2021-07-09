@@ -119,7 +119,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @returns AffectedRecords
    * @throws {IllegalStateError}
    */
-  async delete(schemaId: ObjectId): Promise<AffectedRecords> {
+  async remove(schemaId: ObjectId): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${schemaId}`)).data;
   },
 

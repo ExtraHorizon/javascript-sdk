@@ -72,7 +72,7 @@ describe('Actions Service', () => {
         affectedRecords: 1,
       });
 
-    const res = await sdk.dispatchers.actions.delete(dispatcherId, actionId);
+    const res = await sdk.dispatchers.actions.remove(dispatcherId, actionId);
 
     expect(res.affectedRecords).toBe(1);
   });

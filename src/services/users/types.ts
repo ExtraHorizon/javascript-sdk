@@ -246,7 +246,7 @@ export interface UsersGlobalRolesService {
     this: UsersGlobalRolesService,
     requestBody: RoleCreation
   ): Promise<Role>;
-  delete(
+  remove(
     this: UsersGlobalRolesService,
     rql: RQLString
   ): Promise<AffectedRecords>;
@@ -301,9 +301,9 @@ export interface UsersGroupRolesService {
   ): Promise<GroupRole>;
   remove(
     this: UsersGroupRolesService,
+    rql: RQLString,
     groupId: ObjectId,
-    roleId: ObjectId,
-    rql: RQLString
+    roleId: ObjectId
   ): Promise<AffectedRecords>;
   addPermissions(
     this: UsersGroupRolesService,
@@ -315,9 +315,9 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   removePermissions(
     this: UsersGroupRolesService,
+    rql: RQLString,
     groupId: ObjectId,
-    requestBody: GroupRolePermissions,
-    rql: RQLString
+    requestBody: GroupRolePermissions
   ): Promise<AffectedRecords>;
   assignToStaff(
     this: UsersGroupRolesService,
@@ -329,9 +329,9 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   removeFromStaff(
     this: UsersGroupRolesService,
+    rql: RQLString,
     groupId: ObjectId,
-    requestBody: StaffRoles,
-    rql: RQLString
+    requestBody: StaffRoles
   ): Promise<AffectedRecords>;
   addUsersToStaff(
     this: UsersGroupRolesService,
@@ -342,8 +342,8 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   removeUsersFromStaff(
     this: UsersGroupRolesService,
-    requestBody: StaffGroups,
-    rql: RQLString
+    rql: RQLString,
+    requestBody: StaffGroups
   ): Promise<AffectedRecords>;
 }
 

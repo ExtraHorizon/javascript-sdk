@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
@@ -15,7 +15,8 @@
     "start": "yarn test",
     "start:watch": "yarn test --watch --reporters=\"default\"",
     "create-version-file": "echo \"export const version = '$(node -p \"require('./package.json').version\")';\" > src/version.ts",
-    "build": "yarn create-version-file && yarn clean && yarn build:library && yarn build:declarations",
+    "create-mock-sdk": "node generateMockTypes.js > src/mockType.ts",
+    "build": "yarn create-version-file && yarn clean && yarn build:library && yarn create-mock-sdk && yarn build:declarations",
     "build:library": "rollup --config rollup.config.js",
     "build:declarations": "tsc --project tsconfig.declarations.json",
     "watch": "yarn create-version-file && rollup --config rollup.config.js -w",
@@ -26,7 +27,8 @@
     "test": "jest",
     "test:e2e": "jest tests/e2e",
     "lint": "eslint src --ext .ts",
-    "prettier": "prettier src",
+    "prettier": "prettier src", 
+    "serve:website": "docsify serve .",
     "majestic": "majestic"
   },
   "files": [
@@ -55,6 +57,7 @@
     "@types/node": "^15.12.4",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
+    "docsify-cli": "^4.4.3",
     "dotenv": "^10.0.0",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",

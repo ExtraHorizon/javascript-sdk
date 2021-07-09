@@ -38,7 +38,7 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async delete(
+  async remove(
     schemaId: ObjectId,
     propertyPath: string
   ): Promise<AffectedRecords> {
