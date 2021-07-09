@@ -418,13 +418,6 @@ export interface DataDocumentsService {
       rql?: RQLString;
     }
   ): Promise<PagedResult<Document<CustomData>>>;
-  findAll<CustomData = null>(
-    this: DataDocumentsService,
-    schemaId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<Document<CustomData>[]>;
   findById<CustomData = null>(
     this: DataDocumentsService,
     schemaId: ObjectId,

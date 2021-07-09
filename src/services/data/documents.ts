@@ -102,43 +102,6 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
   },
 
   /**
-   * Request a list of all schemas
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Every one can use this endpoint
-   * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
-   * @param rql Add filters to the requested list.
-   * @returns Document<CustomData>[]
-   */
-  async findAll<CustomData = null>(
-    this: DataDocumentsService,
-    schemaId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<Document<CustomData>[]> {
-    const result: PagedResult<Document<CustomData>> = await this.find(
-      schemaId,
-      {
-        rql:
-          options?.rql && options.rql.includes('limit(')
-            ? options.rql
-            : rqlBuilder(options?.rql).limit(50).build(),
-      }
-    );
-    return result.page.total > result.page.offset + result.page.limit
-      ? [
-          ...result.data,
-          ...(await this.findAll(schemaId, {
-            rql: rqlBuilder(options?.rql)
-              .limit(result.page.limit, result.page.offset + result.page.limit)
-              .build(),
-          })),
-        ]
-      : result.data;
-  },
-
-  /**
    * Shortcut method to find a document by id
    * Same Permissions as the find() method
    *
