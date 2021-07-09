@@ -32,3 +32,20 @@ export const authorizationData = {
   updateTimestamp: new Date('2021-04-06T11:08:29.616Z'),
   creationTimestamp: new Date('2021-04-06T11:08:29.616Z'),
 };
+
+export const mfaSetting = {
+  id: '60701bf059080100071a3d90',
+  methods: [
+    {
+      id: '609b8ad0c0de01f7b1e8b54d',
+      type: 'totp',
+      verified: true,
+      updateTimestamp: '2021-05-12T08:01:47.130Z',
+      creationTimestamp: '2021-05-12T07:59:12.021Z',
+    },
+  ],
+  enabled: true,
+  updateTimestamp: '2021-05-25T11:28:20.514Z',
+  lastFailedAttemptTimestamp: '2021-05-25T11:28:20.514Z',
+  failedAttempts: 2,
+};

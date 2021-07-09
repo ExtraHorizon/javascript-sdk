@@ -51,6 +51,22 @@ describe('Documents Service', () => {
     expect(document.id).toBe(newDocumentCreated.id);
   });
 
+  it('should create a document with gzip', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .post(`/${schemaId}/documents`)
+      .reply(200, newDocumentCreated);
+    const document = await sdk.data.documents.create(
+      schemaId,
+      {
+        additionalProp1: {},
+        additionalProp2: {},
+        additionalProp3: {},
+      },
+      { gzip: true }
+    );
+    expect(document.id).toBe(newDocumentCreated.id);
+  });
+
   it('should request a list of documents', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents`)
