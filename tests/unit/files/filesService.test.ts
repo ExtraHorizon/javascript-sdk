@@ -86,6 +86,13 @@ describe('Files Service', () => {
     expect(res).toBeDefined();
   });
 
+  it('should add a new file from text', async () => {
+    nock(`${host}${FILES_BASE}`).post('/').reply(200, fileData);
+
+    const res = await sdk.files.createFromText('testfilestring');
+    expect(res).toBeDefined();
+  });
+
   it('should delete a file', async () => {
     nock(`${host}${FILES_BASE}`).delete(`/${token}`).reply(200);
 
