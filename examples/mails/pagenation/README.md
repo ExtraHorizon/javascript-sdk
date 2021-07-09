@@ -5,6 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Run these commands to start the example
 
 ```sh
+cp .env.example .env
 yarn
 yarn start
 ```
