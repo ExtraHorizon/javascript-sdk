@@ -55,6 +55,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
 
   /**
    * Request a list of all schemas
+   * Do not pass in an rql with limit operator!
    * Permission | Scope | Effect
    * - | - | -
    * none | | Every one can use this endpoint
@@ -63,11 +64,13 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @returns Schema[]
    */
   async findAll(options?: { rql?: RQLString }): Promise<Schema[]> {
+    // Extra check is needed because this function is call recursively with updated RQL
+    // But on the first run, we need to set the limit to the max to optimize
     const result: PagedResult<Schema> = await this.find({
       rql:
         options.rql && options.rql.includes('limit(')
           ? options.rql
-          : rqlBuilder(options.rql).limit(10).build(),
+          : rqlBuilder(options.rql).limit(50).build(),
     });
 
     return result.page.total > result.page.offset + result.page.limit
