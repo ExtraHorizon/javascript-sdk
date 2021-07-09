@@ -3,6 +3,7 @@ exclude_patterns:
   - '**/types.ts'
   - '**/*test.ts'
   - '**/__helpers__/*.ts'
+  - 'examples'
 plugins:
   duplication:
     enabled: true
