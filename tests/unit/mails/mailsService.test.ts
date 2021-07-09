@@ -58,6 +58,76 @@ describe('Mail Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should retrieve a list of mails and get the next page', async () => {
+    const rql = rqlBuilder().build();
+    const mailArray = Array(20).fill(mailData);
+    nock(`${host}${MAIL_BASE}`)
+      .get(`/${rql}`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 0,
+          limit: 20,
+        },
+        data: mailArray,
+      })
+      .get(`/?limit(20,20)`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 20,
+          limit: 20,
+        },
+        data: mailArray,
+      });
+
+    const res = await sdk.mails.find({ rql });
+
+    const nextPage = await res.nextPage();
+    expect(nextPage.data.length).toBeGreaterThan(0);
+  });
+
+  it('should retrieve a list of mails and get the next page and the previous page', async () => {
+    const rql = rqlBuilder().build();
+    const mailArray = Array(20).fill(mailData);
+    nock.cleanAll();
+    nock(`${host}${MAIL_BASE}`)
+      .get(`/${rql}`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 0,
+          limit: 20,
+        },
+        data: mailArray,
+      })
+      .get(`/?limit(20,20)`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 20,
+          limit: 20,
+        },
+        data: mailArray,
+      })
+      .get(`/?limit(20)`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 0,
+          limit: 20,
+        },
+        data: mailArray,
+      });
+
+    const res = await sdk.mails.find({ rql });
+
+    const nextPage = await res.nextPage();
+
+    const previousPage = await nextPage.previousPage();
+    expect(previousPage.data.length).toBeGreaterThan(0);
+  });
+
   it('should find a mail by id', async () => {
     nock(`${host}${MAIL_BASE}`)
       .get(`/?eq(id,${mailId})`)
