@@ -4,6 +4,7 @@ exclude_patterns:
   - '**/*test.ts'
   - '**/__helpers__/*.ts'
   - 'examples'
+  - 'mockType.ts'
 plugins:
   duplication:
     enabled: true
@@ -11,3 +12,7 @@ plugins:
       languages:
         typescript:
           mass_threshold: 250
+checks:
+  method-lines:
+    config:
+      threshold: 30
