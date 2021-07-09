@@ -1,5 +1,7 @@
 [![Quality assurance](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml)
 [![Code style](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/maintainability)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/test_coverage)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/test_coverage)
 
 # Extra Horizon JavaScript SDK
 
