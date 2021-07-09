@@ -1,5 +1,10 @@
 import type { JSONSchema7 } from './json-schema';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type {
+  AffectedRecords,
+  ObjectId,
+  PagedResult,
+  PagedResultWithPager,
+} from '../types';
 import { RQLString } from '../../rql';
 
 export enum JSONSchemaType {
@@ -540,7 +545,7 @@ export interface DataSchemasService {
   find(
     this: DataSchemasService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<Schema>>;
+  ): Promise<PagedResultWithPager<Schema>>;
   findById(
     this: DataSchemasService,
     id: ObjectId,

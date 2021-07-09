@@ -52,3 +52,16 @@ export interface MailRecipients {
   cc?: MailAddressList;
   bcc?: MailAddressList;
 }
+
+export type PagedResultWithPager<T> = PagedResult<T> & {
+  previousPage: () => Promise<PagedResultWithPager<T>>;
+  nextPage: () => Promise<PagedResultWithPager<T>>;
+};
+
+export interface AddPagers {
+  call<S, T>(
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    thisArg: S,
+    ...argArray: any[]
+  ): PagedResultWithPager<T>;
+}

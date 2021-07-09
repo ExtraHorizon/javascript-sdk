@@ -105,7 +105,7 @@ export interface RQLBuilder {
  * @returns
  */
 export function rqlBuilder(rql?: RQLString): RQLBuilder {
-  let returnString = rql || '';
+  let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
 
   const builder: RQLBuilder = {
     select(value) {
@@ -114,7 +114,10 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
         typeof value === 'string' ? value : value.join(',')
       );
     },
-    limit(limit, offset?) {
+    limit(limit, offset) {
+      if (returnString.includes('limit(')) {
+        returnString = returnString.replace(/&?limit\(\d*,*\d*\)&*/, '');
+      }
       return processQuery('limit', `${limit}${offset ? `,${offset}` : ''}`);
     },
     sort(value) {

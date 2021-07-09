@@ -7,8 +7,8 @@ import {
   MailRecipients,
   AffectedRecords,
   PagedResult,
+  PagedResultWithPager,
 } from '../types';
-import { PagedResultWithPager } from '../utils';
 
 export interface Mail {
   id?: ObjectId;

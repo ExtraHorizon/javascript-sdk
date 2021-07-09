@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
 import type {
   DataSchemasService,
   Schema,
@@ -7,6 +7,7 @@ import type {
   UpdateSchemaInput,
 } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
+import { addPagers } from '../utils';
 
 const addTransitionHelpersToSchema = (schema: Schema) => ({
   ...schema,
@@ -45,12 +46,15 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<Schema>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
-    return {
+
+    return addPagers.call(this, options?.rql, {
       ...result,
       data: result.data.map(addTransitionHelpersToSchema),
-    };
+    });
   },
 
   /**
