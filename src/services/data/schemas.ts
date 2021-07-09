@@ -68,16 +68,16 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
     // But on the first run, we need to set the limit to the max to optimize
     const result: PagedResult<Schema> = await this.find({
       rql:
-        options.rql && options.rql.includes('limit(')
+        options?.rql && options.rql.includes('limit(')
           ? options.rql
-          : rqlBuilder(options.rql).limit(50).build(),
+          : rqlBuilder(options?.rql).limit(50).build(),
     });
 
     return result.page.total > result.page.offset + result.page.limit
       ? [
           ...result.data,
           ...(await this.findAll({
-            rql: rqlBuilder(options.rql)
+            rql: rqlBuilder(options?.rql)
               .limit(result.page.limit, result.page.offset + result.page.limit)
               .build(),
           })),
