@@ -6,15 +6,13 @@ import {
   rqlBuilder,
   ParamsOauth2,
 } from '../../../src/index';
-import {
-  templateData,
-  templateResponse,
-  templateInput,
-} from '../../__helpers__/template';
+import { templateData, templateInput } from '../../__helpers__/template';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Template Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const templateId = templateData.id;
+  const templateResponse = createPagedResponse(templateData);
 
   let sdk: Client<ParamsOauth2>;
 

@@ -8,7 +8,7 @@ import {
   rqlBuilder,
 } from '../../../src/index';
 import { fileData } from '../../__helpers__/file';
-import { filesResponse } from '../../__helpers__/apiResponse';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 jest.mock('fs');
 
@@ -42,7 +42,9 @@ describe('Files Service', () => {
 
   it('should list all files', async () => {
     const rql = rqlBuilder().build();
-    nock(`${host}${FILES_BASE}`).get(`/${rql}`).reply(200, filesResponse);
+    nock(`${host}${FILES_BASE}`)
+      .get(`/${rql}`)
+      .reply(200, createPagedResponse(fileData));
 
     const res = await sdk.files.find({ rql });
 
@@ -53,7 +55,7 @@ describe('Files Service', () => {
     const { name } = fileData;
     nock(`${host}${FILES_BASE}`)
       .get(`/?eq(name,${name})`)
-      .reply(200, filesResponse);
+      .reply(200, createPagedResponse(fileData));
 
     const file = await sdk.files.findByName(name);
 
@@ -61,7 +63,9 @@ describe('Files Service', () => {
   });
 
   it('should find the first file', async () => {
-    nock(`${host}${FILES_BASE}`).get('/').reply(200, filesResponse);
+    nock(`${host}${FILES_BASE}`)
+      .get('/')
+      .reply(200, createPagedResponse(fileData));
 
     const file = await sdk.files.findFirst();
 

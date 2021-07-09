@@ -2,9 +2,10 @@ import nock from 'nock';
 import { AUTH_BASE, PAYMENTS_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
-  subscriptionEventResponse,
-  subscriptionEntitlementResponse,
+  subscriptionEventData,
+  subscriptionEntitlementData,
 } from '../../__helpers__/payment';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Subscriptions Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -36,7 +37,7 @@ describe('Subscriptions Service', () => {
   it('should get a list of subscription entitlements', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/entitlements')
-      .reply(200, subscriptionEntitlementResponse);
+      .reply(200, createPagedResponse(subscriptionEntitlementData));
 
     const res = await sdk.payments.subscriptions.getEntitlements();
 
@@ -46,7 +47,7 @@ describe('Subscriptions Service', () => {
   it('should get a list of subscription events', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/events')
-      .reply(200, subscriptionEventResponse);
+      .reply(200, createPagedResponse(subscriptionEventData));
 
     const res = await sdk.payments.subscriptions.getEvents();
 

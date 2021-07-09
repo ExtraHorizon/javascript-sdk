@@ -10,13 +10,14 @@ import {
   notificationData,
   settingsInput,
   settingsData,
-  settingsResponse,
 } from '../../__helpers__/notification';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Settings Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const notificationId = notificationData.id;
   const settingsId = settingsData.id;
+  const settingsResponse = createPagedResponse(settingsData);
 
   let sdk: Client<ParamsOauth2>;
 

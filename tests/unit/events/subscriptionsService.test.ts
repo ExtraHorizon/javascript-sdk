@@ -6,15 +6,13 @@ import {
   rqlBuilder,
   ParamsOauth2,
 } from '../../../src/index';
-import {
-  subscriptionsInput,
-  subscriptionsData,
-  subscriptionsResponse,
-} from '../../__helpers__/event';
+import { subscriptionsInput, subscriptionsData } from '../../__helpers__/event';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Subscriptions Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const subscriptionId = subscriptionsData.id;
+  const subscriptionsResponse = createPagedResponse(subscriptionsData);
 
   let sdk: Client<ParamsOauth2>;
 

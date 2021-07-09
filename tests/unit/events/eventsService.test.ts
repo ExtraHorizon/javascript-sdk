@@ -6,11 +6,13 @@ import {
   rqlBuilder,
   ParamsOauth2,
 } from '../../../src/index';
-import { eventInput, eventData, eventsResponse } from '../../__helpers__/event';
+import { eventInput, eventData } from '../../__helpers__/event';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Events Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const eventId = eventData.id;
+  const eventsResponse = createPagedResponse(eventData);
 
   let sdk: Client<ParamsOauth2>;
 

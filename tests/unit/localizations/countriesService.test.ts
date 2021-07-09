@@ -1,10 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, LOCALIZATIONS_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import {
-  countriesResponse,
-  regionsResponse,
-} from '../../__helpers__/localization';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Countries Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -31,7 +28,7 @@ describe('Countries Service', () => {
   it('should retrieve a list of all the defined countries', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get('/countries')
-      .reply(200, countriesResponse);
+      .reply(200, createPagedResponse('BE'));
 
     const res = await sdk.localizations.getCountries();
 
@@ -42,7 +39,7 @@ describe('Countries Service', () => {
     const countryCode = 'BE';
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get(`/countries/${countryCode}/regions`)
-      .reply(200, regionsResponse);
+      .reply(200, createPagedResponse('BE-VLI'));
 
     const res = await sdk.localizations.getRegions(countryCode);
 
