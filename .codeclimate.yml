@@ -4,7 +4,7 @@ exclude_patterns:
   - '**/*test.ts'
   - '**/__helpers__/*.ts'
   - 'examples'
-  - 'mockType.ts'
+  - '**/mockType.ts'
 plugins:
   duplication:
     enabled: true
