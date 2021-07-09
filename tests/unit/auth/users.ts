@@ -68,7 +68,7 @@ describe('Auth - Applications', () => {
 
   it('should add mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
-      .post(`mfa/users/${userId}/methods`)
+      .post(`/mfa/users/${userId}/methods`)
       .reply(200, mfaSetting.methods[0]);
 
     const addedMethod = await sdk.auth.users.addMfaMethod(userId, {
