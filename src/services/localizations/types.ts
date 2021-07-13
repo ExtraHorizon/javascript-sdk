@@ -1,5 +1,5 @@
 import { RQLString } from '../../rql';
-import { AffectedRecords, PagedResult } from '../types';
+import { AffectedRecords, PagedResultWithPager } from '../types';
 
 export enum SupportedLanguageCodes {
   EN = 'EN',
@@ -64,7 +64,7 @@ export interface LocalizationsService {
   find(
     this: LocalizationsService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<Localization>>;
+  ): Promise<PagedResultWithPager<Localization>>;
   findByKey(
     this: LocalizationsService,
     key: string,

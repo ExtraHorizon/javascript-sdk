@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
 import type {
   ProductSchema,
   ProductCreationSchema,
@@ -7,6 +7,7 @@ import type {
   PaymentsProductsService,
 } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
+import { addPagers } from '../utils';
 
 export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
   /**
@@ -29,12 +30,15 @@ export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
    * none |  | Everyone can use this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<ProductSchema>
+   * @returns PagedResultWithPager<ProductSchema>
    */
   async find(options?: {
     rql?: RQLString;
-  }): Promise<PagedResult<ProductSchema>> {
-    return (await client.get(httpAuth, `/products${options?.rql || ''}`)).data;
+  }): Promise<PagedResultWithPager<ProductSchema>> {
+    const result = (
+      await client.get(httpAuth, `/products${options?.rql || ''}`)
+    ).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

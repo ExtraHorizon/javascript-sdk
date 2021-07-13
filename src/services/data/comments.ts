@@ -1,6 +1,7 @@
 import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
+import { addPagers } from '../utils';
 import { Comment, CommentText, DataCommentsService } from './types';
 
 export default (client, httpAuth: HttpInstance): DataCommentsService => ({
@@ -45,7 +46,7 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
-   * @returns {Promise<PagedResult<Comment>>}
+   * @returns {Promise<PagedResultWithPager<Comment>>}
    */
   async find(
     schemaId: ObjectId,
@@ -53,13 +54,14 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
     options?: {
       rql?: RQLString;
     }
-  ): Promise<PagedResult<Comment>> {
-    return (
+  ): Promise<PagedResultWithPager<Comment>> {
+    const result = (
       await client.get(
         httpAuth,
         `/${schemaId}/documents/${documentId}/comments${options?.rql || ''}`
       )
     ).data;
+    return addPagers.call(this, [schemaId, documentId], options, result);
   },
 
   /**

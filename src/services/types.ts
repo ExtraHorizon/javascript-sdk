@@ -1,3 +1,5 @@
+import { RQLString } from '../rql';
+
 export type LanguageCode = string;
 
 export type ObjectId = string;
@@ -60,8 +62,9 @@ export type PagedResultWithPager<T> = PagedResult<T> & {
 
 export interface AddPagers {
   call<S, T>(
-    // eslint-disable-next-line @typescript-eslint/ban-types
     thisArg: S,
-    ...argArray: any[]
+    requiredParams: any[],
+    options: { rql?: RQLString },
+    result: PagedResult<T>
   ): PagedResultWithPager<T>;
 }

@@ -35,14 +35,14 @@ export default (client, httpAuth: HttpInstance): MailsService => ({
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<Mail>
+   * @returns PagedResultWithPager<Mail>
    */
   async find(options?: {
     rql?: RQLString;
   }): Promise<PagedResultWithPager<Mail>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
 
-    return addPagers.call(this, options?.rql, result);
+    return addPagers.call(this, [], options, result);
   },
 
   /**

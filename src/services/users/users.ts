@@ -1,5 +1,11 @@
 import type { HttpInstance } from '../../types';
-import { ObjectId, Results, AffectedRecords, PagedResult } from '../types';
+import {
+  ObjectId,
+  Results,
+  AffectedRecords,
+  PagedResult,
+  PagedResultWithPager,
+} from '../types';
 import type {
   RegisterUserData,
   User,
@@ -16,6 +22,7 @@ import type {
   UsersService,
 } from './types';
 import type { RQLString } from '../../rql';
+import { addPagers } from '../utils';
 
 export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
   /**
@@ -64,10 +71,15 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
    * `VIEW_USER` | `global` | See all fields of all users
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<User>
+   * @returns PagedResultWithPager<User>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<User>> {
-    return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<User>> {
+    const result = (
+      await userClient.get(httpWithAuth, `/${options?.rql || ''}`)
+    ).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

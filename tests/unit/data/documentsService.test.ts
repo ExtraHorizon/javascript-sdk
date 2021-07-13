@@ -57,6 +57,75 @@ describe('Documents Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should retrieve a list of documents and get the next page', async () => {
+    // const rql = rqlBuilder().build();
+    const documentArray = Array(20).fill(documentData);
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 0,
+          limit: 20,
+        },
+        data: documentArray,
+      })
+      .get(`/${schemaId}/documents?limit(20,20)`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 20,
+          limit: 20,
+        },
+        data: documentArray,
+      });
+
+    const res = await sdk.data.documents.find(schemaId);
+
+    const nextPage = await res.nextPage();
+    expect(nextPage.data.length).toBeGreaterThan(0);
+  });
+
+  it('should retrieve a list of mails and get the next page and the previous page', async () => {
+    const documentArray = Array(20).fill(documentData);
+    nock.cleanAll();
+    nock(`${host}${DATA_BASE}`)
+      .get(`/${schemaId}/documents`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 0,
+          limit: 20,
+        },
+        data: documentArray,
+      })
+      .get(`/${schemaId}/documents?limit(20,20)`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 20,
+          limit: 20,
+        },
+        data: documentArray,
+      })
+      .get(`/${schemaId}/documents?limit(20)`)
+      .reply(200, {
+        page: {
+          total: 400,
+          offset: 0,
+          limit: 20,
+        },
+        data: documentArray,
+      });
+
+    const res = await sdk.data.documents.find(schemaId);
+
+    const nextPage = await res.nextPage();
+
+    const previousPage = await nextPage.previousPage();
+    expect(previousPage.data.length).toBeGreaterThan(0);
+  });
+
   it('should find a document by id', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)

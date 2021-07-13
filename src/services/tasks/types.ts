@@ -1,5 +1,5 @@
 import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type { AffectedRecords, ObjectId, PagedResultWithPager } from '../types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -37,7 +37,7 @@ export interface TasksService {
   find(
     this: TasksService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<Task>>;
+  ): Promise<PagedResultWithPager<Task>>;
   findById(
     this: TasksService,
     id: ObjectId,

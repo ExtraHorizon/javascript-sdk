@@ -5,6 +5,7 @@ import {
   TimeZone,
   PagedResult,
   AffectedRecords,
+  PagedResultWithPager,
 } from '../types';
 
 export interface UserData {
@@ -358,7 +359,7 @@ export interface UsersService {
   find(
     this: UsersService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<User>>;
+  ): Promise<PagedResultWithPager<User>>;
   removeUsers(this: UsersService, rql: RQLString): Promise<AffectedRecords>;
   patients(
     this: UsersService,

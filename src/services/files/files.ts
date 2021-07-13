@@ -4,12 +4,13 @@ import type { HttpInstance } from '../../types';
 import {
   ResultResponse,
   Results,
-  PagedResult,
   AffectedRecords,
+  PagedResultWithPager,
 } from '../types';
 import type { FileDetails, FilesService, Token } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 import { createCustomFormData, generateBoundary } from './formHelpers';
+import { addPagers } from '../utils';
 
 export default (client, httpAuth: HttpInstance): FilesService => ({
   /**
@@ -19,11 +20,14 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * `VIEW_FILES` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<FileDetails>
+   * @returns PagedResultWithPager<FileDetails>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
-    console.log('this', this);
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<FileDetails>> {
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+
+    return addPagers.call(this, [], options, result);
   },
 
   /**

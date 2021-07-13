@@ -1,6 +1,6 @@
 import { ReadStream } from 'fs';
 import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type { AffectedRecords, ObjectId, PagedResultWithPager } from '../types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
@@ -36,7 +36,7 @@ export interface FilesService {
   find(
     this: FilesService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<FileDetails>>;
+  ): Promise<PagedResultWithPager<FileDetails>>;
   findByName(
     this: FilesService,
     name: string,

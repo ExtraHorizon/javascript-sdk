@@ -371,7 +371,7 @@ export interface DataCommentsService {
     options?: {
       rql?: RQLString;
     }
-  ): Promise<PagedResult<Comment>>;
+  ): Promise<PagedResultWithPager<Comment>>;
   findById(
     this: DataCommentsService,
     id: ObjectId,
@@ -422,7 +422,7 @@ export interface DataDocumentsService {
     options?: {
       rql?: RQLString;
     }
-  ): Promise<PagedResult<Document<CustomData>>>;
+  ): Promise<PagedResultWithPager<Document<CustomData>>>;
   findById<CustomData = null>(
     this: DataDocumentsService,
     schemaId: ObjectId,

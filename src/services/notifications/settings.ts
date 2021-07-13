@@ -1,11 +1,12 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, PagedResult, ObjectId } from '../types';
+import { AffectedRecords, ObjectId, PagedResultWithPager } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import type {
   NotificationSettingsServices,
   Setting,
   SettingCreation,
 } from './types';
+import { addPagers } from '../utils';
 
 export default (
   client,
@@ -19,10 +20,15 @@ export default (
    * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notification settings
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<Setting>
+   * @returns PagedResultWithPager<Setting>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Setting>> {
-    return (await client.get(httpAuth, `/settings${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<Setting>> {
+    const result = (
+      await client.get(httpAuth, `/settings${options?.rql || ''}`)
+    ).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

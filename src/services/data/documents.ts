@@ -1,7 +1,8 @@
 import { RQLString, rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { delay } from '../../utils';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
+import { addPagers } from '../utils';
 import { DataDocumentsService, Document } from './types';
 
 export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
@@ -88,17 +89,18 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * `VIEW_DOCUMENTS` | `global` | See any document
    * @param schemaId The id of the targeted schema.
    * @param rql Add filters to the requested list.
-   * @returns {Document} document
+   * @returns PagedResultWithPager<Document> document
    */
   async find<CustomData = null>(
     schemaId: ObjectId,
     options?: {
       rql?: RQLString;
     }
-  ): Promise<PagedResult<Document<CustomData>>> {
-    return (
+  ): Promise<PagedResultWithPager<Document<CustomData>>> {
+    const result = (
       await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
     ).data;
+    return addPagers.call(this, [schemaId], options, result);
   },
 
   /**

@@ -51,7 +51,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
   }): Promise<PagedResultWithPager<Schema>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
 
-    return addPagers.call(this, options?.rql, {
+    return addPagers.call(this, [], options, {
       ...result,
       data: result.data.map(addTransitionHelpersToSchema),
     });

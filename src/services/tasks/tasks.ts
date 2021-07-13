@@ -1,7 +1,8 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
 import type { Task, TaskInput, TasksService } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
+import { addPagers } from '../utils';
 
 export default (client, httpAuth: HttpInstance): TasksService => ({
   /**
@@ -10,10 +11,13 @@ export default (client, httpAuth: HttpInstance): TasksService => ({
    * - | - | -
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
    *
-   * @returns PagedResult<Task>
+   * @returns PagedResultWithPager<Task>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Task>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<Task>> {
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

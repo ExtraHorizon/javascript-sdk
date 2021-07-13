@@ -1,5 +1,10 @@
 import { RQLString } from '../../rql';
-import { AffectedRecords, ObjectId, PagedResult } from '../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  PagedResult,
+  PagedResultWithPager,
+} from '../types';
 
 export interface Notification {
   id?: ObjectId;
@@ -122,7 +127,7 @@ export interface NotificationsService {
   find(
     this: NotificationsService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<Notification>>;
+  ): Promise<PagedResultWithPager<Notification>>;
   findById(
     this: NotificationsService,
     id: ObjectId,

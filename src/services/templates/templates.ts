@@ -2,7 +2,7 @@ import type { HttpInstance } from '../../types';
 import {
   AffectedRecords,
   ObjectId,
-  PagedResult,
+  PagedResultWithPager,
   ResultResponse,
   Results,
 } from '../types';
@@ -13,6 +13,7 @@ import type {
   CreateFile,
   TemplatesService,
 } from './types';
+import { addPagers } from '../utils';
 
 export default (client, httpAuth: HttpInstance): TemplatesService => ({
   /**
@@ -32,10 +33,14 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
    * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<TemplateOut>
+   * @returns PagedResultWithPager<TemplateOut>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<TemplateOut>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<TemplateOut>> {
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+
+    return addPagers.call(this, [], options, result);
   },
 
   /**

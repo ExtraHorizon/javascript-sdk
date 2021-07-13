@@ -1,6 +1,11 @@
 /* eslint-disable camelcase */
 import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type {
+  AffectedRecords,
+  ObjectId,
+  PagedResult,
+  PagedResultWithPager,
+} from '../types';
 
 export interface ProductCreationSchema {
   name?: string;
@@ -416,7 +421,7 @@ export interface PaymentsOrdersService {
   find(
     this: PaymentsOrdersService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<OrderSchema>>;
+  ): Promise<PagedResultWithPager<OrderSchema>>;
   findById(
     this: PaymentsOrdersService,
     id: ObjectId,
@@ -452,7 +457,7 @@ export interface PaymentsProductsService {
   find(
     this: PaymentsProductsService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResult<ProductSchema>>;
+  ): Promise<PagedResultWithPager<ProductSchema>>;
   findById(
     this: PaymentsProductsService,
     id: ObjectId,

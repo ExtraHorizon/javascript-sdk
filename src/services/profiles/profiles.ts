@@ -1,5 +1,10 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, PagedResult, ObjectId } from '../types';
+import {
+  AffectedRecords,
+  PagedResult,
+  ObjectId,
+  PagedResultWithPager,
+} from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import {
   Profile,
@@ -8,6 +13,7 @@ import {
   Impediments,
   ProfilesService,
 } from './types';
+import { addPagers } from '../utils';
 
 export default (client, httpAuth: HttpInstance): ProfilesService => ({
   /**
@@ -19,10 +25,14 @@ export default (client, httpAuth: HttpInstance): ProfilesService => ({
    * `VIEW_PATIENTS` | `global` | View all profiles
    *
    * @param rql an optional rql string
-   * @returns PagedResult<Profile>
+   * @returns PagedResultWithPager<Profile>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Profile>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<Profile>> {
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+
+    return addPagers.call(this, [], options, result);
   },
 
   /**

@@ -2,14 +2,15 @@ import { rqlBuilder, RQLString } from '../rql';
 import { AddPagers, PagedResult, PagedResultWithPager } from './types';
 
 export const addPagers: AddPagers = function addPagersFn<S, T>(
-  rql: RQLString,
+  requiredParams: any[],
+  options: { rql: RQLString },
   pagedResult: PagedResult<T>
 ): PagedResultWithPager<T> {
   return {
     ...pagedResult,
     previousPage: async () => {
-      const result = await this.find({
-        rql: rqlBuilder(rql)
+      const result = await this.find(...requiredParams, {
+        rql: rqlBuilder(options?.rql)
           .limit(
             pagedResult.page.limit,
             pagedResult.page.offset > 0
@@ -18,11 +19,11 @@ export const addPagers: AddPagers = function addPagersFn<S, T>(
           )
           .build(),
       });
-      return addPagers.call<S, T>(this, rql, result);
+      return addPagers.call<S, T>(this, requiredParams, options, result);
     },
     nextPage: async () => {
-      const result = await this.find({
-        rql: rqlBuilder(rql)
+      const result = await this.find(...requiredParams, {
+        rql: rqlBuilder(options?.rql)
           .limit(
             pagedResult.page.limit,
             pagedResult.page.offset + pagedResult.page.limit <
@@ -32,7 +33,7 @@ export const addPagers: AddPagers = function addPagersFn<S, T>(
           )
           .build(),
       });
-      return addPagers.call<S, T>(this, rql, result);
+      return addPagers.call<S, T>(this, requiredParams, options, result);
     },
   };
 };

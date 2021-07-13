@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
 import type {
   OrderSchema,
   OrderCreationSchema,
@@ -8,6 +8,7 @@ import type {
   PaymentsOrdersService,
 } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
+import { addPagers } from '../utils';
 
 export default (client, httpAuth: HttpInstance): PaymentsOrdersService => ({
   /**
@@ -18,10 +19,14 @@ export default (client, httpAuth: HttpInstance): PaymentsOrdersService => ({
    * `VIEW_STRIPE_ORDERS` | `global` | List orders created by all users
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<OrderSchema>
+   * @returns PagedResultWithPager<OrderSchema>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<OrderSchema>> {
-    return (await client.get(httpAuth, `/orders${options?.rql || ''}`)).data;
+  async find(options?: {
+    rql?: RQLString;
+  }): Promise<PagedResultWithPager<OrderSchema>> {
+    const result = (await client.get(httpAuth, `/orders${options?.rql || ''}`))
+      .data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

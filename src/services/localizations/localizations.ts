@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, PagedResult } from '../types';
+import { AffectedRecords, PagedResultWithPager } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import type {
   Localization,
@@ -10,6 +10,7 @@ import type {
   MappedText,
   LocalizationsService,
 } from './types';
+import { addPagers } from '../utils';
 
 export default (client, httpAuth: HttpInstance): LocalizationsService => ({
   /**
@@ -19,12 +20,14 @@ export default (client, httpAuth: HttpInstance): LocalizationsService => ({
    * none | | Everyone can use this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<Localization>
+   * @returns PagedResultWithPager<Localization>
    */
   async find(options?: {
     rql?: RQLString;
-  }): Promise<PagedResult<Localization>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  }): Promise<PagedResultWithPager<Localization>> {
+    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+
+    return addPagers.call(this, [], options, result);
   },
 
   /**
