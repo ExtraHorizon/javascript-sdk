@@ -15,15 +15,6 @@ export const eventData = {
   creationTimestamp: new Date(),
 };
 
-export const eventsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [eventData],
-};
-
 export const subscriptionsInput = {
   service: {
     name: 'string',
@@ -41,13 +32,4 @@ export const subscriptionsData = {
   id: '5bfbfc3146e0fb321rsa4b28',
   creationTimestamp: new Date(),
   updateTimestamp: new Date(),
-};
-
-export const subscriptionsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [subscriptionsData],
 };

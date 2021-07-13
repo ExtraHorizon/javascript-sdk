@@ -59,7 +59,7 @@ describe('Statuses Service', () => {
       .reply(200, {
         affectedRecords: 1,
       });
-    const res = await sdk.data.statuses.delete(schemaId, statusName);
+    const res = await sdk.data.statuses.remove(schemaId, statusName);
     expect(res.affectedRecords).toBe(1);
   });
 });

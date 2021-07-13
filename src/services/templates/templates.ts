@@ -119,7 +119,7 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async delete(templateId: string): Promise<AffectedRecords> {
+  async remove(templateId: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${templateId}`)).data;
   },
 

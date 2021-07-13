@@ -6,10 +6,8 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import {
-  permissionResponse,
-  roleResponse,
-} from '../../__helpers__/apiResponse';
+import { permissionData, roleData } from '../../__helpers__/user';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Group Roles Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -36,7 +34,7 @@ describe('Group Roles Service', () => {
   it('should retrieve a list of group permissions', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/groups/permissions')
-      .reply(200, permissionResponse);
+      .reply(200, createPagedResponse(permissionData));
 
     const permissions = await sdk.users.groupRoles.getPermissions();
 
@@ -47,7 +45,7 @@ describe('Group Roles Service', () => {
     const rql = rqlBuilder().build();
     nock(`${host}${USER_BASE}`)
       .get(`/groups/${groupId}/roles${rql}`)
-      .reply(200, roleResponse);
+      .reply(200, createPagedResponse(roleData));
 
     const roles = await sdk.users.groupRoles.get(groupId, { rql });
 
@@ -98,7 +96,7 @@ describe('Group Roles Service', () => {
       .delete(`/groups/${groupId}/roles/${roleId}${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.groupRoles.remove(groupId, roleId, rql);
+    const res = await sdk.users.groupRoles.remove(rql, groupId, roleId);
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -128,13 +126,9 @@ describe('Group Roles Service', () => {
       .post(`/groups/${groupId}/roles/remove_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.groupRoles.removePermissions(
-      groupId,
-      {
-        permissions,
-      },
-      rql
-    );
+    const res = await sdk.users.groupRoles.removePermissions(rql, groupId, {
+      permissions,
+    });
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -162,11 +156,9 @@ describe('Group Roles Service', () => {
       .post(`/groups/${groupId}/staff/remove_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.groupRoles.removeFromStaff(
-      groupId,
-      { roles },
-      rql
-    );
+    const res = await sdk.users.groupRoles.removeFromStaff(rql, groupId, {
+      roles,
+    });
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -190,10 +182,9 @@ describe('Group Roles Service', () => {
       .post(`/remove_from_staff${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.groupRoles.removeUsersFromStaff(
-      { groups },
-      rql
-    );
+    const res = await sdk.users.groupRoles.removeUsersFromStaff(rql, {
+      groups,
+    });
 
     expect(res.affectedRecords).toBe(1);
   });

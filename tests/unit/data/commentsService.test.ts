@@ -2,13 +2,11 @@ import nock from 'nock';
 import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { rqlBuilder } from '../../../src/rql';
-import {
-  newCommentCreated,
-  commentData,
-  commentsListResponse,
-} from '../../__helpers__/data';
+import { newCommentCreated, commentData } from '../../__helpers__/data';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Comments Service', () => {
+  const commentsListResponse = createPagedResponse(commentData);
   const { schemaId } = commentData;
   const documentId = '2e9fff9d90135a2a9a718e2f';
   const commentId = commentData.id;
@@ -99,7 +97,7 @@ describe('Comments Service', () => {
     nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.comments.delete(commentId, schemaId, documentId);
+    const res = await sdk.data.comments.remove(commentId, schemaId, documentId);
     expect(res.affectedRecords).toBe(1);
   });
 });

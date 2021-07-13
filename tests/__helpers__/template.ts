@@ -28,15 +28,6 @@ export const templateInput: TemplateIn = {
 export const templateData = {
   ...templateInput,
   id: '5d120f89d601800005728bea',
-  creation_timestamp: 1508762564480,
-  update_timestamp: 1508762244460,
-};
-
-export const templateResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [templateData],
+  creationTimestamp: new Date(1508762564480),
+  updateTimestamp: new Date(1508762244460),
 };

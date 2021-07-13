@@ -92,5 +92,5 @@ export interface ActionsService {
     actionId: ObjectId,
     requestBody: ActionUpdate
   ): Promise<AffectedRecords>;
-  delete(dispatcherId: ObjectId, actionId: ObjectId): Promise<AffectedRecords>;
+  remove(dispatcherId: ObjectId, actionId: ObjectId): Promise<AffectedRecords>;
 }

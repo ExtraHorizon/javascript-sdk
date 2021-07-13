@@ -23,15 +23,6 @@ export const mailData = {
   update_timestamp: 0,
 };
 
-export const mailsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [mailData],
-};
-
 export const mailInput = {
   templateId: '5bfbfc3146e0fb321rsa4b28',
   content: {
@@ -89,13 +80,4 @@ export const queuedMailData = {
       additionalProp3: {},
     },
   },
-};
-
-export const queuedMailsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [queuedMailData],
 };

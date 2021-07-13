@@ -64,7 +64,7 @@ export default (
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  async delete(rql: RQLString): Promise<AffectedRecords> {
+  async remove(rql: RQLString): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
   },
 

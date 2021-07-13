@@ -5,10 +5,11 @@ import {
   newSchemaInput,
   newSchemaCreated,
   schemaData,
-  schemasListResponse,
 } from '../../__helpers__/data';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Schemas Service', () => {
+  const schemasListResponse = createPagedResponse(schemaData);
   const schemaId = newSchemaCreated.id;
   const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
@@ -89,7 +90,7 @@ describe('Schemas Service', () => {
     nock(`${host}${DATA_BASE}`).delete(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
     });
-    const res = await sdk.data.schemas.delete(schemaId);
+    const res = await sdk.data.schemas.remove(schemaId);
     expect(res.affectedRecords).toBe(1);
   });
 

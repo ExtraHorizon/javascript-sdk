@@ -22,6 +22,8 @@ describe('http client', () => {
     const http = createHttpClient({
       ...validateConfig(mockParams),
       packageVersion: '',
+      requestLogger: value => value,
+      responseLogger: value => value,
     });
 
     const test = await http.get('test');
