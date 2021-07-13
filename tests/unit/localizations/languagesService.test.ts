@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { AUTH_BASE, LOCALIZATIONS_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { languagesResponse } from '../../__helpers__/localization';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Languages Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -28,7 +28,7 @@ describe('Languages Service', () => {
   it('should retrieve a list of all the defined languages', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get('/languages')
-      .reply(200, languagesResponse);
+      .reply(200, createPagedResponse('NL'));
 
     const res = await sdk.localizations.getLanguages();
 

@@ -6,16 +6,14 @@ import {
   rqlBuilder,
   ParamsOauth2,
 } from '../../../src/index';
-import {
-  mailInput,
-  mailData,
-  mailsResponse,
-  queuedMailsResponse,
-} from '../../__helpers__/mail';
+import { mailInput, mailData, queuedMailData } from '../../__helpers__/mail';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Mail Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const mailId = mailData.id;
+  const mailsResponse = createPagedResponse(mailData);
+  const queuedMailsResponse = createPagedResponse(queuedMailData);
 
   let sdk: Client<ParamsOauth2>;
 

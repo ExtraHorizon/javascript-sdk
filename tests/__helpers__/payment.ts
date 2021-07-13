@@ -58,15 +58,6 @@ export const productData = {
   ...newProductData,
 };
 
-export const productResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [productData],
-};
-
 export const orderData: OrderSchema = {
   id: '507f191e810c19729de860ea',
   creatorId: '507f191e810c19729de860ea',
@@ -124,15 +115,6 @@ export const orderData: OrderSchema = {
   creationTimestamp: new Date('2021-06-04T11:47:31.601Z'),
 };
 
-export const orderResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [orderData],
-};
-
 export const newOrder: OrderCreationSchema = {
   productId: '507f191e810c19729de860ea',
   currency: 'eur',
@@ -157,15 +139,6 @@ export const subscriptionEntitlementData: SubscriptionEntitlement = {
   creationTimestamp: new Date('2021-06-04T12:01:02.782Z'),
 };
 
-export const subscriptionEntitlementResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [subscriptionEntitlementData],
-};
-
 export const subscriptionEventData: SubscriptionEvent = {
   id: '507f191e810c19729de860ea',
   userId: '507f191e810c19729de860ea',
@@ -176,15 +149,6 @@ export const subscriptionEventData: SubscriptionEvent = {
   subscriptionTier: 'premium',
   type: SubscriptionEventType.STARTED,
   expireTimestamp: new Date('2021-06-04T12:01:02.786Z'),
-};
-
-export const subscriptionEventResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [subscriptionEventData],
 };
 
 export const appleReceipt: AppleReceiptExampleSchema = {
@@ -295,15 +259,6 @@ export const appStoreNotification: AppStoreNotification = {
   },
 };
 
-export const appStoreNotificationResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [appStoreNotification],
-};
-
 export const appStoreReceipt: AppStoreReceipt = {
   id: '507f191e810c19729de860ea',
   creationTimestamp: new Date('2021-06-04T12:56:57.312Z'),
@@ -318,15 +273,6 @@ export const appStoreReceipt: AppStoreReceipt = {
     pending_renewal_info: [{}],
     status: 0,
   },
-};
-
-export const appStoreReceiptResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [appStoreReceipt],
 };
 
 export const appStoreSubscription: AppStoreSubscription = {
@@ -347,15 +293,6 @@ export const appStoreSubscription: AppStoreSubscription = {
   newProductId: 'string',
 };
 
-export const appStoreSubscriptionResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [appStoreSubscription],
-};
-
 export const appStoreSubscriptionProduct: AppStoreSubscriptionProduct = {
   id: '507f191e810c19729de860ea',
   name: 'FibriCheck Premium Monthly',
@@ -365,15 +302,6 @@ export const appStoreSubscriptionProduct: AppStoreSubscriptionProduct = {
   subscriptionTier: 'premium',
   updateTimestamp: new Date('2021-06-04T13:15:20.862Z'),
   creationTimestamp: new Date('2021-06-04T13:15:20.862Z'),
-};
-
-export const appStoreSubscriptionProductResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [appStoreSubscriptionProduct],
 };
 
 export const stripeUser: StripeUser = {

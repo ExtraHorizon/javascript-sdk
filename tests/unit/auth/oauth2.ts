@@ -3,7 +3,8 @@ import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
 import { ResourceUnknownError } from '../../../src/errors';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { authorizationList, newAuthorization } from '../../__helpers__/auth';
+import { authorizationData } from '../../__helpers__/auth';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Auth - OAuth2', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -14,6 +15,8 @@ describe('Auth - OAuth2', () => {
     sdk = createClient({
       host,
       clientId: '',
+      requestLogger: value => value,
+      responseLogger: value => value,
     });
 
     const mockToken = 'mockToken';
@@ -34,7 +37,7 @@ describe('Auth - OAuth2', () => {
   it('should create an authorization', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post('/oauth2/authorizations')
-      .reply(200, newAuthorization);
+      .reply(200, authorizationData);
 
     const createdResult = await sdk.auth.oauth2.createAuthorization({
       responseType: 'code',
@@ -44,18 +47,18 @@ describe('Auth - OAuth2', () => {
       redirectUri: 'http://localhost',
     });
 
-    expect(createdResult.id).toEqual(newAuthorization.id);
+    expect(createdResult.id).toEqual(authorizationData.id);
   });
 
   it('should get authorizations', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/authorizations')
-      .reply(200, authorizationList);
+      .reply(200, createPagedResponse(authorizationData));
 
     const applications = await sdk.auth.oauth2.getAuthorizations();
 
     expect(applications.data).toBeDefined();
-    expect(applications.data[0].id).toEqual(authorizationList.data[0].id);
+    expect(applications.data[0].id).toEqual(authorizationData.id);
   });
 
   it('should delete an authorization', async () => {

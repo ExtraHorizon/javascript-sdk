@@ -41,12 +41,3 @@ export const dispatcherData: Dispatcher = {
   eventType: 'string',
   actions: [mailAction, taskAction],
 };
-
-export const dispatchersResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [dispatcherData],
-};

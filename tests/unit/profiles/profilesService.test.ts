@@ -5,17 +5,16 @@ import {
   createClient,
   ParamsOauth2,
   rqlBuilder,
+  Comorbidities,
+  Impediments,
 } from '../../../src/index';
-import {
-  profileData,
-  profilesResponse,
-  comorbiditiesResponse,
-  impedimentsResponse,
-} from '../../__helpers__/profile';
+import { profileData } from '../../__helpers__/profile';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Profiles Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const profileId = profileData.id;
+  const profilesResponse = createPagedResponse(profileData);
 
   let sdk: Client<ParamsOauth2>;
 
@@ -109,7 +108,7 @@ describe('Profiles Service', () => {
   it('should retrieve a list of all the defined comorbidities', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get('/comorbidities')
-      .reply(200, comorbiditiesResponse);
+      .reply(200, createPagedResponse(Comorbidities.HEART_FAILURE));
 
     const res = await sdk.profiles.getComorbidities();
 
@@ -119,7 +118,7 @@ describe('Profiles Service', () => {
   it('should retrieve a list of all the defined impediments', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get('/impediments')
-      .reply(200, impedimentsResponse);
+      .reply(200, createPagedResponse(Impediments.TREMOR));
 
     const res = await sdk.profiles.getImpediments();
 

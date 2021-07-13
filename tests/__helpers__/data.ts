@@ -287,15 +287,6 @@ export const schemaData = {
   creationTimestamp: '2021-04-21T21:37:14.798Z',
 };
 
-export const schemasListResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [schemaData],
-};
-
 export const newIndexCreated = {
   id: '5e9fff9d90135a2a9a718e2f',
   name: 'location',
@@ -344,15 +335,6 @@ export const commentData = {
   text: 'Your comment here',
   updateTimestamp: '2021-04-30T08:08:11.948Z',
   creationTimestamp: '2021-04-30T08:08:11.948Z',
-};
-
-export const commentsListResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [commentData],
 };
 
 export const newDocumentCreated = {
@@ -404,24 +386,6 @@ export const lockedDocumentData = {
   commentCount: 5,
   updateTimestamp: '2021-04-29T21:07:45.551Z',
   creationTimestamp: '2021-04-29T21:07:45.551Z',
-};
-
-export const documentsListResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [documentData],
-};
-
-export const lockedDocumentsListResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [lockedDocumentData],
 };
 
 const inputCondition: Condition = {

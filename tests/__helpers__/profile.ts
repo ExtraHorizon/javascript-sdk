@@ -58,33 +58,6 @@ export const profileData: Profile = {
   updateTimestamp: new Date(),
 };
 
-export const profilesResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [profileData],
-};
-
-export const comorbiditiesResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [Comorbidities.HEART_FAILURE],
-};
-
-export const impedimentsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [Impediments.TREMOR],
-};
-
 export const groupData: Group = {
   reason: 'string',
   patientId: 'string',
@@ -110,15 +83,6 @@ export const logData: LogEntry = {
   updateTimestamp: new Date(),
 };
 
-export const logsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [logData],
-};
-
 export const medicationData: Medication = {
   name: 'Xarelto',
   dosis: {
@@ -127,13 +91,4 @@ export const medicationData: Medication = {
   },
   medicationFrequency: MedicationFrequency.AS_NEEDED,
   count: 1,
-};
-
-export const medicationsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [medicationData],
 };

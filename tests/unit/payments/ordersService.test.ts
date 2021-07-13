@@ -6,11 +6,13 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import { orderData, orderResponse, newOrder } from '../../__helpers__/payment';
+import { orderData, newOrder } from '../../__helpers__/payment';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Orders Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const orderId = orderData.id;
+  const orderResponse = createPagedResponse(orderData);
 
   let sdk: Client<ParamsOauth2>;
 

@@ -8,16 +8,17 @@ import {
 } from '../../../src/index';
 import {
   localizationData,
-  localizationResponse,
   localizationCreatedResponse,
   localizationUpdatedResponse,
   localizationInput,
   localizationRequest,
 } from '../../__helpers__/localization';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Localizations Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const localizationKey = localizationData.key;
+  const localizationResponse = createPagedResponse(localizationData);
 
   let sdk: Client<ParamsOauth2>;
 
