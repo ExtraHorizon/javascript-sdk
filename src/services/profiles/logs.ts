@@ -10,19 +10,6 @@ import {
 import { LogEntry, ProfileComment, ProfilesLogsService } from './types';
 
 export default (client, httpAuth: HttpInstance): ProfilesLogsService => ({
-  /**
-   * Create a profile log entry
-   * Permission | Scope | Effect
-   * - | - | -
-   * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Create a log entry for any profile of this group
-   * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Create a log entry for any profile of any group
-   *
-   * @param profileId Id of the targeted profile
-   * @param groupId Id of the targeted group
-   * @param requestBody ProfileComment
-   * @returns LogEntry
-   * @throws {ResourceUnknownError}
-   */
   async create(
     profileId: ObjectId,
     groupId: ObjectId,
@@ -37,19 +24,6 @@ export default (client, httpAuth: HttpInstance): ProfilesLogsService => ({
     ).data;
   },
 
-  /**
-   * Retrieve all profile log entries
-   * Permission | Scope | Effect
-   * - | - | -
-   * `VIEW_PROFILE_LOG_ENTRIES` | `staff enlistment` | Retrieve a list of log entries for any profile of this group
-   * `VIEW_PROFILE_LOG_ENTRIES` | `global` | Retrieve a list of log entries for any profile of any group
-   *
-   * @param profileId Id of the targeted profile
-   * @param groupId Id of the targeted group
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<LogEntry>
-   * @throws {ResourceUnknownError}
-   */
   async find(
     profileId: ObjectId,
     groupId: ObjectId,
@@ -63,20 +37,6 @@ export default (client, httpAuth: HttpInstance): ProfilesLogsService => ({
     ).data;
   },
 
-  /**
-   * Update a profile log entry
-   * Permission | Scope | Effect
-   * - | - | -
-   * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Update a log entry, created by the current user, for any profile of this group
-   * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Update a log entry, created by the current user, for any profile of any group
-   *
-   * @param profileId Id of the targeted profile
-   * @param groupId Id of the targeted group
-   * @param entryId Id of the targeted log entry
-   * @param requestBody ProfileComment
-   * @returns LogEntry
-   * @throws {ResourceUnknownError}
-   */
   async update(
     profileId: ObjectId,
     groupId: ObjectId,
@@ -92,19 +52,6 @@ export default (client, httpAuth: HttpInstance): ProfilesLogsService => ({
     ).data;
   },
 
-  /**
-   * Delete a profile log entry
-   * Permission | Scope | Effect
-   * - | - | -
-   * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Delete a log entry, created by the current user, for any profile of this group
-   * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Delete a log entry, created by the current user, for any profile of any group
-   *
-   * @param profileId Id of the targeted profile
-   * @param groupId Id of the targeted group
-   * @param entryId Id of the targeted log entry
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
   async remove(
     profileId: ObjectId,
     groupId: ObjectId,
