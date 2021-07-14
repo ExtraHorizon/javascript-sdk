@@ -28,6 +28,7 @@ export type DataService = ReturnType<typeof infrastructure> & {
   documents: DataDocumentsService;
   transitions: DataTransitionsService;
 };
+
 export const dataService = (httpWithAuth: HttpInstance): DataService => {
   const client = httpClient({
     basePath: DATA_BASE,

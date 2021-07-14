@@ -79,6 +79,17 @@ The data returned from the backend is mapped using interceptors:
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
 
+## Developer Notes
+
+Throughout the different services we use `this` for easy access to other functions in each service. The usage of `this` as first parameter is explained here: https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function. This parameter is excluded from all exported types.
+
+```ts
+find(
+  this: DataSchemasService,
+  options?: { rql?: RQLString }
+): Promise<PagedResult<Schema>>;
+```
+
 [auth]: https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
 [users]: https://developers.extrahorizon.io/services/?service=users-service&redirectToVersion=1
 [data]: https://developers.extrahorizon.io/services/?service=data-service&redirectToVersion=1
