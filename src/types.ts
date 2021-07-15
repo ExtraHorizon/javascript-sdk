@@ -60,7 +60,11 @@ interface ParamsBase {
   responseLogger?: (response: AxiosResponse | Error) => unknown;
   requestLogger?: (request: HttpRequestConfig | Error) => unknown;
   freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
-  headers: Record<string, string>;
+  headers?: {
+    'X-Request-Service'?: string;
+    'X-Forwarded-Application'?: string;
+    'X-Forwarded-User'?: string;
+  };
 }
 
 export interface ParamsOauth1 extends ParamsBase {
