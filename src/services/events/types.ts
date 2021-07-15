@@ -1,5 +1,5 @@
 import { RQLString } from '../../rql';
-import { Entity, ObjectId, PagedResultWithPager, Timestamps } from '../types';
+import { Entity, ObjectId, PagedResult, Timestamps } from '../types';
 
 export interface CreateEvent {
   type: string;
@@ -30,7 +30,7 @@ export interface EventsService {
   find(
     this: EventsService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<Event>>;
+  ): Promise<PagedResult<Event>>;
   findById(
     this: EventsService,
     id: ObjectId,
@@ -44,7 +44,7 @@ export interface SubscriptionsService {
   find(
     this: SubscriptionsService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<Subscription>>;
+  ): Promise<PagedResult<Subscription>>;
   findById(
     this: SubscriptionsService,
     id: ObjectId,

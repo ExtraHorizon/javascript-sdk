@@ -1,10 +1,10 @@
-import { PagedResultWithPager, Schema } from '@extrahorizon/javascript-sdk';
+import { PagedResult, Schema } from '@extrahorizon/javascript-sdk';
 import { useEffect, useState } from 'react';
 
 import { getSdk } from './sdk';
 
 function App() {
-  const [pagedData, setPagedData] = useState<PagedResultWithPager<Schema>>();
+  const [pagedData, setPagedData] = useState<PagedResult<Schema>>();
 
   useEffect(() => {
     async function getInitialData() {

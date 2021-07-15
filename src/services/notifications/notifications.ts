@@ -1,10 +1,5 @@
 import type { OAuthClient } from '../../types';
-import {
-  AffectedRecords,
-  PagedResult,
-  ObjectId,
-  PagedResultWithPager,
-} from '../types';
+import { AffectedRecords, ObjectId, PagedResult } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import {
   Notification,
@@ -44,11 +39,11 @@ export default (client, httpAuth: OAuthClient): NotificationsService => ({
    * `VIEW_NOTIFICATIONS` | `global` | View all notifications
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<Notification>
+   * @returns PagedResult<Notification>
    */
   async find(options?: {
     rql?: RQLString;
-  }): Promise<PagedResultWithPager<Notification>> {
+  }): Promise<PagedResult<Notification>> {
     const result = (
       await client.get(httpAuth, `/notifications${options?.rql || ''}`)
     ).data;
@@ -117,6 +112,7 @@ export default (client, httpAuth: OAuthClient): NotificationsService => ({
    * @returns PagedResult<NotifTypeDef>
    */
   async getTypes(): Promise<PagedResult<NotifTypeDef>> {
-    return (await client.get(httpAuth, '/types')).data;
+    const result = (await client.get(httpAuth, '/types')).data;
+    return addPagers.call(this, [], {}, result);
   },
 });

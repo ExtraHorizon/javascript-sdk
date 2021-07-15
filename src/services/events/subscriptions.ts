@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import { ObjectId, PagedResultWithPager } from '../types';
+import { ObjectId, PagedResult } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import type {
   Subscription,
@@ -16,11 +16,11 @@ export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
    * `VIEW_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<Subscription>
+   * @returns PagedResult<Subscription>
    */
   async find(options?: {
     rql?: RQLString;
-  }): Promise<PagedResultWithPager<Subscription>> {
+  }): Promise<PagedResult<Subscription>> {
     const result = (
       await client.get(httpAuth, `/subscriptions${options?.rql || ''}`)
     ).data;

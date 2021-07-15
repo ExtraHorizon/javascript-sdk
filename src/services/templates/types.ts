@@ -3,7 +3,7 @@ import {
   LanguageCode,
   TimeZone,
   AffectedRecords,
-  PagedResultWithPager,
+  PagedResult,
 } from '../types';
 import { TypeConfiguration } from '../data/types';
 import { RQLString } from '../../rql';
@@ -68,7 +68,7 @@ export interface TemplatesService {
   find(
     this: TemplatesService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<TemplateOut>>;
+  ): Promise<PagedResult<TemplateOut>>;
   findById(
     this: TemplatesService,
     id: ObjectId,

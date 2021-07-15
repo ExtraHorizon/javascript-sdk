@@ -19,7 +19,7 @@ export interface ErrorResponse {
   message?: string;
 }
 
-export interface PagedResult<T> {
+export interface PagedResultBase<T> {
   page: {
     total: number;
     offset: number;
@@ -55,9 +55,9 @@ export interface MailRecipients {
   bcc?: MailAddressList;
 }
 
-export type PagedResultWithPager<T> = PagedResult<T> & {
-  previousPage: () => Promise<PagedResultWithPager<T>>;
-  nextPage: () => Promise<PagedResultWithPager<T>>;
+export type PagedResult<T> = PagedResultBase<T> & {
+  previousPage: () => Promise<PagedResult<T>>;
+  nextPage: () => Promise<PagedResult<T>>;
 };
 
 export interface AddPagers {
@@ -65,6 +65,6 @@ export interface AddPagers {
     thisArg: S,
     requiredParams: any[],
     options: { rql?: RQLString },
-    result: PagedResult<T>
-  ): PagedResultWithPager<T>;
+    result: PagedResultBase<T>
+  ): PagedResult<T>;
 }

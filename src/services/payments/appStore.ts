@@ -1,6 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { PagedResult, ResultResponse } from '../types';
 import { Results } from '../types';
+import { addPagers } from '../utils';
 import type {
   TransactionCompletionDataSchema,
   AppleReceiptExampleSchema,
@@ -82,7 +83,10 @@ export default (client, httpAuth: HttpInstance): PaymentsAppStoreService => ({
    * @returns PagedResult<AppStoreNotification>
    */
   async getNotifications(): Promise<PagedResult<AppStoreNotification>> {
-    return (await client.get(httpAuth, '/appStore/receivedNotifications')).data;
+    const result = (
+      await client.get(httpAuth, '/appStore/receivedNotifications')
+    ).data;
+    return addPagers.call(this, [], {}, result);
   },
 
   /**
@@ -97,6 +101,8 @@ export default (client, httpAuth: HttpInstance): PaymentsAppStoreService => ({
    * @returns PagedResult<AppStoreReceipt>
    */
   async getReceipts(): Promise<PagedResult<AppStoreReceipt>> {
-    return (await client.get(httpAuth, '/appStore/receivedReceipts')).data;
+    const result = (await client.get(httpAuth, '/appStore/receivedReceipts'))
+      .data;
+    return addPagers.call(this, [], {}, result);
   },
 });

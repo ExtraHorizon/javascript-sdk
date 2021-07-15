@@ -1,11 +1,6 @@
 import { Object } from 'ts-toolbelt';
 import { RQLString } from '../../rql';
-import {
-  AffectedRecords,
-  ObjectId,
-  PagedResult,
-  PagedResultWithPager,
-} from '../types';
+import { AffectedRecords, ObjectId, PagedResult } from '../types';
 
 export interface Profile {
   id?: ObjectId;
@@ -154,7 +149,7 @@ export interface ProfilesLogsService {
     profileId: ObjectId,
     groupId: ObjectId,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<LogEntry>>;
+  ): Promise<PagedResult<LogEntry>>;
   update(
     this: ProfilesLogsService,
     profileId: ObjectId,
@@ -174,7 +169,7 @@ export interface ProfilesService {
   find(
     this: ProfilesService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<Profile>>;
+  ): Promise<PagedResult<Profile>>;
   findById(
     this: ProfilesService,
     id: ObjectId,

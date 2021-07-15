@@ -1,11 +1,5 @@
 import type { HttpInstance } from '../../types';
-import {
-  ObjectId,
-  Results,
-  AffectedRecords,
-  PagedResult,
-  PagedResultWithPager,
-} from '../types';
+import { ObjectId, Results, AffectedRecords, PagedResult } from '../types';
 import type {
   RegisterUserData,
   User,
@@ -71,11 +65,9 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
    * `VIEW_USER` | `global` | See all fields of all users
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<User>
+   * @returns PagedResult<User>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResultWithPager<User>> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<User>> {
     const result = (
       await userClient.get(httpWithAuth, `/${options?.rql || ''}`)
     ).data;
@@ -108,9 +100,10 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
    * @returns Patient Success
    */
   async patients(options?: { rql?: RQLString }): Promise<PagedResult<Patient>> {
-    return (
+    const result = (
       await userClient.get(httpWithAuth, `/patients${options?.rql || ''}`)
     ).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**
@@ -126,8 +119,10 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
   async staff(options?: {
     rql?: RQLString;
   }): Promise<PagedResult<StaffMember>> {
-    return (await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`))
-      .data;
+    const result = (
+      await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`)
+    ).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

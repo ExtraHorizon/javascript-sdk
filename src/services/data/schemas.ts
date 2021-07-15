@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type {
   DataSchemasService,
   Schema,
@@ -46,9 +46,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResultWithPager<Schema>> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
 
     return addPagers.call(this, [], options, {

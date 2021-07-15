@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, ObjectId, PagedResultWithPager } from '../types';
+import { AffectedRecords, ObjectId, PagedResult } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import type {
   NotificationSettingsServices,
@@ -20,11 +20,9 @@ export default (
    * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notification settings
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<Setting>
+   * @returns PagedResult<Setting>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResultWithPager<Setting>> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Setting>> {
     const result = (
       await client.get(httpAuth, `/settings${options?.rql || ''}`)
     ).data;

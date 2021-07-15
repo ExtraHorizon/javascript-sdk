@@ -1,10 +1,5 @@
 import type { HttpInstance } from '../../types';
-import {
-  AffectedRecords,
-  PagedResult,
-  ObjectId,
-  PagedResultWithPager,
-} from '../types';
+import { AffectedRecords, ObjectId, PagedResult } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import {
   Profile,
@@ -25,11 +20,9 @@ export default (client, httpAuth: HttpInstance): ProfilesService => ({
    * `VIEW_PATIENTS` | `global` | View all profiles
    *
    * @param rql an optional rql string
-   * @returns PagedResultWithPager<Profile>
+   * @returns PagedResult<Profile>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResultWithPager<Profile>> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Profile>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
 
     return addPagers.call(this, [], options, result);
@@ -124,7 +117,8 @@ export default (client, httpAuth: HttpInstance): ProfilesService => ({
    * @returns PagedResult<Comorbidities>
    */
   async getComorbidities(): Promise<PagedResult<Comorbidities>> {
-    return (await client.get(httpAuth, '/comorbidities')).data;
+    const result = (await client.get(httpAuth, '/comorbidities')).data;
+    return addPagers.call(this, [], {}, result);
   },
 
   /**
@@ -136,6 +130,7 @@ export default (client, httpAuth: HttpInstance): ProfilesService => ({
    * @returns PagedResult<Impediments>
    */
   async getImpediments(): Promise<PagedResult<Impediments>> {
-    return (await client.get(httpAuth, '/impediments')).data;
+    const result = (await client.get(httpAuth, '/impediments')).data;
+    return addPagers.call(this, [], {}, result);
   },
 });

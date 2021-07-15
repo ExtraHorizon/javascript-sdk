@@ -2,6 +2,7 @@ import type { HttpInstance } from '../../types';
 import { AffectedRecords, PagedResult } from '../types';
 import type { OAuth2Authorization, OAuth2AuthorizationCreation } from './types';
 import { RQLString } from '../../rql';
+import { addPagers } from '../utils';
 
 export default (client, httpWithAuth: HttpInstance) => ({
   /**
@@ -28,12 +29,13 @@ export default (client, httpWithAuth: HttpInstance) => ({
   async getAuthorizations(options?: {
     rql?: RQLString;
   }): Promise<PagedResult<OAuth2Authorization>> {
-    return (
+    const result = (
       await client.get(
         httpWithAuth,
         `/oauth2/authorizations${options?.rql || ''}`
       )
     ).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

@@ -1,5 +1,6 @@
 import type { HttpInstance } from '../../types';
 import type { PagedResult } from '../types';
+import { addPagers } from '../utils';
 import type {
   PaymentsSubscriptionsService,
   SubscriptionEntitlement,
@@ -20,7 +21,9 @@ export default (
    * @returns PagedResult<SubscriptionEntitlement>
    */
   async getEntitlements(): Promise<PagedResult<SubscriptionEntitlement>> {
-    return (await client.get(httpAuth, '/subscriptions/entitlements')).data;
+    const result = (await client.get(httpAuth, '/subscriptions/entitlements'))
+      .data;
+    return addPagers.call(this, [], {}, result);
   },
 
   /**
@@ -33,6 +36,7 @@ export default (
    * @returns PagedResult<SubscriptionEvent>
    */
   async getEvents(): Promise<PagedResult<SubscriptionEvent>> {
-    return (await client.get(httpAuth, '/subscriptions/events')).data;
+    const result = (await client.get(httpAuth, '/subscriptions/events')).data;
+    return addPagers.call(this, [], {}, result);
   },
 });

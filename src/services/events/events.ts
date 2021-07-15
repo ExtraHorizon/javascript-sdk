@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import { ObjectId, PagedResultWithPager } from '../types';
+import { ObjectId, PagedResult } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import type { CreateEvent, Event, EventsService } from './types';
 import { addPagers } from '../utils';
@@ -12,11 +12,9 @@ export default (client, httpAuth: HttpInstance): EventsService => ({
    * `VIEW_EVENTS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<Event>
+   * @returns PagedResult<Event>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResultWithPager<Event>> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Event>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
     return addPagers.call(this, [], options, result);
   },

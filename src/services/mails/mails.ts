@@ -1,11 +1,10 @@
 import type { HttpInstance } from '../../types';
 import {
   AffectedRecords,
-  PagedResult,
   ResultResponse,
   Results,
   ObjectId,
-  PagedResultWithPager,
+  PagedResult,
 } from '../types';
 import { RQLString, rqlBuilder } from '../../rql';
 import {
@@ -35,11 +34,9 @@ export default (client, httpAuth: HttpInstance): MailsService => ({
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<Mail>
+   * @returns PagedResult<Mail>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResultWithPager<Mail>> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Mail>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
 
     return addPagers.call(this, [], options, result);
@@ -108,8 +105,11 @@ export default (client, httpAuth: HttpInstance): MailsService => ({
    * @returns PagedResult<QueuedMail>
    */
   async findOutbound(options?: {
-    rql?: string;
+    rql?: RQLString;
   }): Promise<PagedResult<QueuedMail>> {
-    return (await client.get(httpAuth, `/queued${options?.rql || ''}`)).data;
+    const result = (await client.get(httpAuth, `/queued${options?.rql || ''}`))
+      .data;
+
+    return addPagers.call(this, [], options, result);
   },
 });

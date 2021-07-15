@@ -1,6 +1,7 @@
 import type { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
 import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import { addPagers } from '../utils';
 import type {
   GroupRolePermissions,
   StaffRoles,
@@ -24,7 +25,9 @@ export default (
    * @returns PagedResult<GlobalPermission>
    */
   async getPermissions(): Promise<PagedResult<GlobalPermission>> {
-    return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
+    const result = (await userClient.get(httpWithAuth, '/groups/permissions'))
+      .data;
+    return addPagers.call(this, [], {}, result);
   },
 
   /**

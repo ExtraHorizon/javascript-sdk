@@ -1,5 +1,5 @@
 import type { JSONSchema7 } from './json-schema';
-import type { AffectedRecords, ObjectId, PagedResultWithPager } from '../types';
+import type { AffectedRecords, ObjectId, PagedResult } from '../types';
 import { RQLString } from '../../rql';
 
 export enum JSONSchemaType {
@@ -366,7 +366,7 @@ export interface DataCommentsService {
     options?: {
       rql?: RQLString;
     }
-  ): Promise<PagedResultWithPager<Comment>>;
+  ): Promise<PagedResult<Comment>>;
   findById(
     this: DataCommentsService,
     id: ObjectId,
@@ -417,7 +417,7 @@ export interface DataDocumentsService {
     options?: {
       rql?: RQLString;
     }
-  ): Promise<PagedResultWithPager<Document<CustomData>>>;
+  ): Promise<PagedResult<Document<CustomData>>>;
   findById<CustomData = null>(
     this: DataDocumentsService,
     schemaId: ObjectId,
@@ -540,7 +540,7 @@ export interface DataSchemasService {
   find(
     this: DataSchemasService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<Schema>>;
+  ): Promise<PagedResult<Schema>>;
   findById(
     this: DataSchemasService,
     id: ObjectId,

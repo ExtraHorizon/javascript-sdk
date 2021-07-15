@@ -3,9 +3,8 @@ import {
   ObjectId,
   LanguageCode,
   TimeZone,
-  PagedResult,
   AffectedRecords,
-  PagedResultWithPager,
+  PagedResult,
 } from '../types';
 
 export interface UserData {
@@ -359,7 +358,7 @@ export interface UsersService {
   find(
     this: UsersService,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<User>>;
+  ): Promise<PagedResult<User>>;
   removeUsers(this: UsersService, rql: RQLString): Promise<AffectedRecords>;
   patients(
     this: UsersService,

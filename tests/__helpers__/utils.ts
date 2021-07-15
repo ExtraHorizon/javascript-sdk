@@ -1,6 +1,6 @@
-import { PagedResult } from '../../src/services/types';
+import { PagedResultBase } from '../../src/services/types';
 
-export function createPagedResponse<T>(dataObject: T): PagedResult<T> {
+export function createPagedResponse<T>(dataObject: T): PagedResultBase<T> {
   return {
     page: {
       total: 1,

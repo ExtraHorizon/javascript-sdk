@@ -1,5 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { AffectedRecords, PagedResult, ObjectId } from '../types';
+import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import { addPagers } from '../utils';
 import type {
   AppStoreSubscription,
   AppStoreSubscriptionProduct,
@@ -22,7 +23,8 @@ export default (
    * @returns PagedResult<AppStoreSubscription>
    */
   async getSubscriptions(): Promise<PagedResult<AppStoreSubscription>> {
-    return (await client.get(httpAuth, '/appStore/subscriptions')).data;
+    const result = (await client.get(httpAuth, '/appStore/subscriptions')).data;
+    return addPagers.call(this, [], {}, result);
   },
 
   /**
@@ -36,8 +38,10 @@ export default (
   async getSubscriptionsProducts(): Promise<
     PagedResult<AppStoreSubscriptionProduct>
   > {
-    return (await client.get(httpAuth, '/appStore/subscriptions/products'))
-      .data;
+    const result = (
+      await client.get(httpAuth, '/appStore/subscriptions/products')
+    ).data;
+    return addPagers.call(this, [], {}, result);
   },
 
   /**

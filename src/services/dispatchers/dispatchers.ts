@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResultWithPager } from '../types';
+import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type { Dispatcher, DispatchersService } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 import { addPagers } from '../utils';
@@ -11,11 +11,9 @@ export default (client, httpAuth: HttpInstance): DispatchersService => ({
    * - | - | -
    * `VIEW_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<Dispatcher>
+   * @returns PagedResult<Dispatcher>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResultWithPager<Dispatcher>> {
+  async find(options?: { rql?: RQLString }): Promise<PagedResult<Dispatcher>> {
     const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
 
     return addPagers.call(this, [], options, result);

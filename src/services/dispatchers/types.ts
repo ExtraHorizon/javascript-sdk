@@ -3,7 +3,7 @@ import type {
   AffectedRecords,
   MailRecipients,
   ObjectId,
-  PagedResultWithPager,
+  PagedResult,
 } from '../types';
 
 export interface Dispatcher {
@@ -74,7 +74,7 @@ export interface DispatchersService {
   find: (
     this: DispatchersService,
     options?: { rql?: RQLString }
-  ) => Promise<PagedResultWithPager<Dispatcher>>;
+  ) => Promise<PagedResult<Dispatcher>>;
   findById: (
     this: DispatchersService,
     id: ObjectId,

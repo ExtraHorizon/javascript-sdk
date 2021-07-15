@@ -1,11 +1,11 @@
 import { rqlBuilder, RQLString } from '../rql';
-import { AddPagers, PagedResult, PagedResultWithPager } from './types';
+import { AddPagers, PagedResult, PagedResultBase } from './types';
 
 export const addPagers: AddPagers = function addPagersFn<S, T>(
   requiredParams: any[],
   options: { rql: RQLString },
-  pagedResult: PagedResult<T>
-): PagedResultWithPager<T> {
+  pagedResult: PagedResultBase<T>
+): PagedResult<T> {
   return {
     ...pagedResult,
     previousPage: async () => {
@@ -29,7 +29,7 @@ export const addPagers: AddPagers = function addPagersFn<S, T>(
             pagedResult.page.offset + pagedResult.page.limit <
               pagedResult.page.total
               ? pagedResult.page.offset + pagedResult.page.limit
-              : pagedResult.page.offset
+              : pagedResult.page.total
           )
           .build(),
       });

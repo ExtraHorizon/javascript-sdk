@@ -8,6 +8,7 @@ import type {
   ApplicationVersion,
 } from './types';
 import { RQLString } from '../../rql';
+import { addPagers } from '../utils';
 
 export default (client, httpWithAuth: HttpInstance) => ({
   /**
@@ -28,9 +29,10 @@ export default (client, httpWithAuth: HttpInstance) => ({
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
    * */
   async get(options?: { rql?: RQLString }): Promise<PagedResult<Application>> {
-    return (
+    const result = (
       await client.get(httpWithAuth, `/applications${options?.rql || ''}`)
     ).data;
+    return addPagers.call(this, [], options, result);
   },
 
   /**

@@ -5,7 +5,7 @@ import {
   ObjectId,
   Results,
   ResultResponse,
-  PagedResultWithPager,
+  PagedResult,
 } from '../types';
 import { addPagers } from '../utils';
 import { LogEntry, ProfileComment, ProfilesLogsService } from './types';
@@ -48,14 +48,14 @@ export default (client, httpAuth: HttpInstance): ProfilesLogsService => ({
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @returns PagedResultWithPager<LogEntry>
+   * @returns PagedResult<LogEntry>
    * @throws {ResourceUnknownError}
    */
   async find(
     profileId: ObjectId,
     groupId: ObjectId,
     options?: { rql?: RQLString }
-  ): Promise<PagedResultWithPager<LogEntry>> {
+  ): Promise<PagedResult<LogEntry>> {
     const result = (
       await client.get(
         httpAuth,
