@@ -1,6 +1,12 @@
 import { Object } from 'ts-toolbelt';
 import { RQLString } from '../../rql';
-import { AffectedRecords, ObjectId, PagedResult } from '../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 export interface Profile {
   id?: ObjectId;
@@ -128,7 +134,8 @@ export interface ProfilesGroupsService {
   create(
     this: ProfilesGroupsService,
     profileId: ObjectId,
-    requestBody: GroupCreation
+    requestBody: GroupCreation,
+    options?: OptionsBase
   ): Promise<Group>;
   /**
    * Update a group enlistment on a profile
@@ -147,7 +154,8 @@ export interface ProfilesGroupsService {
     this: ProfilesGroupsService,
     profileId: ObjectId,
     groupId: ObjectId,
-    requestBody: Omit<Group, 'groupId'>
+    requestBody: Omit<Group, 'groupId'>,
+    options?: OptionsBase
   ): Promise<Group>;
   /**
    * Delete a group from a profile
@@ -165,7 +173,8 @@ export interface ProfilesGroupsService {
   remove(
     this: ProfilesGroupsService,
     profileId: ObjectId,
-    groupId: ObjectId
+    groupId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Remove a field on a group enlistment object in a profile
@@ -186,7 +195,8 @@ export interface ProfilesGroupsService {
     groupId: ObjectId,
     requestBody: {
       fields: Array<string>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<Group>;
 }
 
@@ -208,7 +218,8 @@ export interface ProfilesLogsService {
     this: ProfilesLogsService,
     profileId: ObjectId,
     groupId: ObjectId,
-    requestBody: ProfileComment
+    requestBody: ProfileComment,
+    options?: OptionsBase
   ): Promise<LogEntry>;
   /**
    * Retrieve all profile log entries
@@ -227,7 +238,7 @@ export interface ProfilesLogsService {
     this: ProfilesLogsService,
     profileId: ObjectId,
     groupId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<LogEntry>>;
   /**
    * Update a profile log entry
@@ -248,7 +259,8 @@ export interface ProfilesLogsService {
     profileId: ObjectId,
     groupId: ObjectId,
     entryId: ObjectId,
-    requestBody: ProfileComment
+    requestBody: ProfileComment,
+    options?: OptionsBase
   ): Promise<LogEntry>;
   /**
    * Delete a profile log entry
@@ -267,7 +279,8 @@ export interface ProfilesLogsService {
     this: ProfilesLogsService,
     profileId: ObjectId,
     groupId: ObjectId,
-    entryId: ObjectId
+    entryId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -285,7 +298,7 @@ export interface ProfilesService {
    */
   find(
     this: ProfilesService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Profile>>;
   /**
    * Find By Id
@@ -296,17 +309,14 @@ export interface ProfilesService {
   findById(
     this: ProfilesService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Profile>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: ProfilesService,
-    options?: { rql?: RQLString }
-  ): Promise<Profile>;
+  findFirst(this: ProfilesService, options?: OptionsWithRql): Promise<Profile>;
   /**
    * Create a new profile
    * Permission | Scope | Effect
@@ -318,7 +328,11 @@ export interface ProfilesService {
    * @returns Profile
    * @throws {ProfileAlreadyExistsError}
    */
-  create(this: ProfilesService, requestBody: ProfileCreation): Promise<Profile>;
+  create(
+    this: ProfilesService,
+    requestBody: ProfileCreation,
+    options?: OptionsBase
+  ): Promise<Profile>;
   /**
    * Update an existing profile
    * Permission | Scope | Effect
@@ -334,7 +348,8 @@ export interface ProfilesService {
   update(
     this: ProfilesService,
     rql: RQLString,
-    requestBody: Profile
+    requestBody: Profile,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Remove a given field from all profile records
@@ -355,7 +370,8 @@ export interface ProfilesService {
     rql: RQLString,
     requestBody: {
       fields: Array<string>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Retrieve a list of all the defined comorbidities
@@ -365,7 +381,10 @@ export interface ProfilesService {
    *
    * @returns PagedResult<Comorbidities>
    */
-  getComorbidities(this: ProfilesService): Promise<PagedResult<Comorbidities>>;
+  getComorbidities(
+    this: ProfilesService,
+    options?: OptionsBase
+  ): Promise<PagedResult<Comorbidities>>;
   /**
    * Retrieve a list of all the defined impediments
    * Permission | Scope | Effect
@@ -374,5 +393,8 @@ export interface ProfilesService {
    *
    * @returns PagedResult<Impediments>
    */
-  getImpediments(this: ProfilesService): Promise<PagedResult<Impediments>>;
+  getImpediments(
+    this: ProfilesService,
+    options?: OptionsBase
+  ): Promise<PagedResult<Impediments>>;
 }
