@@ -2,14 +2,7 @@ import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { delay } from '../../utils';
 import { HttpClient } from '../http-client';
-import type {
-  ObjectId,
-  AffectedRecords,
-  PagedResult,
-  OptionsBase,
-  OptionsWithRql,
-} from '../types';
-import { DataDocumentsService, Document } from './types';
+import { DataDocumentsService } from './types';
 
 export default (
   client: HttpClient,
@@ -26,12 +19,12 @@ export default (
    */
   async assertNonLockedState(
     this: DataDocumentsService,
-    schemaId: ObjectId,
-    documentId: ObjectId,
+    schemaId,
+    documentId,
     tries = 5,
     retryTimeInMs = 300,
-    options?: OptionsBase
-  ): Promise<boolean> {
+    options
+  ) {
     if (tries < 1) {
       throw new Error('Document is in a locked state');
     }
@@ -63,11 +56,7 @@ export default (
    * @returns {Document} document
    * @throws {IllegalArgumentError}
    */
-  async create<CustomData = null>(
-    schemaId: ObjectId,
-    requestBody: Record<string, any>,
-    options?: OptionsWithRql & { gzip?: boolean }
-  ): Promise<Document<CustomData>> {
+  async create(schemaId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
@@ -103,10 +92,7 @@ export default (
    * @param rql Add filters to the requested list.
    * @returns {Document} document
    */
-  async find<CustomData = null>(
-    schemaId: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Document<CustomData>>> {
+  async find(schemaId, options) {
     console.log('options', options);
     return (
       await client.get(
@@ -126,12 +112,7 @@ export default (
    * @param rql an optional rql string
    * @returns {Document} document
    */
-  async findById<CustomData = null>(
-    this: DataDocumentsService,
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Document<CustomData>> {
+  async findById(this: DataDocumentsService, schemaId, documentId, options?) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
     const res = await this.find(schemaId, { ...options, rql: rqlWithId });
 
@@ -146,11 +127,7 @@ export default (
    * @param rql an optional rql string
    * @returns {Document} document
    */
-  async findFirst<CustomData = null>(
-    this: DataDocumentsService,
-    schemaId: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Document<CustomData>> {
+  async findFirst(this: DataDocumentsService, schemaId, options) {
     const res = await this.find(schemaId, options);
     return res.data[0];
   },
@@ -171,11 +148,11 @@ export default (
    */
   async update(
     this: DataDocumentsService,
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: Record<string, any>,
-    options?: OptionsWithRql
-  ): Promise<AffectedRecords> {
+    schemaId,
+    documentId,
+    requestBody,
+    options
+  ) {
     return (
       await client.put(
         httpAuth,
@@ -203,11 +180,7 @@ export default (
    * @param documentId The id of the targeted document.
    * @returns AffectedRecords
    */
-  async remove(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords> {
+  async remove(schemaId, documentId, options) {
     return (
       await client.delete(
         httpAuth,
@@ -231,14 +204,7 @@ export default (
    * @param requestBody list of fields
    * @returns AffectedRecords
    */
-  async removeFields(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      fields: Array<string>;
-    },
-    options?: OptionsWithRql
-  ): Promise<AffectedRecords> {
+  async removeFields(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
@@ -267,15 +233,7 @@ export default (
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async transition(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      id: ObjectId;
-      data?: Record<string, any>;
-    },
-    options?: OptionsWithRql
-  ): Promise<AffectedRecords> {
+  async transition(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
@@ -298,14 +256,7 @@ export default (
    * @param requestBody list of groupIds
    * @returns AffectedRecords
    */
-  async linkGroups(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      groupIds: Array<ObjectId>;
-    },
-    options: OptionsBase
-  ): Promise<AffectedRecords> {
+  async linkGroups(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
@@ -332,14 +283,7 @@ export default (
    * @param requestBody list of groupIds
    * @returns AffectedRecords
    */
-  async unlinkGroups(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      groupIds: Array<ObjectId>;
-    },
-    options: OptionsBase
-  ): Promise<AffectedRecords> {
+  async unlinkGroups(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
@@ -364,14 +308,7 @@ export default (
    * @param requestBody list of userIds
    * @returns AffectedRecords
    */
-  async linkUsers(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      userIds: Array<ObjectId>;
-    },
-    options: OptionsBase
-  ): Promise<AffectedRecords> {
+  async linkUsers(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
@@ -400,14 +337,7 @@ export default (
    * @param requestBody list of userIds
    * @returns AffectedRecords
    */
-  async unlinkUsers(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      userIds: Array<ObjectId>;
-    },
-    options: OptionsBase
-  ): Promise<AffectedRecords> {
+  async unlinkUsers(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,

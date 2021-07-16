@@ -1,12 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type {
-  ObjectId,
-  AffectedRecords,
-  PagedResult,
-  OptionsWithRql,
-  OptionsBase,
-} from '../types';
-import type { DataSchemasService, Schema, SchemaInput } from './types';
+import type { PagedResult } from '../types';
+import type { DataSchemasService, Schema } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
 
@@ -35,10 +29,7 @@ export default (
    * @param requestBody
    * @returns Schema successful operation
    */
-  async create(
-    requestBody: SchemaInput,
-    options?: OptionsBase
-  ): Promise<Schema> {
+  async create(requestBody, options) {
     return addTransitionHelpersToSchema(
       (await client.post(httpAuth, '/', requestBody, options)).data
     );
@@ -53,8 +44,8 @@ export default (
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
    */
-  async find(options?: OptionsWithRql): Promise<PagedResult<Schema>> {
-    const result = (
+  async find(options) {
+    const result: PagedResult<Schema> = (
       await client.get(httpAuth, `/${options?.rql || ''}`, options)
     ).data;
     return {
@@ -69,11 +60,7 @@ export default (
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(
-    this: DataSchemasService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Schema> {
+  async findById(this: DataSchemasService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
     const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
@@ -85,7 +72,7 @@ export default (
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findByName(this: DataSchemasService, name, options): Promise<Schema> {
+  async findByName(this: DataSchemasService, name, options) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
     const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
@@ -96,7 +83,7 @@ export default (
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(options): Promise<Schema> {
+  async findFirst(options) {
     const res = await this.find(options);
     return res.data[0];
   },
@@ -110,7 +97,7 @@ export default (
    * @param requestBody The schema input
    * @returns AffectedRecords
    */
-  async update(schemaId, requestBody, options): Promise<AffectedRecords> {
+  async update(schemaId, requestBody, options) {
     return (await client.put(httpAuth, `/${schemaId}`, requestBody, options))
       .data;
   },
@@ -124,7 +111,7 @@ export default (
    * @returns AffectedRecords
    * @throws {IllegalStateError}
    */
-  async remove(schemaId, options): Promise<AffectedRecords> {
+  async remove(schemaId, options) {
     return (await client.delete(httpAuth, `/${schemaId}`, options)).data;
   },
 
@@ -136,7 +123,7 @@ export default (
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  async disable(schemaId, options): Promise<AffectedRecords> {
+  async disable(schemaId, options) {
     return (await client.post(httpAuth, `/${schemaId}/disable`, null, options))
       .data;
   },
@@ -149,7 +136,7 @@ export default (
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  async enable(schemaId, options): Promise<AffectedRecords> {
+  async enable(schemaId, options) {
     return (await client.post(httpAuth, `/${schemaId}/enable`, options)).data;
   },
 });

@@ -1,14 +1,7 @@
 import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
-import type {
-  ObjectId,
-  AffectedRecords,
-  PagedResult,
-  OptionsBase,
-  OptionsWithRql,
-} from '../types';
-import { Comment, CommentText, DataCommentsService } from './types';
+import { DataCommentsService } from './types';
 
 export default (
   client: HttpClient,
@@ -28,14 +21,7 @@ export default (
    * @returns {Promise<Comment>}
    * @throws {LockedDocumentError}
    */
-  async create(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      text: CommentText;
-    },
-    options?: OptionsBase
-  ): Promise<Comment> {
+  async create(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
@@ -59,11 +45,7 @@ export default (
    * @param rql Add filters to the requested list.
    * @returns {Promise<PagedResult<Comment>>}
    */
-  async find(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Comment>> {
+  async find(schemaId, documentId, options) {
     return (
       await client.get(
         httpAuth,
@@ -81,13 +63,7 @@ export default (
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(
-    this: DataCommentsService,
-    id: ObjectId,
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Comment> {
+  async findById(this: DataCommentsService, id, schemaId, documentId, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
     const res = await this.find(schemaId, documentId, {
       ...options,
@@ -103,12 +79,7 @@ export default (
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(
-    this: DataCommentsService,
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Comment> {
+  async findFirst(this: DataCommentsService, schemaId, documentId, options) {
     const res = await this.find(schemaId, documentId, options);
     return res.data[0];
   },
@@ -126,15 +97,7 @@ export default (
    * @returns {Promise<AffectedRecords>}
    */
 
-  async update(
-    commentId: ObjectId,
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      text: CommentText;
-    },
-    options?: OptionsBase
-  ): Promise<AffectedRecords> {
+  async update(commentId, schemaId, documentId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
@@ -158,12 +121,7 @@ export default (
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
    */
-  async remove(
-    commentId: ObjectId,
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords> {
+  async remove(commentId, schemaId, documentId, options) {
     return (
       await client.delete(
         httpAuth,

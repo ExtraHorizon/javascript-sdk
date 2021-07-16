@@ -429,7 +429,11 @@ export interface DataDocumentsService {
     requestBody: Record<string, any>,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
-  remove(schemaId: ObjectId, documentId: ObjectId): Promise<AffectedRecords>;
+  remove(
+    schemaId: ObjectId,
+    documentId: ObjectId,
+    options: OptionsBase
+  ): Promise<AffectedRecords>;
   removeFields(
     schemaId: ObjectId,
     documentId: ObjectId,
