@@ -1,4 +1,5 @@
 import type { HttpInstance } from '../../types';
+import { HttpClient } from '../http-client';
 import type { AffectedRecords, PagedResult, ObjectId } from '../types';
 import type {
   AppStoreSubscription,
@@ -9,52 +10,48 @@ import type {
 } from './types';
 
 export default (
-  client,
+  client: HttpClient,
   httpAuth: HttpInstance
 ): PaymentsAppStoreSubscriptionsService => ({
-  async getSubscriptions(): Promise<PagedResult<AppStoreSubscription>> {
-    return (await client.get(httpAuth, '/appStore/subscriptions')).data;
-  },
-
-  async getSubscriptionsProducts(): Promise<
-    PagedResult<AppStoreSubscriptionProduct>
-  > {
-    return (await client.get(httpAuth, '/appStore/subscriptions/products'))
+  async getSubscriptions(options) {
+    return (await client.get(httpAuth, '/appStore/subscriptions', options))
       .data;
   },
 
-  async createSubscriptionsProduct(
-    requestBody: AppStoreSubscriptionProductCreation
-  ): Promise<AppStoreSubscriptionProduct> {
+  async getSubscriptionsProducts(options) {
+    return (
+      await client.get(httpAuth, '/appStore/subscriptions/products', options)
+    ).data;
+  },
+
+  async createSubscriptionsProduct(requestBody, options) {
     return (
       await client.post(
         httpAuth,
         '/appStore/subscriptions/products',
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removeSubscriptionsProduct(
-    productId: ObjectId
-  ): Promise<AffectedRecords> {
+  async removeSubscriptionsProduct(productId, options) {
     return (
       await client.delete(
         httpAuth,
-        `/appStore/subscriptions/products/${productId}`
+        `/appStore/subscriptions/products/${productId}`,
+        options
       )
     ).data;
   },
 
-  async updateSubscriptionsProduct(
-    productId: ObjectId,
-    requestBody: AppStoreSubscriptionProductUpdateSchema
-  ): Promise<AffectedRecords> {
+  async updateSubscriptionsProduct(productId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/appStore/subscriptions/products/${productId}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },

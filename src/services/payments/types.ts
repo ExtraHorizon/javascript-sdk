@@ -1,6 +1,11 @@
 /* eslint-disable camelcase */
-import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 export interface ProductCreationSchema {
   name?: string;
@@ -388,7 +393,8 @@ export interface PaymentsAppStoreService {
    */
   createTransaction(
     this: PaymentsAppStoreService,
-    requestBody: TransactionCompletionDataSchema
+    requestBody: TransactionCompletionDataSchema,
+    options: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;
   /**
    * Verify the Receipt of a Transaction
@@ -405,7 +411,8 @@ export interface PaymentsAppStoreService {
    */
   verifyTransaction(
     this: PaymentsAppStoreService,
-    requestBody: ReceiptVerificationDataSchema
+    requestBody: ReceiptVerificationDataSchema,
+    options: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;
   /**
    * Processes an App Store Server notification
@@ -414,7 +421,8 @@ export interface PaymentsAppStoreService {
    */
   processNotification(
     this: PaymentsAppStoreService,
-    requestBody: AppleNotification
+    requestBody: AppleNotification,
+    options: OptionsBase
   ): Promise<boolean>;
   /**
    * Get a list of notifications received from the App Store
@@ -428,7 +436,8 @@ export interface PaymentsAppStoreService {
    * @returns PagedResult<AppStoreNotification>
    */
   getNotifications(
-    this: PaymentsAppStoreService
+    this: PaymentsAppStoreService,
+    options: OptionsBase
   ): Promise<PagedResult<AppStoreNotification>>;
   /**
    * Get a list of receipts received and verified by the App Store
@@ -442,7 +451,8 @@ export interface PaymentsAppStoreService {
    * @returns PagedResult<AppStoreReceipt>
    */
   getReceipts(
-    this: PaymentsAppStoreService
+    this: PaymentsAppStoreService,
+    options: OptionsBase
   ): Promise<PagedResult<AppStoreReceipt>>;
 }
 
@@ -457,7 +467,8 @@ export interface PaymentsAppStoreSubscriptionsService {
    * @returns PagedResult<AppStoreSubscription>
    */
   getSubscriptions(
-    this: PaymentsAppStoreSubscriptionsService
+    this: PaymentsAppStoreSubscriptionsService,
+    options: OptionsBase
   ): Promise<PagedResult<AppStoreSubscription>>;
   /**
    * Get a list of configured App Store subscription products
@@ -468,7 +479,8 @@ export interface PaymentsAppStoreSubscriptionsService {
    * @returns PagedResult<AppStoreSubscriptionProduct>
    */
   getSubscriptionsProducts(
-    this: PaymentsAppStoreSubscriptionsService
+    this: PaymentsAppStoreSubscriptionsService,
+    options: OptionsBase
   ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
   /**
    * Create an App Store subscription product
@@ -482,7 +494,8 @@ export interface PaymentsAppStoreSubscriptionsService {
    */
   createSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
-    requestBody: AppStoreSubscriptionProductCreation
+    requestBody: AppStoreSubscriptionProductCreation,
+    options: OptionsBase
   ): Promise<AppStoreSubscriptionProduct>;
   /**
    * Delete an App Store subscription product
@@ -496,7 +509,8 @@ export interface PaymentsAppStoreSubscriptionsService {
    */
   removeSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
-    productId: ObjectId
+    productId: ObjectId,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Update an App Store subscription product
@@ -512,7 +526,8 @@ export interface PaymentsAppStoreSubscriptionsService {
   updateSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
     productId: ObjectId,
-    requestBody: AppStoreSubscriptionProductUpdateSchema
+    requestBody: AppStoreSubscriptionProductUpdateSchema,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -529,7 +544,7 @@ export interface PaymentsOrdersService {
    */
   find(
     this: PaymentsOrdersService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<OrderSchema>>;
   /**
    * Find By Id
@@ -540,7 +555,7 @@ export interface PaymentsOrdersService {
   findById(
     this: PaymentsOrdersService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<OrderSchema>;
   /**
    * Find First
@@ -549,7 +564,7 @@ export interface PaymentsOrdersService {
    */
   findFirst(
     this: PaymentsOrdersService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<OrderSchema>;
   /**
    * Create an order
@@ -560,7 +575,8 @@ export interface PaymentsOrdersService {
    */
   create(
     this: PaymentsOrdersService,
-    requestBody: OrderCreationSchema
+    requestBody: OrderCreationSchema,
+    options?: OptionsBase
   ): Promise<OrderSchema>;
   /**
    * Update the status of an order
@@ -576,7 +592,8 @@ export interface PaymentsOrdersService {
   update(
     this: PaymentsOrdersService,
     orderId: ObjectId,
-    requestBody: OrderUpdateSchema
+    requestBody: OrderUpdateSchema,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Add Tags to an Order
@@ -591,7 +608,8 @@ export interface PaymentsOrdersService {
   addTagsToOrder(
     this: PaymentsOrdersService,
     rql: RQLString,
-    requestBody: UpdateTagsSchema
+    requestBody: UpdateTagsSchema,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Remove Tags from an Order
@@ -606,7 +624,8 @@ export interface PaymentsOrdersService {
   removeTagsFromOrder(
     this: PaymentsOrdersService,
     rql: RQLString,
-    requestBody: UpdateTagsSchema
+    requestBody: UpdateTagsSchema,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -620,7 +639,10 @@ export interface PaymentsProductsService {
    * @param requestBody
    * @returns ProductSchema
    */
-  create(requestBody: ProductCreationSchema): Promise<ProductSchema>;
+  create(
+    requestBody: ProductCreationSchema,
+    options?: OptionsBase
+  ): Promise<ProductSchema>;
   /**
    * Get a list of products
    * Permission | Scope | Effect
@@ -632,7 +654,7 @@ export interface PaymentsProductsService {
    */
   find(
     this: PaymentsProductsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<ProductSchema>>;
   /**
    * Find By Id
@@ -643,7 +665,7 @@ export interface PaymentsProductsService {
   findById(
     this: PaymentsProductsService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<ProductSchema>;
   /**
    * Find First
@@ -652,7 +674,7 @@ export interface PaymentsProductsService {
    */
   findFirst(
     this: PaymentsProductsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<ProductSchema>;
   /**
    * Add Tags to a Product
@@ -667,7 +689,8 @@ export interface PaymentsProductsService {
   addTagsToProduct(
     this: PaymentsProductsService,
     rql: RQLString,
-    requestBody: UpdateTagsSchema
+    requestBody: UpdateTagsSchema,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Remove tags from a Product
@@ -682,7 +705,8 @@ export interface PaymentsProductsService {
   removeTagsFromProduct(
     this: PaymentsProductsService,
     rql: RQLString,
-    requestBody: UpdateTagsSchema
+    requestBody: UpdateTagsSchema,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Update a product
@@ -698,7 +722,8 @@ export interface PaymentsProductsService {
   update(
     this: PaymentsProductsService,
     orderId: ObjectId,
-    requestBody: ProductCreationSchema
+    requestBody: ProductCreationSchema,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a product
@@ -712,7 +737,8 @@ export interface PaymentsProductsService {
    */
   remove(
     this: PaymentsProductsService,
-    productId: ObjectId
+    productId: ObjectId,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -727,7 +753,11 @@ export interface PaymentsStripeService {
    * @param userId
    * @returns StripeUser
    */
-  getUser(this: PaymentsStripeService, userId: ObjectId): Promise<StripeUser>;
+  getUser(
+    this: PaymentsStripeService,
+    userId: ObjectId,
+    options: OptionsBase
+  ): Promise<StripeUser>;
   /**
    * Save a payment method to a Stripe user
    * Permission | Scope | Effect
@@ -744,7 +774,8 @@ export interface PaymentsStripeService {
   savePaymentMethod(
     this: PaymentsStripeService,
     userId: ObjectId,
-    requestBody: StripePaymentMethodCreation
+    requestBody: StripePaymentMethodCreation,
+    options: OptionsBase
   ): Promise<StripePaymentMethod>;
   /**
    * Add tags to a payment method
@@ -763,7 +794,8 @@ export interface PaymentsStripeService {
     this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
-    requestBody: UpdateTagsSchema
+    requestBody: UpdateTagsSchema,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Remove tags from a payment method
@@ -782,7 +814,8 @@ export interface PaymentsStripeService {
     this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
-    requestBody: UpdateTagsSchema
+    requestBody: UpdateTagsSchema,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a payment method
@@ -799,7 +832,8 @@ export interface PaymentsStripeService {
   removePaymentMethod(
     this: PaymentsStripeService,
     userId: ObjectId,
-    paymentMethodId: ObjectId
+    paymentMethodId: ObjectId,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Create an order linked to a Stripe Payment Intent
@@ -818,7 +852,8 @@ export interface PaymentsStripeService {
    */
   createPaymentIntent(
     this: PaymentsStripeService,
-    requestBody: PaymentIntentCreationSchema
+    requestBody: PaymentIntentCreationSchema,
+    options: OptionsBase
   ): Promise<OrderSchema>;
   /**
    * Create a Stripe Setup Intent for capturing payment details without initial payment
@@ -828,7 +863,8 @@ export interface PaymentsStripeService {
    */
   createSetupIntent(
     this: PaymentsStripeService,
-    requestBody: SetupIntentCreationSchema
+    requestBody: SetupIntentCreationSchema,
+    options: OptionsBase
   ): Promise<StripeSetupIntentSchema>;
   /**
    * Incoming events from Stripe's webhook
@@ -847,7 +883,10 @@ export interface PaymentsStripeService {
    * @returns any
    * @throws {BadRequestError}
    */
-  subscribeToEvents(this: PaymentsStripeService): Promise<any>;
+  subscribeToEvents(
+    this: PaymentsStripeService,
+    options: OptionsBase
+  ): Promise<any>;
 }
 
 export interface PaymentsSubscriptionsService {
@@ -861,7 +900,8 @@ export interface PaymentsSubscriptionsService {
    * @returns PagedResult<SubscriptionEntitlement>
    */
   getEntitlements(
-    this: PaymentsSubscriptionsService
+    this: PaymentsSubscriptionsService,
+    options: OptionsBase
   ): Promise<PagedResult<SubscriptionEntitlement>>;
   /**
    * Get a list of subscription events
@@ -873,6 +913,7 @@ export interface PaymentsSubscriptionsService {
    * @returns PagedResult<SubscriptionEvent>
    */
   getEvents(
-    this: PaymentsSubscriptionsService
+    this: PaymentsSubscriptionsService,
+    options: OptionsBase
   ): Promise<PagedResult<SubscriptionEvent>>;
 }
