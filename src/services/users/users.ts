@@ -1,107 +1,110 @@
 import type { HttpInstance } from '../../types';
-import { ObjectId, Results, AffectedRecords, PagedResult } from '../types';
-import type {
-  RegisterUserData,
-  User,
-  UserDataUpdate,
-  Email,
-  AddPatientEnlistment,
-  ChangePassword,
-  Authenticate,
-  PasswordReset,
-  ConfirmPassword,
-  Patient,
-  StaffMember,
-  Hash,
-  UsersService,
-} from './types';
-import type { RQLString } from '../../rql';
+import { Results } from '../types';
+import type { UsersService } from './types';
+import { HttpClient } from '../http-client';
 
-export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
-  async me(): Promise<User> {
-    return (await userClient.get(httpWithAuth, '/me')).data;
+export default (
+  userClient: HttpClient,
+  httpWithAuth: HttpInstance
+): UsersService => ({
+  async me(options) {
+    return (await userClient.get(httpWithAuth, '/me', options)).data;
   },
 
-  async findById(userId: string): Promise<User> {
-    return (await userClient.get(httpWithAuth, `/${userId}`)).data;
+  async findById(userId, options) {
+    return (await userClient.get(httpWithAuth, `/${userId}`, options)).data;
   },
 
-  async update(userId: string, userData: UserDataUpdate): Promise<User> {
-    return (await userClient.put(httpWithAuth, `/${userId}`, userData)).data;
+  async update(userId, userData, options) {
+    return (await userClient.put(httpWithAuth, `/${userId}`, userData, options))
+      .data;
   },
 
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<User>> {
-    return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
-  },
-
-  async removeUsers(rql: RQLString): Promise<AffectedRecords> {
-    return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
-  },
-
-  async patients(options?: { rql?: RQLString }): Promise<PagedResult<Patient>> {
+  async find(options) {
     return (
-      await userClient.get(httpWithAuth, `/patients${options?.rql || ''}`)
+      await userClient.get(httpWithAuth, `/${options?.rql || ''}`, options)
     ).data;
   },
 
-  async staff(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResult<StaffMember>> {
-    return (await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`))
-      .data;
+  async removeUsers(rql, options) {
+    return (await userClient.delete(httpWithAuth, `/${rql}`, options)).data;
   },
 
-  async remove(userId: ObjectId): Promise<AffectedRecords> {
-    return (await userClient.delete(httpWithAuth, `/${userId}`)).data;
+  async patients(options) {
+    return (
+      await userClient.get(
+        httpWithAuth,
+        `/patients${options?.rql || ''}`,
+        options
+      )
+    ).data;
   },
 
-  async updateEmail(userId: ObjectId, requestBody: Email): Promise<User> {
-    return (await userClient.put(httpWithAuth, `/${userId}/email`, requestBody))
-      .data;
+  async staff(options) {
+    return (
+      await userClient.get(httpWithAuth, `/staff${options?.rql || ''}`, options)
+    ).data;
   },
 
-  async addPatientEnlistment(
-    userId: ObjectId,
-    requestBody: AddPatientEnlistment
-  ): Promise<AffectedRecords> {
+  async remove(userId, options) {
+    return (await userClient.delete(httpWithAuth, `/${userId}`, options)).data;
+  },
+
+  async updateEmail(userId, requestBody, options) {
+    return (
+      await userClient.put(
+        httpWithAuth,
+        `/${userId}/email`,
+        requestBody,
+        options
+      )
+    ).data;
+  },
+
+  async addPatientEnlistment(userId, requestBody, options) {
     return (
       await userClient.post(
         httpWithAuth,
         `/${userId}/patient_enlistments`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removePatientEnlistment(
-    userId: ObjectId,
-    groupId: ObjectId
-  ): Promise<AffectedRecords> {
+  async removePatientEnlistment(userId, groupId, options) {
     return (
       await userClient.delete(
         httpWithAuth,
-        `/${userId}/patient_enlistments/${groupId}`
+        `/${userId}/patient_enlistments/${groupId}`,
+        options
       )
     ).data;
   },
 
-  async createAccount(requestBody: RegisterUserData): Promise<User> {
-    return (await userClient.post(httpWithAuth, '/register', requestBody)).data;
+  async createAccount(requestBody, options) {
+    return (
+      await userClient.post(httpWithAuth, '/register', requestBody, options)
+    ).data;
   },
 
-  async changePassword(requestBody: ChangePassword): Promise<User> {
-    return (await userClient.put(httpWithAuth, '/password', requestBody)).data;
+  async changePassword(requestBody, options) {
+    return (
+      await userClient.put(httpWithAuth, '/password', requestBody, options)
+    ).data;
   },
 
-  async authenticate(requestBody: Authenticate): Promise<User> {
-    return (await userClient.post(httpWithAuth, '/authenticate', requestBody))
-      .data;
+  async authenticate(requestBody, options) {
+    return (
+      await userClient.post(httpWithAuth, '/authenticate', requestBody, options)
+    ).data;
   },
 
-  async requestEmailActivation(email: string): Promise<boolean> {
+  async requestEmailActivation(email, options) {
     return (
       (
         await userClient.get(httpWithAuth, '/activation', {
+          ...options,
           params: {
             email,
           },
@@ -110,17 +113,18 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
     );
   },
 
-  async validateEmailActivation(requestBody: Hash): Promise<boolean> {
+  async validateEmailActivation(requestBody, options) {
     return (
-      (await userClient.post(httpWithAuth, '/activation', requestBody))
+      (await userClient.post(httpWithAuth, '/activation', requestBody, options))
         .status === Results.Success
     );
   },
 
-  async requestPasswordReset(email: string): Promise<boolean> {
+  async requestPasswordReset(email, options) {
     return (
       (
         await userClient.get(httpWithAuth, '/forgot_password', {
+          ...options,
           params: {
             email,
           },
@@ -129,29 +133,30 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
     );
   },
 
-  async validatePasswordReset(requestBody: PasswordReset): Promise<boolean> {
+  async validatePasswordReset(requestBody, options) {
     const result = await userClient.post(
       httpWithAuth,
       '/forgot_password',
-      requestBody
+      requestBody,
+      options
     );
     return result.status === Results.Success;
   },
 
-  async confirmPassword(requestBody: ConfirmPassword): Promise<boolean> {
+  async confirmPassword(requestBody, options) {
     const result = await userClient.post(
       httpWithAuth,
       '/confirm_password',
-      requestBody
+      requestBody,
+      options
     );
     return result.status === Results.Success;
   },
 
-  async isEmailAvailable(email: string): Promise<{
-    emailAvailable: boolean;
-  }> {
+  async isEmailAvailable(email, options) {
     return (
       await userClient.get(httpWithAuth, '/email_available', {
+        ...options,
         params: {
           email,
         },
@@ -159,19 +164,21 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
     ).data;
   },
 
-  async updateProfileImage(userId: ObjectId, requestBody: Hash): Promise<User> {
+  async updateProfileImage(userId, requestBody, options) {
     console.warn('updateProfileImage method is deprecated in swagger');
     return (
       await userClient.put(
         httpWithAuth,
         `/${userId}/profile_image`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async deleteProfileImage(userId: ObjectId): Promise<User> {
-    return (await userClient.delete(httpWithAuth, `/${userId}/profile_image`))
-      .data;
+  async deleteProfileImage(userId, options) {
+    return (
+      await userClient.delete(httpWithAuth, `/${userId}/profile_image`, options)
+    ).data;
   },
 });
