@@ -1,10 +1,20 @@
-import { RQLString, rqlBuilder } from '../../rql';
+import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { delay } from '../../utils';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import { HttpClient } from '../http-client';
+import type {
+  ObjectId,
+  AffectedRecords,
+  PagedResult,
+  OptionsBase,
+  OptionsWithRql,
+} from '../types';
 import { DataDocumentsService, Document } from './types';
 
-export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataDocumentsService => ({
   // TypeScript limitation. Function using optional generic with fallback can not be first function.
   /**
    * Check if the document is not in a locked state
@@ -15,16 +25,18 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @returns boolean success
    */
   async assertNonLockedState(
+    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     tries = 5,
-    retryTimeInMs = 300
+    retryTimeInMs = 300,
+    options?: OptionsBase
   ): Promise<boolean> {
     if (tries < 1) {
       throw new Error('Document is in a locked state');
     }
 
-    const res = await this.findById(schemaId, documentId);
+    const res = await this.findById(schemaId, documentId, options);
     if (!res.transitionLock) {
       return true;
     }
@@ -35,7 +47,8 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
       schemaId,
       documentId,
       tries - 1,
-      retryTimeInMs
+      retryTimeInMs,
+      options
     );
   },
 
@@ -53,14 +66,14 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
   async create<CustomData = null>(
     schemaId: ObjectId,
     requestBody: Record<string, any>,
-    options?: { gzip?: boolean }
+    options?: OptionsWithRql & { gzip?: boolean }
   ): Promise<Document<CustomData>> {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents`,
         requestBody,
-        {},
+        options?.headers ? { headers: options.headers } : {},
         options
       )
     ).data;
@@ -92,12 +105,15 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    */
   async find<CustomData = null>(
     schemaId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Document<CustomData>>> {
+    console.log('options', options);
     return (
-      await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
+      await client.get(
+        httpAuth,
+        `/${schemaId}/documents${options?.rql || ''}`,
+        options?.headers ? { headers: options.headers } : {}
+      )
     ).data;
   },
 
@@ -111,12 +127,13 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @returns {Document} document
    */
   async findById<CustomData = null>(
+    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Document<CustomData>> {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
-    const res = await this.find(schemaId, { rql: rqlWithId });
+    const res = await this.find(schemaId, { ...options, rql: rqlWithId });
 
     return res.data[0];
   },
@@ -130,8 +147,9 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @returns {Document} document
    */
   async findFirst<CustomData = null>(
+    this: DataDocumentsService,
     schemaId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Document<CustomData>> {
     const res = await this.find(schemaId, options);
     return res.data[0];
@@ -152,18 +170,18 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    * @returns AffectedRecords
    */
   async update(
+    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: Record<string, any>,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords> {
     return (
       await client.put(
         httpAuth,
         `/${schemaId}/documents/${documentId}${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -187,10 +205,15 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
    */
   async remove(
     schemaId: ObjectId,
-    documentId: ObjectId
+    documentId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords> {
     return (
-      await client.delete(httpAuth, `/${schemaId}/documents/${documentId}`)
+      await client.delete(
+        httpAuth,
+        `/${schemaId}/documents/${documentId}`,
+        options
+      )
     ).data;
   },
 
@@ -214,9 +237,7 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords> {
     return (
       await client.post(
@@ -224,7 +245,8 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
         `/${schemaId}/documents/${documentId}/deleteFields${
           options?.rql || ''
         }`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -252,15 +274,14 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
       id: ObjectId;
       data?: Record<string, any>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords> {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/transition${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -282,13 +303,15 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
-    }
+    },
+    options: OptionsBase
   ): Promise<AffectedRecords> {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/linkGroups`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -314,13 +337,15 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
-    }
+    },
+    options: OptionsBase
   ): Promise<AffectedRecords> {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/unlinkGroups`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -344,13 +369,15 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
-    }
+    },
+    options: OptionsBase
   ): Promise<AffectedRecords> {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/linkUsers`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -378,13 +405,15 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
-    }
+    },
+    options: OptionsBase
   ): Promise<AffectedRecords> {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/unlinkUsers`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },

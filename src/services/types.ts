@@ -1,3 +1,5 @@
+import { RQLString } from '../rql';
+
 export type LanguageCode = string;
 
 export type ObjectId = string;
@@ -52,3 +54,7 @@ export interface MailRecipients {
   cc?: MailAddressList;
   bcc?: MailAddressList;
 }
+
+export type Headers = Record<string, string>;
+export type OptionsBase = { headers?: Headers };
+export type OptionsWithRql = OptionsBase & { rql?: RQLString };

@@ -1,8 +1,11 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type { DataStatusesService, StatusData } from './types';
+import { HttpClient } from '../http-client';
+import type { DataStatusesService } from './types';
 
-export default (client, httpAuth: HttpInstance): DataStatusesService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataStatusesService => ({
   /**
    * Create a status
    * Permission | Scope | Effect
@@ -13,15 +16,10 @@ export default (client, httpAuth: HttpInstance): DataStatusesService => ({
    * @returns AffectedRecords
    * @throws {ResourceAlreadyExistsError}
    */
-  async create(
-    schemaId: ObjectId,
-    requestBody: {
-      name: string;
-      data?: StatusData;
-    }
-  ): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/${schemaId}/statuses`, requestBody))
-      .data;
+  async create(schemaId, requestBody, options) {
+    return (
+      await client.post(httpAuth, `/${schemaId}/statuses`, requestBody, options)
+    ).data;
   },
 
   /**
@@ -35,13 +33,14 @@ export default (client, httpAuth: HttpInstance): DataStatusesService => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async update(
-    schemaId: ObjectId,
-    name: string,
-    requestBody: StatusData
-  ): Promise<AffectedRecords> {
+  async update(schemaId, name, requestBody, options) {
     return (
-      await client.put(httpAuth, `/${schemaId}/statuses/${name}`, requestBody)
+      await client.put(
+        httpAuth,
+        `/${schemaId}/statuses/${name}`,
+        requestBody,
+        options
+      )
     ).data;
   },
 
@@ -56,8 +55,9 @@ export default (client, httpAuth: HttpInstance): DataStatusesService => ({
    * @throws {StatusInUseError}
    * @throws {ResourceUnknownError}
    */
-  async remove(schemaId: ObjectId, name: string): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/${schemaId}/statuses/${name}`))
-      .data;
+  async remove(schemaId, name, options) {
+    return (
+      await client.delete(httpAuth, `/${schemaId}/statuses/${name}`, options)
+    ).data;
   },
 });

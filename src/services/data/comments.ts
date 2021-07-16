@@ -1,9 +1,19 @@
-import { RQLString, rqlBuilder } from '../../rql';
+import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
+import { HttpClient } from '../http-client';
+import type {
+  ObjectId,
+  AffectedRecords,
+  PagedResult,
+  OptionsBase,
+  OptionsWithRql,
+} from '../types';
 import { Comment, CommentText, DataCommentsService } from './types';
 
-export default (client, httpAuth: HttpInstance): DataCommentsService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataCommentsService => ({
   /**
    * Create a comment
    * Comment on the specified document.
@@ -23,13 +33,15 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
-    }
+    },
+    options?: OptionsBase
   ): Promise<Comment> {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/comments`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -50,14 +62,13 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
   async find(
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Comment>> {
     return (
       await client.get(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments${options?.rql || ''}`
+        `/${schemaId}/documents/${documentId}/comments${options?.rql || ''}`,
+        options
       )
     ).data;
   },
@@ -71,13 +82,17 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
    * @returns the first element found
    */
   async findById(
+    this: DataCommentsService,
     id: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Comment> {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find(schemaId, documentId, { rql: rqlWithId });
+    const res = await this.find(schemaId, documentId, {
+      ...options,
+      rql: rqlWithId,
+    });
     return res.data[0];
   },
 
@@ -89,9 +104,10 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
    * @returns the first element found
    */
   async findFirst(
+    this: DataCommentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Comment> {
     const res = await this.find(schemaId, documentId, options);
     return res.data[0];
@@ -116,13 +132,15 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords> {
     return (
       await client.put(
         httpAuth,
         `/${schemaId}/documents/${documentId}/comments/${commentId}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -143,12 +161,14 @@ export default (client, httpAuth: HttpInstance): DataCommentsService => ({
   async remove(
     commentId: ObjectId,
     schemaId: ObjectId,
-    documentId: ObjectId
+    documentId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords> {
     return (
       await client.delete(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments/${commentId}`
+        `/${schemaId}/documents/${documentId}/comments/${commentId}`,
+        options
       )
     ).data;
   },

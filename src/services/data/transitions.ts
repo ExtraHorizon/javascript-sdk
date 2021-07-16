@@ -1,12 +1,11 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  CreationTransition,
-  DataTransitionsService,
-  TransitionInput,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { DataTransitionsService } from './types';
 
-export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataTransitionsService => ({
   /**
    * Update the creation transition
    * Permission | Scope | Effect
@@ -17,12 +16,14 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
-  async updateCreation(
-    schemaId: ObjectId,
-    requestBody: CreationTransition
-  ): Promise<AffectedRecords> {
+  async updateCreation(schemaId, requestBody, options) {
     return (
-      await client.put(httpAuth, `/${schemaId}/creationTransition`, requestBody)
+      await client.put(
+        httpAuth,
+        `/${schemaId}/creationTransition`,
+        requestBody,
+        options
+      )
     ).data;
   },
 
@@ -36,12 +37,14 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
-  async create(
-    schemaId: ObjectId,
-    requestBody: TransitionInput
-  ): Promise<AffectedRecords> {
+  async create(schemaId, requestBody, options) {
     return (
-      await client.post(httpAuth, `/${schemaId}/transitions`, requestBody)
+      await client.post(
+        httpAuth,
+        `/${schemaId}/transitions`,
+        requestBody,
+        options
+      )
     ).data;
   },
 
@@ -57,16 +60,13 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async update(
-    schemaId: ObjectId,
-    transitionId: ObjectId,
-    requestBody: TransitionInput
-  ): Promise<AffectedRecords> {
+  async update(schemaId, transitionId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/${schemaId}/transitions/${transitionId}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -81,12 +81,13 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
    * @returns {Promise<AffectedRecords>}
    * @throws {ResourceUnknownError}
    */
-  async remove(
-    schemaId: ObjectId,
-    transitionId: ObjectId
-  ): Promise<AffectedRecords> {
+  async remove(schemaId, transitionId, options) {
     return (
-      await client.delete(httpAuth, `/${schemaId}/transitions/${transitionId}`)
+      await client.delete(
+        httpAuth,
+        `/${schemaId}/transitions/${transitionId}`,
+        options
+      )
     ).data;
   },
 });

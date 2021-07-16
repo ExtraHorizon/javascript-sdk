@@ -1,6 +1,11 @@
 import type { JSONSchema7 } from './json-schema';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
-import { RQLString } from '../../rql';
+import type {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 export enum JSONSchemaType {
   OBJECT = 'object',
@@ -352,270 +357,223 @@ export interface Comment {
 
 export interface DataCommentsService {
   create(
-    this: DataCommentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
-    }
+    },
+    options?: OptionsBase
   ): Promise<Comment>;
   find(
-    this: DataCommentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Comment>>;
   findById(
-    this: DataCommentsService,
     id: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Comment>;
   findFirst(
-    this: DataCommentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Comment>;
   update(
-    this: DataCommentsService,
     commentId: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   remove(
-    this: DataCommentsService,
     commentId: ObjectId,
     schemaId: ObjectId,
-    documentId: ObjectId
+    documentId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
 export interface DataDocumentsService {
   assertNonLockedState(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     tries: number,
-    retryTimeInMs: number
+    retryTimeInMs: number,
+    options?: OptionsBase
   ): Promise<boolean>;
   create<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     requestBody: Record<string, any>,
-    options?: { gzip?: boolean }
+    options?: OptionsWithRql & { gzip?: boolean }
   ): Promise<Document<CustomData>>;
   find<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Document<CustomData>>>;
   findById<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Document<CustomData>>;
   findFirst<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Document<CustomData>>;
   update(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: Record<string, any>,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
-  remove(
-    this: DataDocumentsService,
-    schemaId: ObjectId,
-    documentId: ObjectId
-  ): Promise<AffectedRecords>;
+  remove(schemaId: ObjectId, documentId: ObjectId): Promise<AffectedRecords>;
   removeFields(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   transition(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       id: ObjectId;
       data?: Record<string, any>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   linkGroups(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   unlinkGroups(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   linkUsers(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   unlinkUsers(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
 export interface DataIndexesService {
   create(
-    this: DataIndexesService,
     schemaId: ObjectId,
-    requestBody: IndexInput
+    requestBody: IndexInput,
+    options?: OptionsBase
   ): Promise<Index>;
   remove(
-    this: DataIndexesService,
     indexId: ObjectId,
-    schemaId: ObjectId
+    schemaId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
 export interface DataPropertiesService {
   create(
-    this: DataPropertiesService,
     schemaId: ObjectId,
     requestBody: {
       name: string;
       configuration: TypeConfiguration;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   remove(
-    this: DataPropertiesService,
-    schemaId: ObjectId,
-    propertyPath: string
-  ): Promise<AffectedRecords>;
-  update(
-    this: DataPropertiesService,
     schemaId: ObjectId,
     propertyPath: string,
-    requestBody: TypeConfiguration
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
+  update(
+    schemaId: ObjectId,
+    propertyPath: string,
+    requestBody: TypeConfiguration,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
 export interface DataSchemasService {
-  create(this: DataSchemasService, requestBody: SchemaInput): Promise<Schema>;
-  find(
-    this: DataSchemasService,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<Schema>>;
-  findById(
-    this: DataSchemasService,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Schema>;
-  findByName(
-    this: DataSchemasService,
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<Schema>;
-  findFirst(
-    this: DataSchemasService,
-    options?: { rql?: RQLString }
-  ): Promise<Schema>;
+  create(requestBody: SchemaInput, options?: OptionsBase): Promise<Schema>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Schema>>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Schema>;
+  findByName(name: string, options?: OptionsWithRql): Promise<Schema>;
+  findFirst(options?: OptionsWithRql): Promise<Schema>;
   update(
-    this: DataSchemasService,
     schemaId: ObjectId,
-    requestBody: UpdateSchemaInput
+    requestBody: UpdateSchemaInput,
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
-  remove(
-    this: DataSchemasService,
-    schemaId: ObjectId
-  ): Promise<AffectedRecords>;
-  disable(
-    this: DataSchemasService,
-    schemaId: ObjectId
-  ): Promise<AffectedRecords>;
-  enable(
-    this: DataSchemasService,
-    schemaId: ObjectId
-  ): Promise<AffectedRecords>;
+  remove(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+  disable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+  enable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 }
 
 export interface DataStatusesService {
   create(
-    this: DataStatusesService,
     schemaId: ObjectId,
     requestBody: {
       name: string;
       data?: StatusData;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   update(
-    this: DataStatusesService,
     schemaId: ObjectId,
     name: string,
-    requestBody: StatusData
+    requestBody: StatusData,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   remove(
-    this: DataStatusesService,
     schemaId: ObjectId,
-    name: string
+    name: string,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
 export interface DataTransitionsService {
   updateCreation(
-    this: DataTransitionsService,
     schemaId: ObjectId,
-    requestBody: CreationTransition
+    requestBody: CreationTransition,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   create(
-    this: DataTransitionsService,
     schemaId: ObjectId,
-    requestBody: TransitionInput
+    requestBody: TransitionInput,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   update(
-    this: DataTransitionsService,
     schemaId: ObjectId,
     transitionId: ObjectId,
-    requestBody: TransitionInput
+    requestBody: TransitionInput,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   remove(
-    this: DataTransitionsService,
     schemaId: ObjectId,
-    transitionId: ObjectId
+    transitionId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }

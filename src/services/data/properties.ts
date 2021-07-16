@@ -1,8 +1,11 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type { DataPropertiesService, TypeConfiguration } from './types';
+import { HttpClient } from '../http-client';
+import type { DataPropertiesService } from './types';
 
-export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataPropertiesService => ({
   /**
    * Create a property
    * Permission | Scope | Effect
@@ -16,15 +19,15 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
    * @throws {IllegalStateException}
    * @throws {ResourceUnknownException}
    */
-  async create(
-    schemaId: ObjectId,
-    requestBody: {
-      name: string;
-      configuration: TypeConfiguration;
-    }
-  ): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/${schemaId}/properties`, requestBody))
-      .data;
+  async create(schemaId, requestBody, options) {
+    return (
+      await client.post(
+        httpAuth,
+        `/${schemaId}/properties`,
+        requestBody,
+        options
+      )
+    ).data;
   },
 
   /**
@@ -38,12 +41,13 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async remove(
-    schemaId: ObjectId,
-    propertyPath: string
-  ): Promise<AffectedRecords> {
+  async remove(schemaId, propertyPath, options) {
     return (
-      await client.delete(httpAuth, `/${schemaId}/properties/${propertyPath}`)
+      await client.delete(
+        httpAuth,
+        `/${schemaId}/properties/${propertyPath}`,
+        options
+      )
     ).data;
   },
 
@@ -59,16 +63,13 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
-  async update(
-    schemaId: ObjectId,
-    propertyPath: string,
-    requestBody: TypeConfiguration
-  ): Promise<AffectedRecords> {
+  async update(schemaId, propertyPath, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/${schemaId}/properties/${propertyPath}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },

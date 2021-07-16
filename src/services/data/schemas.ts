@@ -1,12 +1,14 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
 import type {
-  DataSchemasService,
-  Schema,
-  SchemaInput,
-  UpdateSchemaInput,
-} from './types';
-import { RQLString, rqlBuilder } from '../../rql';
+  ObjectId,
+  AffectedRecords,
+  PagedResult,
+  OptionsWithRql,
+  OptionsBase,
+} from '../types';
+import type { DataSchemasService, Schema, SchemaInput } from './types';
+import { rqlBuilder } from '../../rql';
+import { HttpClient } from '../http-client';
 
 const addTransitionHelpersToSchema = (schema: Schema) => ({
   ...schema,
@@ -21,7 +23,10 @@ const addTransitionHelpersToSchema = (schema: Schema) => ({
   },
 });
 
-export default (client, httpAuth: HttpInstance): DataSchemasService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataSchemasService => ({
   /**
    * Create a schema
    * Permission | Scope | Effect
@@ -30,9 +35,12 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param requestBody
    * @returns Schema successful operation
    */
-  async create(requestBody: SchemaInput): Promise<Schema> {
+  async create(
+    requestBody: SchemaInput,
+    options?: OptionsBase
+  ): Promise<Schema> {
     return addTransitionHelpersToSchema(
-      (await client.post(httpAuth, '/', requestBody)).data
+      (await client.post(httpAuth, '/', requestBody, options)).data
     );
   },
 
@@ -45,8 +53,10 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
-    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options?: OptionsWithRql): Promise<PagedResult<Schema>> {
+    const result = (
+      await client.get(httpAuth, `/${options?.rql || ''}`, options)
+    ).data;
     return {
       ...result,
       data: result.data.map(addTransitionHelpersToSchema),
@@ -59,9 +69,13 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Schema> {
+  async findById(
+    this: DataSchemasService,
+    id: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<Schema> {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
@@ -71,12 +85,9 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findByName(
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<Schema> {
+  async findByName(this: DataSchemasService, name, options): Promise<Schema> {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-    const res = await this.find({ rql: rqlWithName });
+    const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
   },
 
@@ -85,7 +96,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(options?: { rql?: RQLString }): Promise<Schema> {
+  async findFirst(options): Promise<Schema> {
     const res = await this.find(options);
     return res.data[0];
   },
@@ -99,11 +110,9 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param requestBody The schema input
    * @returns AffectedRecords
    */
-  async update(
-    schemaId: ObjectId,
-    requestBody: UpdateSchemaInput
-  ): Promise<AffectedRecords> {
-    return (await client.put(httpAuth, `/${schemaId}`, requestBody)).data;
+  async update(schemaId, requestBody, options): Promise<AffectedRecords> {
+    return (await client.put(httpAuth, `/${schemaId}`, requestBody, options))
+      .data;
   },
 
   /**
@@ -115,8 +124,8 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @returns AffectedRecords
    * @throws {IllegalStateError}
    */
-  async remove(schemaId: ObjectId): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/${schemaId}`)).data;
+  async remove(schemaId, options): Promise<AffectedRecords> {
+    return (await client.delete(httpAuth, `/${schemaId}`, options)).data;
   },
 
   /**
@@ -127,8 +136,9 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  async disable(schemaId: ObjectId): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/${schemaId}/disable`)).data;
+  async disable(schemaId, options): Promise<AffectedRecords> {
+    return (await client.post(httpAuth, `/${schemaId}/disable`, null, options))
+      .data;
   },
 
   /**
@@ -139,7 +149,7 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  async enable(schemaId: ObjectId): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/${schemaId}/enable`)).data;
+  async enable(schemaId, options): Promise<AffectedRecords> {
+    return (await client.post(httpAuth, `/${schemaId}/enable`, options)).data;
   },
 });
