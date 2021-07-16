@@ -1,5 +1,10 @@
-import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -44,7 +49,7 @@ export interface TasksService {
    */
   find(
     this: TasksService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Task>>;
   /**
    * Find By Id
@@ -55,14 +60,14 @@ export interface TasksService {
   findById(
     this: TasksService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Task>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: TasksService, options?: { rql?: RQLString }): Promise<Task>;
+  findFirst(this: TasksService, options?: OptionsWithRql): Promise<Task>;
   /**
    * Create a task
    * Permission | Scope | Effect
@@ -72,7 +77,11 @@ export interface TasksService {
    * @param requestBody
    * @returns Task Success
    */
-  create(this: TasksService, requestBody: TaskInput): Promise<Task>;
+  create(
+    this: TasksService,
+    requestBody: TaskInput,
+    options: OptionsBase
+  ): Promise<Task>;
   /**
    * Cancel a task
    * The targeted task **MUST** be in the `new` status.
@@ -86,5 +95,9 @@ export interface TasksService {
    * @throws {IllegalStateException}
    * @throws {ResourceUnknownException}
    */
-  cancel(this: TasksService, taskId: ObjectId): Promise<AffectedRecords>;
+  cancel(
+    this: TasksService,
+    taskId: ObjectId,
+    options: OptionsBase
+  ): Promise<AffectedRecords>;
 }
