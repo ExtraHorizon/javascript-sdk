@@ -1,5 +1,11 @@
-import { RQLString } from '../../rql';
-import { Entity, Timestamps, ObjectId, AffectedRecords } from '../types';
+import {
+  Entity,
+  Timestamps,
+  ObjectId,
+  AffectedRecords,
+  OptionsBase,
+  OptionsWithRql,
+} from '../types';
 
 export type Configuration = Record<string, any>;
 
@@ -43,56 +49,41 @@ export type UserConfiguration = UserConfigurationInput &
   Timestamps;
 
 export interface ConfigurationsGeneralService {
-  get(this: ConfigurationsGeneralService): Promise<GeneralConfiguration>;
+  get(options: OptionsBase): Promise<GeneralConfiguration>;
   update(
-    this: ConfigurationsGeneralService,
     requestBody: GeneralConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   removeFields(
-    this: ConfigurationsGeneralService,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
 }
 
 export interface ConfigurationsGroupsService {
-  get(
-    this: ConfigurationsGroupsService,
-    groupId: ObjectId
-  ): Promise<GroupConfiguration>;
+  get(groupId: ObjectId, options: OptionsBase): Promise<GroupConfiguration>;
   update(
-    this: ConfigurationsGroupsService,
     groupId: ObjectId,
     requestBody: GroupConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   removeFields(
-    this: ConfigurationsGroupsService,
     groupId: ObjectId,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
 }
 
 export interface ConfigurationsPatientsService {
   update(
-    this: ConfigurationsPatientsService,
     groupId: ObjectId,
     userId: ObjectId,
-    requestBody: UserConfigurationInput
+    requestBody: UserConfigurationInput,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   removeFields(
     this: ConfigurationsPatientsService,
@@ -100,48 +91,40 @@ export interface ConfigurationsPatientsService {
     userId: ObjectId,
     requestBody: {
       fields: Array<string>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
 export interface ConfigurationsStaffService {
   update(
-    this: ConfigurationsStaffService,
     groupId: ObjectId,
-    userId: ObjectId,
-    requestBody: UserConfigurationInput
-  ): Promise<AffectedRecords>;
-  removeFields(
-    this: ConfigurationsStaffService,
-    groupId: ObjectId,
-    userId: ObjectId,
-    requestBody: {
-      fields: Array<string>;
-    }
-  ): Promise<AffectedRecords>;
-}
-
-export interface ConfigurationsUsersService {
-  get(
-    this: ConfigurationsUsersService,
-    userId: ObjectId
-  ): Promise<UserConfiguration>;
-  update(
-    this: ConfigurationsUsersService,
     userId: ObjectId,
     requestBody: UserConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
+    options: OptionsBase
   ): Promise<AffectedRecords>;
   removeFields(
-    this: ConfigurationsUsersService,
+    groupId: ObjectId,
     userId: ObjectId,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options: OptionsBase
+  ): Promise<AffectedRecords>;
+}
+
+export interface ConfigurationsUsersService {
+  get(userId: ObjectId, options: OptionsBase): Promise<UserConfiguration>;
+  update(
+    userId: ObjectId,
+    requestBody: UserConfigurationInput,
+    options?: OptionsWithRql
+  ): Promise<AffectedRecords>;
+  removeFields(
+    userId: ObjectId,
+    requestBody: {
+      fields: Array<string>;
+    },
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
 }

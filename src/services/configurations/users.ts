@@ -1,15 +1,9 @@
-import { RQLString } from '../../rql';
-
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  ConfigurationsUsersService,
-  UserConfiguration,
-  UserConfigurationInput,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { ConfigurationsUsersService } from './types';
 
 export default (
-  client,
+  client: HttpClient,
   httpAuth: HttpInstance
 ): ConfigurationsUsersService => ({
   /**
@@ -25,8 +19,8 @@ export default (
    * @param userId The id of the targeted user
    * @returns UserConfiguration
    */
-  async get(userId: ObjectId): Promise<UserConfiguration> {
-    return (await client.get(httpAuth, `/users/${userId}`)).data;
+  async get(userId, options) {
+    return (await client.get(httpAuth, `/users/${userId}`, options)).data;
   },
 
   /**
@@ -43,18 +37,13 @@ export default (
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async update(
-    userId: ObjectId,
-    requestBody: UserConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async update(userId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/users/${userId}${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -73,15 +62,7 @@ export default (
    * @param rql Add filters to the requested list
    * @returns AffectedRecords
    */
-  async removeFields(
-    userId: ObjectId,
-    requestBody: {
-      fields: Array<string>;
-    },
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async removeFields(userId, requestBody, options) {
     return (
       await client.post(
         httpAuth,

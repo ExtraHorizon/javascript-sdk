@@ -1,14 +1,9 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  GroupConfigurationInput,
-  GroupConfiguration,
-  ConfigurationsGroupsService,
-} from './types';
-import type { RQLString } from '../../rql';
+import type { ConfigurationsGroupsService } from './types';
+import { HttpClient } from '../http-client';
 
 export default (
-  client,
+  client: HttpClient,
   httpAuth: HttpInstance
 ): ConfigurationsGroupsService => ({
   /**
@@ -23,8 +18,8 @@ export default (
    * @param groupId The id of the targeted group
    * @returns GroupConfiguration
    */
-  async get(groupId: ObjectId): Promise<GroupConfiguration> {
-    return (await client.get(httpAuth, `/groups/${groupId}`)).data;
+  async get(groupId, options) {
+    return (await client.get(httpAuth, `/groups/${groupId}`, options)).data;
   },
 
   /**
@@ -41,18 +36,13 @@ export default (
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async update(
-    groupId: ObjectId,
-    requestBody: GroupConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async update(groupId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/groups/${groupId}${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -71,20 +61,13 @@ export default (
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  async removeFields(
-    groupId: ObjectId,
-    requestBody: {
-      fields: Array<string>;
-    },
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async removeFields(groupId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/groups/${groupId}/deleteFields${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
