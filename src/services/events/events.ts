@@ -1,9 +1,9 @@
 import type { HttpInstance } from '../../types';
-import { PagedResult, ObjectId } from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
-import type { CreateEvent, Event, EventsService } from './types';
+import { rqlBuilder } from '../../rql';
+import type { EventsService } from './types';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): EventsService => ({
+export default (client: HttpClient, httpAuth: HttpInstance): EventsService => ({
   /**
    * Returns a list of events
    * Permission | Scope | Effect
@@ -13,7 +13,7 @@ export default (client, httpAuth: HttpInstance): EventsService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Event>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Event>> {
+  async find(options) {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
@@ -23,9 +23,9 @@ export default (client, httpAuth: HttpInstance): EventsService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Event> {
+  async findById(id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
@@ -34,7 +34,7 @@ export default (client, httpAuth: HttpInstance): EventsService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(options?: { rql?: RQLString }): Promise<Event> {
+  async findFirst(options) {
     const res = await this.find(options);
     return res.data[0];
   },
@@ -48,7 +48,7 @@ export default (client, httpAuth: HttpInstance): EventsService => ({
    * @param requestBody
    * @returns Event
    */
-  async create(requestBody: CreateEvent): Promise<Event> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/', requestBody, options)).data;
   },
 });

@@ -6,8 +6,12 @@ import type {
   CreateSubscription,
   SubscriptionsService,
 } from './types';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): SubscriptionsService => ({
   /**
    * Returns a list of event subscriptions
    * Permission | Scope | Effect
@@ -17,9 +21,7 @@ export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Subscription>
    */
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResult<Subscription>> {
+  async find(options) {
     return (await client.get(httpAuth, `/subscriptions${options?.rql || ''}`))
       .data;
   },
@@ -30,12 +32,9 @@ export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Subscription> {
+  async findById(id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
@@ -44,7 +43,7 @@ export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(options?: { rql?: RQLString }): Promise<Subscription> {
+  async findFirst(options) {
     const res = await this.find(options);
     return res.data[0];
   },
@@ -58,7 +57,8 @@ export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
    * @param requestBody
    * @returns Subscription
    */
-  async create(requestBody: CreateSubscription): Promise<Subscription> {
-    return (await client.post(httpAuth, '/subscriptions', requestBody)).data;
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/subscriptions', requestBody, options))
+      .data;
   },
 });

@@ -1,5 +1,12 @@
 import { RQLString } from '../../rql';
-import { Entity, ObjectId, PagedResult, Timestamps } from '../types';
+import {
+  Entity,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+  Timestamps,
+} from '../types';
 
 export interface CreateEvent {
   type: string;
@@ -29,33 +36,38 @@ export interface Version {
 export interface EventsService {
   find(
     this: EventsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Event>>;
   findById(
     this: EventsService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Event>;
-  findFirst(this: EventsService, options?: { rql?: RQLString }): Promise<Event>;
-  create(this: EventsService, requestBody: CreateEvent): Promise<Event>;
+  findFirst(this: EventsService, options?: OptionsWithRql): Promise<Event>;
+  create(
+    this: EventsService,
+    requestBody: CreateEvent,
+    options: OptionsBase
+  ): Promise<Event>;
 }
 
 export interface SubscriptionsService {
   find(
     this: SubscriptionsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Subscription>>;
   findById(
     this: SubscriptionsService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Subscription>;
   findFirst(
     this: SubscriptionsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Subscription>;
   create(
     this: SubscriptionsService,
-    requestBody: CreateSubscription
+    requestBody: CreateSubscription,
+    options?: OptionsBase
   ): Promise<Subscription>;
 }
