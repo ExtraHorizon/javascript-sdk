@@ -1,5 +1,10 @@
-import { RQLString } from '../../rql';
-import { AffectedRecords, ObjectId, PagedResult } from '../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 export interface Notification {
   id?: ObjectId;
@@ -127,7 +132,8 @@ export interface NotificationsService {
    */
   create(
     this: NotificationsService,
-    requestBody: CreateNotificationRequest
+    requestBody: CreateNotificationRequest,
+    options: OptionsBase
   ): Promise<Notification>;
   /**
    * Retrieve a list of notifications
@@ -141,7 +147,7 @@ export interface NotificationsService {
    */
   find(
     this: NotificationsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Notification>>;
   /**
    * Find By Id
@@ -152,7 +158,7 @@ export interface NotificationsService {
   findById(
     this: NotificationsService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Notification>;
   /**
    * Find First
@@ -161,7 +167,7 @@ export interface NotificationsService {
    */
   findFirst(
     this: NotificationsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Notification>;
   /**
    * Delete notification(s)
@@ -174,7 +180,7 @@ export interface NotificationsService {
    */
   remove(
     this: NotificationsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Mark your notification(s) as viewed
@@ -187,7 +193,7 @@ export interface NotificationsService {
    */
   markAsViewed(
     this: NotificationsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Retrieve the list of notification types
@@ -197,7 +203,10 @@ export interface NotificationsService {
    *
    * @returns PagedResult<NotifTypeDef>
    */
-  getTypes(this: NotificationsService): Promise<PagedResult<NotifTypeDef>>;
+  getTypes(
+    this: NotificationsService,
+    options: OptionsBase
+  ): Promise<PagedResult<NotifTypeDef>>;
 }
 
 export interface NotificationSettingsServices {
@@ -213,7 +222,7 @@ export interface NotificationSettingsServices {
    */
   find(
     this: NotificationSettingsServices,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Setting>>;
   /**
    * Find By Id
@@ -224,7 +233,7 @@ export interface NotificationSettingsServices {
   findById(
     this: NotificationSettingsServices,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Setting>;
   /**
    * Find First
@@ -233,7 +242,7 @@ export interface NotificationSettingsServices {
    */
   findFirst(
     this: NotificationSettingsServices,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Setting>;
   /**
    * Update the notification settings for a user
@@ -249,7 +258,8 @@ export interface NotificationSettingsServices {
   update(
     this: NotificationSettingsServices,
     userId: string,
-    requestBody: SettingCreation
+    requestBody: SettingCreation,
+    options: OptionsBase
   ): Promise<Setting>;
   /**
    * Delete the notifications settings for a user
@@ -262,6 +272,7 @@ export interface NotificationSettingsServices {
    */
   remove(
     this: NotificationSettingsServices,
-    userId: string
+    userId: string,
+    options: OptionsBase
   ): Promise<AffectedRecords>;
 }

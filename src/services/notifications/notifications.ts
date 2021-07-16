@@ -1,57 +1,62 @@
 import type { OAuthClient } from '../../types';
-import { AffectedRecords, PagedResult, ObjectId } from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
-import {
-  Notification,
-  CreateNotificationRequest,
-  NotifTypeDef,
-  NotificationsService,
-} from './types';
+import { rqlBuilder } from '../../rql';
+import { NotificationsService } from './types';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: OAuthClient): NotificationsService => ({
-  async create(requestBody: CreateNotificationRequest): Promise<Notification> {
+export default (
+  client: HttpClient,
+  httpAuth: OAuthClient
+): NotificationsService => ({
+  async create(requestBody, options) {
     return (
-      await client.post(httpAuth, '/', {
-        ...requestBody,
-        ...(requestBody.type === 'message'
-          ? { fields: { ...requestBody.fields, senderId: httpAuth.userId } }
-          : {}),
-      })
+      await client.post(
+        httpAuth,
+        '/',
+        {
+          ...requestBody,
+          ...(requestBody.type === 'message'
+            ? { fields: { ...requestBody.fields, senderId: httpAuth.userId } }
+            : {}),
+        },
+        options
+      )
     ).data;
   },
 
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResult<Notification>> {
-    return (await client.get(httpAuth, `/notifications${options?.rql || ''}`))
-      .data;
+  async find(options) {
+    return (
+      await client.get(httpAuth, `/notifications${options?.rql || ''}`, options)
+    ).data;
   },
 
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Notification> {
+  async findById(id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options?: { rql?: RQLString }): Promise<Notification> {
+  async findFirst(options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async remove(options?: { rql?: RQLString }): Promise<AffectedRecords> {
+  async remove(options) {
     return (
-      await client.delete(httpAuth, `/notifications${options?.rql || ''}`)
+      await client.delete(
+        httpAuth,
+        `/notifications${options?.rql || ''}`,
+        options
+      )
     ).data;
   },
 
-  async markAsViewed(options?: { rql?: RQLString }): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/viewed${options?.rql || ''}`)).data;
+  async markAsViewed(options) {
+    return (
+      await client.post(httpAuth, `/viewed${options?.rql || ''}`, options)
+    ).data;
   },
 
-  async getTypes(): Promise<PagedResult<NotifTypeDef>> {
-    return (await client.get(httpAuth, '/types')).data;
+  async getTypes(options) {
+    return (await client.get(httpAuth, '/types', options)).data;
   },
 });
