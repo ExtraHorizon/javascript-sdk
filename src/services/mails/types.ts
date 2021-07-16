@@ -7,6 +7,8 @@ import {
   MailRecipients,
   AffectedRecords,
   PagedResult,
+  OptionsBase,
+  OptionsWithRql,
 } from '../types';
 
 export interface Mail {
@@ -100,7 +102,7 @@ export interface MailsService {
    * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
-  health(this: MailsService): Promise<boolean>;
+  health(this: MailsService, options: OptionsBase): Promise<boolean>;
   /**
    * Retrieve a list of mails
    * Permission | Scope | Effect
@@ -112,7 +114,7 @@ export interface MailsService {
    */
   find: (
     this: MailsService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ) => Promise<PagedResult<Mail>>;
   /**
    * Find By Id
@@ -123,14 +125,14 @@ export interface MailsService {
   findById: (
     this: MailsService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ) => Promise<Mail>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: MailsService, options?: { rql?: RQLString }): Promise<Mail>;
+  findFirst(this: MailsService, options?: OptionsWithRql): Promise<Mail>;
   /**
    * Send a mail
    * Permission | Scope | Effect
@@ -145,7 +147,8 @@ export interface MailsService {
    */
   send(
     this: MailsService,
-    requestBody?: PlainMailCreation | TemplateBasedMailCreation
+    requestBody: PlainMailCreation | TemplateBasedMailCreation,
+    options: OptionsBase
   ): Promise<Mail>;
   /**
    * Register a mail being opened
@@ -156,7 +159,11 @@ export interface MailsService {
    * @param trackingHash
    * @returns any Operation successful
    */
-  track(this: MailsService, trackingHash: string): Promise<AffectedRecords>;
+  track(
+    this: MailsService,
+    trackingHash: string,
+    options: OptionsBase
+  ): Promise<AffectedRecords>;
   /**
    * Retrieve the list of mails that are not sent yet
    * Permission | Scope | Effect
@@ -168,6 +175,6 @@ export interface MailsService {
    */
   findOutbound(
     this: MailsService,
-    options?: { rql?: string }
+    options?: OptionsWithRql
   ): Promise<PagedResult<QueuedMail>>;
 }
