@@ -4,6 +4,8 @@ import {
   TimeZone,
   PagedResult,
   AffectedRecords,
+  OptionsWithRql,
+  OptionsBase,
 } from '../types';
 import { TypeConfiguration } from '../data/types';
 import { RQLString } from '../../rql';
@@ -81,7 +83,7 @@ export interface TemplatesService {
    */
   find(
     this: TemplatesService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<TemplateOut>>;
   /**
    * Find By Id
@@ -92,7 +94,7 @@ export interface TemplatesService {
   findById(
     this: TemplatesService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<TemplateOut>;
   /**
    * Find By Name
@@ -103,7 +105,7 @@ export interface TemplatesService {
   findByName(
     this: TemplatesService,
     name: string,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<TemplateOut>;
   /**
    * Find First
@@ -112,7 +114,7 @@ export interface TemplatesService {
    */
   findFirst(
     this: TemplatesService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<TemplateOut>;
   /**
    * Create a new template
@@ -123,7 +125,11 @@ export interface TemplatesService {
    * @param requestBody
    * @returns TemplateOut Success
    */
-  create(this: TemplatesService, requestBody: TemplateIn): Promise<TemplateOut>;
+  create(
+    this: TemplatesService,
+    requestBody: TemplateIn,
+    options: OptionsBase
+  ): Promise<TemplateOut>;
   /**
    * Update an existing template
    * Permission | Scope | Effect
@@ -138,7 +144,8 @@ export interface TemplatesService {
   update(
     this: TemplatesService,
     templateId: string,
-    requestBody: TemplateIn
+    requestBody: TemplateIn,
+    options: OptionsBase
   ): Promise<TemplateOut>;
   /**
    * Delete a template
@@ -150,7 +157,11 @@ export interface TemplatesService {
    * @returns any Operation successful
    * @throws {ResourceUnknownError}
    */
-  remove(this: TemplatesService, templateId: string): Promise<AffectedRecords>;
+  remove(
+    this: TemplatesService,
+    templateId: string,
+    options: OptionsBase
+  ): Promise<AffectedRecords>;
   /**
    * Resolves a template and presents the result as a pdf file
    * Permission | Scope | Effect
@@ -167,7 +178,8 @@ export interface TemplatesService {
   resolveAsPdf(
     this: TemplatesService,
     templateId: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options: OptionsBase
   ): Promise<Buffer>;
   /**
    * @deprecated
@@ -188,7 +200,8 @@ export interface TemplatesService {
     this: TemplatesService,
     templateId: string,
     localizationCode: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options: OptionsBase
   ): Promise<Buffer>;
   /**
    * Resolves a template and presents the result as a json response
@@ -206,7 +219,8 @@ export interface TemplatesService {
   resolveAsJson(
     this: TemplatesService,
     templateId: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options: OptionsBase
   ): Promise<Record<string, string>>;
   /**
    * @deprecated
@@ -227,6 +241,7 @@ export interface TemplatesService {
     this: TemplatesService,
     templateId: string,
     localizationCode: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options: OptionsBase
   ): Promise<Record<string, string>>;
 }
