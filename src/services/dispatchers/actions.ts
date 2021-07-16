@@ -8,15 +8,6 @@ import type {
 } from './types';
 
 export default (client, httpAuth: HttpInstance): ActionsService => ({
-  /**
-   * Add an action to the dispatcher
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
-   * @param dispatcherId The id of the targeted dispatcher
-   * @param requestBody ActionCreation
-   * @returns Action
-   */
   async create(
     dispatcherId: ObjectId,
     requestBody: ActionCreation
@@ -26,17 +17,6 @@ export default (client, httpAuth: HttpInstance): ActionsService => ({
     ).data;
   },
 
-  /**
-   * Update an action for the specified dispatcher
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
-   * @param dispatcherId The id of the targeted dispatcher
-   * @param actionId The id of the targeted action
-   * @param requestBody ActionUpdate
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
   async update(
     dispatcherId: ObjectId,
     actionId: ObjectId,
@@ -51,16 +31,6 @@ export default (client, httpAuth: HttpInstance): ActionsService => ({
     ).data;
   },
 
-  /**
-   * Delete an action from the specified dispatcher
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
-   * @param dispatcherId The id of the targeted dispatcher
-   * @param actionId The id of the targeted action
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
   async remove(
     dispatcherId: ObjectId,
     actionId: ObjectId

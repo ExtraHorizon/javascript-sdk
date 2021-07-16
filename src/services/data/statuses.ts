@@ -3,16 +3,6 @@ import type { ObjectId, AffectedRecords } from '../types';
 import type { DataStatusesService, StatusData } from './types';
 
 export default (client, httpAuth: HttpInstance): DataStatusesService => ({
-  /**
-   * Create a status
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param requestBody The name and status data
-   * @returns AffectedRecords
-   * @throws {ResourceAlreadyExistsError}
-   */
   async create(
     schemaId: ObjectId,
     requestBody: {
@@ -24,17 +14,6 @@ export default (client, httpAuth: HttpInstance): DataStatusesService => ({
       .data;
   },
 
-  /**
-   * Update a status
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param name The name of the targeted status.
-   * @param requestBody The status data
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
   async update(
     schemaId: ObjectId,
     name: string,
@@ -45,17 +24,6 @@ export default (client, httpAuth: HttpInstance): DataStatusesService => ({
     ).data;
   },
 
-  /**
-   * Delete a status
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param name The name of the targeted status.
-   * @returns AffectedRecords
-   * @throws {StatusInUseError}
-   * @throws {ResourceUnknownError}
-   */
   async remove(schemaId: ObjectId, name: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${schemaId}/statuses/${name}`))
       .data;
