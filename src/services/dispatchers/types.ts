@@ -1,4 +1,3 @@
-import { RQLString } from '../../rql';
 import type {
   AffectedRecords,
   MailRecipients,
