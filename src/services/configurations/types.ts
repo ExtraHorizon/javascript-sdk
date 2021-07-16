@@ -59,7 +59,7 @@ export interface ConfigurationsGeneralService {
    */
   get(
     this: ConfigurationsGeneralService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<GeneralConfiguration>;
   /**
    * Update the general configuration
@@ -111,7 +111,7 @@ export interface ConfigurationsGroupsService {
   get(
     this: ConfigurationsGroupsService,
     groupId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<GroupConfiguration>;
   /**
    * Update a group configuration.
@@ -217,7 +217,7 @@ export interface ConfigurationsStaffService {
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: UserConfigurationInput,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a staff configuration for a group of a user.
@@ -238,7 +238,7 @@ export interface ConfigurationsStaffService {
     requestBody: {
       fields: Array<string>;
     },
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -259,7 +259,7 @@ export interface ConfigurationsUsersService {
   get(
     this: ConfigurationsUsersService,
     userId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<UserConfiguration>;
   /**
    * Update a user configuration

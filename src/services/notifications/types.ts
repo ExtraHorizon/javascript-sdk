@@ -133,7 +133,7 @@ export interface NotificationsService {
   create(
     this: NotificationsService,
     requestBody: CreateNotificationRequest,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Notification>;
   /**
    * Retrieve a list of notifications
@@ -205,7 +205,7 @@ export interface NotificationsService {
    */
   getTypes(
     this: NotificationsService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<PagedResult<NotifTypeDef>>;
 }
 
@@ -259,7 +259,7 @@ export interface NotificationSettingsServices {
     this: NotificationSettingsServices,
     userId: string,
     requestBody: SettingCreation,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Setting>;
   /**
    * Delete the notifications settings for a user
@@ -273,6 +273,6 @@ export interface NotificationSettingsServices {
   remove(
     this: NotificationSettingsServices,
     userId: string,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }

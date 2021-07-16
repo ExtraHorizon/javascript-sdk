@@ -80,7 +80,7 @@ export interface TasksService {
   create(
     this: TasksService,
     requestBody: TaskInput,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Task>;
   /**
    * Cancel a task
@@ -98,6 +98,6 @@ export interface TasksService {
   cancel(
     this: TasksService,
     taskId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }

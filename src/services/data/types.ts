@@ -597,7 +597,7 @@ export interface DataDocumentsService {
     this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a document

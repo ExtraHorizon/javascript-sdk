@@ -127,7 +127,7 @@ export interface TemplatesService {
   create(
     this: TemplatesService,
     requestBody: TemplateIn,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<TemplateOut>;
   /**
    * Update an existing template
@@ -144,7 +144,7 @@ export interface TemplatesService {
     this: TemplatesService,
     templateId: string,
     requestBody: TemplateIn,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<TemplateOut>;
   /**
    * Delete a template
@@ -159,7 +159,7 @@ export interface TemplatesService {
   remove(
     this: TemplatesService,
     templateId: string,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Resolves a template and presents the result as a pdf file
@@ -178,7 +178,7 @@ export interface TemplatesService {
     this: TemplatesService,
     templateId: string,
     requestBody: CreateFile,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Buffer>;
   /**
    * @deprecated
@@ -200,7 +200,7 @@ export interface TemplatesService {
     templateId: string,
     localizationCode: string,
     requestBody: CreateFile,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Buffer>;
   /**
    * Resolves a template and presents the result as a json response
@@ -219,7 +219,7 @@ export interface TemplatesService {
     this: TemplatesService,
     templateId: string,
     requestBody: CreateFile,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Record<string, string>>;
   /**
    * @deprecated
@@ -241,6 +241,6 @@ export interface TemplatesService {
     templateId: string,
     localizationCode: string,
     requestBody: CreateFile,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Record<string, string>>;
 }

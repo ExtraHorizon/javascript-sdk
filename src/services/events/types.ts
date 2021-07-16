@@ -75,7 +75,7 @@ export interface EventsService {
   create(
     this: EventsService,
     requestBody: CreateEvent,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Event>;
 }
 

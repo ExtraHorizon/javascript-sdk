@@ -65,7 +65,10 @@ export interface CountriesService {
    *
    * @returns PagedResult<string>
    */
-  getCountries(this: CountriesService, options: OptionsBase): Promise<string[]>;
+  getCountries(
+    this: CountriesService,
+    options?: OptionsBase
+  ): Promise<string[]>;
   /**
    * Retrieve a list of all the defined regions for the specified country code
    * Permission | Scope | Effect
@@ -79,7 +82,7 @@ export interface CountriesService {
   getRegions(
     this: CountriesService,
     country: string,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<string[]>;
 }
 
@@ -92,7 +95,10 @@ export interface LanguagesService {
    *
    * @returns PagedResult<SupportedLanguageCodes>
    */
-  getLanguages(this: LanguagesService, options: OptionsBase): Promise<string[]>;
+  getLanguages(
+    this: LanguagesService,
+    options?: OptionsBase
+  ): Promise<string[]>;
 }
 
 export interface LocalizationsService {
@@ -142,7 +148,7 @@ export interface LocalizationsService {
   create(
     this: LocalizationsService,
     requestBody: BulkLocalization,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<BulkCreationResponse>;
   /**
    * Update localizations
@@ -156,7 +162,7 @@ export interface LocalizationsService {
   update(
     this: LocalizationsService,
     requestBody: BulkLocalization,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<BulkUpdateResponse>;
   /**
    * Delete localizations
@@ -170,7 +176,7 @@ export interface LocalizationsService {
   remove(
     this: LocalizationsService,
     rql: RQLString,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Request localizations of multiple keys in a specific language
@@ -186,6 +192,6 @@ export interface LocalizationsService {
   getByKeys(
     this: LocalizationsService,
     requestBody: LocalizationRequest,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Record<string, MappedText>>;
 }

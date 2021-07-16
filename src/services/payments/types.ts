@@ -395,7 +395,7 @@ export interface PaymentsAppStoreService {
   createTransaction(
     this: PaymentsAppStoreService,
     requestBody: TransactionCompletionDataSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;
   /**
    * Verify the Receipt of a Transaction
@@ -413,7 +413,7 @@ export interface PaymentsAppStoreService {
   verifyTransaction(
     this: PaymentsAppStoreService,
     requestBody: ReceiptVerificationDataSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;
   /**
    * Processes an App Store Server notification
@@ -423,7 +423,7 @@ export interface PaymentsAppStoreService {
   processNotification(
     this: PaymentsAppStoreService,
     requestBody: AppleNotification,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<boolean>;
   /**
    * Get a list of notifications received from the App Store
@@ -438,7 +438,7 @@ export interface PaymentsAppStoreService {
    */
   getNotifications(
     this: PaymentsAppStoreService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<PagedResult<AppStoreNotification>>;
   /**
    * Get a list of receipts received and verified by the App Store
@@ -453,7 +453,7 @@ export interface PaymentsAppStoreService {
    */
   getReceipts(
     this: PaymentsAppStoreService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<PagedResult<AppStoreReceipt>>;
 }
 
@@ -469,7 +469,7 @@ export interface PaymentsAppStoreSubscriptionsService {
    */
   getSubscriptions(
     this: PaymentsAppStoreSubscriptionsService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<PagedResult<AppStoreSubscription>>;
   /**
    * Get a list of configured App Store subscription products
@@ -481,7 +481,7 @@ export interface PaymentsAppStoreSubscriptionsService {
    */
   getSubscriptionsProducts(
     this: PaymentsAppStoreSubscriptionsService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
   /**
    * Create an App Store subscription product
@@ -496,7 +496,7 @@ export interface PaymentsAppStoreSubscriptionsService {
   createSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
     requestBody: AppStoreSubscriptionProductCreation,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AppStoreSubscriptionProduct>;
   /**
    * Delete an App Store subscription product
@@ -511,7 +511,7 @@ export interface PaymentsAppStoreSubscriptionsService {
   removeSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
     productId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Update an App Store subscription product
@@ -528,7 +528,7 @@ export interface PaymentsAppStoreSubscriptionsService {
     this: PaymentsAppStoreSubscriptionsService,
     productId: ObjectId,
     requestBody: AppStoreSubscriptionProductUpdateSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -691,7 +691,7 @@ export interface PaymentsProductsService {
     this: PaymentsProductsService,
     rql: RQLString,
     requestBody: UpdateTagsSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Remove tags from a Product
@@ -707,7 +707,7 @@ export interface PaymentsProductsService {
     this: PaymentsProductsService,
     rql: RQLString,
     requestBody: UpdateTagsSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Update a product
@@ -724,7 +724,7 @@ export interface PaymentsProductsService {
     this: PaymentsProductsService,
     orderId: ObjectId,
     requestBody: ProductCreationSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a product
@@ -739,7 +739,7 @@ export interface PaymentsProductsService {
   remove(
     this: PaymentsProductsService,
     productId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -757,7 +757,7 @@ export interface PaymentsStripeService {
   getUser(
     this: PaymentsStripeService,
     userId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<StripeUser>;
   /**
    * Save a payment method to a Stripe user
@@ -776,7 +776,7 @@ export interface PaymentsStripeService {
     this: PaymentsStripeService,
     userId: ObjectId,
     requestBody: StripePaymentMethodCreation,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<StripePaymentMethod>;
   /**
    * Add tags to a payment method
@@ -796,7 +796,7 @@ export interface PaymentsStripeService {
     userId: ObjectId,
     paymentMethodId: ObjectId,
     requestBody: UpdateTagsSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Remove tags from a payment method
@@ -816,7 +816,7 @@ export interface PaymentsStripeService {
     userId: ObjectId,
     paymentMethodId: ObjectId,
     requestBody: UpdateTagsSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a payment method
@@ -834,7 +834,7 @@ export interface PaymentsStripeService {
     this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Create an order linked to a Stripe Payment Intent
@@ -854,7 +854,7 @@ export interface PaymentsStripeService {
   createPaymentIntent(
     this: PaymentsStripeService,
     requestBody: PaymentIntentCreationSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<OrderSchema>;
   /**
    * Create a Stripe Setup Intent for capturing payment details without initial payment
@@ -865,7 +865,7 @@ export interface PaymentsStripeService {
   createSetupIntent(
     this: PaymentsStripeService,
     requestBody: SetupIntentCreationSchema,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<StripeSetupIntentSchema>;
   /**
    * Incoming events from Stripe's webhook
@@ -886,7 +886,7 @@ export interface PaymentsStripeService {
    */
   subscribeToEvents(
     this: PaymentsStripeService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<any>;
 }
 
@@ -902,7 +902,7 @@ export interface PaymentsSubscriptionsService {
    */
   getEntitlements(
     this: PaymentsSubscriptionsService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<PagedResult<SubscriptionEntitlement>>;
   /**
    * Get a list of subscription events
@@ -915,6 +915,6 @@ export interface PaymentsSubscriptionsService {
    */
   getEvents(
     this: PaymentsSubscriptionsService,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<PagedResult<SubscriptionEvent>>;
 }

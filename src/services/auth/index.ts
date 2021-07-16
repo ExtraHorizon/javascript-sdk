@@ -29,7 +29,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
      * */
     async confirmPresence(
       data: { password: string },
-      options: OptionsBase
+      options?: OptionsBase
     ): Promise<Presence> {
       return (
         await authClient.post(httpWithAuth, `/confirmPresence`, data, options)

@@ -101,7 +101,7 @@ export interface MailsService {
    * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
-  health(this: MailsService, options: OptionsBase): Promise<boolean>;
+  health(this: MailsService, options?: OptionsBase): Promise<boolean>;
   /**
    * Retrieve a list of mails
    * Permission | Scope | Effect
@@ -147,7 +147,7 @@ export interface MailsService {
   send(
     this: MailsService,
     requestBody: PlainMailCreation | TemplateBasedMailCreation,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<Mail>;
   /**
    * Register a mail being opened
@@ -161,7 +161,7 @@ export interface MailsService {
   track(
     this: MailsService,
     trackingHash: string,
-    options: OptionsBase
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Retrieve the list of mails that are not sent yet

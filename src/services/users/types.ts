@@ -581,7 +581,7 @@ export interface UsersService {
    * @permission Everyone can use this endpoint
    * @returns {UserData} UserData
    */
-  me(this: UsersService, options: OptionsBase): Promise<User>;
+  me(this: UsersService, options?: OptionsBase): Promise<User>;
   /**
    * Retrieve a specific user
    * @params {string} userId of the targeted user (required)
