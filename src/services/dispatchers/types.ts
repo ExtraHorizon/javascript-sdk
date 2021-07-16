@@ -3,6 +3,8 @@ import type {
   AffectedRecords,
   MailRecipients,
   ObjectId,
+  OptionsBase,
+  OptionsWithRql,
   PagedResult,
 } from '../types';
 
@@ -73,24 +75,47 @@ export interface TaskActionUpdate {
 export interface DispatchersService {
   find: (
     this: DispatchersService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ) => Promise<PagedResult<Dispatcher>>;
   findById: (
     this: DispatchersService,
     id: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ) => Promise<Dispatcher>;
-  findFirst(options?: { rql?: RQLString }): Promise<Dispatcher>;
-  create(requestBody: Dispatcher): Promise<Dispatcher>;
-  remove(dispatcherId: ObjectId): Promise<AffectedRecords>;
+  findFirst(
+    this: DispatchersService,
+    options?: OptionsWithRql
+  ): Promise<Dispatcher>;
+  create(
+    this: DispatchersService,
+    requestBody: Dispatcher,
+    options?: OptionsBase
+  ): Promise<Dispatcher>;
+  remove(
+    this: DispatchersService,
+    dispatcherId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }
 
 export interface ActionsService {
-  create(dispatcherId: ObjectId, requestBody: ActionCreation): Promise<Action>;
+  create(
+    this: DispatchersService,
+    dispatcherId: ObjectId,
+    requestBody: ActionCreation,
+    options?: OptionsBase
+  ): Promise<Action>;
   update(
+    this: DispatchersService,
     dispatcherId: ObjectId,
     actionId: ObjectId,
-    requestBody: ActionUpdate
+    requestBody: ActionUpdate,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
-  remove(dispatcherId: ObjectId, actionId: ObjectId): Promise<AffectedRecords>;
+  remove(
+    this: DispatchersService,
+    dispatcherId: ObjectId,
+    actionId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }

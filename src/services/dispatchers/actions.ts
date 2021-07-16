@@ -1,13 +1,11 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  Action,
-  ActionCreation,
-  ActionUpdate,
-  ActionsService,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { ActionsService } from './types';
 
-export default (client, httpAuth: HttpInstance): ActionsService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): ActionsService => ({
   /**
    * Add an action to the dispatcher
    * Permission | Scope | Effect
@@ -17,12 +15,14 @@ export default (client, httpAuth: HttpInstance): ActionsService => ({
    * @param requestBody ActionCreation
    * @returns Action
    */
-  async create(
-    dispatcherId: ObjectId,
-    requestBody: ActionCreation
-  ): Promise<Action> {
+  async create(dispatcherId, requestBody, options) {
     return (
-      await client.post(httpAuth, `/${dispatcherId}/actions`, requestBody)
+      await client.post(
+        httpAuth,
+        `/${dispatcherId}/actions`,
+        requestBody,
+        options
+      )
     ).data;
   },
 
@@ -37,16 +37,13 @@ export default (client, httpAuth: HttpInstance): ActionsService => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async update(
-    dispatcherId: ObjectId,
-    actionId: ObjectId,
-    requestBody: ActionUpdate
-  ): Promise<AffectedRecords> {
+  async update(dispatcherId, actionId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/${dispatcherId}/actions/${actionId}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
@@ -61,12 +58,13 @@ export default (client, httpAuth: HttpInstance): ActionsService => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async remove(
-    dispatcherId: ObjectId,
-    actionId: ObjectId
-  ): Promise<AffectedRecords> {
+  async remove(dispatcherId, actionId, options) {
     return (
-      await client.delete(httpAuth, `/${dispatcherId}/actions/${actionId}`)
+      await client.delete(
+        httpAuth,
+        `/${dispatcherId}/actions/${actionId}`,
+        options
+      )
     ).data;
   },
 });

@@ -1,9 +1,12 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type { Dispatcher, DispatchersService } from './types';
-import { RQLString, rqlBuilder } from '../../rql';
+import type { DispatchersService } from './types';
+import { rqlBuilder } from '../../rql';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): DispatchersService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DispatchersService => ({
   /**
    * Request a list of dispatchers
    * Permission | Scope | Effect
@@ -12,8 +15,8 @@ export default (client, httpAuth: HttpInstance): DispatchersService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Dispatcher>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Dispatcher>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options) {
+    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
   /**
@@ -22,12 +25,9 @@ export default (client, httpAuth: HttpInstance): DispatchersService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Dispatcher> {
+  async findById(id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
@@ -36,7 +36,7 @@ export default (client, httpAuth: HttpInstance): DispatchersService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(options?: { rql?: RQLString }): Promise<Dispatcher> {
+  async findFirst(options) {
     const res = await this.find(options);
     return res.data[0];
   },
@@ -49,8 +49,8 @@ export default (client, httpAuth: HttpInstance): DispatchersService => ({
    * @param requestBody Dispatcher
    * @returns Dispatcher
    */
-  async create(requestBody: Dispatcher): Promise<Dispatcher> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/', requestBody, options)).data;
   },
 
   /**
@@ -62,7 +62,7 @@ export default (client, httpAuth: HttpInstance): DispatchersService => ({
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  async remove(dispatcherId: ObjectId): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/${dispatcherId}`)).data;
+  async remove(dispatcherId, options) {
+    return (await client.delete(httpAuth, `/${dispatcherId}`, options)).data;
   },
 });
