@@ -1,37 +1,23 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, PagedResult } from '../types';
-import type { OAuth2Authorization, OAuth2AuthorizationCreation } from './types';
-import { RQLString } from '../../rql';
+import type { AuthOauth2Service } from './types';
+import { HttpClient } from '../http-client';
 
-export default (client, httpWithAuth: HttpInstance) => ({
-  /**
-   * Create an OAuth2 authorization
-   *
-   * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/post_oauth2_authorizations
-   * @throws {ApplicationUnknownError}
-   * @throws {CallbackNotValidError}
-   * @throws {UnsupportedResponseTypeError}
-   */
-  async createAuthorization(
-    data: OAuth2AuthorizationCreation
-  ): Promise<OAuth2Authorization> {
-    return (await client.post(httpWithAuth, `/oauth2/authorizations`, data))
-      .data;
+export default (
+  client: HttpClient,
+  httpWithAuth: HttpInstance
+): AuthOauth2Service => ({
+  async createAuthorization(data, options) {
+    return (
+      await client.post(httpWithAuth, `/oauth2/authorizations`, data, options)
+    ).data;
   },
 
-  /**
-   * Get a list of OAuth2 Authorizations
-   *
-   * @permission VIEW_AUTHORIZATIONS | scope:global | Required for this endpoint
-   * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
-   */
-  async getAuthorizations(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResult<OAuth2Authorization>> {
+  async getAuthorizations(options) {
     return (
       await client.get(
         httpWithAuth,
-        `/oauth2/authorizations${options?.rql || ''}`
+        `/oauth2/authorizations${options?.rql || ''}`,
+        options
       )
     ).data;
   },
@@ -43,11 +29,12 @@ export default (client, httpWithAuth: HttpInstance) => ({
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/delete_oauth2_authorizations__authorizationId_
    * @throws {ResourceUnknownError}
    */
-  async deleteAuthorization(authorizationId: string): Promise<AffectedRecords> {
+  async deleteAuthorization(authorizationId, options) {
     return (
       await client.delete(
         httpWithAuth,
-        `/oauth2/authorizations/${authorizationId}`
+        `/oauth2/authorizations/${authorizationId}`,
+        options
       )
     ).data;
   },
