@@ -1,11 +1,6 @@
 import type { HttpInstance } from '../../types';
-import { PagedResult, ObjectId } from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
-import type {
-  Subscription,
-  CreateSubscription,
-  SubscriptionsService,
-} from './types';
+import { rqlBuilder } from '../../rql';
+import type { SubscriptionsService } from './types';
 import { HttpClient } from '../http-client';
 
 export default (
