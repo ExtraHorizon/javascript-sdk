@@ -1,17 +1,12 @@
-import type { ReadStream } from 'fs';
 import FormData from 'form-data';
 import type { HttpInstance } from '../../types';
-import {
-  ResultResponse,
-  Results,
-  PagedResult,
-  AffectedRecords,
-} from '../types';
-import type { FileDetails, FilesService, Token } from './types';
-import { RQLString, rqlBuilder } from '../../rql';
+import { ResultResponse, Results } from '../types';
+import type { FilesService } from './types';
+import { rqlBuilder } from '../../rql';
 import { createCustomFormData, generateBoundary } from './formHelpers';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): FilesService => ({
+export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
   /**
    * List all files
    * Permission | Scope | Effect
@@ -21,9 +16,8 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @param rql Add filters to the requested list.
    * @returns PagedResult<FileDetails>
    */
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<FileDetails>> {
-    console.log('this', this);
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options) {
+    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
   /**
@@ -32,12 +26,9 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findByName(
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<FileDetails> {
+  async findByName(name, options) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-    const res = await this.find({ rql: rqlWithName });
+    const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
   },
 
@@ -46,7 +37,7 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @param rql an optional rql string
    * @returns the first element found
    */
-  async findFirst(options?: { rql?: RQLString }): Promise<FileDetails> {
+  async findFirst(options) {
     const res = await this.find(options);
     return res.data[0];
   },
@@ -61,13 +52,14 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  async createFromText(text: string): Promise<FileDetails> {
+  async createFromText(text, options) {
     const boundary = generateBoundary();
     const formData = createCustomFormData(text, boundary);
 
     return (
       await client.post(httpAuth, '/', formData, {
         headers: {
+          ...(options?.headers ? options.headers : {}),
           'Content-Type': `multipart/form-data; boundary=${boundary}`,
         },
       })
@@ -84,11 +76,7 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  async create(
-    fileName: string,
-    fileData: Blob | Buffer | ReadStream,
-    options?: { tags: [] }
-  ): Promise<FileDetails> {
+  async create(fileName, fileData, options) {
     const form = new FormData();
     if (typeof window !== 'undefined' && !(fileData instanceof Blob)) {
       throw new Error(
@@ -104,10 +92,12 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
 
     return (
       await client.post(httpAuth, '/', form, {
-        headers:
-          typeof window === 'undefined'
+        headers: {
+          ...(options?.headers ? options.headers : {}),
+          ...(typeof window === 'undefined'
             ? form.getHeaders()
-            : { 'Content-Type': 'multipart/form-data' },
+            : { 'Content-Type': 'multipart/form-data' }),
+        },
       })
     ).data;
   },
@@ -123,8 +113,12 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async remove(token: Token): Promise<AffectedRecords> {
-    const result: ResultResponse = await client.delete(httpAuth, `/${token}`);
+  async remove(token, options) {
+    const result: ResultResponse = await client.delete(
+      httpAuth,
+      `/${token}`,
+      options
+    );
     const affectedRecords = result.status === Results.Success ? 1 : 0;
     return { affectedRecords };
   },
@@ -140,9 +134,10 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async retrieve(token: Token): Promise<Buffer> {
+  async retrieve(token, options) {
     return (
       await client.get(httpAuth, `/${token}/file`, {
+        ...options,
         responseType: 'arraybuffer',
       })
     ).data;
@@ -159,8 +154,9 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async retrieveStream(token: Token): Promise<{ data: ReadStream }> {
+  async retrieveStream(token, options) {
     return await client.get(httpAuth, `/${token}/file`, {
+      ...options,
       responseType: 'stream',
     });
   },
@@ -181,7 +177,7 @@ export default (client, httpAuth: HttpInstance): FilesService => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async getDetails(token: Token): Promise<FileDetails> {
-    return (await client.get(httpAuth, `/${token}/details`)).data;
+  async getDetails(token, options) {
+    return (await client.get(httpAuth, `/${token}/details`, options)).data;
   },
 });

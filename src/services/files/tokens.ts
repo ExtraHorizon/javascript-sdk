@@ -1,12 +1,11 @@
 import type { HttpInstance } from '../../types';
-import type {
-  TokenObject,
-  CreateTokenRequest,
-  Token,
-  FileTokensService,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { FileTokensService } from './types';
 
-export default (userClient, httpAuth: HttpInstance): FileTokensService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): FileTokensService => ({
   /**
    * Delete a token
    * Permission | Scope | Effect
@@ -20,8 +19,8 @@ export default (userClient, httpAuth: HttpInstance): FileTokensService => ({
    * @throws {UnauthorizedTokenError}
    * @throws {TokenNotDeleteableError}
    */
-  async deleteToken(token: Token, tokenToAccess: Token): Promise<void> {
-    await userClient.delete(httpAuth, `/${token}/tokens/${tokenToAccess}`);
+  async deleteToken(token, tokenToAccess, options) {
+    await client.delete(httpAuth, `/${token}/tokens/${tokenToAccess}`, options);
   },
 
   /**
@@ -36,11 +35,9 @@ export default (userClient, httpAuth: HttpInstance): FileTokensService => ({
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  async generateToken(
-    token: Token,
-    requestBody: CreateTokenRequest
-  ): Promise<TokenObject> {
-    return (await userClient.post(httpAuth, `/${token}/tokens`, requestBody))
-      .data;
+  async generateToken(token, requestBody, options) {
+    return (
+      await client.post(httpAuth, `/${token}/tokens`, requestBody, options)
+    ).data;
   },
 });

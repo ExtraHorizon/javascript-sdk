@@ -1,6 +1,11 @@
 import { ReadStream } from 'fs';
-import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
@@ -35,42 +40,58 @@ export interface CreateTokenRequest {
 export interface FilesService {
   find(
     this: FilesService,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<PagedResult<FileDetails>>;
   findByName(
     this: FilesService,
     name: string,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<FileDetails>;
-  findFirst(
+  findFirst(this: FilesService, options?: OptionsWithRql): Promise<FileDetails>;
+  createFromText(
     this: FilesService,
-    options?: { rql?: RQLString }
+    text: string,
+    options?: OptionsBase
   ): Promise<FileDetails>;
-  createFromText(this: FilesService, text: string): Promise<FileDetails>;
   create(
     this: FilesService,
     fileName: string,
     fileData: Blob | Buffer | ReadStream,
-    options?: { tags: [] }
+    options?: OptionsBase & { tags: [] }
   ): Promise<FileDetails>;
-  remove(this: FilesService, token: Token): Promise<AffectedRecords>;
-  retrieve(this: FilesService, token: Token): Promise<Buffer>;
+  remove(
+    this: FilesService,
+    token: Token,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
+  retrieve(
+    this: FilesService,
+    token: Token,
+    options?: OptionsBase
+  ): Promise<Buffer>;
   retrieveStream(
     this: FilesService,
-    token: Token
+    token: Token,
+    options?: OptionsBase
   ): Promise<{ data: ReadStream }>;
-  getDetails(this: FilesService, token: Token): Promise<FileDetails>;
+  getDetails(
+    this: FilesService,
+    token: Token,
+    options?: OptionsBase
+  ): Promise<FileDetails>;
 }
 
 export interface FileTokensService {
   deleteToken(
     this: FileTokensService,
     token: Token,
-    tokenToAccess: Token
+    tokenToAccess: Token,
+    options?: OptionsBase
   ): Promise<void>;
   generateToken(
     this: FileTokensService,
     token: Token,
-    requestBody: CreateTokenRequest
+    requestBody: CreateTokenRequest,
+    options?: OptionsBase
   ): Promise<TokenObject>;
 }
