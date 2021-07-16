@@ -6,16 +6,6 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataTransitionsService => ({
-  /**
-   * Update the creation transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns {Promise<AffectedRecords>}
-   * @throws {IllegalArgumentError}
-   */
   async updateCreation(schemaId, requestBody, options) {
     return (
       await client.put(
@@ -27,16 +17,6 @@ export default (
     ).data;
   },
 
-  /**
-   * Create a transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns {Promise<AffectedRecords>}
-   * @throws {IllegalArgumentError}
-   */
   async create(schemaId, requestBody, options) {
     return (
       await client.post(
@@ -48,18 +28,6 @@ export default (
     ).data;
   },
 
-  /**
-   * Update a transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param transitionId The id of the targeted transition.
-   * @param requestBody
-   * @returns {Promise<AffectedRecords>}
-   * @throws {IllegalArgumentError}
-   * @throws {ResourceUnknownError}
-   */
   async update(schemaId, transitionId, requestBody, options) {
     return (
       await client.put(
@@ -71,16 +39,6 @@ export default (
     ).data;
   },
 
-  /**
-   * Delete a transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param transitionId The id of the targeted transition.
-   * @returns {Promise<AffectedRecords>}
-   * @throws {ResourceUnknownError}
-   */
   async remove(schemaId, transitionId, options) {
     return (
       await client.delete(

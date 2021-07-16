@@ -72,24 +72,60 @@ export interface TaskActionUpdate {
 }
 
 export interface DispatchersService {
+  /**
+   * Request a list of dispatchers
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_DISPATCHERS` | `global` | **Required** for this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Dispatcher>
+   */
   find: (
     this: DispatchersService,
     options?: OptionsWithRql
   ) => Promise<PagedResult<Dispatcher>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById: (
     this: DispatchersService,
     id: ObjectId,
     options?: OptionsWithRql
   ) => Promise<Dispatcher>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(
     this: DispatchersService,
     options?: OptionsWithRql
   ): Promise<Dispatcher>;
+  /**
+   * Create a dispatcher
+   * Permission | Scope | Effect
+   * - | - | -
+   * `CREATE_DISPATCHERS` | `global` | **Required** for this endpoint
+   * @param requestBody Dispatcher
+   * @returns Dispatcher
+   */
   create(
     this: DispatchersService,
     requestBody: Dispatcher,
     options?: OptionsBase
   ): Promise<Dispatcher>;
+  /**
+   * Delete a dispatcher
+   * Permission | Scope | Effect
+   * - | - | -
+   * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint
+   * @param dispatcherId The id of the targeted dispatcher
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   remove(
     this: DispatchersService,
     dispatcherId: ObjectId,
@@ -98,21 +134,51 @@ export interface DispatchersService {
 }
 
 export interface ActionsService {
+  /**
+   * Add an action to the dispatcher
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
+   * @param dispatcherId The id of the targeted dispatcher
+   * @param requestBody ActionCreation
+   * @returns Action
+   */
   create(
-    this: DispatchersService,
+    this: ActionsService,
     dispatcherId: ObjectId,
     requestBody: ActionCreation,
     options?: OptionsBase
   ): Promise<Action>;
+  /**
+   * Update an action for the specified dispatcher
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
+   * @param dispatcherId The id of the targeted dispatcher
+   * @param actionId The id of the targeted action
+   * @param requestBody ActionUpdate
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   update(
-    this: DispatchersService,
+    this: ActionsService,
     dispatcherId: ObjectId,
     actionId: ObjectId,
     requestBody: ActionUpdate,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+  /**
+   * Delete an action from the specified dispatcher
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
+   * @param dispatcherId The id of the targeted dispatcher
+   * @param actionId The id of the targeted action
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   remove(
-    this: DispatchersService,
+    this: ActionsService,
     dispatcherId: ObjectId,
     actionId: ObjectId,
     options?: OptionsBase

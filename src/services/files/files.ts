@@ -7,51 +7,21 @@ import { createCustomFormData, generateBoundary } from './formHelpers';
 import { HttpClient } from '../http-client';
 
 export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
-  /**
-   * List all files
-   * Permission | Scope | Effect
-   * - | - | -
-   * `VIEW_FILES` | `global` | **Required** for this endpoint
-   *
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<FileDetails>
-   */
   async find(options) {
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
-  /**
-   * Find By Name
-   * @param name the name to search for
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
   async findByName(name, options) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
     const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
   },
 
-  /**
-   * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
   async findFirst(options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  /**
-   * Add a new file from a plain text source
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param string text
-   * @returns FileDetails Success
-   * @throws {FileTooLargeError}
-   */
   async createFromText(text, options) {
     const boundary = generateBoundary();
     const formData = createCustomFormData(text, boundary);
@@ -66,16 +36,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     ).data;
   },
 
-  /**
-   * Add a new file
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param requestBody
-   * @returns FileDetails Success
-   * @throws {FileTooLargeError}
-   */
   async create(fileName, fileData, options) {
     const form = new FormData();
     if (typeof window !== 'undefined' && !(fileData instanceof Blob)) {
@@ -102,17 +62,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     ).data;
   },
 
-  /**
-   * Delete a file
-   * AccessLevel | Effect
-   * - | -
-   * `full` | **Required** to be able to delete the file
-   *
-   * @param token
-   * @returns AffectedRecords
-   * @throws {InvalidTokenError}
-   * @throws {UnauthorizedTokenError}
-   */
   async remove(token, options) {
     const result: ResultResponse = await client.delete(
       httpAuth,
@@ -123,17 +72,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     return { affectedRecords };
   },
 
-  /**
-   * Retrieve a file from the object store
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param token
-   * @returns arraybuffer Success
-   * @throws {InvalidTokenError}
-   * @throws {UnauthorizedTokenError}
-   */
   async retrieve(token, options) {
     return (
       await client.get(httpAuth, `/${token}/file`, {
@@ -143,17 +81,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     ).data;
   },
 
-  /**
-   * Retrieve a file stream from the object store
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param token
-   * @returns ReadStream Success
-   * @throws {InvalidTokenError}
-   * @throws {UnauthorizedTokenError}
-   */
   async retrieveStream(token, options) {
     return await client.get(httpAuth, `/${token}/file`, {
       ...options,
@@ -161,22 +88,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     });
   },
 
-  /**
-   * Get file details
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * AccessLevel | Effect
-   * - | -
-   * `full` | **Required** to return file metadata with all tokens.
-   * `read` | **Required** to return name, size, mimetype.
-   *
-   * @param token
-   * @returns FileDetails Success
-   * @throws {InvalidTokenError}
-   * @throws {UnauthorizedTokenError}
-   */
   async getDetails(token, options) {
     return (await client.get(httpAuth, `/${token}/details`, options)).data;
   },

@@ -9,40 +9,16 @@ import type {
 import { RQLString, rqlBuilder } from '../../rql';
 
 export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
-  /**
-   * Create a product
-   * Permission | Scope | Effect
-   * - | - | -
-   * `CREATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
-   * @param requestBody
-   * @returns ProductSchema
-   */
   async create(requestBody: ProductCreationSchema): Promise<ProductSchema> {
     return (await client.post(httpAuth, '/products', requestBody)).data;
   },
 
-  /**
-   * Get a list of products
-   * Permission | Scope | Effect
-   * - | - | -
-   * none |  | Everyone can use this endpoint
-   *
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<ProductSchema>
-   */
   async find(options?: {
     rql?: RQLString;
   }): Promise<PagedResult<ProductSchema>> {
     return (await client.get(httpAuth, `/products${options?.rql || ''}`)).data;
   },
 
-  /**
-   * Find By Id
-   * @param id the Id to search for
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
   async findById(
     id: ObjectId,
     options?: { rql?: RQLString }
@@ -52,26 +28,11 @@ export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
     return res.data[0];
   },
 
-  /**
-   * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
   async findFirst(options?: { rql?: RQLString }): Promise<ProductSchema> {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  /**
-   * Add Tags to a Product
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
-   * @param rql Add filters to the requested list, **required**.
-   * @param requestBody UpdateTagsSchema
-   * @returns AffectedRecords
-   */
   async addTagsToProduct(
     rql: RQLString,
     requestBody: UpdateTagsSchema
@@ -81,16 +42,6 @@ export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
     ).data;
   },
 
-  /**
-   * Remove tags from a Product
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
-   * @param rql Add filters to the requested list, **required**.
-   * @param requestBody UpdateTagsSchema
-   * @returns AffectedRecords
-   */
   async removeTagsFromProduct(
     rql: RQLString,
     requestBody: UpdateTagsSchema
@@ -104,17 +55,6 @@ export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
     ).data;
   },
 
-  /**
-   * Update a product
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
-   * @param productId ID of the Product
-   * @param requestBody ProductCreationSchema
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
   async update(
     productId: ObjectId,
     requestBody: ProductCreationSchema
@@ -123,16 +63,6 @@ export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
       .data;
   },
 
-  /**
-   * Delete a product
-   * Permission | Scope | Effect
-   * - | - | -
-   * `DELETE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
-   * @param productId ID of the Product
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
   async remove(productId: ObjectId): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/products/${productId}`)).data;
   },

@@ -58,3 +58,9 @@ export interface MailRecipients {
 export type Headers = Record<string, string>;
 export type OptionsBase = { headers?: Headers };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString };
+export type OmitThisParameterDeep<T> = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  [P in keyof T]: T[P] extends Function
+    ? OmitThisParameter<T[P]>
+    : OmitThisParameterDeep<T[P]>;
+};

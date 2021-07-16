@@ -15,35 +15,15 @@ import type {
 } from './types';
 
 export default (client, httpAuth: HttpInstance): TemplatesService => ({
-  /**
-   * Perform a health check
-   * @permission Everyone can use this endpoint
-   * @returns {boolean} success
-   */
   async health(): Promise<boolean> {
     const result: ResultResponse = await client.get(httpAuth, '/health');
     return result.status === Results.Success;
   },
 
-  /**
-   * Get all templates the service has to offer
-   * Permission | Scope | Effect
-   * - | - | -
-   * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
-   *
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<TemplateOut>
-   */
   async find(options?: { rql?: RQLString }): Promise<PagedResult<TemplateOut>> {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
-  /**
-   * Find By Id
-   * @param id the Id to search for
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
   async findById(
     id: ObjectId,
     options?: { rql?: RQLString }
@@ -53,12 +33,6 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
     return res.data[0];
   },
 
-  /**
-   * Find By Name
-   * @param name the name to search for
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
   async findByName(
     name: string,
     options?: { rql?: RQLString }
@@ -68,40 +42,15 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
     return res.data[0];
   },
 
-  /**
-   * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
   async findFirst(options?: { rql?: RQLString }): Promise<TemplateOut> {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  /**
-   * Create a new template
-   * Permission | Scope | Effect
-   * - | - | -
-   * `CREATE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
-   * @param requestBody
-   * @returns TemplateOut Success
-   */
   async create(requestBody: TemplateIn): Promise<TemplateOut> {
     return (await client.post(httpAuth, '/', requestBody)).data;
   },
 
-  /**
-   * Update an existing template
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
-   * @param templateId Id of the targeted template
-   * @param requestBody
-   * @returns TemplateOut Success
-   * @throws {ResourceUnknownError}
-   */
   async update(
     templateId: string,
     requestBody: TemplateIn
@@ -109,33 +58,10 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
     return (await client.put(httpAuth, `/${templateId}`, requestBody)).data;
   },
 
-  /**
-   * Delete a template
-   * Permission | Scope | Effect
-   * - | - | -
-   * `DELETE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
-   * @param templateId Id of the targeted template
-   * @returns any Operation successful
-   * @throws {ResourceUnknownError}
-   */
   async remove(templateId: string): Promise<AffectedRecords> {
     return (await client.delete(httpAuth, `/${templateId}`)).data;
   },
 
-  /**
-   * Resolves a template and presents the result as a pdf file
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param templateId Id of the targeted template
-   * @param requestBody The file data
-   * @returns Buffer
-   * @throws {LocalizationKeyMissingError}
-   * @throws {TemplateFillingError}
-   * @throws {ResourceUnknownError}
-   */
   async resolveAsPdf(
     templateId: string,
     requestBody: CreateFile
@@ -147,21 +73,6 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
     ).data;
   },
 
-  /**
-   * @deprecated
-   * Resolves a template and presents the result as a pdf file
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param templateId Id of the targeted template
-   * @param localizationCode Specifies the language the template must be resolved in
-   * @param requestBody The file data
-   * @returns Buffer
-   * @throws {LocalizationKeyMissingError}
-   * @throws {TemplateFillingError}
-   * @throws {ResourceUnknownError}
-   */
   async resolveAsPdfUsingCode(
     templateId: string,
     localizationCode: string,
@@ -179,19 +90,6 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
     ).data;
   },
 
-  /**
-   * Resolves a template and presents the result as a json response
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param templateId Id of the targeted template
-   * @param requestBody
-   * @returns string Success
-   * @throws {LocalizationKeyMissingError}
-   * @throws {TemplateFillingError}
-   * @throws {ResourceUnknownError}
-   */
   async resolveAsJson(
     templateId: string,
     requestBody: CreateFile
@@ -200,21 +98,6 @@ export default (client, httpAuth: HttpInstance): TemplatesService => ({
       .data;
   },
 
-  /**
-   * @deprecated
-   * Resolves a template and presents the result as a json response
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   *
-   * @param templateId Id of the targeted template
-   * @param localizationCode Specifies the language the template must be resolved in
-   * @param requestBody
-   * @returns string Success
-   * @throws {LocalizationKeyMissingError}
-   * @throws {TemplateFillingError}
-   * @throws {ResourceUnknownError}
-   */
   async resolveAsJsonUsingCode(
     templateId: string,
     localizationCode: string,

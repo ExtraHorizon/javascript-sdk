@@ -33,16 +33,45 @@ export interface Version {
 }
 
 export interface EventsService {
+  /**
+   * Returns a list of events
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_EVENTS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Event>
+   */
   find(
     this: EventsService,
     options?: OptionsWithRql
   ): Promise<PagedResult<Event>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById(
     this: EventsService,
     id: ObjectId,
     options?: OptionsWithRql
   ): Promise<Event>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(this: EventsService, options?: OptionsWithRql): Promise<Event>;
+  /**
+   * Creates an event
+   * Permission | Scope | Effect
+   * - | - | -
+   * `CREATE_EVENTS` | `global` | **Required** for this endpoint
+   *
+   * @param requestBody
+   * @returns Event
+   */
   create(
     this: EventsService,
     requestBody: CreateEvent,
@@ -51,19 +80,48 @@ export interface EventsService {
 }
 
 export interface SubscriptionsService {
+  /**
+   * Returns a list of event subscriptions
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Subscription>
+   */
   find(
     this: SubscriptionsService,
     options?: OptionsWithRql
   ): Promise<PagedResult<Subscription>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById(
     this: SubscriptionsService,
     id: ObjectId,
     options?: OptionsWithRql
   ): Promise<Subscription>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(
     this: SubscriptionsService,
     options?: OptionsWithRql
   ): Promise<Subscription>;
+  /**
+   * Creates an event subscription
+   * Permission | Scope | Effect
+   * - | - | -
+   * `CREATE_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
+   *
+   * @param requestBody
+   * @returns Subscription
+   */
   create(
     this: SubscriptionsService,
     requestBody: CreateSubscription,
