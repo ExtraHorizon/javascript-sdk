@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { RQLString } from '../../rql';
 import type {
   AffectedRecords,
   ObjectId,
