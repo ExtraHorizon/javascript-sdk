@@ -8,7 +8,6 @@ import {
   OptionsBase,
 } from '../types';
 import { TypeConfiguration } from '../data/types';
-import { RQLString } from '../../rql';
 
 export interface TemplateOut {
   id?: ObjectId;

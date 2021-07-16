@@ -1,18 +1,7 @@
 import type { HttpInstance } from '../../types';
-import {
-  AffectedRecords,
-  ObjectId,
-  PagedResult,
-  ResultResponse,
-  Results,
-} from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
-import type {
-  TemplateIn,
-  TemplateOut,
-  CreateFile,
-  TemplatesService,
-} from './types';
+import { ResultResponse, Results } from '../types';
+import { rqlBuilder } from '../../rql';
+import type { TemplatesService } from './types';
 import { HttpClient } from '../http-client';
 
 export default (
