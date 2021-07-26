@@ -34,6 +34,11 @@ export default (userClient, httpWithAuth: HttpInstance): UsersService => ({
     return (await userClient.get(httpWithAuth, `/${options?.rql || ''}`)).data;
   },
 
+  async findFirst(options?: { rql?: RQLString }): Promise<User> {
+    const res = await this.find(options);
+    return res.data[0];
+  },
+
   async removeUsers(rql: RQLString): Promise<AffectedRecords> {
     return (await userClient.delete(httpWithAuth, `/${rql}`)).data;
   },
