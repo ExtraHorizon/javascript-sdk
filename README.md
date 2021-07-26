@@ -30,6 +30,15 @@ To get started with the ExtraHorizon SDK you'll need to install it, and then get
 
 ## Installation
 
+In your project, if you are using yarn you need to create a file called `.yarnrc` (if you are using npm, create a file called `.npmrc`) at the root level of your project and add this line:
+
+```
+@extrahorizon:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:\_authToken=${AUTH_TOKEN}
+```
+
+Explanation from GitHub on how to add your token can be found here https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages
+
 Using npm:
 
 ```sh
