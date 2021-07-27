@@ -30,7 +30,7 @@ To get started with the ExtraHorizon SDK you'll need to install it, and then get
 
 ## Installation
 
-In your project, if you are using yarn you need to create a file called `.yarnrc` (if you are using npm, create a file called `.npmrc`) at the root level of your project and add this line:
+In your project, if you are using yarn you need to create a file called `.yarnrc` (if you are using npm, create a file called `.npmrc`) at the root level of your project and add these lines:
 
 ```
 @extrahorizon:registry=https://npm.pkg.github.com
