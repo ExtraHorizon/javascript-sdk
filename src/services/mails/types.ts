@@ -103,8 +103,11 @@ export interface MailsService {
   health(this: MailsService): Promise<boolean>;
   /**
    * Retrieve a list of mails
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
@@ -133,14 +136,19 @@ export interface MailsService {
   findFirst(this: MailsService, options?: { rql?: RQLString }): Promise<Mail>;
   /**
    * Send a mail
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Send mails to your own email address
+   *
    * none | `staff enlistment` | Send any mail to your patients or send a template mail based on pre-configured allowed templates to any email address.
+   *
    * `SEND_MAILS` | `global` | Send mails to any email address
    *
-   * @param requestBody
-   * @returns Mail Success
+   * @param requestBody mail creation data
+   * @returns Mail
    * @throws {NotActivatedError}
    */
   send(
@@ -149,18 +157,24 @@ export interface MailsService {
   ): Promise<Mail>;
   /**
    * Register a mail being opened
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
    * @param trackingHash
-   * @returns any Operation successful
+   * @returns AffectedRecords
    */
   track(this: MailsService, trackingHash: string): Promise<AffectedRecords>;
   /**
    * Retrieve the list of mails that are not sent yet
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
