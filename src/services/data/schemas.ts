@@ -55,10 +55,15 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
 
   /**
    * Request a list of all schemas
+   *
    * Do not pass in an rql with limit operator!
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Every one can use this endpoint
+   *
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
    * @param rql Add filters to the requested list.
    * @returns Schema[]
