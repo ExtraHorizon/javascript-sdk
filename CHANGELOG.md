@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v4.1.0]
 
+### Added
+
 - Added missing permissions
+- Added findFirst method in users service
+
+### Changes
+
 - Fixed bug to show a clear error when the user is not authenticated
 - Fixed documentation format
 - Updated README installation

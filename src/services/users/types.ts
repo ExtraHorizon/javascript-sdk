@@ -779,6 +779,12 @@ export interface UsersService {
     options?: { rql?: RQLString }
   ): Promise<PagedResult<User>>;
   /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  findFirst(this: UsersService, options?: { rql?: RQLString }): Promise<User>;
+  /**
    * @deprecated
    * Delete a list of users
    *
