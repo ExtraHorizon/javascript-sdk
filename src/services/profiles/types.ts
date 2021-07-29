@@ -113,10 +113,15 @@ export interface ProfileComment {
 export interface ProfilesGroupsService {
   /**
    * Add a group enlistment to a profile
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Add a group enlistment for your profile only
+   *
    * `ADD_PATIENT` | `staff enlistment` | Add a group enlistment for any profile of this group
+   *
    * `ADD_PATIENT` & `ACTIVATE_PRESCRIPTIONS` | `global` | Add a group enlistment for any profile for any group
    *
    * @param profileId Id of the targeted profile
@@ -132,9 +137,13 @@ export interface ProfilesGroupsService {
   ): Promise<Group>;
   /**
    * Update a group enlistment on a profile
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_PROFILES` | `staff enlistment` | Update a group enlistment for any profile for this group
+   *
    * `UPDATE_PROFILES` | `global` | Update a group enlistment for any profile for any group
    *
    * @param profileId Id of the targeted profile
@@ -151,10 +160,15 @@ export interface ProfilesGroupsService {
   ): Promise<Group>;
   /**
    * Delete a group from a profile
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Delete a group from your profile only
+   *
    * `UPDATE_PROFILES` | `staff enlistment` | Delete a group from any profile in this group
+   *
    * `UPDATE_PROFILES` | `global` | Delete a group from any profile in any group
    *
    * @param profileId Id of the targeted profile
@@ -169,9 +183,13 @@ export interface ProfilesGroupsService {
   ): Promise<AffectedRecords>;
   /**
    * Remove a field on a group enlistment object in a profile
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_PROFILES` | `staff enlistment` | Remove a field for this group
+   *
    * `UPDATE_PROFILES` | `global` | Remove a field for any group
    *
    * @param profileId Id of the targeted profile
@@ -193,9 +211,13 @@ export interface ProfilesGroupsService {
 export interface ProfilesLogsService {
   /**
    * Create a profile log entry
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Create a log entry for any profile of this group
+   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Create a log entry for any profile of any group
    *
    * @param profileId Id of the targeted profile
@@ -212,9 +234,13 @@ export interface ProfilesLogsService {
   ): Promise<LogEntry>;
   /**
    * Retrieve all profile log entries
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `VIEW_PROFILE_LOG_ENTRIES` | `staff enlistment` | Retrieve a list of log entries for any profile of this group
+   *
    * `VIEW_PROFILE_LOG_ENTRIES` | `global` | Retrieve a list of log entries for any profile of any group
    *
    * @param profileId Id of the targeted profile
@@ -231,9 +257,13 @@ export interface ProfilesLogsService {
   ): Promise<PagedResult<LogEntry>>;
   /**
    * Update a profile log entry
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Update a log entry, created by the current user, for any profile of this group
+   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Update a log entry, created by the current user, for any profile of any group
    *
    * @param profileId Id of the targeted profile
@@ -252,9 +282,13 @@ export interface ProfilesLogsService {
   ): Promise<LogEntry>;
   /**
    * Delete a profile log entry
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Delete a log entry, created by the current user, for any profile of this group
+   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Delete a log entry, created by the current user, for any profile of any group
    *
    * @param profileId Id of the targeted profile
@@ -274,10 +308,15 @@ export interface ProfilesLogsService {
 export interface ProfilesService {
   /**
    * Get a list of profiles
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | View your profile
+   *
    * none | `staff enlistment` | View all the profiles of the group
+   *
    * `VIEW_PATIENTS` | `global` | View all profiles
    *
    * @param rql an optional rql string
@@ -309,22 +348,31 @@ export interface ProfilesService {
   ): Promise<Profile>;
   /**
    * Create a new profile
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Create a profile for the current user
+   *
    * `CREATE_PROFILES` | `global` | Create a profile for any user
    *
-   * @param requestBody
+   * @param requestBody ProfileCreation
    * @returns Profile
    * @throws {ProfileAlreadyExistsError}
    */
   create(this: ProfilesService, requestBody: ProfileCreation): Promise<Profile>;
   /**
    * Update an existing profile
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your profile
+   *
    * `UPDATE_PROFILES` | `staff enlistment` | Update the profile of any group member
+   *
    * `UPDATE_PROFILES` | `global` | Update any profile
    *
    * @param rql Add filters to the requested list, **required**.
@@ -338,11 +386,17 @@ export interface ProfilesService {
   ): Promise<AffectedRecords>;
   /**
    * Remove a given field from all profile records
+   *
    * To make a selection of profiles, use RQL.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Remove a given field from your profile
+   *
    * `UPDATE_PROFILES` | `staff enlistment` | Remove a given field from any group member
+   *
    * `UPDATE_PROFILES` | `global` | Remove a given field from any profile
    *
    * @param rql Add filters to the requested list, **required**.
@@ -359,8 +413,11 @@ export interface ProfilesService {
   ): Promise<AffectedRecords>;
   /**
    * Retrieve a list of all the defined comorbidities
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @returns PagedResult<Comorbidities>
@@ -368,8 +425,11 @@ export interface ProfilesService {
   getComorbidities(this: ProfilesService): Promise<PagedResult<Comorbidities>>;
   /**
    * Retrieve a list of all the defined impediments
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @returns PagedResult<Impediments>

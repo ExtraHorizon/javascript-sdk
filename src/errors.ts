@@ -184,7 +184,7 @@ Looks like you forgot to authenticate. Please check the README file to get start
 As example if you want to use the Oauth2 Password Grant Flow you can authenticate using this snippet:
 
 const sdk = createClient({
-  host: '${config.baseURL}',
+  host: '${config ? config.baseURL : ''}',
   clientId: '',
 });
 

@@ -117,9 +117,13 @@ export type SettingCreation = Required<Pick<Setting, 'key' | 'preferences'>>;
 export interface NotificationsService {
   /**
    * Create a notification
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Create a notification for yourself
+   *
    * `CREATE_NOTIFICATIONS` | `global` | Create a notification for another person
    *
    * @param requestBody CreateNotificationRequest
@@ -131,9 +135,13 @@ export interface NotificationsService {
   ): Promise<Notification>;
   /**
    * Retrieve a list of notifications
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | View your own notifications
+   *
    * `VIEW_NOTIFICATIONS` | `global` | View all notifications
    *
    * @param rql Add filters to the requested list.
@@ -165,8 +173,11 @@ export interface NotificationsService {
   ): Promise<Notification>;
   /**
    * Delete notification(s)
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `DELETE_NOTIFICATIONS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
@@ -178,8 +189,11 @@ export interface NotificationsService {
   ): Promise<AffectedRecords>;
   /**
    * Mark your notification(s) as viewed
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @param rql Add filters to the requested list.
@@ -191,8 +205,11 @@ export interface NotificationsService {
   ): Promise<AffectedRecords>;
   /**
    * Retrieve the list of notification types
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @returns PagedResult<NotifTypeDef>
@@ -203,9 +220,13 @@ export interface NotificationsService {
 export interface NotificationSettingsServices {
   /**
    * Retrieve a list of notifications settings
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | View your own notification settings
+   *
    * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notification settings
    *
    * @param rql Add filters to the requested list.
@@ -237,9 +258,13 @@ export interface NotificationSettingsServices {
   ): Promise<Setting>;
   /**
    * Update the notification settings for a user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your own notification settings
+   *
    * `UPDATE_NOTIFICATION_SETTINGS` | `global` | Update all notification settings
    *
    * @param userId The User Id
@@ -253,8 +278,11 @@ export interface NotificationSettingsServices {
   ): Promise<Setting>;
   /**
    * Delete the notifications settings for a user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_NOTIFICATION_SETTINGS` | `global` | **Required** for this endpoint
    *
    * @param userId

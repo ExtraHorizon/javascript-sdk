@@ -353,11 +353,17 @@ export interface Comment {
 export interface DataCommentsService {
   /**
    * Create a comment
+   *
    * Comment on the specified document.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Comment on your own documents
+   *
    * `CREATE_DOCUMENT_COMMENTS` | `staff enlistment`  | Comment on any document belonging to the group
+   *
    * `CREATE_DOCUMENT_COMMENTS` | `global` | Comment on any document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -375,11 +381,17 @@ export interface DataCommentsService {
   ): Promise<Comment>;
   /**
    * Request a list of comments
+   *
    * List the comments for the specified document.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | View comments for your own documents
+   *
    * `VIEW_DOCUMENT_COMMENTS` | `staff enlistment`  | View comments for any document belonging to the group
+   *
    * `VIEW_DOCUMENT_COMMENTS` | `global` | View the comments for any document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -424,10 +436,15 @@ export interface DataCommentsService {
   ): Promise<Comment>;
   /**
    * Update a comment
+   *
    * Update a comment you made.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your comments
+   *
    * `UPDATE_DOCUMENT_COMMENTS` | `global` | Update comments
    * @param commentId The id of the targeted comment.
    * @param schemaId The id of the targeted schema.
@@ -445,11 +462,17 @@ export interface DataCommentsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a comment
+   *
    * Delete a comments from the specified measurement.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Delete your comments
+   *
    * `UPDATE_DOCUMENT_COMMENTS` | `staff enlistment`  | Delete comments for any document belonging to the group
+   *
    * `UPDATE_DOCUMENT_COMMENTS` | `global` | Delete the comments for any document
    * @param commentId The id of the targeted comment.
    * @param schemaId The id of the targeted schema.
@@ -467,6 +490,7 @@ export interface DataCommentsService {
 export interface DataDocumentsService {
   /**
    * Check if the document is not in a locked state
+   *
    * Actions cannot be performed if the document has a transitionLock
    *
    * @param schemaId the schema Id
@@ -482,9 +506,13 @@ export interface DataDocumentsService {
   ): Promise<boolean>;
   /**
    * Create a document
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
+   *
    * `CREATE_DOCUMENTS` | `global` | When the schema.createMode is set to permissionRequired then this permission is required to make a group
    * @param schemaId The id of the targeted schema.
    * @param requestBody
@@ -499,23 +527,37 @@ export interface DataDocumentsService {
   ): Promise<Document<CustomData>>;
   /**
    * Request a list of documents
+   *
    * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | See your own documents
+   *
    * none | `staff enlistment` | See the documents belonging to the group (and your own documents)
+   *
    * `VIEW_DOCUMENTS` | `global` | See any document
    *
    * ReadMode on schema is set to 'allUsers':
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | See any document
    *
    * ReadMode on schema is set to 'enlistedInLinkedGroups':
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | `patient enlistment` | See the documents belonging to the group
+   *
    * none | `staff enlistment` | See the documents belonging to the group
+   *
    * `VIEW_DOCUMENTS` | `global` | See any document
    * @param schemaId The id of the targeted schema.
    * @param rql Add filters to the requested list.
@@ -530,6 +572,7 @@ export interface DataDocumentsService {
   ): Promise<PagedResult<Document<CustomData>>>;
   /**
    * Shortcut method to find a document by id
+   *
    * Same Permissions as the find() method
    *
    * @param schemaId the schema Id
@@ -545,6 +588,7 @@ export interface DataDocumentsService {
   ): Promise<Document<CustomData>>;
   /**
    * Returns the first document that is found with the applied filter
+   *
    * Same Permissions as the find() method
    *
    * @param schemaId the schema Id
@@ -558,16 +602,22 @@ export interface DataDocumentsService {
   ): Promise<Document<CustomData>>;
   /**
    * Update a document
+   *
    * **Partially** update the selected document. Use a `null` value to clear a field.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your own documents
+   *
    * none | `staff enlistment`  | Update all the documents belonging to the group
+   *
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param rql Add filters to the requested list.
-   * @param requestBody
+   * @param requestBody Record<string, any>
    * @returns AffectedRecords
    */
   update(
@@ -581,16 +631,25 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a document
+   *
    * DeleteMode on schema is set to 'permissionRequired':
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `DELETE_DOCUMENTS` | `global` | **Required** for this endpoint
    *
    * DeleteMode on schema is set to 'linkedUsersOnly':
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Delete the document if the userId is linked to the document
+   *
    * none | `staff enlistment`  | Delete the document if the groupId is linked
+   *
    * `DELETE_DOCUMENTS` | `global` | Delete the document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -603,11 +662,17 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a document
+   *
    * Delete the specified fields from the selected document.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your own documents
+   *
    * none | `staff enlistment`  | Update all the documents belonging to the group
+   *
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -628,11 +693,17 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
   /**
    * Transition a document
+   *
    * Start a transition manually for the selected document where the conditions of a manual transition are met.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your own documents
+   *
    * none | `staff enlistment`  | Update all the documents belonging to the group
+   *
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -656,10 +727,13 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
   /**
    * Link groups to a document
+   *
    * Link the specified groups to a document.
    *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -676,6 +750,7 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
   /**
    * Unlink groups from a document
+   *
    * Unlink the specified groups from a document.
    *
    * Specifying an **empty** `groupIds` array will have **no effect** on the document.
@@ -683,7 +758,9 @@ export interface DataDocumentsService {
    * **Not** specifying the `groupIds` array will **unlink all** groups from the document.
    *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -700,10 +777,13 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
   /**
    * Link users to a document
+   *
    * Link the specified users to a document.
    *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be added to the document.
@@ -722,6 +802,7 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
   /**
    * Unlink users from a document
+   *
    * Unlink the specified users from a document.
    *
    * Specifying an **empty** `userIds` array will have **no effect** on the document.
@@ -729,7 +810,9 @@ export interface DataDocumentsService {
    * **Not** specifying the `userIds` array will **unlink all** users from the document.
    *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
@@ -751,9 +834,13 @@ export interface DataDocumentsService {
 export interface DataIndexesService {
   /**
    * Create an index
+   *
    * Set an index on a specific property in a schema.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Create an index
    * @param schemaId The id of the targeted schema.
    * @param requestBody
@@ -769,9 +856,13 @@ export interface DataIndexesService {
   ): Promise<Index>;
   /**
    * Delete an existing index
+   *
    * Delete an index for a specific property in a schema.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Delete an index
    * @param indexId The id of the targeted index.
    * @param schemaId The id of the targeted schema.
@@ -789,8 +880,11 @@ export interface DataIndexesService {
 export interface DataPropertiesService {
   /**
    * Create a property
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody The name and configuration
@@ -810,8 +904,11 @@ export interface DataPropertiesService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a property
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
@@ -826,8 +923,11 @@ export interface DataPropertiesService {
   ): Promise<AffectedRecords>;
   /**
    * Update a property
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
@@ -847,8 +947,11 @@ export interface DataPropertiesService {
 export interface DataSchemasService {
   /**
    * Create a schema
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `CREATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param requestBody
    * @returns Schema successful operation
@@ -856,9 +959,13 @@ export interface DataSchemasService {
   create(this: DataSchemasService, requestBody: SchemaInput): Promise<Schema>;
   /**
    * Request a list of schemas
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Every one can use this endpoint
+   *
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
@@ -900,8 +1007,11 @@ export interface DataSchemasService {
   ): Promise<Schema>;
   /**
    * Update a schema
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody The schema input
@@ -914,8 +1024,11 @@ export interface DataSchemasService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a schema
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `DELETE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
@@ -927,8 +1040,11 @@ export interface DataSchemasService {
   ): Promise<AffectedRecords>;
   /**
    * Disable a schema
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
@@ -939,8 +1055,11 @@ export interface DataSchemasService {
   ): Promise<AffectedRecords>;
   /**
    * Enable a schema
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
@@ -954,8 +1073,11 @@ export interface DataSchemasService {
 export interface DataStatusesService {
   /**
    * Create a status
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody The name and status data
@@ -972,8 +1094,11 @@ export interface DataStatusesService {
   ): Promise<AffectedRecords>;
   /**
    * Update a status
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param name The name of the targeted status.
@@ -989,8 +1114,11 @@ export interface DataStatusesService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a status
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param name The name of the targeted status.
@@ -1008,8 +1136,11 @@ export interface DataStatusesService {
 export interface DataTransitionsService {
   /**
    * Update the creation transition
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody
@@ -1023,11 +1154,14 @@ export interface DataTransitionsService {
   ): Promise<AffectedRecords>;
   /**
    * Create a transition
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
-   * @param requestBody
+   * @param requestBody TransitionInput
    * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
@@ -1038,8 +1172,11 @@ export interface DataTransitionsService {
   ): Promise<AffectedRecords>;
   /**
    * Update a transition
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param transitionId The id of the targeted transition.
@@ -1056,8 +1193,11 @@ export interface DataTransitionsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a transition
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param transitionId The id of the targeted transition.

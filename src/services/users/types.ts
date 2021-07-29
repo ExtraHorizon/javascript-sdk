@@ -169,6 +169,96 @@ export enum GlobalPermissionName {
   UPDATE_PATIENT_REPORT_CONFIGURATIONS = 'UPDATE_PATIENT_REPORT_CONFIGURATIONS',
   CREATE_REPORT_SHARES = 'CREATE_REPORT_SHARES',
   DELETE_REPORT_SHARES = 'DELETE_REPORT_SHARES',
+  VIEW_DISPATCHERS = 'VIEW_DISPATCHERS',
+  APPROVE_GROUP_REQUESTS = 'APPROVE_GROUP_REQUESTS',
+  DELETE_AUTHORIZATIONS = 'DELETE_AUTHORIZATIONS',
+  VIEW_SENTIANCE_DATA = 'VIEW_SENTIANCE_DATA',
+  UPDATE_PRESCRIPTION_STATUS = 'UPDATE_PRESCRIPTION_STATUS',
+  UPDATE_STRIPE_PRODUCTS = 'UPDATE_STRIPE_PRODUCTS',
+  UPDATE_SENTIANCE_DATA = 'UPDATE_SENTIANCE_DATA',
+  CANCEL_TASKS = 'CANCEL_TASKS',
+  CREATE_DISPATCHERS = 'CREATE_DISPATCHERS',
+  UPDATE_TEMPLATES = 'UPDATE_TEMPLATES',
+  VIEW_DOCUMENT_COMMENTS = 'VIEW_DOCUMENT_COMMENTS',
+  DELETE_SCHEMAS = 'DELETE_SCHEMAS',
+  VIEW_FILES = 'VIEW_FILES',
+  VIEW_GROUPS = 'VIEW_GROUPS',
+  UPDATE_PACKAGES = 'UPDATE_PACKAGES',
+  UPDATE_GROUP_REQUESTS = 'UPDATE_GROUP_REQUESTS',
+  CREATE_DOCUMENT_COMMENTS = 'CREATE_DOCUMENT_COMMENTS',
+  CREATE_PACKAGES = 'CREATE_PACKAGES',
+  VIEW_DOCUMENTS = 'VIEW_DOCUMENTS',
+  UPDATE_DOCUMENT_COMMENTS = 'UPDATE_DOCUMENT_COMMENTS',
+  CREATE_DOCUMENTS = 'CREATE_DOCUMENTS',
+  CREATE_TASKS = 'CREATE_TASKS',
+  DELETE_USER = 'DELETE_USER',
+  VIEW_ACTIVE_PERIODS = 'VIEW_ACTIVE_PERIODS',
+  VIEW_MAILS = 'VIEW_MAILS',
+  ADD_ROLE_PERMISSION = 'ADD_ROLE_PERMISSION',
+  VIEW_GROUP_REQUESTS = 'VIEW_GROUP_REQUESTS',
+  UPDATE_APPLICATIONS = 'UPDATE_APPLICATIONS',
+  CREATE_STRIPE_PRODUCTS = 'CREATE_STRIPE_PRODUCTS',
+  VIEW_APPLICATIONS = 'VIEW_APPLICATIONS',
+  UPDATE_USER_EMAIL = 'UPDATE_USER_EMAIL',
+  VIEW_NOTIFICATION_SETTINGS = 'VIEW_NOTIFICATION_SETTINGS',
+  DELETE_LOCALIZATIONS = 'DELETE_LOCALIZATIONS',
+  DELETE_CONFIGURATIONS = 'DELETE_CONFIGURATIONS',
+  SEND_MAILS = 'SEND_MAILS',
+  VIEW_GROUP = 'VIEW_GROUP',
+  UPDATE_STRIPE_ORDERS = 'UPDATE_STRIPE_ORDERS',
+  CREATE_TEMPLATES = 'CREATE_TEMPLATES',
+  VIEW_CONFIGURATIONS = 'VIEW_CONFIGURATIONS',
+  UPDATE_DOCUMENTS = 'UPDATE_DOCUMENTS',
+  UPDATE_LOCALIZATIONS = 'UPDATE_LOCALIZATIONS',
+  VIEW_TEMPLATES = 'VIEW_TEMPLATES',
+  DELETE_TEMPLATES = 'DELETE_TEMPLATES',
+  ADD_CREDITS = 'ADD_CREDITS',
+  UPDATE_PROFILE_IMAGE = 'UPDATE_PROFILE_IMAGE',
+  DELETE_DISPATCHERS = 'DELETE_DISPATCHERS',
+  DELETE_DOCUMENTS = 'DELETE_DOCUMENTS',
+  UPDATE_DISPATCHERS = 'UPDATE_DISPATCHERS',
+  ADD_APPLICATION_VERSION = 'ADD_APPLICATION_VERSION',
+  UPDATE_USER = 'UPDATE_USER',
+  VIEW_TASKS = 'VIEW_TASKS',
+  CREATE_PROFILES = 'CREATE_PROFILES',
+  PRERENDER_REPORTS = 'PRERENDER_REPORTS',
+  VIEW_SUBSCRIPTIONS = 'VIEW_SUBSCRIPTIONS',
+  VIEW_STRIPE_ORDERS = 'VIEW_STRIPE_ORDERS',
+  UPDATE_FREE_STATUS = 'UPDATE_FREE_STATUS',
+  REMOVE_ROLE_PERMISSION = 'REMOVE_ROLE_PERMISSION',
+  REMOVE_APPLICATION_VERSION = 'REMOVE_APPLICATION_VERSION',
+  VIEW_USER = 'VIEW_USER',
+  DISABLE_SCHEMAS = 'DISABLE_SCHEMAS',
+  MANAGE_SERVICE_ALERTS = 'MANAGE_SERVICE_ALERTS',
+  ACTIVATE_PRESCRIPTIONS = 'ACTIVATE_PRESCRIPTIONS',
+  CREATE_LOCALIZATIONS = 'CREATE_LOCALIZATIONS',
+  CREATE_SUBSCRIPTIONS = 'CREATE_SUBSCRIPTIONS',
+  UPDATE_CONFIGURATIONS = 'UPDATE_CONFIGURATIONS',
+  VIEW_EVENTS = 'VIEW_EVENTS',
+  DELETE_PACKAGES = 'DELETE_PACKAGES',
+  CREATE_GROUP = 'CREATE_GROUP',
+  CREATE_ROLE = 'CREATE_ROLE',
+  UPDATE_SCHEMAS = 'UPDATE_SCHEMAS',
+  CREATE_NOTIFICATIONS = 'CREATE_NOTIFICATIONS',
+  PAY_PRESCRIPTIONS = 'PAY_PRESCRIPTIONS',
+  CREATE_APPLICATIONS = 'CREATE_APPLICATIONS',
+  UPDATE_ROLE = 'UPDATE_ROLE',
+  TRANSFER_PERIOD = 'TRANSFER_PERIOD',
+  ADD_ROLE_TO_USER = 'ADD_ROLE_TO_USER',
+  VIEW_AUTHORIZATIONS = 'VIEW_AUTHORIZATIONS',
+  TRANSITION_DOCUMENTS = 'TRANSITION_DOCUMENTS',
+  REMOVE_ROLE_FROM_USER = 'REMOVE_ROLE_FROM_USER',
+  VIEW_ROLE = 'VIEW_ROLE',
+  UPDATE_NOTIFICATION_SETTINGS = 'UPDATE_NOTIFICATION_SETTINGS',
+  VIEW_PERIODS = 'VIEW_PERIODS',
+  SYNC_PROFILE_GROUPS = 'SYNC_PROFILE_GROUPS',
+  DELETE_APPLICATIONS = 'DELETE_APPLICATIONS',
+  CREATE_SCHEMAS = 'CREATE_SCHEMAS',
+  CREATE_EVENTS = 'CREATE_EVENTS',
+  VIEW_AWS_SES_STATISTICS = 'VIEW_AWS_SES_STATISTICS',
+  DELETE_ROLE = 'DELETE_ROLE',
+  UPDATE_PRESCRIPTIONS = 'UPDATE_PRESCRIPTIONS',
+  CREATE_USER_PERIODS = 'CREATE_USER_PERIODS',
 }
 
 export interface GroupRolePermissions {
@@ -237,8 +327,11 @@ export interface UserRoles {
 export interface UsersGlobalRolesService {
   /**
    * Retrieve a list of permissions
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
    * @returns PagedResult<GlobalPermission>
@@ -248,8 +341,11 @@ export interface UsersGlobalRolesService {
   ): Promise<PagedResult<GlobalPermission>>;
   /**
    * Retrieve a list of roles
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `VIEW_ROLE` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
@@ -261,8 +357,11 @@ export interface UsersGlobalRolesService {
   ): Promise<PagedResult<Role>>;
   /**
    * Create a role
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `CREATE_ROLE` | `global` | **Required** for this endpoint
    *
    * @param requestBody The role data
@@ -274,12 +373,15 @@ export interface UsersGlobalRolesService {
   ): Promise<Role>;
   /**
    * Delete a role
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `DELETE_ROLE` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @returns any Operation successful
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   remove(
@@ -288,13 +390,16 @@ export interface UsersGlobalRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Update a role
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_ROLE` | `global` | **Required** for this endpoint
    *
    * @param id Id of the targeted role
-   * @param requestBody
-   * @returns Role Success
+   * @param requestBody RoleUpdate
+   * @returns Promise<Role>
    */
   update(
     this: UsersGlobalRolesService,
@@ -303,12 +408,15 @@ export interface UsersGlobalRolesService {
   ): Promise<Role>;
   /**
    * Add permissions to a role
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `ADD_ROLE_PERMISSIONS` | `global` | **Required** for this endpoint
    *
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody RolePermissions
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   addPermissions(
@@ -318,13 +426,16 @@ export interface UsersGlobalRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Remove permissions from roles
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `REMOVE_ROLE_PERMISSIONS` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody RolePermissions
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   removePermissions(
@@ -334,12 +445,15 @@ export interface UsersGlobalRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Add roles to users
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `ADD_ROLE_TO_USER` | `global` | **Required** for this endpoint
    *
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody UserRoles
+   * @returns AffectedRecords
    */
   addToUsers(
     this: UsersGlobalRolesService,
@@ -348,13 +462,16 @@ export interface UsersGlobalRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Remove roles from users
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `REMOVE_ROLE_FROM_USER` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody UserRoles
+   * @returns AffectedRecords
    */
   removeFromUser(
     this: UsersGlobalRolesService,
@@ -366,8 +483,11 @@ export interface UsersGlobalRolesService {
 export interface UsersGroupRolesService {
   /**
    * Retrieve a list of group permissions
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
    * @returns PagedResult<GlobalPermission>
@@ -377,9 +497,13 @@ export interface UsersGroupRolesService {
   ): Promise<PagedResult<GlobalPermission>>;
   /**
    * Retrieve a list of group roles
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | `staff enlistment` | View the roles for the group
+   *
    * `VIEW_GROUP` | `global` | View any group its roles
    *
    * @param groupId Id of the targeted group
@@ -395,9 +519,13 @@ export interface UsersGroupRolesService {
   ): Promise<PagedResult<GroupRole>>;
   /**
    * Add role to a group
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `CREATE_GROUP_ROLE` | `staff enlistment` | Create a role for any group
+   *
    * `CREATE_GROUP_ROLE` | `global` | Create a role for the group
    *
    * @param groupId Id of the targeted group
@@ -411,9 +539,13 @@ export interface UsersGroupRolesService {
   ): Promise<GroupRole>;
   /**
    * Update a group role
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_GROUP_ROLE` | `staff enlistment` | Update a role for the group
+   *
    * `UPDATE_GROUP_ROLE` | `global` | Update a role for any group
    *
    * @param groupId Id of the targeted group
@@ -430,15 +562,18 @@ export interface UsersGroupRolesService {
   ): Promise<GroupRole>;
   /**
    * Remove a role from a group
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
    * `DELETE_GROUP_ROLE` | `staff enlistment` | Delete a role for the group
+   *
    * `DELETE_GROUP_ROLE` | `global` | Delete a role from any group
    *
    * @param groupId Id of the targeted group
    * @param roleId Id of the targeted role
    * @param rql Add filters to the requested list.
-   * @returns any Operation successful
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   remove(
@@ -449,15 +584,19 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Add permissions to group roles
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `ADD_GROUP_ROLE_PERMISSION` | `staff enlistment` | Add permissions to roles of the group
+   *
    * `ADD_GROUP_ROLE_PERMISSION` | `global` | Add permissions to roles of any group
    *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody GroupRolePermissions
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   addPermissions(
@@ -470,15 +609,19 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Remove permissions from group roles
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `REMOVE_GROUP_ROLE_PERMISSION` | `staff enlistment` | Remove permissions from roles of the group
+   *
    * `REMOVE_GROUP_ROLE_PERMISSION` | `global` | Remove permissions from roles of any group
    *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody GroupRolePermissions
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   removePermissions(
@@ -489,15 +632,19 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Assign roles to staff members of a group
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `ADD_GROUP_ROLE_TO_STAFF` | `staff enlistment` | Assign roles for the group
+   *
    * `ADD_GROUP_ROLE_TO_STAFF` | `global` | Assign roles for any group
    *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody StaffRoles
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   assignToStaff(
@@ -510,15 +657,19 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Remove roles from staff members of a group
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `REMOVE_GROUP_ROLE_FROM_STAFF` | `staff enlistment` | Remove roles from staff of the group
+   *
    * `REMOVE_GROUP_ROLE_FROM_STAFF` | `global` | Remove roles from staff of any group
    *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody StaffRoles
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   removeFromStaff(
@@ -529,14 +680,18 @@ export interface UsersGroupRolesService {
   ): Promise<AffectedRecords>;
   /**
    * Add users to staff
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `ADD_STAFF` | `staff enlistment` | Add staff to the group
+   *
    * `ADD_STAFF` | `global` | Add staff to any group
    *
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody StaffGroups
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   addUsersToStaff(
@@ -549,14 +704,18 @@ export interface UsersGroupRolesService {
 
   /**
    * Remove users from staff
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `ADD_STAFF` | `staff enlistment` | Remove staff from the group
+   *
    * `ADD_STAFF` | `global` | Remove staff from any group
    *
    * @param rql Add filters to the requested list.
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody StaffGroups
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   removeUsersFromStaff(
@@ -601,10 +760,15 @@ export interface UsersService {
   ): Promise<User>;
   /**
    * Retrieve a list of users
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
+   *
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
+   *
    * `VIEW_USER` | `global` | See all fields of all users
    *
    * @param rql Add filters to the requested list.
@@ -623,20 +787,28 @@ export interface UsersService {
   /**
    * @deprecated
    * Delete a list of users
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Delete your own user (object)
+   *
    * `DELETE_USER` | `global` | Delete any user
    *
    * @param rql Add filters to the requested list.
-   * @returns any Operation successful
+   * @returns AffectedRecords
    */
   removeUsers(this: UsersService, rql: RQLString): Promise<AffectedRecords>;
   /**
    * Retrieve a list of users that have a patient enlistment
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | `staff enlistment` | View the patients of the group
+   *
    * `VIEW_PATIENTS` | `global`  | View all patients
    *
    * @param rql Add filters to the requested list.
@@ -648,9 +820,13 @@ export interface UsersService {
   ): Promise<PagedResult<Patient>>;
   /**
    * Retrieve a list of users that have a staff enlistment
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | `staff enlistment` | View the other staff members of the group
+   *
    * `VIEW_STAFF` | `global`  | View all staff members
    *
    * @param rql Add filters to the requested list.
@@ -662,28 +838,36 @@ export interface UsersService {
   ): Promise<PagedResult<StaffMember>>;
   /**
    * Delete a specific user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Delete your own user object
+   *
    * `DELETE_USER` | `global` | Delete any user
    *
    * @param userId Id of the targeted user
-   * @returns any Operation successful
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   remove(this: UsersService, userId: ObjectId): Promise<AffectedRecords>;
   /**
    * Update the email address of a specific user
+   *
    * An email is send to validate and activate the new address.
    *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your own data
+   *
    * `UPDATE_USER_EMAIL` | `global` | Update any user
    *
    * @param userId Id of the targeted user
-   * @param requestBody
-   * @returns FullUser Success
+   * @param requestBody Email
+   * @returns User
    * @throws {EmailUsedError}
    * @throws {ResourceUnknownError}
    */
@@ -694,13 +878,16 @@ export interface UsersService {
   ): Promise<User>;
   /**
    * Add a patient enlistment to a user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `ADD_PATIENT` | `global` | **Required** for this endpoint
    *
    * @param userId Id of the targeted user
-   * @param requestBody
-   * @returns any Operation successful
+   * @param requestBody AddPatientEnlistment
+   * @returns AffectedRecords
    * @throws {ResourceAlreadyExistsError}
    */
   addPatientEnlistment(
@@ -710,15 +897,20 @@ export interface UsersService {
   ): Promise<AffectedRecords>;
   /**
    * Remove a patient enlistment from a user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Remove a patient enlistment from yourself
+   *
    * `REMOVE_PATIENT` | `staff enlistment` | Remove a patient enlistment for the group
+   *
    * `REMOVE_PATIENT` | `global` | Remove any patient enlistment
    *
    * @param userId Id of the targeted user
    * @param groupId Id of the targeted group
-   * @returns any Operation successful
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   removePatientEnlistment(
@@ -728,12 +920,15 @@ export interface UsersService {
   ): Promise<AffectedRecords>;
   /**
    * Create an account
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns FullUser Success
+   * @param requestBody RegisterUserData
+   * @returns User
    * @throws {EmailUsedError}
    */
   createAccount(
@@ -742,12 +937,15 @@ export interface UsersService {
   ): Promise<User>;
   /**
    * Change your password
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns FullUser Success
+   * @param requestBody ChangePassword
+   * @returns User
    * @throws {PasswordError}
    */
   changePassword(
@@ -756,12 +954,15 @@ export interface UsersService {
   ): Promise<User>;
   /**
    * Authenticate a user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns FullUser Success
+   * @param requestBody Authenticate
+   * @returns User
    * @throws {AuthenticationError}
    * @throws {LoginTimeoutError}
    * @throws {LoginFreezeError}
@@ -770,24 +971,30 @@ export interface UsersService {
   authenticate(this: UsersService, requestBody: Authenticate): Promise<User>;
   /**
    * Request an email activation
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
    * @param email
-   * @returns {boolean} Success
+   * @returns {boolean} true on success
    * @throws {EmailUnknownError}
    * @throws {AlreadyActivatedError}
    */
   requestEmailActivation(this: UsersService, email: string): Promise<boolean>;
   /**
    * Complete an email activation
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns {boolean} Success
+   * @param requestBody Hash
+   * @returns {boolean} true on success
    * @throws {ActivationUnknownError}
    */
   validateEmailActivation(
@@ -796,24 +1003,30 @@ export interface UsersService {
   ): Promise<boolean>;
   /**
    * Request a password reset
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
    * @param email
-   * @returns {boolean} Success
+   * @returns {boolean} true on success
    * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
    */
   requestPasswordReset(this: UsersService, email: string): Promise<boolean>;
   /**
    * Complete a password reset
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns true if completed a password reset
+   * @param requestBody PasswordReset
+   * @returns {boolean} true if completed a password reset
    * @throws {NotActivatedError}
    * @throws {NewPasswordHashUnknownError}
    */
@@ -823,12 +1036,15 @@ export interface UsersService {
   ): Promise<boolean>;
   /**
    * Confirm the password for the user making the request
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
    * @param requestBody the password to confirm
-   * @returns true if password was confirmed
+   * @returns {boolean} true if password was confirmed
    * @throws {AuthenticationError}
    * @throws {LoginTimeoutError}
    * @throws {LoginFreezeError}
@@ -840,8 +1056,11 @@ export interface UsersService {
   ): Promise<boolean>;
   /**
    * Check if an email address is still available
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @param email
@@ -855,15 +1074,19 @@ export interface UsersService {
   }>;
   /**
    * Update the profile image of a user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Update your own profile image
+   *
    * `UPDATE_PROFILE_IMAGE` | `global` | Update any user its profile image
    *
    * @deprecated this method is deprecated in swagger
    * @param userId Id of the targeted user
-   * @param requestBody
-   * @returns FullUser Success
+   * @param requestBody Hash
+   * @returns User
    * @throws {ResourceUnknownError}
    */
   updateProfileImage(
@@ -873,13 +1096,17 @@ export interface UsersService {
   ): Promise<User>;
   /**
    * Delete the profile image of a user
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Delete your own profile image
+   *
    * `UPDATE_PROFILE_IMAGE` | `global` | Delete any user its profile image
    *
    * @param userId Id of the targeted user
-   * @returns FullUser Success
+   * @returns User
    * @throws {ResourceUnknownError}
    */
   deleteProfileImage(this: UsersService, userId: ObjectId): Promise<User>;
