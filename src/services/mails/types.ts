@@ -95,22 +95,91 @@ export enum QueuedMailStatus {
 }
 
 export interface MailsService {
+  /**
+   * Perform a health check for mail service
+   * @permission Everyone can use this endpoint
+   * @returns {boolean} success
+   */
   health(this: MailsService): Promise<boolean>;
+  /**
+   * Retrieve a list of mails
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `VIEW_MAILS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Mail>
+   */
   find: (
     this: MailsService,
     options?: { rql?: RQLString }
   ) => Promise<PagedResult<Mail>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById: (
     this: MailsService,
     id: ObjectId,
     options?: { rql?: RQLString }
   ) => Promise<Mail>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(this: MailsService, options?: { rql?: RQLString }): Promise<Mail>;
+  /**
+   * Send a mail
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none | | Send mails to your own email address
+   *
+   * none | `staff enlistment` | Send any mail to your patients or send a template mail based on pre-configured allowed templates to any email address.
+   *
+   * `SEND_MAILS` | `global` | Send mails to any email address
+   *
+   * @param requestBody mail creation data
+   * @returns Mail
+   * @throws {NotActivatedError}
+   */
   send(
     this: MailsService,
     requestBody?: PlainMailCreation | TemplateBasedMailCreation
   ): Promise<Mail>;
+  /**
+   * Register a mail being opened
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Everyone can use this endpoint
+   *
+   * @param trackingHash
+   * @returns AffectedRecords
+   */
   track(this: MailsService, trackingHash: string): Promise<AffectedRecords>;
+  /**
+   * Retrieve the list of mails that are not sent yet
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `VIEW_MAILS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<QueuedMail>
+   */
   findOutbound(
     this: MailsService,
     options?: { rql?: string }

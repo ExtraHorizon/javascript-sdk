@@ -3,19 +3,6 @@ import type { ObjectId, AffectedRecords } from '../types';
 import type { DataPropertiesService, TypeConfiguration } from './types';
 
 export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
-  /**
-   * Create a property
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param requestBody The name and configuration
-   * @returns AffectedRecords
-   * @throws {ResourceAlreadyExistsError}
-   * @throws {IllegalArgumentError}
-   * @throws {IllegalStateException}
-   * @throws {ResourceUnknownException}
-   */
   async create(
     schemaId: ObjectId,
     requestBody: {
@@ -27,17 +14,6 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
       .data;
   },
 
-  /**
-   * Delete a property
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param propertyPath The path to the property
-   * @returns AffectedRecords
-   * @throws {IllegalArgumentError}
-   * @throws {ResourceUnknownError}
-   */
   async remove(
     schemaId: ObjectId,
     propertyPath: string
@@ -47,18 +23,6 @@ export default (client, httpAuth: HttpInstance): DataPropertiesService => ({
     ).data;
   },
 
-  /**
-   * Update a property
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param propertyPath The path to the property
-   * @param requestBody The configuration
-   * @returns AffectedRecords
-   * @throws {IllegalArgumentError}
-   * @throws {ResourceUnknownError}
-   */
   async update(
     schemaId: ObjectId,
     propertyPath: string,

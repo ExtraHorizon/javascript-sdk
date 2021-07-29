@@ -115,53 +115,179 @@ export interface Setting {
 export type SettingCreation = Required<Pick<Setting, 'key' | 'preferences'>>;
 
 export interface NotificationsService {
+  /**
+   * Create a notification
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none | | Create a notification for yourself
+   *
+   * `CREATE_NOTIFICATIONS` | `global` | Create a notification for another person
+   *
+   * @param requestBody CreateNotificationRequest
+   * @returns Notification
+   */
   create(
     this: NotificationsService,
     requestBody: CreateNotificationRequest
   ): Promise<Notification>;
+  /**
+   * Retrieve a list of notifications
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none | | View your own notifications
+   *
+   * `VIEW_NOTIFICATIONS` | `global` | View all notifications
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Notification>
+   */
   find(
     this: NotificationsService,
     options?: { rql?: RQLString }
   ): Promise<PagedResult<Notification>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById(
     this: NotificationsService,
     id: ObjectId,
     options?: { rql?: RQLString }
   ): Promise<Notification>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(
     this: NotificationsService,
     options?: { rql?: RQLString }
   ): Promise<Notification>;
+  /**
+   * Delete notification(s)
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `DELETE_NOTIFICATIONS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list.
+   * @returns AffectedRecords
+   */
   remove(
     this: NotificationsService,
     options?: { rql?: RQLString }
   ): Promise<AffectedRecords>;
+  /**
+   * Mark your notification(s) as viewed
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none | | Everyone can use this endpoint
+   *
+   * @param rql Add filters to the requested list.
+   * @returns AffectedRecords
+   */
   markAsViewed(
     this: NotificationsService,
     options?: { rql?: RQLString }
   ): Promise<AffectedRecords>;
+  /**
+   * Retrieve the list of notification types
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none | | Everyone can use this endpoint
+   *
+   * @returns PagedResult<NotifTypeDef>
+   */
   getTypes(this: NotificationsService): Promise<PagedResult<NotifTypeDef>>;
 }
 
 export interface NotificationSettingsServices {
+  /**
+   * Retrieve a list of notifications settings
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none | | View your own notification settings
+   *
+   * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notification settings
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Setting>
+   */
   find(
     this: NotificationSettingsServices,
     options?: { rql?: RQLString }
   ): Promise<PagedResult<Setting>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById(
     this: NotificationSettingsServices,
     id: ObjectId,
     options?: { rql?: RQLString }
   ): Promise<Setting>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(
     this: NotificationSettingsServices,
     options?: { rql?: RQLString }
   ): Promise<Setting>;
+  /**
+   * Update the notification settings for a user
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none | | Update your own notification settings
+   *
+   * `UPDATE_NOTIFICATION_SETTINGS` | `global` | Update all notification settings
+   *
+   * @param userId The User Id
+   * @param requestBody SettingCreation object
+   * @returns Setting
+   */
   update(
     this: NotificationSettingsServices,
     userId: string,
     requestBody: SettingCreation
   ): Promise<Setting>;
+  /**
+   * Delete the notifications settings for a user
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_NOTIFICATION_SETTINGS` | `global` | **Required** for this endpoint
+   *
+   * @param userId
+   * @returns AffectedRecords
+   */
   remove(
     this: NotificationSettingsServices,
     userId: string

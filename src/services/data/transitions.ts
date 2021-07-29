@@ -7,16 +7,6 @@ import type {
 } from './types';
 
 export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
-  /**
-   * Update the creation transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns {Promise<AffectedRecords>}
-   * @throws {IllegalArgumentError}
-   */
   async updateCreation(
     schemaId: ObjectId,
     requestBody: CreationTransition
@@ -26,16 +16,6 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
     ).data;
   },
 
-  /**
-   * Create a transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param requestBody
-   * @returns {Promise<AffectedRecords>}
-   * @throws {IllegalArgumentError}
-   */
   async create(
     schemaId: ObjectId,
     requestBody: TransitionInput
@@ -45,18 +25,6 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
     ).data;
   },
 
-  /**
-   * Update a transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param transitionId The id of the targeted transition.
-   * @param requestBody
-   * @returns {Promise<AffectedRecords>}
-   * @throws {IllegalArgumentError}
-   * @throws {ResourceUnknownError}
-   */
   async update(
     schemaId: ObjectId,
     transitionId: ObjectId,
@@ -70,17 +38,6 @@ export default (client, httpAuth: HttpInstance): DataTransitionsService => ({
       )
     ).data;
   },
-
-  /**
-   * Delete a transition
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
-   * @param transitionId The id of the targeted transition.
-   * @returns {Promise<AffectedRecords>}
-   * @throws {ResourceUnknownError}
-   */
   async remove(
     schemaId: ObjectId,
     transitionId: ObjectId

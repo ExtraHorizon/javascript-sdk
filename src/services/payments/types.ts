@@ -370,41 +370,175 @@ export interface StripeSetupIntentSchema {
 }
 
 export interface PaymentsAppStoreService {
+  /**
+   * Complete a transaction
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Everyone can use this endpoint
+   *
+   * @param requestBody TransactionCompletionDataSchema
+   * @returns AppleReceiptExampleSchema
+   *
+   * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
+   *
+   * @throws {InvalidReceiptDataError}
+   * @throws {UnknownReceiptTransactionError}
+   * @throws {AppStoreTransactionAlreadyLinked}
+   * @throws {NoConfiguredAppStoreProduct}
+   */
   createTransaction(
     this: PaymentsAppStoreService,
     requestBody: TransactionCompletionDataSchema
   ): Promise<AppleReceiptExampleSchema>;
+  /**
+   * Verify the Receipt of a Transaction
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Everyone can use this endpoint
+   *
+   * @param requestBody ReceiptVerificationDataSchema
+   * @returns AppleReceiptExampleSchema
+   *
+   * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
+   *
+   * @throws {InvalidReceiptDataError}
+   */
   verifyTransaction(
     this: PaymentsAppStoreService,
     requestBody: ReceiptVerificationDataSchema
   ): Promise<AppleReceiptExampleSchema>;
+  /**
+   * Processes an App Store Server notification
+   * @param requestBody AppleNotification
+   * @returns true if the notification was successfully processed
+   */
   processNotification(
     this: PaymentsAppStoreService,
     requestBody: AppleNotification
   ): Promise<boolean>;
+  /**
+   * Get a list of notifications received from the App Store
+   *
+   * The raw notification as it was received from the App Store.
+   *
+   * A detailed description of the data structure can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstoreservernotifications/responsebody).
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `VIEW_APP_STORE_NOTIFICATIONS` | `global` | **Required** for this endpoint
+   *
+   * @returns PagedResult<AppStoreNotification>
+   */
   getNotifications(
     this: PaymentsAppStoreService
   ): Promise<PagedResult<AppStoreNotification>>;
+  /**
+   * Get a list of receipts received and verified by the App Store
+   *
+   * The raw receipt as it was received after verification by the App Store.
+   *
+   * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `VIEW_APP_STORE_RECEIPTS` | `global` | **Required** for this endpoint
+   *
+   * @returns PagedResult<AppStoreReceipt>
+   */
   getReceipts(
     this: PaymentsAppStoreService
   ): Promise<PagedResult<AppStoreReceipt>>;
 }
 
 export interface PaymentsAppStoreSubscriptionsService {
+  /**
+   * Get a list of App Store subscriptions
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | List App Store subscriptions related to you
+   *
+   * `VIEW_APP_STORE_SUBSCRIPTIONS` | `global` | List App Store subscriptions related to all users
+   *
+   * @returns PagedResult<AppStoreSubscription>
+   */
   getSubscriptions(
     this: PaymentsAppStoreSubscriptionsService
   ): Promise<PagedResult<AppStoreSubscription>>;
+  /**
+   * Get a list of configured App Store subscription products
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Everyone can use this endpoint
+   *
+   * @returns PagedResult<AppStoreSubscriptionProduct>
+   */
   getSubscriptionsProducts(
     this: PaymentsAppStoreSubscriptionsService
   ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
+  /**
+   * Create an App Store subscription product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `CREATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+   *
+   * @param requestBody AppStoreSubscriptionProductCreation
+   * @returns AppStoreSubscriptionProduct
+   * @throws {ResourceAlreadyExistsError}
+   */
   createSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
     requestBody: AppStoreSubscriptionProductCreation
   ): Promise<AppStoreSubscriptionProduct>;
+  /**
+   * Delete an App Store subscription product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `DELETE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+   *
+   * @param productId
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   removeSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
     productId: ObjectId
   ): Promise<AffectedRecords>;
+  /**
+   * Update an App Store subscription product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+   *
+   * @param productId
+   * @param requestBody AppStoreSubscriptionProductUpdateSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   updateSubscriptionsProduct(
     this: PaymentsAppStoreSubscriptionsService,
     productId: ObjectId,
@@ -413,33 +547,105 @@ export interface PaymentsAppStoreSubscriptionsService {
 }
 
 export interface PaymentsOrdersService {
+  /**
+   * Get a list of orders
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | List orders created by you
+   *
+   * `VIEW_STRIPE_ORDERS` | `global` | List orders created by all users
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<OrderSchema>
+   */
   find(
     this: PaymentsOrdersService,
     options?: { rql?: RQLString }
   ): Promise<PagedResult<OrderSchema>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById(
     this: PaymentsOrdersService,
     id: ObjectId,
     options?: { rql?: RQLString }
   ): Promise<OrderSchema>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(
     this: PaymentsOrdersService,
     options?: { rql?: RQLString }
   ): Promise<OrderSchema>;
+  /**
+   * Create an order
+   * @param requestBody
+   * @returns OrderSchema
+   * @throws {ResourceAlreadyExistsError}
+   * @throws {InvalidCurrencyForProductPrice}
+   */
   create(
     this: PaymentsOrdersService,
     requestBody: OrderCreationSchema
   ): Promise<OrderSchema>;
+  /**
+   * Update the status of an order
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
+   *
+   * @param orderId The order Id
+   * @param requestBody OrderUpdateSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   update(
     this: PaymentsOrdersService,
     orderId: ObjectId,
     requestBody: OrderUpdateSchema
   ): Promise<AffectedRecords>;
+  /**
+   * Add Tags to an Order
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list, **required**.
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   */
   addTagsToOrder(
     this: PaymentsOrdersService,
     rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
+  /**
+   * Remove Tags from an Order
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list, **required**.
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   */
   removeTagsFromOrder(
     this: PaymentsOrdersService,
     rql: RQLString,
@@ -448,35 +654,123 @@ export interface PaymentsOrdersService {
 }
 
 export interface PaymentsProductsService {
+  /**
+   * Create a product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `CREATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
+   *
+   * @param requestBody
+   * @returns ProductSchema
+   */
   create(requestBody: ProductCreationSchema): Promise<ProductSchema>;
+  /**
+   * Get a list of products
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Everyone can use this endpoint
+   *
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<ProductSchema>
+   */
   find(
     this: PaymentsProductsService,
     options?: { rql?: RQLString }
   ): Promise<PagedResult<ProductSchema>>;
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findById(
     this: PaymentsProductsService,
     id: ObjectId,
     options?: { rql?: RQLString }
   ): Promise<ProductSchema>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(
     this: PaymentsProductsService,
     options?: { rql?: RQLString }
   ): Promise<ProductSchema>;
+  /**
+   * Add Tags to a Product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list, **required**.
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   */
   addTagsToProduct(
     this: PaymentsProductsService,
     rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
+  /**
+   * Remove tags from a Product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
+   *
+   * @param rql Add filters to the requested list, **required**.
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   */
   removeTagsFromProduct(
     this: PaymentsProductsService,
     rql: RQLString,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
+  /**
+   * Update a product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
+   *
+   * @param productId ID of the Product
+   * @param requestBody ProductCreationSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   update(
     this: PaymentsProductsService,
     orderId: ObjectId,
     requestBody: ProductCreationSchema
   ): Promise<AffectedRecords>;
+  /**
+   * Delete a product
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * `DELETE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
+   *
+   * @param productId ID of the Product
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   remove(
     this: PaymentsProductsService,
     productId: ObjectId
@@ -484,44 +778,194 @@ export interface PaymentsProductsService {
 }
 
 export interface PaymentsStripeService {
+  /**
+   * Get the saved Stripe data for a user
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Get the saved Stripe data for your user
+   *
+   * `VIEW_STRIPE_USERS` | `global` | Get the saved Stripe data for all users
+   *
+   * @param userId
+   * @returns StripeUser
+   */
   getUser(this: PaymentsStripeService, userId: ObjectId): Promise<StripeUser>;
+  /**
+   * Save a payment method to a Stripe user
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Save a payment method for your user
+   *
+   * `UPDATE_STRIPE_USERS` | `global` | Save a payment method for any users
+   *
+   * @param userId
+   * @param requestBody StripePaymentMethodCreation
+   * @returns StripePaymentMethod
+   * @throws {StripePaymentMethodError}
+   * @throws {StripeRequestError}
+   */
   savePaymentMethod(
     this: PaymentsStripeService,
     userId: ObjectId,
     requestBody: StripePaymentMethodCreation
   ): Promise<StripePaymentMethod>;
+  /**
+   * Add tags to a payment method
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Add a tag to a payment method for your user
+   *
+   * `UPDATE_STRIPE_USERS` | `global` | Add a tag to a payment method for any users
+   *
+   * @param userId
+   * @param paymentMethodId
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   addTagsToPaymentMethod(
     this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
+  /**
+   * Remove tags from a payment method
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Remove tag(s) from a payment method for your user
+   *
+   * `UPDATE_STRIPE_USERS` | `global` | Remove tag(s) from a payment method for any users
+   *
+   * @param userId
+   * @param paymentMethodId
+   * @param requestBody UpdateTagsSchema
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   removeTagsToPaymentMethod(
     this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
     requestBody: UpdateTagsSchema
   ): Promise<AffectedRecords>;
+  /**
+   * Delete a payment method
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Delete a payment method for your user
+   *
+   * `UPDATE_STRIPE_USERS` | `global` | Delete a payment method for any users
+   *
+   * @param userId
+   * @param paymentMethodId
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
   removePaymentMethod(
     this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId
   ): Promise<AffectedRecords>;
+  /**
+   * Create an order linked to a Stripe Payment Intent
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | Create an order linked to a Stripe Payment Intent for your user
+   *
+   * `CREATE_PAYMENT_INTENTS` | `global` | Create an order linked to a Stripe Payment Intent for any users
+   *
+   * @param requestBody PaymentIntentCreationSchema
+   * @returns OrderSchema
+   * @throws {ResourceAlreadyExistsError}
+   * @throws {IllegalArgumentError}
+   * @throws {StripePaymentMethodError}
+   * @throws {InvalidCurrencyForProductPrice}
+   * @throws {ResourceUnknownError}
+   */
   createPaymentIntent(
     this: PaymentsStripeService,
     requestBody: PaymentIntentCreationSchema
   ): Promise<OrderSchema>;
+  /**
+   * Create a Stripe Setup Intent for capturing payment details without initial payment
+   * @param requestBody SetupIntentCreationSchema
+   * @returns StripeSetupIntentSchema
+   * @throws {StripePaymentMethodError}
+   */
   createSetupIntent(
     this: PaymentsStripeService,
     requestBody: SetupIntentCreationSchema
   ): Promise<StripeSetupIntentSchema>;
+  /**
+   * Incoming events from Stripe's webhook
+   *
+   * Stripe docs for webhooks: https://stripe.com/docs/webhooks/setup#create-endpoint.
+   *
+   * Allowed events:
+   * - 'source.chargeable'
+   * - 'source.canceled'
+   * - 'source.failed'
+   * - 'charge.pending'
+   * - 'charge.failed'
+   * - 'charge.succeeded'
+   * - 'payment_intent.payment_failed'
+   * - 'payment_intent.succeeded'
+   *
+   * @returns any
+   * @throws {BadRequestError}
+   */
   subscribeToEvents(this: PaymentsStripeService): Promise<any>;
 }
 
 export interface PaymentsSubscriptionsService {
+  /**
+   * Get a list of subscription entitlements
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | List entitlements related to you
+   *
+   * `VIEW_SUBSCRIPTION_ENTITLEMENTS` | `global` | List entitlements related to all users
+   *
+   * @returns PagedResult<SubscriptionEntitlement>
+   */
   getEntitlements(
     this: PaymentsSubscriptionsService
   ): Promise<PagedResult<SubscriptionEntitlement>>;
+  /**
+   * Get a list of subscription events
+   *
+   * Permission | Scope | Effect
+   *
+   * \- | - | -
+   *
+   * none |  | List events related to you
+   *
+   * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
+   *
+   * @returns PagedResult<SubscriptionEvent>
+   */
   getEvents(
     this: PaymentsSubscriptionsService
   ): Promise<PagedResult<SubscriptionEvent>>;
