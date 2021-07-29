@@ -35,8 +35,11 @@ export interface CreateTokenRequest {
 export interface FilesService {
   /**
    * List all files
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `VIEW_FILES` | `global` | **Required** for this endpoint
    *
    * @param rql Add filters to the requested list.
@@ -68,8 +71,11 @@ export interface FilesService {
   ): Promise<FileDetails>;
   /**
    * Add a new file from a plain text source
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @param string text
@@ -79,12 +85,16 @@ export interface FilesService {
   createFromText(this: FilesService, text: string): Promise<FileDetails>;
   /**
    * Add a new file
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
-   * @param requestBody
-   * @returns FileDetails Success
+   * @param fileName string
+   * @param fileData the file data
+   * @returns FileDetails
    * @throws {FileTooLargeError}
    */
   create(
@@ -95,8 +105,11 @@ export interface FilesService {
   ): Promise<FileDetails>;
   /**
    * Delete a file
+   *
    * AccessLevel | Effect
-   * - | -
+   *
+   * \- | -
+   *
    * `full` | **Required** to be able to delete the file
    *
    * @param token
@@ -107,24 +120,30 @@ export interface FilesService {
   remove(this: FilesService, token: Token): Promise<AffectedRecords>;
   /**
    * Retrieve a file from the object store
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @param token
-   * @returns arraybuffer Success
+   * @returns Buffer
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
   retrieve(this: FilesService, token: Token): Promise<Buffer>;
   /**
    * Retrieve a file stream from the object store
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @param token
-   * @returns ReadStream Success
+   * @returns data as ReadStream
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
@@ -134,17 +153,23 @@ export interface FilesService {
   ): Promise<{ data: ReadStream }>;
   /**
    * Get file details
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * AccessLevel | Effect
-   * - | -
+   *
+   * \- | -
+   *
    * `full` | **Required** to return file metadata with all tokens.
+   *
    * `read` | **Required** to return name, size, mimetype.
    *
    * @param token
-   * @returns FileDetails Success
+   * @returns FileDetails
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
@@ -154,8 +179,11 @@ export interface FilesService {
 export interface FileTokensService {
   /**
    * Delete a token
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none |  | Everyone can use this endpoint
    *
    * @param token
@@ -172,8 +200,11 @@ export interface FileTokensService {
   ): Promise<void>;
   /**
    * Generate a token for a file
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @param token
