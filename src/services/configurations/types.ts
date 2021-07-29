@@ -45,8 +45,11 @@ export type UserConfiguration = UserConfigurationInput &
 export interface ConfigurationsGeneralService {
   /**
    * View the general configuration.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | Everyone can use this endpoint
    *
    * @returns GeneralConfiguration
@@ -54,8 +57,11 @@ export interface ConfigurationsGeneralService {
   get(this: ConfigurationsGeneralService): Promise<GeneralConfiguration>;
   /**
    * Update the general configuration
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Required for this endpoint
    *
    * @param requestBody GeneralConfigurationInput
@@ -71,8 +77,11 @@ export interface ConfigurationsGeneralService {
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from the general configuration.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Required for this endpoint
    *
    * @param requestBody list of fields to remove
@@ -93,11 +102,17 @@ export interface ConfigurationsGeneralService {
 export interface ConfigurationsGroupsService {
   /**
    * View a group configuration
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `VIEW_PATIENT_CONFIGURATIONS` | `staff enlistment` | View the group its patient configuration
+   *
    * `VIEW_STAFF_CONFIGURATIONS` | `staff enlistment` | View the group its staff configuration
+   *
    * `VIEW_CONFIGURATIONS` | `staff enlistment` | View the group its full configuration
+   *
    * `VIEW_CONFIGURATIONS` | `global` | View any group its full configuration
    *
    * @param groupId The id of the targeted group
@@ -109,11 +124,17 @@ export interface ConfigurationsGroupsService {
   ): Promise<GroupConfiguration>;
   /**
    * Update a group configuration.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_PATIENT_CONFIGURATIONS` | `staff enlistment` | Update the group its patient configuration
+   *
    * `UPDATE_STAFF_CONFIGURATIONS` | `staff enlistment` | Update the group its staff configuration
+   *
    * `UPDATE_CONFIGURATIONS` | `staff enlistment` | Update the group its full configuration
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any group its full configuration
    *
    * @param groupId The id of the targeted group
@@ -131,11 +152,17 @@ export interface ConfigurationsGroupsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a group configuration.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_PATIENT_CONFIGURATIONS` | `staff enlistment` | Update the group its patient configuration
+   *
    * `UPDATE_STAFF_CONFIGURATIONS` | `staff enlistment` | Update the group its staff configuration
+   *
    * `UPDATE_CONFIGURATIONS` | `staff enlistment` | Update the group its full configuration
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any group its full configuration
    *
    * @param groupId The id of the targeted group
@@ -158,10 +185,15 @@ export interface ConfigurationsGroupsService {
 export interface ConfigurationsPatientsService {
   /**
    * Update a patient configuration for a group of a user.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_PATIENT_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user its staff configuration
    *
    * @param groupId The id of the targeted group
@@ -177,10 +209,15 @@ export interface ConfigurationsPatientsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a patient configuration for a group of a user.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_PATIENT_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For patients of the group, update the patient enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user its staff configuration
    *
    * @param groupId The id of the targeted group
@@ -201,10 +238,15 @@ export interface ConfigurationsPatientsService {
 export interface ConfigurationsStaffService {
   /**
    * Update a staff configuration for a group of a user.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_STAFF_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user its staff configuration
    *
    * @param groupId The id of the targeted group
@@ -220,10 +262,15 @@ export interface ConfigurationsStaffService {
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a staff configuration for a group of a user.
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_STAFF_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `staff enlistment` | For staff of the group, update the staff enlistment configuration of the group
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user its staff configuration
    *
    * @param groupId The id of the targeted group
@@ -244,12 +291,19 @@ export interface ConfigurationsStaffService {
 export interface ConfigurationsUsersService {
   /**
    * Get a user configuration
+   *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * none | | View your own configuration
+   *
    * `VIEW_PATIENT_CONFIGURATIONS` | `staff enlistment` | For patients of the group, view the patient enlistment configuration of the group
+   *
    * `VIEW_STAFF_CONFIGURATIONS` | `staff enlistment` | For staff of the group, view the staff enlistment configuration of the group
+   *
    * `VIEW_CONFIGURATIONS` | `staff enlistment` | view the patient enlistment configuration of the group
+   *
    * `VIEW_CONFIGURATIONS` | `global` | View any user its full configuration
    *
    * @param userId The id of the targeted user
@@ -261,11 +315,15 @@ export interface ConfigurationsUsersService {
   ): Promise<UserConfiguration>;
   /**
    * Update a user configuration
+   *
    * Only the `data` content
    *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user configuration
+   *
    * none | | Update your own configuration
    *
    * @param userId The id of the targeted user
@@ -283,11 +341,15 @@ export interface ConfigurationsUsersService {
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a user configuration
+   *
    * Only from the `data` field
    *
    * Permission | Scope | Effect
-   * - | - | -
+   *
+   * \- | - | -
+   *
    * `UPDATE_CONFIGURATIONS` | `global` | Update any user configuration
+   *
    * none | | Update your own configuration
    *
    * @param userId The id of the targeted user
