@@ -37,6 +37,8 @@ In your project, if you are using yarn you need to create a file called `.yarnrc
 //npm.pkg.github.com/:\_authToken=${AUTH_TOKEN}
 ```
 
+Alternatively, this file can be added/edited in your home directory and it will be applied to all projects.
+
 Explanation from GitHub on how to add your token can be found here https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages
 
 Using npm:
