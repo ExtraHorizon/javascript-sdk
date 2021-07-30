@@ -329,11 +329,8 @@ export interface UsersGlobalRolesService {
    * Retrieve a list of permissions
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @returns PagedResult<GlobalPermission>
    */
   getPermissions(
@@ -343,11 +340,8 @@ export interface UsersGlobalRolesService {
    * Retrieve a list of roles
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_ROLE` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Role>
    */
@@ -359,11 +353,8 @@ export interface UsersGlobalRolesService {
    * Create a role
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_ROLE` | `global` | **Required** for this endpoint
-   *
    * @param requestBody The role data
    * @returns Role
    */
@@ -375,11 +366,8 @@ export interface UsersGlobalRolesService {
    * Delete a role
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DELETE_ROLE` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -392,11 +380,8 @@ export interface UsersGlobalRolesService {
    * Update a role
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_ROLE` | `global` | **Required** for this endpoint
-   *
    * @param id Id of the targeted role
    * @param requestBody RoleUpdate
    * @returns Promise<Role>
@@ -410,11 +395,8 @@ export interface UsersGlobalRolesService {
    * Add permissions to a role
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `ADD_ROLE_PERMISSIONS` | `global` | **Required** for this endpoint
-   *
    * @param requestBody RolePermissions
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -428,11 +410,8 @@ export interface UsersGlobalRolesService {
    * Remove permissions from roles
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `REMOVE_ROLE_PERMISSIONS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @param requestBody RolePermissions
    * @returns AffectedRecords
@@ -447,11 +426,8 @@ export interface UsersGlobalRolesService {
    * Add roles to users
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `ADD_ROLE_TO_USER` | `global` | **Required** for this endpoint
-   *
    * @param requestBody UserRoles
    * @returns AffectedRecords
    */
@@ -464,11 +440,8 @@ export interface UsersGlobalRolesService {
    * Remove roles from users
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `REMOVE_ROLE_FROM_USER` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @param requestBody UserRoles
    * @returns AffectedRecords
@@ -485,11 +458,8 @@ export interface UsersGroupRolesService {
    * Retrieve a list of group permissions
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @returns PagedResult<GlobalPermission>
    */
   getPermissions(
@@ -499,13 +469,9 @@ export interface UsersGroupRolesService {
    * Retrieve a list of group roles
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | `staff enlistment` | View the roles for the group
-   *
    * `VIEW_GROUP` | `global` | View any group its roles
-   *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
    * @returns PagedResult<GroupRole>
@@ -521,13 +487,9 @@ export interface UsersGroupRolesService {
    * Add role to a group
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_GROUP_ROLE` | `staff enlistment` | Create a role for any group
-   *
    * `CREATE_GROUP_ROLE` | `global` | Create a role for the group
-   *
    * @param groupId Id of the targeted group
    * @param requestBody The role to add
    * @returns GroupRole
@@ -541,13 +503,9 @@ export interface UsersGroupRolesService {
    * Update a group role
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_GROUP_ROLE` | `staff enlistment` | Update a role for the group
-   *
    * `UPDATE_GROUP_ROLE` | `global` | Update a role for any group
-   *
    * @param groupId Id of the targeted group
    * @param roleId Id of the targeted role
    * @param requestBody The role data to update
@@ -564,12 +522,9 @@ export interface UsersGroupRolesService {
    * Remove a role from a group
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
+   * - | - | -
    * `DELETE_GROUP_ROLE` | `staff enlistment` | Delete a role for the group
-   *
    * `DELETE_GROUP_ROLE` | `global` | Delete a role from any group
-   *
    * @param groupId Id of the targeted group
    * @param roleId Id of the targeted role
    * @param rql Add filters to the requested list.
@@ -586,13 +541,9 @@ export interface UsersGroupRolesService {
    * Add permissions to group roles
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `ADD_GROUP_ROLE_PERMISSION` | `staff enlistment` | Add permissions to roles of the group
-   *
    * `ADD_GROUP_ROLE_PERMISSION` | `global` | Add permissions to roles of any group
-   *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
    * @param requestBody GroupRolePermissions
@@ -611,13 +562,9 @@ export interface UsersGroupRolesService {
    * Remove permissions from group roles
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `REMOVE_GROUP_ROLE_PERMISSION` | `staff enlistment` | Remove permissions from roles of the group
-   *
    * `REMOVE_GROUP_ROLE_PERMISSION` | `global` | Remove permissions from roles of any group
-   *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
    * @param requestBody GroupRolePermissions
@@ -634,13 +581,9 @@ export interface UsersGroupRolesService {
    * Assign roles to staff members of a group
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `ADD_GROUP_ROLE_TO_STAFF` | `staff enlistment` | Assign roles for the group
-   *
    * `ADD_GROUP_ROLE_TO_STAFF` | `global` | Assign roles for any group
-   *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
    * @param requestBody StaffRoles
@@ -659,13 +602,9 @@ export interface UsersGroupRolesService {
    * Remove roles from staff members of a group
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `REMOVE_GROUP_ROLE_FROM_STAFF` | `staff enlistment` | Remove roles from staff of the group
-   *
    * `REMOVE_GROUP_ROLE_FROM_STAFF` | `global` | Remove roles from staff of any group
-   *
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
    * @param requestBody StaffRoles
@@ -682,13 +621,9 @@ export interface UsersGroupRolesService {
    * Add users to staff
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `ADD_STAFF` | `staff enlistment` | Add staff to the group
-   *
    * `ADD_STAFF` | `global` | Add staff to any group
-   *
    * @param rql Add filters to the requested list.
    * @param requestBody StaffGroups
    * @returns AffectedRecords
@@ -706,13 +641,9 @@ export interface UsersGroupRolesService {
    * Remove users from staff
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `ADD_STAFF` | `staff enlistment` | Remove staff from the group
-   *
    * `ADD_STAFF` | `global` | Remove staff from any group
-   *
    * @param rql Add filters to the requested list.
    * @param requestBody StaffGroups
    * @returns AffectedRecords
@@ -762,15 +693,10 @@ export interface UsersService {
    * Retrieve a list of users
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
-   *
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
-   *
    * `VIEW_USER` | `global` | See all fields of all users
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<User>
    */
@@ -789,13 +715,9 @@ export interface UsersService {
    * Delete a list of users
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Delete your own user (object)
-   *
    * `DELETE_USER` | `global` | Delete any user
-   *
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
@@ -804,13 +726,9 @@ export interface UsersService {
    * Retrieve a list of users that have a patient enlistment
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | `staff enlistment` | View the patients of the group
-   *
    * `VIEW_PATIENTS` | `global`  | View all patients
-   *
    * @param rql Add filters to the requested list.
    * @returns Patient Success
    */
@@ -822,13 +740,9 @@ export interface UsersService {
    * Retrieve a list of users that have a staff enlistment
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | `staff enlistment` | View the other staff members of the group
-   *
    * `VIEW_STAFF` | `global`  | View all staff members
-   *
    * @param rql Add filters to the requested list.
    * @returns StaffMember Success
    */
@@ -840,13 +754,9 @@ export interface UsersService {
    * Delete a specific user
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Delete your own user object
-   *
    * `DELETE_USER` | `global` | Delete any user
-   *
    * @param userId Id of the targeted user
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -854,17 +764,12 @@ export interface UsersService {
   remove(this: UsersService, userId: ObjectId): Promise<AffectedRecords>;
   /**
    * Update the email address of a specific user
-   *
    * An email is send to validate and activate the new address.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Update your own data
-   *
    * `UPDATE_USER_EMAIL` | `global` | Update any user
-   *
    * @param userId Id of the targeted user
    * @param requestBody Email
    * @returns User
@@ -880,11 +785,8 @@ export interface UsersService {
    * Add a patient enlistment to a user
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `ADD_PATIENT` | `global` | **Required** for this endpoint
-   *
    * @param userId Id of the targeted user
    * @param requestBody AddPatientEnlistment
    * @returns AffectedRecords
@@ -899,15 +801,10 @@ export interface UsersService {
    * Remove a patient enlistment from a user
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Remove a patient enlistment from yourself
-   *
    * `REMOVE_PATIENT` | `staff enlistment` | Remove a patient enlistment for the group
-   *
    * `REMOVE_PATIENT` | `global` | Remove any patient enlistment
-   *
    * @param userId Id of the targeted user
    * @param groupId Id of the targeted group
    * @returns AffectedRecords
@@ -922,11 +819,8 @@ export interface UsersService {
    * Create an account
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param requestBody RegisterUserData
    * @returns User
    * @throws {EmailUsedError}
@@ -939,11 +833,8 @@ export interface UsersService {
    * Change your password
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param requestBody ChangePassword
    * @returns User
    * @throws {PasswordError}
@@ -956,11 +847,8 @@ export interface UsersService {
    * Authenticate a user
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param requestBody Authenticate
    * @returns User
    * @throws {AuthenticationError}
@@ -973,11 +861,8 @@ export interface UsersService {
    * Request an email activation
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param email
    * @returns {boolean} true on success
    * @throws {EmailUnknownError}
@@ -988,11 +873,8 @@ export interface UsersService {
    * Complete an email activation
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param requestBody Hash
    * @returns {boolean} true on success
    * @throws {ActivationUnknownError}
@@ -1005,11 +887,8 @@ export interface UsersService {
    * Request a password reset
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param email
    * @returns {boolean} true on success
    * @throws {EmailUnknownError}
@@ -1020,11 +899,8 @@ export interface UsersService {
    * Complete a password reset
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param requestBody PasswordReset
    * @returns {boolean} true if completed a password reset
    * @throws {NotActivatedError}
@@ -1038,11 +914,8 @@ export interface UsersService {
    * Confirm the password for the user making the request
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param requestBody the password to confirm
    * @returns {boolean} true if password was confirmed
    * @throws {AuthenticationError}
@@ -1058,11 +931,8 @@ export interface UsersService {
    * Check if an email address is still available
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param email
    * @returns emailAvailable will be true on success
    */
@@ -1076,13 +946,9 @@ export interface UsersService {
    * Update the profile image of a user
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Update your own profile image
-   *
    * `UPDATE_PROFILE_IMAGE` | `global` | Update any user its profile image
-   *
    * @deprecated this method is deprecated in swagger
    * @param userId Id of the targeted user
    * @param requestBody Hash
@@ -1098,13 +964,9 @@ export interface UsersService {
    * Delete the profile image of a user
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Delete your own profile image
-   *
    * `UPDATE_PROFILE_IMAGE` | `global` | Delete any user its profile image
-   *
    * @param userId Id of the targeted user
    * @returns User
    * @throws {ResourceUnknownError}

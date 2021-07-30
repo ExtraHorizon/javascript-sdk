@@ -75,9 +75,7 @@ export interface DispatchersService {
    * Request a list of dispatchers
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Dispatcher>
@@ -108,9 +106,7 @@ export interface DispatchersService {
    * Create a dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param requestBody Dispatcher
    * @returns Dispatcher
@@ -120,9 +116,7 @@ export interface DispatchersService {
    * Delete a dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @returns AffectedRecords
@@ -136,9 +130,7 @@ export interface ActionsService {
    * Add an action to the dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param requestBody ActionCreation
@@ -149,9 +141,7 @@ export interface ActionsService {
    * Update an action for the specified dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param actionId The id of the targeted action
@@ -168,9 +158,7 @@ export interface ActionsService {
    * Delete an action from the specified dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param actionId The id of the targeted action

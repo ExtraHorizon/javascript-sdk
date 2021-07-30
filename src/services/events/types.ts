@@ -31,11 +31,8 @@ export interface EventsService {
    * Returns a list of events
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_EVENTS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Event>
    */
@@ -64,11 +61,8 @@ export interface EventsService {
    * Creates an event
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_EVENTS` | `global` | **Required** for this endpoint
-   *
    * @param requestBody
    * @returns Event
    */
@@ -80,11 +74,8 @@ export interface SubscriptionsService {
    * Returns a list of event subscriptions
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Subscription>
    */
@@ -116,11 +107,8 @@ export interface SubscriptionsService {
    * Creates an event subscription
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
-   *
    * @param requestBody
    * @returns Subscription
    */
