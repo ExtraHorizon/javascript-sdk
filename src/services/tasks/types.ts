@@ -38,11 +38,8 @@ export interface TasksService {
    * View a list of tasks
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
-   *
    * @returns PagedResult<Task>
    */
   find(
@@ -70,11 +67,8 @@ export interface TasksService {
    * Create a task
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_TASKS` | `gobal` | **Required** for this endpoint
-   *
    * @param requestBody
    * @returns Task Success
    */
@@ -83,13 +77,9 @@ export interface TasksService {
    * Cancel a task
    *
    * The targeted task **MUST** be in the `new` status.
-   *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CANCEL_TASKS` | `gobal` | **Required** for this endpoint
-   *
    * @param taskId The id of the targeted task
    * @returns AffectedRecords
    * @throws {IllegalStateException}
