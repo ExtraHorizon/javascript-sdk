@@ -357,13 +357,9 @@ export interface DataCommentsService {
    * Comment on the specified document.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Comment on your own documents
-   *
    * `CREATE_DOCUMENT_COMMENTS` | `staff enlistment`  | Comment on any document belonging to the group
-   *
    * `CREATE_DOCUMENT_COMMENTS` | `global` | Comment on any document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -385,13 +381,9 @@ export interface DataCommentsService {
    * List the comments for the specified document.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | View comments for your own documents
-   *
    * `VIEW_DOCUMENT_COMMENTS` | `staff enlistment`  | View comments for any document belonging to the group
-   *
    * `VIEW_DOCUMENT_COMMENTS` | `global` | View the comments for any document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -440,11 +432,8 @@ export interface DataCommentsService {
    * Update a comment you made.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Update your comments
-   *
    * `UPDATE_DOCUMENT_COMMENTS` | `global` | Update comments
    * @param commentId The id of the targeted comment.
    * @param schemaId The id of the targeted schema.
@@ -466,13 +455,9 @@ export interface DataCommentsService {
    * Delete a comments from the specified measurement.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Delete your comments
-   *
    * `UPDATE_DOCUMENT_COMMENTS` | `staff enlistment`  | Delete comments for any document belonging to the group
-   *
    * `UPDATE_DOCUMENT_COMMENTS` | `global` | Delete the comments for any document
    * @param commentId The id of the targeted comment.
    * @param schemaId The id of the targeted schema.
@@ -508,9 +493,7 @@ export interface DataDocumentsService {
    * Create a document
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
    *
    * `CREATE_DOCUMENTS` | `global` | When the schema.createMode is set to permissionRequired then this permission is required to make a group
@@ -531,33 +514,23 @@ export interface DataDocumentsService {
    * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | See your own documents
-   *
    * none | `staff enlistment` | See the documents belonging to the group (and your own documents)
-   *
    * `VIEW_DOCUMENTS` | `global` | See any document
    *
    * ReadMode on schema is set to 'allUsers':
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | See any document
    *
    * ReadMode on schema is set to 'enlistedInLinkedGroups':
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | `patient enlistment` | See the documents belonging to the group
-   *
    * none | `staff enlistment` | See the documents belonging to the group
-   *
    * `VIEW_DOCUMENTS` | `global` | See any document
    * @param schemaId The id of the targeted schema.
    * @param rql Add filters to the requested list.
@@ -590,7 +563,6 @@ export interface DataDocumentsService {
    * Returns the first document that is found with the applied filter
    *
    * Same Permissions as the find() method
-   *
    * @param schemaId the schema Id
    * @param rql an optional rql string
    * @returns {Document} document
@@ -606,13 +578,9 @@ export interface DataDocumentsService {
    * **Partially** update the selected document. Use a `null` value to clear a field.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Update your own documents
-   *
    * none | `staff enlistment`  | Update all the documents belonging to the group
-   *
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -635,21 +603,15 @@ export interface DataDocumentsService {
    * DeleteMode on schema is set to 'permissionRequired':
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DELETE_DOCUMENTS` | `global` | **Required** for this endpoint
    *
    * DeleteMode on schema is set to 'linkedUsersOnly':
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Delete the document if the userId is linked to the document
-   *
    * none | `staff enlistment`  | Delete the document if the groupId is linked
-   *
    * `DELETE_DOCUMENTS` | `global` | Delete the document
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -666,13 +628,9 @@ export interface DataDocumentsService {
    * Delete the specified fields from the selected document.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Update your own documents
-   *
    * none | `staff enlistment`  | Update all the documents belonging to the group
-   *
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -697,13 +655,9 @@ export interface DataDocumentsService {
    * Start a transition manually for the selected document where the conditions of a manual transition are met.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Update your own documents
-   *
    * none | `staff enlistment`  | Update all the documents belonging to the group
-   *
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -731,9 +685,7 @@ export interface DataDocumentsService {
    * Link the specified groups to a document.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -751,16 +703,14 @@ export interface DataDocumentsService {
   /**
    * Unlink groups from a document
    *
-   * Unlink the specified groups from a document.
+   * Unlink the specified groups from a document
    *
    * Specifying an **empty** `groupIds` array will have **no effect** on the document.
    *
    * **Not** specifying the `groupIds` array will **unlink all** groups from the document.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param documentId The id of the targeted document.
@@ -781,9 +731,7 @@ export interface DataDocumentsService {
    * Link the specified users to a document.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be added to the document.
@@ -810,9 +758,7 @@ export interface DataDocumentsService {
    * **Not** specifying the `userIds` array will **unlink all** users from the document.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
@@ -838,9 +784,7 @@ export interface DataIndexesService {
    * Set an index on a specific property in a schema.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Create an index
    * @param schemaId The id of the targeted schema.
    * @param requestBody
@@ -860,9 +804,7 @@ export interface DataIndexesService {
    * Delete an index for a specific property in a schema.
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Delete an index
    * @param indexId The id of the targeted index.
    * @param schemaId The id of the targeted schema.
@@ -882,9 +824,7 @@ export interface DataPropertiesService {
    * Create a property
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody The name and configuration
@@ -906,9 +846,7 @@ export interface DataPropertiesService {
    * Delete a property
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
@@ -925,9 +863,7 @@ export interface DataPropertiesService {
    * Update a property
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param propertyPath The path to the property
@@ -949,9 +885,7 @@ export interface DataSchemasService {
    * Create a schema
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param requestBody
    * @returns Schema successful operation
@@ -961,11 +895,8 @@ export interface DataSchemasService {
    * Request a list of schemas
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Every one can use this endpoint
-   *
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
@@ -1009,9 +940,7 @@ export interface DataSchemasService {
    * Update a schema
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody The schema input
@@ -1026,9 +955,7 @@ export interface DataSchemasService {
    * Delete a schema
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DELETE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
@@ -1042,9 +969,7 @@ export interface DataSchemasService {
    * Disable a schema
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
@@ -1057,9 +982,7 @@ export interface DataSchemasService {
    * Enable a schema
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
@@ -1075,9 +998,7 @@ export interface DataStatusesService {
    * Create a status
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody The name and status data
@@ -1096,9 +1017,7 @@ export interface DataStatusesService {
    * Update a status
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param name The name of the targeted status.
@@ -1116,9 +1035,7 @@ export interface DataStatusesService {
    * Delete a status
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param name The name of the targeted status.
@@ -1138,9 +1055,7 @@ export interface DataTransitionsService {
    * Update the creation transition
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody
@@ -1156,9 +1071,7 @@ export interface DataTransitionsService {
    * Create a transition
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param requestBody TransitionInput
@@ -1174,9 +1087,7 @@ export interface DataTransitionsService {
    * Update a transition
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param transitionId The id of the targeted transition.
@@ -1195,9 +1106,7 @@ export interface DataTransitionsService {
    * Delete a transition
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
    * @param schemaId The id of the targeted schema.
    * @param transitionId The id of the targeted transition.

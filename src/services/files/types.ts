@@ -37,11 +37,8 @@ export interface FilesService {
    * List all files
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_FILES` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<FileDetails>
    */
@@ -73,11 +70,8 @@ export interface FilesService {
    * Add a new file from a plain text source
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param string text
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
@@ -87,11 +81,8 @@ export interface FilesService {
    * Add a new file
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param fileName string
    * @param fileData the file data
    * @returns FileDetails
@@ -107,11 +98,8 @@ export interface FilesService {
    * Delete a file
    *
    * AccessLevel | Effect
-   *
-   * \- | -
-   *
+   * - | -
    * `full` | **Required** to be able to delete the file
-   *
    * @param token
    * @returns AffectedRecords
    * @throws {InvalidTokenError}
@@ -122,11 +110,8 @@ export interface FilesService {
    * Retrieve a file from the object store
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param token
    * @returns Buffer
    * @throws {InvalidTokenError}
@@ -137,11 +122,8 @@ export interface FilesService {
    * Retrieve a file stream from the object store
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param token
    * @returns data as ReadStream
    * @throws {InvalidTokenError}
@@ -155,19 +137,13 @@ export interface FilesService {
    * Get file details
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
    *
    * AccessLevel | Effect
-   *
-   * \- | -
-   *
+   * - | -
    * `full` | **Required** to return file metadata with all tokens.
-   *
    * `read` | **Required** to return name, size, mimetype.
-   *
    * @param token
    * @returns FileDetails
    * @throws {InvalidTokenError}

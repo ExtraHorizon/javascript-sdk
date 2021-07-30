@@ -105,11 +105,8 @@ export interface MailsService {
    * Retrieve a list of mails
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Mail>
    */
@@ -138,15 +135,10 @@ export interface MailsService {
    * Send a mail
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Send mails to your own email address
-   *
    * none | `staff enlistment` | Send any mail to your patients or send a template mail based on pre-configured allowed templates to any email address.
-   *
    * `SEND_MAILS` | `global` | Send mails to any email address
-   *
    * @param requestBody mail creation data
    * @returns Mail
    * @throws {NotActivatedError}
@@ -159,11 +151,8 @@ export interface MailsService {
    * Register a mail being opened
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param trackingHash
    * @returns AffectedRecords
    */
@@ -172,11 +161,8 @@ export interface MailsService {
    * Retrieve the list of mails that are not sent yet
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<QueuedMail>
    */

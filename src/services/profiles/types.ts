@@ -115,15 +115,10 @@ export interface ProfilesGroupsService {
    * Add a group enlistment to a profile
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Add a group enlistment for your profile only
-   *
    * `ADD_PATIENT` | `staff enlistment` | Add a group enlistment for any profile of this group
-   *
    * `ADD_PATIENT` & `ACTIVATE_PRESCRIPTIONS` | `global` | Add a group enlistment for any profile for any group
-   *
    * @param profileId Id of the targeted profile
    * @param requestBody Group data
    * @returns Group
@@ -139,13 +134,9 @@ export interface ProfilesGroupsService {
    * Update a group enlistment on a profile
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_PROFILES` | `staff enlistment` | Update a group enlistment for any profile for this group
-   *
    * `UPDATE_PROFILES` | `global` | Update a group enlistment for any profile for any group
-   *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param requestBody Group data to update
@@ -162,15 +153,10 @@ export interface ProfilesGroupsService {
    * Delete a group from a profile
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Delete a group from your profile only
-   *
    * `UPDATE_PROFILES` | `staff enlistment` | Delete a group from any profile in this group
-   *
    * `UPDATE_PROFILES` | `global` | Delete a group from any profile in any group
-   *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @returns AffectedRecords
@@ -185,13 +171,9 @@ export interface ProfilesGroupsService {
    * Remove a field on a group enlistment object in a profile
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_PROFILES` | `staff enlistment` | Remove a field for this group
-   *
    * `UPDATE_PROFILES` | `global` | Remove a field for any group
-   *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param requestBody list of fields to remove
@@ -213,13 +195,9 @@ export interface ProfilesLogsService {
    * Create a profile log entry
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Create a log entry for any profile of this group
-   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Create a log entry for any profile of any group
-   *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param requestBody ProfileComment
@@ -236,13 +214,9 @@ export interface ProfilesLogsService {
    * Retrieve all profile log entries
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_PROFILE_LOG_ENTRIES` | `staff enlistment` | Retrieve a list of log entries for any profile of this group
-   *
    * `VIEW_PROFILE_LOG_ENTRIES` | `global` | Retrieve a list of log entries for any profile of any group
-   *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
@@ -259,13 +233,9 @@ export interface ProfilesLogsService {
    * Update a profile log entry
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Update a log entry, created by the current user, for any profile of this group
-   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Update a log entry, created by the current user, for any profile of any group
-   *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param entryId Id of the targeted log entry
@@ -284,13 +254,9 @@ export interface ProfilesLogsService {
    * Delete a profile log entry
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_PROFILE_LOG_ENTRIES` | `staff enlistment` | Delete a log entry, created by the current user, for any profile of this group
-   *
    * `CREATE_PROFILE_LOG_ENTRIES` | `global` | Delete a log entry, created by the current user, for any profile of any group
-   *
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param entryId Id of the targeted log entry
@@ -310,15 +276,10 @@ export interface ProfilesService {
    * Get a list of profiles
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | View your profile
-   *
    * none | `staff enlistment` | View all the profiles of the group
-   *
    * `VIEW_PATIENTS` | `global` | View all profiles
-   *
    * @param rql an optional rql string
    * @returns PagedResult<Profile>
    */
@@ -350,13 +311,9 @@ export interface ProfilesService {
    * Create a new profile
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Create a profile for the current user
-   *
    * `CREATE_PROFILES` | `global` | Create a profile for any user
-   *
    * @param requestBody ProfileCreation
    * @returns Profile
    * @throws {ProfileAlreadyExistsError}
@@ -366,15 +323,10 @@ export interface ProfilesService {
    * Update an existing profile
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Update your profile
-   *
    * `UPDATE_PROFILES` | `staff enlistment` | Update the profile of any group member
-   *
    * `UPDATE_PROFILES` | `global` | Update any profile
-   *
    * @param rql Add filters to the requested list, **required**.
    * @param requestBody The Profile data to update
    * @returns AffectedRecords
@@ -388,17 +340,11 @@ export interface ProfilesService {
    * Remove a given field from all profile records
    *
    * To make a selection of profiles, use RQL.
-   *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Remove a given field from your profile
-   *
    * `UPDATE_PROFILES` | `staff enlistment` | Remove a given field from any group member
-   *
    * `UPDATE_PROFILES` | `global` | Remove a given field from any profile
-   *
    * @param rql Add filters to the requested list, **required**.
    * @param requestBody the list of fields to remove
    * @returns AffectedRecords
@@ -415,11 +361,8 @@ export interface ProfilesService {
    * Retrieve a list of all the defined comorbidities
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @returns PagedResult<Comorbidities>
    */
   getComorbidities(this: ProfilesService): Promise<PagedResult<Comorbidities>>;
@@ -427,11 +370,8 @@ export interface ProfilesService {
    * Retrieve a list of all the defined impediments
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @returns PagedResult<Impediments>
    */
   getImpediments(this: ProfilesService): Promise<PagedResult<Impediments>>;

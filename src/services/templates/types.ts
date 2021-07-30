@@ -74,11 +74,8 @@ export interface TemplatesService {
    * Get all templates the service has to offer
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<TemplateOut>
    */
@@ -121,11 +118,8 @@ export interface TemplatesService {
    * Create a new template
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
    * @param requestBody TemplateIn
    * @returns TemplateOut
    */
@@ -134,11 +128,8 @@ export interface TemplatesService {
    * Update an existing template
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param requestBody TemplateIn
    * @returns TemplateOut
@@ -153,11 +144,8 @@ export interface TemplatesService {
    * Delete a template
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DELETE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
    * @param templateId Id of the targeted template
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -167,11 +155,8 @@ export interface TemplatesService {
    * Resolves a template and presents the result as a pdf file
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param requestBody The file data
    * @returns Buffer
@@ -189,11 +174,8 @@ export interface TemplatesService {
    * Resolves a template and presents the result as a pdf file
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param localizationCode Specifies the language the template must be resolved in
    * @param requestBody The file data
@@ -212,11 +194,8 @@ export interface TemplatesService {
    * Resolves a template and presents the result as a json response
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param requestBody CreateFile
    * @returns Record<string, string>
@@ -234,11 +213,8 @@ export interface TemplatesService {
    * Resolves a template and presents the result as a json response
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param localizationCode Specifies the language the template must be resolved in
    * @param requestBody CreateFile
