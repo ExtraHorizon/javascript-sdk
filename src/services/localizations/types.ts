@@ -59,10 +59,10 @@ export interface LocalizationRequest {
 export interface CountriesService {
   /**
    * Retrieve a list of all the defined countries
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @returns PagedResult<string>
    */
   getCountries(
@@ -71,10 +71,10 @@ export interface CountriesService {
   ): Promise<string[]>;
   /**
    * Retrieve a list of all the defined regions for the specified country code
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param country The country code (as defined in ISO 3166-1)
    * @returns PagedResult<string>
    * @throws {ResourceUnknownError}
@@ -89,10 +89,10 @@ export interface CountriesService {
 export interface LanguagesService {
   /**
    * Retrieve a list of all the defined languages
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @returns PagedResult<SupportedLanguageCodes>
    */
   getLanguages(
@@ -104,10 +104,10 @@ export interface LanguagesService {
 export interface LocalizationsService {
   /**
    * Returns all possible localizations stored in this service
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Localization>
    */
@@ -137,10 +137,10 @@ export interface LocalizationsService {
   ): Promise<Localization>;
   /**
    * Create new localizations
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_LOCALIZATIONS` | global | **Required** for this endpoint
-   *
    * @param requestBody BulkLocalization
    * @returns BulkCreationResponse
    * @throws {DefaultLocalizationMissingError}
@@ -152,10 +152,10 @@ export interface LocalizationsService {
   ): Promise<BulkCreationResponse>;
   /**
    * Update localizations
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_LOCALIZATIONS` | global | **Required** for this endpoint
-   *
    * @param requestBody BulkLocalization
    * @returns BulkUpdateResponse
    */
@@ -166,10 +166,10 @@ export interface LocalizationsService {
   ): Promise<BulkUpdateResponse>;
   /**
    * Delete localizations
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_LOCALIZATIONS` | global | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list, **required**.
    * @returns AffectedRecords
    */
@@ -185,7 +185,6 @@ export interface LocalizationsService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param requestBody LocalizationRequest
    * @returns Record<string, MappedText>
    */

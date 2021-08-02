@@ -73,10 +73,10 @@ export interface TemplatesService {
   health(this: TemplatesService): Promise<boolean>;
   /**
    * Get all templates the service has to offer
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<TemplateOut>
    */
@@ -117,12 +117,12 @@ export interface TemplatesService {
   ): Promise<TemplateOut>;
   /**
    * Create a new template
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
-   * @param requestBody
-   * @returns TemplateOut Success
+   * @param requestBody TemplateIn
+   * @returns TemplateOut
    */
   create(
     this: TemplatesService,
@@ -131,13 +131,13 @@ export interface TemplatesService {
   ): Promise<TemplateOut>;
   /**
    * Update an existing template
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
    * @param templateId Id of the targeted template
-   * @param requestBody
-   * @returns TemplateOut Success
+   * @param requestBody TemplateIn
+   * @returns TemplateOut
    * @throws {ResourceUnknownError}
    */
   update(
@@ -148,12 +148,12 @@ export interface TemplatesService {
   ): Promise<TemplateOut>;
   /**
    * Delete a template
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_TEMPLATES` | `global` | **Required** for this endpoint
-   *
    * @param templateId Id of the targeted template
-   * @returns any Operation successful
+   * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   remove(
@@ -163,10 +163,10 @@ export interface TemplatesService {
   ): Promise<AffectedRecords>;
   /**
    * Resolves a template and presents the result as a pdf file
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param requestBody The file data
    * @returns Buffer
@@ -183,10 +183,10 @@ export interface TemplatesService {
   /**
    * @deprecated
    * Resolves a template and presents the result as a pdf file
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param localizationCode Specifies the language the template must be resolved in
    * @param requestBody The file data
@@ -204,13 +204,13 @@ export interface TemplatesService {
   ): Promise<Buffer>;
   /**
    * Resolves a template and presents the result as a json response
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
-   * @param requestBody
-   * @returns string Success
+   * @param requestBody CreateFile
+   * @returns Record<string, string>
    * @throws {LocalizationKeyMissingError}
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}
@@ -224,14 +224,14 @@ export interface TemplatesService {
   /**
    * @deprecated
    * Resolves a template and presents the result as a json response
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param templateId Id of the targeted template
    * @param localizationCode Specifies the language the template must be resolved in
-   * @param requestBody
-   * @returns string Success
+   * @param requestBody CreateFile
+   * @returns Record<string, string>
    * @throws {LocalizationKeyMissingError}
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}

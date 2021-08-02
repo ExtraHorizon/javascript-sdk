@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "4.0.0",
+  "version": "4.1.1",
   "description": "",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
@@ -27,7 +27,7 @@
     "test": "jest",
     "test:e2e": "jest tests/e2e",
     "lint": "eslint src --ext .ts",
-    "prettier": "prettier src", 
+    "prettier": "prettier src",
     "serve:website": "docsify serve .",
     "majestic": "majestic"
   },

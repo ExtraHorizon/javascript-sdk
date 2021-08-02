@@ -26,6 +26,11 @@ export default (
     ).data;
   },
 
+  async findFirst(options) {
+    const res = await this.find(options);
+    return res.data[0];
+  },
+
   async removeUsers(rql, options) {
     return (await userClient.delete(httpWithAuth, `/${rql}`, options)).data;
   },

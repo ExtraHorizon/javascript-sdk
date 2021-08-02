@@ -41,10 +41,10 @@ export type TaskInput = Pick<
 export interface TasksService {
   /**
    * View a list of tasks
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
-   *
    * @returns PagedResult<Task>
    */
   find(
@@ -70,10 +70,10 @@ export interface TasksService {
   findFirst(this: TasksService, options?: OptionsWithRql): Promise<Task>;
   /**
    * Create a task
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_TASKS` | `gobal` | **Required** for this endpoint
-   *
    * @param requestBody
    * @returns Task Success
    */
@@ -84,14 +84,13 @@ export interface TasksService {
   ): Promise<Task>;
   /**
    * Cancel a task
-   * The targeted task **MUST** be in the `new` status.
    *
+   * The targeted task **MUST** be in the `new` status.
    * Permission | Scope | Effect
    * - | - | -
    * `CANCEL_TASKS` | `gobal` | **Required** for this endpoint
-   *
    * @param taskId The id of the targeted task
-   * @returns any Operation successful
+   * @returns AffectedRecords
    * @throws {IllegalStateException}
    * @throws {ResourceUnknownException}
    */

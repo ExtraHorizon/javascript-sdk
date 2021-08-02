@@ -74,6 +74,7 @@ export interface TaskActionUpdate {
 export interface DispatchersService {
   /**
    * Request a list of dispatchers
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_DISPATCHERS` | `global` | **Required** for this endpoint
@@ -106,6 +107,7 @@ export interface DispatchersService {
   ): Promise<Dispatcher>;
   /**
    * Create a dispatcher
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_DISPATCHERS` | `global` | **Required** for this endpoint
@@ -119,6 +121,7 @@ export interface DispatchersService {
   ): Promise<Dispatcher>;
   /**
    * Delete a dispatcher
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint
@@ -136,6 +139,7 @@ export interface DispatchersService {
 export interface ActionsService {
   /**
    * Add an action to the dispatcher
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
@@ -151,6 +155,7 @@ export interface ActionsService {
   ): Promise<Action>;
   /**
    * Update an action for the specified dispatcher
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
@@ -169,6 +174,7 @@ export interface ActionsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete an action from the specified dispatcher
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint

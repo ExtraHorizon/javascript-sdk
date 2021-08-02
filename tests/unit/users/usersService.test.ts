@@ -60,6 +60,16 @@ describe('Users Service', () => {
     expect(user.id);
   });
 
+  it('should find the first user', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/')
+      .reply(200, createPagedResponse(userData));
+
+    const user = await sdk.users.findFirst();
+
+    expect(user.id);
+  });
+
   it('should get user by id', async () => {
     nock(`${host}${USER_BASE}`).get(`/${userId}`).reply(200, userData);
 

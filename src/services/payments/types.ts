@@ -378,15 +378,13 @@ export interface StripeSetupIntentSchema {
 export interface PaymentsAppStoreService {
   /**
    * Complete a transaction
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param requestBody TransactionCompletionDataSchema
    * @returns AppleReceiptExampleSchema
-   *
    * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
-   *
    * @throws {InvalidReceiptDataError}
    * @throws {UnknownReceiptTransactionError}
    * @throws {AppStoreTransactionAlreadyLinked}
@@ -399,15 +397,13 @@ export interface PaymentsAppStoreService {
   ): Promise<AppleReceiptExampleSchema>;
   /**
    * Verify the Receipt of a Transaction
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param requestBody ReceiptVerificationDataSchema
    * @returns AppleReceiptExampleSchema
-   *
    * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
-   *
    * @throws {InvalidReceiptDataError}
    */
   verifyTransaction(
@@ -427,13 +423,12 @@ export interface PaymentsAppStoreService {
   ): Promise<boolean>;
   /**
    * Get a list of notifications received from the App Store
+   *
    * The raw notification as it was received from the App Store.
    * A detailed description of the data structure can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstoreservernotifications/responsebody).
-   *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_APP_STORE_NOTIFICATIONS` | `global` | **Required** for this endpoint
-   *
    * @returns PagedResult<AppStoreNotification>
    */
   getNotifications(
@@ -442,13 +437,12 @@ export interface PaymentsAppStoreService {
   ): Promise<PagedResult<AppStoreNotification>>;
   /**
    * Get a list of receipts received and verified by the App Store
+   *
    * The raw receipt as it was received after verification by the App Store.
    * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
-   *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_APP_STORE_RECEIPTS` | `global` | **Required** for this endpoint
-   *
    * @returns PagedResult<AppStoreReceipt>
    */
   getReceipts(
@@ -460,11 +454,11 @@ export interface PaymentsAppStoreService {
 export interface PaymentsAppStoreSubscriptionsService {
   /**
    * Get a list of App Store subscriptions
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | List App Store subscriptions related to you
    * `VIEW_APP_STORE_SUBSCRIPTIONS` | `global` | List App Store subscriptions related to all users
-   *
    * @returns PagedResult<AppStoreSubscription>
    */
   getSubscriptions(
@@ -473,10 +467,10 @@ export interface PaymentsAppStoreSubscriptionsService {
   ): Promise<PagedResult<AppStoreSubscription>>;
   /**
    * Get a list of configured App Store subscription products
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @returns PagedResult<AppStoreSubscriptionProduct>
    */
   getSubscriptionsProducts(
@@ -485,10 +479,10 @@ export interface PaymentsAppStoreSubscriptionsService {
   ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
   /**
    * Create an App Store subscription product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
-   *
    * @param requestBody AppStoreSubscriptionProductCreation
    * @returns AppStoreSubscriptionProduct
    * @throws {ResourceAlreadyExistsError}
@@ -500,10 +494,10 @@ export interface PaymentsAppStoreSubscriptionsService {
   ): Promise<AppStoreSubscriptionProduct>;
   /**
    * Delete an App Store subscription product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
-   *
    * @param productId
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -515,10 +509,10 @@ export interface PaymentsAppStoreSubscriptionsService {
   ): Promise<AffectedRecords>;
   /**
    * Update an App Store subscription product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
-   *
    * @param productId
    * @param requestBody AppStoreSubscriptionProductUpdateSchema
    * @returns AffectedRecords
@@ -535,11 +529,11 @@ export interface PaymentsAppStoreSubscriptionsService {
 export interface PaymentsOrdersService {
   /**
    * Get a list of orders
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | List orders created by you
    * `VIEW_STRIPE_ORDERS` | `global` | List orders created by all users
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<OrderSchema>
    */
@@ -581,10 +575,10 @@ export interface PaymentsOrdersService {
   ): Promise<OrderSchema>;
   /**
    * Update the status of an order
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
-   *
    * @param orderId The order Id
    * @param requestBody OrderUpdateSchema
    * @returns AffectedRecords
@@ -598,10 +592,10 @@ export interface PaymentsOrdersService {
   ): Promise<AffectedRecords>;
   /**
    * Add Tags to an Order
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list, **required**.
    * @param requestBody UpdateTagsSchema
    * @returns AffectedRecords
@@ -614,10 +608,10 @@ export interface PaymentsOrdersService {
   ): Promise<AffectedRecords>;
   /**
    * Remove Tags from an Order
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_STRIPE_ORDERS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list, **required**.
    * @param requestBody UpdateTagsSchema
    * @returns AffectedRecords
@@ -633,10 +627,10 @@ export interface PaymentsOrdersService {
 export interface PaymentsProductsService {
   /**
    * Create a product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
    * @param requestBody
    * @returns ProductSchema
    */
@@ -646,10 +640,10 @@ export interface PaymentsProductsService {
   ): Promise<ProductSchema>;
   /**
    * Get a list of products
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<ProductSchema>
    */
@@ -679,10 +673,10 @@ export interface PaymentsProductsService {
   ): Promise<ProductSchema>;
   /**
    * Add Tags to a Product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list, **required**.
    * @param requestBody UpdateTagsSchema
    * @returns AffectedRecords
@@ -695,10 +689,10 @@ export interface PaymentsProductsService {
   ): Promise<AffectedRecords>;
   /**
    * Remove tags from a Product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list, **required**.
    * @param requestBody UpdateTagsSchema
    * @returns AffectedRecords
@@ -711,10 +705,10 @@ export interface PaymentsProductsService {
   ): Promise<AffectedRecords>;
   /**
    * Update a product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
    * @param productId ID of the Product
    * @param requestBody ProductCreationSchema
    * @returns AffectedRecords
@@ -728,10 +722,10 @@ export interface PaymentsProductsService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a product
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_STRIPE_PRODUCTS` | `global` | **Required** for this endpoint
-   *
    * @param productId ID of the Product
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -746,11 +740,11 @@ export interface PaymentsProductsService {
 export interface PaymentsStripeService {
   /**
    * Get the saved Stripe data for a user
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Get the saved Stripe data for your user
    * `VIEW_STRIPE_USERS` | `global` | Get the saved Stripe data for all users
-   *
    * @param userId
    * @returns StripeUser
    */
@@ -761,11 +755,11 @@ export interface PaymentsStripeService {
   ): Promise<StripeUser>;
   /**
    * Save a payment method to a Stripe user
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Save a payment method for your user
    * `UPDATE_STRIPE_USERS` | `global` | Save a payment method for any users
-   *
    * @param userId
    * @param requestBody StripePaymentMethodCreation
    * @returns StripePaymentMethod
@@ -780,11 +774,11 @@ export interface PaymentsStripeService {
   ): Promise<StripePaymentMethod>;
   /**
    * Add tags to a payment method
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Add a tag to a payment method for your user
    * `UPDATE_STRIPE_USERS` | `global` | Add a tag to a payment method for any users
-   *
    * @param userId
    * @param paymentMethodId
    * @param requestBody UpdateTagsSchema
@@ -800,11 +794,11 @@ export interface PaymentsStripeService {
   ): Promise<AffectedRecords>;
   /**
    * Remove tags from a payment method
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Remove tag(s) from a payment method for your user
    * `UPDATE_STRIPE_USERS` | `global` | Remove tag(s) from a payment method for any users
-   *
    * @param userId
    * @param paymentMethodId
    * @param requestBody UpdateTagsSchema
@@ -820,11 +814,11 @@ export interface PaymentsStripeService {
   ): Promise<AffectedRecords>;
   /**
    * Delete a payment method
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Delete a payment method for your user
    * `UPDATE_STRIPE_USERS` | `global` | Delete a payment method for any users
-   *
    * @param userId
    * @param paymentMethodId
    * @returns AffectedRecords
@@ -838,11 +832,11 @@ export interface PaymentsStripeService {
   ): Promise<AffectedRecords>;
   /**
    * Create an order linked to a Stripe Payment Intent
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Create an order linked to a Stripe Payment Intent for your user
    * `CREATE_PAYMENT_INTENTS` | `global` | Create an order linked to a Stripe Payment Intent for any users
-   *
    * @param requestBody PaymentIntentCreationSchema
    * @returns OrderSchema
    * @throws {ResourceAlreadyExistsError}
@@ -869,8 +863,8 @@ export interface PaymentsStripeService {
   ): Promise<StripeSetupIntentSchema>;
   /**
    * Incoming events from Stripe's webhook
-   * Stripe docs for webhooks: https://stripe.com/docs/webhooks/setup#create-endpoint.
    *
+   * Stripe docs for webhooks: https://stripe.com/docs/webhooks/setup#create-endpoint.
    * Allowed events:
    * - 'source.chargeable'
    * - 'source.canceled'
@@ -880,7 +874,6 @@ export interface PaymentsStripeService {
    * - 'charge.succeeded'
    * - 'payment_intent.payment_failed'
    * - 'payment_intent.succeeded'
-   *
    * @returns any
    * @throws {BadRequestError}
    */
@@ -893,11 +886,11 @@ export interface PaymentsStripeService {
 export interface PaymentsSubscriptionsService {
   /**
    * Get a list of subscription entitlements
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | List entitlements related to you
    * `VIEW_SUBSCRIPTION_ENTITLEMENTS` | `global` | List entitlements related to all users
-   *
    * @returns PagedResult<SubscriptionEntitlement>
    */
   getEntitlements(
@@ -906,11 +899,11 @@ export interface PaymentsSubscriptionsService {
   ): Promise<PagedResult<SubscriptionEntitlement>>;
   /**
    * Get a list of subscription events
+   *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | List events related to you
    * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
-   *
    * @returns PagedResult<SubscriptionEvent>
    */
   getEvents(
