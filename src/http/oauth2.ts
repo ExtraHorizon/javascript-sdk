@@ -133,10 +133,16 @@ export function createOAuth2HttpClient(
     setTokenData(tokenResult.data);
   }
 
+  function logout(): boolean {
+    tokenData = null;
+    return true;
+  }
+
   return {
     ...httpWithAuth,
     authenticate,
     confirmMfa,
+    logout,
     get userId() {
       return tokenData?.userId;
     },

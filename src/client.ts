@@ -223,6 +223,7 @@ export interface Client<T extends ClientParams> {
       methodId: string;
       code: string;
     }) => Promise<void>;
+    logout: () => boolean;
   } & Authenticate<T>;
 }
 
@@ -267,6 +268,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
       authenticate: (oauth: AuthParams): Promise<TokenDataOauth1 | void> =>
         httpWithAuth.authenticate(parseAuthParams(oauth)),
       confirmMfa: httpWithAuth.confirmMfa,
+      logout: httpWithAuth.logout,
     } as any,
     raw: httpWithAuth,
   };
