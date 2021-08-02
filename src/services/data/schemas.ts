@@ -8,6 +8,8 @@ import type {
 } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
+const MAX_LIMIT = 50;
+
 const addTransitionHelpersToSchema = (schema: Schema) => ({
   ...schema,
   findTransitionIdByName(name: string) {
@@ -43,8 +45,14 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
       rql:
         options?.rql && options.rql.includes('limit(')
           ? options.rql
-          : rqlBuilder(options?.rql).limit(50).build(),
+          : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
     });
+
+    if (result.page.total > 2000 && result.page.offset === 0) {
+      console.warn(
+        'WARNING: total amount is > 2000, be aware that this function can hog up resources'
+      );
+    }
 
     return result.page.total > result.page.offset + result.page.limit
       ? [
