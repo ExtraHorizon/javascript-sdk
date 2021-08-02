@@ -4,7 +4,6 @@ import {
   OmitThisParameterDeep,
   ParamsOauth1,
   ParamsOauth2,
-  TokenDataOauth1,
 } from './types';
 import { version as packageVersion } from './version';
 
@@ -32,7 +31,7 @@ import {
   createOAuth2HttpClient,
 } from './http';
 import { validateConfig } from './utils';
-import { OAuthClient } from './http/types';
+import { OAuthClient, TokenDataOauth1 } from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -194,37 +193,9 @@ export interface Client<T extends ClientParams> {
    * Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
    * @see https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
    */
-  auth: OmitThisParameterDeep<ReturnType<typeof authService>> & {
-    /**
-     *  Confirm MFA method with token, methodId and code
-     *  @example
-     *  try {
-     *    await sdk.auth.authenticate({
-     *      password: '',
-     *      username: '',
-     *    });
-     *  } catch (error) {
-     *    if (error instanceof MfaRequiredError) {
-     *      const { mfa } = error.response;
-     *
-     *      // Your logic to request which method the user want to use in case of multiple methods
-     *      const methodId = mfa.methods[0].id;
-     *
-     *      await sdk.auth.confirmMfa({
-     *        token: mfa.token,
-     *        methodId,
-     *        code: '', // code from ie. Google Authenticator
-     *      });
-     *    }
-     *  }
-     */
-    confirmMfa: (mfa: {
-      token: string;
-      methodId: string;
-      code: string;
-    }) => Promise<void>;
-    logout: () => boolean;
-  } & Authenticate<T>;
+  auth: OmitThisParameterDeep<ReturnType<typeof authService>> &
+    Pick<OAuthClient, 'confirmMfa' | 'logout'> &
+    Authenticate<T>;
 }
 
 /**
@@ -265,7 +236,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     events: eventsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
-      authenticate: (oauth: AuthParams): Promise<TokenDataOauth1 | void> =>
+      authenticate: (oauth: AuthParams) =>
         httpWithAuth.authenticate(parseAuthParams(oauth)),
       confirmMfa: httpWithAuth.confirmMfa,
       logout: httpWithAuth.logout,
