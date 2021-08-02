@@ -4,6 +4,7 @@ import {
   OmitThisParameterDeep,
   ParamsOauth1,
   ParamsOauth2,
+  TokenDataOauth1,
 } from './types';
 import { version as packageVersion } from './version';
 
@@ -52,7 +53,7 @@ export interface OAuth1Authenticate {
     token: string;
     tokenSecret: string;
     skipTokenCheck?: boolean;
-  }): Promise<void>;
+  }): Promise<TokenDataOauth1>;
   /**
    * Use OAuth1 Password authentication
    * @example
@@ -67,7 +68,10 @@ export interface OAuth1Authenticate {
    * @throws {TooManyFailedAttemptsError}
    * @throws {MfaRequiredError}
    */
-  authenticate(oauth: { email: string; password: string }): Promise<void>;
+  authenticate(oauth: {
+    email: string;
+    password: string;
+  }): Promise<TokenDataOauth1>;
 }
 
 export interface OAuth2Authenticate {
@@ -260,7 +264,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     events: eventsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
-      authenticate: (oauth: AuthParams): Promise<void> =>
+      authenticate: (oauth: AuthParams): Promise<TokenDataOauth1 | void> =>
         httpWithAuth.authenticate(parseAuthParams(oauth)),
       confirmMfa: httpWithAuth.confirmMfa,
     } as any,

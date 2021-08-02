@@ -84,7 +84,7 @@ export function createOAuth1HttpClient(
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
-  async function authenticate(data: OAuth1Config): Promise<void> {
+  async function authenticate(data: OAuth1Config): Promise<TokenDataOauth1> {
     // If the user has passed in a token/tokenSecret combination.
     // Validate it against /users/me on the unauthenticated Axios client unless skipTokenCheck is true
 
@@ -107,31 +107,36 @@ export function createOAuth1HttpClient(
           },
         });
       }
-    } else {
-      const tokenResult = await http.post(options.path, data.params, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.oauth1.toHeader(
-            options.oauth1.authorize({
-              url: options.host + options.path,
-              method: 'POST',
-            })
-          ),
-        },
-      });
-      setTokenData({
-        ...tokenResult.data,
-        key: tokenResult.data.token,
-        secret: tokenResult.data.tokenSecret,
-      });
+      return tokenData;
     }
+
+    const tokenResult = await http.post(options.path, data.params, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.oauth1.toHeader(
+          options.oauth1.authorize({
+            url: options.host + options.path,
+            method: 'POST',
+          })
+        ),
+      },
+    });
+
+    const tokenResultData = {
+      ...tokenResult.data,
+      key: tokenResult.data.token,
+      secret: tokenResult.data.tokenSecret,
+    };
+
+    setTokenData(tokenResultData);
+    return tokenResultData;
   }
 
   async function confirmMfa({
     token,
     methodId,
     code,
-  }: MfaConfig): Promise<void> {
+  }: MfaConfig): Promise<TokenDataOauth1> {
     const tokenResult = await http.post(
       `${options.path}/mfa`,
       {
@@ -151,11 +156,15 @@ export function createOAuth1HttpClient(
         },
       }
     );
-    setTokenData({
+
+    const tokenResultData = {
       ...tokenResult.data,
       key: tokenResult.data.token,
       secret: tokenResult.data.tokenSecret,
-    });
+    };
+
+    setTokenData(tokenResultData);
+    return tokenResultData;
   }
 
   return {

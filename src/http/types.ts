@@ -122,8 +122,8 @@ export type OAuth2Config =
 export type AuthConfig = OAuth1Config | OAuth2Config;
 
 export interface OAuthClient extends HttpInstance {
-  authenticate: (data: AuthConfig) => Promise<void>;
-  confirmMfa: (data: MfaConfig) => Promise<void>;
+  authenticate: (data: AuthConfig) => Promise<TokenDataOauth1 | void>;
+  confirmMfa: (data: MfaConfig) => Promise<TokenDataOauth1 | void>;
   userId: string;
 }
 
