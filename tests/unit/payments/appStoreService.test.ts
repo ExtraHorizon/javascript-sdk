@@ -4,9 +4,10 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   appleReceipt,
   appleNotification,
-  appStoreNotificationResponse,
-  appStoreReceiptResponse,
+  appStoreNotification,
+  appStoreReceipt,
 } from '../../__helpers__/payment';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('App Store Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -77,7 +78,7 @@ describe('App Store Service', () => {
   it('should get a list of notifications received from the App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/receivedNotifications')
-      .reply(200, appStoreNotificationResponse);
+      .reply(200, createPagedResponse(appStoreNotification));
 
     const res = await sdk.payments.appStore.getNotifications();
 
@@ -87,7 +88,7 @@ describe('App Store Service', () => {
   it('should get a list of receipts received and verified by the App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/receivedReceipts')
-      .reply(200, appStoreReceiptResponse);
+      .reply(200, createPagedResponse(appStoreReceipt));
 
     const res = await sdk.payments.appStore.getReceipts();
 

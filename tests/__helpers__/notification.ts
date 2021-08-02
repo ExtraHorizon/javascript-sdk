@@ -23,15 +23,6 @@ export const notificationData: Notification = {
   updateTimestamp: new Date(1550577829354),
 };
 
-export const notificationResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [notificationData],
-};
-
 export const notificationTypeData: NotifTypeDef = {
   name: 'string',
   requiredFields: {
@@ -59,15 +50,6 @@ export const notificationTypeData: NotifTypeDef = {
   pushByDefault: true,
 };
 
-export const notificationTypesResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [notificationTypeData],
-};
-
 export const settingsInput = {
   key: 'string',
   preferences: {
@@ -82,13 +64,4 @@ export const settingsData = {
   id: '58074804b2148f3b28ad759a',
   creationTimestamp: new Date(1550577829354),
   updateTimestamp: new Date(1550577829354),
-};
-
-export const settingsResponse = {
-  page: {
-    total: 1,
-    offset: 0,
-    limit: 20,
-  },
-  data: [settingsData],
 };

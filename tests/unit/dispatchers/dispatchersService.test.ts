@@ -6,14 +6,13 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import {
-  dispatcherData,
-  dispatchersResponse,
-} from '../../__helpers__/dispatcher';
+import { dispatcherData } from '../../__helpers__/dispatcher';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Dispatchers Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const dispatcherId = dispatcherData.id;
+  const dispatchersResponse = createPagedResponse(dispatcherData);
 
   let sdk: Client<ParamsOauth2>;
 

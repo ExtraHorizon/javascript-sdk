@@ -30,6 +30,17 @@ To get started with the ExtraHorizon SDK you'll need to install it, and then get
 
 ## Installation
 
+In your project, if you are using yarn you need to create a file called `.yarnrc` (if you are using npm, create a file called `.npmrc`) at the root level of your project and add these lines:
+
+```
+@extrahorizon:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:\_authToken=${AUTH_TOKEN}
+```
+
+Alternatively, this file can be added/edited in your home directory and it will be applied to all projects.
+
+Explanation from GitHub on how to add your token can be found here https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages
+
 Using npm:
 
 ```sh
@@ -78,6 +89,17 @@ The data returned from the backend is mapped using interceptors:
 ## 🔑 License
 
 The MIT License (MIT). Please see [License File](/LICENSE) for more information.
+
+## Developer Notes
+
+Throughout the different services we use `this` for easy access to other functions in each service. The usage of `this` as first parameter is explained here: https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function. This parameter is excluded from all exported types.
+
+```ts
+find(
+  this: DataSchemasService,
+  options?: { rql?: RQLString }
+): Promise<PagedResult<Schema>>;
+```
 
 [auth]: https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
 [users]: https://developers.extrahorizon.io/services/?service=users-service&redirectToVersion=1

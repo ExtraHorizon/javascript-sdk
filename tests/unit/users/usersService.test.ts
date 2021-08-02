@@ -13,11 +13,7 @@ import {
   updatedUserData,
   resourceUnknownError,
 } from '../../__helpers__/user';
-import {
-  patientsResponse,
-  staffResponse,
-  userResponse,
-} from '../../__helpers__/apiResponse';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Users Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -60,6 +56,16 @@ describe('Users Service', () => {
     nock(`${host}${USER_BASE}`).get('/me').reply(200, userData);
 
     const user = await sdk.users.me();
+
+    expect(user.id);
+  });
+
+  it('should find the first user', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/')
+      .reply(200, createPagedResponse(userData));
+
+    const user = await sdk.users.findFirst();
 
     expect(user.id);
   });
@@ -121,7 +127,9 @@ describe('Users Service', () => {
       .select(['firstName', 'id'])
       .sort('-firstName')
       .build();
-    nock(`${host}${USER_BASE}`).get(`/${rql}`).reply(200, userResponse);
+    nock(`${host}${USER_BASE}`)
+      .get(`/${rql}`)
+      .reply(200, createPagedResponse(userData));
 
     const users = await sdk.users.find({ rql });
 
@@ -129,7 +137,9 @@ describe('Users Service', () => {
   });
 
   it('should get patients list', async () => {
-    nock(`${host}${USER_BASE}`).get('/patients').reply(200, patientsResponse);
+    nock(`${host}${USER_BASE}`)
+      .get('/patients')
+      .reply(200, createPagedResponse(userData));
 
     const patients = await sdk.users.patients();
 
@@ -137,7 +147,9 @@ describe('Users Service', () => {
   });
 
   it('should get staff list', async () => {
-    nock(`${host}${USER_BASE}`).get('/staff').reply(200, staffResponse);
+    nock(`${host}${USER_BASE}`)
+      .get('/staff')
+      .reply(200, createPagedResponse(userData));
 
     const staff = await sdk.users.staff();
 
@@ -276,5 +288,15 @@ describe('Users Service', () => {
     const result = await sdk.users.isEmailAvailable(newEmail);
 
     expect(result).toEqual({ emailAvailable: true });
+  });
+
+  it('should upload profile image', async () => {
+    nock(`${host}${USER_BASE}`)
+      .put(`/${userId}/profile_image`)
+      .reply(200, userData);
+
+    const result = await sdk.users.updateProfileImage(userId, { hash: 'xxx' });
+
+    expect(result).toBeDefined();
   });
 });

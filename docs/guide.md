@@ -109,6 +109,30 @@ interface MyData {
 const document = await sdk.data.documents.find<MyData>(mySchema.id);
 ```
 
+## SSL Pinning
+
+If you are using the SDK in a React Native application, you can use these hashes to enable SSL pinning in your application.
+
+Android
+
+```
+"sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
+"sha256/f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE="
+"sha256/NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k="
+"sha256/9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U="
+```
+
+Ios
+
+```
+@"++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
+@"f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE="
+@"NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k="
+@"9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U="
+```
+
+More info on how to use the can be found here: https://medium.com/@jaedmuva/react-native-ssl-pinning-is-back-e317e6682642
+
 ## Tests
 
 ### Mock

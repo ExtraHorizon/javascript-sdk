@@ -4,11 +4,13 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import {
   newDocumentCreated,
   documentData,
-  documentsListResponse,
-  lockedDocumentsListResponse,
+  lockedDocumentData,
 } from '../../__helpers__/data';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Documents Service', () => {
+  const documentsListResponse = createPagedResponse(documentData);
+  const lockedDocumentsListResponse = createPagedResponse(lockedDocumentData);
   const schemaId = '1e9fff9d90135a2a9a718e2f';
   const documentId = documentData.id;
 
@@ -46,6 +48,22 @@ describe('Documents Service', () => {
       additionalProp2: {},
       additionalProp3: {},
     });
+    expect(document.id).toBe(newDocumentCreated.id);
+  });
+
+  it('should create a document with gzip', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .post(`/${schemaId}/documents`)
+      .reply(200, newDocumentCreated);
+    const document = await sdk.data.documents.create(
+      schemaId,
+      {
+        additionalProp1: {},
+        additionalProp2: {},
+        additionalProp3: {},
+      },
+      { gzip: true }
+    );
     expect(document.id).toBe(newDocumentCreated.id);
   });
 

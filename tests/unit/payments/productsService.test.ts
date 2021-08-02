@@ -6,15 +6,13 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import {
-  newProductData,
-  productData,
-  productResponse,
-} from '../../__helpers__/payment';
+import { newProductData, productData } from '../../__helpers__/payment';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Products Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const productId = productData.id;
+  const productResponse = createPagedResponse(productData);
 
   let sdk: Client<ParamsOauth2>;
 

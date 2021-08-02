@@ -6,11 +6,13 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import { taskData, tasksResponse } from '../../__helpers__/task';
+import { taskData } from '../../__helpers__/task';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Tasks Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
   const taskId = taskData.id;
+  const tasksResponse = createPagedResponse(taskData);
 
   let sdk: Client<ParamsOauth2>;
 
