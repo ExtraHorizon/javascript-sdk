@@ -16,7 +16,10 @@
     "paths": {
       "*": ["node_modules/*", "types/*"]
     },
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "strictFunctionTypes": false,
+    "strict": true,
+    "noStrictGenericChecks": true
   },
   "include": ["src/**/*"]
 }
