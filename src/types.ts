@@ -67,6 +67,28 @@ export interface ParamsOauth1 extends ParamsBase {
   consumerSecret: string;
 }
 
+export interface ServiceLocation {
+  host: string;
+  port: number;
+}
+
+export interface ServiceLocatorInfo {
+  service: string;
+  version?: string;
+}
+
+export type ServiceLocatorFn = (
+  service: ServiceLocatorInfo
+) => Promise<ServiceLocation>;
+
+export interface MicroservicesConfig extends ConfigOauth2 {
+  serviceUrlFn: ServiceLocatorFn;
+}
+
+export interface MicroservicesParams extends ParamsOauth2 {
+  serviceUrlFn: ServiceLocatorFn;
+}
+
 export interface ParamsOauth2 extends ParamsBase {
   clientId: string;
 }
@@ -88,6 +110,6 @@ export interface ConfigOauth2 extends ParamsBase {
   };
 }
 
-export type ClientParams = ParamsOauth1 | ParamsOauth2;
-export type ClientConfig = ConfigOauth1 | ConfigOauth2;
+export type ClientParams = ParamsOauth1 | ParamsOauth2 | MicroservicesParams;
+export type ClientConfig = ConfigOauth1 | ConfigOauth2 | MicroservicesConfig;
 export type HttpClientConfig = HttpClientBase & ClientConfig;

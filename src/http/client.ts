@@ -9,7 +9,8 @@ export function createHttpClient({
   host,
   requestLogger,
   responseLogger,
-}: HttpClientConfig): AxiosInstance {
+}: // serviceDiscoveryFn,
+HttpClientConfig): AxiosInstance {
   const http = axios.create({
     baseURL: host,
     headers: {

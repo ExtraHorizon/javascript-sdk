@@ -4,6 +4,7 @@ import {
   OmitThisParameterDeep,
   ParamsOauth1,
   ParamsOauth2,
+  MicroservicesParams,
 } from './types';
 import { version as packageVersion } from './version';
 
@@ -29,6 +30,7 @@ import {
   createOAuth1HttpClient,
   parseAuthParams,
   createOAuth2HttpClient,
+  createMicroservicesHttpClient,
 } from './http';
 import { validateConfig } from './utils';
 import { OAuthClient } from './http/types';
@@ -239,10 +241,14 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
   const config = validateConfig(rawConfig);
   const http = createHttpClient({ ...config, packageVersion });
 
-  const httpWithAuth =
-    'oauth1' in config
-      ? createOAuth1HttpClient(http, config)
-      : createOAuth2HttpClient(http, config);
+  let httpWithAuth;
+  if ('serviceUrlFn' in config) {
+    httpWithAuth = createMicroservicesHttpClient(http, config);
+  } else if ('oauth1' in config) {
+    httpWithAuth = createOAuth1HttpClient(http, config);
+  } else {
+    httpWithAuth = createOAuth2HttpClient(http, config);
+  }
 
   return {
     users: usersService(httpWithAuth),
@@ -302,3 +308,11 @@ export type OAuth2Client = Client<ParamsOauth2>;
  */
 export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
   createClient(rawConfig);
+
+export const createMicroservicesClient = (
+  rawConfig: MicroservicesParams
+): Client<MicroservicesParams> =>
+  createClient({
+    ...rawConfig,
+    host: 'this_host_will_be_overriden_by_the_serviceUrlFn',
+  });
