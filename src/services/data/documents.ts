@@ -48,7 +48,7 @@ export default (
     ).data;
   },
 
-  async find(schemaId, options) {
+  async find(this: DataDocumentsService, schemaId, options) {
     console.log('options', options);
     return (
       await client.get(
@@ -59,14 +59,14 @@ export default (
     ).data;
   },
 
-  async findById(schemaId, documentId, options?) {
+  async findById(this: DataDocumentsService, schemaId, documentId, options?) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
     const res = await this.find(schemaId, { ...options, rql: rqlWithId });
 
     return res.data[0];
   },
 
-  async findFirst(schemaId, options) {
+  async findFirst(this: DataDocumentsService, schemaId, options) {
     const res = await this.find(schemaId, options);
     return res.data[0];
   },

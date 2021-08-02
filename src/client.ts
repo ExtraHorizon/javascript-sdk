@@ -133,7 +133,7 @@ export interface Client<T extends ClientParams> {
    * A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
    * @see https://developers.extrahorizon.io/services/?service=data-service&redirectToVersion=1
    */
-  data: OmitThisParameterDeep<ReturnType<typeof dataService>>;
+  data: ReturnType<typeof dataService>;
   /**
    * A service that handles file storage, metadata & file retrieval based on tokens.
    * @see https://developers.extrahorizon.io/services/?service=files-service&redirectToVersion=1

@@ -4,9 +4,9 @@ import type { DataSchemasService, Schema } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
 
-const addTransitionHelpersToSchema = (schema: Schema) => ({
+const addTransitionHelpersToSchema = (schema: Schema): Schema => ({
   ...schema,
-  findTransitionIdByName(name: string) {
+  findTransitionIdByName(name) {
     return schema.transitions?.find(transition => transition.name === name)?.id;
   },
   get transitionsByName() {

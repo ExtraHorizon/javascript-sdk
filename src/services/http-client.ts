@@ -4,9 +4,7 @@ import { HttpInstance, HttpRequestConfig } from '../http/types';
 
 interface HttpClientOptions {
   basePath: string;
-  transformRequestData?(
-    args?: Record<string, unknown>
-  ): Record<string, unknown>;
+  transformRequestData?(args: Record<string, unknown>): Record<string, unknown>;
 }
 
 interface Options {
@@ -33,9 +31,12 @@ const httpClient = ({
       ...(options?.gzip
         ? {
             transformRequest: [
-              ...(Array.isArray(axios.defaults.transformRequest)
-                ? axios.defaults.transformRequest
-                : [axios.defaults.transformRequest]),
+              // eslint-disable-next-line no-nested-ternary
+              ...(axios.defaults.transformRequest
+                ? Array.isArray(axios.defaults.transformRequest)
+                  ? axios.defaults.transformRequest
+                  : [axios.defaults.transformRequest]
+                : []),
               (dataInTransform, headers) => {
                 if (typeof dataInTransform === 'string') {
                   // eslint-disable-next-line no-param-reassign
