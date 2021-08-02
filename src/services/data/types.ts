@@ -283,7 +283,7 @@ export interface Schema {
   maximumLimit?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
-  findTransitionIdByName?: (name: string) => ObjectId;
+  findTransitionIdByName?: (name: string) => ObjectId | undefined;
   transitionsByName?: Record<string, Transition>;
 }
 
@@ -483,7 +483,6 @@ export interface DataDocumentsService {
    * @returns boolean success
    */
   assertNonLockedState(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     tries: number,
@@ -504,7 +503,6 @@ export interface DataDocumentsService {
    * @throws {IllegalArgumentError}
    */
   create<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     requestBody: Record<string, any>,
     options?: OptionsWithRql & { gzip?: boolean }
@@ -538,7 +536,6 @@ export interface DataDocumentsService {
    * @returns {Document} document
    */
   find<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     options?: OptionsWithRql
   ): Promise<PagedResult<Document<CustomData>>>;
@@ -553,7 +550,6 @@ export interface DataDocumentsService {
    * @returns {Document} document
    */
   findById<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     options?: OptionsWithRql
@@ -567,7 +563,6 @@ export interface DataDocumentsService {
    * @returns {Document} document
    */
   findFirst<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     options?: OptionsWithRql
   ): Promise<Document<CustomData>>;
@@ -588,7 +583,6 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   update(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: Record<string, any>,
@@ -615,7 +609,6 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   remove(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     options?: OptionsBase
@@ -637,7 +630,6 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -664,7 +656,6 @@ export interface DataDocumentsService {
    * @throws {ResourceUnknownError}
    */
   transition(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -687,7 +678,6 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   linkGroups(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -713,7 +703,6 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   unlinkGroups(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -737,7 +726,6 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   linkUsers(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -765,7 +753,6 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   unlinkUsers(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
@@ -792,7 +779,6 @@ export interface DataIndexesService {
    * @throws {IllegalStateError}
    */
   create(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     requestBody: IndexInput,
     options?: OptionsBase
@@ -812,7 +798,6 @@ export interface DataIndexesService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: DataDocumentsService,
     indexId: ObjectId,
     schemaId: ObjectId,
     options?: OptionsBase
@@ -835,7 +820,6 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownException}
    */
   create(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     requestBody: {
       name: string;
@@ -856,7 +840,6 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     propertyPath: string,
     options?: OptionsBase
@@ -875,7 +858,6 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     propertyPath: string,
     requestBody: TypeConfiguration,
