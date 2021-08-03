@@ -11,6 +11,7 @@ export {
   createClient,
   createOAuth1Client,
   createOAuth2Client,
+  createMicroservicesClient,
   Client,
   OAuth1Client,
   OAuth2Client,

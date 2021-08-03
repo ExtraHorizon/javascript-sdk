@@ -40,13 +40,17 @@ export function validateConfig({
     };
   }
 
-  return {
-    ...configBase,
-    path: `${AUTH_BASE}/oauth2/tokens`,
-    params: {
-      client_id: params.clientId,
-    },
-  };
+  if ('clientId' in params) {
+    return {
+      ...configBase,
+      path: `${AUTH_BASE}/oauth2/tokens`,
+      params: {
+        client_id: params.clientId,
+      },
+    };
+  }
+
+  return { ...params, host: '' };
 }
 
 export function delay(ms: number): Promise<void> {

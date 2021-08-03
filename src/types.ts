@@ -48,12 +48,17 @@ export interface ParamsOauth2Refresh {
   refreshToken: string;
 }
 
+export interface ParamsServiceDiscovery {
+  secret: string;
+}
+
 export type AuthParams =
   | ParamsOauth1WithEmail
   | ParamsOauth1WithToken
   | ParamsOauth2AuthorizationCode
   | ParamsOauth2Password
-  | ParamsOauth2Refresh;
+  | ParamsOauth2Refresh
+  | ParamsServiceDiscovery;
 
 interface ParamsBase {
   host: string;
@@ -81,11 +86,7 @@ export type ServiceLocatorFn = (
   service: ServiceLocatorInfo
 ) => Promise<ServiceLocation>;
 
-export interface MicroservicesConfig extends ConfigOauth2 {
-  serviceUrlFn: ServiceLocatorFn;
-}
-
-export interface MicroservicesParams extends ParamsOauth2 {
+export interface MicroservicesParams extends ParamsBase {
   serviceUrlFn: ServiceLocatorFn;
 }
 
@@ -108,6 +109,10 @@ export interface ConfigOauth2 extends ParamsBase {
     // eslint-disable-next-line camelcase
     client_id: string;
   };
+}
+
+export interface MicroservicesConfig extends ParamsBase {
+  serviceUrlFn: ServiceLocatorFn;
 }
 
 export type ClientParams = ParamsOauth1 | ParamsOauth2 | MicroservicesParams;

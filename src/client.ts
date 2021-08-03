@@ -116,8 +116,24 @@ export interface OAuth2Authenticate {
   authenticate(oauth: { refreshToken: string }): Promise<void>;
 }
 
+export interface ServiceDiscoveryAuthenticate {
+  /**
+   * Use service discovery with secret authentication
+   * @example
+   * await sdk.auth.authenticate({
+   *  secret: '',
+   * });
+   * @throws {InvalidClientError}
+   */
+  authenticate(auth: { secret: string }): Promise<void>;
+}
+
 type Authenticate<T extends ClientParams = ParamsOauth1> =
-  T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
+  T extends ParamsOauth1
+    ? OAuth1Authenticate
+    : T extends ParamsOauth2
+    ? OAuth2Authenticate
+    : ServiceDiscoveryAuthenticate;
 
 export interface Client<T extends ClientParams> {
   raw: OAuthClient;
@@ -311,8 +327,4 @@ export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
 
 export const createMicroservicesClient = (
   rawConfig: MicroservicesParams
-): Client<MicroservicesParams> =>
-  createClient({
-    ...rawConfig,
-    host: 'this_host_will_be_overriden_by_the_serviceUrlFn',
-  });
+): Client<MicroservicesParams> => createClient(rawConfig);

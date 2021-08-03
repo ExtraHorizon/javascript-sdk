@@ -119,7 +119,11 @@ export type OAuth2Config =
   | Oauth2ConfigCode
   | Oauth2Refresh;
 
-export type AuthConfig = OAuth1Config | OAuth2Config;
+export interface ServiceDiscoveryConfig {
+  secret: string;
+}
+
+export type AuthConfig = OAuth1Config | OAuth2Config | ServiceDiscoveryConfig;
 
 export interface OAuthClient extends HttpInstance {
   authenticate: (data: AuthConfig) => Promise<void>;

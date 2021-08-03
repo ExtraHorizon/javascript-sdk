@@ -53,6 +53,12 @@ export function parseAuthParams(options: AuthParams): AuthConfig {
     };
   }
 
+  if ('secret' in options) {
+    return {
+      secret: options.secret,
+    };
+  }
+
   throw new Error('Invalid Oauth config');
 }
 

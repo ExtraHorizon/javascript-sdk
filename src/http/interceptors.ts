@@ -1,7 +1,6 @@
-import { AxiosResponse, AxiosRequestConfig } from 'axios';
+import { AxiosResponse } from 'axios';
 import { DATA_BASE } from '../constants';
 import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
-import { ServiceLocatorFn } from '../types';
 
 export const camelizeResponseData = ({
   data,
@@ -71,12 +70,3 @@ export const transformKeysResponseData = ({
     ? data
     : recursiveRenameKeys(convertRecordsAffectedKeys, data),
 });
-
-export const useHostFromServiceDiscovery =
-  (serviceDiscoveryFn: ServiceLocatorFn) =>
-  async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-    const [_, service, version] = config.url.split('/');
-    const { host, port } = await serviceDiscoveryFn({ service, version });
-    const baseURL = `${host}:${port || 80}`;
-    return { ...config, baseURL };
-  };
