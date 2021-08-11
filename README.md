@@ -30,11 +30,11 @@ To get started with the ExtraHorizon SDK you'll need to install it, and then get
 
 ## Installation
 
-In your project, if you are using yarn you need to create a file called `.yarnrc` (if you are using npm, create a file called `.npmrc`) at the root level of your project and add these lines:
+In your project, if you are using yarn or npm you need to create a file called `.npmrc` at the root level of your project and add these lines. Replace ${AUTH_TOKEN} with your personal access token. You can get a new one at https://github.com/settings/tokens/new. Make sure you enable the `read:packages` scope.
 
 ```
 @extrahorizon:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:\_authToken=${AUTH_TOKEN}
+//npm.pkg.github.com/:_authToken=${AUTH_TOKEN}
 ```
 
 Alternatively, this file can be added/edited in your home directory and it will be applied to all projects.
