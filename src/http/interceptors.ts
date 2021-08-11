@@ -12,7 +12,7 @@ export const camelizeResponseData = ({
   data:
     // Note: the /data endpoint can return custom properties that the user has defined
     config?.url?.startsWith(DATA_BASE) ||
-    ['arraybuffer', 'stream'].includes(config?.responseType || '')
+    ['arraybuffer', 'stream'].includes(config.responseType ?? '')
       ? data
       : camelizeKeys(data),
 });
@@ -47,7 +47,7 @@ export const transformResponseData = ({
 }: AxiosResponse): AxiosResponse => ({
   ...response,
   config,
-  data: ['arraybuffer', 'stream'].includes(config?.responseType || '')
+  data: ['arraybuffer', 'stream'].includes(config?.responseType ?? '')
     ? data
     : recursiveMap(mapDateValues)(data),
 });
@@ -66,7 +66,7 @@ export const transformKeysResponseData = ({
 }: AxiosResponse): AxiosResponse => ({
   ...response,
   config,
-  data: ['arraybuffer', 'stream'].includes(config?.responseType || '')
+  data: ['arraybuffer', 'stream'].includes(config?.responseType ?? '')
     ? data
     : recursiveRenameKeys(convertRecordsAffectedKeys, data),
 });
