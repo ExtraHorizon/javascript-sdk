@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated documentation on SSL pinning
 - Add `logout` function to `sdk.auth`
 - Updated installation instructions
+- Add `findAll` to `sdk.data.schemas`
 - Client creation allows for extra headers which will be set on every call.
 
 ```ts
