@@ -28,6 +28,7 @@ export default (
 
   /**
    * Delete a dispatcher
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint

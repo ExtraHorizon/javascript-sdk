@@ -151,9 +151,7 @@ export interface FileTokensService {
    * Delete a token
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
    *
    * @param token
@@ -172,9 +170,7 @@ export interface FileTokensService {
    * Generate a token for a file
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
    *
    * @param token

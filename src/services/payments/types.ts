@@ -423,6 +423,7 @@ export interface PaymentsAppStoreService {
    *
    * The raw notification as it was received from the App Store.
    * A detailed description of the data structure can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstoreservernotifications/responsebody).
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_APP_STORE_NOTIFICATIONS` | `global` | **Required** for this endpoint
@@ -436,6 +437,7 @@ export interface PaymentsAppStoreService {
    *
    * The raw receipt as it was received after verification by the App Store.
    * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_APP_STORE_RECEIPTS` | `global` | **Required** for this endpoint

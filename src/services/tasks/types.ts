@@ -75,6 +75,7 @@ export interface TasksService {
    * Cancel a task
    *
    * The targeted task **MUST** be in the `new` status.
+   *
    * Permission | Scope | Effect
    * - | - | -
    * `CANCEL_TASKS` | `gobal` | **Required** for this endpoint
