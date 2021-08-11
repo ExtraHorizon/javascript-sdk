@@ -662,8 +662,7 @@ export interface UsersService {
    * Update a specific user
    * @params {string} userId of the targeted user (required)
    * @params {Pick<UserData,'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'>} data Fields to update
-   
-  * Permission | Scope | Effect
+   * Permission | Scope | Effect
    * - | - | -
    * none | | Update your own data
    * UPDATE_USER | global | Update any user
