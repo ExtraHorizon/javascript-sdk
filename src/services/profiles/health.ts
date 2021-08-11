@@ -4,7 +4,6 @@ import { ResultResponse, Results } from '../types';
 export default (client, httpAuth: HttpInstance) => ({
   /**
    * Perform a health check for profiles service
-   * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
   async health(): Promise<boolean> {

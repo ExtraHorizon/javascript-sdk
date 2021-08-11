@@ -1,4 +1,3 @@
-import { RQLString } from '../../rql';
 import {
   ObjectId,
   LanguageCode,
@@ -7,6 +6,8 @@ import {
   MailRecipients,
   AffectedRecords,
   PagedResult,
+  OptionsBase,
+  OptionsWithRql,
 } from '../types';
 
 export interface Mail {
@@ -97,10 +98,9 @@ export enum QueuedMailStatus {
 export interface MailsService {
   /**
    * Perform a health check for mail service
-   * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
-  health(this: MailsService): Promise<boolean>;
+  health(options?: OptionsBase): Promise<boolean>;
   /**
    * Retrieve a list of mails
    *
@@ -110,27 +110,20 @@ export interface MailsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Mail>
    */
-  find: (
-    this: MailsService,
-    options?: { rql?: RQLString }
-  ) => Promise<PagedResult<Mail>>;
+  find: (options?: OptionsWithRql) => Promise<PagedResult<Mail>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById: (
-    this: MailsService,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ) => Promise<Mail>;
+  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Mail>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: MailsService, options?: { rql?: RQLString }): Promise<Mail>;
+  findFirst(options?: OptionsWithRql): Promise<Mail>;
   /**
    * Send a mail
    *
@@ -144,8 +137,8 @@ export interface MailsService {
    * @throws {NotActivatedError}
    */
   send(
-    this: MailsService,
-    requestBody?: PlainMailCreation | TemplateBasedMailCreation
+    requestBody: PlainMailCreation | TemplateBasedMailCreation,
+    options?: OptionsBase
   ): Promise<Mail>;
   /**
    * Register a mail being opened
@@ -156,7 +149,7 @@ export interface MailsService {
    * @param trackingHash
    * @returns AffectedRecords
    */
-  track(this: MailsService, trackingHash: string): Promise<AffectedRecords>;
+  track(trackingHash: string, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Retrieve the list of mails that are not sent yet
    *
@@ -166,8 +159,5 @@ export interface MailsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<QueuedMail>
    */
-  findOutbound(
-    this: MailsService,
-    options?: { rql?: string }
-  ): Promise<PagedResult<QueuedMail>>;
+  findOutbound(options?: OptionsWithRql): Promise<PagedResult<QueuedMail>>;
 }

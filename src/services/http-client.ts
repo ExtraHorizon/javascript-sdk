@@ -2,21 +2,19 @@ import pako from 'pako';
 import platform from 'platform-specific';
 import { HttpInstance, HttpRequestConfig } from '../http/types';
 
-interface HttpClient {
+interface HttpClientOptions {
   basePath: string;
-  transformRequestData?(
-    args?: Record<string, unknown>
-  ): Record<string, unknown>;
+  transformRequestData?(args: Record<string, unknown>): Record<string, unknown>;
 }
 
 interface Options {
   gzip?: boolean;
 }
 
-export default ({
+const httpClient = ({
   basePath,
   transformRequestData = data => data,
-}: HttpClient) => ({
+}: HttpClientOptions) => ({
   get: (axios: HttpInstance, url: string, config?: HttpRequestConfig) =>
     axios.get(`${basePath}${url}`, config),
   put: (axios: HttpInstance, url: string, data, config?: HttpRequestConfig) =>
@@ -33,9 +31,12 @@ export default ({
       ...(options?.gzip
         ? {
             transformRequest: [
-              ...(Array.isArray(axios.defaults.transformRequest)
-                ? axios.defaults.transformRequest
-                : [axios.defaults.transformRequest]),
+              // eslint-disable-next-line no-nested-ternary
+              ...(axios.defaults.transformRequest
+                ? Array.isArray(axios.defaults.transformRequest)
+                  ? axios.defaults.transformRequest
+                  : [axios.defaults.transformRequest]
+                : []),
               (dataInTransform, headers) => {
                 if (typeof dataInTransform === 'string') {
                   // eslint-disable-next-line no-param-reassign
@@ -63,3 +64,7 @@ export default ({
   delete: (axios: HttpInstance, url: string, config?: HttpRequestConfig) =>
     axios.delete(`${basePath}${url}`, config),
 });
+
+export default httpClient;
+
+export type HttpClient = ReturnType<typeof httpClient>;

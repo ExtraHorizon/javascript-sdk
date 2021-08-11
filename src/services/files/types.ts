@@ -1,6 +1,11 @@
 import { ReadStream } from 'fs';
-import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
@@ -42,30 +47,20 @@ export interface FilesService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<FileDetails>
    */
-  find(
-    this: FilesService,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<FileDetails>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<FileDetails>>;
   /**
    * Find By Name
    * @param name the name to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByName(
-    this: FilesService,
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<FileDetails>;
+  findByName(name: string, options?: OptionsWithRql): Promise<FileDetails>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: FilesService,
-    options?: { rql?: RQLString }
-  ): Promise<FileDetails>;
+  findFirst(options?: OptionsWithRql): Promise<FileDetails>;
   /**
    * Add a new file from a plain text source
    *
@@ -76,7 +71,7 @@ export interface FilesService {
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  createFromText(this: FilesService, text: string): Promise<FileDetails>;
+  createFromText(text: string, options?: OptionsBase): Promise<FileDetails>;
   /**
    * Add a new file
    *
@@ -89,10 +84,9 @@ export interface FilesService {
    * @throws {FileTooLargeError}
    */
   create(
-    this: FilesService,
     fileName: string,
     fileData: Blob | Buffer | ReadStream,
-    options?: { tags: [] }
+    options?: OptionsBase & { tags: [] }
   ): Promise<FileDetails>;
   /**
    * Delete a file
@@ -105,7 +99,7 @@ export interface FilesService {
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  remove(this: FilesService, token: Token): Promise<AffectedRecords>;
+  remove(token: Token, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Retrieve a file from the object store
    *
@@ -117,7 +111,7 @@ export interface FilesService {
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  retrieve(this: FilesService, token: Token): Promise<Buffer>;
+  retrieve(token: Token, options?: OptionsBase): Promise<Buffer>;
   /**
    * Retrieve a file stream from the object store
    *
@@ -130,8 +124,8 @@ export interface FilesService {
    * @throws {UnauthorizedTokenError}
    */
   retrieveStream(
-    this: FilesService,
-    token: Token
+    token: Token,
+    options?: OptionsBase
   ): Promise<{ data: ReadStream }>;
   /**
    * Get file details
@@ -149,7 +143,7 @@ export interface FilesService {
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  getDetails(this: FilesService, token: Token): Promise<FileDetails>;
+  getDetails(token: Token, options?: OptionsBase): Promise<FileDetails>;
 }
 
 export interface FileTokensService {
@@ -157,9 +151,7 @@ export interface FileTokensService {
    * Delete a token
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
    *
    * @param token
@@ -170,17 +162,15 @@ export interface FileTokensService {
    * @throws {TokenNotDeleteableError}
    */
   deleteToken(
-    this: FileTokensService,
     token: Token,
-    tokenToAccess: Token
+    tokenToAccess: Token,
+    options?: OptionsBase
   ): Promise<void>;
   /**
    * Generate a token for a file
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
    *
    * @param token
@@ -190,8 +180,8 @@ export interface FileTokensService {
    * @throws {UnauthorizedTokenError}
    */
   generateToken(
-    this: FileTokensService,
     token: Token,
-    requestBody: CreateTokenRequest
+    requestBody: CreateTokenRequest,
+    options?: OptionsBase
   ): Promise<TokenObject>;
 }

@@ -1,59 +1,57 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type {
-  OrderSchema,
-  OrderCreationSchema,
-  OrderUpdateSchema,
-  UpdateTagsSchema,
-  PaymentsOrdersService,
-} from './types';
-import { RQLString, rqlBuilder } from '../../rql';
+import type { PaymentsOrdersService } from './types';
+import { rqlBuilder } from '../../rql';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): PaymentsOrdersService => ({
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<OrderSchema>> {
-    return (await client.get(httpAuth, `/orders${options?.rql || ''}`)).data;
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): PaymentsOrdersService => ({
+  async find(options) {
+    return (await client.get(httpAuth, `/orders${options?.rql || ''}`, options))
+      .data;
   },
 
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<OrderSchema> {
+  async findById(this: PaymentsOrdersService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options?: { rql?: RQLString }): Promise<OrderSchema> {
+  async findFirst(this: PaymentsOrdersService, options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async create(requestBody: OrderCreationSchema): Promise<OrderSchema> {
-    return (await client.post(httpAuth, '/orders', requestBody)).data;
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/orders', requestBody, options)).data;
   },
 
-  async update(
-    orderId: ObjectId,
-    requestBody: OrderUpdateSchema
-  ): Promise<AffectedRecords> {
-    return (await client.put(httpAuth, `/orders/${orderId}`, requestBody)).data;
-  },
-
-  async addTagsToOrder(
-    rql: RQLString,
-    requestBody: UpdateTagsSchema
-  ): Promise<AffectedRecords> {
+  async update(orderId, requestBody, options) {
     return (
-      await client.post(httpAuth, `/orders/addTags${rql || ''}`, requestBody)
+      await client.put(httpAuth, `/orders/${orderId}`, requestBody, options)
     ).data;
   },
 
-  async removeTagsFromOrder(
-    rql: RQLString,
-    requestBody: UpdateTagsSchema
-  ): Promise<AffectedRecords> {
+  async addTagsToOrder(rql, requestBody, options) {
     return (
-      await client.post(httpAuth, `/orders/removeTags${rql || ''}`, requestBody)
+      await client.post(
+        httpAuth,
+        `/orders/addTags${rql || ''}`,
+        requestBody,
+        options
+      )
+    ).data;
+  },
+
+  async removeTagsFromOrder(rql, requestBody, options) {
+    return (
+      await client.post(
+        httpAuth,
+        `/orders/removeTags${rql || ''}`,
+        requestBody,
+        options
+      )
     ).data;
   },
 });

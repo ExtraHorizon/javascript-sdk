@@ -1,25 +1,25 @@
 import type { HttpInstance } from '../../types';
-import { PagedResult, ObjectId } from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
-import type { CreateEvent, Event, EventsService } from './types';
+import { rqlBuilder } from '../../rql';
+import type { EventsService } from './types';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): EventsService => ({
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Event>> {
+export default (client: HttpClient, httpAuth: HttpInstance): EventsService => ({
+  async find(options) {
     return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
   },
 
-  async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Event> {
+  async findById(this: EventsService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options?: { rql?: RQLString }): Promise<Event> {
+  async findFirst(this: EventsService, options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async create(requestBody: CreateEvent): Promise<Event> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/', requestBody, options)).data;
   },
 });

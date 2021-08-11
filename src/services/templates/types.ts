@@ -4,9 +4,10 @@ import {
   TimeZone,
   PagedResult,
   AffectedRecords,
+  OptionsWithRql,
+  OptionsBase,
 } from '../types';
 import { TypeConfiguration } from '../data/types';
-import { RQLString } from '../../rql';
 
 export interface TemplateOut {
   id?: ObjectId;
@@ -66,10 +67,9 @@ export interface CreateFile {
 export interface TemplatesService {
   /**
    * Perform a health check
-   * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
-  health(this: TemplatesService): Promise<boolean>;
+  health(): Promise<boolean>;
   /**
    * Get all templates the service has to offer
    *
@@ -79,41 +79,27 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<TemplateOut>
    */
-  find(
-    this: TemplatesService,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<TemplateOut>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<TemplateOut>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: TemplatesService,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<TemplateOut>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateOut>;
   /**
    * Find By Name
    * @param name the name to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByName(
-    this: TemplatesService,
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<TemplateOut>;
+  findByName(name: string, options?: OptionsWithRql): Promise<TemplateOut>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: TemplatesService,
-    options?: { rql?: RQLString }
-  ): Promise<TemplateOut>;
+  findFirst(options?: OptionsWithRql): Promise<TemplateOut>;
   /**
    * Create a new template
    *
@@ -123,7 +109,7 @@ export interface TemplatesService {
    * @param requestBody TemplateIn
    * @returns TemplateOut
    */
-  create(this: TemplatesService, requestBody: TemplateIn): Promise<TemplateOut>;
+  create(requestBody: TemplateIn, options?: OptionsBase): Promise<TemplateOut>;
   /**
    * Update an existing template
    *
@@ -136,9 +122,9 @@ export interface TemplatesService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: TemplatesService,
     templateId: string,
-    requestBody: TemplateIn
+    requestBody: TemplateIn,
+    options?: OptionsBase
   ): Promise<TemplateOut>;
   /**
    * Delete a template
@@ -150,7 +136,7 @@ export interface TemplatesService {
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(this: TemplatesService, templateId: string): Promise<AffectedRecords>;
+  remove(templateId: string, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Resolves a template and presents the result as a pdf file
    *
@@ -165,9 +151,9 @@ export interface TemplatesService {
    * @throws {ResourceUnknownError}
    */
   resolveAsPdf(
-    this: TemplatesService,
     templateId: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options?: OptionsBase
   ): Promise<Buffer>;
   /**
    * @deprecated
@@ -185,10 +171,10 @@ export interface TemplatesService {
    * @throws {ResourceUnknownError}
    */
   resolveAsPdfUsingCode(
-    this: TemplatesService,
     templateId: string,
     localizationCode: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options?: OptionsBase
   ): Promise<Buffer>;
   /**
    * Resolves a template and presents the result as a json response
@@ -204,9 +190,9 @@ export interface TemplatesService {
    * @throws {ResourceUnknownError}
    */
   resolveAsJson(
-    this: TemplatesService,
     templateId: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options?: OptionsBase
   ): Promise<Record<string, string>>;
   /**
    * @deprecated
@@ -224,9 +210,9 @@ export interface TemplatesService {
    * @throws {ResourceUnknownError}
    */
   resolveAsJsonUsingCode(
-    this: TemplatesService,
     templateId: string,
     localizationCode: string,
-    requestBody: CreateFile
+    requestBody: CreateFile,
+    options?: OptionsBase
   ): Promise<Record<string, string>>;
 }

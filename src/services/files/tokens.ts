@@ -1,21 +1,18 @@
 import type { HttpInstance } from '../../types';
-import type {
-  TokenObject,
-  CreateTokenRequest,
-  Token,
-  FileTokensService,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { FileTokensService } from './types';
 
-export default (userClient, httpAuth: HttpInstance): FileTokensService => ({
-  async deleteToken(token: Token, tokenToAccess: Token): Promise<void> {
-    await userClient.delete(httpAuth, `/${token}/tokens/${tokenToAccess}`);
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): FileTokensService => ({
+  async deleteToken(token, tokenToAccess, options) {
+    await client.delete(httpAuth, `/${token}/tokens/${tokenToAccess}`, options);
   },
 
-  async generateToken(
-    token: Token,
-    requestBody: CreateTokenRequest
-  ): Promise<TokenObject> {
-    return (await userClient.post(httpAuth, `/${token}/tokens`, requestBody))
-      .data;
+  async generateToken(token, requestBody, options) {
+    return (
+      await client.post(httpAuth, `/${token}/tokens`, requestBody, options)
+    ).data;
   },
 });

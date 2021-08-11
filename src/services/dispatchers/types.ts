@@ -1,8 +1,9 @@
-import { RQLString } from '../../rql';
 import type {
   AffectedRecords,
   MailRecipients,
   ObjectId,
+  OptionsBase,
+  OptionsWithRql,
   PagedResult,
 } from '../types';
 
@@ -80,28 +81,20 @@ export interface DispatchersService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Dispatcher>
    */
-  find: (
-    this: DispatchersService,
-    options?: { rql?: RQLString }
-  ) => Promise<PagedResult<Dispatcher>>;
+  find: (options?: OptionsWithRql) => Promise<PagedResult<Dispatcher>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById: (
-    this: DispatchersService,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ) => Promise<Dispatcher>;
-
+  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Dispatcher>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: { rql?: RQLString }): Promise<Dispatcher>;
+  findFirst(options?: OptionsWithRql): Promise<Dispatcher>;
   /**
    * Create a dispatcher
    *
@@ -111,7 +104,7 @@ export interface DispatchersService {
    * @param requestBody Dispatcher
    * @returns Dispatcher
    */
-  create(requestBody: Dispatcher): Promise<Dispatcher>;
+  create(requestBody: Dispatcher, options?: OptionsBase): Promise<Dispatcher>;
   /**
    * Delete a dispatcher
    *
@@ -122,7 +115,10 @@ export interface DispatchersService {
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(dispatcherId: ObjectId): Promise<AffectedRecords>;
+  remove(
+    dispatcherId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }
 
 export interface ActionsService {
@@ -136,7 +132,11 @@ export interface ActionsService {
    * @param requestBody ActionCreation
    * @returns Action
    */
-  create(dispatcherId: ObjectId, requestBody: ActionCreation): Promise<Action>;
+  create(
+    dispatcherId: ObjectId,
+    requestBody: ActionCreation,
+    options?: OptionsBase
+  ): Promise<Action>;
   /**
    * Update an action for the specified dispatcher
    *
@@ -152,7 +152,8 @@ export interface ActionsService {
   update(
     dispatcherId: ObjectId,
     actionId: ObjectId,
-    requestBody: ActionUpdate
+    requestBody: ActionUpdate,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete an action from the specified dispatcher
@@ -165,5 +166,9 @@ export interface ActionsService {
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(dispatcherId: ObjectId, actionId: ObjectId): Promise<AffectedRecords>;
+  remove(
+    dispatcherId: ObjectId,
+    actionId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }

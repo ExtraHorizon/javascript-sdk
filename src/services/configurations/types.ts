@@ -1,5 +1,11 @@
-import { RQLString } from '../../rql';
-import { Entity, Timestamps, ObjectId, AffectedRecords } from '../types';
+import {
+  Entity,
+  Timestamps,
+  ObjectId,
+  AffectedRecords,
+  OptionsBase,
+  OptionsWithRql,
+} from '../types';
 
 export type Configuration = Record<string, any>;
 
@@ -51,7 +57,7 @@ export interface ConfigurationsGeneralService {
    * none | | Everyone can use this endpoint
    * @returns GeneralConfiguration
    */
-  get(this: ConfigurationsGeneralService): Promise<GeneralConfiguration>;
+  get(options?: OptionsBase): Promise<GeneralConfiguration>;
   /**
    * Update the general configuration
    *
@@ -63,11 +69,8 @@ export interface ConfigurationsGeneralService {
    * @returns AffectedRecords
    */
   update(
-    this: ConfigurationsGeneralService,
     requestBody: GeneralConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from the general configuration.
@@ -80,13 +83,10 @@ export interface ConfigurationsGeneralService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: ConfigurationsGeneralService,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
 }
 
@@ -103,10 +103,7 @@ export interface ConfigurationsGroupsService {
    * @param groupId The id of the targeted group
    * @returns GroupConfiguration
    */
-  get(
-    this: ConfigurationsGroupsService,
-    groupId: ObjectId
-  ): Promise<GroupConfiguration>;
+  get(groupId: ObjectId, options?: OptionsBase): Promise<GroupConfiguration>;
   /**
    * Update a group configuration.
    *
@@ -122,12 +119,9 @@ export interface ConfigurationsGroupsService {
    * @returns AffectedRecords
    */
   update(
-    this: ConfigurationsGroupsService,
     groupId: ObjectId,
     requestBody: GroupConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a group configuration.
@@ -144,14 +138,11 @@ export interface ConfigurationsGroupsService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: ConfigurationsGroupsService,
     groupId: ObjectId,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
 }
 
@@ -170,10 +161,10 @@ export interface ConfigurationsPatientsService {
    * @returns AffectedRecords
    */
   update(
-    this: ConfigurationsPatientsService,
     groupId: ObjectId,
     userId: ObjectId,
-    requestBody: UserConfigurationInput
+    requestBody: UserConfigurationInput,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a patient configuration for a group of a user.
@@ -189,12 +180,12 @@ export interface ConfigurationsPatientsService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: ConfigurationsPatientsService,
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: {
       fields: Array<string>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -213,10 +204,10 @@ export interface ConfigurationsStaffService {
    * @returns AffectedRecords
    */
   update(
-    this: ConfigurationsStaffService,
     groupId: ObjectId,
     userId: ObjectId,
-    requestBody: UserConfigurationInput
+    requestBody: UserConfigurationInput,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a staff configuration for a group of a user.
@@ -232,12 +223,12 @@ export interface ConfigurationsStaffService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: ConfigurationsStaffService,
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: {
       fields: Array<string>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -255,10 +246,7 @@ export interface ConfigurationsUsersService {
    * @param userId The id of the targeted user
    * @returns UserConfiguration
    */
-  get(
-    this: ConfigurationsUsersService,
-    userId: ObjectId
-  ): Promise<UserConfiguration>;
+  get(userId: ObjectId, options?: OptionsBase): Promise<UserConfiguration>;
   /**
    * Update a user configuration
    *
@@ -274,12 +262,9 @@ export interface ConfigurationsUsersService {
    * @returns AffectedRecords
    */
   update(
-    this: ConfigurationsUsersService,
     userId: ObjectId,
     requestBody: UserConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a user configuration
@@ -296,13 +281,10 @@ export interface ConfigurationsUsersService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: ConfigurationsUsersService,
     userId: ObjectId,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
 }

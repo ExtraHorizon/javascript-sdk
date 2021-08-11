@@ -162,7 +162,7 @@ export interface OAuthClient extends HttpInstance {
    *  }
    */
   logout: () => boolean;
-  userId: string;
+  userId: string | undefined;
 }
 
 export interface MfaConfig {

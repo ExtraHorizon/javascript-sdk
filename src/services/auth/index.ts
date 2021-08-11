@@ -1,7 +1,7 @@
 import type { HttpInstance } from '../../types';
 import type { Presence } from './types';
 import httpClient from '../http-client';
-import { Results } from '../types';
+import { OptionsBase, Results } from '../types';
 import applications from './applications';
 import oauth2 from './oauth2';
 import users from './users';
@@ -27,9 +27,13 @@ export const authService = (httpWithAuth: HttpInstance) => {
      * @throws {LoginFreezeError}
      * @throws {TooManyFailedAttemptsError}
      * */
-    async confirmPresence(data: { password: string }): Promise<Presence> {
-      return (await authClient.post(httpWithAuth, `/confirmPresence`, data))
-        .data;
+    async confirmPresence(
+      data: { password: string },
+      options?: OptionsBase
+    ): Promise<Presence> {
+      return (
+        await authClient.post(httpWithAuth, `/confirmPresence`, data, options)
+      ).data;
     },
 
     /**

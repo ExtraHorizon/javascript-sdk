@@ -52,20 +52,22 @@ export function createOAuth1HttpClient(
     tokenData = data;
   }
 
-  httpWithAuth.interceptors.request.use(async (config = {}) => ({
+  httpWithAuth.interceptors.request.use(async config => ({
     ...config,
     headers: {
       ...config.headers,
       'Content-Type': 'application/json',
-      ...options.oauth1.toHeader(
-        options.oauth1.authorize(
-          {
-            url: `${config.baseURL}${config.url}`,
-            method: config.method,
-          },
-          tokenData
-        )
-      ),
+      ...(config?.method
+        ? options.oauth1.toHeader(
+            options.oauth1.authorize(
+              {
+                url: `${config.baseURL}${config.url}`,
+                method: config.method,
+              },
+              tokenData
+            )
+          )
+        : {}),
     },
   }));
 

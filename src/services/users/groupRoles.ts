@@ -1,159 +1,120 @@
-import type { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type {
-  GroupRolePermissions,
-  StaffRoles,
-  StaffGroups,
-  AddRole,
-  GroupRole,
-  GlobalPermission,
-  UsersGroupRolesService,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { UsersGroupRolesService } from './types';
 
 export default (
-  userClient,
+  client: HttpClient,
   httpWithAuth: HttpInstance
 ): UsersGroupRolesService => ({
-  async getPermissions(): Promise<PagedResult<GlobalPermission>> {
-    return (await userClient.get(httpWithAuth, '/groups/permissions')).data;
+  async getPermissions(options) {
+    return (await client.get(httpWithAuth, '/groups/permissions', options))
+      .data;
   },
 
-  async get(
-    groupId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<PagedResult<GroupRole>> {
+  async get(groupId, options) {
     return (
-      await userClient.get(
+      await client.get(
         httpWithAuth,
-        `/groups/${groupId}/roles${options?.rql || ''}`
+        `/groups/${groupId}/roles${options?.rql || ''}`,
+        options
       )
     ).data;
   },
 
-  async add(groupId: ObjectId, requestBody: AddRole): Promise<GroupRole> {
+  async add(groupId, requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/groups/${groupId}/roles`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async update(
-    groupId: ObjectId,
-    roleId: ObjectId,
-    requestBody: AddRole
-  ): Promise<GroupRole> {
+  async update(groupId, roleId, requestBody, options) {
     return (
-      await userClient.put(
+      await client.put(
         httpWithAuth,
         `/groups/${groupId}/roles/${roleId}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async remove(
-    rql: RQLString,
-    groupId: ObjectId,
-    roleId: ObjectId
-  ): Promise<AffectedRecords> {
+  async remove(rql, groupId, roleId, options) {
     return (
-      await userClient.delete(
+      await client.delete(
         httpWithAuth,
-        `/groups/${groupId}/roles/${roleId}${rql}`
+        `/groups/${groupId}/roles/${roleId}${rql}`,
+        options
       )
     ).data;
   },
 
-  async addPermissions(
-    groupId: ObjectId,
-    requestBody: GroupRolePermissions,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async addPermissions(groupId, requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/groups/${groupId}/roles/add_permissions${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removePermissions(
-    rql: RQLString,
-    groupId: ObjectId,
-    requestBody: GroupRolePermissions
-  ): Promise<AffectedRecords> {
+  async removePermissions(rql, groupId, requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/groups/${groupId}/roles/remove_permissions${rql}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async assignToStaff(
-    groupId: ObjectId,
-    requestBody: StaffRoles,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async assignToStaff(groupId, requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/groups/${groupId}/staff/add_roles${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removeFromStaff(
-    rql: RQLString,
-    groupId: ObjectId,
-    requestBody: StaffRoles
-  ): Promise<AffectedRecords> {
+  async removeFromStaff(rql, groupId, requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/groups/${groupId}/staff/remove_roles${rql}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async addUsersToStaff(
-    requestBody: StaffGroups,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async addUsersToStaff(requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/add_to_staff${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removeUsersFromStaff(
-    rql: RQLString,
-    requestBody: StaffGroups
-  ): Promise<AffectedRecords> {
+  async removeUsersFromStaff(rql, requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/remove_from_staff${rql}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },

@@ -1,5 +1,10 @@
-import { RQLString } from '../../rql';
-import { AffectedRecords, ObjectId, PagedResult } from '../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 export interface Notification {
   id?: ObjectId;
@@ -126,8 +131,8 @@ export interface NotificationsService {
    * @returns Notification
    */
   create(
-    this: NotificationsService,
-    requestBody: CreateNotificationRequest
+    requestBody: CreateNotificationRequest,
+    options?: OptionsBase
   ): Promise<Notification>;
   /**
    * Retrieve a list of notifications
@@ -139,30 +144,20 @@ export interface NotificationsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Notification>
    */
-  find(
-    this: NotificationsService,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<Notification>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Notification>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: NotificationsService,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Notification>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Notification>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: NotificationsService,
-    options?: { rql?: RQLString }
-  ): Promise<Notification>;
+  findFirst(options?: OptionsWithRql): Promise<Notification>;
   /**
    * Delete notification(s)
    *
@@ -172,10 +167,7 @@ export interface NotificationsService {
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  remove(
-    this: NotificationsService,
-    options?: { rql?: RQLString }
-  ): Promise<AffectedRecords>;
+  remove(options?: OptionsWithRql): Promise<AffectedRecords>;
   /**
    * Mark your notification(s) as viewed
    *
@@ -185,10 +177,7 @@ export interface NotificationsService {
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  markAsViewed(
-    this: NotificationsService,
-    options?: { rql?: RQLString }
-  ): Promise<AffectedRecords>;
+  markAsViewed(options?: OptionsWithRql): Promise<AffectedRecords>;
   /**
    * Retrieve the list of notification types
    *
@@ -197,7 +186,7 @@ export interface NotificationsService {
    * none | | Everyone can use this endpoint
    * @returns PagedResult<NotifTypeDef>
    */
-  getTypes(this: NotificationsService): Promise<PagedResult<NotifTypeDef>>;
+  getTypes(options?: OptionsBase): Promise<PagedResult<NotifTypeDef>>;
 }
 
 export interface NotificationSettingsServices {
@@ -211,30 +200,20 @@ export interface NotificationSettingsServices {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Setting>
    */
-  find(
-    this: NotificationSettingsServices,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<Setting>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Setting>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: NotificationSettingsServices,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Setting>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Setting>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: NotificationSettingsServices,
-    options?: { rql?: RQLString }
-  ): Promise<Setting>;
+  findFirst(options?: OptionsWithRql): Promise<Setting>;
   /**
    * Update the notification settings for a user
    *
@@ -247,9 +226,9 @@ export interface NotificationSettingsServices {
    * @returns Setting
    */
   update(
-    this: NotificationSettingsServices,
     userId: string,
-    requestBody: SettingCreation
+    requestBody: SettingCreation,
+    options?: OptionsBase
   ): Promise<Setting>;
   /**
    * Delete the notifications settings for a user
@@ -260,8 +239,5 @@ export interface NotificationSettingsServices {
    * @param userId
    * @returns AffectedRecords
    */
-  remove(
-    this: NotificationSettingsServices,
-    userId: string
-  ): Promise<AffectedRecords>;
+  remove(userId: string, options?: OptionsBase): Promise<AffectedRecords>;
 }

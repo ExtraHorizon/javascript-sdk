@@ -1,6 +1,11 @@
 import type { JSONSchema7 } from './json-schema';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
-import { RQLString } from '../../rql';
+import type {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 export enum JSONSchemaType {
   OBJECT = 'object',
@@ -278,7 +283,7 @@ export interface Schema {
   maximumLimit?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
-  findTransitionIdByName?: (name: string) => ObjectId;
+  findTransitionIdByName?: (name: string) => ObjectId | undefined;
   transitionsByName?: Record<string, Transition>;
 }
 
@@ -368,12 +373,12 @@ export interface DataCommentsService {
    * @throws {LockedDocumentError}
    */
   create(
-    this: DataCommentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
-    }
+    },
+    options?: OptionsBase
   ): Promise<Comment>;
   /**
    * Request a list of comments
@@ -391,12 +396,9 @@ export interface DataCommentsService {
    * @returns {Promise<PagedResult<Comment>>}
    */
   find(
-    this: DataCommentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Comment>>;
   /**
    * Find By Id
@@ -407,11 +409,10 @@ export interface DataCommentsService {
    * @returns the first element found
    */
   findById(
-    this: DataCommentsService,
     id: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Comment>;
   /**
    * Find First
@@ -421,10 +422,9 @@ export interface DataCommentsService {
    * @returns the first element found
    */
   findFirst(
-    this: DataCommentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Comment>;
   /**
    * Update a comment
@@ -441,13 +441,13 @@ export interface DataCommentsService {
    * @returns {Promise<AffectedRecords>}
    */
   update(
-    this: DataCommentsService,
     commentId: ObjectId,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a comment
@@ -465,10 +465,10 @@ export interface DataCommentsService {
    * @returns {Promise<AffectedRecords>}
    */
   remove(
-    this: DataCommentsService,
     commentId: ObjectId,
     schemaId: ObjectId,
-    documentId: ObjectId
+    documentId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -483,11 +483,11 @@ export interface DataDocumentsService {
    * @returns boolean success
    */
   assertNonLockedState(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     tries: number,
-    retryTimeInMs: number
+    retryTimeInMs: number,
+    options?: OptionsBase
   ): Promise<boolean>;
   /**
    * Create a document
@@ -503,10 +503,9 @@ export interface DataDocumentsService {
    * @throws {IllegalArgumentError}
    */
   create<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     requestBody: Record<string, any>,
-    options?: { gzip?: boolean }
+    options?: OptionsWithRql & { gzip?: boolean }
   ): Promise<Document<CustomData>>;
   /**
    * Request a list of documents
@@ -537,11 +536,8 @@ export interface DataDocumentsService {
    * @returns {Document} document
    */
   find<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<PagedResult<Document<CustomData>>>;
   /**
    * Shortcut method to find a document by id
@@ -554,10 +550,9 @@ export interface DataDocumentsService {
    * @returns {Document} document
    */
   findById<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Document<CustomData>>;
   /**
    * Returns the first document that is found with the applied filter
@@ -568,9 +563,8 @@ export interface DataDocumentsService {
    * @returns {Document} document
    */
   findFirst<CustomData = null>(
-    this: DataDocumentsService,
     schemaId: ObjectId,
-    options?: { rql?: RQLString }
+    options?: OptionsWithRql
   ): Promise<Document<CustomData>>;
   /**
    * Update a document
@@ -589,13 +583,10 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   update(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: Record<string, any>,
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Delete a document
@@ -618,9 +609,9 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   remove(
-    this: DataDocumentsService,
     schemaId: ObjectId,
-    documentId: ObjectId
+    documentId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete fields from a document
@@ -639,15 +630,12 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       fields: Array<string>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Transition a document
@@ -668,16 +656,13 @@ export interface DataDocumentsService {
    * @throws {ResourceUnknownError}
    */
   transition(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       id: ObjectId;
       data?: Record<string, any>;
     },
-    options?: {
-      rql?: RQLString;
-    }
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Link groups to a document
@@ -693,12 +678,12 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   linkGroups(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Unlink groups from a document
@@ -718,12 +703,12 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   unlinkGroups(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Link users to a document
@@ -741,12 +726,12 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   linkUsers(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Unlink users from a document
@@ -768,12 +753,12 @@ export interface DataDocumentsService {
    * @returns AffectedRecords
    */
   unlinkUsers(
-    this: DataDocumentsService,
     schemaId: ObjectId,
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -794,9 +779,9 @@ export interface DataIndexesService {
    * @throws {IllegalStateError}
    */
   create(
-    this: DataIndexesService,
     schemaId: ObjectId,
-    requestBody: IndexInput
+    requestBody: IndexInput,
+    options?: OptionsBase
   ): Promise<Index>;
   /**
    * Delete an existing index
@@ -813,9 +798,9 @@ export interface DataIndexesService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: DataIndexesService,
     indexId: ObjectId,
-    schemaId: ObjectId
+    schemaId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -835,12 +820,12 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownException}
    */
   create(
-    this: DataPropertiesService,
     schemaId: ObjectId,
     requestBody: {
       name: string;
       configuration: TypeConfiguration;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a property
@@ -855,9 +840,9 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: DataPropertiesService,
     schemaId: ObjectId,
-    propertyPath: string
+    propertyPath: string,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Update a property
@@ -873,10 +858,10 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: DataPropertiesService,
     schemaId: ObjectId,
     propertyPath: string,
-    requestBody: TypeConfiguration
+    requestBody: TypeConfiguration,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -890,7 +875,7 @@ export interface DataSchemasService {
    * @param requestBody
    * @returns Schema successful operation
    */
-  create(this: DataSchemasService, requestBody: SchemaInput): Promise<Schema>;
+  create(requestBody: SchemaInput, options?: OptionsBase): Promise<Schema>;
   /**
    * Request a list of schemas
    *
@@ -901,10 +886,7 @@ export interface DataSchemasService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
    */
-  find(
-    this: DataSchemasService,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<Schema>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Schema>>;
   /**
    * Request a list of all schemas
    *
@@ -917,38 +899,27 @@ export interface DataSchemasService {
    * @param rql Add filters to the requested list.
    * @returns Schema[]
    */
-  findAll(options?: { rql?: RQLString }): Promise<Schema[]>;
+  findAll(options?: OptionsWithRql): Promise<Schema[]>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: DataSchemasService,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Schema>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Schema>;
   /**
    * Find By Name
    * @param name the name to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByName(
-    this: DataSchemasService,
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<Schema>;
+  findByName(name: string, options?: OptionsWithRql): Promise<Schema>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: DataSchemasService,
-    options?: { rql?: RQLString }
-  ): Promise<Schema>;
+  findFirst(options?: OptionsWithRql): Promise<Schema>;
   /**
    * Update a schema
    *
@@ -960,9 +931,9 @@ export interface DataSchemasService {
    * @returns AffectedRecords
    */
   update(
-    this: DataSchemasService,
     schemaId: ObjectId,
-    requestBody: UpdateSchemaInput
+    requestBody: UpdateSchemaInput,
+    options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
    * Delete a schema
@@ -974,10 +945,7 @@ export interface DataSchemasService {
    * @returns AffectedRecords
    * @throws {IllegalStateError}
    */
-  remove(
-    this: DataSchemasService,
-    schemaId: ObjectId
-  ): Promise<AffectedRecords>;
+  remove(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Disable a schema
    *
@@ -987,10 +955,7 @@ export interface DataSchemasService {
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  disable(
-    this: DataSchemasService,
-    schemaId: ObjectId
-  ): Promise<AffectedRecords>;
+  disable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Enable a schema
    *
@@ -1000,10 +965,7 @@ export interface DataSchemasService {
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  enable(
-    this: DataSchemasService,
-    schemaId: ObjectId
-  ): Promise<AffectedRecords>;
+  enable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 }
 
 export interface DataStatusesService {
@@ -1019,12 +981,12 @@ export interface DataStatusesService {
    * @throws {ResourceAlreadyExistsError}
    */
   create(
-    this: DataStatusesService,
     schemaId: ObjectId,
     requestBody: {
       name: string;
       data?: StatusData;
-    }
+    },
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Update a status
@@ -1039,10 +1001,10 @@ export interface DataStatusesService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: DataStatusesService,
     schemaId: ObjectId,
     name: string,
-    requestBody: StatusData
+    requestBody: StatusData,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a status
@@ -1057,9 +1019,9 @@ export interface DataStatusesService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: DataStatusesService,
     schemaId: ObjectId,
-    name: string
+    name: string,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
 
@@ -1076,9 +1038,9 @@ export interface DataTransitionsService {
    * @throws {IllegalArgumentError}
    */
   updateCreation(
-    this: DataTransitionsService,
     schemaId: ObjectId,
-    requestBody: CreationTransition
+    requestBody: CreationTransition,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Create a transition
@@ -1092,9 +1054,9 @@ export interface DataTransitionsService {
    * @throws {IllegalArgumentError}
    */
   create(
-    this: DataTransitionsService,
     schemaId: ObjectId,
-    requestBody: TransitionInput
+    requestBody: TransitionInput,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Update a transition
@@ -1110,10 +1072,10 @@ export interface DataTransitionsService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: DataTransitionsService,
     schemaId: ObjectId,
     transitionId: ObjectId,
-    requestBody: TransitionInput
+    requestBody: TransitionInput,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete a transition
@@ -1127,8 +1089,8 @@ export interface DataTransitionsService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: DataTransitionsService,
     schemaId: ObjectId,
-    transitionId: ObjectId
+    transitionId: ObjectId,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
