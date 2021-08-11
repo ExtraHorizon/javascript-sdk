@@ -48,6 +48,30 @@ describe('Schemas Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should request a list of all schemas', async () => {
+    nock(`${host}${DATA_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(schemaData),
+      })
+      .get('/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(schemaData),
+      });
+    const res = await sdk.data.schemas.findAll();
+    expect(res.length).toBe(65);
+  });
+
   it('should find a schema by id', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/?eq(id,${schemaId})`)

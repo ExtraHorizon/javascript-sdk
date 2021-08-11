@@ -10,7 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v4.1.1]
 
 - Fixed documentation tables
+- OAuth1 `authenticate` returns `tokenData`
 - Updated documentation on SSL pinning
+- Add `logout` function to `sdk.auth`
+- Updated installation instructions
 
 ## [v4.1.0]
 
