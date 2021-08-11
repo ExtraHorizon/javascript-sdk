@@ -149,7 +149,9 @@ export interface AuthApplicationsService {
   /**
    * Create an OAuth application
    *
-   * @permission CREATE_APPLICATIONS | scope:global |
+   * Permission | Scope | Effect
+   * - | - | -
+   * CREATE_APPLICATIONS | global | Required for this endpoint
    * @async
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications
    */
@@ -159,7 +161,11 @@ export interface AuthApplicationsService {
   ): Promise<Application>;
   /**
    * Get a list of applications
-   * @permission VIEW_APPLICATIONS | scope:global |
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none| | 	Returns a limited set of fields of the list (only name, description, logo and type fields)
+   * VIEW_APPLICATIONS | global | Returns all fields of the list
    * @async
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
    * */
@@ -167,7 +173,9 @@ export interface AuthApplicationsService {
   /**
    * Update an OAuth application
    *
-   * @permission UPDATE_APPLICATIONS | scope:global |
+   * Permission | Scope | Effect
+   * - | - | -
+   * UPDATE_APPLICATIONS | global |
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/put_applications
    * @throws {ResourceUnknownError}
    */
@@ -179,7 +187,9 @@ export interface AuthApplicationsService {
   /**
    * Delete an OAuth application
    *
-   * @permission DELETE_APPLICATIONS | scope:global |
+   * Permission | Scope | Effect
+   * - | - | -
+   * DELETE_APPLICATIONS | global | **Required** for this endpoint
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId_
    * @throws {ResourceUnknownError}
    */
@@ -190,7 +200,9 @@ export interface AuthApplicationsService {
   /**
    * Create an application version
    *
-   * @permission CREATE_APPLICATIONS | scope:global | Required for this endpoint
+   * Permission | Scope | Effect
+   * - | - | -
+   * CREATE_APPLICATIONS | global | **Required** for this endpoint
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications__applicationId__versions
    */
   createVersion(
@@ -201,7 +213,9 @@ export interface AuthApplicationsService {
   /**
    * Delete an application version
    *
-   * @permission DELETE_APPLICATIONS | scope:global | Required for this endpoint
+   * Permission | Scope | Effect
+   * - | - | -
+   * DELETE_APPLICATIONS | global | **Required** for this endpoint
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId__versions__versionId_
    * @throws {ResourceUnknownError}
    */
@@ -216,6 +230,9 @@ export interface AuthOauth2Service {
   /**
    * Create an OAuth2 authorization
    *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/post_oauth2_authorizations
    * @throws {ApplicationUnknownError}
    * @throws {CallbackNotValidError}
@@ -229,7 +246,9 @@ export interface AuthOauth2Service {
   /**
    * Get a list of OAuth2 Authorizations
    *
-   * @permission VIEW_AUTHORIZATIONS | scope:global | Required for this endpoint
+   * Permission | Scope | Effect
+   * - | - | -
+   * VIEW_AUTHORIZATIONS | global | **Required** for this endpoint
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
    */
   getAuthorizations(
@@ -239,7 +258,9 @@ export interface AuthOauth2Service {
   /**
    * Delete an OAuth2 Authorization
    *
-   * @permission DELETE_AUTHORIZATIONS | scope:global | Required for this endpoint
+   * Permission | Scope | Effect
+   * - | - | -
+   * DELETE_AUTHORIZATIONS | global | **Required** for this endpoint
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/delete_oauth2_authorizations__authorizationId_
    * @throws {ResourceUnknownError}
    */
@@ -253,14 +274,20 @@ export interface AuthUsersService {
   /**
    * View the MFA settings of a user (or create the settings if they have none)
    *
-   * @permission VIEW_USER_MFA_SETTINGS | scope:global | See anyone their MFA settings
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | See your own MFA settings
+   * VIEW_USER_MFA_SETTINGS | global | See anyone their MFA settings
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/get_mfa_users__userId_
    */
   getMfaSetting(userId: string, options?: OptionsBase): Promise<MfaSetting>;
   /**
    * Enable MFA for a user
    *
-   * @permission UPDATE_USER_MFA_SETTINGS | scope:global | Enable MFA for any account
+   * Permission | Scope | Effect
+   * - | - | -
+   * none	|	| Enable MFA for your own account
+   * UPDATE_USER_MFA_SETTINGS | global | Enable MFA for any account
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__enable
    * @throws {InvalidPresenceTokenError}
    * @throws {NotEnoughMfaMethodsError}
@@ -273,7 +300,10 @@ export interface AuthUsersService {
   /**
    * Disable MFA for a user
    *
-   * @permission UPDATE_USER_MFA_SETTINGS | scope:global | Enable MFA for any account
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Disable MFA for your own account
+   * UPDATE_USER_MFA_SETTINGS | global | Enable MFA for any account
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
    * @throws {InvalidPresenceTokenError}
    */
@@ -285,7 +315,10 @@ export interface AuthUsersService {
   /**
    * Add a MFA method to a user
    *
-   * @permission UPDATE_USER_MFA_SETTINGS | scope:global | Enable MFA for any account
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Add a MFA method to your user
+   * UPDATE_USER_MFA_SETTINGS | global | Enable MFA for any account
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
    * @throws {InvalidPresenceTokenError}
    */
@@ -297,7 +330,10 @@ export interface AuthUsersService {
   /**
    * Confirm the correct functioning of a MFA method
    *
-   * @permission UPDATE_USER_MFA_SETTINGS | scope:global | Enable MFA for any account
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Confirm a MFA method for your user
+   * UPDATE_USER_MFA_SETTINGS | global | Confirm a MFA method for any user
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__verification_confirm
    * @throws {ResourceUnknownError}
    * @throws {IllegalArgumentError}
@@ -313,7 +349,10 @@ export interface AuthUsersService {
   /**
    * Remove a MFA method from a user
    *
-   * @permission UPDATE_USER_MFA_SETTINGS | scope:global | Enable MFA for any account
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Remove a MFA method for your user
+   * UPDATE_USER_MFA_SETTINGS | global | Enable MFA for any account
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__methods__methodId__remove
    * @throws {NotEnoughMfaMethodsError}
    * @throws {InvalidPresenceTokenError}

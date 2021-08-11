@@ -636,18 +636,24 @@ export interface UsersGroupRolesService {
 export interface UsersService {
   /**
    * Retrieve the current logged in user
-   * @permission Everyone can use this endpoint
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
    * @returns {UserData} UserData
    */
   me(options?: OptionsBase): Promise<User>;
   /**
    * Retrieve a specific user
    * @params {string} userId of the targeted user (required)
-   * @permission See your own user object
-   * @permission --------- | scope:group  | See a subset of the fields for any staff member or patient of the group
-   * @permission VIEW_PATIENTS | scope:global | See a subset of fields for any user with a patient enlistment
-   * @permission VIEW_STAFF | scope:global | See a subset of fields for any user with a staff enlistment
-   * @permission VIEW_USER | scope:global | See any user object
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | See your own user object
+   * none | group  | See a subset of the fields for any staff member or patient of the group
+   * VIEW_PATIENTS | global | See a subset of fields for any user with a patient enlistment
+   * VIEW_STAFF | global | See a subset of fields for any user with a staff enlistment
+   * VIEW_USER | global | See any user object
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
@@ -656,8 +662,11 @@ export interface UsersService {
    * Update a specific user
    * @params {string} userId of the targeted user (required)
    * @params {Pick<UserData,'firstName' | 'lastName' | 'phoneNumber' | 'language' | 'timeZone'>} data Fields to update
-   * @permission Update your own data
-   * @permission UPDATE_USER | scope:global | Update any user
+   
+  * Permission | Scope | Effect
+   * - | - | -
+   * none | | Update your own data
+   * UPDATE_USER | global | Update any user
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */

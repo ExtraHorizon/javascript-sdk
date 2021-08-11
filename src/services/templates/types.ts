@@ -67,7 +67,6 @@ export interface CreateFile {
 export interface TemplatesService {
   /**
    * Perform a health check
-   * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
   health(): Promise<boolean>;

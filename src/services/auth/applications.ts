@@ -53,13 +53,6 @@ export default (
     ).data;
   },
 
-  /**
-   * Delete an application version
-   *
-   * @permission DELETE_APPLICATIONS | scope:global | Required for this endpoint
-   * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId__versions__versionId_
-   * @throws {ResourceUnknownError}
-   */
   async deleteVersion(applicationId, versionId, options) {
     return (
       await client.delete(

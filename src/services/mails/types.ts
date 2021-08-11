@@ -98,7 +98,6 @@ export enum QueuedMailStatus {
 export interface MailsService {
   /**
    * Perform a health check for mail service
-   * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
   health(options?: OptionsBase): Promise<boolean>;
