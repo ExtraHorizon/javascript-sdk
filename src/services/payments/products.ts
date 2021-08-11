@@ -1,69 +1,64 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type {
-  ProductSchema,
-  ProductCreationSchema,
-  UpdateTagsSchema,
-  PaymentsProductsService,
-} from './types';
-import { RQLString, rqlBuilder } from '../../rql';
+import type { PaymentsProductsService } from './types';
+import { rqlBuilder } from '../../rql';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): PaymentsProductsService => ({
-  async create(requestBody: ProductCreationSchema): Promise<ProductSchema> {
-    return (await client.post(httpAuth, '/products', requestBody)).data;
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): PaymentsProductsService => ({
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/products', requestBody, options))
+      .data;
   },
 
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResult<ProductSchema>> {
-    return (await client.get(httpAuth, `/products${options?.rql || ''}`)).data;
+  async find(options) {
+    return (
+      await client.get(httpAuth, `/products${options?.rql || ''}`, options)
+    ).data;
   },
 
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<ProductSchema> {
+  async findById(this: PaymentsProductsService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options?: { rql?: RQLString }): Promise<ProductSchema> {
+  async findFirst(this: PaymentsProductsService, options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async addTagsToProduct(
-    rql: RQLString,
-    requestBody: UpdateTagsSchema
-  ): Promise<AffectedRecords> {
-    return (
-      await client.post(httpAuth, `/products/addTags${rql || ''}`, requestBody)
-    ).data;
-  },
-
-  async removeTagsFromProduct(
-    rql: RQLString,
-    requestBody: UpdateTagsSchema
-  ): Promise<AffectedRecords> {
+  async addTagsToProduct(rql, requestBody, options) {
     return (
       await client.post(
         httpAuth,
-        `/products/removeTags${rql || ''}`,
-        requestBody
+        `/products/addTags${rql || ''}`,
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async update(
-    productId: ObjectId,
-    requestBody: ProductCreationSchema
-  ): Promise<AffectedRecords> {
-    return (await client.put(httpAuth, `/products/${productId}`, requestBody))
-      .data;
+  async removeTagsFromProduct(rql, requestBody, options) {
+    return (
+      await client.post(
+        httpAuth,
+        `/products/removeTags${rql || ''}`,
+        requestBody,
+        options
+      )
+    ).data;
   },
 
-  async remove(productId: ObjectId): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/products/${productId}`)).data;
+  async update(productId, requestBody, options) {
+    return (
+      await client.put(httpAuth, `/products/${productId}`, requestBody, options)
+    ).data;
+  },
+
+  async remove(productId, options) {
+    return (await client.delete(httpAuth, `/products/${productId}`, options))
+      .data;
   },
 });

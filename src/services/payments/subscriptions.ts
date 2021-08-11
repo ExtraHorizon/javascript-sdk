@@ -1,20 +1,17 @@
 import type { HttpInstance } from '../../types';
-import type { PagedResult } from '../types';
-import type {
-  PaymentsSubscriptionsService,
-  SubscriptionEntitlement,
-  SubscriptionEvent,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { PaymentsSubscriptionsService } from './types';
 
 export default (
-  client,
+  client: HttpClient,
   httpAuth: HttpInstance
 ): PaymentsSubscriptionsService => ({
-  async getEntitlements(): Promise<PagedResult<SubscriptionEntitlement>> {
-    return (await client.get(httpAuth, '/subscriptions/entitlements')).data;
+  async getEntitlements(options) {
+    return (await client.get(httpAuth, '/subscriptions/entitlements', options))
+      .data;
   },
 
-  async getEvents(): Promise<PagedResult<SubscriptionEvent>> {
-    return (await client.get(httpAuth, '/subscriptions/events')).data;
+  async getEvents(options) {
+    return (await client.get(httpAuth, '/subscriptions/events', options)).data;
   },
 });

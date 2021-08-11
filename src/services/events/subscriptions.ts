@@ -1,35 +1,30 @@
 import type { HttpInstance } from '../../types';
-import { PagedResult, ObjectId } from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
-import type {
-  Subscription,
-  CreateSubscription,
-  SubscriptionsService,
-} from './types';
+import { rqlBuilder } from '../../rql';
+import type { SubscriptionsService } from './types';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): SubscriptionsService => ({
-  async find(options?: {
-    rql?: RQLString;
-  }): Promise<PagedResult<Subscription>> {
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): SubscriptionsService => ({
+  async find(options) {
     return (await client.get(httpAuth, `/subscriptions${options?.rql || ''}`))
       .data;
   },
 
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Subscription> {
+  async findById(this: SubscriptionsService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options?: { rql?: RQLString }): Promise<Subscription> {
+  async findFirst(this: SubscriptionsService, options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async create(requestBody: CreateSubscription): Promise<Subscription> {
-    return (await client.post(httpAuth, '/subscriptions', requestBody)).data;
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/subscriptions', requestBody, options))
+      .data;
   },
 });

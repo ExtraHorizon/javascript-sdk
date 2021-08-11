@@ -1,44 +1,28 @@
 import type { HttpInstance } from '../../types';
-import type { AffectedRecords } from '../types';
-import type {
-  ConfigurationsGeneralService,
-  GeneralConfiguration,
-  GeneralConfigurationInput,
-} from './types';
-import type { RQLString } from '../../rql';
+import type { ConfigurationsGeneralService } from './types';
+import { HttpClient } from '../http-client';
 
 export default (
-  client,
+  client: HttpClient,
   httpAuth: HttpInstance
 ): ConfigurationsGeneralService => ({
-  async get(): Promise<GeneralConfiguration> {
-    return (await client.get(httpAuth, '/general')).data;
+  async get(options) {
+    return (await client.get(httpAuth, '/general', options)).data;
   },
 
-  async update(
-    requestBody: GeneralConfigurationInput,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async update(requestBody, options) {
     return (
       await client.put(httpAuth, `/general${options?.rql || ''}`, requestBody)
     ).data;
   },
 
-  async removeFields(
-    requestBody: {
-      fields: Array<string>;
-    },
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async removeFields(requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/general/deleteFields${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },

@@ -122,9 +122,47 @@ export type OAuth2Config =
 export type AuthConfig = OAuth1Config | OAuth2Config;
 
 export interface OAuthClient extends HttpInstance {
-  authenticate: (data: AuthConfig) => Promise<void>;
-  confirmMfa: (data: MfaConfig) => Promise<void>;
-  userId: string;
+  authenticate: (data: AuthConfig) => Promise<TokenDataOauth1 | void>;
+  /**
+   *  Confirm MFA method with token, methodId and code
+   *  @example
+   *  try {
+   *    await sdk.auth.authenticate({
+   *      password: '',
+   *      username: '',
+   *    });
+   *  } catch (error) {
+   *    if (error instanceof MfaRequiredError) {
+   *      const { mfa } = error.response;
+   *
+   *      // Your logic to request which method the user want to use in case of multiple methods
+   *      const methodId = mfa.methods[0].id;
+   *
+   *      await sdk.auth.confirmMfa({
+   *        token: mfa.token,
+   *        methodId,
+   *        code: '', // code from ie. Google Authenticator
+   *      });
+   *    }
+   *  }
+   */
+  confirmMfa: (data: MfaConfig) => Promise<TokenDataOauth1 | void>;
+  /**
+   *  Logout
+   *  @returns {boolean} Success
+   *  @example
+   *  try {
+   *    await sdk.auth.authenticate({
+   *      password: '',
+   *      username: '',
+   *    });
+   *    sdk.auth.logout();
+   *  } catch (error) {
+   *    console.log(error)
+   *  }
+   */
+  logout: () => boolean;
+  userId: string | undefined;
 }
 
 export interface MfaConfig {

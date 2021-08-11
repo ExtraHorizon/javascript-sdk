@@ -1,90 +1,82 @@
 import type { HttpInstance } from '../../types';
-import type { AffectedRecords, ObjectId } from '../types';
-import type {
-  StripeUser,
-  StripePaymentMethod,
-  StripePaymentMethodCreation,
-  UpdateTagsSchema,
-  PaymentIntentCreationSchema,
-  OrderSchema,
-  SetupIntentCreationSchema,
-  StripeSetupIntentSchema,
-  PaymentsStripeService,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { PaymentsStripeService } from './types';
 
-export default (client, httpAuth: HttpInstance): PaymentsStripeService => ({
-  async getUser(userId: ObjectId): Promise<StripeUser> {
-    return (await client.get(httpAuth, `/stripe/users/${userId}`)).data;
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): PaymentsStripeService => ({
+  async getUser(userId, options) {
+    return (await client.get(httpAuth, `/stripe/users/${userId}`, options))
+      .data;
   },
 
-  async savePaymentMethod(
-    userId: ObjectId,
-    requestBody: StripePaymentMethodCreation
-  ): Promise<StripePaymentMethod> {
+  async savePaymentMethod(userId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/stripe/users/${userId}/paymentMethods`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async addTagsToPaymentMethod(
-    userId: ObjectId,
-    paymentMethodId: ObjectId,
-    requestBody: UpdateTagsSchema
-  ): Promise<AffectedRecords> {
+  async addTagsToPaymentMethod(userId, paymentMethodId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/stripe/users/${userId}/paymentMethods/${paymentMethodId}/addTags`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
   async removeTagsToPaymentMethod(
-    userId: ObjectId,
-    paymentMethodId: ObjectId,
-    requestBody: UpdateTagsSchema
-  ): Promise<AffectedRecords> {
+    userId,
+    paymentMethodId,
+    requestBody,
+    options
+  ) {
     return (
       await client.post(
         httpAuth,
         `/stripe/users/${userId}/paymentMethods/${paymentMethodId}/removeTags`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removePaymentMethod(
-    userId: ObjectId,
-    paymentMethodId: ObjectId
-  ): Promise<AffectedRecords> {
+  async removePaymentMethod(userId, paymentMethodId, options) {
     return (
       await client.delete(
         httpAuth,
-        `/stripe/users/${userId}/paymentMethods/${paymentMethodId}`
+        `/stripe/users/${userId}/paymentMethods/${paymentMethodId}`,
+        options
       )
     ).data;
   },
 
-  async createPaymentIntent(
-    requestBody: PaymentIntentCreationSchema
-  ): Promise<OrderSchema> {
-    return (await client.post(httpAuth, '/stripe/paymentIntents', requestBody))
-      .data;
+  async createPaymentIntent(requestBody, options) {
+    return (
+      await client.post(
+        httpAuth,
+        '/stripe/paymentIntents',
+        requestBody,
+        options
+      )
+    ).data;
   },
 
-  async createSetupIntent(
-    requestBody: SetupIntentCreationSchema
-  ): Promise<StripeSetupIntentSchema> {
-    return (await client.post(httpAuth, '/stripe/setupIntents', requestBody))
-      .data;
+  async createSetupIntent(requestBody, options) {
+    return (
+      await client.post(httpAuth, '/stripe/setupIntents', requestBody, options)
+    ).data;
   },
 
-  async subscribeToEvents(): Promise<any> {
-    return (await client.post(httpAuth, '/stripe/events')).data;
+  async subscribeToEvents(options) {
+    return (await client.post(httpAuth, '/stripe/events', options)).data;
   },
 });

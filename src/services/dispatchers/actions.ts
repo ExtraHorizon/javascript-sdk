@@ -1,42 +1,40 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  Action,
-  ActionCreation,
-  ActionUpdate,
-  ActionsService,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { ActionsService } from './types';
 
-export default (client, httpAuth: HttpInstance): ActionsService => ({
-  async create(
-    dispatcherId: ObjectId,
-    requestBody: ActionCreation
-  ): Promise<Action> {
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): ActionsService => ({
+  async create(dispatcherId, requestBody, options) {
     return (
-      await client.post(httpAuth, `/${dispatcherId}/actions`, requestBody)
-    ).data;
-  },
-
-  async update(
-    dispatcherId: ObjectId,
-    actionId: ObjectId,
-    requestBody: ActionUpdate
-  ): Promise<AffectedRecords> {
-    return (
-      await client.put(
+      await client.post(
         httpAuth,
-        `/${dispatcherId}/actions/${actionId}`,
-        requestBody
+        `/${dispatcherId}/actions`,
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async remove(
-    dispatcherId: ObjectId,
-    actionId: ObjectId
-  ): Promise<AffectedRecords> {
+  async update(dispatcherId, actionId, requestBody, options) {
     return (
-      await client.delete(httpAuth, `/${dispatcherId}/actions/${actionId}`)
+      await client.put(
+        httpAuth,
+        `/${dispatcherId}/actions/${actionId}`,
+        requestBody,
+        options
+      )
+    ).data;
+  },
+
+  async remove(dispatcherId, actionId, options) {
+    return (
+      await client.delete(
+        httpAuth,
+        `/${dispatcherId}/actions/${actionId}`,
+        options
+      )
     ).data;
   },
 });

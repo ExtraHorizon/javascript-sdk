@@ -1,16 +1,14 @@
 import BufferModule from 'buffer';
 
 export function createCustomFormData(value: string, boundary: string): Buffer {
-  const chunks = [];
-
-  chunks.push(
+  const chunks = [
     `--${boundary}\r\n`,
     'Content-Disposition: form-data; name="file"; filename="data"\r\n',
     'Content-Type: application/octet-stream\r\n\r\n',
     value,
     '\r\n',
-    `--${boundary}--`
-  );
+    `--${boundary}--`,
+  ];
 
   return BufferModule.Buffer.from(chunks.join(''));
 }

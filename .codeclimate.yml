@@ -10,3 +10,7 @@ plugins:
       languages:
         typescript:
           mass_threshold: 250
+checks:
+  argument-count:
+    config:
+      threshold: 5

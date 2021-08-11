@@ -1,18 +1,20 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import { DataIndexesService, Index, IndexInput } from './types';
+import { HttpClient } from '../http-client';
+import { DataIndexesService } from './types';
 
-export default (client, httpAuth: HttpInstance): DataIndexesService => ({
-  async create(schemaId: ObjectId, requestBody: IndexInput): Promise<Index> {
-    return (await client.post(httpAuth, `/${schemaId}/indexes`, requestBody))
-      .data;
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataIndexesService => ({
+  async create(schemaId, requestBody, options) {
+    return (
+      await client.post(httpAuth, `/${schemaId}/indexes`, requestBody, options)
+    ).data;
   },
 
-  async remove(
-    indexId: ObjectId,
-    schemaId: ObjectId
-  ): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/${schemaId}/indexes/${indexId}`))
-      .data;
+  async remove(indexId, schemaId, options) {
+    return (
+      await client.delete(httpAuth, `/${schemaId}/indexes/${indexId}`, options)
+    ).data;
   },
 });

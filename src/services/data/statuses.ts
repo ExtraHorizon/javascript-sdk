@@ -1,31 +1,31 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type { DataStatusesService, StatusData } from './types';
+import { HttpClient } from '../http-client';
+import type { DataStatusesService } from './types';
 
-export default (client, httpAuth: HttpInstance): DataStatusesService => ({
-  async create(
-    schemaId: ObjectId,
-    requestBody: {
-      name: string;
-      data?: StatusData;
-    }
-  ): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/${schemaId}/statuses`, requestBody))
-      .data;
-  },
-
-  async update(
-    schemaId: ObjectId,
-    name: string,
-    requestBody: StatusData
-  ): Promise<AffectedRecords> {
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataStatusesService => ({
+  async create(schemaId, requestBody, options) {
     return (
-      await client.put(httpAuth, `/${schemaId}/statuses/${name}`, requestBody)
+      await client.post(httpAuth, `/${schemaId}/statuses`, requestBody, options)
     ).data;
   },
 
-  async remove(schemaId: ObjectId, name: string): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/${schemaId}/statuses/${name}`))
-      .data;
+  async update(schemaId, name, requestBody, options) {
+    return (
+      await client.put(
+        httpAuth,
+        `/${schemaId}/statuses/${name}`,
+        requestBody,
+        options
+      )
+    ).data;
+  },
+
+  async remove(schemaId, name, options) {
+    return (
+      await client.delete(httpAuth, `/${schemaId}/statuses/${name}`, options)
+    ).data;
   },
 });

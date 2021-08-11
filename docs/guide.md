@@ -131,6 +131,8 @@ Ios
 @"9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U="
 ```
 
+More info on how to use the can be found here: https://medium.com/@jaedmuva/react-native-ssl-pinning-is-back-e317e6682642
+
 ## Tests
 
 ### Mock
