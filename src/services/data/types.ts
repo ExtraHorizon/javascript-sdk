@@ -906,6 +906,19 @@ export interface DataSchemasService {
     options?: { rql?: RQLString }
   ): Promise<PagedResult<Schema>>;
   /**
+   * Request a list of all schemas
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Every one can use this endpoint
+   * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
+   * @param rql Add filters to the requested list.
+   * @returns Schema[]
+   */
+  findAll(options?: { rql?: RQLString }): Promise<Schema[]>;
+  /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string

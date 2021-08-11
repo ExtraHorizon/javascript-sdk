@@ -8,6 +8,8 @@ import type {
 } from './types';
 import { RQLString, rqlBuilder } from '../../rql';
 
+const MAX_LIMIT = 50;
+
 const addTransitionHelpersToSchema = (schema: Schema) => ({
   ...schema,
   findTransitionIdByName(name: string) {
@@ -34,6 +36,34 @@ export default (client, httpAuth: HttpInstance): DataSchemasService => ({
       ...result,
       data: result.data.map(addTransitionHelpersToSchema),
     };
+  },
+
+  async findAll(options?: { rql?: RQLString }): Promise<Schema[]> {
+    // Extra check is needed because this function is call recursively with updated RQL
+    // But on the first run, we need to set the limit to the max to optimize
+    const result: PagedResult<Schema> = await this.find({
+      rql:
+        options?.rql && options.rql.includes('limit(')
+          ? options.rql
+          : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+    });
+
+    if (result.page.total > 2000 && result.page.offset === 0) {
+      console.warn(
+        'WARNING: total amount is > 2000, be aware that this function can hog up resources'
+      );
+    }
+
+    return result.page.total > result.page.offset + result.page.limit
+      ? [
+          ...result.data,
+          ...(await this.findAll({
+            rql: rqlBuilder(options?.rql)
+              .limit(result.page.limit, result.page.offset + result.page.limit)
+              .build(),
+          })),
+        ]
+      : result.data;
   },
 
   async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Schema> {
