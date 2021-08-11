@@ -52,7 +52,7 @@ export function createOAuth1HttpClient(
     tokenData = data;
   }
 
-  httpWithAuth.interceptors.request.use(async config => ({
+  httpWithAuth.interceptors.request.use(async (config = {}) => ({
     ...config,
     headers: {
       ...config.headers,
