@@ -55,6 +55,11 @@ export interface FilesService {
    * @returns the first element found
    */
   findByName(name: string, options?: OptionsWithRql): Promise<FileDetails>;
+  /**
+   * Find First
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
   findFirst(options?: OptionsWithRql): Promise<FileDetails>;
   /**
    * Add a new file from a plain text source
