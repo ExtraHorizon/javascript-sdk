@@ -114,7 +114,7 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
         typeof value === 'string' ? value : value.join(',')
       );
     },
-    limit(limit, offset?) {
+    limit(limit, offset) {
       if (returnString.includes('limit(')) {
         returnString = returnString.replace(/&?limit\(\d*,*\d*\)&*/, '');
       }
