@@ -899,7 +899,7 @@ export interface DataSchemasService {
    * @param rql Add filters to the requested list.
    * @returns Schema[]
    */
-  findAll(options?: { rql?: RQLString }): Promise<Schema[]>;
+  findAll(options?: OptionsWithRql): Promise<Schema[]>;
   /**
    * Find By Id
    * @param id the Id to search for
