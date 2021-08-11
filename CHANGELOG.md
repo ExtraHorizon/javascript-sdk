@@ -7,13 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v4.1.1]
+## [v4.2.0]
+
+### Added
 
 - Fixed documentation tables
 - OAuth1 `authenticate` returns `tokenData`
 - Updated documentation on SSL pinning
 - Add `logout` function to `sdk.auth`
 - Updated installation instructions
+- Client creation allows for extra headers which will be set on every call.
+
+```ts
+const sdk = createClient({
+  host: 'https://api.dev.fibricheck.com',
+  clientId: '',
+  headers: {
+    'X-Forwarded-Application': 'test',
+  },
+});
+```
+
+- Functions now accept options to set custom headers
+
+```ts
+await sdk.data.documents.create(
+  '5f3511c7e9ae42283ae2eb29',
+  {
+    model: 'string',
+  },
+  { gzip: true, headers: { 'x-test': 'test' } }
+);
+```
 
 ## [v4.1.0]
 
