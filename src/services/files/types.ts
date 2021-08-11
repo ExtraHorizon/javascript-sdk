@@ -47,22 +47,15 @@ export interface FilesService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<FileDetails>
    */
-  find(
-    this: FilesService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<FileDetails>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<FileDetails>>;
   /**
    * Find By Name
    * @param name the name to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByName(
-    this: FilesService,
-    name: string,
-    options?: OptionsWithRql
-  ): Promise<FileDetails>;
-  findFirst(this: FilesService, options?: OptionsWithRql): Promise<FileDetails>;
+  findByName(name: string, options?: OptionsWithRql): Promise<FileDetails>;
+  findFirst(options?: OptionsWithRql): Promise<FileDetails>;
   /**
    * Add a new file from a plain text source
    *
@@ -73,11 +66,7 @@ export interface FilesService {
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  createFromText(
-    this: FilesService,
-    text: string,
-    options?: OptionsBase
-  ): Promise<FileDetails>;
+  createFromText(text: string, options?: OptionsBase): Promise<FileDetails>;
   /**
    * Add a new file
    *
@@ -90,7 +79,6 @@ export interface FilesService {
    * @throws {FileTooLargeError}
    */
   create(
-    this: FilesService,
     fileName: string,
     fileData: Blob | Buffer | ReadStream,
     options?: OptionsBase & { tags: [] }
@@ -106,11 +94,7 @@ export interface FilesService {
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  remove(
-    this: FilesService,
-    token: Token,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  remove(token: Token, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Retrieve a file from the object store
    *
@@ -122,11 +106,7 @@ export interface FilesService {
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  retrieve(
-    this: FilesService,
-    token: Token,
-    options?: OptionsBase
-  ): Promise<Buffer>;
+  retrieve(token: Token, options?: OptionsBase): Promise<Buffer>;
   /**
    * Retrieve a file stream from the object store
    *
@@ -139,7 +119,6 @@ export interface FilesService {
    * @throws {UnauthorizedTokenError}
    */
   retrieveStream(
-    this: FilesService,
     token: Token,
     options?: OptionsBase
   ): Promise<{ data: ReadStream }>;
@@ -159,11 +138,7 @@ export interface FilesService {
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  getDetails(
-    this: FilesService,
-    token: Token,
-    options?: OptionsBase
-  ): Promise<FileDetails>;
+  getDetails(token: Token, options?: OptionsBase): Promise<FileDetails>;
 }
 
 export interface FileTokensService {
@@ -184,7 +159,6 @@ export interface FileTokensService {
    * @throws {TokenNotDeleteableError}
    */
   deleteToken(
-    this: FileTokensService,
     token: Token,
     tokenToAccess: Token,
     options?: OptionsBase
@@ -205,7 +179,6 @@ export interface FileTokensService {
    * @throws {UnauthorizedTokenError}
    */
   generateToken(
-    this: FileTokensService,
     token: Token,
     requestBody: CreateTokenRequest,
     options?: OptionsBase

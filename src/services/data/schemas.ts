@@ -37,19 +37,19 @@ export default (
     };
   },
 
-  async findById(id, options) {
+  async findById(this: DataSchemasService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
     const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findByName(name, options) {
+  async findByName(this: DataSchemasService, name, options) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
     const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
   },
 
-  async findFirst(options) {
+  async findFirst(this: DataSchemasService, options) {
     const res = await this.find(options);
     return res.data[0];
   },

@@ -65,10 +65,7 @@ export interface CountriesService {
    * none | | Everyone can use this endpoint
    * @returns PagedResult<string>
    */
-  getCountries(
-    this: CountriesService,
-    options?: OptionsBase
-  ): Promise<string[]>;
+  getCountries(options?: OptionsBase): Promise<string[]>;
   /**
    * Retrieve a list of all the defined regions for the specified country code
    *
@@ -79,11 +76,7 @@ export interface CountriesService {
    * @returns PagedResult<string>
    * @throws {ResourceUnknownError}
    */
-  getRegions(
-    this: CountriesService,
-    country: string,
-    options?: OptionsBase
-  ): Promise<string[]>;
+  getRegions(country: string, options?: OptionsBase): Promise<string[]>;
 }
 
 export interface LanguagesService {
@@ -95,10 +88,7 @@ export interface LanguagesService {
    * none | | Everyone can use this endpoint
    * @returns PagedResult<SupportedLanguageCodes>
    */
-  getLanguages(
-    this: LanguagesService,
-    options?: OptionsBase
-  ): Promise<string[]>;
+  getLanguages(options?: OptionsBase): Promise<string[]>;
 }
 
 export interface LocalizationsService {
@@ -111,30 +101,20 @@ export interface LocalizationsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Localization>
    */
-  find(
-    this: LocalizationsService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Localization>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Localization>>;
   /**
    * Find By Key
    * @param key the key to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByKey(
-    this: LocalizationsService,
-    key: string,
-    options?: OptionsWithRql
-  ): Promise<Localization>;
+  findByKey(key: string, options?: OptionsWithRql): Promise<Localization>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: LocalizationsService,
-    options?: OptionsWithRql
-  ): Promise<Localization>;
+  findFirst(options?: OptionsWithRql): Promise<Localization>;
   /**
    * Create new localizations
    *
@@ -146,7 +126,6 @@ export interface LocalizationsService {
    * @throws {DefaultLocalizationMissingError}
    */
   create(
-    this: LocalizationsService,
     requestBody: BulkLocalization,
     options?: OptionsBase
   ): Promise<BulkCreationResponse>;
@@ -160,7 +139,6 @@ export interface LocalizationsService {
    * @returns BulkUpdateResponse
    */
   update(
-    this: LocalizationsService,
     requestBody: BulkLocalization,
     options?: OptionsBase
   ): Promise<BulkUpdateResponse>;
@@ -173,11 +151,7 @@ export interface LocalizationsService {
    * @param rql Add filters to the requested list, **required**.
    * @returns AffectedRecords
    */
-  remove(
-    this: LocalizationsService,
-    rql: RQLString,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  remove(rql: RQLString, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Request localizations of multiple keys in a specific language
    * The default language (EN) is always included in the response as a fallback in case there is no translation available for the specified language
@@ -189,7 +163,6 @@ export interface LocalizationsService {
    * @returns Record<string, MappedText>
    */
   getByKeys(
-    this: LocalizationsService,
     requestBody: LocalizationRequest,
     options?: OptionsBase
   ): Promise<Record<string, MappedText>>;

@@ -26,7 +26,7 @@ export default (
     ).data;
   },
 
-  async findFirst(options) {
+  async findFirst(this: UsersService, options) {
     const res = await this.find(options);
     return res.data[0];
   },

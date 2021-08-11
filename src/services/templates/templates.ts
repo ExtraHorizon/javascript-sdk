@@ -17,19 +17,19 @@ export default (
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
-  async findById(id, options) {
+  async findById(this: TemplatesService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
     const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findByName(name, options?) {
+  async findByName(this: TemplatesService, name, options?) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
     const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
   },
 
-  async findFirst(options) {
+  async findFirst(this: TemplatesService, options) {
     const res = await this.find(options);
     return res.data[0];
   },

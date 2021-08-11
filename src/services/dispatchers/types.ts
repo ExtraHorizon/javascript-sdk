@@ -81,30 +81,20 @@ export interface DispatchersService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Dispatcher>
    */
-  find: (
-    this: DispatchersService,
-    options?: OptionsWithRql
-  ) => Promise<PagedResult<Dispatcher>>;
+  find: (options?: OptionsWithRql) => Promise<PagedResult<Dispatcher>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById: (
-    this: DispatchersService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ) => Promise<Dispatcher>;
+  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Dispatcher>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: DispatchersService,
-    options?: OptionsWithRql
-  ): Promise<Dispatcher>;
+  findFirst(options?: OptionsWithRql): Promise<Dispatcher>;
   /**
    * Create a dispatcher
    *
@@ -114,11 +104,7 @@ export interface DispatchersService {
    * @param requestBody Dispatcher
    * @returns Dispatcher
    */
-  create(
-    this: DispatchersService,
-    requestBody: Dispatcher,
-    options?: OptionsBase
-  ): Promise<Dispatcher>;
+  create(requestBody: Dispatcher, options?: OptionsBase): Promise<Dispatcher>;
   /**
    * Delete a dispatcher
    *
@@ -130,7 +116,6 @@ export interface DispatchersService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: DispatchersService,
     dispatcherId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -148,7 +133,6 @@ export interface ActionsService {
    * @returns Action
    */
   create(
-    this: ActionsService,
     dispatcherId: ObjectId,
     requestBody: ActionCreation,
     options?: OptionsBase
@@ -166,7 +150,6 @@ export interface ActionsService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: ActionsService,
     dispatcherId: ObjectId,
     actionId: ObjectId,
     requestBody: ActionUpdate,
@@ -184,7 +167,6 @@ export interface ActionsService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: ActionsService,
     dispatcherId: ObjectId,
     actionId: ObjectId,
     options?: OptionsBase

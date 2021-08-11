@@ -101,7 +101,7 @@ export interface MailsService {
    * @permission Everyone can use this endpoint
    * @returns {boolean} success
    */
-  health(this: MailsService, options?: OptionsBase): Promise<boolean>;
+  health(options?: OptionsBase): Promise<boolean>;
   /**
    * Retrieve a list of mails
    *
@@ -111,27 +111,20 @@ export interface MailsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Mail>
    */
-  find: (
-    this: MailsService,
-    options?: OptionsWithRql
-  ) => Promise<PagedResult<Mail>>;
+  find: (options?: OptionsWithRql) => Promise<PagedResult<Mail>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById: (
-    this: MailsService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ) => Promise<Mail>;
+  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Mail>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: MailsService, options?: OptionsWithRql): Promise<Mail>;
+  findFirst(options?: OptionsWithRql): Promise<Mail>;
   /**
    * Send a mail
    *
@@ -145,7 +138,6 @@ export interface MailsService {
    * @throws {NotActivatedError}
    */
   send(
-    this: MailsService,
     requestBody: PlainMailCreation | TemplateBasedMailCreation,
     options?: OptionsBase
   ): Promise<Mail>;
@@ -158,11 +150,7 @@ export interface MailsService {
    * @param trackingHash
    * @returns AffectedRecords
    */
-  track(
-    this: MailsService,
-    trackingHash: string,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  track(trackingHash: string, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Retrieve the list of mails that are not sent yet
    *
@@ -172,8 +160,5 @@ export interface MailsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<QueuedMail>
    */
-  findOutbound(
-    this: MailsService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<QueuedMail>>;
+  findOutbound(options?: OptionsWithRql): Promise<PagedResult<QueuedMail>>;
 }

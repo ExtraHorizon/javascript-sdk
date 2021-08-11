@@ -57,10 +57,7 @@ export interface ConfigurationsGeneralService {
    * none | | Everyone can use this endpoint
    * @returns GeneralConfiguration
    */
-  get(
-    this: ConfigurationsGeneralService,
-    options?: OptionsBase
-  ): Promise<GeneralConfiguration>;
+  get(options?: OptionsBase): Promise<GeneralConfiguration>;
   /**
    * Update the general configuration
    *
@@ -72,7 +69,6 @@ export interface ConfigurationsGeneralService {
    * @returns AffectedRecords
    */
   update(
-    this: ConfigurationsGeneralService,
     requestBody: GeneralConfigurationInput,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
@@ -87,7 +83,6 @@ export interface ConfigurationsGeneralService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: ConfigurationsGeneralService,
     requestBody: {
       fields: Array<string>;
     },
@@ -108,11 +103,7 @@ export interface ConfigurationsGroupsService {
    * @param groupId The id of the targeted group
    * @returns GroupConfiguration
    */
-  get(
-    this: ConfigurationsGroupsService,
-    groupId: ObjectId,
-    options?: OptionsBase
-  ): Promise<GroupConfiguration>;
+  get(groupId: ObjectId, options?: OptionsBase): Promise<GroupConfiguration>;
   /**
    * Update a group configuration.
    *
@@ -189,7 +180,6 @@ export interface ConfigurationsPatientsService {
    * @returns AffectedRecords
    */
   removeFields(
-    this: ConfigurationsPatientsService,
     groupId: ObjectId,
     userId: ObjectId,
     requestBody: {
@@ -256,11 +246,7 @@ export interface ConfigurationsUsersService {
    * @param userId The id of the targeted user
    * @returns UserConfiguration
    */
-  get(
-    this: ConfigurationsUsersService,
-    userId: ObjectId,
-    options?: OptionsBase
-  ): Promise<UserConfiguration>;
+  get(userId: ObjectId, options?: OptionsBase): Promise<UserConfiguration>;
   /**
    * Update a user configuration
    *

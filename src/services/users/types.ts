@@ -335,10 +335,7 @@ export interface UsersGlobalRolesService {
    * none |  | Everyone can use this endpoint
    * @returns PagedResult<GlobalPermission>
    */
-  getPermissions(
-    this: UsersGlobalRolesService,
-    options?: OptionsBase
-  ): Promise<PagedResult<GlobalPermission>>;
+  getPermissions(options?: OptionsBase): Promise<PagedResult<GlobalPermission>>;
   /**
    * Retrieve a list of roles
    *
@@ -348,10 +345,7 @@ export interface UsersGlobalRolesService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Role>
    */
-  get(
-    this: UsersGlobalRolesService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Role>>;
+  get(options?: OptionsWithRql): Promise<PagedResult<Role>>;
   /**
    * Create a role
    *
@@ -361,11 +355,7 @@ export interface UsersGlobalRolesService {
    * @param requestBody The role data
    * @returns Role
    */
-  create(
-    this: UsersGlobalRolesService,
-    requestBody: RoleCreation,
-    options?: OptionsBase
-  ): Promise<Role>;
+  create(requestBody: RoleCreation, options?: OptionsBase): Promise<Role>;
   /**
    * Delete a role
    *
@@ -376,11 +366,7 @@ export interface UsersGlobalRolesService {
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(
-    this: UsersGlobalRolesService,
-    rql: RQLString,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  remove(rql: RQLString, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Update a role
    *
@@ -392,7 +378,6 @@ export interface UsersGlobalRolesService {
    * @returns Promise<Role>
    */
   update(
-    this: UsersGlobalRolesService,
     id: ObjectId,
     requestBody: RoleUpdate,
     options?: OptionsBase
@@ -408,7 +393,6 @@ export interface UsersGlobalRolesService {
    * @throws {ResourceUnknownError}
    */
   addPermissions(
-    this: UsersGlobalRolesService,
     rql: RQLString,
     requestBody: RolePermissions,
     options?: OptionsBase
@@ -425,7 +409,6 @@ export interface UsersGlobalRolesService {
    * @throws {ResourceUnknownError}
    */
   removePermissions(
-    this: UsersGlobalRolesService,
     rql: RQLString,
     requestBody: RolePermissions,
     options?: OptionsBase
@@ -440,7 +423,6 @@ export interface UsersGlobalRolesService {
    * @returns AffectedRecords
    */
   addToUsers(
-    this: UsersGlobalRolesService,
     rql: RQLString,
     requestBody: UserRoles,
     options?: OptionsBase
@@ -456,7 +438,6 @@ export interface UsersGlobalRolesService {
    * @returns AffectedRecords
    */
   removeFromUser(
-    this: UsersGlobalRolesService,
     rql: RQLString,
     requestBody: UserRoles,
     options?: OptionsBase
@@ -472,10 +453,7 @@ export interface UsersGroupRolesService {
    * none |  | Everyone can use this endpoint
    * @returns PagedResult<GlobalPermission>
    */
-  getPermissions(
-    this: UsersGroupRolesService,
-    options?: OptionsBase
-  ): Promise<PagedResult<GlobalPermission>>;
+  getPermissions(options?: OptionsBase): Promise<PagedResult<GlobalPermission>>;
   /**
    * Retrieve a list of group roles
    *
@@ -488,7 +466,6 @@ export interface UsersGroupRolesService {
    * @returns PagedResult<GroupRole>
    */
   get(
-    this: UsersGroupRolesService,
     groupId: ObjectId,
     options?: OptionsWithRql
   ): Promise<PagedResult<GroupRole>>;
@@ -504,7 +481,6 @@ export interface UsersGroupRolesService {
    * @returns GroupRole
    */
   add(
-    this: UsersGroupRolesService,
     groupId: ObjectId,
     requestBody: AddRole,
     options?: OptionsBase
@@ -523,7 +499,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: UsersGroupRolesService,
     groupId: ObjectId,
     roleId: ObjectId,
     requestBody: AddRole,
@@ -543,7 +518,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: UsersGroupRolesService,
     rql: RQLString,
     groupId: ObjectId,
     roleId: ObjectId,
@@ -563,7 +537,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   addPermissions(
-    this: UsersGroupRolesService,
     groupId: ObjectId,
     requestBody: GroupRolePermissions,
     options?: OptionsWithRql
@@ -582,7 +555,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   removePermissions(
-    this: UsersGroupRolesService,
     rql: RQLString,
     groupId: ObjectId,
     requestBody: GroupRolePermissions,
@@ -602,7 +574,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   assignToStaff(
-    this: UsersGroupRolesService,
     groupId: ObjectId,
     requestBody: StaffRoles,
     options?: OptionsWithRql
@@ -621,7 +592,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   removeFromStaff(
-    this: UsersGroupRolesService,
     rql: RQLString,
     groupId: ObjectId,
     requestBody: StaffRoles,
@@ -640,7 +610,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   addUsersToStaff(
-    this: UsersGroupRolesService,
     requestBody: StaffGroups,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
@@ -658,7 +627,6 @@ export interface UsersGroupRolesService {
    * @throws {ResourceUnknownError}
    */
   removeUsersFromStaff(
-    this: UsersGroupRolesService,
     rql: RQLString,
     requestBody: StaffGroups,
     options?: OptionsBase
@@ -671,7 +639,7 @@ export interface UsersService {
    * @permission Everyone can use this endpoint
    * @returns {UserData} UserData
    */
-  me(this: UsersService, options?: OptionsBase): Promise<User>;
+  me(options?: OptionsBase): Promise<User>;
   /**
    * Retrieve a specific user
    * @params {string} userId of the targeted user (required)
@@ -683,11 +651,7 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
-  findById(
-    this: UsersService,
-    userId: string,
-    options?: OptionsBase
-  ): Promise<User>;
+  findById(userId: string, options?: OptionsBase): Promise<User>;
   /**
    * Update a specific user
    * @params {string} userId of the targeted user (required)
@@ -698,7 +662,6 @@ export interface UsersService {
    * @returns {UserData} UserData
    */
   update(
-    this: UsersService,
     userId: string,
     userData: UserDataUpdate,
     options?: OptionsBase
@@ -714,16 +677,13 @@ export interface UsersService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<User>
    */
-  find(
-    this: UsersService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<User>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<User>>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: UsersService, options?: { rql?: RQLString }): Promise<User>;
+  findFirst(options?: { rql?: RQLString }): Promise<User>;
   /**
    * @deprecated
    * Delete a list of users
@@ -735,11 +695,7 @@ export interface UsersService {
    * @param rql Add filters to the requested list.
    * @returns AffectedRecords
    */
-  removeUsers(
-    this: UsersService,
-    rql: RQLString,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  removeUsers(rql: RQLString, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Retrieve a list of users that have a patient enlistment
    *
@@ -750,10 +706,7 @@ export interface UsersService {
    * @param rql Add filters to the requested list.
    * @returns Patient Success
    */
-  patients(
-    this: UsersService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Patient>>;
+  patients(options?: OptionsWithRql): Promise<PagedResult<Patient>>;
   /**
    * Retrieve a list of users that have a staff enlistment
    *
@@ -764,10 +717,7 @@ export interface UsersService {
    * @param rql Add filters to the requested list.
    * @returns StaffMember Success
    */
-  staff(
-    this: UsersService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<StaffMember>>;
+  staff(options?: OptionsWithRql): Promise<PagedResult<StaffMember>>;
   /**
    * Delete a specific user
    *
@@ -779,11 +729,7 @@ export interface UsersService {
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(
-    this: UsersService,
-    userId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  remove(userId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Update the email address of a specific user
    * An email is send to validate and activate the new address.
@@ -799,7 +745,6 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    */
   updateEmail(
-    this: UsersService,
     userId: ObjectId,
     requestBody: Email,
     options?: OptionsBase
@@ -816,7 +761,6 @@ export interface UsersService {
    * @throws {ResourceAlreadyExistsError}
    */
   addPatientEnlistment(
-    this: UsersService,
     userId: ObjectId,
     requestBody: AddPatientEnlistment,
     options?: OptionsBase
@@ -835,7 +779,6 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    */
   removePatientEnlistment(
-    this: UsersService,
     userId: ObjectId,
     groupId: ObjectId,
     options?: OptionsBase
@@ -851,7 +794,6 @@ export interface UsersService {
    * @throws {EmailUsedError}
    */
   createAccount(
-    this: UsersService,
     requestBody: RegisterUserData,
     options?: OptionsBase
   ): Promise<User>;
@@ -866,7 +808,6 @@ export interface UsersService {
    * @throws {PasswordError}
    */
   changePassword(
-    this: UsersService,
     requestBody: ChangePassword,
     options?: OptionsBase
   ): Promise<User>;
@@ -883,11 +824,7 @@ export interface UsersService {
    * @throws {LoginFreezeError}
    * @throws {TooManyFailedAttemptsError}
    */
-  authenticate(
-    this: UsersService,
-    requestBody: Authenticate,
-    options?: OptionsBase
-  ): Promise<User>;
+  authenticate(requestBody: Authenticate, options?: OptionsBase): Promise<User>;
   /**
    * Request an email activation
    *
@@ -900,7 +837,6 @@ export interface UsersService {
    * @throws {AlreadyActivatedError}
    */
   requestEmailActivation(
-    this: UsersService,
     email: string,
     options?: OptionsBase
   ): Promise<boolean>;
@@ -915,7 +851,6 @@ export interface UsersService {
    * @throws {ActivationUnknownError}
    */
   validateEmailActivation(
-    this: UsersService,
     requestBody: Hash,
     options?: OptionsBase
   ): Promise<boolean>;
@@ -930,11 +865,7 @@ export interface UsersService {
    * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
    */
-  requestPasswordReset(
-    this: UsersService,
-    email: string,
-    options?: OptionsBase
-  ): Promise<boolean>;
+  requestPasswordReset(email: string, options?: OptionsBase): Promise<boolean>;
   /**
    * Complete a password reset
    *
@@ -947,7 +878,6 @@ export interface UsersService {
    * @throws {NewPasswordHashUnknownError}
    */
   validatePasswordReset(
-    this: UsersService,
     requestBody: PasswordReset,
     options?: OptionsBase
   ): Promise<boolean>;
@@ -965,7 +895,6 @@ export interface UsersService {
    * @throws {TooManyFailedAttemptsError}
    */
   confirmPassword(
-    this: UsersService,
     requestBody: ConfirmPassword,
     options?: OptionsBase
   ): Promise<boolean>;
@@ -979,7 +908,6 @@ export interface UsersService {
    * @returns emailAvailable will be true on success
    */
   isEmailAvailable(
-    this: UsersService,
     email: string,
     options?: OptionsBase
   ): Promise<{
@@ -999,7 +927,6 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    */
   updateProfileImage(
-    this: UsersService,
     userId: ObjectId,
     requestBody: Hash,
     options?: OptionsBase
@@ -1015,9 +942,5 @@ export interface UsersService {
    * @returns User
    * @throws {ResourceUnknownError}
    */
-  deleteProfileImage(
-    this: UsersService,
-    userId: ObjectId,
-    options?: OptionsBase
-  ): Promise<User>;
+  deleteProfileImage(userId: ObjectId, options?: OptionsBase): Promise<User>;
 }

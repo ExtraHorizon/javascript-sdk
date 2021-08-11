@@ -11,13 +11,13 @@ export default (
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
-  async findByKey(key, options) {
+  async findByKey(this: LocalizationsService, key, options) {
     const rqlWithKey = rqlBuilder(options?.rql).eq('key', key).build();
     const res = await this.find({ ...options, rql: rqlWithKey });
     return res.data[0];
   },
 
-  async findFirst(options) {
+  async findFirst(this: LocalizationsService, options) {
     const res = await this.find(options);
     return res.data[0];
   },

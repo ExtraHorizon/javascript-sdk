@@ -132,7 +132,6 @@ export interface ProfilesGroupsService {
    * @throws {ResourceUnknownError}
    */
   create(
-    this: ProfilesGroupsService,
     profileId: ObjectId,
     requestBody: GroupCreation,
     options?: OptionsBase
@@ -151,7 +150,6 @@ export interface ProfilesGroupsService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: ProfilesGroupsService,
     profileId: ObjectId,
     groupId: ObjectId,
     requestBody: Omit<Group, 'groupId'>,
@@ -171,7 +169,6 @@ export interface ProfilesGroupsService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: ProfilesGroupsService,
     profileId: ObjectId,
     groupId: ObjectId,
     options?: OptionsBase
@@ -190,7 +187,6 @@ export interface ProfilesGroupsService {
    * @throws {ResourceUnknownError}
    */
   removeFields(
-    this: ProfilesGroupsService,
     profileId: ObjectId,
     groupId: ObjectId,
     requestBody: {
@@ -215,7 +211,6 @@ export interface ProfilesLogsService {
    * @throws {ResourceUnknownError}
    */
   create(
-    this: ProfilesLogsService,
     profileId: ObjectId,
     groupId: ObjectId,
     requestBody: ProfileComment,
@@ -235,7 +230,6 @@ export interface ProfilesLogsService {
    * @throws {ResourceUnknownError}
    */
   find(
-    this: ProfilesLogsService,
     profileId: ObjectId,
     groupId: ObjectId,
     options?: OptionsWithRql
@@ -255,7 +249,6 @@ export interface ProfilesLogsService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: ProfilesLogsService,
     profileId: ObjectId,
     groupId: ObjectId,
     entryId: ObjectId,
@@ -276,7 +269,6 @@ export interface ProfilesLogsService {
    * @throws {ResourceUnknownError}
    */
   remove(
-    this: ProfilesLogsService,
     profileId: ObjectId,
     groupId: ObjectId,
     entryId: ObjectId,
@@ -296,27 +288,20 @@ export interface ProfilesService {
    * @param rql an optional rql string
    * @returns PagedResult<Profile>
    */
-  find(
-    this: ProfilesService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Profile>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Profile>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: ProfilesService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Profile>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Profile>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: ProfilesService, options?: OptionsWithRql): Promise<Profile>;
+  findFirst(options?: OptionsWithRql): Promise<Profile>;
   /**
    * Create a new profile
    *
@@ -328,11 +313,7 @@ export interface ProfilesService {
    * @returns Profile
    * @throws {ProfileAlreadyExistsError}
    */
-  create(
-    this: ProfilesService,
-    requestBody: ProfileCreation,
-    options?: OptionsBase
-  ): Promise<Profile>;
+  create(requestBody: ProfileCreation, options?: OptionsBase): Promise<Profile>;
   /**
    * Update an existing profile
    *
@@ -346,7 +327,6 @@ export interface ProfilesService {
    * @returns AffectedRecords
    */
   update(
-    this: ProfilesService,
     rql: RQLString,
     requestBody: Profile,
     options?: OptionsBase
@@ -366,7 +346,6 @@ export interface ProfilesService {
    * @throws {RemoveFieldError}
    */
   removeFields(
-    this: ProfilesService,
     rql: RQLString,
     requestBody: {
       fields: Array<string>;
@@ -381,10 +360,7 @@ export interface ProfilesService {
    * none | | Everyone can use this endpoint
    * @returns PagedResult<Comorbidities>
    */
-  getComorbidities(
-    this: ProfilesService,
-    options?: OptionsBase
-  ): Promise<PagedResult<Comorbidities>>;
+  getComorbidities(options?: OptionsBase): Promise<PagedResult<Comorbidities>>;
   /**
    * Retrieve a list of all the defined impediments
    *
@@ -393,8 +369,5 @@ export interface ProfilesService {
    * none | | Everyone can use this endpoint
    * @returns PagedResult<Impediments>
    */
-  getImpediments(
-    this: ProfilesService,
-    options?: OptionsBase
-  ): Promise<PagedResult<Impediments>>;
+  getImpediments(options?: OptionsBase): Promise<PagedResult<Impediments>>;
 }

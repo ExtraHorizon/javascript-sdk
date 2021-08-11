@@ -42,27 +42,20 @@ export interface EventsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Event>
    */
-  find(
-    this: EventsService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Event>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Event>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: EventsService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Event>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Event>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: EventsService, options?: OptionsWithRql): Promise<Event>;
+  findFirst(options?: OptionsWithRql): Promise<Event>;
   /**
    * Creates an event
    *
@@ -72,11 +65,7 @@ export interface EventsService {
    * @param requestBody
    * @returns Event
    */
-  create(
-    this: EventsService,
-    requestBody: CreateEvent,
-    options?: OptionsBase
-  ): Promise<Event>;
+  create(requestBody: CreateEvent, options?: OptionsBase): Promise<Event>;
 }
 
 export interface SubscriptionsService {
@@ -89,30 +78,20 @@ export interface SubscriptionsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Subscription>
    */
-  find(
-    this: SubscriptionsService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Subscription>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Subscription>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: SubscriptionsService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Subscription>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Subscription>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: SubscriptionsService,
-    options?: OptionsWithRql
-  ): Promise<Subscription>;
+  findFirst(options?: OptionsWithRql): Promise<Subscription>;
   /**
    * Creates an event subscription
    *
@@ -123,7 +102,6 @@ export interface SubscriptionsService {
    * @returns Subscription
    */
   create(
-    this: SubscriptionsService,
     requestBody: CreateSubscription,
     options?: OptionsBase
   ): Promise<Subscription>;

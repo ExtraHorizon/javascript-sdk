@@ -11,13 +11,13 @@ export default (
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
-  async findById(id, options) {
+  async findById(this: DispatchersService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
     const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options) {
+  async findFirst(this: DispatchersService, options) {
     const res = await this.find(options);
     return res.data[0];
   },

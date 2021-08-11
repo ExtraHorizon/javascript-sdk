@@ -11,13 +11,13 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
-  async findByName(name, options) {
+  async findByName(this: FilesService, name, options) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
     const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
   },
 
-  async findFirst(options) {
+  async findFirst(this: FilesService, options) {
     const res = await this.find(options);
     return res.data[0];
   },

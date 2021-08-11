@@ -391,7 +391,6 @@ export interface PaymentsAppStoreService {
    * @throws {NoConfiguredAppStoreProduct}
    */
   createTransaction(
-    this: PaymentsAppStoreService,
     requestBody: TransactionCompletionDataSchema,
     options?: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;
@@ -407,7 +406,6 @@ export interface PaymentsAppStoreService {
    * @throws {InvalidReceiptDataError}
    */
   verifyTransaction(
-    this: PaymentsAppStoreService,
     requestBody: ReceiptVerificationDataSchema,
     options?: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;
@@ -417,7 +415,6 @@ export interface PaymentsAppStoreService {
    * @returns true if the notification was successfully processed
    */
   processNotification(
-    this: PaymentsAppStoreService,
     requestBody: AppleNotification,
     options?: OptionsBase
   ): Promise<boolean>;
@@ -432,7 +429,6 @@ export interface PaymentsAppStoreService {
    * @returns PagedResult<AppStoreNotification>
    */
   getNotifications(
-    this: PaymentsAppStoreService,
     options?: OptionsBase
   ): Promise<PagedResult<AppStoreNotification>>;
   /**
@@ -445,10 +441,7 @@ export interface PaymentsAppStoreService {
    * `VIEW_APP_STORE_RECEIPTS` | `global` | **Required** for this endpoint
    * @returns PagedResult<AppStoreReceipt>
    */
-  getReceipts(
-    this: PaymentsAppStoreService,
-    options?: OptionsBase
-  ): Promise<PagedResult<AppStoreReceipt>>;
+  getReceipts(options?: OptionsBase): Promise<PagedResult<AppStoreReceipt>>;
 }
 
 export interface PaymentsAppStoreSubscriptionsService {
@@ -462,7 +455,6 @@ export interface PaymentsAppStoreSubscriptionsService {
    * @returns PagedResult<AppStoreSubscription>
    */
   getSubscriptions(
-    this: PaymentsAppStoreSubscriptionsService,
     options?: OptionsBase
   ): Promise<PagedResult<AppStoreSubscription>>;
   /**
@@ -474,7 +466,6 @@ export interface PaymentsAppStoreSubscriptionsService {
    * @returns PagedResult<AppStoreSubscriptionProduct>
    */
   getSubscriptionsProducts(
-    this: PaymentsAppStoreSubscriptionsService,
     options?: OptionsBase
   ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
   /**
@@ -488,7 +479,6 @@ export interface PaymentsAppStoreSubscriptionsService {
    * @throws {ResourceAlreadyExistsError}
    */
   createSubscriptionsProduct(
-    this: PaymentsAppStoreSubscriptionsService,
     requestBody: AppStoreSubscriptionProductCreation,
     options?: OptionsBase
   ): Promise<AppStoreSubscriptionProduct>;
@@ -503,7 +493,6 @@ export interface PaymentsAppStoreSubscriptionsService {
    * @throws {ResourceUnknownError}
    */
   removeSubscriptionsProduct(
-    this: PaymentsAppStoreSubscriptionsService,
     productId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -519,7 +508,6 @@ export interface PaymentsAppStoreSubscriptionsService {
    * @throws {ResourceUnknownError}
    */
   updateSubscriptionsProduct(
-    this: PaymentsAppStoreSubscriptionsService,
     productId: ObjectId,
     requestBody: AppStoreSubscriptionProductUpdateSchema,
     options?: OptionsBase
@@ -537,30 +525,20 @@ export interface PaymentsOrdersService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<OrderSchema>
    */
-  find(
-    this: PaymentsOrdersService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<OrderSchema>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<OrderSchema>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: PaymentsOrdersService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<OrderSchema>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<OrderSchema>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: PaymentsOrdersService,
-    options?: OptionsWithRql
-  ): Promise<OrderSchema>;
+  findFirst(options?: OptionsWithRql): Promise<OrderSchema>;
   /**
    * Create an order
    * @param requestBody
@@ -569,7 +547,6 @@ export interface PaymentsOrdersService {
    * @throws {InvalidCurrencyForProductPrice}
    */
   create(
-    this: PaymentsOrdersService,
     requestBody: OrderCreationSchema,
     options?: OptionsBase
   ): Promise<OrderSchema>;
@@ -585,7 +562,6 @@ export interface PaymentsOrdersService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: PaymentsOrdersService,
     orderId: ObjectId,
     requestBody: OrderUpdateSchema,
     options?: OptionsBase
@@ -601,7 +577,6 @@ export interface PaymentsOrdersService {
    * @returns AffectedRecords
    */
   addTagsToOrder(
-    this: PaymentsOrdersService,
     rql: RQLString,
     requestBody: UpdateTagsSchema,
     options?: OptionsBase
@@ -617,7 +592,6 @@ export interface PaymentsOrdersService {
    * @returns AffectedRecords
    */
   removeTagsFromOrder(
-    this: PaymentsOrdersService,
     rql: RQLString,
     requestBody: UpdateTagsSchema,
     options?: OptionsBase
@@ -647,30 +621,20 @@ export interface PaymentsProductsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<ProductSchema>
    */
-  find(
-    this: PaymentsProductsService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<ProductSchema>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<ProductSchema>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: PaymentsProductsService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<ProductSchema>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<ProductSchema>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: PaymentsProductsService,
-    options?: OptionsWithRql
-  ): Promise<ProductSchema>;
+  findFirst(options?: OptionsWithRql): Promise<ProductSchema>;
   /**
    * Add Tags to a Product
    *
@@ -682,7 +646,6 @@ export interface PaymentsProductsService {
    * @returns AffectedRecords
    */
   addTagsToProduct(
-    this: PaymentsProductsService,
     rql: RQLString,
     requestBody: UpdateTagsSchema,
     options?: OptionsBase
@@ -698,7 +661,6 @@ export interface PaymentsProductsService {
    * @returns AffectedRecords
    */
   removeTagsFromProduct(
-    this: PaymentsProductsService,
     rql: RQLString,
     requestBody: UpdateTagsSchema,
     options?: OptionsBase
@@ -715,7 +677,6 @@ export interface PaymentsProductsService {
    * @throws {ResourceUnknownError}
    */
   update(
-    this: PaymentsProductsService,
     orderId: ObjectId,
     requestBody: ProductCreationSchema,
     options?: OptionsBase
@@ -730,11 +691,7 @@ export interface PaymentsProductsService {
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(
-    this: PaymentsProductsService,
-    productId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  remove(productId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 }
 
 export interface PaymentsStripeService {
@@ -748,11 +705,7 @@ export interface PaymentsStripeService {
    * @param userId
    * @returns StripeUser
    */
-  getUser(
-    this: PaymentsStripeService,
-    userId: ObjectId,
-    options?: OptionsBase
-  ): Promise<StripeUser>;
+  getUser(userId: ObjectId, options?: OptionsBase): Promise<StripeUser>;
   /**
    * Save a payment method to a Stripe user
    *
@@ -767,7 +720,6 @@ export interface PaymentsStripeService {
    * @throws {StripeRequestError}
    */
   savePaymentMethod(
-    this: PaymentsStripeService,
     userId: ObjectId,
     requestBody: StripePaymentMethodCreation,
     options?: OptionsBase
@@ -786,7 +738,6 @@ export interface PaymentsStripeService {
    * @throws {ResourceUnknownError}
    */
   addTagsToPaymentMethod(
-    this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
     requestBody: UpdateTagsSchema,
@@ -806,7 +757,6 @@ export interface PaymentsStripeService {
    * @throws {ResourceUnknownError}
    */
   removeTagsToPaymentMethod(
-    this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
     requestBody: UpdateTagsSchema,
@@ -825,7 +775,6 @@ export interface PaymentsStripeService {
    * @throws {ResourceUnknownError}
    */
   removePaymentMethod(
-    this: PaymentsStripeService,
     userId: ObjectId,
     paymentMethodId: ObjectId,
     options?: OptionsBase
@@ -846,7 +795,6 @@ export interface PaymentsStripeService {
    * @throws {ResourceUnknownError}
    */
   createPaymentIntent(
-    this: PaymentsStripeService,
     requestBody: PaymentIntentCreationSchema,
     options?: OptionsBase
   ): Promise<OrderSchema>;
@@ -857,7 +805,6 @@ export interface PaymentsStripeService {
    * @throws {StripePaymentMethodError}
    */
   createSetupIntent(
-    this: PaymentsStripeService,
     requestBody: SetupIntentCreationSchema,
     options?: OptionsBase
   ): Promise<StripeSetupIntentSchema>;
@@ -877,10 +824,7 @@ export interface PaymentsStripeService {
    * @returns any
    * @throws {BadRequestError}
    */
-  subscribeToEvents(
-    this: PaymentsStripeService,
-    options?: OptionsBase
-  ): Promise<any>;
+  subscribeToEvents(options?: OptionsBase): Promise<any>;
 }
 
 export interface PaymentsSubscriptionsService {
@@ -894,7 +838,6 @@ export interface PaymentsSubscriptionsService {
    * @returns PagedResult<SubscriptionEntitlement>
    */
   getEntitlements(
-    this: PaymentsSubscriptionsService,
     options?: OptionsBase
   ): Promise<PagedResult<SubscriptionEntitlement>>;
   /**
@@ -906,8 +849,5 @@ export interface PaymentsSubscriptionsService {
    * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
    * @returns PagedResult<SubscriptionEvent>
    */
-  getEvents(
-    this: PaymentsSubscriptionsService,
-    options?: OptionsBase
-  ): Promise<PagedResult<SubscriptionEvent>>;
+  getEvents(options?: OptionsBase): Promise<PagedResult<SubscriptionEvent>>;
 }

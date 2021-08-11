@@ -29,13 +29,13 @@ export default (
     ).data;
   },
 
-  async findById(id, options) {
+  async findById(this: NotificationsService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
     const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options) {
+  async findFirst(this: NotificationsService, options) {
     const res = await this.find(options);
     return res.data[0];
   },

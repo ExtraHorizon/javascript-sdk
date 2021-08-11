@@ -875,11 +875,7 @@ export interface DataSchemasService {
    * @param requestBody
    * @returns Schema successful operation
    */
-  create(
-    this: DataSchemasService,
-    requestBody: SchemaInput,
-    options?: OptionsBase
-  ): Promise<Schema>;
+  create(requestBody: SchemaInput, options?: OptionsBase): Promise<Schema>;
   /**
    * Request a list of schemas
    *
@@ -890,41 +886,27 @@ export interface DataSchemasService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Schema>
    */
-  find(
-    this: DataSchemasService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Schema>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Schema>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: DataSchemasService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Schema>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Schema>;
   /**
    * Find By Name
    * @param name the name to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByName(
-    this: DataSchemasService,
-    name: string,
-    options?: OptionsWithRql
-  ): Promise<Schema>;
+  findByName(name: string, options?: OptionsWithRql): Promise<Schema>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: DataSchemasService,
-    options?: OptionsWithRql
-  ): Promise<Schema>;
+  findFirst(options?: OptionsWithRql): Promise<Schema>;
   /**
    * Update a schema
    *
@@ -936,7 +918,6 @@ export interface DataSchemasService {
    * @returns AffectedRecords
    */
   update(
-    this: DataSchemasService,
     schemaId: ObjectId,
     requestBody: UpdateSchemaInput,
     options?: OptionsWithRql
@@ -951,11 +932,7 @@ export interface DataSchemasService {
    * @returns AffectedRecords
    * @throws {IllegalStateError}
    */
-  remove(
-    this: DataSchemasService,
-    schemaId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  remove(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Disable a schema
    *
@@ -965,11 +942,7 @@ export interface DataSchemasService {
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  disable(
-    this: DataSchemasService,
-    schemaId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  disable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Enable a schema
    *
@@ -979,11 +952,7 @@ export interface DataSchemasService {
    * @param schemaId The id of the targeted schema.
    * @returns AffectedRecords
    */
-  enable(
-    this: DataSchemasService,
-    schemaId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  enable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 }
 
 export interface DataStatusesService {

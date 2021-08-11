@@ -47,27 +47,20 @@ export interface TasksService {
    * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
    * @returns PagedResult<Task>
    */
-  find(
-    this: TasksService,
-    options?: OptionsWithRql
-  ): Promise<PagedResult<Task>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Task>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(
-    this: TasksService,
-    id: ObjectId,
-    options?: OptionsWithRql
-  ): Promise<Task>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(this: TasksService, options?: OptionsWithRql): Promise<Task>;
+  findFirst(options?: OptionsWithRql): Promise<Task>;
   /**
    * Create a task
    *
@@ -77,11 +70,7 @@ export interface TasksService {
    * @param requestBody
    * @returns Task Success
    */
-  create(
-    this: TasksService,
-    requestBody: TaskInput,
-    options?: OptionsBase
-  ): Promise<Task>;
+  create(requestBody: TaskInput, options?: OptionsBase): Promise<Task>;
   /**
    * Cancel a task
    *
@@ -94,9 +83,5 @@ export interface TasksService {
    * @throws {IllegalStateException}
    * @throws {ResourceUnknownException}
    */
-  cancel(
-    this: TasksService,
-    taskId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  cancel(taskId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 }
