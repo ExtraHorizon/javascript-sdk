@@ -49,7 +49,6 @@ export default (
   },
 
   async find(this: DataDocumentsService, schemaId, options) {
-    console.log('options', options);
     return (
       await client.get(
         httpAuth,
