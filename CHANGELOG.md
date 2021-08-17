@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.2.1]
+
+### Changes
+
+- removed console.log in `sdk.data.documents.find` function
+
 ## [v4.2.0]
 
 ### Added
