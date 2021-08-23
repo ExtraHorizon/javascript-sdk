@@ -88,6 +88,12 @@ await sdk.auth.authenticate({
 
 ### Authorization Code Grant flow with callback
 
+- Open https://pages.dev.fibricheck.com/authorize/?client_id=CLIENT_ID&response_type=code&redirect_uri=REDIRECT_URI
+- click Authorize
+- Capture the query params on the redirect uri
+- Authenticate with the code query param
+- Use following snippet
+
 ```js
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 
@@ -101,7 +107,6 @@ const sdk = createOAuth2Client({
 
 await sdk.auth.authenticate({
   code: '',
-  redirectUri: '',
 });
 ```
 
