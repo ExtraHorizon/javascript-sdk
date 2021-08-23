@@ -108,20 +108,21 @@ export function createOAuth2HttpClient(
     tokenData = data;
   }
 
-  async function authenticate(data: OAuth2Config): Promise<void> {
+  async function authenticate(data: OAuth2Config): Promise<TokenDataOauth2> {
     authConfig = data;
     const tokenResult = await http.post(options.path, {
       ...options.params,
       ...authConfig.params,
     });
     setTokenData(tokenResult.data);
+    return tokenResult.data;
   }
 
   async function confirmMfa({
     token,
     methodId,
     code,
-  }: MfaConfig): Promise<void> {
+  }: MfaConfig): Promise<TokenDataOauth2> {
     const tokenResult = await http.post(options.path, {
       ...options.params,
       ...authConfig.params,
@@ -131,6 +132,7 @@ export function createOAuth2HttpClient(
       method_id: methodId,
     });
     setTokenData(tokenResult.data);
+    return tokenResult.data;
   }
 
   function logout(): boolean {
