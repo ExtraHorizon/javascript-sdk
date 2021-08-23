@@ -231,7 +231,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
   const http = createHttpClient({ ...config, packageVersion });
 
   let httpWithAuth;
-  if ('serviceUrlFn' in config) {
+  if ('secret' in config) {
     httpWithAuth = createMicroservicesHttpClient(http, config);
   } else if ('oauth1' in config) {
     httpWithAuth = createOAuth1HttpClient(http, config);

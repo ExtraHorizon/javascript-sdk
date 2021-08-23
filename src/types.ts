@@ -92,7 +92,8 @@ export type ServiceLocatorFn = (
 ) => Promise<ServiceLocation>;
 
 export interface MicroservicesParams extends ParamsBase {
-  serviceUrlFn: ServiceLocatorFn;
+  secret: string;
+  serviceUrlFn?: ServiceLocatorFn;
 }
 
 export interface ParamsOauth2 extends ParamsBase {
@@ -117,7 +118,8 @@ export interface ConfigOauth2 extends ParamsBase {
 }
 
 export interface MicroservicesConfig extends ParamsBase {
-  serviceUrlFn: ServiceLocatorFn;
+  secret: string;
+  serviceUrlFn?: ServiceLocatorFn;
 }
 
 export type ClientParams = ParamsOauth1 | ParamsOauth2 | MicroservicesParams;
