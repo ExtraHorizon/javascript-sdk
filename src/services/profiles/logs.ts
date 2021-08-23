@@ -1,65 +1,49 @@
-import { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import {
-  AffectedRecords,
-  ObjectId,
-  PagedResult,
-  Results,
-  ResultResponse,
-} from '../types';
-import { LogEntry, ProfileComment, ProfilesLogsService } from './types';
+import { HttpClient } from '../http-client';
+import { Results, ResultResponse } from '../types';
+import { ProfilesLogsService } from './types';
 
-export default (client, httpAuth: HttpInstance): ProfilesLogsService => ({
-  async create(
-    profileId: ObjectId,
-    groupId: ObjectId,
-    requestBody: ProfileComment
-  ): Promise<LogEntry> {
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): ProfilesLogsService => ({
+  async create(profileId, groupId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${profileId}/groups/${groupId}/logs`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async find(
-    profileId: ObjectId,
-    groupId: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<LogEntry>> {
+  async find(profileId, groupId, options?) {
     return (
       await client.get(
         httpAuth,
-        `/${profileId}/groups/${groupId}/logs${options?.rql || ''}`
+        `/${profileId}/groups/${groupId}/logs${options?.rql || ''}`,
+        options
       )
     ).data;
   },
 
-  async update(
-    profileId: ObjectId,
-    groupId: ObjectId,
-    entryId: ObjectId,
-    requestBody: ProfileComment
-  ): Promise<LogEntry> {
+  async update(profileId, groupId, entryId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/${profileId}/groups/${groupId}/logs/${entryId}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async remove(
-    profileId: ObjectId,
-    groupId: ObjectId,
-    entryId: ObjectId
-  ): Promise<AffectedRecords> {
+  async remove(profileId, groupId, entryId, options) {
     const result: ResultResponse = await client.delete(
       httpAuth,
-      `/${profileId}/groups/${groupId}/logs/${entryId}`
+      `/${profileId}/groups/${groupId}/logs/${entryId}`,
+      options
     );
     const affectedRecords = result.status === Results.Success ? 1 : 0;
     return { affectedRecords };

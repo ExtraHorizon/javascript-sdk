@@ -1,40 +1,29 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords } from '../types';
-import type {
-  ConfigurationsStaffService,
-  UserConfigurationInput,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { ConfigurationsStaffService } from './types';
 
 export default (
-  client,
+  client: HttpClient,
   httpAuth: HttpInstance
 ): ConfigurationsStaffService => ({
-  async update(
-    groupId: ObjectId,
-    userId: ObjectId,
-    requestBody: UserConfigurationInput
-  ): Promise<AffectedRecords> {
+  async update(groupId, userId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
         `/users/${userId}/staffConfigurations/${groupId}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removeFields(
-    groupId: ObjectId,
-    userId: ObjectId,
-    requestBody: {
-      fields: Array<string>;
-    }
-  ): Promise<AffectedRecords> {
+  async removeFields(groupId, userId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/users/${userId}/staffConfigurations/${groupId}/deleteFields`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },

@@ -1,22 +1,26 @@
-import { RQLString, rqlBuilder } from '../../rql';
+import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { delay } from '../../utils';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import { DataDocumentsService, Document } from './types';
+import { HttpClient } from '../http-client';
+import { DataDocumentsService } from './types';
 
-export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataDocumentsService => ({
   // TypeScript limitation. Function using optional generic with fallback can not be first function.
   async assertNonLockedState(
-    schemaId: ObjectId,
-    documentId: ObjectId,
+    schemaId,
+    documentId,
     tries = 5,
-    retryTimeInMs = 300
-  ): Promise<boolean> {
+    retryTimeInMs = 300,
+    options
+  ) {
     if (tries < 1) {
       throw new Error('Document is in a locked state');
     }
 
-    const res = await this.findById(schemaId, documentId);
+    const res = await this.findById(schemaId, documentId, options);
     if (!res.transitionLock) {
       return true;
     }
@@ -27,183 +31,130 @@ export default (client, httpAuth: HttpInstance): DataDocumentsService => ({
       schemaId,
       documentId,
       tries - 1,
-      retryTimeInMs
+      retryTimeInMs,
+      options
     );
   },
 
-  async create<CustomData = null>(
-    schemaId: ObjectId,
-    requestBody: Record<string, any>,
-    options?: { gzip?: boolean }
-  ): Promise<Document<CustomData>> {
+  async create(schemaId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents`,
         requestBody,
-        {},
+        options?.headers ? { headers: options.headers } : {},
         options
       )
     ).data;
   },
 
-  async find<CustomData = null>(
-    schemaId: ObjectId,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<PagedResult<Document<CustomData>>> {
+  async find(this: DataDocumentsService, schemaId, options) {
     return (
-      await client.get(httpAuth, `/${schemaId}/documents${options?.rql || ''}`)
-    ).data;
-  },
-
-  async findById<CustomData = null>(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Document<CustomData>> {
-    const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
-    const res = await this.find(schemaId, { rql: rqlWithId });
-
-    return res.data[0];
-  },
-
-  async findFirst<CustomData = null>(
-    schemaId: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Document<CustomData>> {
-    const res = await this.find(schemaId, options);
-    return res.data[0];
-  },
-
-  async update(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: Record<string, any>,
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
-    return (
-      await client.put(
+      await client.get(
         httpAuth,
-        `/${schemaId}/documents/${documentId}${options?.rql || ''}`,
-        requestBody
+        `/${schemaId}/documents${options?.rql || ''}`,
+        options?.headers ? { headers: options.headers } : {}
       )
     ).data;
   },
 
-  async remove(
-    schemaId: ObjectId,
-    documentId: ObjectId
-  ): Promise<AffectedRecords> {
+  async findById(this: DataDocumentsService, schemaId, documentId, options?) {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
+    const res = await this.find(schemaId, { ...options, rql: rqlWithId });
+
+    return res.data[0];
+  },
+
+  async findFirst(this: DataDocumentsService, schemaId, options) {
+    const res = await this.find(schemaId, options);
+    return res.data[0];
+  },
+
+  async update(schemaId, documentId, requestBody, options) {
     return (
-      await client.delete(httpAuth, `/${schemaId}/documents/${documentId}`)
+      await client.put(
+        httpAuth,
+        `/${schemaId}/documents/${documentId}${options?.rql || ''}`,
+        requestBody,
+        options
+      )
     ).data;
   },
 
-  async removeFields(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      fields: Array<string>;
-    },
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async remove(schemaId, documentId, options) {
+    return (
+      await client.delete(
+        httpAuth,
+        `/${schemaId}/documents/${documentId}`,
+        options
+      )
+    ).data;
+  },
+
+  async removeFields(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/deleteFields${
           options?.rql || ''
         }`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async transition(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      id: ObjectId;
-      data?: Record<string, any>;
-    },
-    options?: {
-      rql?: RQLString;
-    }
-  ): Promise<AffectedRecords> {
+  async transition(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/transition${options?.rql || ''}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async linkGroups(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      groupIds: Array<ObjectId>;
-    }
-  ): Promise<AffectedRecords> {
+  async linkGroups(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/linkGroups`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async unlinkGroups(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      groupIds: Array<ObjectId>;
-    }
-  ): Promise<AffectedRecords> {
+  async unlinkGroups(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/unlinkGroups`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async linkUsers(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      userIds: Array<ObjectId>;
-    }
-  ): Promise<AffectedRecords> {
+  async linkUsers(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/linkUsers`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async unlinkUsers(
-    schemaId: ObjectId,
-    documentId: ObjectId,
-    requestBody: {
-      userIds: Array<ObjectId>;
-    }
-  ): Promise<AffectedRecords> {
+  async unlinkUsers(schemaId, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
         `/${schemaId}/documents/${documentId}/unlinkUsers`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },

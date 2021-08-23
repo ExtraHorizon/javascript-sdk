@@ -1,10 +1,9 @@
 import {
   AuthParams,
   ClientParams,
-  OmitThisParameterDeep,
+  MicroservicesParams,
   ParamsOauth1,
   ParamsOauth2,
-  MicroservicesParams,
 } from './types';
 import { version as packageVersion } from './version';
 
@@ -33,7 +32,7 @@ import {
   createMicroservicesHttpClient,
 } from './http';
 import { validateConfig } from './utils';
-import { OAuthClient } from './http/types';
+import { OAuthClient, TokenDataOauth1 } from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -54,7 +53,7 @@ export interface OAuth1Authenticate {
     token: string;
     tokenSecret: string;
     skipTokenCheck?: boolean;
-  }): Promise<void>;
+  }): Promise<TokenDataOauth1>;
   /**
    * Use OAuth1 Password authentication
    * @example
@@ -69,7 +68,10 @@ export interface OAuth1Authenticate {
    * @throws {TooManyFailedAttemptsError}
    * @throws {MfaRequiredError}
    */
-  authenticate(oauth: { email: string; password: string }): Promise<void>;
+  authenticate(oauth: {
+    email: string;
+    password: string;
+  }): Promise<TokenDataOauth1>;
 }
 
 export interface OAuth2Authenticate {
@@ -141,103 +143,74 @@ export interface Client<T extends ClientParams> {
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/?service=templates-service&redirectToVersion=1
    */
-  templates: OmitThisParameterDeep<ReturnType<typeof templatesService>>;
+  templates: ReturnType<typeof templatesService>;
   /**
    * Provides mail functionality for other services.
    * @see https://developers.extrahorizon.io/services/?service=mail-service&redirectToVersion=1
    */
-  mails: OmitThisParameterDeep<ReturnType<typeof mailsService>>;
+  mails: ReturnType<typeof mailsService>;
   /**
    * A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
    * @see https://developers.extrahorizon.io/services/?service=data-service&redirectToVersion=1
    */
-  data: OmitThisParameterDeep<ReturnType<typeof dataService>>;
+  data: ReturnType<typeof dataService>;
   /**
    * A service that handles file storage, metadata & file retrieval based on tokens.
    * @see https://developers.extrahorizon.io/services/?service=files-service&redirectToVersion=1
    */
-  files: OmitThisParameterDeep<ReturnType<typeof filesService>>;
+  files: ReturnType<typeof filesService>;
   /**
    * Start functions on demand, directly or at a future moment.
    * @see https://developers.extrahorizon.io/services/?service=tasks-service&redirectToVersion=1
    */
-  tasks: OmitThisParameterDeep<ReturnType<typeof tasksService>>;
+  tasks: ReturnType<typeof tasksService>;
   /**
    * Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
    * @see https://developers.extrahorizon.io/services/?service=configurations-service&redirectToVersion=2
    */
-  configurations: OmitThisParameterDeep<
-    ReturnType<typeof configurationsService>
-  >;
+  configurations: ReturnType<typeof configurationsService>;
   /**
    * Configure actions that need to be invoked when a specific event is/was triggered.
    * @see https://developers.extrahorizon.io/services/?service=dispatchers-service&redirectToVersion=1
    */
-  dispatchers: OmitThisParameterDeep<ReturnType<typeof dispatchersService>>;
+  dispatchers: ReturnType<typeof dispatchersService>;
   /**
    * A service that provides payment functionality.
    * @see https://developers.extrahorizon.io/services/?service=payments-service&redirectToVersion=1
    */
-  payments: OmitThisParameterDeep<ReturnType<typeof paymentsService>>;
+  payments: ReturnType<typeof paymentsService>;
   /**
    * Storage and retrieval of text snippets, translated into multiple languages.
    * @see https://developers.extrahorizon.io/services/?service=localizations-service&redirectToVersion=1
    */
-  localizations: OmitThisParameterDeep<ReturnType<typeof localizationsService>>;
+  localizations: ReturnType<typeof localizationsService>;
   /**
    * Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
    * @see https://developers.extrahorizon.io/services/?service=profiles-service&redirectToVersion=1
    */
-  profiles: OmitThisParameterDeep<ReturnType<typeof profilesService>>;
+  profiles: ReturnType<typeof profilesService>;
   /**
    * A service that handles push notifications.
    * @see https://developers.extrahorizon.io/services/?service=notifications-service&redirectToVersion=1
    */
-  notifications: OmitThisParameterDeep<ReturnType<typeof notificationsService>>;
+  notifications: ReturnType<typeof notificationsService>;
   /**
    * Service that provides event (publish/subscribe) functionality for other services.
    * @see https://developers.extrahorizon.io/services/?service=events-service&redirectToVersion=1
    */
-  events: OmitThisParameterDeep<ReturnType<typeof eventsService>>;
+  events: ReturnType<typeof eventsService>;
   /**
    * The user service stands in for managing users themselves, as well as roles related to users and groups of users.
    * @see https://developers.extrahorizon.io/services/?service=users-service&redirectToVersion=1
    */
-  users: OmitThisParameterDeep<ReturnType<typeof usersService>>;
+  users: ReturnType<typeof usersService>;
   /**
    * Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
    * @see https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
    */
-  auth: OmitThisParameterDeep<ReturnType<typeof authService>> & {
-    /**
-     *  Confirm MFA method with token, methodId and code
-     *  @example
-     *  try {
-     *    await sdk.auth.authenticate({
-     *      password: '',
-     *      username: '',
-     *    });
-     *  } catch (error) {
-     *    if (error instanceof MfaRequiredError) {
-     *      const { mfa } = error.response;
-     *
-     *      // Your logic to request which method the user want to use in case of multiple methods
-     *      const methodId = mfa.methods[0].id;
-     *
-     *      await sdk.auth.confirmMfa({
-     *        token: mfa.token,
-     *        methodId,
-     *        code: '', // code from ie. Google Authenticator
-     *      });
-     *    }
-     *  }
-     */
-    confirmMfa: (mfa: {
-      token: string;
-      methodId: string;
-      code: string;
-    }) => Promise<void>;
-  } & Authenticate<T>;
+  auth: ReturnType<typeof authService> &
+    Pick<OAuthClient, 'confirmMfa' | 'logout'> &
+    Authenticate<T>;
 }
 
 /**
@@ -282,9 +255,10 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     events: eventsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
-      authenticate: (oauth: AuthParams): Promise<void> =>
+      authenticate: (oauth: AuthParams) =>
         httpWithAuth.authenticate(parseAuthParams(oauth)),
       confirmMfa: httpWithAuth.confirmMfa,
+      logout: httpWithAuth.logout,
     } as any,
     raw: httpWithAuth,
   };

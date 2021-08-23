@@ -1,31 +1,42 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type { Dispatcher, DispatchersService } from './types';
-import { RQLString, rqlBuilder } from '../../rql';
+import type { DispatchersService } from './types';
+import { rqlBuilder } from '../../rql';
+import { HttpClient } from '../http-client';
 
-export default (client, httpAuth: HttpInstance): DispatchersService => ({
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Dispatcher>> {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DispatchersService => ({
+  async find(options) {
+    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
   },
 
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Dispatcher> {
+  async findById(this: DispatchersService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
-  async findFirst(options?: { rql?: RQLString }): Promise<Dispatcher> {
+
+  async findFirst(this: DispatchersService, options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async create(requestBody: Dispatcher): Promise<Dispatcher> {
-    return (await client.post(httpAuth, '/', requestBody)).data;
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/', requestBody, options)).data;
   },
 
-  async remove(dispatcherId: ObjectId): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/${dispatcherId}`)).data;
+  /**
+   * Delete a dispatcher
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint
+   * @param dispatcherId The id of the targeted dispatcher
+   * @returns AffectedRecords
+   * @throws {ResourceUnknownError}
+   */
+  async remove(dispatcherId, options) {
+    return (await client.delete(httpAuth, `/${dispatcherId}`, options)).data;
   },
 });

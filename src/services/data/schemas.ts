@@ -1,16 +1,14 @@
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type {
-  DataSchemasService,
-  Schema,
-  SchemaInput,
-  UpdateSchemaInput,
-} from './types';
-import { RQLString, rqlBuilder } from '../../rql';
+import type { PagedResult } from '../types';
+import type { DataSchemasService, Schema } from './types';
+import { rqlBuilder } from '../../rql';
+import { HttpClient } from '../http-client';
 
-const addTransitionHelpersToSchema = (schema: Schema) => ({
+const MAX_LIMIT = 50;
+
+const addTransitionHelpersToSchema = (schema: Schema): Schema => ({
   ...schema,
-  findTransitionIdByName(name: string) {
+  findTransitionIdByName(name) {
     return schema.transitions?.find(transition => transition.name === name)?.id;
   },
   get transitionsByName() {
@@ -21,57 +19,86 @@ const addTransitionHelpersToSchema = (schema: Schema) => ({
   },
 });
 
-export default (client, httpAuth: HttpInstance): DataSchemasService => ({
-  async create(requestBody: SchemaInput): Promise<Schema> {
+export default (
+  client: HttpClient,
+  httpAuth: HttpInstance
+): DataSchemasService => ({
+  async create(requestBody, options) {
     return addTransitionHelpersToSchema(
-      (await client.post(httpAuth, '/', requestBody)).data
+      (await client.post(httpAuth, '/', requestBody, options)).data
     );
   },
 
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Schema>> {
-    const result = (await client.get(httpAuth, `/${options?.rql || ''}`)).data;
+  async find(options) {
+    const result: PagedResult<Schema> = (
+      await client.get(httpAuth, `/${options?.rql || ''}`, options)
+    ).data;
     return {
       ...result,
       data: result.data.map(addTransitionHelpersToSchema),
     };
   },
 
-  async findById(id: ObjectId, options?: { rql?: RQLString }): Promise<Schema> {
+  async findAll(options) {
+    // Extra check is needed because this function is call recursively with updated RQL
+    // But on the first run, we need to set the limit to the max to optimize
+    const result: PagedResult<Schema> = await this.find({
+      rql:
+        options?.rql && options.rql.includes('limit(')
+          ? options.rql
+          : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+    });
+
+    if (result.page.total > 2000 && result.page.offset === 0) {
+      console.warn(
+        'WARNING: total amount is > 2000, be aware that this function can hog up resources'
+      );
+    }
+
+    return result.page.total > result.page.offset + result.page.limit
+      ? [
+          ...result.data,
+          ...(await this.findAll({
+            rql: rqlBuilder(options?.rql)
+              .limit(result.page.limit, result.page.offset + result.page.limit)
+              .build(),
+          })),
+        ]
+      : result.data;
+  },
+
+  async findById(this: DataSchemasService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findByName(
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<Schema> {
+  async findByName(this: DataSchemasService, name, options) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-    const res = await this.find({ rql: rqlWithName });
+    const res = await this.find({ ...options, rql: rqlWithName });
     return res.data[0];
   },
 
-  async findFirst(options?: { rql?: RQLString }): Promise<Schema> {
+  async findFirst(this: DataSchemasService, options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async update(
-    schemaId: ObjectId,
-    requestBody: UpdateSchemaInput
-  ): Promise<AffectedRecords> {
-    return (await client.put(httpAuth, `/${schemaId}`, requestBody)).data;
+  async update(schemaId, requestBody, options) {
+    return (await client.put(httpAuth, `/${schemaId}`, requestBody, options))
+      .data;
   },
 
-  async remove(schemaId: ObjectId): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/${schemaId}`)).data;
+  async remove(schemaId, options) {
+    return (await client.delete(httpAuth, `/${schemaId}`, options)).data;
   },
 
-  async disable(schemaId: ObjectId): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/${schemaId}/disable`)).data;
+  async disable(schemaId, options) {
+    return (await client.post(httpAuth, `/${schemaId}/disable`, null, options))
+      .data;
   },
 
-  async enable(schemaId: ObjectId): Promise<AffectedRecords> {
-    return (await client.post(httpAuth, `/${schemaId}/enable`)).data;
+  async enable(schemaId, options) {
+    return (await client.post(httpAuth, `/${schemaId}/enable`, options)).data;
   },
 });

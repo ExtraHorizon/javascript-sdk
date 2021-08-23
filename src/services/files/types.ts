@@ -1,6 +1,11 @@
 import { ReadStream } from 'fs';
-import { RQLString } from '../../rql';
-import type { AffectedRecords, ObjectId, PagedResult } from '../types';
+import type {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+} from '../types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
@@ -37,143 +42,108 @@ export interface FilesService {
    * List all files
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_FILES` | `global` | **Required** for this endpoint
-   *
    * @param rql Add filters to the requested list.
    * @returns PagedResult<FileDetails>
    */
-  find(
-    this: FilesService,
-    options?: { rql?: RQLString }
-  ): Promise<PagedResult<FileDetails>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<FileDetails>>;
   /**
    * Find By Name
    * @param name the name to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByName(
-    this: FilesService,
-    name: string,
-    options?: { rql?: RQLString }
-  ): Promise<FileDetails>;
+  findByName(name: string, options?: OptionsWithRql): Promise<FileDetails>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(
-    this: FilesService,
-    options?: { rql?: RQLString }
-  ): Promise<FileDetails>;
+  findFirst(options?: OptionsWithRql): Promise<FileDetails>;
   /**
    * Add a new file from a plain text source
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param string text
    * @returns FileDetails Success
    * @throws {FileTooLargeError}
    */
-  createFromText(this: FilesService, text: string): Promise<FileDetails>;
+  createFromText(text: string, options?: OptionsBase): Promise<FileDetails>;
   /**
    * Add a new file
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param fileName string
    * @param fileData the file data
    * @returns FileDetails
    * @throws {FileTooLargeError}
    */
   create(
-    this: FilesService,
     fileName: string,
     fileData: Blob | Buffer | ReadStream,
-    options?: { tags: [] }
+    options?: OptionsBase & { tags: [] }
   ): Promise<FileDetails>;
   /**
    * Delete a file
    *
    * AccessLevel | Effect
-   *
-   * \- | -
-   *
+   * - | -
    * `full` | **Required** to be able to delete the file
-   *
    * @param token
    * @returns AffectedRecords
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  remove(this: FilesService, token: Token): Promise<AffectedRecords>;
+  remove(token: Token, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Retrieve a file from the object store
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param token
    * @returns Buffer
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  retrieve(this: FilesService, token: Token): Promise<Buffer>;
+  retrieve(token: Token, options?: OptionsBase): Promise<Buffer>;
   /**
    * Retrieve a file stream from the object store
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
-   *
    * @param token
    * @returns data as ReadStream
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
   retrieveStream(
-    this: FilesService,
-    token: Token
+    token: Token,
+    options?: OptionsBase
   ): Promise<{ data: ReadStream }>;
   /**
    * Get file details
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
    *
    * AccessLevel | Effect
-   *
-   * \- | -
-   *
+   * - | -
    * `full` | **Required** to return file metadata with all tokens.
-   *
    * `read` | **Required** to return name, size, mimetype.
-   *
    * @param token
    * @returns FileDetails
    * @throws {InvalidTokenError}
    * @throws {UnauthorizedTokenError}
    */
-  getDetails(this: FilesService, token: Token): Promise<FileDetails>;
+  getDetails(token: Token, options?: OptionsBase): Promise<FileDetails>;
 }
 
 export interface FileTokensService {
@@ -181,9 +151,7 @@ export interface FileTokensService {
    * Delete a token
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none |  | Everyone can use this endpoint
    *
    * @param token
@@ -194,17 +162,15 @@ export interface FileTokensService {
    * @throws {TokenNotDeleteableError}
    */
   deleteToken(
-    this: FileTokensService,
     token: Token,
-    tokenToAccess: Token
+    tokenToAccess: Token,
+    options?: OptionsBase
   ): Promise<void>;
   /**
    * Generate a token for a file
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * none | | Everyone can use this endpoint
    *
    * @param token
@@ -214,8 +180,8 @@ export interface FileTokensService {
    * @throws {UnauthorizedTokenError}
    */
   generateToken(
-    this: FileTokensService,
     token: Token,
-    requestBody: CreateTokenRequest
+    requestBody: CreateTokenRequest,
+    options?: OptionsBase
   ): Promise<TokenObject>;
 }

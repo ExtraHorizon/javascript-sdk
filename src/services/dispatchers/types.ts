@@ -1,8 +1,9 @@
-import { RQLString } from '../../rql';
 import type {
   AffectedRecords,
   MailRecipients,
   ObjectId,
+  OptionsBase,
+  OptionsWithRql,
   PagedResult,
 } from '../types';
 
@@ -75,60 +76,49 @@ export interface DispatchersService {
    * Request a list of dispatchers
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `VIEW_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Dispatcher>
    */
-  find: (
-    this: DispatchersService,
-    options?: { rql?: RQLString }
-  ) => Promise<PagedResult<Dispatcher>>;
+  find: (options?: OptionsWithRql) => Promise<PagedResult<Dispatcher>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById: (
-    this: DispatchersService,
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ) => Promise<Dispatcher>;
-
+  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Dispatcher>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: { rql?: RQLString }): Promise<Dispatcher>;
+  findFirst(options?: OptionsWithRql): Promise<Dispatcher>;
   /**
    * Create a dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `CREATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param requestBody Dispatcher
    * @returns Dispatcher
    */
-  create(requestBody: Dispatcher): Promise<Dispatcher>;
+  create(requestBody: Dispatcher, options?: OptionsBase): Promise<Dispatcher>;
   /**
    * Delete a dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `DELETE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(dispatcherId: ObjectId): Promise<AffectedRecords>;
+  remove(
+    dispatcherId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }
 
 export interface ActionsService {
@@ -136,22 +126,22 @@ export interface ActionsService {
    * Add an action to the dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param requestBody ActionCreation
    * @returns Action
    */
-  create(dispatcherId: ObjectId, requestBody: ActionCreation): Promise<Action>;
+  create(
+    dispatcherId: ObjectId,
+    requestBody: ActionCreation,
+    options?: OptionsBase
+  ): Promise<Action>;
   /**
    * Update an action for the specified dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param actionId The id of the targeted action
@@ -162,20 +152,23 @@ export interface ActionsService {
   update(
     dispatcherId: ObjectId,
     actionId: ObjectId,
-    requestBody: ActionUpdate
+    requestBody: ActionUpdate,
+    options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
    * Delete an action from the specified dispatcher
    *
    * Permission | Scope | Effect
-   *
-   * \- | - | -
-   *
+   * - | - | -
    * `UPDATE_DISPATCHERS` | `global` | **Required** for this endpoint
    * @param dispatcherId The id of the targeted dispatcher
    * @param actionId The id of the targeted action
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
-  remove(dispatcherId: ObjectId, actionId: ObjectId): Promise<AffectedRecords>;
+  remove(
+    dispatcherId: ObjectId,
+    actionId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }

@@ -1,83 +1,71 @@
-import type { RQLString } from '../../rql';
 import type { HttpInstance } from '../../types';
-import type { ObjectId, AffectedRecords, PagedResult } from '../types';
-import type {
-  RolePermissions,
-  Role,
-  RoleCreation,
-  RoleUpdate,
-  UserRoles,
-  GlobalPermission,
-  UsersGlobalRolesService,
-} from './types';
+import { HttpClient } from '../http-client';
+import type { UsersGlobalRolesService } from './types';
 
 export default (
-  userClient,
+  client: HttpClient,
   httpWithAuth: HttpInstance
 ): UsersGlobalRolesService => ({
-  async getPermissions(): Promise<PagedResult<GlobalPermission>> {
-    return (await userClient.get(httpWithAuth, '/permissions')).data;
+  async getPermissions(options) {
+    return (await client.get(httpWithAuth, '/permissions', options)).data;
   },
 
-  async get(options?: { rql?: RQLString }): Promise<PagedResult<Role>> {
-    return (await userClient.get(httpWithAuth, `/roles${options?.rql || ''}`))
-      .data;
-  },
-
-  async create(requestBody: RoleCreation): Promise<Role> {
-    return (await userClient.post(httpWithAuth, `/roles`, requestBody)).data;
-  },
-
-  async remove(rql: RQLString): Promise<AffectedRecords> {
-    return (await userClient.delete(httpWithAuth, `/roles${rql}`)).data;
-  },
-
-  async update(id: ObjectId, requestBody: RoleUpdate): Promise<Role> {
-    return (await userClient.put(httpWithAuth, `/roles${id}`, requestBody))
-      .data;
-  },
-
-  async addPermissions(
-    rql: RQLString,
-    requestBody: RolePermissions
-  ): Promise<AffectedRecords> {
+  async get(options) {
     return (
-      await userClient.post(
+      await client.get(httpWithAuth, `/roles${options?.rql || ''}`, options)
+    ).data;
+  },
+
+  async create(requestBody, options) {
+    return (await client.post(httpWithAuth, `/roles`, requestBody, options))
+      .data;
+  },
+
+  async remove(rql, options) {
+    return (await client.delete(httpWithAuth, `/roles${rql}`, options)).data;
+  },
+
+  async update(id, requestBody, options) {
+    return (await client.put(httpWithAuth, `/roles${id}`, requestBody, options))
+      .data;
+  },
+
+  async addPermissions(rql, requestBody, options) {
+    return (
+      await client.post(
         httpWithAuth,
         `/roles/add_permissions${rql}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async removePermissions(
-    rql: RQLString,
-    requestBody: RolePermissions
-  ): Promise<AffectedRecords> {
+  async removePermissions(rql, requestBody, options) {
     return (
-      await userClient.post(
+      await client.post(
         httpWithAuth,
         `/roles/remove_permissions${rql}`,
-        requestBody
+        requestBody,
+        options
       )
     ).data;
   },
 
-  async addToUsers(
-    rql: RQLString,
-    requestBody: UserRoles
-  ): Promise<AffectedRecords> {
+  async addToUsers(rql, requestBody, options) {
     return (
-      await userClient.post(httpWithAuth, `/add_roles${rql}`, requestBody)
+      await client.post(httpWithAuth, `/add_roles${rql}`, requestBody, options)
     ).data;
   },
 
-  async removeFromUser(
-    rql: RQLString,
-    requestBody: UserRoles
-  ): Promise<AffectedRecords> {
+  async removeFromUser(rql, requestBody, options) {
     return (
-      await userClient.post(httpWithAuth, `/remove_roles${rql}`, requestBody)
+      await client.post(
+        httpWithAuth,
+        `/remove_roles${rql}`,
+        requestBody,
+        options
+      )
     ).data;
   },
 });

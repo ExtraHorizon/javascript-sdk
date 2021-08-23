@@ -43,6 +43,20 @@ describe('http client', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
   });
 
+  it('should authorize and logout', async () => {
+    const mockToken = 'test';
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: mockToken });
+
+    await httpWithAuth.authenticate(authConfig);
+    nock(mockParams.host).get('/test').reply(200, '');
+
+    const result = httpWithAuth.logout();
+
+    expect(result).toBe(true);
+  });
+
   it('throws on authorization with wrong password', async () => {
     expect.assertions(1);
     nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {

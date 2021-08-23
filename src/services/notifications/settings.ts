@@ -1,40 +1,36 @@
 import type { HttpInstance } from '../../types';
-import { AffectedRecords, PagedResult, ObjectId } from '../types';
-import { RQLString, rqlBuilder } from '../../rql';
-import type {
-  NotificationSettingsServices,
-  Setting,
-  SettingCreation,
-} from './types';
+import { rqlBuilder } from '../../rql';
+import type { NotificationSettingsServices } from './types';
+import { HttpClient } from '../http-client';
 
 export default (
-  client,
+  client: HttpClient,
   httpAuth: HttpInstance
 ): NotificationSettingsServices => ({
-  async find(options?: { rql?: RQLString }): Promise<PagedResult<Setting>> {
-    return (await client.get(httpAuth, `/settings${options?.rql || ''}`)).data;
+  async find(options) {
+    return (
+      await client.get(httpAuth, `/settings${options?.rql || ''}`, options)
+    ).data;
   },
 
-  async findById(
-    id: ObjectId,
-    options?: { rql?: RQLString }
-  ): Promise<Setting> {
+  async findById(this: NotificationSettingsServices, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ rql: rqlWithId });
+    const res = await this.find({ ...options, rql: rqlWithId });
     return res.data[0];
   },
 
-  async findFirst(options?: { rql?: RQLString }): Promise<Setting> {
+  async findFirst(this: NotificationSettingsServices, options) {
     const res = await this.find(options);
     return res.data[0];
   },
 
-  async update(userId: string, requestBody: SettingCreation): Promise<Setting> {
-    return (await client.put(httpAuth, `/settings/${userId}`, requestBody))
-      .data;
+  async update(userId, requestBody, options) {
+    return (
+      await client.put(httpAuth, `/settings/${userId}`, requestBody, options)
+    ).data;
   },
 
-  async remove(userId: string): Promise<AffectedRecords> {
-    return (await client.delete(httpAuth, `/settings/${userId}`)).data;
+  async remove(userId, options) {
+    return (await client.delete(httpAuth, `/settings/${userId}`, options)).data;
   },
 });
