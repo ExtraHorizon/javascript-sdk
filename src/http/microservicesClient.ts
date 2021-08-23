@@ -78,6 +78,9 @@ export function createMicroservicesHttpClient(
     authenticate,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     async confirmMfa() {},
+    logout() {
+      return false;
+    },
     get userId() {
       return '';
     },
