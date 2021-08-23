@@ -45,6 +45,7 @@ export function validateConfig({
     path: `${AUTH_BASE}/oauth2/tokens`,
     params: {
       client_id: params.clientId,
+      ...(params.clientSecret ? { client_secret: params.clientSecret } : {}),
     },
   };
 }

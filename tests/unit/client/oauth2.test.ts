@@ -222,4 +222,33 @@ describe('http client', () => {
       expect(confirmMfaResult).toStrictEqual({ accessToken: 'access token' });
     }
   });
+
+  it('should authorize with confidential application', async () => {
+    const mockToken = 'test';
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .basicAuth({ user: 'clientId', pass: 'secret' })
+      .reply(200, { access_token: mockToken });
+
+    const confidentialConfig = validateConfig({
+      ...mockParams,
+      clientId: 'clientId',
+      clientSecret: 'secret',
+    }) as ConfigOauth2;
+
+    const confidentialHttpWithAuth = createOAuth2HttpClient(
+      http,
+      confidentialConfig
+    );
+
+    const authenticateResult = await confidentialHttpWithAuth.authenticate(
+      authConfig
+    );
+    nock(mockParams.host).get('/test').reply(200, '');
+
+    const result = await confidentialHttpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
+    expect(authenticateResult).toStrictEqual({ accessToken: 'test' });
+  });
 });
