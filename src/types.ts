@@ -36,7 +36,6 @@ export interface ParamsOauth1WithToken {
 
 export interface ParamsOauth2AuthorizationCode {
   code: string;
-  redirectUri: string;
 }
 
 export interface ParamsOauth2Password {

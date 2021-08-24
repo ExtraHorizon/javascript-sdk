@@ -73,7 +73,6 @@ export interface OAuth2Authenticate {
    * @example
    * await sdk.auth.authenticate({
    *  code: '',
-   *  redirectUri: '',
    * });
    * @throws {InvalidRequestError}
    * @throws {InvalidGrantError}
@@ -81,10 +80,7 @@ export interface OAuth2Authenticate {
    * @throws {MfaRequiredError}
    * @throws {InvalidClientError}
    */
-  authenticate(oauth: {
-    code: string;
-    redirectUri: string;
-  }): Promise<TokenDataOauth2>;
+  authenticate(oauth: { code: string }): Promise<TokenDataOauth2>;
   /**
    * Use OAuth2 Password Grant flow
    * @example

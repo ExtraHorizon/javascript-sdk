@@ -39,6 +39,7 @@ export function parseAuthParams(options: AuthParams): AuthConfig {
     return {
       params: {
         grant_type: 'authorization_code',
+        code: options.code,
       },
     };
   }

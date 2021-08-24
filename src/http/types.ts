@@ -102,6 +102,7 @@ interface Oauth2ConfigPassword {
 interface Oauth2ConfigCode {
   params: {
     grant_type: string;
+    code: string;
   };
 }
 
