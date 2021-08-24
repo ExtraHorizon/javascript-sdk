@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- OAuth2 `authenticate` returns `tokenData`
+- OAuth2 `authenticate` returns `tokenData`.
+- OAuth2 `authenticate` can now be used with an authorization code. See Docs.
 - OAuth2 supports confidentials applications.
 
 ```ts
