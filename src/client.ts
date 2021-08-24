@@ -25,7 +25,7 @@ import {
   createOAuth2HttpClient,
 } from './http';
 import { validateConfig } from './utils';
-import { OAuthClient, TokenDataOauth1 } from './http/types';
+import { OAuthClient, TokenDataOauth1, TokenDataOauth2 } from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -73,7 +73,6 @@ export interface OAuth2Authenticate {
    * @example
    * await sdk.auth.authenticate({
    *  code: '',
-   *  redirectUri: '',
    * });
    * @throws {InvalidRequestError}
    * @throws {InvalidGrantError}
@@ -81,7 +80,7 @@ export interface OAuth2Authenticate {
    * @throws {MfaRequiredError}
    * @throws {InvalidClientError}
    */
-  authenticate(oauth: { code: string; redirectUri: string }): Promise<void>;
+  authenticate(oauth: { code: string }): Promise<TokenDataOauth2>;
   /**
    * Use OAuth2 Password Grant flow
    * @example
@@ -95,7 +94,10 @@ export interface OAuth2Authenticate {
    * @throws {MfaRequiredError}
    * @throws {InvalidClientError}
    */
-  authenticate(oauth: { username: string; password: string }): Promise<void>;
+  authenticate(oauth: {
+    username: string;
+    password: string;
+  }): Promise<TokenDataOauth2>;
   /**
    * Use OAuth2 Refresh Token Grant flow
    * @example
@@ -108,7 +110,7 @@ export interface OAuth2Authenticate {
    * @throws {MfaRequiredError}
    * @throws {InvalidClientError}
    */
-  authenticate(oauth: { refreshToken: string }): Promise<void>;
+  authenticate(oauth: { refreshToken: string }): Promise<TokenDataOauth2>;
 }
 
 type Authenticate<T extends ClientParams = ParamsOauth1> =

@@ -35,12 +35,13 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(authConfig);
+    const authenticateResult = await httpWithAuth.authenticate(authConfig);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
 
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
+    expect(authenticateResult).toStrictEqual({ accessToken: 'test' });
   });
 
   it('should authorize and logout', async () => {
@@ -179,7 +180,7 @@ describe('http client', () => {
   });
 
   it('should authorize with MFA Enabled', async () => {
-    expect.assertions(2);
+    expect.assertions(3);
     const mockToken = 'access token';
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
@@ -211,13 +212,43 @@ describe('http client', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(MfaRequiredError);
       const { mfa } = error.response;
-      await httpWithAuth.confirmMfa({
+      const confirmMfaResult = await httpWithAuth.confirmMfa({
         token: mfa.token,
         methodId: mfa.methods[0].id,
         code: 'code',
       });
       const result = await httpWithAuth.get('test');
       expect(result).toBeDefined();
+      expect(confirmMfaResult).toStrictEqual({ accessToken: 'access token' });
     }
+  });
+
+  it('should authorize with confidential application', async () => {
+    const mockToken = 'test';
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .basicAuth({ user: 'clientId', pass: 'secret' })
+      .reply(200, { access_token: mockToken });
+
+    const confidentialConfig = validateConfig({
+      ...mockParams,
+      clientId: 'clientId',
+      clientSecret: 'secret',
+    }) as ConfigOauth2;
+
+    const confidentialHttpWithAuth = createOAuth2HttpClient(
+      http,
+      confidentialConfig
+    );
+
+    const authenticateResult = await confidentialHttpWithAuth.authenticate(
+      authConfig
+    );
+    nock(mockParams.host).get('/test').reply(200, '');
+
+    const result = await confidentialHttpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
+    expect(authenticateResult).toStrictEqual({ accessToken: 'test' });
   });
 });

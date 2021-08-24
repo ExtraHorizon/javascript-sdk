@@ -102,6 +102,7 @@ interface Oauth2ConfigPassword {
 interface Oauth2ConfigCode {
   params: {
     grant_type: string;
+    code: string;
   };
 }
 
@@ -122,7 +123,9 @@ export type OAuth2Config =
 export type AuthConfig = OAuth1Config | OAuth2Config;
 
 export interface OAuthClient extends HttpInstance {
-  authenticate: (data: AuthConfig) => Promise<TokenDataOauth1 | void>;
+  authenticate: (
+    data: AuthConfig
+  ) => Promise<TokenDataOauth1 | TokenDataOauth2>;
   /**
    *  Confirm MFA method with token, methodId and code
    *  @example
@@ -146,7 +149,7 @@ export interface OAuthClient extends HttpInstance {
    *    }
    *  }
    */
-  confirmMfa: (data: MfaConfig) => Promise<TokenDataOauth1 | void>;
+  confirmMfa: (data: MfaConfig) => Promise<TokenDataOauth1 | TokenDataOauth2>;
   /**
    *  Logout
    *  @returns {boolean} Success

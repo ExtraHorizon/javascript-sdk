@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.3.0]
+
+### Changes
+
+- OAuth2 `authenticate` returns `tokenData`.
+- OAuth2 `authenticate` can now be used with an authorization code. See Docs.
+- OAuth2 supports confidentials applications.
+
+```ts
+const sdk = createClient({
+  host: 'https://api.dev.fibricheck.com',
+  clientId: '',
+  clientSecret: '',
+});
+```
+
 ## [v4.2.1]
 
 ### Changes
