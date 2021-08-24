@@ -158,4 +158,14 @@ try {
 }
 ```
 
+### Confidential Applications
+
+```js
+const sdk = createClient({
+  host: 'https://api.dev.fibricheck.com',
+  clientId: '',
+  clientSecret: '',
+});
+```
+
 ![Refresh](../assets/refresh.webp)
