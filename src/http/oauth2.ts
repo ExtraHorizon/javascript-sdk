@@ -110,10 +110,21 @@ export function createOAuth2HttpClient(
 
   async function authenticate(data: OAuth2Config): Promise<TokenDataOauth2> {
     authConfig = data;
-    const tokenResult = await http.post(options.path, {
-      ...options.params,
-      ...authConfig.params,
-    });
+    const tokenResult = await http.post(
+      options.path,
+      {
+        ...options.params,
+        ...authConfig.params,
+      },
+      options.params.client_secret
+        ? {
+            auth: {
+              username: options.params.client_id,
+              password: options.params.client_secret,
+            },
+          }
+        : {}
+    );
     setTokenData(tokenResult.data);
     return tokenResult.data;
   }
@@ -123,14 +134,25 @@ export function createOAuth2HttpClient(
     methodId,
     code,
   }: MfaConfig): Promise<TokenDataOauth2> {
-    const tokenResult = await http.post(options.path, {
-      ...options.params,
-      ...authConfig.params,
-      grant_type: 'mfa',
-      token,
-      code,
-      method_id: methodId,
-    });
+    const tokenResult = await http.post(
+      options.path,
+      {
+        ...options.params,
+        ...authConfig.params,
+        grant_type: 'mfa',
+        token,
+        code,
+        method_id: methodId,
+      },
+      options.params.client_secret
+        ? {
+            auth: {
+              username: options.params.client_id,
+              password: options.params.client_secret,
+            },
+          }
+        : {}
+    );
     setTokenData(tokenResult.data);
     return tokenResult.data;
   }
