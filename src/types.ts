@@ -74,6 +74,7 @@ export interface ParamsOauth1 extends ParamsBase {
 
 export interface ParamsOauth2 extends ParamsBase {
   clientId: string;
+  clientSecret?: string;
 }
 
 interface HttpClientBase {
@@ -90,6 +91,8 @@ export interface ConfigOauth2 extends ParamsBase {
   params: {
     // eslint-disable-next-line camelcase
     client_id: string;
+    // eslint-disable-next-line camelcase
+    client_secret?: string;
   };
 }
 
