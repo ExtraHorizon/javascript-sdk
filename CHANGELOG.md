@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 +options?: OptionsBase & { tags: string[] }
 ```
 
+- JSDoc for `rqlBuilder().contains`. See #351
+
 ## [v4.3.0]
 
 ### Changes
