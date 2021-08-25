@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.3.1]
+
+### Changes
+
+- Fixed `sdk.files.create` options types. See #352
+
+```diff
+-options?: OptionsBase & { tags: [] }
++options?: OptionsBase & { tags: string[] }
+```
+
 ## [v4.3.0]
 
 ### Changes
