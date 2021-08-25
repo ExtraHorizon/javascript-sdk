@@ -177,7 +177,7 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     contains(field, expression) {
       return processQuery(
         'contains',
-        `${field}${expression ? `,${expression}` : ''}`
+        expression ? `${field},${expression}` : field
       );
     },
     build(): RQLString {
