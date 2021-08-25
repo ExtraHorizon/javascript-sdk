@@ -80,7 +80,7 @@ export interface RQLBuilder {
    */
   or: (...list: RQLString[]) => RQLBuilder;
   /**
-   * @description`contains(field)` only returns records having this field as property
+   * @description `contains(field)` only returns records having this field as property
    * @example
    * await sdk.data.documents.find(
    *   schemaId,
@@ -99,7 +99,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents containing `data.heartrate > 60`
    */
-  contains(field: string, expression?: RQLString): RQLBuilder;
+  contains: (field: string, expression?: RQLString) => RQLBuilder;
 
   /**
    * Returns a valid rqlString
