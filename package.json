@@ -51,7 +51,7 @@
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-typescript": "^8.2.1",
     "@types/crypto-js": "^4.0.1",
-    "@types/humps": "^2.0.0",
+    "@types/humps": "^2.0.1",
     "@types/jest": "^26.0.23",
     "@types/nock": "^11.1.0",
     "@types/node": "^15.12.4",

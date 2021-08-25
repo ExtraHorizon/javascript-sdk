@@ -971,10 +971,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/humps@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@types/humps/-/humps-2.0.0.tgz#9ad07801cd34f9d9ce379fa66f62d3049937d815"
-  integrity sha512-bP/s9HUT2oTJ0c3XGcHGISwTNs6r8eUPNfU6DuOSU8EHgtHqwvoDEyj76jPhKT/0MszS1PF/hHolxRrHSLYUPQ==
+"@types/humps@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/humps/-/humps-2.0.1.tgz#fc87ccbe59913240c3fdca5f0dd43cb9f073eb72"
+  integrity sha512-cxIGJjiOQRl5s/KjqoTa0u39qKrVD3T6+6eGsERva0MLBp9AMVG8udKn9JZgVDe9zF0J9H4SRVzKILK6iZ9IZQ==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
