@@ -688,7 +688,7 @@ export interface UsersService {
    */
   find(options?: OptionsWithRql): Promise<PagedResult<User>>;
   /**
-   * Request a list of all uusers
+   * Request a list of all users
    *
    * Do not pass in an rql with limit operator!
    *
