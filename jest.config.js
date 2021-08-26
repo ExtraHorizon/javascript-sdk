@@ -16,6 +16,7 @@ module.exports = {
   ],
   collectCoverage: true,
   coverageDirectory: 'test-results/coverage',
+  collectCoverageFrom: ['src/**/{!(parser),}.ts'],
   reporters: [
     'default',
     [
