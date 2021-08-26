@@ -4,9 +4,7 @@ import { rqlBuilder } from '../rql';
 const MAX_LIMIT = 50;
 
 export async function findAllGeneric<T>(
-  find: (
-    options: OptionsWithRql
-  ) => PagedResult<T> | PromiseLike<PagedResult<T>>,
+  find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
   options: OptionsWithRql,
   level = 1
 ): Promise<T[]> {
