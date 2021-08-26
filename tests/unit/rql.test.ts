@@ -134,9 +134,14 @@ describe('rql string builder', () => {
   it('should parse a string to rqlString', async () => {
     const parsed = rqlBuilder().parse(
       'or(like(name,bi,tfit),eq(),like(name,fitbit))'
-      // '(foo=3|foo=bar)&price=lt=10'
     );
 
-    expect(parsed).toBe('or(like(name,bitfit),like(name,fitbit))');
+    expect(parsed).toBe('or(like(name,bi,tfit),eq(),like(name,fitbit))');
+  });
+
+  it('should throw an error on parsing invalid RQL to rqlString', async () => {
+    expect(() => {
+      rqlBuilder().parse('or((like(name,btfit))');
+    }).toThrowError();
   });
 });

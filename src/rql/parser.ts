@@ -8,6 +8,12 @@
 /* eslint-disable no-var */
 /* eslint-disable no-useless-escape */
 /* eslint-disable consistent-return */
+
+/*
+ * This file is heavily based on the work done by the good people at persvr
+ * https://github.com/persvr/rql
+ */
+
 const operatorMap = {
   '=': 'eq',
   '==': 'eq',
@@ -142,7 +148,10 @@ const converters = {
   },
 };
 
-export function parse(/* String|Object */ query = '' as any, parameters?) {
+export default function parse(
+  /* String|Object */ query = '' as any,
+  parameters?
+) {
   var term = new Query();
   const topTerm = term;
   topTerm.cache = {}; // room for lastSeen params
