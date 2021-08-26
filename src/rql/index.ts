@@ -117,6 +117,8 @@ export interface RQLBuilder {
 
   /**
    * Accepts a strings and returns an RQLString
+   * @throws {Error}
+   * @throws {URIError}
    */
   parse: (value: string) => RQLString;
 }
