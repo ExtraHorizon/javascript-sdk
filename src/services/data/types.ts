@@ -540,6 +540,41 @@ export interface DataDocumentsService {
     options?: OptionsWithRql
   ): Promise<PagedResult<Document<CustomData>>>;
   /**
+   * Request a list of all documents
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | See your own documents
+   * none | `staff enlistment` | See the documents belonging to the group (and your own documents)
+   * `VIEW_DOCUMENTS` | `global` | See any document
+   *
+   * ReadMode on schema is set to 'allUsers':
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | See any document
+   *
+   * ReadMode on schema is set to 'enlistedInLinkedGroups':
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `patient enlistment` | See the documents belonging to the group
+   * none | `staff enlistment` | See the documents belonging to the group
+   * `VIEW_DOCUMENTS` | `global` | See any document
+   * @param schemaId The id of the targeted schema.
+   * @param rql Add filters to the requested list.
+   * @returns Document[]
+   */
+  findAll<CustomData = null>(
+    schemaId: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<Document<CustomData>[]>;
+
+  /**
    * Shortcut method to find a document by id
    *
    * Same Permissions as the find() method
