@@ -1,3 +1,5 @@
+import { parse } from './parser';
+
 // TypeScript Does not allow custom error on type errors. This is a hackish work around.
 type NotAnRQLStringError =
   'Please use rqlBuilder to construct valid RQL. See README for an example.';
@@ -112,6 +114,11 @@ export interface RQLBuilder {
    * @returns valid rqlString
    */
   intermediate: () => RQLString;
+
+  /**
+   * Accepts a strings and returns an RQLString
+   */
+  parse: (value: string) => RQLString;
 }
 
 /**
@@ -187,6 +194,10 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     },
     intermediate(): RQLString {
       return returnString as RQLString;
+    },
+    parse(value) {
+      parse(value);
+      return value as RQLString;
     },
   };
 
