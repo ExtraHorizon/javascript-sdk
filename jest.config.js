@@ -16,7 +16,7 @@ module.exports = {
   ],
   collectCoverage: true,
   coverageDirectory: 'test-results/coverage',
-  collectCoverageFrom: ['src/**/{!(parser),}.ts'],
+  coveragePathIgnorePatterns: ['src/rql/parser.ts'],
   reporters: [
     'default',
     [
