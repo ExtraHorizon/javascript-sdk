@@ -49,7 +49,7 @@ export function createOAuth2HttpClient(
       grant_type: 'refresh_token',
       refresh_token: tokenData.refreshToken,
     });
-    setTokenData(tokenResult.data);
+    await setTokenData(tokenResult.data);
     return tokenResult.data;
   };
 
@@ -125,7 +125,7 @@ export function createOAuth2HttpClient(
           }
         : {}
     );
-    setTokenData(tokenResult.data);
+    await setTokenData(tokenResult.data);
     return tokenResult.data;
   }
 
@@ -153,7 +153,7 @@ export function createOAuth2HttpClient(
           }
         : {}
     );
-    setTokenData(tokenResult.data);
+    await setTokenData(tokenResult.data);
     return tokenResult.data;
   }
 

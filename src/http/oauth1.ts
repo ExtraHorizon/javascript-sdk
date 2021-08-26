@@ -130,7 +130,7 @@ export function createOAuth1HttpClient(
       secret: tokenResult.data.tokenSecret,
     };
 
-    setTokenData(tokenResultData);
+    await setTokenData(tokenResultData);
     return tokenResultData;
   }
 
@@ -165,7 +165,7 @@ export function createOAuth1HttpClient(
       secret: tokenResult.data.tokenSecret,
     };
 
-    setTokenData(tokenResultData);
+    await setTokenData(tokenResultData);
     return tokenResultData;
   }
 
