@@ -3,6 +3,7 @@ exclude_patterns:
   - '**/types.ts'
   - '**/*test.ts'
   - '**/__helpers__/*.ts'
+  - 'src/rql/parser.ts'
 plugins:
   duplication:
     enabled: true
