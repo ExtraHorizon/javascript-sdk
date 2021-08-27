@@ -36,33 +36,33 @@ export const retryInterceptor =
     return Promise.reject(error);
   };
 
+const defaultRetryConfig = {
+  tries: 5,
+  retryTimeInMs: 300,
+  current: 1,
+  retryCondition: (error: HttpResponseError) => {
+    try {
+      if (
+        ['SERVICE_CLIENT_EXCEPTION', 'LOCKED_DOCUMENT_EXCEPTION'].includes(
+          error.response?.data?.name
+        )
+      ) {
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  },
+};
+
 export const addRetryOnRequestConfig = (
   config: HttpRequestConfig
 ): HttpRequestConfig => ({
   ...config,
-  retry: config.retry
-    ? config.retry
-    : {
-        tries: 5,
-        retryTimeInMs: 300,
-        current: 1,
-        retryCondition: (error: HttpResponseError) => {
-          try {
-            if (
-              [
-                'SERVICE_CLIENT_EXCEPTION',
-                'LOCKED_DOCUMENT_EXCEPTION',
-              ].includes(error.response?.data?.name)
-            ) {
-              return true;
-            }
-            return false;
-          } catch {
-            return false;
-          }
-        },
-      },
+  retry: config.retry ?? defaultRetryConfig,
 });
+
 export const camelizeResponseData = ({
   data,
   config,
