@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { DATA_BASE } from '../constants';
-import { HttpRequestConfig, HttpResponseError } from './types';
+import { HttpResponseError } from './types';
 import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
 
 export const retryInterceptor =
@@ -13,6 +13,7 @@ export const retryInterceptor =
     if (
       error &&
       error.isAxiosError &&
+      retry &&
       retry.tries > retry.current &&
       retry.retryCondition(error)
     ) {
@@ -35,33 +36,6 @@ export const retryInterceptor =
 
     return Promise.reject(error);
   };
-
-const defaultRetryConfig = {
-  tries: 5,
-  retryTimeInMs: 300,
-  current: 1,
-  retryCondition: (error: HttpResponseError) => {
-    try {
-      if (
-        ['SERVICE_CLIENT_EXCEPTION', 'LOCKED_DOCUMENT_EXCEPTION'].includes(
-          error.response?.data?.name
-        )
-      ) {
-        return true;
-      }
-      return false;
-    } catch {
-      return false;
-    }
-  },
-};
-
-export const addRetryOnRequestConfig = (
-  config: HttpRequestConfig
-): HttpRequestConfig => ({
-  ...config,
-  retry: config.retry ?? defaultRetryConfig,
-});
 
 export const camelizeResponseData = ({
   data,

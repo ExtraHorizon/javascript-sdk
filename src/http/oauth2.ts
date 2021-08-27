@@ -3,7 +3,6 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { ConfigOauth2 } from '../types';
 import { MfaConfig, OAuth2Config, OAuthClient, TokenDataOauth2 } from './types';
 import {
-  addRetryOnRequestConfig,
   camelizeResponseData,
   retryInterceptor,
   transformKeysResponseData,
@@ -64,8 +63,6 @@ export function createOAuth2HttpClient(
         : {}),
     },
   }));
-
-  httpWithAuth.interceptors.request.use(addRetryOnRequestConfig);
 
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
 
