@@ -4,6 +4,7 @@ import { ConfigOauth2 } from '../types';
 import { MfaConfig, OAuth2Config, OAuthClient, TokenDataOauth2 } from './types';
 import {
   camelizeResponseData,
+  retryInterceptor,
   transformKeysResponseData,
   transformResponseData,
 } from './interceptors';
@@ -62,6 +63,8 @@ export function createOAuth2HttpClient(
         : {}),
     },
   }));
+
+  httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
 
   httpWithAuth.interceptors.response.use(
     (response: AxiosResponse) => response,
