@@ -251,4 +251,68 @@ describe('http client', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
     expect(authenticateResult).toStrictEqual({ accessToken: 'test' });
   });
+
+  it('should retry on specific conditions and succeed', async () => {
+    expect.assertions(1);
+    const mockToken = 'test';
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: mockToken });
+
+    const serviceClientException = {
+      code: 7,
+      name: 'SERVICE_CLIENT_EXCEPTION',
+      message: 'Error while locating the service',
+    };
+    await httpWithAuth.authenticate(authConfig);
+    nock(mockParams.host)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(200, { all: 'good' });
+
+    try {
+      const result = await httpWithAuth.get('test');
+      expect(result.data).toEqual({ all: 'good' });
+      // eslint-disable-next-line no-empty
+    } catch {}
+  });
+
+  it('should retry on specific conditions and fail', async () => {
+    expect.assertions(1);
+    const mockToken = 'test';
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: mockToken });
+
+    const serviceClientException = {
+      code: 7,
+      name: 'SERVICE_CLIENT_EXCEPTION',
+      message: 'Error while locating the service',
+    };
+    await httpWithAuth.authenticate(authConfig);
+    nock(mockParams.host)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(500, serviceClientException)
+      .get('/test')
+      .reply(200, { all: 'good' });
+
+    try {
+      await httpWithAuth.get('test');
+    } catch (error) {
+      expect(error).toBeDefined();
+    }
+  });
 });
