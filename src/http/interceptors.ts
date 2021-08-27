@@ -1,9 +1,7 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { HttpError } from '../errors';
 import { DATA_BASE } from '../constants';
 import { HttpRequestConfig, HttpResponseError } from './types';
 import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
-import { typeReceivedError } from '../errorHandler';
 
 export const retryInterceptor =
   (axios: AxiosInstance) =>
@@ -11,28 +9,30 @@ export const retryInterceptor =
     const { config } = error;
     const { retry } = config;
 
-    if (error && error.isAxiosError) {
-      // tries includes the initial try. So 5 tries equals 4 retries
-      if (retry.tries > retry.current && retry.retryCondition(error)) {
-        return new Promise(resolve =>
-          setTimeout(
-            () =>
-              resolve(
-                axios({
-                  ...config,
-                  retry: {
-                    ...retry,
-                    current: retry.current + 1,
-                  },
-                } as AxiosRequestConfig)
-              ),
-            retry.retryTimeInMs
-          )
-        );
-      }
-
-      return Promise.reject(typeReceivedError(error as HttpError));
+    // tries includes the initial try. So 5 tries equals 4 retries
+    if (
+      error &&
+      error.isAxiosError &&
+      retry.tries > retry.current &&
+      retry.retryCondition(error)
+    ) {
+      return new Promise(resolve =>
+        setTimeout(
+          () =>
+            resolve(
+              axios({
+                ...config,
+                retry: {
+                  ...retry,
+                  current: retry.current + 1,
+                },
+              } as AxiosRequestConfig)
+            ),
+          retry.retryTimeInMs
+        )
+      );
     }
+
     return Promise.reject(error);
   };
 
