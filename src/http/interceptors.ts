@@ -11,11 +11,9 @@ export const retryInterceptor =
 
     // tries includes the initial try. So 5 tries equals 4 retries
     if (
-      error &&
-      error.isAxiosError &&
-      retry &&
-      retry.tries > retry.current &&
-      retry.retryCondition(error)
+      error?.isAxiosError &&
+      retry?.tries > retry?.current &&
+      retry?.retryCondition(error)
     ) {
       return new Promise(resolve =>
         setTimeout(
