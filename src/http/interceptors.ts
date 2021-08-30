@@ -1,11 +1,12 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { delay } from '../utils';
 import { DATA_BASE } from '../constants';
 import { HttpResponseError } from './types';
 import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
 
 export const retryInterceptor =
   (axios: AxiosInstance) =>
-  (error: HttpResponseError): unknown => {
+  async (error: HttpResponseError): Promise<unknown> => {
     const { config } = error;
     const { retry } = config;
 
@@ -15,21 +16,15 @@ export const retryInterceptor =
       retry?.tries > retry?.current &&
       retry?.retryCondition(error)
     ) {
-      return new Promise(resolve =>
-        setTimeout(
-          () =>
-            resolve(
-              axios({
-                ...config,
-                retry: {
-                  ...retry,
-                  current: retry.current + 1,
-                },
-              } as AxiosRequestConfig)
-            ),
-          retry.retryTimeInMs
-        )
-      );
+      await delay(retry.retryTimeInMs);
+
+      return axios({
+        ...config,
+        retry: {
+          ...retry,
+          current: retry.current + 1,
+        },
+      } as AxiosRequestConfig);
     }
 
     return Promise.reject(error);
