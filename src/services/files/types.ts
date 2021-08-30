@@ -86,7 +86,7 @@ export interface FilesService {
   create(
     fileName: string,
     fileData: Blob | Buffer | ReadStream,
-    options?: OptionsBase & { tags: [] }
+    options?: OptionsBase & { tags: string[] }
   ): Promise<FileDetails>;
   /**
    * Delete a file

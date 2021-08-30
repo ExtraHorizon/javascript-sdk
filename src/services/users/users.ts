@@ -1,7 +1,8 @@
 import type { HttpInstance } from '../../types';
 import { Results } from '../types';
-import type { UsersService } from './types';
+import type { User, UsersService } from './types';
 import { HttpClient } from '../http-client';
+import { findAllGeneric } from '../helpers';
 
 export default (
   userClient: HttpClient,
@@ -24,6 +25,10 @@ export default (
     return (
       await userClient.get(httpWithAuth, `/${options?.rql || ''}`, options)
     ).data;
+  },
+
+  async findAll(options) {
+    return findAllGeneric<User>(this.find, options);
   },
 
   async findFirst(this: UsersService, options) {

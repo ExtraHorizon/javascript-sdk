@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.4.0]
+
+### Changes
+
+- Fixed `sdk.files.create` options types. See #352
+
+```diff
+-options?: OptionsBase & { tags: [] }
++options?: OptionsBase & { tags: string[] }
+```
+
+- JSDoc for `rqlBuilder().contains`. See #351
+
+- GET requests returning a 500 status will be retried 4 more times at 300ms intervals. To disable this behaviour add `shouldRetry: false` to the options parameter. See #373
+
+- `findAll` function added on users and data.documents. See #333
+
 ## [v4.3.0]
 
 ### Changes

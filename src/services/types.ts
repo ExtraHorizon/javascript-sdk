@@ -56,5 +56,10 @@ export interface MailRecipients {
 }
 
 export type Headers = Record<string, string>;
-export type OptionsBase = { headers?: Headers };
+export type OptionsBase = {
+  /** Added to all HTTP verbs */
+  headers?: Headers;
+  /** Only passed to the GET requests. Will retry 4 times on 500 errors */
+  shouldRetry?: boolean;
+};
 export type OptionsWithRql = OptionsBase & { rql?: RQLString };

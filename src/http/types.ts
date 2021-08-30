@@ -1,12 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
 import {
+  AxiosError,
   AxiosInterceptorManager,
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios';
 
-export type HttpRequestConfig = AxiosRequestConfig;
+export type HttpRequestConfig = AxiosRequestConfig & {
+  retry?: {
+    tries: number;
+    retryTimeInMs: number;
+    current: number;
+    retryCondition: (error: HttpResponseError) => boolean;
+  };
+};
+
+export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
 
 export interface HttpInstance {
   defaults: AxiosRequestConfig;

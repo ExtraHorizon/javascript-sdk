@@ -1,3 +1,5 @@
+import rqlParser from './parser';
+
 // TypeScript Does not allow custom error on type errors. This is a hackish work around.
 type NotAnRQLStringError =
   'Please use rqlBuilder to construct valid RQL. See README for an example.';
@@ -79,12 +81,27 @@ export interface RQLBuilder {
    * Allows combining results of 2 or more queries with the logical OR operator.
    */
   or: (...list: RQLString[]) => RQLBuilder;
-
   /**
-   * Filters for objects where the specified property's value is an array and the array contains
+   * @description `contains(field)` only returns records having this field as property
+   * @example
+   * await sdk.data.documents.find(
+   *   schemaId,
+   *   { rql: rqlBuilder().contains('data.indicator').build()
+   * });
+   * @returns returns documents containing the `data.indicator` field
+   *
+   * @description Filters for objects where the specified property's value is an array and the array contains
    * any value that equals the provided value or satisfies the provided expression.
+   * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is valid
+   * @example
+   * await sdk.data.documents.find(schemaId, {
+   *   rql: rqlBuilder()
+   *     .contains("data", rqlBuilder().gt("heartrate", "60").intermediate())
+   *     .build(),
+   * });
+   * @return Only returns documents containing `data.heartrate > 60`
    */
-  contains: (field: string, value: string) => RQLBuilder;
+  contains: (field: string, expression?: RQLString) => RQLBuilder;
 
   /**
    * Returns a valid rqlString
@@ -97,6 +114,13 @@ export interface RQLBuilder {
    * @returns valid rqlString
    */
   intermediate: () => RQLString;
+
+  /**
+   * Accepts a strings and returns an RQLString
+   * @throws {Error}
+   * @throws {URIError}
+   */
+  parse: (value: string) => RQLString;
 }
 
 /**
@@ -159,8 +183,11 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     gt(field, value) {
       return processQuery('gt', `${field},${value}`);
     },
-    contains(field, value) {
-      return processQuery('contains', `${field},${value}`);
+    contains(field, expression) {
+      return processQuery(
+        'contains',
+        expression ? `${field},${expression}` : field
+      );
     },
     build(): RQLString {
       return `${
@@ -169,6 +196,10 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     },
     intermediate(): RQLString {
       return returnString as RQLString;
+    },
+    parse(value) {
+      rqlParser(value);
+      return value as RQLString;
     },
   };
 

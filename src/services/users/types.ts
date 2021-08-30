@@ -688,6 +688,20 @@ export interface UsersService {
    */
   find(options?: OptionsWithRql): Promise<PagedResult<User>>;
   /**
+   * Request a list of all users
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
+   * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
+   * `VIEW_USER` | `global` | See all fields of all users
+   * @param rql Add filters to the requested list.
+   * @returns User[]
+   */
+  findAll(options?: OptionsWithRql): Promise<User[]>;
+  /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found

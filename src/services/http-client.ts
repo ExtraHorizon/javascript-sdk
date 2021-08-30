@@ -1,6 +1,10 @@
 import pako from 'pako';
 import platform from 'platform-specific';
-import { HttpInstance, HttpRequestConfig } from '../http/types';
+import {
+  HttpInstance,
+  HttpRequestConfig,
+  HttpResponseError,
+} from '../http/types';
 
 interface HttpClientOptions {
   basePath: string;
@@ -11,12 +15,39 @@ interface Options {
   gzip?: boolean;
 }
 
+interface GetOptions {
+  shouldRetry?: boolean;
+}
+
+const defaultRetryConfig = {
+  tries: 5,
+  retryTimeInMs: 300,
+  current: 1,
+  retryCondition: (error: HttpResponseError) => {
+    try {
+      if (error.response?.status === 500) {
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  },
+};
+
 const httpClient = ({
   basePath,
   transformRequestData = data => data,
 }: HttpClientOptions) => ({
-  get: (axios: HttpInstance, url: string, config?: HttpRequestConfig) =>
-    axios.get(`${basePath}${url}`, config),
+  get: (
+    axios: HttpInstance,
+    url: string,
+    { shouldRetry, ...config }: HttpRequestConfig & GetOptions = {}
+  ) =>
+    axios.get(`${basePath}${url}`, {
+      ...config,
+      ...(shouldRetry !== false ? { retry: defaultRetryConfig } : {}),
+    }),
   put: (axios: HttpInstance, url: string, data, config?: HttpRequestConfig) =>
     axios.put(`${basePath}${url}`, transformRequestData(data), config),
   post: (
