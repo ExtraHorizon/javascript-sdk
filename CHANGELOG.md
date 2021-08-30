@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - JSDoc for `rqlBuilder().contains`. See #351
 
+- GET requests returning a 500 status will be retried 4 more times at 300ms intervals. To disable this behaviour add `shouldRetry: false` to the options parameter. See #373
+
 ## [v4.3.0]
 
 ### Changes
