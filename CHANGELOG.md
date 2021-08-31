@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.5.0]
+
+### Added
+
+- services that have a `findAll` method now also have `findAllGenerator`.
+
+```ts
+const generator = sdk.data.documents.findAllGenerator(
+  '5a9552adcfd7f200016728d5'
+);
+
+for await (const page of generator) {
+  console.log(page.length);
+}
+```
+
 ## [v4.4.0]
 
 ### Changes

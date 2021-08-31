@@ -7,22 +7,27 @@ export async function* findAllGenerator<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
   options: OptionsWithRql
 ): AsyncGenerator<T[]> {
-  const mutableOptions = {
+  async function* makeRequest(requestOptions: OptionsWithRql) {
+    const result = await find(requestOptions);
+    yield result.data;
+
+    if (result.page.total > result.page.offset + result.page.limit) {
+      yield* makeRequest({
+        ...requestOptions,
+        rql: rqlBuilder(requestOptions?.rql)
+          .limit(result.page.limit, result.page.offset + result.page.limit)
+          .build(),
+      });
+    }
+  }
+
+  yield* makeRequest({
     rql:
       options?.rql && options.rql.includes('limit(')
         ? options.rql
         : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
     ...options,
-  };
-  let result: PagedResult<T>;
-  do {
-    result = await find(mutableOptions);
-    mutableOptions.rql = rqlBuilder(mutableOptions?.rql)
-      .limit(result.page.limit, result.page.offset + result.page.limit)
-      .build();
-    yield result.data;
-  } while (result.page.total > result.page.offset + result.page.limit);
-  return [];
+  });
 }
 
 export async function findAllGeneric<T>(

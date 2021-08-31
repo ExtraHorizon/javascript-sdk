@@ -573,7 +573,40 @@ export interface DataDocumentsService {
     schemaId: ObjectId,
     options?: OptionsWithRql
   ): Promise<Document<CustomData>[]>;
-
+  /**
+   * Request a list of all documents and return a generator
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | See your own documents
+   * none | `staff enlistment` | See the documents belonging to the group (and your own documents)
+   * `VIEW_DOCUMENTS` | `global` | See any document
+   *
+   * ReadMode on schema is set to 'allUsers':
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | See any document
+   *
+   * ReadMode on schema is set to 'enlistedInLinkedGroups':
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `patient enlistment` | See the documents belonging to the group
+   * none | `staff enlistment` | See the documents belonging to the group
+   * `VIEW_DOCUMENTS` | `global` | See any document
+   * @param schemaId The id of the targeted schema.
+   * @param rql Add filters to the requested list.
+   * @returns Document[]
+   */
+  findAllGenerator<CustomData = null>(
+    schemaId: ObjectId,
+    options?: OptionsWithRql
+  ): AsyncGenerator<Document<CustomData>[], []>;
   /**
    * Shortcut method to find a document by id
    *
@@ -936,7 +969,7 @@ export interface DataSchemasService {
    */
   findAll(options?: OptionsWithRql): Promise<Schema[]>;
   /**
-   * Request a list of all schemas
+   * Request a list of all schemas and returns a generator
    *
    * Do not pass in an rql with offset operator!
    *
