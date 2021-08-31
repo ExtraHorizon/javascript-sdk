@@ -3,7 +3,7 @@ import type { PagedResult } from '../types';
 import type { DataSchemasService, Schema } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
-import { findAllGeneric } from '../helpers';
+import { findAllGenerator, findAllGeneric } from '../helpers';
 
 const addTransitionHelpersToSchema = (schema: Schema): Schema => ({
   ...schema,
@@ -40,6 +40,10 @@ export default (
 
   async findAll(options) {
     return findAllGeneric<Schema>(this.find, options);
+  },
+
+  findAllGenerator(options) {
+    return findAllGenerator<Schema>(this.find, options);
   },
 
   async findById(this: DataSchemasService, id, options) {

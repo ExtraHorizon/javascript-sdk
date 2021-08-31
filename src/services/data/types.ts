@@ -936,6 +936,21 @@ export interface DataSchemasService {
    */
   findAll(options?: OptionsWithRql): Promise<Schema[]>;
   /**
+   * Request a list of all schemas
+   *
+   * Do not pass in an rql with offset operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Every one can use this endpoint
+   * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
+   * @param rql Add filters to the requested list.
+   * @returns Schema[]
+   */
+  findAllGenerator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<Schema[], [], void>;
+  /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
