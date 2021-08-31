@@ -818,22 +818,22 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@qompium/eslint-config-q-base@^1.2.9":
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-base/-/eslint-config-q-base-1.2.9.tgz#196602be4a5d82e9a7504f1a5d8a077b6d9aa725"
-  integrity sha512-2rzAEAXoiH9X8IB0uxHz3H9ah6DyTkzHSuvbvnNsihIqz309nFTo4cKi35Ru3PnwVQqW0n1+O76Mz5fMliCZ9Q==
+"@qompium/eslint-config-q-base@^1.2.11":
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-base/-/eslint-config-q-base-1.2.11.tgz#02cc7e64569b81688b0db24db85e778ef06e3dcd"
+  integrity sha512-5Bqk0BVPkWaR6iZ0PTEsuH4teT2p+FNxXuhv5fQ4HH/r0LEQ0CanzqY31CAjaOhKxOoZRd4LtzutptYN8lxWLQ==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.14.0"
     "@typescript-eslint/parser" "^4.14.0"
     eslint-config-airbnb-base "^14.2.1"
     eslint-plugin-import "^2.22.1"
 
-"@qompium/eslint-config-q-node@^1.2.9":
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-node/-/eslint-config-q-node-1.2.9.tgz#0949497769157e6ab960f0349baebe77151388ae"
-  integrity sha512-eyH2fmDro29kLC+ZLAD2MdRILHoTS1yyXEEzwMbkyUQl7Oisc5QE3LXfp2qYgrFseXosEOS8LQs20j3lVoyoWA==
+"@qompium/eslint-config-q-node@^1.2.11":
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-node/-/eslint-config-q-node-1.2.11.tgz#ec6dba9e1791e73b1a8c90a6257afa288f22f184"
+  integrity sha512-uWX/6LfMAO/QMAVapBO3NS/xSRDFH/W+4LaFCYar2hVGUNAZLNaHdQHkxJJBQe3G5aQzXwEqynkW/uBE2VdOGg==
   dependencies:
-    "@qompium/eslint-config-q-base" "^1.2.9"
+    "@qompium/eslint-config-q-base" "^1.2.11"
 
 "@rollup/plugin-babel@^5.3.0":
   version "5.3.0"
