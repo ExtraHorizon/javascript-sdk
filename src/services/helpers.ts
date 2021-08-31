@@ -3,6 +3,27 @@ import { rqlBuilder } from '../rql';
 
 const MAX_LIMIT = 50;
 
+export async function* findAllGenerator<T>(
+  find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
+  options: OptionsWithRql
+): AsyncGenerator<T[]> {
+  const mutableOptions = {
+    rql:
+      options?.rql && options.rql.includes('limit(')
+        ? options.rql
+        : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+    ...options,
+  };
+  let result: PagedResult<T>;
+  do {
+    result = await find(mutableOptions);
+    mutableOptions.rql = rqlBuilder(mutableOptions?.rql)
+      .limit(result.page.limit, result.page.offset + result.page.limit)
+      .build();
+    yield result.data;
+  } while (result.page.total > result.page.offset + result.page.limit);
+}
+
 export async function findAllGeneric<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
   options: OptionsWithRql,
