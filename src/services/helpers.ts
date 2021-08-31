@@ -22,6 +22,7 @@ export async function* findAllGenerator<T>(
       .build();
     yield result.data;
   } while (result.page.total > result.page.offset + result.page.limit);
+  return [];
 }
 
 export async function findAllGeneric<T>(
