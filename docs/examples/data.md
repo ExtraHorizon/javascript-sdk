@@ -96,3 +96,14 @@ for await (const page of schemaGenerator) {
   console.log(page.length);
 }
 ```
+
+## Find with pagination
+
+For Schema, Documents and Users the `find` function returns and object with the initial data and two helpers function to get the previous / next page.
+
+```js
+const users = await sdk.users.find();
+
+const nextPage = await users.next();
+const previousPage = await users.previous();
+```

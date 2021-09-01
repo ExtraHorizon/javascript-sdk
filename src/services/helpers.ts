@@ -1,4 +1,4 @@
-import { OptionsWithRql, PagedResult } from './types';
+import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 import { rqlBuilder } from '../rql';
 
 const MAX_LIMIT = 50;
@@ -69,4 +69,41 @@ export async function findAllGeneric<T>(
         )),
       ]
     : result.data;
+}
+
+export function addPagersFn<T>(
+  find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
+  options: OptionsWithRql,
+  pagedResult: PagedResult<T>
+): PagedResultWithPager<T> {
+  return {
+    ...pagedResult,
+    previous: async () => {
+      const result = await find({
+        rql: rqlBuilder(options?.rql)
+          .limit(
+            pagedResult.page.limit,
+            pagedResult.page.offset > 0
+              ? pagedResult.page.offset - pagedResult.page.limit
+              : 0
+          )
+          .build(),
+      });
+      return addPagersFn<T>(find, options, result);
+    },
+    next: async () => {
+      const result = await find({
+        rql: rqlBuilder(options?.rql)
+          .limit(
+            pagedResult.page.limit,
+            pagedResult.page.offset + pagedResult.page.limit <
+              pagedResult.page.total
+              ? pagedResult.page.offset + pagedResult.page.limit
+              : pagedResult.page.total
+          )
+          .build(),
+      });
+      return addPagersFn<T>(find, options, result);
+    },
+  };
 }

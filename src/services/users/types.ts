@@ -7,6 +7,7 @@ import {
   AffectedRecords,
   OptionsBase,
   OptionsWithRql,
+  PagedResultWithPager,
 } from '../types';
 
 export interface UserData {
@@ -684,9 +685,9 @@ export interface UsersService {
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
    * `VIEW_USER` | `global` | See all fields of all users
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<User>
+   * @returns PagedResultWithPager<User>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<User>>;
+  find(options?: OptionsWithRql): Promise<PagedResultWithPager<User>>;
   /**
    * Request a list of all users
    *

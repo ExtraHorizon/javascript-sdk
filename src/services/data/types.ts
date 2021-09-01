@@ -5,6 +5,7 @@ import type {
   OptionsBase,
   OptionsWithRql,
   PagedResult,
+  PagedResultWithPager,
 } from '../types';
 
 export enum JSONSchemaType {
@@ -533,12 +534,12 @@ export interface DataDocumentsService {
    * `VIEW_DOCUMENTS` | `global` | See any document
    * @param schemaId The id of the targeted schema.
    * @param rql Add filters to the requested list.
-   * @returns {Document} document
+   * @returns PagedResultWithPager<Document>
    */
   find<CustomData = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<PagedResult<Document<CustomData>>>;
+  ): Promise<PagedResultWithPager<Document<CustomData>>>;
   /**
    * Request a list of all documents
    *
@@ -952,9 +953,9 @@ export interface DataSchemasService {
    * none | | Every one can use this endpoint
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<Schema>
+   * @returns PagedResultWithPager<Schema>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<Schema>>;
+  find(options?: OptionsWithRql): Promise<PagedResultWithPager<Schema>>;
   /**
    * Request a list of all schemas
    *
