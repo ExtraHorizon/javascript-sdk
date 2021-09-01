@@ -577,8 +577,6 @@ export interface DataDocumentsService {
   /**
    * Request a list of all documents and return a generator
    *
-   * Do not pass in an rql with limit operator!
-   *
    * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
    *
    * Permission | Scope | Effect
@@ -971,8 +969,6 @@ export interface DataSchemasService {
   findAll(options?: OptionsWithRql): Promise<Schema[]>;
   /**
    * Request a list of all schemas and returns a generator
-   *
-   * Do not pass in an rql with offset operator!
    *
    * Permission | Scope | Effect
    * - | - | -

@@ -705,8 +705,6 @@ export interface UsersService {
   /**
    * Request a list of all users
    *
-   * Do not pass in an rql with limit operator!
-   *
    * Permission | Scope | Effect
    * - | - | -
    * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
