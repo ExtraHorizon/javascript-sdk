@@ -2,7 +2,7 @@ import type { HttpInstance } from '../../types';
 import { Results } from '../types';
 import type { User, UsersService } from './types';
 import { HttpClient } from '../http-client';
-import { addPagersFn, findAllGenerator, findAllGeneric } from '../helpers';
+import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   userClient: HttpClient,
@@ -38,8 +38,8 @@ export default (
       return findAllGeneric<User>(find, options);
     },
 
-    findAllGenerator(options) {
-      return findAllGenerator<User>(find, options);
+    findAllIterator(options) {
+      return findAllIterator<User>(find, options);
     },
 
     async findFirst(this: UsersService, options) {

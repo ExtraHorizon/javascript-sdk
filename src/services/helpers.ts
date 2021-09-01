@@ -3,13 +3,13 @@ import { rqlBuilder } from '../rql';
 
 const MAX_LIMIT = 50;
 
-export async function* findAllGenerator<T>(
+export async function* findAllIterator<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
   options: OptionsWithRql
-): AsyncGenerator<T[]> {
+): AsyncGenerator<PagedResult<T>> {
   async function* makeRequest(requestOptions: OptionsWithRql) {
     const result = await find(requestOptions);
-    yield result.data;
+    yield result;
 
     if (result.page.total > result.page.offset + result.page.limit) {
       yield* makeRequest({
@@ -76,34 +76,36 @@ export function addPagersFn<T>(
   options: OptionsWithRql,
   pagedResult: PagedResult<T>
 ): PagedResultWithPager<T> {
+  let result = pagedResult;
+
+  async function previous() {
+    result = await find({
+      rql: rqlBuilder(options?.rql)
+        .limit(
+          result.page.limit,
+          result.page.offset > 0 ? result.page.offset - result.page.limit : 0
+        )
+        .build(),
+    });
+    return addPagersFn<T>(find, options, result);
+  }
+
+  async function next() {
+    result = await find({
+      rql: rqlBuilder(options?.rql)
+        .limit(
+          result.page.limit,
+          result.page.offset + result.page.limit < result.page.total
+            ? result.page.offset + result.page.limit
+            : result.page.offset + result.page.limit
+        )
+        .build(),
+    });
+    return addPagersFn<T>(find, options, result);
+  }
   return {
-    ...pagedResult,
-    previous: async () => {
-      const result = await find({
-        rql: rqlBuilder(options?.rql)
-          .limit(
-            pagedResult.page.limit,
-            pagedResult.page.offset > 0
-              ? pagedResult.page.offset - pagedResult.page.limit
-              : 0
-          )
-          .build(),
-      });
-      return addPagersFn<T>(find, options, result);
-    },
-    next: async () => {
-      const result = await find({
-        rql: rqlBuilder(options?.rql)
-          .limit(
-            pagedResult.page.limit,
-            pagedResult.page.offset + pagedResult.page.limit <
-              pagedResult.page.total
-              ? pagedResult.page.offset + pagedResult.page.limit
-              : pagedResult.page.total
-          )
-          .build(),
-      });
-      return addPagersFn<T>(find, options, result);
-    },
+    ...result,
+    previous,
+    next,
   };
 }

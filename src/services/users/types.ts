@@ -715,7 +715,9 @@ export interface UsersService {
    * @param rql Add filters to the requested list.
    * @returns User[]
    */
-  findAllGenerator(options?: OptionsWithRql): AsyncGenerator<User[], [], void>;
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<User>, Record<string, never>, void>;
   findFirst(options?: { rql?: RQLString }): Promise<User>;
   /**
    * @deprecated

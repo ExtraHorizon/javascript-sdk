@@ -73,26 +73,26 @@ const schemas = await sdk.data.schemas.findAll({
 });
 ```
 
-## Find all schemas with generator
+## Find all schemas with Iterator
 
-More info on [Generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)
+More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol)
 
 ```js
-const schemaGenerator = sdk.data.schemas.findAllGenerator({
+const schemaIterator = sdk.data.schemas.findAllIterator({
   rql: rqlBuilder().select(['id', 'name']).build(),
 });
 
-const firstBatch = await generator.next();
+const firstBatch = await schemaIterator.next();
 
 console.log(firstBatch.value); // [...] Array containing first 50 items
 ```
 
 ```js
-const schemaGenerator = sdk.data.schemas.findAllGenerator({
+const schemas = sdk.data.schemas.schemaIterator({
   rql: rqlBuilder().select(['id', 'name']).build(),
 });
 
-for await (const page of schemaGenerator) {
+for await (const page of schemas) {
   console.log(page.length);
 }
 ```
@@ -106,4 +106,22 @@ const users = await sdk.users.find();
 
 const nextPage = await users.next();
 const previousPage = await users.previous();
+```
+
+Or if you are using the [Async](https://caolan.github.io/async/v3/index.html) package.
+
+```js
+import async from 'async';
+
+const users = await sdk.users.find();
+
+await async.timesLimit(5, 1, async function () {
+  const batch = await users.next();
+  console.log('batch', batch.page, batch.data.length);
+});
+
+async.timesLimit(8, 1, async function () {
+  const batch = await users.previous();
+  console.log('batch', batch.page, batch.data.length);
+});
 ```

@@ -1,7 +1,7 @@
 import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { delay } from '../../utils';
-import { addPagersFn, findAllGenerator, findAllGeneric } from '../helpers';
+import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
 import { DataDocumentsService, Document } from './types';
 
@@ -70,8 +70,8 @@ export default (
       return findAllGeneric<Document>(partialApplyFind(schemaId), options);
     },
 
-    findAllGenerator(schemaId, options) {
-      return findAllGenerator<Document>(partialApplyFind(schemaId), options);
+    findAllIterator(schemaId, options) {
+      return findAllIterator<Document>(partialApplyFind(schemaId), options);
     },
 
     async findById(this: DataDocumentsService, schemaId, documentId, options?) {

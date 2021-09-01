@@ -604,10 +604,10 @@ export interface DataDocumentsService {
    * @param rql Add filters to the requested list.
    * @returns Document[]
    */
-  findAllGenerator<CustomData = null>(
+  findAllIterator<CustomData = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): AsyncGenerator<Document<CustomData>[], []>;
+  ): AsyncGenerator<PagedResult<Document<CustomData>>, Record<string, never>>;
   /**
    * Shortcut method to find a document by id
    *
@@ -981,9 +981,9 @@ export interface DataSchemasService {
    * @param rql Add filters to the requested list.
    * @returns Schema[]
    */
-  findAllGenerator(
+  findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<Schema[], [], void>;
+  ): AsyncGenerator<PagedResult<Schema>, Record<string, never>, void>;
   /**
    * Find By Id
    * @param id the Id to search for
