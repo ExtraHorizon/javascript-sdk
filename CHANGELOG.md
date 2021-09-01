@@ -14,11 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - services that have a `findAll` method now also have `findAllIterator`.
 
 ```ts
-const generator = sdk.data.documents.findAllIterator(
-  '5a9552adcfd7f200016728d5'
-);
+const iterator = sdk.data.documents.findAllIterator('5a9552adcfd7f200016728d5');
 
-for await (const page of generator) {
+for await (const page of iterator) {
   console.log(page.length);
 }
 ```

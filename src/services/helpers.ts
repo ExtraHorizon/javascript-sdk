@@ -22,11 +22,11 @@ export async function* findAllIterator<T>(
   }
 
   yield* makeRequest({
+    ...options,
     rql:
       options?.rql && options.rql.includes('limit(')
         ? options.rql
         : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
-    ...options,
   });
 }
 

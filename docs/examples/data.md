@@ -80,11 +80,15 @@ More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript
 ```js
 const schemaIterator = sdk.data.schemas.findAllIterator({
   rql: rqlBuilder().select(['id', 'name']).build(),
-});
+}); // Let's assume there are 66 schemas
 
 const firstBatch = await schemaIterator.next();
+const secondBatch = await schemaIterator.next();
+const thirdBatch = await schemaIterator.next();
 
-console.log(firstBatch.value); // [...] Array containing first 50 items
+console.log(firstBatch); // { value: PagedResult with 50 schemas, done: false }
+console.log(secondBatch); // { value: PagedResult with 16 schemas, done: false }
+console.log(thirdBatch); // { value: undefined, done: true }
 ```
 
 ```js
