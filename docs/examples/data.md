@@ -64,3 +64,35 @@ if (transitionResult.affectedRecords === 1) {
   console.log('transition succesful');
 }
 ```
+
+## Find all schemas
+
+```js
+const schemas = await sdk.data.schemas.findAll({
+  rql: rqlBuilder().select(['id', 'name']).build(),
+});
+```
+
+## Find all schemas with generator
+
+More info on [Generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)
+
+```js
+const schemaGenerator = sdk.data.schemas.findAllGenerator({
+  rql: rqlBuilder().select(['id', 'name']).build(),
+});
+
+const firstBatch = await generator.next();
+
+console.log(firstBatch.value); // [...] Array containing first 50 items
+```
+
+```js
+const schemaGenerator = sdk.data.schemas.findAllGenerator({
+  rql: rqlBuilder().select(['id', 'name']).build(),
+});
+
+for await (const page of schemaGenerator) {
+  console.log(page.length);
+}
+```
