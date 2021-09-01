@@ -129,3 +129,27 @@ async.timesLimit(8, 1, async function () {
   console.log('batch', batch.page, batch.data.length);
 });
 ```
+
+You can also pass in an offset (for example when you were processing items and something went wrong and want to resume where you left off)
+
+```js
+import async from 'async';
+
+const users = await sdk.users.find();
+const currentOffset = 0;
+await async.timesLimit(5, 1, async function () {
+  const batch = await users.next();
+  currentOffset = batch.page.offset;
+});
+
+const usersWithOffset = await sdk.users.find({
+  rql: rqlBuilder().limit(50, currentOffset).build(),
+});
+
+console.log(bausersWithOffsettch.page.offset); // 100
+
+await async.timesLimit(5, 1, async function () {
+  const batch = await usersWithOffset.next();
+  console.log(batch.page.offset); // 150 -> 200 -> 250 -> 300 -> 350
+});
+```
