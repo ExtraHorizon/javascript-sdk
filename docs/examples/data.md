@@ -146,7 +146,7 @@ const usersWithOffset = await sdk.users.find({
   rql: rqlBuilder().limit(50, currentOffset).build(),
 });
 
-console.log(bausersWithOffsettch.page.offset); // 100
+console.log(usersWithOffset.page.offset); // 100
 
 await async.timesLimit(5, 1, async function () {
   const batch = await usersWithOffset.next();
