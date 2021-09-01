@@ -92,12 +92,12 @@ console.log(thirdBatch); // { value: undefined, done: true }
 ```
 
 ```js
-const schemas = sdk.data.schemas.schemaIterator({
+const schemas = sdk.data.schemas.findAllIterator({
   rql: rqlBuilder().select(['id', 'name']).build(),
 });
 
-for await (const page of schemas) {
-  console.log(page.length);
+for await (const schema of schemas) {
+  console.log(schema); /* PagedResult<Schema> */
 }
 ```
 
