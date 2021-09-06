@@ -7,6 +7,7 @@ import {
   AffectedRecords,
   OptionsBase,
   OptionsWithRql,
+  PagedResultWithPager,
 } from '../types';
 
 export interface UserData {
@@ -684,9 +685,9 @@ export interface UsersService {
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
    * `VIEW_USER` | `global` | See all fields of all users
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<User>
+   * @returns PagedResultWithPager<User>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<User>>;
+  find(options?: OptionsWithRql): Promise<PagedResultWithPager<User>>;
   /**
    * Request a list of all users
    *
@@ -702,10 +703,19 @@ export interface UsersService {
    */
   findAll(options?: OptionsWithRql): Promise<User[]>;
   /**
-   * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
+   * Request a list of all users
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
+   * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
+   * `VIEW_USER` | `global` | See all fields of all users
+   * @param rql Add filters to the requested list.
+   * @returns User[]
    */
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<User>, Record<string, never>, void>;
   findFirst(options?: { rql?: RQLString }): Promise<User>;
   /**
    * @deprecated

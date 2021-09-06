@@ -1,7 +1,34 @@
-import { OptionsWithRql, PagedResult } from './types';
+import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 import { rqlBuilder } from '../rql';
 
 const MAX_LIMIT = 50;
+
+export async function* findAllIterator<T>(
+  find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
+  options: OptionsWithRql
+): AsyncGenerator<PagedResult<T>> {
+  async function* makeRequest(requestOptions: OptionsWithRql) {
+    const result = await find(requestOptions);
+    yield result;
+
+    if (result.page.total > result.page.offset + result.page.limit) {
+      yield* makeRequest({
+        ...requestOptions,
+        rql: rqlBuilder(requestOptions?.rql)
+          .limit(result.page.limit, result.page.offset + result.page.limit)
+          .build(),
+      });
+    }
+  }
+
+  yield* makeRequest({
+    ...options,
+    rql:
+      options?.rql && options.rql.includes('limit(')
+        ? options.rql
+        : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+  });
+}
 
 export async function findAllGeneric<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
@@ -42,4 +69,43 @@ export async function findAllGeneric<T>(
         )),
       ]
     : result.data;
+}
+
+export function addPagersFn<T>(
+  find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
+  options: OptionsWithRql,
+  pagedResult: PagedResult<T>
+): PagedResultWithPager<T> {
+  let result = pagedResult;
+
+  async function previous() {
+    result = await find({
+      rql: rqlBuilder(options?.rql)
+        .limit(
+          result.page.limit,
+          result.page.offset > 0 ? result.page.offset - result.page.limit : 0
+        )
+        .build(),
+    });
+    return addPagersFn<T>(find, options, result);
+  }
+
+  async function next() {
+    result = await find({
+      rql: rqlBuilder(options?.rql)
+        .limit(
+          result.page.limit,
+          result.page.offset + result.page.limit < result.page.total
+            ? result.page.offset + result.page.limit
+            : result.page.offset + result.page.limit
+        )
+        .build(),
+    });
+    return addPagersFn<T>(find, options, result);
+  }
+  return {
+    ...result,
+    previous,
+    next,
+  };
 }

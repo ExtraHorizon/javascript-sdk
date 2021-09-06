@@ -63,3 +63,8 @@ export type OptionsBase = {
   shouldRetry?: boolean;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString };
+
+export type PagedResultWithPager<T> = PagedResult<T> & {
+  previous: () => Promise<PagedResultWithPager<T>>;
+  next: () => Promise<PagedResultWithPager<T>>;
+};
