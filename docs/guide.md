@@ -4,7 +4,7 @@
 
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
 
-```js
+```ts
 import { rqlBuilder } from '@extrahorizon/javascript-sdk';
 
 const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
@@ -13,7 +13,7 @@ const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 
 An example using the rqlBuilder to compose a complex rql request documents having a heartRate between 40 and 50 or indicator = 'warning'
 
-```js
+```ts
 import { rqlBuilder } from '@extrahorizon/javascript-sdk';
 
 const rql = rqlBuilder()
@@ -37,7 +37,7 @@ const result = await sdk.data.documents.find({ rql });
 
 You can also use the `rqlParser` function and pass in your own stirng.
 
-```js
+```ts
 import { rqlParser } from '@extrahorizon/javascript-sdk';
 
 const rql = rqlParser(
@@ -52,7 +52,7 @@ const result = await sdk.data.documents.find({ rql });
 
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
 
-```js
+```ts
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 
 (async () => {
@@ -75,7 +75,7 @@ import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 
 You can pass in two logger function that will be called by Axios on every request/response respectively.
 
-```js
+```ts
 import AxiosLogger from "axios-logger";
 
 const sdk = createOAuth2Client({

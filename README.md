@@ -55,7 +55,7 @@ yarn add @extrahorizon/javascript-sdk
 
 ## Quick Start
 
-```js
+```ts
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 
 (async () => {

@@ -1,6 +1,6 @@
 ## Find the schema with name `tests` and only select id, name and transitions
 
-```js
+```ts
 const schema = await sdk.data.schemas.findByName('tests', {
   rql: rqlBuilder().select(['id', 'name', 'transitions']).build(),
 });
@@ -40,7 +40,7 @@ console.log(document.data.ppg);
 
 ## Transition a document based on `data.deviceUid`
 
-```js
+```ts
 const schema = await sdk.data.schemas.findByName('tests', {
   rql: rqlBuilder().select(['id', 'name', 'transitions']).build(),
 });
@@ -67,7 +67,7 @@ if (transitionResult.affectedRecords === 1) {
 
 ## Find all schemas
 
-```js
+```ts
 const schemas = await sdk.data.schemas.findAll({
   rql: rqlBuilder().select(['id', 'name']).build(),
 });
@@ -77,7 +77,7 @@ const schemas = await sdk.data.schemas.findAll({
 
 More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol)
 
-```js
+```ts
 const schemaIterator = sdk.data.schemas.findAllIterator({
   rql: rqlBuilder().select(['id', 'name']).build(),
 }); // Let's assume there are 66 schemas
@@ -91,7 +91,7 @@ console.log(secondBatch); // { value: PagedResult with 16 schemas, done: false }
 console.log(thirdBatch); // { value: undefined, done: true }
 ```
 
-```js
+```ts
 const schemas = sdk.data.schemas.findAllIterator({
   rql: rqlBuilder().select(['id', 'name']).build(),
 });
@@ -105,7 +105,7 @@ for await (const schema of schemas) {
 
 For Schema, Documents and Users the `find` function returns and object with the initial data and two helpers function to get the previous / next page.
 
-```js
+```ts
 const users = await sdk.users.find();
 
 const nextPage = await users.next();
@@ -114,7 +114,7 @@ const previousPage = await users.previous();
 
 Or if you are using the [Async](https://caolan.github.io/async/v3/index.html) package.
 
-```js
+```ts
 import async from 'async';
 
 const users = await sdk.users.find();
@@ -132,7 +132,7 @@ async.timesLimit(8, 1, async function () {
 
 You can also pass in an offset (for example when you were processing items and something went wrong and want to resume where you left off)
 
-```js
+```ts
 import async from 'async';
 
 const users = await sdk.users.find();
