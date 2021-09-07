@@ -482,7 +482,7 @@ export interface DataDocumentsService {
    * @param schemaId the schema Id
    * @param documentId the document Id
    * @returns boolean success
-   * @throws {LockedDocumentError}
+   * @throws {Error} If the document is in locked state after the specified tries
    */
   assertNonLockedState(
     schemaId: ObjectId,
