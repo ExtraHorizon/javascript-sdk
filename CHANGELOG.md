@@ -34,11 +34,12 @@ console.log((await users.next()).page); // { total: 8268, offset: 60, limit: 20 
 console.log((await users.previous()).page); // { total: 8268, offset: 40, limit: 20 }
 ```
 
+- rqlParser accepts a regular string which will be checked using the parser function and returns a valid RQLString.
+
 ### Changes
 
 - added `endTimestamp` to list of fieldnames that are parsed at Date
 - rqlBuilder now supports the `excludes` operator
-- rqlBuilder now accepts a regular string which will be checked using the parser function
 - several examples had updates to reflect proper usage
 
 ## [v4.4.0]
