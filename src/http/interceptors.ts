@@ -55,6 +55,7 @@ const mapDateValues = (value, key) => {
       'lastFailedTimestamp',
       'statusChangedTimestamp',
       'startTimestamp',
+      'endTimestamp',
       'timestamp',
       'originalPurchaseDate',
       'lastPurchaseDate',

@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.5.0]
+
+### Added
+
+- services that have a `findAll` method now also have `findAllIterator`.
+
+```ts
+const iterator = sdk.data.documents.findAllIterator('5a9552adcfd7f200016728d5');
+
+for await (const page of iterator) {
+  console.log(page); /* PagedResult<Document> */
+}
+```
+
+- `sdk.data.schemas`, `sdk.data.documents` and `sdk.data.users` have had changes to their `find` function. This now returns the current value with two added functions `next()` and `previous()` which can be used to easily traverse the data.
+
+```ts
+const users = await sdk.users.find();
+
+console.log('users,', users.page); // { total: 8268, offset: 0, limit: 20 }
+
+console.log((await users.next()).page); // { total: 8268, offset: 20, limit: 20 }
+console.log((await users.next()).page); // { total: 8268, offset: 40, limit: 20 }
+console.log((await users.next()).page); // { total: 8268, offset: 60, limit: 20 }
+console.log((await users.previous()).page); // { total: 8268, offset: 40, limit: 20 }
+```
+
+- rqlParser accepts a regular string which will be checked using the parser function and returns a valid RQLString.
+
+### Changes
+
+- added `endTimestamp` to list of fieldnames that are parsed at Date
+- rqlBuilder now supports the `excludes` operator
+- several examples had updates to reflect proper usage
+
 ## [v4.4.0]
 
 ### Changes

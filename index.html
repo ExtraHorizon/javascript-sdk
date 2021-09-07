@@ -35,19 +35,10 @@
         auto2top: true,
         subMaxLevel: 3,
         maxLevel: 3,
-        markdown: function (marked, renderer) {
-          marked.setOptions({
-            renderer,
-            highlight: function highlight(code, lang) {
-              const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-              return hljs.highlight(code, { language }).value;
-            },
-          });
-          return marked;
-        },
       };
     </script>
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
   </body>
 </html>

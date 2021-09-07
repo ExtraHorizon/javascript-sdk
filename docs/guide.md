@@ -1,19 +1,58 @@
-## RQL Builder
+## RQL
+
+### Builder
 
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
 
-```js
+```ts
 import { rqlBuilder } from '@extrahorizon/javascript-sdk';
 
 const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 // ?select(name)&eq(name,fitbit)
 ```
 
+An example using the rqlBuilder to compose a complex rql request documents having a heartRate between 40 and 50 or indicator = 'warning'
+
+```ts
+import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+
+const rql = rqlBuilder()
+  .or(
+    rqlBuilder()
+      .and(
+        rqlBuilder().lt('data.heartRate', '50').intermediate(),
+        rqlBuilder().gt('data.heartRate', '40').intermediate()
+      )
+      .intermediate(),
+    rqlBuilder().eq('data.indicator', 'warning').intermediate()
+  )
+  .select(['id', 'name', 'data.heartRate', 'data.indicator'])
+  .build();
+
+// ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
+const result = await sdk.data.documents.find({ rql });
+```
+
+### Parser
+
+You can also use the `rqlParser` function and pass in your own stirng.
+
+```ts
+import { rqlParser } from '@extrahorizon/javascript-sdk';
+
+const rql = rqlParser(
+  'or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)'
+);
+
+// ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
+const result = await sdk.data.documents.find({ rql });
+```
+
 ## Raw Queries
 
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
 
-```js
+```ts
 import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 
 (async () => {
@@ -27,7 +66,7 @@ import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
     username: '',
   });
 
-  const me = await sdk.raw.get('/users/v1/me').data;
+  const me = (await sdk.raw.get('/users/v1/me')).data;
   console.log('Me', me);
 })();
 ```
@@ -36,7 +75,7 @@ import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 
 You can pass in two logger function that will be called by Axios on every request/response respectively.
 
-```js
+```ts
 import AxiosLogger from "axios-logger";
 
 const sdk = createOAuth2Client({
@@ -139,15 +178,31 @@ More info on how to use the can be found here: https://medium.com/@jaedmuva/reac
 
 The package also exports a mockSdk you can use in your tests. In this example `jest` is used as testing library.
 
-```js
+```ts
 import { getMockSdk } from '@extrahorizon/javascript-sdk';
 
 describe('mock SDK', () => {
-  const sdk = getMockSdk < jest.Mock > jest.fn;
+  const sdk = getMockSdk<jest.Mock>(jest.fn);
   it('should be valid mock', async () => {
     expect(sdk.data).toBeDefined();
   });
 });
+```
+
+If you are using `jest`. You can create a file under your `__mocks__/@extrahorizon/` called `javascript-sdk.ts` and add the following content:
+
+```ts
+import { getMockSdk } from '@extrahorizon/javascript-sdk';
+
+export const mockSdk = getMockSdk<jest.Mock>(jest.fn);
+
+const createOAuth1Client = () => mockSdk;
+
+module.exports = {
+  ...jest.requireActual('@extrahorizon/javascript-sdk'),
+  createOAuth1Client,
+  mockSdk,
+};
 ```
 
 ### Library
