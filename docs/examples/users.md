@@ -1,6 +1,6 @@
 ## Accept Invitation for Group
 
-```js
+```ts
 try {
   const hash = 'invitation-hash';
 
@@ -13,9 +13,10 @@ try {
     data,
     id: invitationId,
     status,
-  } = (await sdk.data.documents.findFirst) <
-  InvitationData >
-  (invitationsSchema.id, { rql });
+  } = (await sdk.data.documents.findFirst)<InvitationData>(
+    invitationsSchema.id,
+    { rql }
+  );
 
   const { groupId, email: inviteEmail, userId } = data;
 

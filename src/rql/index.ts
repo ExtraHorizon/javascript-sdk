@@ -1,4 +1,4 @@
-import rqlParser from './parser';
+import rqlParserFromLibrary from './parser';
 
 // TypeScript Does not allow custom error on type errors. This is a hackish work around.
 type NotAnRQLStringError =
@@ -102,6 +102,27 @@ export interface RQLBuilder {
    * @return Only returns documents containing `data.heartrate > 60`
    */
   contains: (field: string, expression?: RQLString) => RQLBuilder;
+  /**
+   * @description `excludes(field)` only returns records not having this field as property
+   * @example
+   * await sdk.data.documents.find(
+   *   schemaId,
+   *   { rql: rqlBuilder().excludes('data.indicator').build()
+   * });
+   * @returns returns documents not containing the `data.indicator` field
+   *
+   * @description Filters for objects where the specified property's value is an array and the array excludes
+   * any value that equals the provided value or satisfies the provided expression.
+   * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is invalid
+   * @example
+   * await sdk.data.documents.find(schemaId, {
+   *   rql: rqlBuilder()
+   *     .excludes("data", rqlBuilder().gt("heartrate", "60").intermediate())
+   *     .build(),
+   * });
+   * @return Only returns documents excluding documents where `data.heartrate > 60`
+   */
+  excludes: (field: string, expression?: RQLString) => RQLBuilder;
 
   /**
    * Returns a valid rqlString
@@ -114,13 +135,18 @@ export interface RQLBuilder {
    * @returns valid rqlString
    */
   intermediate: () => RQLString;
+}
 
-  /**
-   * Accepts a strings and returns an RQLString
-   * @throws {Error}
-   * @throws {URIError}
-   */
-  parse: (value: string) => RQLString;
+/**
+ * rqlParser accepts a regular string and returns a valid RQLString if it's valid.
+ * @see https://developers.extrahorizon.io/guide/rql.html
+ * @returns {RQLString}
+ * @throws {URIError}
+ * @throws {Error}
+ */
+export function rqlParser(rql: string): RQLString {
+  rqlParserFromLibrary(rql);
+  return rql as RQLString;
 }
 
 /**
@@ -128,8 +154,9 @@ export interface RQLBuilder {
  * @see https://developers.extrahorizon.io/guide/rql.html
  * @returns
  */
-export function rqlBuilder(rql?: RQLString): RQLBuilder {
+export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
   let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
+  rqlParser(returnString);
 
   const builder: RQLBuilder = {
     select(value) {
@@ -189,6 +216,12 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
         expression ? `${field},${expression}` : field
       );
     },
+    excludes(field, expression) {
+      return processQuery(
+        'excludes',
+        expression ? `${field},${expression}` : field
+      );
+    },
     build(): RQLString {
       return `${
         returnString.length > 0 && returnString.charAt(0) !== '?' ? '?' : ''
@@ -196,10 +229,6 @@ export function rqlBuilder(rql?: RQLString): RQLBuilder {
     },
     intermediate(): RQLString {
       return returnString as RQLString;
-    },
-    parse(value) {
-      rqlParser(value);
-      return value as RQLString;
     },
   };
 

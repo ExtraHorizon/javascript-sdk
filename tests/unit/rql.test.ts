@@ -1,4 +1,4 @@
-import { rqlBuilder } from '../../src/rql';
+import { rqlBuilder, rqlParser } from '../../src/rql';
 
 describe('rql string builder', () => {
   it('should build a valid select', async () => {
@@ -132,16 +132,14 @@ describe('rql string builder', () => {
   });
 
   it('should parse a string to rqlString', async () => {
-    const parsed = rqlBuilder().parse(
-      'or(like(name,bi,tfit),eq(),like(name,fitbit))'
-    );
+    const parsed = rqlParser('or(like(name,bi,tfit),eq(),like(name,fitbit))');
 
     expect(parsed).toBe('or(like(name,bi,tfit),eq(),like(name,fitbit))');
   });
 
   it('should throw an error on parsing invalid RQL to rqlString', async () => {
     expect(() => {
-      rqlBuilder().parse('or((like(name,btfit))');
+      rqlParser('or((like(name,btfit))');
     }).toThrowError();
   });
 });
