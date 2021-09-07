@@ -39,6 +39,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 - added `endTimestamp` to list of fieldnames that are parsed at Date
 - rqlBuilder now supports the `excludes` operator
 - rqlBuilder now accepts a regular string which will be checked using the parser function
+- several examples had updates to reflect proper usage
 
 ## [v4.4.0]
 
