@@ -143,8 +143,8 @@ export interface RQLBuilder {
  * @returns
  */
 export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
-  rqlParser(rql);
   let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
+  rqlParser(returnString);
 
   const builder: RQLBuilder = {
     select(value) {

@@ -9,6 +9,41 @@ const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
 // ?select(name)&eq(name,fitbit)
 ```
 
+An example using the rqlBuilder to compose a complex rql request documents having a heartRate between 40 and 50 or indicator = 'warning'
+
+```js
+import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+
+const rql = rqlBuilder()
+  .or(
+    rqlBuilder()
+      .and(
+        rqlBuilder().lt('data.heartRate', '50').intermediate(),
+        rqlBuilder().gt('data.heartRate', '40').intermediate()
+      )
+      .intermediate(),
+    rqlBuilder().eq('data.indicator', 'warning').intermediate()
+  )
+  .select(['id', 'name', 'data.heartRate', 'data.indicator'])
+  .build();
+
+// ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
+const result = await sdk.data.documents.find({ rql });
+```
+
+You can also compose this yourself stringbased.
+
+```js
+import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+
+const rql = rqlBuilder(
+  'or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)'
+).build();
+
+// ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
+const result = await sdk.data.documents.find({ rql });
+```
+
 ## Raw Queries
 
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
