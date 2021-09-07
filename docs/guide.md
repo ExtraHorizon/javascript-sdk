@@ -139,15 +139,31 @@ More info on how to use the can be found here: https://medium.com/@jaedmuva/reac
 
 The package also exports a mockSdk you can use in your tests. In this example `jest` is used as testing library.
 
-```js
+```ts
 import { getMockSdk } from '@extrahorizon/javascript-sdk';
 
 describe('mock SDK', () => {
-  const sdk = getMockSdk < jest.Mock > jest.fn;
+  const sdk = getMockSdk<jest.Mock>(jest.fn);
   it('should be valid mock', async () => {
     expect(sdk.data).toBeDefined();
   });
 });
+```
+
+If you are using `jest`. You can create a file under your `__mocks__/@extrahorizon/` called `javascript-sdk.ts` and add the following content:
+
+```ts
+import { getMockSdk } from '@extrahorizon/javascript-sdk';
+
+export const mockSdk = getMockSdk<jest.Mock>(jest.fn);
+
+const createOAuth1Client = () => mockSdk;
+
+module.exports = {
+  ...jest.requireActual('@extrahorizon/javascript-sdk'),
+  createOAuth1Client,
+  mockSdk,
+};
 ```
 
 ### Library
