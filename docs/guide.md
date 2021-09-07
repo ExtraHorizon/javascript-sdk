@@ -1,4 +1,6 @@
-## RQL Builder
+## RQL
+
+### Builder
 
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
 
@@ -31,14 +33,16 @@ const rql = rqlBuilder()
 const result = await sdk.data.documents.find({ rql });
 ```
 
-You can also compose this yourself stringbased.
+### Parser
+
+You can also use the `rqlParser` function and pass in your own stirng.
 
 ```js
-import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+import { rqlParser } from '@extrahorizon/javascript-sdk';
 
-const rql = rqlBuilder(
+const rql = rqlParser(
   'or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)'
-).build();
+);
 
 // ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
 const result = await sdk.data.documents.find({ rql });

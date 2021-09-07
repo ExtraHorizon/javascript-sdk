@@ -1,4 +1,4 @@
-import rqlParser from './parser';
+import rqlParserFromLibrary from './parser';
 
 // TypeScript Does not allow custom error on type errors. This is a hackish work around.
 type NotAnRQLStringError =
@@ -135,6 +135,18 @@ export interface RQLBuilder {
    * @returns valid rqlString
    */
   intermediate: () => RQLString;
+}
+
+/**
+ * rqlParser accepts a regular string and returns a valid RQLString if it's valid.
+ * @see https://developers.extrahorizon.io/guide/rql.html
+ * @returns {RQLString}
+ * @throws {URIError}
+ * @throws {Error}
+ */
+export function rqlParser(rql: string): RQLString {
+  rqlParserFromLibrary(rql);
+  return rql as RQLString;
 }
 
 /**
