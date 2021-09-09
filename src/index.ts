@@ -4,6 +4,7 @@ export * from './errors';
 export * from './types';
 
 export { recursiveMap } from './http/utils';
+export { parseGlobalPermissions } from './utils';
 
 export { getMockSdk } from './mock';
 
