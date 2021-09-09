@@ -25,7 +25,7 @@ const defaultRetryConfig = {
   current: 1,
   retryCondition: (error: HttpResponseError) => {
     try {
-      if (error.response?.status === 500) {
+      if (error.response?.status >= 500 && error.response?.status <= 599) {
         return true;
       }
       return false;
