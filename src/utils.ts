@@ -2,7 +2,7 @@ import OAuth from 'oauth-1.0a';
 
 import { HmacSHA1 } from 'crypto-es/lib/sha1';
 import { Base64 } from 'crypto-es/lib/enc-base64';
-import { ClientConfig, ClientParams } from './types';
+import { ClientConfig, ClientParams, GlobalPermissionName } from './types';
 import { AUTH_BASE } from './constants';
 
 function hmacSha1Hash(baseString: string, key: string) {
@@ -52,4 +52,19 @@ export function validateConfig({
 
 export function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function parseGlobalPermissions(
+  permissions: string[]
+): GlobalPermissionName[] {
+  const GlobalPermissionNameValues = Object.values(GlobalPermissionName);
+
+  return permissions
+    .map(element => {
+      if (!GlobalPermissionNameValues.includes(GlobalPermissionName[element])) {
+        console.warn(`${element} is not a valid permission.`);
+      }
+      return GlobalPermissionName[element];
+    })
+    .filter(element => element);
 }

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `parseGlobalPermissions` is a function to parse strings are return valid permissions
+
 ## [v4.5.0]
 
 ### Added
