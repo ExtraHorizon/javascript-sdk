@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `parseGlobalPermissions` is a function to parse strings are return valid permissions
 
+### Changed
+
+- `userId` getter on the `OAuthClient` interface now returns a `Promise<string>` in stead of `string`. You can access this on `sdk.raw.userId`
+
 ## [v4.5.0]
 
 ### Added

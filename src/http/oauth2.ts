@@ -171,7 +171,7 @@ export function createOAuth2HttpClient(
     confirmMfa,
     logout,
     get userId() {
-      return tokenData?.userId;
+      return Promise.resolve(tokenData?.userId);
     },
   };
 }

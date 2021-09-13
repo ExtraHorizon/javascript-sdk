@@ -97,7 +97,7 @@ export function createOAuth1HttpClient(
       tokenData = data.tokenData;
       if (!data.skipTokenCheck) {
         const path = `${USER_BASE}/me`;
-        await http.get(path, {
+        const { data: me } = await http.get(path, {
           headers: {
             'Content-Type': 'application/json',
             ...options.oauth1.toHeader(
@@ -111,6 +111,7 @@ export function createOAuth1HttpClient(
             ),
           },
         });
+        tokenData = { ...data.tokenData, userId: me.id };
       }
       return tokenData;
     }
@@ -183,7 +184,32 @@ export function createOAuth1HttpClient(
     confirmMfa,
     logout,
     get userId() {
-      return tokenData?.userId;
+      return (async () => {
+        try {
+          if (!tokenData?.userId) {
+            const path = `${USER_BASE}/me`;
+            const { data: me } = await http.get(path, {
+              headers: {
+                'Content-Type': 'application/json',
+                ...options.oauth1.toHeader(
+                  options.oauth1.authorize(
+                    {
+                      url: options.host + path,
+                      method: 'get',
+                    },
+                    tokenData
+                  )
+                ),
+              },
+            });
+            tokenData = { ...tokenData, userId: me.id };
+            return me.id;
+          }
+          return tokenData?.userId;
+        } catch (e) {
+          return undefined;
+        }
+      })();
     },
   };
 }
