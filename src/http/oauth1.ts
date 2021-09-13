@@ -20,6 +20,25 @@ export function createOAuth1HttpClient(
 
   const { requestLogger, responseLogger } = options;
 
+  const getMe = async () => {
+    const path = `${USER_BASE}/me`;
+    const { data: me } = await http.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.oauth1.toHeader(
+          options.oauth1.authorize(
+            {
+              url: options.host + path,
+              method: 'get',
+            },
+            tokenData
+          )
+        ),
+      },
+    });
+    return me;
+  };
+
   if (requestLogger) {
     httpWithAuth.interceptors.request.use(
       config => {
@@ -96,21 +115,7 @@ export function createOAuth1HttpClient(
     if ('tokenData' in data) {
       tokenData = data.tokenData;
       if (!data.skipTokenCheck) {
-        const path = `${USER_BASE}/me`;
-        const { data: me } = await http.get(path, {
-          headers: {
-            'Content-Type': 'application/json',
-            ...options.oauth1.toHeader(
-              options.oauth1.authorize(
-                {
-                  url: options.host + path,
-                  method: 'get',
-                },
-                tokenData
-              )
-            ),
-          },
-        });
+        const me = await getMe();
         tokenData = { ...data.tokenData, userId: me.id };
       }
       return tokenData;
@@ -187,21 +192,7 @@ export function createOAuth1HttpClient(
       return (async () => {
         try {
           if (!tokenData?.userId) {
-            const path = `${USER_BASE}/me`;
-            const { data: me } = await http.get(path, {
-              headers: {
-                'Content-Type': 'application/json',
-                ...options.oauth1.toHeader(
-                  options.oauth1.authorize(
-                    {
-                      url: options.host + path,
-                      method: 'get',
-                    },
-                    tokenData
-                  )
-                ),
-              },
-            });
+            const me = await getMe();
             tokenData = { ...tokenData, userId: me.id };
             return me.id;
           }
