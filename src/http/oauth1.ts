@@ -20,7 +20,7 @@ export function createOAuth1HttpClient(
 
   const { requestLogger, responseLogger } = options;
 
-  const getMe = async () => {
+  async function getMe() {
     const path = `${USER_BASE}/me`;
     const { data: me } = await http.get(path, {
       headers: {
@@ -37,7 +37,7 @@ export function createOAuth1HttpClient(
       },
     });
     return me;
-  };
+  }
 
   if (requestLogger) {
     httpWithAuth.interceptors.request.use(
