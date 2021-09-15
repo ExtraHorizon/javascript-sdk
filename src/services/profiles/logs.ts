@@ -13,7 +13,7 @@ export default (
       (
         await client.get(
           httpAuth,
-          `/${profileId}/groups/${groupId}/logs${options?.rql || ''}`,
+          `/${profileId}/groups/${groupId}/logs/${options?.rql || ''}`,
           options
         )
       ).data;

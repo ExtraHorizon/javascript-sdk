@@ -48,7 +48,7 @@ describe('Logs Service', () => {
 
   it('should retrieve all profile log entries', async () => {
     nock(`${host}${PROFILES_BASE}`)
-      .get(`/${profileId}/groups/${groupId}/logs`)
+      .get(`/${profileId}/groups/${groupId}/logs/`)
       .reply(200, createPagedResponse(logData));
 
     const res = await sdk.profiles.logs.find(profileId, groupId);
