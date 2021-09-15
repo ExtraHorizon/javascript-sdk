@@ -86,6 +86,36 @@ export interface TemplatesService {
    * @param rql an optional rql string
    * @returns the first element found
    */
+  /**
+   * Find By Id
+   * @param id the Id to search for
+   * @param rql an optional rql string
+   * @returns the first element found
+   */
+  /**
+   * Request a list of all templates
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns TemplateOut[]
+   */
+  findAll(options?: OptionsWithRql): Promise<TemplateOut[]>;
+  /**
+   * Request a list of all templates
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns TemplateOut[]
+   */
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<TemplateOut>, Record<string, never>, void>;
   findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateOut>;
   /**
    * Find By Name

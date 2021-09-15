@@ -54,6 +54,30 @@ export interface TasksService {
    * @param rql an optional rql string
    * @returns the first element found
    */
+  /**
+   * Request a list of all tasks
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns Task[]
+   */
+  findAll(options?: OptionsWithRql): Promise<Task[]>;
+  /**
+   * Request a list of all tasks
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_TASKS` | `gobal` | **Required** for this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns Task[]
+   */
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<Task>, Record<string, never>, void>;
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
   /**
    * Find First
