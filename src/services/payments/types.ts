@@ -447,73 +447,130 @@ export interface PaymentsAppStoreService {
 }
 
 export interface PaymentsAppStoreSubscriptionsService {
-  /**
-   * Get a list of App Store subscriptions
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none |  | List App Store subscriptions related to you
-   * `VIEW_APP_STORE_SUBSCRIPTIONS` | `global` | List App Store subscriptions related to all users
-   * @returns PagedResult<AppStoreSubscription>
-   */
-  getSubscriptions(
-    options?: OptionsBase
-  ): Promise<PagedResult<AppStoreSubscription>>;
-  /**
-   * Get a list of configured App Store subscription products
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none |  | Everyone can use this endpoint
-   * @returns PagedResult<AppStoreSubscriptionProduct>
-   */
-  getSubscriptionsProducts(
-    options?: OptionsBase
-  ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
-  /**
-   * Create an App Store subscription product
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * `CREATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
-   * @param requestBody AppStoreSubscriptionProductCreation
-   * @returns AppStoreSubscriptionProduct
-   * @throws {ResourceAlreadyExistsError}
-   */
-  createSubscriptionsProduct(
-    requestBody: AppStoreSubscriptionProductCreation,
-    options?: OptionsBase
-  ): Promise<AppStoreSubscriptionProduct>;
-  /**
-   * Delete an App Store subscription product
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * `DELETE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
-   * @param productId
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
-  removeSubscriptionsProduct(
-    productId: ObjectId,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
-  /**
-   * Update an App Store subscription product
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
-   * @param productId
-   * @param requestBody AppStoreSubscriptionProductUpdateSchema
-   * @returns AffectedRecords
-   * @throws {ResourceUnknownError}
-   */
-  updateSubscriptionsProduct(
-    productId: ObjectId,
-    requestBody: AppStoreSubscriptionProductUpdateSchema,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  subscriptions: {
+    /**
+     * Get a list of App Store subscriptions
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List App Store subscriptions related to you
+     * `VIEW_APP_STORE_SUBSCRIPTIONS` | `global` | List App Store subscriptions related to all users
+     * @returns PagedResult<AppStoreSubscription>
+     */
+    find(options?: OptionsWithRql): Promise<PagedResult<AppStoreSubscription>>;
+    /**
+     * Request a list of all App Store subscriptions
+     *
+     * Do not pass in an rql with limit operator!
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List App Store subscriptions related to you
+     * `VIEW_APP_STORE_SUBSCRIPTIONS` | `global` | List App Store subscriptions related to all users
+     * @returns AppStoreSubscription[]
+     */
+    findAll(options?: OptionsWithRql): Promise<AppStoreSubscription[]>;
+    /**
+     * Request a list of all App Store subscriptions
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List App Store subscriptions related to you
+     * `VIEW_APP_STORE_SUBSCRIPTIONS` | `global` | List App Store subscriptions related to all users
+     * @returns AppStoreSubscription[]
+     */
+    findAllIterator(
+      options?: OptionsWithRql
+    ): AsyncGenerator<
+      PagedResult<AppStoreSubscription>,
+      Record<string, never>,
+      void
+    >;
+  };
+  products: {
+    /**
+     * Get a list of configured App Store subscription products
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | Everyone can use this endpoint
+     * @returns PagedResult<AppStoreSubscriptionProduct>
+     */
+    find(
+      options?: OptionsBase
+    ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
+    /**
+     * Request a list of all App Store subscription products
+     *
+     * Do not pass in an rql with limit operator!
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | Everyone can use this endpoint
+     * @returns AppStoreSubscriptionProduct[]
+     */
+    findAll(options?: OptionsWithRql): Promise<AppStoreSubscriptionProduct[]>;
+    /**
+     * Request a list of all App Store subscription products
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | Everyone can use this endpoint
+     * @returns AppStoreSubscriptionProduct[]
+     */
+    findAllIterator(
+      options?: OptionsWithRql
+    ): AsyncGenerator<
+      PagedResult<AppStoreSubscriptionProduct>,
+      Record<string, never>,
+      void
+    >;
+    /**
+     * Create an App Store subscription product
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * `CREATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+     * @param requestBody AppStoreSubscriptionProductCreation
+     * @returns AppStoreSubscriptionProduct
+     * @throws {ResourceAlreadyExistsError}
+     */
+
+    create(
+      requestBody: AppStoreSubscriptionProductCreation,
+      options?: OptionsBase
+    ): Promise<AppStoreSubscriptionProduct>;
+    /**
+     * Delete an App Store subscription product
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * `DELETE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+     * @param productId
+     * @returns AffectedRecords
+     * @throws {ResourceUnknownError}
+     */
+    remove(
+      productId: ObjectId,
+      options?: OptionsBase
+    ): Promise<AffectedRecords>;
+    /**
+     * Update an App Store subscription product
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * `UPDATE_APP_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+     * @param productId
+     * @param requestBody AppStoreSubscriptionProductUpdateSchema
+     * @returns AffectedRecords
+     * @throws {ResourceUnknownError}
+     */
+    update(
+      productId: ObjectId,
+      requestBody: AppStoreSubscriptionProductUpdateSchema,
+      options?: OptionsBase
+    ): Promise<AffectedRecords>;
+  };
 }
 
 export interface PaymentsOrdersService {
