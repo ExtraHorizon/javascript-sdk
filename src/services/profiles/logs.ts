@@ -21,7 +21,7 @@ export default (
 
   return {
     async find(profileId, groupId, options) {
-      return await partialApplyFind(profileId, groupId)(options);
+      return partialApplyFind(profileId, groupId)(options);
     },
 
     async findAll(profileId, groupId, options) {

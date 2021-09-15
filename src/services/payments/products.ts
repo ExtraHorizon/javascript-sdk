@@ -7,76 +7,67 @@ import { findAllIterator, findAllGeneric } from '../helpers';
 export default (
   client: HttpClient,
   httpAuth: HttpInstance
-): PaymentsProductsService => {
-  async function find(options) {
+): PaymentsProductsService => ({
+  async create(requestBody, options) {
+    return (await client.post(httpAuth, '/products', requestBody, options))
+      .data;
+  },
+
+  async find(options) {
     return (
       await client.get(httpAuth, `/products${options?.rql || ''}`, options)
     ).data;
-  }
+  },
 
-  return {
-    async create(requestBody, options) {
-      return (await client.post(httpAuth, '/products', requestBody, options))
-        .data;
-    },
+  async findAll(this: PaymentsProductsService, options) {
+    return findAllGeneric<ProductSchema>(this.find, options);
+  },
 
-    find,
+  findAllIterator(this: PaymentsProductsService, options) {
+    return findAllIterator<ProductSchema>(this.find, options);
+  },
 
-    async findAll(options) {
-      return findAllGeneric<ProductSchema>(find, options);
-    },
+  async findById(this: PaymentsProductsService, id, options) {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    const res = await this.find({ ...options, rql: rqlWithId });
+    return res.data[0];
+  },
 
-    findAllIterator(options) {
-      return findAllIterator<ProductSchema>(find, options);
-    },
+  async findFirst(this: PaymentsProductsService, options) {
+    const res = await this.find(options);
+    return res.data[0];
+  },
 
-    async findById(this: PaymentsProductsService, id, options) {
-      const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-      const res = await find({ ...options, rql: rqlWithId });
-      return res.data[0];
-    },
+  async addTagsToProduct(rql, requestBody, options) {
+    return (
+      await client.post(
+        httpAuth,
+        `/products/addTags${rql || ''}`,
+        requestBody,
+        options
+      )
+    ).data;
+  },
 
-    async findFirst(this: PaymentsProductsService, options) {
-      const res = await find(options);
-      return res.data[0];
-    },
+  async removeTagsFromProduct(rql, requestBody, options) {
+    return (
+      await client.post(
+        httpAuth,
+        `/products/removeTags${rql || ''}`,
+        requestBody,
+        options
+      )
+    ).data;
+  },
 
-    async addTagsToProduct(rql, requestBody, options) {
-      return (
-        await client.post(
-          httpAuth,
-          `/products/addTags${rql || ''}`,
-          requestBody,
-          options
-        )
-      ).data;
-    },
+  async update(productId, requestBody, options) {
+    return (
+      await client.put(httpAuth, `/products/${productId}`, requestBody, options)
+    ).data;
+  },
 
-    async removeTagsFromProduct(rql, requestBody, options) {
-      return (
-        await client.post(
-          httpAuth,
-          `/products/removeTags${rql || ''}`,
-          requestBody,
-          options
-        )
-      ).data;
-    },
-
-    async update(productId, requestBody, options) {
-      return (
-        await client.put(
-          httpAuth,
-          `/products/${productId}`,
-          requestBody,
-          options
-        )
-      ).data;
-    },
-
-    async remove(productId, options) {
-      return (await client.delete(httpAuth, `/products/${productId}`, options))
-        .data;
-    },
-  };
-};
+  async remove(productId, options) {
+    return (await client.delete(httpAuth, `/products/${productId}`, options))
+      .data;
+  },
+});
