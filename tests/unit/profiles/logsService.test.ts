@@ -56,6 +56,57 @@ describe('Logs Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should request a list of all profile log entries', async () => {
+    nock(`${host}${PROFILES_BASE}`)
+      .get(`/${profileId}/groups/${groupId}/logs/?limit(50)`)
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(logData),
+      })
+      .get(`/${profileId}/groups/${groupId}/logs/?limit(50,50)`)
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(logData),
+      });
+    const res = await sdk.profiles.logs.findAll(profileId, groupId);
+    expect(res.length).toBe(65);
+  });
+
+  it('should request a list of all profile log entries via iterator', async () => {
+    nock(`${host}${PROFILES_BASE}`)
+      .get(`/${profileId}/groups/${groupId}/logs/?limit(50)`)
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(logData),
+      })
+      .get(`/${profileId}/groups/${groupId}/logs/?limit(50,50)`)
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(5).fill(logData),
+      });
+    const profileLogs = sdk.profiles.logs.findAllIterator(profileId, groupId);
+
+    await profileLogs.next();
+    const thirdPage = await profileLogs.next();
+    expect(thirdPage.value.data.length).toBe(5);
+  });
+
   it('should update a profile log entry', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .put(`/${profileId}/groups/${groupId}/logs/${logId}`)
