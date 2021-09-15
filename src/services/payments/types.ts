@@ -880,26 +880,86 @@ export interface PaymentsStripeService {
 }
 
 export interface PaymentsSubscriptionsService {
-  /**
-   * Get a list of subscription entitlements
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none |  | List entitlements related to you
-   * `VIEW_SUBSCRIPTION_ENTITLEMENTS` | `global` | List entitlements related to all users
-   * @returns PagedResult<SubscriptionEntitlement>
-   */
-  getEntitlements(
-    options?: OptionsBase
-  ): Promise<PagedResult<SubscriptionEntitlement>>;
-  /**
-   * Get a list of subscription events
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none |  | List events related to you
-   * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
-   * @returns PagedResult<SubscriptionEvent>
-   */
-  getEvents(options?: OptionsBase): Promise<PagedResult<SubscriptionEvent>>;
+  entitlements: {
+    /**
+     * Get a list of subscription entitlements
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List entitlements related to you
+     * `VIEW_SUBSCRIPTION_ENTITLEMENTS` | `global` | List entitlements related to all users
+     * @returns PagedResult<SubscriptionEntitlement>
+     */
+    find(
+      options?: OptionsWithRql
+    ): Promise<PagedResult<SubscriptionEntitlement>>;
+    /**
+     * Request a list of all subscription entitlements
+     *
+     * Do not pass in an rql with limit operator!
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List entitlements related to you
+     * `VIEW_SUBSCRIPTION_ENTITLEMENTS` | `global` | List entitlements related to all users
+     * @returns SubscriptionEntitlement[]
+     */
+    findAll(options?: OptionsWithRql): Promise<SubscriptionEntitlement[]>;
+    /**
+     * Request a list of all subscription entitlements
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List entitlements related to you
+     * `VIEW_SUBSCRIPTION_ENTITLEMENTS` | `global` | List entitlements related to all users
+     * @returns SubscriptionEntitlement[]
+     */
+    findAllIterator(
+      options?: OptionsWithRql
+    ): AsyncGenerator<
+      PagedResult<SubscriptionEntitlement>,
+      Record<string, never>,
+      void
+    >;
+  };
+  events: {
+    /**
+     * Get a list of subscription events
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List events related to you
+     * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
+     * @returns PagedResult<SubscriptionEvent>
+     */
+    find(options?: OptionsWithRql): Promise<PagedResult<SubscriptionEvent>>;
+    /**
+     * Request a list of all subscription entitlements
+     *
+     * Do not pass in an rql with limit operator!
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List events related to you
+     * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
+     * @returns SubscriptionEvent[]
+     */
+    findAll(options?: OptionsWithRql): Promise<SubscriptionEvent[]>;
+    /**
+     * Request a list of all subscription entitlements
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List events related to you
+     * `VIEW_SUBSCRIPTION_EVENTS` | `global` | List events related to all users
+     * @returns SubscriptionEvent[]
+     */
+    findAllIterator(
+      options?: OptionsWithRql
+    ): AsyncGenerator<
+      PagedResult<SubscriptionEvent>,
+      Record<string, never>,
+      void
+    >;
+  };
 }
