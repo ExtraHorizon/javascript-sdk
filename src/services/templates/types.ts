@@ -81,12 +81,6 @@ export interface TemplatesService {
    */
   find(options?: OptionsWithRql): Promise<PagedResult<TemplateOut>>;
   /**
-   * Find By Id
-   * @param id the Id to search for
-   * @param rql an optional rql string
-   * @returns the first element found
-   */
-  /**
    * Request a list of all templates
    *
    * Do not pass in an rql with limit operator!
