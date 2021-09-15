@@ -47,6 +47,57 @@ describe('Tasks Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should request a list of all tasks', async () => {
+    nock(`${host}${TASKS_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(taskData),
+      })
+      .get('/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(taskData),
+      });
+    const res = await sdk.tasks.findAll();
+    expect(res.length).toBe(65);
+  });
+
+  it('should request a list of all tasks via iterator', async () => {
+    nock(`${host}${TASKS_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(taskData),
+      })
+      .get('/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(5).fill(taskData),
+      });
+    const tasks = sdk.tasks.findAllIterator();
+
+    await tasks.next();
+    const thirdPage = await tasks.next();
+    expect(thirdPage.value.data.length).toBe(5);
+  });
+
   it('should find a task by id', async () => {
     nock(`${host}${TASKS_BASE}`)
       .get(`/?eq(id,${taskId})`)

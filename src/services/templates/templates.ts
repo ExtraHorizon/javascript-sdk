@@ -1,8 +1,9 @@
 import type { HttpInstance } from '../../types';
 import { ResultResponse, Results } from '../types';
 import { rqlBuilder } from '../../rql';
-import type { TemplatesService } from './types';
+import type { TemplateOut, TemplatesService } from './types';
 import { HttpClient } from '../http-client';
+import { findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   client: HttpClient,
@@ -15,6 +16,14 @@ export default (
 
   async find(options) {
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+  },
+
+  async findAll(this: TemplatesService, options) {
+    return findAllGeneric<TemplateOut>(this.find, options);
+  },
+
+  findAllIterator(this: TemplatesService, options) {
+    return findAllIterator<TemplateOut>(this.find, options);
   },
 
   async findById(this: TemplatesService, id, options) {

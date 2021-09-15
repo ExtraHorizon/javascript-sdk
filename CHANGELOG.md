@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v5.0.0]
+
+### Breaking Changes
+
+- The payments services has had some refactoring.
+
+```diff
+- sdk.payments.subscriptions.getEntitlements();
+- sdk.payments.subscriptions.getEvents();
++ sdk.payments.subscriptions.entitlements.find();
++ sdk.payments.subscriptions.events.find();
+```
+
+```diff
+- sdk.payments.appStoreSubscriptions.getSubscriptions();
+- sdk.payments.appStoreSubscriptions.getSubscriptionsProducts();
++ sdk.payments.appStoreSubscriptioons.subscriptions.find();
++ sdk.payments.appStoreSubscriptioons.products.find();
+
+- sdk.payments.appStoreSubscriptions.createSubscriptionsProduct();
+- sdk.payments.appStoreSubscriptions.removeSubscriptionsProduct();
+- sdk.payments.appStoreSubscriptions.updateSubscriptionsProduct();
++ sdk.payments.appStoreSubscriptions.products.create();
++ sdk.payments.appStoreSubscriptions.products.remove();
++ sdk.payments.appStoreSubscriptions.products.update();
+```
+
+### Added
+
+- `parseGlobalPermissions` is a function to parse strings are return valid permissions
+
+### Changed
+
+- `userId` getter on the `OAuthClient` interface now returns a `Promise<string>` in stead of `string`. You can access this on `sdk.raw.userId`
+
 ## [v4.5.0]
 
 ### Added

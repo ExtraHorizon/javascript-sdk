@@ -1,51 +1,97 @@
 import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
-import type { PaymentsAppStoreSubscriptionsService } from './types';
+import type {
+  PaymentsAppStoreSubscriptionsService,
+  AppStoreSubscription,
+  AppStoreSubscriptionProduct,
+} from './types';
+import { findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): PaymentsAppStoreSubscriptionsService => ({
-  async getSubscriptions(options) {
-    return (await client.get(httpAuth, '/appStore/subscriptions', options))
-      .data;
+  subscriptions: {
+    async find(options) {
+      return (
+        await client.get(
+          httpAuth,
+          `/appStore/subscriptions/${options?.rql || ''}`,
+          options
+        )
+      ).data;
+    },
+
+    async findAll(
+      this: PaymentsAppStoreSubscriptionsService['subscriptions'],
+      options
+    ) {
+      return findAllGeneric<AppStoreSubscription>(this.find, options);
+    },
+
+    findAllIterator(
+      this: PaymentsAppStoreSubscriptionsService['subscriptions'],
+      options
+    ) {
+      return findAllIterator<AppStoreSubscription>(this.find, options);
+    },
   },
 
-  async getSubscriptionsProducts(options) {
-    return (
-      await client.get(httpAuth, '/appStore/subscriptions/products', options)
-    ).data;
-  },
+  products: {
+    async find(options) {
+      return (
+        await client.get(
+          httpAuth,
+          `/appStore/subscriptions/products/${options?.rql || ''}`,
+          options
+        )
+      ).data;
+    },
 
-  async createSubscriptionsProduct(requestBody, options) {
-    return (
-      await client.post(
-        httpAuth,
-        '/appStore/subscriptions/products',
-        requestBody,
-        options
-      )
-    ).data;
-  },
+    async findAll(
+      this: PaymentsAppStoreSubscriptionsService['products'],
+      options
+    ) {
+      return findAllGeneric<AppStoreSubscriptionProduct>(this.find, options);
+    },
 
-  async removeSubscriptionsProduct(productId, options) {
-    return (
-      await client.delete(
-        httpAuth,
-        `/appStore/subscriptions/products/${productId}`,
-        options
-      )
-    ).data;
-  },
+    findAllIterator(
+      this: PaymentsAppStoreSubscriptionsService['products'],
+      options
+    ) {
+      return findAllIterator<AppStoreSubscriptionProduct>(this.find, options);
+    },
 
-  async updateSubscriptionsProduct(productId, requestBody, options) {
-    return (
-      await client.put(
-        httpAuth,
-        `/appStore/subscriptions/products/${productId}`,
-        requestBody,
-        options
-      )
-    ).data;
+    async create(requestBody, options) {
+      return (
+        await client.post(
+          httpAuth,
+          '/appStore/subscriptions/products',
+          requestBody,
+          options
+        )
+      ).data;
+    },
+
+    async remove(productId, options) {
+      return (
+        await client.delete(
+          httpAuth,
+          `/appStore/subscriptions/products/${productId}`,
+          options
+        )
+      ).data;
+    },
+
+    async update(productId, requestBody, options) {
+      return (
+        await client.put(
+          httpAuth,
+          `/appStore/subscriptions/products/${productId}`,
+          requestBody,
+          options
+        )
+      ).data;
+    },
   },
 });

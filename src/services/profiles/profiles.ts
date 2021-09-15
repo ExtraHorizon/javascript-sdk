@@ -1,7 +1,8 @@
 import type { HttpInstance } from '../../types';
 import { rqlBuilder } from '../../rql';
-import { ProfilesService } from './types';
+import { ProfilesService, Profile } from './types';
 import { HttpClient } from '../http-client';
+import { findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   client: HttpClient,
@@ -9,6 +10,14 @@ export default (
 ): ProfilesService => ({
   async find(options) {
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+  },
+
+  async findAll(this: ProfilesService, options) {
+    return findAllGeneric<Profile>(this.find, options);
+  },
+
+  findAllIterator(this: ProfilesService, options) {
+    return findAllIterator<Profile>(this.find, options);
   },
 
   async findById(this: ProfilesService, id, options) {

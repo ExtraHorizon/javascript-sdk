@@ -235,6 +235,42 @@ export interface ProfilesLogsService {
     options?: OptionsWithRql
   ): Promise<PagedResult<LogEntry>>;
   /**
+   * Request a list of all profile log entries
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_PROFILE_LOG_ENTRIES` | `staff enlistment` | Retrieve a list of log entries for any profile of this group
+   * `VIEW_PROFILE_LOG_ENTRIES` | `global` | Retrieve a list of log entries for any profile of any group
+   * @param profileId Id of the targeted profile
+   * @param groupId Id of the targeted group
+   * @param rql Add filters to the requested list.
+   * @returns LogEntry[]
+   */
+  findAll(
+    profileId: ObjectId,
+    groupId: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<LogEntry[]>;
+  /**
+   * Request a list of all profile log entries
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_PROFILE_LOG_ENTRIES` | `staff enlistment` | Retrieve a list of log entries for any profile of this group
+   * `VIEW_PROFILE_LOG_ENTRIES` | `global` | Retrieve a list of log entries for any profile of any group
+   * @param profileId Id of the targeted profile
+   * @param groupId Id of the targeted group
+   * @param rql Add filters to the requested list.
+   * @returns LogEntry[]
+   */
+  findAllIterator(
+    profileId: ObjectId,
+    groupId: ObjectId,
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<LogEntry>, Record<string, never>, void>;
+  /**
    * Update a profile log entry
    *
    * Permission | Scope | Effect
@@ -289,6 +325,34 @@ export interface ProfilesService {
    * @returns PagedResult<Profile>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Profile>>;
+  /**
+   * Request a list of all profiles
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | View your profile
+   * none | `staff enlistment` | View all the profiles of the group
+   * `VIEW_PATIENTS` | `global` | View all profiles
+   * @param rql Add filters to the requested list.
+   * @returns Profile[]
+   */
+  findAll(options?: OptionsWithRql): Promise<Profile[]>;
+  /**
+   * Request a list of all profiles
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | View your profile
+   * none | `staff enlistment` | View all the profiles of the group
+   * `VIEW_PATIENTS` | `global` | View all profiles
+   * @param rql Add filters to the requested list.
+   * @returns Profile[]
+   */
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<Profile>, Record<string, never>, void>;
   /**
    * Find By Id
    * @param id the Id to search for

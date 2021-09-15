@@ -9,7 +9,7 @@ import {
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth1HttpClient } from '../../../src/http/oauth1';
 import { parseAuthParams } from '../../../src/http/utils';
-import { ConfigOauth1 } from '../../../src/types';
+import { ConfigOauth1, OAuthClient } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',
@@ -33,7 +33,7 @@ describe('http client', () => {
   const config = validateConfig(mockParams) as ConfigOauth1;
   const http = createHttpClient({ ...config, packageVersion: '' });
   const authConfig = parseAuthParams(oauthEmailMock);
-  let httpWithAuth;
+  let httpWithAuth: OAuthClient;
 
   beforeEach(() => {
     nock.cleanAll();
@@ -112,11 +112,31 @@ describe('http client', () => {
 
   it('should authorize with valid token/tokenSecret', async () => {
     expect.assertions(1);
-    nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, {});
+    nock(mockParams.host)
+      .get(`${USER_BASE}/me`)
+      .reply(200, { id: 'mockUserId' });
 
     try {
       await httpWithAuth.authenticate(parseAuthParams(oauthTokenMock));
-      expect(true).toBe(true);
+      const userId = await httpWithAuth.userId;
+      expect(userId).toBeDefined();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  it('should authorize with valid token/tokenSecret/skipTokenCheck and get a userId', async () => {
+    expect.assertions(1);
+    nock(mockParams.host)
+      .get(`${USER_BASE}/me`)
+      .reply(200, { id: 'mockUserId' });
+
+    try {
+      await httpWithAuth.authenticate(
+        parseAuthParams({ ...oauthTokenMock, skipTokenCheck: true })
+      );
+      const userId = await httpWithAuth.userId;
+      expect(userId).toBeDefined();
     } catch (error) {
       console.log(error);
     }
