@@ -529,6 +529,32 @@ export interface PaymentsOrdersService {
    */
   find(options?: OptionsWithRql): Promise<PagedResult<OrderSchema>>;
   /**
+   * Request a list of all orders
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | List orders created by you
+   * `VIEW_STRIPE_ORDERS` | `global` | List orders created by all users
+   * @param rql Add filters to the requested list.
+   * @returns OrderSchema[]
+   */
+  findAll(options?: OptionsWithRql): Promise<OrderSchema[]>;
+  /**
+   * Request a list of all orders
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | List orders created by you
+   * `VIEW_STRIPE_ORDERS` | `global` | List orders created by all users
+   * @param rql Add filters to the requested list.
+   * @returns OrderSchema[]
+   */
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<OrderSchema>, Record<string, never>, void>;
+  /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
@@ -624,6 +650,30 @@ export interface PaymentsProductsService {
    * @returns PagedResult<ProductSchema>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<ProductSchema>>;
+  /**
+   * Request a list of all products
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns ProductSchema[]
+   */
+  findAll(options?: OptionsWithRql): Promise<ProductSchema[]>;
+  /**
+   * Request a list of all products
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns ProductSchema[]
+   */
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<ProductSchema>, Record<string, never>, void>;
   /**
    * Find By Id
    * @param id the Id to search for
