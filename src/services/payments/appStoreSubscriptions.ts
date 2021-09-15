@@ -22,11 +22,17 @@ export default (
       ).data;
     },
 
-    async findAll(options) {
+    async findAll(
+      this: PaymentsAppStoreSubscriptionsService['subscriptions'],
+      options
+    ) {
       return findAllGeneric<AppStoreSubscription>(this.find, options);
     },
 
-    findAllIterator(options) {
+    findAllIterator(
+      this: PaymentsAppStoreSubscriptionsService['subscriptions'],
+      options
+    ) {
       return findAllIterator<AppStoreSubscription>(this.find, options);
     },
   },
@@ -42,11 +48,17 @@ export default (
       ).data;
     },
 
-    async findAll(options) {
+    async findAll(
+      this: PaymentsAppStoreSubscriptionsService['products'],
+      options
+    ) {
       return findAllGeneric<AppStoreSubscriptionProduct>(this.find, options);
     },
 
-    findAllIterator(options) {
+    findAllIterator(
+      this: PaymentsAppStoreSubscriptionsService['products'],
+      options
+    ) {
       return findAllIterator<AppStoreSubscriptionProduct>(this.find, options);
     },
 

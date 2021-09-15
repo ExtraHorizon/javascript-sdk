@@ -246,7 +246,7 @@ export interface ProfilesLogsService {
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @returns Profile[]
+   * @returns LogEntry[]
    */
   findAll(
     profileId: ObjectId,
@@ -263,7 +263,7 @@ export interface ProfilesLogsService {
    * @param profileId Id of the targeted profile
    * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
-   * @returns Profile[]
+   * @returns LogEntry[]
    */
   findAllIterator(
     profileId: ObjectId,

@@ -13,11 +13,11 @@ export default (
       .data;
   },
 
-  async findAll(options) {
+  async findAll(this: PaymentsOrdersService, options) {
     return findAllGeneric<OrderSchema>(this.find, options);
   },
 
-  findAllIterator(options) {
+  findAllIterator(this: PaymentsOrdersService, options) {
     return findAllIterator<OrderSchema>(this.find, options);
   },
 

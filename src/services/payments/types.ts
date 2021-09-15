@@ -991,7 +991,7 @@ export interface PaymentsSubscriptionsService {
      */
     find(options?: OptionsWithRql): Promise<PagedResult<SubscriptionEvent>>;
     /**
-     * Request a list of all subscription entitlements
+     * Request a list of all subscription events
      *
      * Do not pass in an rql with limit operator!
      *
@@ -1003,7 +1003,7 @@ export interface PaymentsSubscriptionsService {
      */
     findAll(options?: OptionsWithRql): Promise<SubscriptionEvent[]>;
     /**
-     * Request a list of all subscription entitlements
+     * Request a list of all subscription events
      *
      * Permission | Scope | Effect
      * - | - | -
