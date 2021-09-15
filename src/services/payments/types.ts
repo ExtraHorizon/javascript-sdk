@@ -497,7 +497,7 @@ export interface PaymentsAppStoreSubscriptionsService {
      * @returns PagedResult<AppStoreSubscriptionProduct>
      */
     find(
-      options?: OptionsBase
+      options?: OptionsWithRql
     ): Promise<PagedResult<AppStoreSubscriptionProduct>>;
     /**
      * Request a list of all App Store subscription products
