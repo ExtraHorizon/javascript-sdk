@@ -1,7 +1,8 @@
 import type { HttpInstance } from '../../types';
-import type { PaymentsProductsService } from './types';
+import type { PaymentsProductsService, ProductSchema } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
+import { findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   client: HttpClient,
@@ -16,6 +17,14 @@ export default (
     return (
       await client.get(httpAuth, `/products${options?.rql || ''}`, options)
     ).data;
+  },
+
+  async findAll(this: PaymentsProductsService, options) {
+    return findAllGeneric<ProductSchema>(this.find, options);
+  },
+
+  findAllIterator(this: PaymentsProductsService, options) {
+    return findAllIterator<ProductSchema>(this.find, options);
   },
 
   async findById(this: PaymentsProductsService, id, options) {

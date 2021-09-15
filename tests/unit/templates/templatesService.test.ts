@@ -50,6 +50,57 @@ describe('Template Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should request a list of all templates', async () => {
+    nock(`${host}${TEMPLATE_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(templateData),
+      })
+      .get('/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(templateData),
+      });
+    const res = await sdk.templates.findAll();
+    expect(res.length).toBe(65);
+  });
+
+  it('should request a list of all templates via iterator', async () => {
+    nock(`${host}${TEMPLATE_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(templateData),
+      })
+      .get('/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(5).fill(templateData),
+      });
+    const templates = sdk.templates.findAllIterator();
+
+    await templates.next();
+    const thirdPage = await templates.next();
+    expect(thirdPage.value.data.length).toBe(5);
+  });
+
   it('should find a template by id', async () => {
     nock(`${host}${TEMPLATE_BASE}`)
       .get(`/?eq(id,${templateId})`)

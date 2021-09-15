@@ -59,6 +59,7 @@ export const profileData: Profile = {
 };
 
 export const groupData: Group = {
+  groupId: '58074804b2148f3b28ad759a',
   reason: 'string',
   patientId: 'string',
   customFields: {

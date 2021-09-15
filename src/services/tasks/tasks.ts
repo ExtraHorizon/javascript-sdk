@@ -1,11 +1,20 @@
 import type { HttpInstance } from '../../types';
-import type { TasksService } from './types';
+import type { Task, TasksService } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
+import { findAllIterator, findAllGeneric } from '../helpers';
 
 export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   async find(options) {
     return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+  },
+
+  async findAll(this: TasksService, options) {
+    return findAllGeneric<Task>(this.find, options);
+  },
+
+  findAllIterator(this: TasksService, options) {
+    return findAllIterator<Task>(this.find, options);
   },
 
   async findById(this: TasksService, id, options) {

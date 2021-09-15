@@ -49,6 +49,57 @@ describe('Profiles Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should request a list of all profiles', async () => {
+    nock(`${host}${PROFILES_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(profileData),
+      })
+      .get('/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(profileData),
+      });
+    const res = await sdk.profiles.findAll();
+    expect(res.length).toBe(65);
+  });
+
+  it('should request a list of all profiles via iterator', async () => {
+    nock(`${host}${PROFILES_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(profileData),
+      })
+      .get('/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(5).fill(profileData),
+      });
+    const profiles = sdk.profiles.findAllIterator();
+
+    await profiles.next();
+    const thirdPage = await profiles.next();
+    expect(thirdPage.value.data.length).toBe(5);
+  });
+
   it('should find a profile by id', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get(`/?eq(id,${profileId})`)

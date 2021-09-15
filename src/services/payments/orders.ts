@@ -1,7 +1,8 @@
 import type { HttpInstance } from '../../types';
-import type { PaymentsOrdersService } from './types';
+import type { PaymentsOrdersService, OrderSchema } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
+import { findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   client: HttpClient,
@@ -10,6 +11,14 @@ export default (
   async find(options) {
     return (await client.get(httpAuth, `/orders${options?.rql || ''}`, options))
       .data;
+  },
+
+  async findAll(this: PaymentsOrdersService, options) {
+    return findAllGeneric<OrderSchema>(this.find, options);
+  },
+
+  findAllIterator(this: PaymentsOrdersService, options) {
+    return findAllIterator<OrderSchema>(this.find, options);
   },
 
   async findById(this: PaymentsOrdersService, id, options) {
