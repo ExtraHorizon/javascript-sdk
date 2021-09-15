@@ -23,7 +23,6 @@ export default (
     },
 
     async findAll(options) {
-      console.log('this', this);
       return findAllGeneric<AppStoreSubscription>(this.find, options);
     },
 
