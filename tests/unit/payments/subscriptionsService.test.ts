@@ -36,20 +36,20 @@ describe('Subscriptions Service', () => {
 
   it('should get a list of subscription entitlements', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/subscriptions/entitlements')
+      .get('/subscriptions/entitlements/')
       .reply(200, createPagedResponse(subscriptionEntitlementData));
 
-    const res = await sdk.payments.subscriptions.getEntitlements();
+    const res = await sdk.payments.subscriptions.entitlements.find();
 
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   it('should get a list of subscription events', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/subscriptions/events')
+      .get('/subscriptions/events/')
       .reply(200, createPagedResponse(subscriptionEventData));
 
-    const res = await sdk.payments.subscriptions.getEvents();
+    const res = await sdk.payments.subscriptions.events.find();
 
     expect(res.data.length).toBeGreaterThan(0);
   });

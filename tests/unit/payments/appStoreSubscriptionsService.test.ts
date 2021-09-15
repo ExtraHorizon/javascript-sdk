@@ -37,7 +37,7 @@ describe('App Store Subscriptions Service', () => {
 
   it('should get a list of App Store subscriptions', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/appStore/subscriptions')
+      .get('/appStore/subscriptions/')
       .reply(200, createPagedResponse(appStoreSubscription));
 
     const res = await sdk.payments.appStoreSubscriptions.subscriptions.find();
@@ -47,7 +47,7 @@ describe('App Store Subscriptions Service', () => {
 
   it('should get a list of configured App Store subscription products', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/appStore/subscriptions/products')
+      .get('/appStore/subscriptions/products/')
       .reply(200, createPagedResponse(appStoreSubscriptionProduct));
 
     const res = await sdk.payments.appStoreSubscriptions.products.find();
