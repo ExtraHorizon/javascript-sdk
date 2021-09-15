@@ -45,6 +45,59 @@ describe('App Store Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should request a list of all App Store subscriptions', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/appStore/subscriptions/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(appStoreSubscription),
+      })
+      .get('/appStore/subscriptions/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(appStoreSubscription),
+      });
+    const res =
+      await sdk.payments.appStoreSubscriptions.subscriptions.findAll();
+    expect(res.length).toBe(65);
+  });
+
+  it('should request a list of all App Store subscriptions via iterator', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/appStore/subscriptions/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(appStoreSubscription),
+      })
+      .get('/appStore/subscriptions/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(5).fill(appStoreSubscription),
+      });
+    const subscriptions =
+      sdk.payments.appStoreSubscriptions.subscriptions.findAllIterator();
+
+    await subscriptions.next();
+    const thirdPage = await subscriptions.next();
+    expect(thirdPage.value.data.length).toBe(5);
+  });
+
   it('should get a list of configured App Store subscription products', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/products/')
@@ -53,6 +106,58 @@ describe('App Store Subscriptions Service', () => {
     const res = await sdk.payments.appStoreSubscriptions.products.find();
 
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should request a list of all App Store subscription products', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/appStore/subscriptions/products/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(appStoreSubscriptionProduct),
+      })
+      .get('/appStore/subscriptions/products/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(appStoreSubscriptionProduct),
+      });
+    const res = await sdk.payments.appStoreSubscriptions.products.findAll();
+    expect(res.length).toBe(65);
+  });
+
+  it('should request a list of all App Store subscription products via iterator', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/appStore/subscriptions/products/?limit(50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(appStoreSubscriptionProduct),
+      })
+      .get('/appStore/subscriptions/products/?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(5).fill(appStoreSubscriptionProduct),
+      });
+    const products =
+      sdk.payments.appStoreSubscriptions.products.findAllIterator();
+
+    await products.next();
+    const thirdPage = await products.next();
+    expect(thirdPage.value.data.length).toBe(5);
   });
 
   it('should create an App Store subscription product', async () => {
