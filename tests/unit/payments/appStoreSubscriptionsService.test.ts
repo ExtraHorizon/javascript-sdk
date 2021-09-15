@@ -40,7 +40,7 @@ describe('App Store Subscriptions Service', () => {
       .get('/appStore/subscriptions')
       .reply(200, createPagedResponse(appStoreSubscription));
 
-    const res = await sdk.payments.appStoreSubscriptions.getSubscriptions();
+    const res = await sdk.payments.appStoreSubscriptions.subscriptions.find();
 
     expect(res.data.length).toBeGreaterThan(0);
   });
@@ -50,8 +50,7 @@ describe('App Store Subscriptions Service', () => {
       .get('/appStore/subscriptions/products')
       .reply(200, createPagedResponse(appStoreSubscriptionProduct));
 
-    const res =
-      await sdk.payments.appStoreSubscriptions.getSubscriptionsProducts();
+    const res = await sdk.payments.appStoreSubscriptions.products.find();
 
     expect(res.data.length).toBeGreaterThan(0);
   });
@@ -62,7 +61,7 @@ describe('App Store Subscriptions Service', () => {
       .reply(200, appStoreSubscriptionProduct);
 
     const subscriptionProduct =
-      await sdk.payments.appStoreSubscriptions.createSubscriptionsProduct({
+      await sdk.payments.appStoreSubscriptions.products.create({
         name: 'FibriCheck Premium Monthly',
         appStoreAppBundleId: 'com.qompium.fibricheck',
         appStoreProductId: 'fibricheck-premium-monthly',
@@ -82,10 +81,9 @@ describe('App Store Subscriptions Service', () => {
         affectedRecords: 1,
       });
 
-    const res =
-      await sdk.payments.appStoreSubscriptions.removeSubscriptionsProduct(
-        appStoreSubscriptionProductId
-      );
+    const res = await sdk.payments.appStoreSubscriptions.products.remove(
+      appStoreSubscriptionProductId
+    );
 
     expect(res.affectedRecords).toBe(1);
   });
@@ -97,13 +95,12 @@ describe('App Store Subscriptions Service', () => {
         affectedRecords: 1,
       });
 
-    const res =
-      await sdk.payments.appStoreSubscriptions.updateSubscriptionsProduct(
-        appStoreSubscriptionProductId,
-        {
-          name: 'FibriCheck Premium Monthly',
-        }
-      );
+    const res = await sdk.payments.appStoreSubscriptions.products.update(
+      appStoreSubscriptionProductId,
+      {
+        name: 'FibriCheck Premium Monthly',
+      }
+    );
 
     expect(res.affectedRecords).toBe(1);
   });
