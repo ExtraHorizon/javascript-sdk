@@ -54,6 +54,7 @@ export interface TasksService {
    * @param rql an optional rql string
    * @returns the first element found
    */
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
   /**
    * Request a list of all tasks
    *
@@ -78,7 +79,6 @@ export interface TasksService {
   findAllIterator(
     options?: OptionsWithRql
   ): AsyncGenerator<PagedResult<Task>, Record<string, never>, void>;
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
   /**
    * Find First
    * @param rql an optional rql string
