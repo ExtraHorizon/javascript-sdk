@@ -145,6 +145,26 @@ export interface PresenceToken {
   presenceToken: string;
 }
 
+export interface SsoToken {
+  id: string;
+  ssoToken: string;
+  userId: string;
+  createdByApplicationId: string;
+  expiryTimestamp: Date;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
+}
+
+export interface SsoResponse {
+  id: string;
+  userId: string;
+  applicationid: string;
+  token: string;
+  tokenSecret: string;
+  lastUsedTimestamp: Date;
+  creationTimestamp: Date;
+}
+
 export interface AuthApplicationsService {
   /**
    * Create an OAuth application
@@ -363,4 +383,29 @@ export interface AuthUsersService {
     data: PresenceToken,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+}
+
+export interface AuthOauth1Service {
+  /**
+   * Generate an SSO token with OAuth 1 authentication
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/SSO/post_oauth1_ssoTokens_generate
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {UserNotAuthenticatedError}
+   */
+  generateSsoToken(): Promise<SsoToken>;
+  /**
+   * Consume an SSO token to get OAuth 1 tokens
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/SSO/post_oauth1_ssoTokens_generate
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {ResourceUnknownError}
+   */
+  consumeSsoToken(ssoToken: string): Promise<SsoResponse>;
 }
