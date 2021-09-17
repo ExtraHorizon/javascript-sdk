@@ -57,4 +57,30 @@ describe('Auth - OAuth1', () => {
       code: 'code',
     });
   });
+
+  it('should generate a ssoToken', async () => {
+    const ssoToken = {
+      ssoToken: 'fakeSsoToken',
+    };
+    nock(`${host}${AUTH_BASE}`)
+      .post('/oauth1/ssoTokens/generate')
+      .reply(200, ssoToken);
+
+    const ssoTokenResult = await sdk.auth.oauth1.generateSsoToken();
+    expect(ssoTokenResult.ssoToken).toEqual(ssoToken.ssoToken);
+  });
+
+  it('should consume a ssoToken', async () => {
+    const ssoResponse = {
+      token: 'fakeToken',
+    };
+    nock(`${host}${AUTH_BASE}`)
+      .post('/oauth1/ssoTokens/consume')
+      .reply(200, ssoResponse);
+
+    const ssoTokenResult = await sdk.auth.oauth1.consumeSsoToken(
+      'fakeSsoToken'
+    );
+    expect(ssoTokenResult.token).toEqual(ssoResponse.token);
+  });
 });

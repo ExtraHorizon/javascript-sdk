@@ -4,6 +4,7 @@ import httpClient from '../http-client';
 import { OptionsBase, Results } from '../types';
 import applications from './applications';
 import oauth2 from './oauth2';
+import oauth1 from './oauth1';
 import users from './users';
 import { AUTH_BASE } from '../../constants';
 
@@ -15,6 +16,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
   return {
     applications: applications(authClient, httpWithAuth),
     oauth2: oauth2(authClient, httpWithAuth),
+    oauth1: oauth1(authClient, httpWithAuth),
     users: users(authClient, httpWithAuth),
 
     /**

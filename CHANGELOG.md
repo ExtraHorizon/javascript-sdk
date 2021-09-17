@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- `oauth1/ssoTokens/generate` and `oauth1/ssoTokens/consume` are added under the `sdk.auth` scope. [More info](https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/SSO)
+
 ## [v5.0.0]
 
 ### Breaking Changes
