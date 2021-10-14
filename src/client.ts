@@ -215,7 +215,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
       : createOAuth2HttpClient(http, config);
 
   return {
-    users: usersService(httpWithAuth),
+    users: usersService(httpWithAuth, http),
     data: dataService(httpWithAuth),
     files: filesService(httpWithAuth),
     tasks: tasksService(httpWithAuth),

@@ -6,7 +6,8 @@ import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   userClient: HttpClient,
-  httpWithAuth: HttpInstance
+  httpWithAuth: HttpInstance,
+  http: HttpInstance
 ): UsersService => {
   async function find(options) {
     return (
@@ -160,7 +161,7 @@ export default (
     async requestPasswordReset(email, options) {
       return (
         (
-          await userClient.get(httpWithAuth, '/forgot_password', {
+          await userClient.get(http, '/forgot_password', {
             ...options,
             params: {
               email,
