@@ -142,4 +142,19 @@ describe('rql string builder', () => {
       rqlParser('or((like(name,btfit))');
     }).toThrowError();
   });
+
+  it('should build a valid rql with a ISOstring', async () => {
+    const timestamp = new Date(0).toISOString();
+    const rql = rqlParser(`eq(timestamp,${timestamp})`);
+
+    expect(rql).toBe('eq(timestamp,1970-01-01T00:00:00.000Z)');
+  });
+
+  it('should throw an error on parsing invalid ISOString in RQL to rqlString', async () => {
+    const invalidTimestamp = '1970-21-01T00:00:00.000Z';
+
+    expect(() => {
+      rqlParser(`eq(timestamp,${invalidTimestamp})`);
+    }).toThrowError();
+  });
 });
