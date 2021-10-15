@@ -317,6 +317,9 @@ function stringToValue(string, parameters) {
     return paramIndex >= 0 && parameters ? parameters[paramIndex] : undefined;
   }
   if (string.indexOf(':') > -1) {
+    if (!isNaN(Date.parse(string))) {
+      return converter(string);
+    }
     const parts = string.split(':');
     converter = converters[parts[0]];
     if (!converter) {

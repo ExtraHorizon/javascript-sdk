@@ -57,6 +57,7 @@ const mapDateValues = (value, key) => {
       'startTimestamp',
       'endTimestamp',
       'timestamp',
+      'paidTimestamp',
       'originalPurchaseDate',
       'lastPurchaseDate',
       'expiresDate',
