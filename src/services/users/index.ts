@@ -9,7 +9,8 @@ import { decamelizeKeys } from '../../http/utils';
 import { UsersGlobalRolesService, UsersGroupRolesService } from './types';
 
 export const usersService = (
-  httpWithAuth: HttpInstance
+  httpWithAuth: HttpInstance,
+  http: HttpInstance
 ): ReturnType<typeof users> &
   ReturnType<typeof health> & {
     globalRoles: UsersGlobalRolesService;
@@ -21,7 +22,7 @@ export const usersService = (
   });
 
   const healthMethods = health(userClient, httpWithAuth);
-  const usersMethods = users(userClient, httpWithAuth);
+  const usersMethods = users(userClient, httpWithAuth, http);
   const groupRolesMethods = groupRoles(userClient, httpWithAuth);
   const globalRolesMethods = globalRoles(userClient, httpWithAuth);
 

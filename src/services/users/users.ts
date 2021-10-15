@@ -6,7 +6,8 @@ import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   userClient: HttpClient,
-  httpWithAuth: HttpInstance
+  httpWithAuth: HttpInstance,
+  http: HttpInstance
 ): UsersService => {
   async function find(options) {
     return (
@@ -109,9 +110,8 @@ export default (
     },
 
     async createAccount(requestBody, options) {
-      return (
-        await userClient.post(httpWithAuth, '/register', requestBody, options)
-      ).data;
+      return (await userClient.post(http, '/register', requestBody, options))
+        .data;
     },
 
     async changePassword(requestBody, options) {
@@ -134,7 +134,7 @@ export default (
     async requestEmailActivation(email, options) {
       return (
         (
-          await userClient.get(httpWithAuth, '/activation', {
+          await userClient.get(http, '/activation', {
             ...options,
             params: {
               email,
@@ -160,7 +160,7 @@ export default (
     async requestPasswordReset(email, options) {
       return (
         (
-          await userClient.get(httpWithAuth, '/forgot_password', {
+          await userClient.get(http, '/forgot_password', {
             ...options,
             params: {
               email,
@@ -192,7 +192,7 @@ export default (
 
     async isEmailAvailable(email, options) {
       return (
-        await userClient.get(httpWithAuth, '/email_available', {
+        await userClient.get(http, '/email_available', {
           ...options,
           params: {
             email,
