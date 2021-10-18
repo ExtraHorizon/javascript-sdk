@@ -50,4 +50,30 @@ export default (
     return (await client.get(httpAuth, '/appStore/receivedReceipts', options))
       .data;
   },
+
+  async getSharedSecrets(options) {
+    return (await client.get(httpAuth, '/appStore/sharedSecrets', options))
+      .data;
+  },
+
+  async createSharedSecret(requestBody, options) {
+    return (
+      await client.post(
+        httpAuth,
+        '/appStore/sharedSecrets',
+        requestBody,
+        options
+      )
+    ).data;
+  },
+
+  async removeSharedSecret(secretId, options) {
+    return (
+      await client.delete(
+        httpAuth,
+        `/appStore/sharedSecrets/${secretId}`,
+        options
+      )
+    ).data;
+  },
 });

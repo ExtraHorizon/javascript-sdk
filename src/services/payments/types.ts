@@ -375,6 +375,19 @@ export interface StripeSetupIntentSchema {
   stripeClientSecret?: string;
 }
 
+export interface AppStoreSharedSecret {
+  id: ObjectId;
+  creationTimestamp: Date;
+  applicationid: ObjectId;
+  bundleId: string;
+}
+
+export interface AppStoreSharedSecretCreation {
+  applicationId: ObjectId;
+  bundleId: string;
+  secret: string;
+}
+
 export interface PaymentsAppStoreService {
   /**
    * Complete a transaction
@@ -444,6 +457,48 @@ export interface PaymentsAppStoreService {
    * @returns PagedResult<AppStoreReceipt>
    */
   getReceipts(options?: OptionsBase): Promise<PagedResult<AppStoreReceipt>>;
+
+  /**
+   * Get a list of shared secrets
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_APP_STORE_SHARED_SECRETS` | `global` | **Required** for this endpoint
+   * @returns PagedResult<AppStoreSharedSecret>
+   */
+  getSharedSecrets(
+    options?: OptionsWithRql
+  ): Promise<PagedResult<AppStoreSharedSecret>>;
+
+  /**
+   * Create a shared secret
+   *
+   * The App Store Shared Secret is used when an Application has to communicate
+   * with the App Store The shared secret allows decryption of sensitive data such
+   * as receipts and allows the verification of the Application Identifier
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `CREATE_APP_STORE_SHARED_SECRET` | `global` | **Required** for this endpoint
+   * @returns AppStoreSharedSecret
+   */
+  createSharedSecret(
+    requestBody: AppStoreSharedSecretCreation,
+    options?: OptionsBase
+  ): Promise<AppStoreSharedSecret>;
+
+  /**
+   * Delete an AppStore shared secret bassed on its id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `DELETE_APP_STORE_SHARED_SECRET` | `global` | **Required** for this endpoint
+   * @returns AffectedRecords
+   */
+  removeSharedSecret(
+    secretId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }
 
 export interface PaymentsAppStoreSubscriptionsService {
