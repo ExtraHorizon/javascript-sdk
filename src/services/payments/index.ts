@@ -15,7 +15,13 @@ import {
   PaymentsProductsService,
   PaymentsStripeService,
   PaymentsSubscriptionsService,
+  PaymentsPlayStoreService,
+  PaymentsPlayStoreSubscriptionsService,
+  PaymentsPlayStoreHistoryService,
 } from './types';
+import playStore from './playStore';
+import playStoreSubscriptions from './playStoreSubscriptions';
+import playStoreHistory from './playStoreHistory';
 
 export type PaymentsService = ReturnType<typeof health> & {
   products: PaymentsProductsService;
@@ -23,6 +29,9 @@ export type PaymentsService = ReturnType<typeof health> & {
   subscriptions: PaymentsSubscriptionsService;
   appStore: PaymentsAppStoreService;
   appStoreSubscriptions: PaymentsAppStoreSubscriptionsService;
+  playStore: PaymentsPlayStoreService;
+  playStoreHistory: PaymentsPlayStoreHistoryService;
+  playStoreSubscriptions: PaymentsPlayStoreSubscriptionsService;
   stripe: PaymentsStripeService;
 };
 
@@ -40,6 +49,9 @@ export const paymentsService = (
     subscriptions: subscriptions(client, httpWithAuth),
     appStore: appStore(client, httpWithAuth),
     appStoreSubscriptions: appStoreSubscriptions(client, httpWithAuth),
+    playStore: playStore(client, httpWithAuth),
+    playStoreHistory: playStoreHistory(client, httpWithAuth),
+    playStoreSubscriptions: playStoreSubscriptions(client, httpWithAuth),
     stripe: stripe(client, httpWithAuth),
   };
 };

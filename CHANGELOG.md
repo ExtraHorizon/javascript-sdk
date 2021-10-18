@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v5.2.0]
+
+### Added
+
+- Updated payments service to reflect v1.2.0 payments REST API
+
 ## [v5.1.0]
 
 ### Added
