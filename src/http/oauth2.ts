@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { btoa } from '../utils';
+import btoa from '../btoa';
 import { ConfigOauth2 } from '../types';
 import { MfaConfig, OAuth2Config, OAuthClient, TokenDataOauth2 } from './types';
 import {

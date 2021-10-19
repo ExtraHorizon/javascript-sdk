@@ -4,6 +4,7 @@ exclude_patterns:
   - '**/*test.ts'
   - '**/__helpers__/*.ts'
   - '**/rql/parser.ts'
+  - '**/btoa.ts'
 plugins:
   duplication:
     enabled: true
