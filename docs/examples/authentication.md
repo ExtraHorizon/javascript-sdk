@@ -160,6 +160,8 @@ try {
 
 ### Confidential Applications
 
+If you are using a confidential application in combination with React-Native. The SDK will add `btoa` function to your global scope. See https://github.com/ExtraHorizon/javascript-sdk/issues/446
+
 ```ts
 const sdk = createClient({
   host: 'https://api.dev.fibricheck.com',
