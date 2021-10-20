@@ -18,7 +18,6 @@ export function validateConfig({
     : rawHost;
 
   const configBase = {
-    ...params,
     host: `https://api.${validHostEnd
       .replace(/^https?:\/\//, '')
       .replace(/^api\./, '')}`,
@@ -27,6 +26,7 @@ export function validateConfig({
   if ('consumerKey' in params) {
     // oauth1
     return {
+      ...params,
       ...configBase,
       path: `${AUTH_BASE}/oauth1/tokens`,
       oauth1: new OAuth({
@@ -41,6 +41,7 @@ export function validateConfig({
   }
 
   return {
+    ...params,
     ...configBase,
     path: `${AUTH_BASE}/oauth2/tokens`,
     params: {

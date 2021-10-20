@@ -83,6 +83,7 @@ interface HttpClientBase {
 export interface ConfigOauth1 extends ParamsBase {
   path: string;
   oauth1: OAuth;
+  freshTokensCallback?: (tokenData: TokenDataOauth1) => void;
 }
 
 export interface ConfigOauth2 extends ParamsBase {
@@ -93,6 +94,7 @@ export interface ConfigOauth2 extends ParamsBase {
     // eslint-disable-next-line camelcase
     client_secret?: string;
   };
+  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 
 export type ClientParams = ParamsOauth1 | ParamsOauth2;

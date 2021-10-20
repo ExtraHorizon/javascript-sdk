@@ -254,8 +254,13 @@ export type OAuth1Client = Client<ParamsOauth1>;
  *   password: 'string',
  * });
  */
-export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client =>
-  createClient(rawConfig);
+
+interface ParamsOauth1WithCallback extends ParamsOauth1 {
+  freshTokensCallback?: (tokenData: TokenDataOauth1) => void;
+}
+export const createOAuth1Client = (
+  rawConfig: ParamsOauth1WithCallback
+): OAuth1Client => createClient(rawConfig);
 
 export type OAuth2Client = Client<ParamsOauth2>;
 /**
@@ -271,5 +276,11 @@ export type OAuth2Client = Client<ParamsOauth2>;
  *   password: 'string',
  * });
  */
-export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
-  createClient(rawConfig);
+
+interface ParamsOauth2WithCallback extends ParamsOauth2 {
+  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
+}
+
+export const createOAuth2Client = (
+  rawConfig: ParamsOauth2WithCallback
+): OAuth2Client => createClient(rawConfig);
