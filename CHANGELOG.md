@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `btoa` function to be used when you are using React-Native in combination with a Confidential Application. See documentation for more info.
+- `createOAuth1Client` and `createOAuth2Client` have had their type signatures updated. The `freshTokensCallback` will now have the correct type.
 
 ## [v5.1.0]
 
