@@ -74,6 +74,8 @@ import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
 })();
 ```
 
+Please see [authentication examples](https://extrahorizon.github.io/javascript-sdk/#/docs/examples/authentication) for more options.
+
 ## Interceptors
 
 The data returned from the backend is mapped using interceptors:
