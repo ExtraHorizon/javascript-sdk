@@ -350,8 +350,9 @@ export interface Comment {
   id?: ObjectId;
   schemaId?: ObjectId;
   measurementId?: ObjectId;
-  userId?: ObjectId;
+  creatorId?: ObjectId;
   text?: CommentText;
+  commentedTimestamp?: Date;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
 }
