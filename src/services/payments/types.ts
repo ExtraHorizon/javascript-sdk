@@ -378,7 +378,7 @@ export interface StripeSetupIntentSchema {
 export interface AppStoreSharedSecret {
   id: ObjectId;
   creationTimestamp: Date;
-  applicationid: ObjectId;
+  applicationId: ObjectId;
   bundleId: string;
 }
 

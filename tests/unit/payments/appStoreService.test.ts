@@ -6,6 +6,8 @@ import {
   appleNotification,
   appStoreNotification,
   appStoreReceipt,
+  appStoreSharedSecret,
+  appStoreSharedSecretCreation,
 } from '../../__helpers__/payment';
 import { createPagedResponse } from '../../__helpers__/utils';
 
@@ -93,5 +95,39 @@ describe('App Store Service', () => {
     const res = await sdk.payments.appStore.getReceipts();
 
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should get a list of shared secrets with App Store', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/appStore/sharedSecrets')
+      .reply(200, createPagedResponse(appStoreSharedSecret));
+
+    const res = await sdk.payments.appStore.getSharedSecrets();
+
+    expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should create a shared secret with App Store', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .post('/appStore/sharedSecrets')
+      .reply(200, appStoreSharedSecret);
+
+    const res = await sdk.payments.appStore.createSharedSecret(
+      appStoreSharedSecretCreation
+    );
+
+    expect(res.id).toBeDefined();
+  });
+
+  it('should remove a shared secret with App Store', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .delete('/appStore/sharedSecrets/sharedsecretid')
+      .reply(200, { affectedRecords: 1 });
+
+    const res = await sdk.payments.appStore.removeSharedSecret(
+      'sharedsecretid'
+    );
+
+    expect(res.affectedRecords).toBe(1);
   });
 });

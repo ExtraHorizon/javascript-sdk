@@ -27,6 +27,8 @@ import {
   PlayStoreSubscriptionPurchaseRecordSchema,
   PlayStoreSubscription,
   PlayStoreSubscriptionProduct,
+  AppStoreSharedSecret,
+  AppStoreSharedSecretCreation,
 } from '../../src/services/payments/types';
 
 export const newProductData: ProductCreationSchema = {
@@ -326,6 +328,19 @@ export const appStoreReceipt: AppStoreReceipt = {
     pending_renewal_info: [{}],
     status: 0,
   },
+};
+
+export const appStoreSharedSecret: AppStoreSharedSecret = {
+  id: 'sharedsecretid',
+  creationTimestamp: new Date(),
+  applicationId: 'applicationId',
+  bundleId: 'com.applicationId',
+};
+
+export const appStoreSharedSecretCreation: AppStoreSharedSecretCreation = {
+  applicationId: 'applicationId',
+  bundleId: 'com.applicationId',
+  secret: 'sharedsecret',
 };
 
 export const appStoreSubscription: AppStoreSubscription = {
