@@ -66,9 +66,6 @@ export function createOAuth1HttpClient(
   }
 
   async function setTokenData(data: TokenDataOauth1) {
-    if (options.freshTokensCallback) {
-      await options.freshTokensCallback(data);
-    }
     tokenData = data;
   }
 

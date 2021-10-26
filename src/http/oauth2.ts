@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import btoa from '../btoa';
 import { ConfigOauth2 } from '../types';
 import { MfaConfig, OAuth2Config, OAuthClient, TokenDataOauth2 } from './types';
 import {
@@ -113,6 +114,12 @@ export function createOAuth2HttpClient(
 
   async function authenticate(data: OAuth2Config): Promise<TokenDataOauth2> {
     authConfig = data;
+
+    /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
+    if (options.params.client_secret && typeof global.btoa !== 'function') {
+      global.btoa = btoa;
+    }
+
     const tokenResult = await http.post(
       options.path,
       {

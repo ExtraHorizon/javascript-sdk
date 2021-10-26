@@ -254,6 +254,7 @@ export type OAuth1Client = Client<ParamsOauth1>;
  *   password: 'string',
  * });
  */
+
 export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client =>
   createClient(rawConfig);
 
@@ -271,5 +272,6 @@ export type OAuth2Client = Client<ParamsOauth2>;
  *   password: 'string',
  * });
  */
+
 export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
   createClient(rawConfig);
