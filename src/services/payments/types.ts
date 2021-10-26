@@ -375,6 +375,19 @@ export interface StripeSetupIntentSchema {
   stripeClientSecret?: string;
 }
 
+export interface AppStoreSharedSecret {
+  id: ObjectId;
+  creationTimestamp: Date;
+  applicationId: ObjectId;
+  bundleId: string;
+}
+
+export interface AppStoreSharedSecretCreation {
+  applicationId: ObjectId;
+  bundleId: string;
+  secret: string;
+}
+
 export interface PaymentsAppStoreService {
   /**
    * Complete a transaction
@@ -444,6 +457,48 @@ export interface PaymentsAppStoreService {
    * @returns PagedResult<AppStoreReceipt>
    */
   getReceipts(options?: OptionsBase): Promise<PagedResult<AppStoreReceipt>>;
+
+  /**
+   * Get a list of shared secrets
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_APP_STORE_SHARED_SECRETS` | `global` | **Required** for this endpoint
+   * @returns PagedResult<AppStoreSharedSecret>
+   */
+  getSharedSecrets(
+    options?: OptionsWithRql
+  ): Promise<PagedResult<AppStoreSharedSecret>>;
+
+  /**
+   * Create a shared secret
+   *
+   * The App Store Shared Secret is used when an Application has to communicate
+   * with the App Store The shared secret allows decryption of sensitive data such
+   * as receipts and allows the verification of the Application Identifier
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `CREATE_APP_STORE_SHARED_SECRET` | `global` | **Required** for this endpoint
+   * @returns AppStoreSharedSecret
+   */
+  createSharedSecret(
+    requestBody: AppStoreSharedSecretCreation,
+    options?: OptionsBase
+  ): Promise<AppStoreSharedSecret>;
+
+  /**
+   * Delete an AppStore shared secret bassed on its id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `DELETE_APP_STORE_SHARED_SECRET` | `global` | **Required** for this endpoint
+   * @returns AffectedRecords
+   */
+  removeSharedSecret(
+    secretId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 }
 
 export interface PaymentsAppStoreSubscriptionsService {
@@ -1018,5 +1073,327 @@ export interface PaymentsSubscriptionsService {
       Record<string, never>,
       void
     >;
+  };
+}
+
+export interface PlayStoreReceiptSchema {
+  packageName: string;
+  subscriptionId: string;
+  purchaseToken: string;
+}
+
+export interface PlayStoreDeveloperNotificationMessageSchema {
+  message: {
+    attributes: Record<string, any>;
+    data: string;
+    messageId: string;
+    publishTime: Date;
+  };
+  subscription: string;
+}
+
+export interface PaymentsPlayStoreService {
+  /**
+   * Complete a purchase initiated froom an Android app
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   * @param requestBody PlayStoreReceiptSchema
+   * @returns any
+   * @throws {InvalidReceiptDataError}
+   * @throws {PlayStoreTransactionAlreadyLinked}
+   * @throws {NoConfiguredPlayStoreProduct}
+   */
+  complete(
+    requestBody: PlayStoreReceiptSchema,
+    options?: OptionsBase
+  ): Promise<any>;
+  /**
+   * Process a developer notification from Google Cloud PubSub
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   * @param requestBody PlayStoreDeveloperNotificationMessageSchema
+   * @returns any
+   * @throws {InvalidReceiptDataError}
+   * @throws {NoMatchingPlayStoreLinkedSubscription}
+   * @throws {NoConfiguredPlayStoreProduct}
+   */
+  processDeveloperNotification(
+    requestBody: PlayStoreDeveloperNotificationMessageSchema,
+    options?: OptionsBase
+  ): Promise<any>;
+}
+
+export interface PlayStorePurchaseRecord {
+  receipt: PlayStoreReceiptSchema;
+  userId: ObjectId;
+  id: ObjectId;
+  creationTimestamp: Date;
+}
+
+export interface PlayStoreDeveloperNotificationSchema {
+  version: string;
+  packageName: string;
+  eventTimeMillis: number;
+  subscriptionNotification: {
+    version: string;
+    notificationType: number;
+    purchaseToken: string;
+    subscriptionId: string;
+  };
+}
+
+export interface PlayStoreSubscriptionPurchaseSchema {
+  kind: string;
+  startTimeMillis: string;
+  expiryTimeMillis: string;
+  autoResumeTimeMillis?: string;
+  autoRenewing: boolean;
+  priceCurrencyCode: string;
+  priceAmountMicros: string;
+  introductoryPriceInfo: {
+    introductoryPriceCurrencyCode: string;
+    introductoryPriceAmountMicros: string;
+    introductoryPricePeriod: string;
+    introductoryPriceCycles: string;
+  };
+  countryCode: string;
+  developerPayload: string;
+  paymentState?: number;
+  cancelReason?: number;
+  userCancellationTimeMillis?: string;
+  cancelSurveyResult?: {
+    cancelSurveyReason?: number;
+    userInputCancelReason?: string;
+  };
+  orderId: string;
+  linkedPurchaseToken?: string;
+  purchaseType: number;
+  priceChange?: {
+    newPrice?: {
+      priceMicros?: string;
+      currency?: string;
+    };
+    state: number;
+  };
+  profileName?: string;
+  emailAddress?: string;
+  givenName?: string;
+  familyName?: string;
+  profileId?: string;
+  acknowledgementState: number;
+  externalAccountId?: string;
+  promotionType?: number;
+  promotionCode?: string;
+  obfuscatedExternalAccountId?: string;
+  obfuscatedExternalProfileId?: string;
+}
+
+export interface PlayStoreSubscriptionPurchaseRecordSchema {
+  receipt: PlayStoreReceiptSchema;
+  purchaseInfo: PlayStoreSubscriptionPurchaseSchema;
+  id: string;
+  creationTimestamp: Date;
+}
+
+export interface PaymentsPlayStoreHistoryService {
+  /**
+   * Get a list of recorded Play Store purchase requests
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_PLAY_STORE_PURCHASES` | `global` | **Required** for this endpoint
+   * @returns PagedResult<PlayStorePurchaseRecord>
+   */
+  purchases(
+    options?: OptionsBase
+  ): Promise<PagedResult<PlayStorePurchaseRecord>>;
+  /**
+   * Get a list of recorded Play Store developer notifications received
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_PLAY_STORE_NOTIFICATIONS` | `global` | **Required** for this endpoint
+   * @returns PagedResult<PlayStoreDeveloperNotificationSchema>
+   */
+  notifications(
+    options?: OptionsBase
+  ): Promise<PagedResult<PlayStoreDeveloperNotificationSchema>>;
+  /**
+   * Get a list of purchase information (SubscriptionPurchase) records fetched from the Play Store
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_PLAY_STORE_PURCHASE_INFOS` | `global` | **Required** for this endpoint
+   * @returns PagedResult<PlayStoreSubscriptionPurchaseRecordSchema>
+   */
+  purchaseInfos(
+    options?: OptionsBase
+  ): Promise<PagedResult<PlayStoreSubscriptionPurchaseRecordSchema>>;
+}
+
+export interface PlayStoreSubscription {
+  expiryTimestamp: Date;
+  autoRenewing: boolean;
+  paymentState: number;
+  purchaserId: ObjectId;
+  receipt: PlayStoreReceiptSchema;
+  id: ObjectId;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
+  lockId: ObjectId;
+  lockTimestamp: Date;
+}
+
+export interface PlayStoreSubscriptionProduct {
+  name: string;
+  playStorePackageName: string;
+  playStoreSubscriptionId: string;
+  subscriptionGroup: string;
+  subscriptionTier: string;
+  id: ObjectId;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
+}
+
+export interface PlayStoreSubscriptionProductCreation {
+  name: string;
+  playStorePackageName: string;
+  playStoreSubscriptionId: string;
+  subscriptionGroup: string;
+  subscriptionTier: string;
+}
+
+export interface PlayStoreSubscriptionProductUpdateSchema {
+  name: string;
+}
+
+export interface PaymentsPlayStoreSubscriptionsService {
+  subscriptions: {
+    /**
+     * Get a list of Play Store subscriptions
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List Play Store subscriptions related to you
+     * `VIEW_PLAY_STORE_SUBSCRIPTIONS` | `global` | List Play Store subscriptions related to all users
+     * @returns PagedResult<PlayStoreSubscription>
+     */
+    find(options?: OptionsWithRql): Promise<PagedResult<PlayStoreSubscription>>;
+    /**
+     * Request a list of all Play Store subscriptions
+     *
+     * Do not pass in an rql with limit operator!
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List Play Store subscriptions related to you
+     * `VIEW_PLAY_STORE_SUBSCRIPTIONS` | `global` | List Play Store subscriptions related to all users
+     * @returns PlayStoreSubscription[]
+     */
+    findAll(options?: OptionsWithRql): Promise<PlayStoreSubscription[]>;
+    /**
+     * Request a list of all Play Store subscriptions
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | List App Store subscriptions related to you
+     * `VIEW_PLAY_STORE_SUBSCRIPTIONS` | `global` | List Play Store subscriptions related to all users
+     * @returns PlayStoreSubscription[]
+     */
+    findAllIterator(
+      options?: OptionsWithRql
+    ): AsyncGenerator<
+      PagedResult<PlayStoreSubscription>,
+      Record<string, never>,
+      void
+    >;
+  };
+  products: {
+    /**
+     * Get a list of configured Play Store subscription products
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | Everyone can use this endpoint
+     * @returns PagedResult<PlayStoreSubscriptionProduct>
+     */
+    find(
+      options?: OptionsWithRql
+    ): Promise<PagedResult<PlayStoreSubscriptionProduct>>;
+    /**
+     * Request a list of all Play Store subscription products
+     *
+     * Do not pass in an rql with limit operator!
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | Everyone can use this endpoint
+     * @returns PlayStoreSubscriptionProduct[]
+     */
+    findAll(options?: OptionsWithRql): Promise<PlayStoreSubscriptionProduct[]>;
+    /**
+     * Request a list of all App Store subscription products
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * none |  | Everyone can use this endpoint
+     * @returns PlayStoreSubscriptionProduct[]
+     */
+    findAllIterator(
+      options?: OptionsWithRql
+    ): AsyncGenerator<
+      PagedResult<PlayStoreSubscriptionProduct>,
+      Record<string, never>,
+      void
+    >;
+    /**
+     * Create an Play Store subscription product
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * `CREATE_PLAY_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+     * @param requestBody PlayStoreSubscriptionProductCreation
+     * @returns PlayStoreSubscriptionProduct
+     * @throws {ResourceAlreadyExistsError}
+     */
+
+    create(
+      requestBody: PlayStoreSubscriptionProductCreation,
+      options?: OptionsBase
+    ): Promise<PlayStoreSubscriptionProduct>;
+    /**
+     * Delete an Play Store subscription product
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * `DELETE_PLAY_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+     * @param productId
+     * @returns AffectedRecords
+     * @throws {ResourceUnknownError}
+     */
+    remove(
+      productId: ObjectId,
+      options?: OptionsBase
+    ): Promise<AffectedRecords>;
+    /**
+     * Update an App Store subscription product
+     *
+     * Permission | Scope | Effect
+     * - | - | -
+     * `UPDATE_PLAY_STORE_SUBSCRIPTION_PRODUCT` | `global` | **Required** for this endpoint
+     * @param productId
+     * @param requestBody PlayStoreSubscriptionProductUpdateSchema
+     * @returns AffectedRecords
+     * @throws {ResourceUnknownError}
+     */
+    update(
+      productId: ObjectId,
+      requestBody: PlayStoreSubscriptionProductUpdateSchema,
+      options?: OptionsBase
+    ): Promise<AffectedRecords>;
   };
 }

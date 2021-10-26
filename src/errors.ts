@@ -150,6 +150,9 @@ export class InvalidCurrencyForProductPrice extends BadRequestError {}
 export class InvalidReceiptDataError extends BadRequestError {}
 export class UnknownReceiptTransactionError extends BadRequestError {}
 export class AppStoreTransactionAlreadyLinked extends BadRequestError {}
+export class NoMatchingPlayStoreLinkedSubscription extends BadRequestError {}
+export class PlayStoreTransactionAlreadyLinked extends BadRequestError {}
+export class NoConfiguredPlayStoreProduct extends BadRequestError {}
 export class StripePaymentMethodError extends BadRequestError {}
 export class DefaultLocalizationMissingError extends BadRequestError {}
 

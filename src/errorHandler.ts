@@ -61,6 +61,9 @@ import {
   DefaultLocalizationMissingError,
   ProfileAlreadyExistsError,
   RemoveFieldError,
+  PlayStoreTransactionAlreadyLinked,
+  NoConfiguredPlayStoreProduct,
+  NoMatchingPlayStoreLinkedSubscription,
 } from './errors';
 
 export const ErrorClassDefinitionsMap = {
@@ -120,6 +123,9 @@ export const ErrorClassDefinitionsMap = {
   2714: InvalidCurrencyForProductPrice,
   2716: NoConfiguredAppStoreProduct,
   2717: AppStoreTransactionAlreadyLinked,
+  2718: NoMatchingPlayStoreLinkedSubscription,
+  2719: NoConfiguredPlayStoreProduct,
+  2720: PlayStoreTransactionAlreadyLinked,
 };
 
 const ErrorClassDefinitionsByErrorMap = {

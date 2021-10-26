@@ -21,6 +21,14 @@ import {
   PaymentIntentCreationSchema,
   PaymentIntentCreationSchemaSetupPaymentMethodReuse,
   PaymentIntentCreationSchemaPaymentMethodType,
+  PlayStoreDeveloperNotificationMessageSchema,
+  PlayStoreDeveloperNotificationSchema,
+  PlayStorePurchaseRecord,
+  PlayStoreSubscriptionPurchaseRecordSchema,
+  PlayStoreSubscription,
+  PlayStoreSubscriptionProduct,
+  AppStoreSharedSecret,
+  AppStoreSharedSecretCreation,
 } from '../../src/services/payments/types';
 
 export const newProductData: ProductCreationSchema = {
@@ -207,6 +215,53 @@ export const appleNotification: AppleNotification = {
   bvrs: 'string',
 };
 
+export const playStoreDeveloperNotificationMessage: PlayStoreDeveloperNotificationMessageSchema =
+  {
+    message: {
+      attributes: {},
+      data: 'data',
+      messageId: 'messageId',
+      publishTime: new Date(),
+    },
+    subscription: 'subscription',
+  };
+
+export const playStoreDeveloperNotificationSchema: PlayStoreDeveloperNotificationSchema =
+  {
+    version: 'version1',
+    packageName: 'packageName',
+    eventTimeMillis: 1,
+    subscriptionNotification: {
+      version: '1',
+      notificationType: 1,
+      purchaseToken: 'token',
+      subscriptionId: 'subscriptionI',
+    },
+  };
+
+export const playStorePurchaseRecord: PlayStorePurchaseRecord = {
+  receipt: {
+    packageName: 'packageName',
+    subscriptionId: 'subscriptionId',
+    purchaseToken: 'purchaseToken',
+  },
+  userId: 'userId',
+  id: 'id',
+  creationTimestamp: new Date(),
+};
+
+export const playStoreSubscriptionPurchaseRecordSchema: PlayStoreSubscriptionPurchaseRecordSchema =
+  {
+    receipt: {
+      packageName: 'packageName',
+      subscriptionId: 'subscriptionId',
+      purchaseToken: 'purchaseToken',
+    },
+    id: 'id',
+    creationTimestamp: new Date(),
+    purchaseInfo: undefined,
+  };
+
 export const appStoreNotification: AppStoreNotification = {
   id: '507f191e810c19729de860ea',
   creationTimestamp: new Date('2021-06-04T12:56:57.298Z'),
@@ -275,6 +330,19 @@ export const appStoreReceipt: AppStoreReceipt = {
   },
 };
 
+export const appStoreSharedSecret: AppStoreSharedSecret = {
+  id: 'sharedsecretid',
+  creationTimestamp: new Date(),
+  applicationId: 'applicationId',
+  bundleId: 'com.applicationId',
+};
+
+export const appStoreSharedSecretCreation: AppStoreSharedSecretCreation = {
+  applicationId: 'applicationId',
+  bundleId: 'com.applicationId',
+  secret: 'sharedsecret',
+};
+
 export const appStoreSubscription: AppStoreSubscription = {
   id: '507f191e810c19729de860ea',
   userId: '507f191e810c19729de860ea',
@@ -298,6 +366,34 @@ export const appStoreSubscriptionProduct: AppStoreSubscriptionProduct = {
   name: 'FibriCheck Premium Monthly',
   appStoreAppBundleId: 'com.qompium.fibricheck',
   appStoreProductId: 'fibricheck-premium-monthly',
+  subscriptionGroup: 'fibricheck',
+  subscriptionTier: 'premium',
+  updateTimestamp: new Date('2021-06-04T13:15:20.862Z'),
+  creationTimestamp: new Date('2021-06-04T13:15:20.862Z'),
+};
+
+export const playStoreSubscription: PlayStoreSubscription = {
+  id: '507f191e810c19729de860ea',
+  expiryTimestamp: new Date(),
+  autoRenewing: true,
+  paymentState: 1,
+  purchaserId: 'purchaserId',
+  receipt: {
+    packageName: 'packageName',
+    subscriptionId: 'subscriptionId',
+    purchaseToken: 'purchaseToken',
+  },
+  creationTimestamp: new Date(),
+  updateTimestamp: new Date(),
+  lockId: 'lockId',
+  lockTimestamp: new Date(),
+};
+
+export const playStoreSubscriptionProduct: PlayStoreSubscriptionProduct = {
+  id: '507f191e810c19729de860ea',
+  name: 'FibriCheck Premium Monthly',
+  playStorePackageName: 'com.qompium.fibricheck',
+  playStoreSubscriptionId: 'fibricheck-premium-montly',
   subscriptionGroup: 'fibricheck',
   subscriptionTier: 'premium',
   updateTimestamp: new Date('2021-06-04T13:15:20.862Z'),
