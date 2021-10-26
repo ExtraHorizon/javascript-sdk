@@ -38,7 +38,7 @@ jobs:
           path: exh-infrastructure-tools-scripts
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
-      - name: Move Update Summary Script to Gitbook Directory
+      - name: Copy Update Summary Script to Gitbook Directory
         run: cp -r exh-infrastructure-tools-scripts/gitbook-sdk-docs-summary-updater/* gitbook
 
       - name: Setup Node
@@ -48,11 +48,11 @@ jobs:
 
       - name: Install Update Summary script
         working-directory: gitbook
-        run: npm install
+        run: yarn
 
       - name: Run Update Summary Script
         working-directory: gitbook
-        run: npm run start
+        run: yarn start
 
       - name: Add and Commit docs to GitBook
         working-directory: gitbook
