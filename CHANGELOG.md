@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `createOAuth1Client` and `createOAuth2Client` have had their type signatures updated. The `freshTokensCallback` will now have the correct type.
 - Updated payments service to reflect v1.2.0 payments REST API
 
+### Changed
+
+- `Comment` interface.
+
+```diff
+- userId
++ creatorId
++ commentedTimestamp
+```
+
 ## [v5.1.0]
 
 ### Added
