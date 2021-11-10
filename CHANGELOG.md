@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 + commentedTimestamp
 ```
 
+- `Document` interface now accepts an optional second parameter for the status property of the document. See [PR #461](https://github.com/ExtraHorizon/javascript-sdk/pull/461)
+
 ## [v5.1.0]
 
 ### Added
