@@ -180,24 +180,29 @@ export function createOAuth1HttpClient(
     return true;
   }
 
-  return {
-    ...httpWithAuth,
-    authenticate,
-    confirmMfa,
-    logout,
-    get userId() {
-      return (async () => {
-        try {
-          if (!tokenData?.userId) {
-            const me = await getMe();
-            tokenData = { ...tokenData, userId: me.id };
-            return me.id;
-          }
-          return tokenData?.userId;
-        } catch (e) {
-          return undefined;
-        }
-      })();
+  return Object.defineProperty(
+    {
+      ...httpWithAuth,
+      authenticate,
+      confirmMfa,
+      logout,
     },
-  };
+    'userId',
+    {
+      get() {
+        return (async () => {
+          try {
+            if (!tokenData?.userId) {
+              const me = await getMe();
+              tokenData = { ...tokenData, userId: me.id };
+              return me.id;
+            }
+            return tokenData?.userId;
+          } catch (e) {
+            return undefined;
+          }
+        })();
+      },
+    }
+  ) as OAuthClient;
 }

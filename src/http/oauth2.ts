@@ -172,13 +172,18 @@ export function createOAuth2HttpClient(
     return true;
   }
 
-  return {
-    ...httpWithAuth,
-    authenticate,
-    confirmMfa,
-    logout,
-    get userId() {
-      return Promise.resolve(tokenData?.userId);
+  return Object.defineProperty(
+    {
+      ...httpWithAuth,
+      authenticate,
+      confirmMfa,
+      logout,
     },
-  };
+    'userId',
+    {
+      get() {
+        return Promise.resolve(tokenData?.userId);
+      },
+    }
+  ) as OAuthClient;
 }
