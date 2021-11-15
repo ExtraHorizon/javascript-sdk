@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `btoa` function to be used when you are using React-Native in combination with a Confidential Application. See documentation for more info.
 - `createOAuth1Client` and `createOAuth2Client` have had their type signatures updated. The `freshTokensCallback` will now have the correct type.
-- Updated payments service to reflect v1.2.0 payments REST API
+- Updated payments service to reflect v1.2.0 payments RES TAPI
 
 ### Changed
 
@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ```
 
 - `Document` interface now accepts an optional second parameter for the status property of the document. See [PR #461](https://github.com/ExtraHorizon/javascript-sdk/pull/461)
+- Refactor of `userId` getter on the `sdk.raw` instance. It now works consistently everywhere (browser/node/react-native). See [PR #462](https://github.com/ExtraHorizon/javascript-sdk/pull/462)
 
 ## [v5.1.0]
 

@@ -180,6 +180,10 @@ export function createOAuth1HttpClient(
     return true;
   }
 
+  /*
+   * The default way of adding a getter does not seem to work well with RN at
+   * the moment. This way always works.
+   */
   return Object.defineProperty(
     {
       ...httpWithAuth,
