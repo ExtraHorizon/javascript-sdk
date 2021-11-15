@@ -172,13 +172,22 @@ export function createOAuth2HttpClient(
     return true;
   }
 
-  return {
-    ...httpWithAuth,
-    authenticate,
-    confirmMfa,
-    logout,
-    get userId() {
-      return Promise.resolve(tokenData?.userId);
+  /*
+   * The default way of adding a getter does not seem to work well with RN at
+   * the moment. This way always works.
+   */
+  return Object.defineProperty(
+    {
+      ...httpWithAuth,
+      authenticate,
+      confirmMfa,
+      logout,
     },
-  };
+    'userId',
+    {
+      get() {
+        return Promise.resolve(tokenData?.userId);
+      },
+    }
+  ) as OAuthClient;
 }
