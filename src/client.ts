@@ -193,11 +193,15 @@ export interface Client<T extends ClientParams> {
    * Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
    * @see https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
    */
-  auth: T extends ParamsProxy
-    ? ReturnType<typeof authService>
-    : ReturnType<typeof authService> &
+  auth: T extends ParamsOauth2
+    ? ReturnType<typeof authService> &
         Pick<OAuthClient, 'confirmMfa' | 'logout'> &
-        Authenticate<T>;
+        Authenticate<T>
+    : T extends ParamsOauth1
+    ? ReturnType<typeof authService> &
+        Pick<OAuthClient, 'confirmMfa' | 'logout'> &
+        Authenticate<T>
+    : ReturnType<typeof authService>;
 }
 
 /**
