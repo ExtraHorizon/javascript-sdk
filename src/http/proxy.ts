@@ -2,7 +2,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { USER_BASE } from '../constants';
 import { ConfigProxy } from '../types';
-import { HttpInstance, OAuthClient, TokenDataOauth2 } from './types';
+import { HttpInstance, OAuthClient } from './types';
 import {
   camelizeResponseData,
   retryInterceptor,

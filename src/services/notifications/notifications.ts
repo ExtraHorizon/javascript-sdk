@@ -1,11 +1,11 @@
-import type { Instance } from '../../types';
+import type { AuthHttpClient } from '../../types';
 import { rqlBuilder } from '../../rql';
 import { NotificationsService } from './types';
 import { HttpClient } from '../http-client';
 
 export default (
   client: HttpClient,
-  httpAuth: Instance
+  httpAuth: AuthHttpClient
 ): NotificationsService => ({
   async create(requestBody, options) {
     return (
