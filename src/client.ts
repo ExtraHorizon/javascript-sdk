@@ -31,7 +31,12 @@ import {
   createProxyHttpClient,
 } from './http';
 import { validateConfig } from './utils';
-import { OAuthClient, TokenDataOauth1, TokenDataOauth2 } from './http/types';
+import {
+  OAuthClient,
+  TokenDataOauth1,
+  TokenDataOauth2,
+  AuthHttpClient,
+} from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -123,7 +128,7 @@ type Authenticate<T extends ClientParams = ParamsOauth1> =
   T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  raw: OAuthClient;
+  raw: AuthHttpClient;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/?service=templates-service&redirectToVersion=1
@@ -225,12 +230,12 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     if ('oauth1' in _iconfig) {
       return createOAuth1HttpClient(_http, _iconfig);
     }
-    if ('clientId' in _iconfig) {
+    if ('params' in _iconfig) {
       return createOAuth2HttpClient(_http, _iconfig);
     }
 
     return createProxyHttpClient(_http, _iconfig);
-  })(http, config);
+  })(http, config) as AuthHttpClient;
 
   return {
     users: usersService(httpWithAuth, http),
@@ -246,7 +251,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     profiles: profilesService(httpWithAuth),
     notifications: notificationsService(httpWithAuth),
     events: eventsService(httpWithAuth),
-    auth: (httpWithAuth.authenticate
+    auth: ('authenticate' in httpWithAuth && httpWithAuth.authenticate
       ? {
           ...authService(httpWithAuth),
           authenticate: (oauth: AuthParams) =>

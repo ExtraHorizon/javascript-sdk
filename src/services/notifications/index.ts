@@ -1,4 +1,4 @@
-import type { OAuthClient } from '../../types';
+import type { Instance } from '../../types';
 import httpClient from '../http-client';
 import { decamelizeKeys } from '../../http/utils';
 import notifications from './notifications';
@@ -8,7 +8,7 @@ import { NOTIFICATIONS_BASE } from '../../constants';
 import { NotificationSettingsServices, NotificationsService } from './types';
 
 export const notificationsService = (
-  httpWithAuth: OAuthClient
+  httpWithAuth: Instance
 ): NotificationsService &
   ReturnType<typeof health> & {
     settings: NotificationSettingsServices;

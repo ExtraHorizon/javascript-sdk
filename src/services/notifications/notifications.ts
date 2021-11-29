@@ -1,11 +1,11 @@
-import type { OAuthClient } from '../../types';
+import type { Instance } from '../../types';
 import { rqlBuilder } from '../../rql';
 import { NotificationsService } from './types';
 import { HttpClient } from '../http-client';
 
 export default (
   client: HttpClient,
-  httpAuth: OAuthClient
+  httpAuth: Instance
 ): NotificationsService => ({
   async create(requestBody, options) {
     return (
@@ -18,7 +18,9 @@ export default (
             ? {
                 fields: {
                   ...requestBody.fields,
-                  senderId: await httpAuth.userId,
+                  ...('userId' in httpAuth
+                    ? { senderId: await httpAuth.userId }
+                    : {}),
                 },
               }
             : {}),

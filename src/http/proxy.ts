@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-
+import { USER_BASE } from '../constants';
 import { ConfigProxy } from '../types';
 import { HttpInstance, OAuthClient, TokenDataOauth2 } from './types';
 import {
@@ -15,8 +15,6 @@ export function createProxyHttpClient(
   http: AxiosInstance,
   options: ConfigProxy
 ): HttpInstance {
-  let tokenData: TokenDataOauth2;
-
   const httpWithAuth = axios.create({
     ...http.defaults,
     withCredentials: true,
@@ -91,7 +89,14 @@ export function createProxyHttpClient(
     'userId',
     {
       get() {
-        return Promise.resolve(tokenData?.userId);
+        return (async () => {
+          try {
+            const { data: me } = await httpWithAuth.get(`${USER_BASE}/me`);
+            return me?.id;
+          } catch (e) {
+            return undefined;
+          }
+        })();
       },
     }
   ) as OAuthClient;
