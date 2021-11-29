@@ -15,13 +15,20 @@ const mockParams = {
 
 describe('proxy client', () => {
   const config = validateConfig(mockParams) as ConfigOauth2;
-  const http = createHttpClient({ ...config, packageVersion: '' });
+  const http = createHttpClient({
+    ...config,
+    packageVersion: '',
+  });
 
   let httpWithAuth: ReturnType<typeof createProxyHttpClient>;
 
   beforeEach(() => {
     nock.cleanAll();
-    httpWithAuth = createProxyHttpClient(http, config);
+    httpWithAuth = createProxyHttpClient(http, {
+      ...config,
+      requestLogger: value => value,
+      responseLogger: value => value,
+    });
   });
 
   it('throws on calls with missing jwt', async () => {
