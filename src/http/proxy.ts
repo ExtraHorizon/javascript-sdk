@@ -2,7 +2,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { USER_BASE } from '../constants';
 import { ConfigProxy } from '../types';
-import { HttpInstance, OAuthClient } from './types';
+import { OAuthClient, AuthHttpClient } from './types';
 import {
   camelizeResponseData,
   retryInterceptor,
@@ -14,7 +14,7 @@ import { typeReceivedError } from '../errorHandler';
 export function createProxyHttpClient(
   http: AxiosInstance,
   options: ConfigProxy
-): HttpInstance {
+): AuthHttpClient {
   const httpWithAuth = axios.create({
     ...http.defaults,
     withCredentials: true,

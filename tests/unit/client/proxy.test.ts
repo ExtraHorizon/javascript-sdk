@@ -31,6 +31,22 @@ describe('proxy client', () => {
     });
   });
 
+  it('should authorize', async () => {
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, { id: 'mockId' });
+
+    const { data: me } = await httpWithAuth.get(`${USER_BASE}/me`);
+
+    expect(me.id).toBe('mockId');
+  });
+
+  it('should get userId', async () => {
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, { id: 'mockId' });
+
+    const userId = await httpWithAuth.userId;
+
+    expect(userId).toBe('mockId');
+  });
+
   it('throws on calls with missing jwt', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, { code: 104 });
 
