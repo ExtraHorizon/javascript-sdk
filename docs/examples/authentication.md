@@ -64,6 +64,30 @@ try {
 }
 ```
 
+## Proxy client
+
+The package export a client you can use in combination with a proxy service. The client will throw a typed error in case you need to redirect to the login page.
+
+```ts
+import { createProxyClient } from '@extrahorizon/javascript-sdk';
+
+const loginPageUrl = 'https://pages.dev.fibricheck.com/login';
+
+(async () => {
+  try {
+    const sdk = createProxyClient({ host: 'apx.dev.fibricheck.com' });
+    await sdk.users.me();
+  } catch (error) {
+    if (
+      error instanceof UserNotAuthenticatedError ||
+      error instanceof OauthTokenError
+    ) {
+      redirectToUrl(`${loginPageUrl}/?redirect=${window.location.url}`);
+    }
+  }
+})();
+```
+
 ## Other examples
 
 ### OAuth1
