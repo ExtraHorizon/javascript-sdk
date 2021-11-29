@@ -88,6 +88,14 @@ const loginPageUrl = 'https://pages.dev.fibricheck.com/login';
 })();
 ```
 
+### Local setup
+
+If you want to use the proxy sdk locally, you need to make some changes to your local setup.
+
+- add `127.0.0.1 local.yourdomain.com` to your `/etc/hosts` file
+- start your server with https enabled. For CRA you can do this with `HTTPS=true yarn start`
+- open your browser `https://local.yourdomain.com:3000/` and skip the security warning
+
 ## Other examples
 
 ### OAuth1
