@@ -1,4 +1,10 @@
-import { AuthParams, ClientParams, ParamsOauth1, ParamsOauth2 } from './types';
+import {
+  AuthParams,
+  ClientParams,
+  ParamsOauth1,
+  ParamsOauth2,
+  ParamsProxy,
+} from './types';
 import { version as packageVersion } from './version';
 
 import {
@@ -17,15 +23,20 @@ import {
   notificationsService,
   eventsService,
 } from './services';
-
 import {
   createHttpClient,
   createOAuth1HttpClient,
   parseAuthParams,
   createOAuth2HttpClient,
+  createProxyHttpClient,
 } from './http';
 import { validateConfig } from './utils';
-import { OAuthClient, TokenDataOauth1, TokenDataOauth2 } from './http/types';
+import {
+  OAuthClient,
+  TokenDataOauth1,
+  TokenDataOauth2,
+  AuthHttpClient,
+} from './http/types';
 
 export interface OAuth1Authenticate {
   /**
@@ -117,7 +128,7 @@ type Authenticate<T extends ClientParams = ParamsOauth1> =
   T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
-  raw: OAuthClient;
+  raw: AuthHttpClient;
   /**
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://developers.extrahorizon.io/services/?service=templates-service&redirectToVersion=1
@@ -187,9 +198,15 @@ export interface Client<T extends ClientParams> {
    * Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
    * @see https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
    */
-  auth: ReturnType<typeof authService> &
-    Pick<OAuthClient, 'confirmMfa' | 'logout'> &
-    Authenticate<T>;
+  auth: T extends ParamsOauth2
+    ? ReturnType<typeof authService> &
+        Pick<OAuthClient, 'confirmMfa' | 'logout'> &
+        Authenticate<T>
+    : T extends ParamsOauth1
+    ? ReturnType<typeof authService> &
+        Pick<OAuthClient, 'confirmMfa' | 'logout'> &
+        Authenticate<T>
+    : ReturnType<typeof authService>;
 }
 
 /**
@@ -209,10 +226,16 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
   const config = validateConfig(rawConfig);
   const http = createHttpClient({ ...config, packageVersion });
 
-  const httpWithAuth =
-    'oauth1' in config
-      ? createOAuth1HttpClient(http, config)
-      : createOAuth2HttpClient(http, config);
+  const httpWithAuth = ((_http, _iconfig) => {
+    if ('oauth1' in _iconfig) {
+      return createOAuth1HttpClient(_http, _iconfig);
+    }
+    if ('params' in _iconfig) {
+      return createOAuth2HttpClient(_http, _iconfig);
+    }
+
+    return createProxyHttpClient(_http, _iconfig);
+  })(http, config) as AuthHttpClient;
 
   return {
     users: usersService(httpWithAuth, http),
@@ -228,13 +251,15 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     profiles: profilesService(httpWithAuth),
     notifications: notificationsService(httpWithAuth),
     events: eventsService(httpWithAuth),
-    auth: {
-      ...authService(httpWithAuth),
-      authenticate: (oauth: AuthParams) =>
-        httpWithAuth.authenticate(parseAuthParams(oauth)),
-      confirmMfa: httpWithAuth.confirmMfa,
-      logout: httpWithAuth.logout,
-    } as any,
+    auth: ('authenticate' in httpWithAuth && httpWithAuth.authenticate
+      ? {
+          ...authService(httpWithAuth),
+          authenticate: (oauth: AuthParams) =>
+            httpWithAuth.authenticate(parseAuthParams(oauth)),
+          confirmMfa: httpWithAuth.confirmMfa,
+          logout: httpWithAuth.logout,
+        }
+      : authService(httpWithAuth)) as any,
     raw: httpWithAuth,
   };
 }
@@ -254,7 +279,6 @@ export type OAuth1Client = Client<ParamsOauth1>;
  *   password: 'string',
  * });
  */
-
 export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client =>
   createClient(rawConfig);
 
@@ -272,6 +296,17 @@ export type OAuth2Client = Client<ParamsOauth2>;
  *   password: 'string',
  * });
  */
-
 export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
+  createClient(rawConfig);
+
+export type ProxyClient = Client<ParamsProxy>;
+/**
+ * Create ExtraHorizon Proxy client.
+ *
+ * @example
+ * const sdk = createProxyClient({
+ *   host: 'apx.dev.fibricheck.com',
+ * });
+ */
+export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient =>
   createClient(rawConfig);
