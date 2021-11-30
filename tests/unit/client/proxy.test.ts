@@ -47,6 +47,14 @@ describe('proxy client', () => {
     expect(userId).toBe('mockId');
   });
 
+  it('should get userId but return undefined because server error', async () => {
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(500);
+
+    const userId = await httpWithAuth.userId;
+
+    expect(userId).toBe(undefined);
+  });
+
   it('throws on calls with missing jwt', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, { code: 104 });
 
