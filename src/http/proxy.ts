@@ -54,21 +54,7 @@ export function createProxyHttpClient(
     async error => {
       // Only needed if it's an axiosError, otherwise it's already typed
       if (error && error.isAxiosError) {
-        if (error.response && [400, 401, 403].includes(error.response.status)) {
-          if (
-            error.response?.data?.code === 104 ||
-            // UserNotAuthenticatedError
-            error.response?.data?.code === 108
-            // OauthTokenError
-          ) {
-            return Promise.reject(
-              typeReceivedError({ ...error, type: 'proxy' })
-            );
-          }
-          return Promise.reject(typeReceivedError(error));
-        }
-
-        return Promise.reject(typeReceivedError(error));
+        return Promise.reject(typeReceivedError({ ...error, type: 'proxy' }));
       }
       return Promise.reject(error);
     }
