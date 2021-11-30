@@ -1,4 +1,4 @@
-import type { OAuthClient } from '../../types';
+import type { AuthHttpClient } from '../../types';
 import { rqlBuilder } from '../../rql';
 import { NotificationsService, Notification } from './types';
 import { HttpClient } from '../http-client';
@@ -6,7 +6,7 @@ import { findAllIterator, findAllGeneric, addPagersFn } from '../helpers';
 
 export default (
   client: HttpClient,
-  httpAuth: OAuthClient
+  httpAuth: AuthHttpClient
 ): NotificationsService => {
   async function find(options) {
     return (

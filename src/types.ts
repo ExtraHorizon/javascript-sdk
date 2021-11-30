@@ -72,6 +72,8 @@ export interface ParamsOauth2 extends ParamsBase {
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 
+export type ParamsProxy = ParamsBase;
+
 interface HttpClientBase {
   packageVersion: string;
 }
@@ -92,6 +94,8 @@ export interface ConfigOauth2 extends ParamsBase {
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 
-export type ClientParams = ParamsOauth1 | ParamsOauth2;
-export type ClientConfig = ConfigOauth1 | ConfigOauth2;
+export type ConfigProxy = ParamsBase;
+
+export type ClientParams = ParamsOauth1 | ParamsOauth2 | ParamsProxy;
+export type ClientConfig = ConfigOauth1 | ConfigOauth2 | ConfigProxy;
 export type HttpClientConfig = HttpClientBase & ClientConfig;

@@ -12,6 +12,7 @@ export {
   createClient,
   createOAuth1Client,
   createOAuth2Client,
+  createProxyClient,
   Client,
   OAuth1Client,
   OAuth2Client,
