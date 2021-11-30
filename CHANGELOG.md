@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Document` interface now accepts an optional second parameter for the status property of the document. See [PR #461](https://github.com/ExtraHorizon/javascript-sdk/pull/461)
 - Refactor of `userId` getter on the `sdk.raw` instance. It now works consistently everywhere (browser/node/react-native). See [PR #462](https://github.com/ExtraHorizon/javascript-sdk/pull/462)
+- Added `findAll` and `findAllIterator` to notifications. The `find` method is also update to have pagination helpers [PR #475](https://github.com/ExtraHorizon/javascript-sdk/pull/475)
 
 ## [v5.1.0]
 

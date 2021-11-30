@@ -4,6 +4,7 @@ import {
   OptionsBase,
   OptionsWithRql,
   PagedResult,
+  PagedResultWithPager,
 } from '../types';
 
 export interface Notification {
@@ -144,7 +145,31 @@ export interface NotificationsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Notification>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<Notification>>;
+  find(options?: OptionsWithRql): Promise<PagedResultWithPager<Notification>>;
+  /**
+   * Request a list of all notifications
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | View your own notifications
+   * `VIEW_NOTIFICATIONS` | `global` | View all notifications
+   * @returns Notification[]
+   */
+  findAll(options?: OptionsWithRql): Promise<Notification[]>;
+  /**
+   * Request a list of all notifications
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | View your own notifications
+   * `VIEW_NOTIFICATIONS` | `global` | View all notifications
+   * @returns Notification[]
+   */
+  findAllIterator(
+    options?: OptionsWithRql
+  ): AsyncGenerator<PagedResult<Notification>, Record<string, never>, void>;
   /**
    * Find By Id
    * @param id the Id to search for
