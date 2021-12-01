@@ -2,11 +2,7 @@ name: Sync SDK docs
 on:
   # Allow manual triggering
   workflow_dispatch:
-  push:
-    branches: 
-      - dev
-    paths:
-      - docs/**
+  
 jobs:
   sync-sdk-docs:
     runs-on: ubuntu-latest
