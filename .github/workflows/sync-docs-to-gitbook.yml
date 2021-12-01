@@ -1,0 +1,61 @@
+name: Sync SDK docs
+on:
+  # Allow manual triggering
+  workflow_dispatch:
+  
+jobs:
+  sync-sdk-docs:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+    steps:
+      - name: Checkout SDK repo
+        uses: actions/checkout@v2
+        with:
+          path: Extrahorizon-SDK
+      
+      - name: Checkout Gitbook repo
+        uses: actions/checkout@v2
+        with:
+          repository: ExtraHorizon/docs
+          path: gitbook
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+
+      - name: Move sdk docs to gitbook directory
+        run: |
+          mkdir --parents gitbook/for-developers/Extrahorizon-SDK
+          cp -r Extrahorizon-SDK/docs/* gitbook/for-developers/Extrahorizon-SDK/
+          ls gitbook/for-developers/Extrahorizon-SDK/
+
+      - name: Checkout Summary Update Script
+        uses: actions/checkout@v2
+        with:
+          repository: ExtraHorizon/exh-infrastructure-tools-scripts
+          path: exh-infrastructure-tools-scripts
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+
+      - name: Copy Update Summary Script to Gitbook Directory
+        run: cp -r exh-infrastructure-tools-scripts/gitbook-sdk-docs-summary-updater/* gitbook
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install Update Summary script
+        working-directory: gitbook
+        run: yarn
+
+      - name: Run Update Summary Script
+        working-directory: gitbook
+        run: yarn start
+
+      - name: Add and Commit docs to GitBook
+        working-directory: gitbook
+        run: |
+          git config --global user.name "SDK docs sync bot"
+          git config --global user.email "sdk-docs-sync-bot@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/ExtraHorizon/docs.git
+          git add for-developers/Extrahorizon-SDK/ SUMMARY.md
+          git commit -m "Sync Extrahorizon-SDK docs"
+          git push

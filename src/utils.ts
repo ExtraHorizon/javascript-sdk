@@ -9,25 +9,26 @@ function hmacSha1Hash(baseString: string, key: string) {
   return HmacSHA1(baseString, key).toString(Base64);
 }
 
-export function validateConfig({
-  host: rawHost,
-  ...params
-}: ClientParams): ClientConfig {
+function parseHost(rawHost: string, prefix: 'api' | 'apx') {
   const validHostEnd = rawHost.endsWith('/')
     ? rawHost.substr(0, rawHost.length - 1)
     : rawHost;
 
-  const configBase = {
-    ...params,
-    host: `https://api.${validHostEnd
-      .replace(/^https?:\/\//, '')
-      .replace(/^api\./, '')}`,
-  };
+  return `https://${prefix}.${validHostEnd
+    .replace(/^https?:\/\//, '')
+    .replace(/^api\./, '')
+    .replace(/^apx\./, '')}`;
+}
 
+export function validateConfig({
+  host: rawHost,
+  ...params
+}: ClientParams): ClientConfig {
   if ('consumerKey' in params) {
     // oauth1
     return {
-      ...configBase,
+      ...params,
+      host: parseHost(rawHost, 'api'),
       path: `${AUTH_BASE}/oauth1/tokens`,
       oauth1: new OAuth({
         consumer: {
@@ -40,13 +41,21 @@ export function validateConfig({
     };
   }
 
+  if ('clientId' in params) {
+    return {
+      ...params,
+      host: parseHost(rawHost, 'api'),
+      path: `${AUTH_BASE}/oauth2/tokens`,
+      params: {
+        client_id: params.clientId,
+        ...(params.clientSecret ? { client_secret: params.clientSecret } : {}),
+      },
+    };
+  }
+
   return {
-    ...configBase,
-    path: `${AUTH_BASE}/oauth2/tokens`,
-    params: {
-      client_id: params.clientId,
-      ...(params.clientSecret ? { client_secret: params.clientSecret } : {}),
-    },
+    ...params,
+    host: parseHost(rawHost, 'apx'),
   };
 }
 

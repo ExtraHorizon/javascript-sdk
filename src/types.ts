@@ -1,10 +1,6 @@
 import { AxiosResponse } from 'axios';
 import * as OAuth from 'oauth-1.0a';
-import {
-  TokenDataOauth1,
-  TokenDataOauth2,
-  HttpRequestConfig,
-} from './http/types';
+import { TokenDataOauth2, HttpRequestConfig } from './http/types';
 
 export * from './http/types';
 export * from './services/types';
@@ -58,7 +54,6 @@ interface ParamsBase {
   host: string;
   responseLogger?: (response: AxiosResponse | Error) => unknown;
   requestLogger?: (request: HttpRequestConfig | Error) => unknown;
-  freshTokensCallback?: (tokenData: TokenDataOauth2 | TokenDataOauth1) => void;
   headers?: {
     'X-Request-Service'?: string;
     'X-Forwarded-Application'?: string;
@@ -74,7 +69,10 @@ export interface ParamsOauth1 extends ParamsBase {
 export interface ParamsOauth2 extends ParamsBase {
   clientId: string;
   clientSecret?: string;
+  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
+
+export type ParamsProxy = ParamsBase;
 
 interface HttpClientBase {
   packageVersion: string;
@@ -93,8 +91,11 @@ export interface ConfigOauth2 extends ParamsBase {
     // eslint-disable-next-line camelcase
     client_secret?: string;
   };
+  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 
-export type ClientParams = ParamsOauth1 | ParamsOauth2;
-export type ClientConfig = ConfigOauth1 | ConfigOauth2;
+export type ConfigProxy = ParamsBase;
+
+export type ClientParams = ParamsOauth1 | ParamsOauth2 | ParamsProxy;
+export type ClientConfig = ConfigOauth1 | ConfigOauth2 | ConfigProxy;
 export type HttpClientConfig = HttpClientBase & ClientConfig;

@@ -57,6 +57,60 @@ describe('Notifications Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should find all notifications', async () => {
+    const rql = rqlBuilder().build();
+    nock(`${host}${NOTIFICATIONS_BASE}`)
+      .get('/notifications?limit(50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(notificationData),
+      })
+      .get('/notifications?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 65,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(15).fill(notificationData),
+      });
+
+    const res = await sdk.notifications.findAll({ rql });
+
+    expect(res.length).toBeGreaterThan(0);
+  });
+
+  it('should request a list of all notifications via iterator', async () => {
+    nock(`${host}${NOTIFICATIONS_BASE}`)
+      .get('/notifications?limit(50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 0,
+          limit: 50,
+        },
+        data: Array(50).fill(notificationData),
+      })
+      .get('/notifications?limit(50,50)')
+      .reply(200, {
+        page: {
+          total: 55,
+          offset: 50,
+          limit: 50,
+        },
+        data: Array(5).fill(notificationData),
+      });
+    const notifications = sdk.notifications.findAllIterator();
+
+    await notifications.next();
+    const thirdPage = await notifications.next();
+    expect(thirdPage.value.data.length).toBe(5);
+  });
+
   it('should find a notification by id', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get(`/notifications?eq(id,${notificationId})`)

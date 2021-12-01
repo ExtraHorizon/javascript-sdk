@@ -1,0 +1,70 @@
+import nock from 'nock';
+import { AUTH_BASE, PAYMENTS_BASE } from '../../../src/constants';
+import { Client, createClient, ParamsOauth2 } from '../../../src/index';
+import {
+  playStoreDeveloperNotificationSchema,
+  playStorePurchaseRecord,
+  playStoreSubscriptionPurchaseRecordSchema,
+} from '../../__helpers__/payment';
+import { createPagedResponse } from '../../__helpers__/utils';
+
+describe('Play Store History Service', () => {
+  const host = 'https://api.xxx.fibricheck.com';
+
+  let sdk: Client<ParamsOauth2>;
+
+  beforeAll(async () => {
+    sdk = createClient({
+      host,
+      clientId: '',
+    });
+
+    const mockToken = 'mockToken';
+    nock(host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: mockToken });
+
+    await sdk.auth.authenticate({
+      username: '',
+      password: '',
+    });
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    nock.enableNetConnect();
+  });
+
+  it('should get a list of notifications received from the Play Store', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/playStore/history/notifications')
+      .reply(200, createPagedResponse(playStoreDeveloperNotificationSchema));
+
+    const res = await sdk.payments.playStoreHistory.notifications();
+
+    expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should get a list of purchases received and verified by the Play Store', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/playStore/history/purchases')
+      .reply(200, createPagedResponse(playStorePurchaseRecord));
+
+    const res = await sdk.payments.playStoreHistory.purchases();
+
+    expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('should get a list of purchases info (SubscriptionPurchase) received and verified by the Play Store', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .get('/playStore/history/purchaseInfos')
+      .reply(
+        200,
+        createPagedResponse(playStoreSubscriptionPurchaseRecordSchema)
+      );
+
+    const res = await sdk.payments.playStoreHistory.purchaseInfos();
+
+    expect(res.data.length).toBeGreaterThan(0);
+  });
+});

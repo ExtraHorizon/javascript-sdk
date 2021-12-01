@@ -46,6 +46,7 @@ export interface HttpError<T = any> extends Error {
   request?: any;
   response?: Response<T>;
   isAxiosError: boolean;
+  type: 'proxy' | 'oauth1' | 'oauth2';
   toJSON: () => Record<string, unknown>;
 }
 
@@ -150,6 +151,9 @@ export class InvalidCurrencyForProductPrice extends BadRequestError {}
 export class InvalidReceiptDataError extends BadRequestError {}
 export class UnknownReceiptTransactionError extends BadRequestError {}
 export class AppStoreTransactionAlreadyLinked extends BadRequestError {}
+export class NoMatchingPlayStoreLinkedSubscription extends BadRequestError {}
+export class PlayStoreTransactionAlreadyLinked extends BadRequestError {}
+export class NoConfiguredPlayStoreProduct extends BadRequestError {}
 export class StripePaymentMethodError extends BadRequestError {}
 export class DefaultLocalizationMissingError extends BadRequestError {}
 
@@ -166,7 +170,6 @@ export class LoginFreezeError extends UnauthorizedError {}
 export class TooManyFailedAttemptsError extends UnauthorizedError {}
 
 export class OauthKeyError extends UnauthorizedError {}
-export class OauthTokenError extends UnauthorizedError {}
 export class OauthSignatureError extends UnauthorizedError {}
 export class DuplicateRequestError extends UnauthorizedError {}
 export class AccessTokenUnknownError extends UnauthorizedError {}
@@ -176,24 +179,14 @@ export class NoPermissionError extends UnauthorizedError {}
 export class UnauthorizedTokenError extends UnauthorizedError {}
 
 export class UserNotAuthenticatedError extends UnauthorizedError {
-  constructor(error: HttpError) {
-    const { config } = error;
-    super(`
+  public static createFromHttpError(error: HttpError): ApiError {
+    return new this(getSpecifiedAuthenticationError(error));
+  }
+}
 
-Looks like you forgot to authenticate. Please check the README file to get started.  
-As example if you want to use the Oauth2 Password Grant Flow you can authenticate using this snippet:
-
-const sdk = createClient({
-  host: '${config ? config.baseURL : ''}',
-  clientId: '',
-});
-
-await sdk.auth.authenticate({
-  username: '',
-  password: '',
-});  
-    
-`);
+export class OauthTokenError extends UnauthorizedError {
+  public static createFromHttpError(error: HttpError): ApiError {
+    return new this(getSpecifiedAuthenticationError(error));
   }
 }
 
@@ -214,3 +207,65 @@ export class FieldFormatError extends ServerError {}
 // 502 Bad Gateway Server Error
 export class BadGatewayServerError extends ApiError {}
 export class StripeRequestError extends BadGatewayServerError {}
+
+function getSpecifiedAuthenticationError(error: HttpError): string {
+  const { type, config } = error;
+
+  const messageHeader =
+    'Looks like you are not authenticated yet. Please check the README file to get started.  ';
+
+  switch (type) {
+    case 'proxy': {
+      return `${messageHeader}
+      As example you can authenticate using this snippet:
+      
+      try {
+        const sdk = createProxyClient({
+          host: '${config ? config.baseURL : ''}',
+        });
+
+        sdk.users.me(); 
+      
+      } catch (error) {
+        // redirect to login page of your proxy service
+      }
+      `;
+    }
+    case 'oauth1': {
+      return `${messageHeader}
+      As example if you want to use the Oauth1 you can authenticate using this snippet:
+      
+      const sdk = createClient({
+        host: '${config ? config.baseURL : ''}',
+        consumerKey: '',
+        consumerSecret: '',
+      });
+      
+      await sdk.auth.authenticate({
+        email: '',
+        password: '',
+      });  
+          
+      `;
+    }
+    case 'oauth2': {
+      return `${messageHeader}
+      As example if you want to use the Oauth2 Password Grant Flow you can authenticate using this snippet:
+      
+      const sdk = createClient({
+        host: '${config ? config.baseURL : ''}',
+        clientId: '',
+      });
+      
+      await sdk.auth.authenticate({
+        username: '',
+        password: '',
+      });  
+          
+      `;
+    }
+    default: {
+      return messageHeader;
+    }
+  }
+}

@@ -63,6 +63,7 @@ const mapDateValues = (value, key) => {
       'expiresDate',
       'reevaluateDate',
       'autoRenewStatusChange',
+      'commentedTimestamp',
     ].includes(key)
   ) {
     return new Date(value);

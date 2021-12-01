@@ -61,36 +61,31 @@ export interface HttpInstance {
   ): Promise<R>;
 }
 export interface TokenDataOauth2 {
-  userId?: string;
+  userId: string;
   accessToken: string;
   refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+  applicationId: string;
 }
 
 export interface TokenDataOauth1 {
   userId?: string;
   key: string;
   secret: string;
-}
-
-export interface TokenResponseOauth1 {
-  id: string;
-  userId: string;
-  applicationId: string;
-  token: string;
-  tokenSecret: string;
-  lastUsedTimestamp: string;
-  creationTimestamp: string;
-}
-
-export interface TokenResponseOauth2 {
-  grantType: string;
-  username: string;
-  password: string;
-  clientId: string;
+  applicationId?: string;
+  token?: string;
+  tokenSecret?: string;
+  updateTimeStamp?: string;
+  creationTimestamp?: string;
+  id?: string;
 }
 
 export interface Oauth1Token {
-  tokenData: TokenDataOauth1;
+  tokenData: {
+    key: TokenDataOauth1['key'];
+    secret: TokenDataOauth1['secret'];
+  };
   skipTokenCheck: boolean;
 }
 
@@ -177,6 +172,12 @@ export interface OAuthClient extends HttpInstance {
   logout: () => boolean;
   userId: Promise<string | undefined>;
 }
+
+export interface ProxyClient extends HttpInstance {
+  userId: Promise<string | undefined>;
+}
+
+export type AuthHttpClient = OAuthClient | ProxyClient;
 
 export interface MfaConfig {
   token: string;

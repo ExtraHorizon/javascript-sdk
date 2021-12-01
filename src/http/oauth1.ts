@@ -66,9 +66,6 @@ export function createOAuth1HttpClient(
   }
 
   async function setTokenData(data: TokenDataOauth1) {
-    if (options.freshTokensCallback) {
-      await options.freshTokensCallback(data);
-    }
     tokenData = data;
   }
 
@@ -183,24 +180,33 @@ export function createOAuth1HttpClient(
     return true;
   }
 
-  return {
-    ...httpWithAuth,
-    authenticate,
-    confirmMfa,
-    logout,
-    get userId() {
-      return (async () => {
-        try {
-          if (!tokenData?.userId) {
-            const me = await getMe();
-            tokenData = { ...tokenData, userId: me.id };
-            return me.id;
-          }
-          return tokenData?.userId;
-        } catch (e) {
-          return undefined;
-        }
-      })();
+  /*
+   * The default way of adding a getter does not seem to work well with RN at
+   * the moment. This way always works.
+   */
+  return Object.defineProperty(
+    {
+      ...httpWithAuth,
+      authenticate,
+      confirmMfa,
+      logout,
     },
-  };
+    'userId',
+    {
+      get() {
+        return (async () => {
+          try {
+            if (!tokenData?.userId) {
+              const me = await getMe();
+              tokenData = { ...tokenData, userId: me.id };
+              return me.id;
+            }
+            return tokenData?.userId;
+          } catch (e) {
+            return undefined;
+          }
+        })();
+      },
+    }
+  ) as OAuthClient;
 }

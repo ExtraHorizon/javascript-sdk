@@ -328,11 +328,11 @@ export interface Index {
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
 
-export interface Document<CustomData = null> {
+export interface Document<CustomData = null, CustomStatus = null> {
   id?: ObjectId;
   userIds?: ObjectId[];
   groupIds?: ObjectId[];
-  status?: string;
+  status?: CustomStatus extends null ? string : CustomStatus;
   data?: CustomData extends null ? Record<string, unknown> : CustomData;
   transitionLock?: {
     timestamp?: Date;
@@ -350,8 +350,9 @@ export interface Comment {
   id?: ObjectId;
   schemaId?: ObjectId;
   measurementId?: ObjectId;
-  userId?: ObjectId;
+  creatorId?: ObjectId;
   text?: CommentText;
+  commentedTimestamp?: Date;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
 }
@@ -504,11 +505,11 @@ export interface DataDocumentsService {
    * @returns {Document} document
    * @throws {IllegalArgumentError}
    */
-  create<CustomData = null>(
+  create<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     requestBody: Record<string, any>,
     options?: OptionsWithRql & { gzip?: boolean }
-  ): Promise<Document<CustomData>>;
+  ): Promise<Document<CustomData, CustomStatus>>;
   /**
    * Request a list of documents
    *
@@ -537,10 +538,10 @@ export interface DataDocumentsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResultWithPager<Document>
    */
-  find<CustomData = null>(
+  find<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<PagedResultWithPager<Document<CustomData>>>;
+  ): Promise<PagedResultWithPager<Document<CustomData, CustomStatus>>>;
   /**
    * Request a list of all documents
    *
@@ -571,10 +572,10 @@ export interface DataDocumentsService {
    * @param rql Add filters to the requested list.
    * @returns Document[]
    */
-  findAll<CustomData = null>(
+  findAll<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<Document<CustomData>[]>;
+  ): Promise<Document<CustomData, CustomStatus>[]>;
   /**
    * Request a list of all documents and return a generator
    *
@@ -603,10 +604,13 @@ export interface DataDocumentsService {
    * @param rql Add filters to the requested list.
    * @returns Document[]
    */
-  findAllIterator<CustomData = null>(
+  findAllIterator<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Document<CustomData>>, Record<string, never>>;
+  ): AsyncGenerator<
+    PagedResult<Document<CustomData, CustomStatus>>,
+    Record<string, never>
+  >;
   /**
    * Shortcut method to find a document by id
    *
@@ -617,11 +621,11 @@ export interface DataDocumentsService {
    * @param rql an optional rql string
    * @returns {Document} document
    */
-  findById<CustomData = null>(
+  findById<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     documentId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<Document<CustomData>>;
+  ): Promise<Document<CustomData, CustomStatus>>;
   /**
    * Returns the first document that is found with the applied filter
    *
@@ -630,10 +634,10 @@ export interface DataDocumentsService {
    * @param rql an optional rql string
    * @returns {Document} document
    */
-  findFirst<CustomData = null>(
+  findFirst<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<Document<CustomData>>;
+  ): Promise<Document<CustomData, CustomStatus>>;
   /**
    * Update a document
    *
