@@ -93,8 +93,12 @@ const loginPageUrl = 'https://pages.dev.fibricheck.com/login';
 If you want to use the proxy sdk locally, you need to make some changes to your local setup.
 
 - add `127.0.0.1 local.yourdomain.com` to your `/etc/hosts` file (or if you are using Windows `c:\Windows\System32\Drivers\etc\hosts`)
-- start your server with https enabled. For CRA you can do this with `HTTPS=true yarn start`
+- start your server with https enabled. 
+  - For CRA you can do this with `HTTPS=true yarn start`.  
+  - For Windows, add `HTTPS=true` to your user environment variables and run `yarn start`.
 - open your browser `https://local.yourdomain.com:3000/` and skip the security warning
+- Navigate to `https://pages.dev.fibricheck.com/login/` and login with your account. Once logged in, a cookie will be created named `dev-fibproxy`. To access this cookie on your local domain, set the property `SameSite=None`.
+
 
 ## Other examples
 
