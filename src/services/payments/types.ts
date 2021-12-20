@@ -1209,7 +1209,7 @@ export interface PaymentsPlayStoreHistoryService {
    * @returns PagedResult<PlayStorePurchaseRecord>
    */
   purchases(
-    options?: OptionsBase
+    options?: OptionsWithRql
   ): Promise<PagedResult<PlayStorePurchaseRecord>>;
   /**
    * Get a list of recorded Play Store developer notifications received
@@ -1220,7 +1220,7 @@ export interface PaymentsPlayStoreHistoryService {
    * @returns PagedResult<PlayStoreDeveloperNotificationSchema>
    */
   notifications(
-    options?: OptionsBase
+    options?: OptionsWithRql
   ): Promise<PagedResult<PlayStoreDeveloperNotificationSchema>>;
   /**
    * Get a list of purchase information (SubscriptionPurchase) records fetched from the Play Store
@@ -1231,7 +1231,7 @@ export interface PaymentsPlayStoreHistoryService {
    * @returns PagedResult<PlayStoreSubscriptionPurchaseRecordSchema>
    */
   purchaseInfos(
-    options?: OptionsBase
+    options?: OptionsWithRql
   ): Promise<PagedResult<PlayStoreSubscriptionPurchaseRecordSchema>>;
 }
 
