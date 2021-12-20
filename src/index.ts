@@ -6,6 +6,8 @@ export * from './types';
 export { recursiveMap } from './http/utils';
 export { parseGlobalPermissions } from './utils';
 
+export { findAllGeneric, findAllIterator } from './services/helpers';
+
 export {
   getMockSdkOAuth1,
   getMockSdkOAuth2,
