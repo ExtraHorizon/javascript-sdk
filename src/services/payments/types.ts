@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { FindAllIterator } from '../../services/helpers';
 import { RQLString } from '../../rql';
 import type {
   AffectedRecords,
@@ -536,11 +537,7 @@ export interface PaymentsAppStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<AppStoreSubscription>,
-      Record<string, never>,
-      void
-    >;
+    ): FindAllIterator<AppStoreSubscription>;
   };
   products: {
     /**
@@ -575,11 +572,7 @@ export interface PaymentsAppStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<AppStoreSubscriptionProduct>,
-      Record<string, never>,
-      void
-    >;
+    ): FindAllIterator<AppStoreSubscriptionProduct>;
     /**
      * Create an App Store subscription product
      *
@@ -663,9 +656,7 @@ export interface PaymentsOrdersService {
    * @param rql Add filters to the requested list.
    * @returns OrderSchema[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<OrderSchema>, Record<string, never>, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<OrderSchema>;
   /**
    * Find By Id
    * @param id the Id to search for
@@ -783,9 +774,7 @@ export interface PaymentsProductsService {
    * @param rql Add filters to the requested list.
    * @returns ProductSchema[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<ProductSchema>, Record<string, never>, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<ProductSchema>;
   /**
    * Find By Id
    * @param id the Id to search for
@@ -1028,11 +1017,7 @@ export interface PaymentsSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<SubscriptionEntitlement>,
-      Record<string, never>,
-      void
-    >;
+    ): FindAllIterator<SubscriptionEntitlement>;
   };
   events: {
     /**
@@ -1068,11 +1053,7 @@ export interface PaymentsSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<SubscriptionEvent>,
-      Record<string, never>,
-      void
-    >;
+    ): FindAllIterator<SubscriptionEvent>;
   };
 }
 
@@ -1306,11 +1287,7 @@ export interface PaymentsPlayStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<PlayStoreSubscription>,
-      Record<string, never>,
-      void
-    >;
+    ): FindAllIterator<PlayStoreSubscription>;
   };
   products: {
     /**
@@ -1345,11 +1322,7 @@ export interface PaymentsPlayStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<PlayStoreSubscriptionProduct>,
-      Record<string, never>,
-      void
-    >;
+    ): FindAllIterator<PlayStoreSubscriptionProduct>;
     /**
      * Create an Play Store subscription product
      *

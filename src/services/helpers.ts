@@ -3,10 +3,16 @@ import { rqlBuilder } from '../rql';
 
 const MAX_LIMIT = 50;
 
+export type FindAllIterator<T> = AsyncGenerator<
+  PagedResult<T>,
+  Record<string, never>,
+  void
+>;
+
 export async function* findAllIterator<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
   options: OptionsWithRql
-): AsyncGenerator<PagedResult<T>> {
+): FindAllIterator<T> {
   async function* makeRequest(requestOptions: OptionsWithRql) {
     const result = await find(requestOptions);
     yield result;
@@ -28,6 +34,8 @@ export async function* findAllIterator<T>(
         ? options.rql
         : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
   });
+
+  return {};
 }
 
 export async function findAllGeneric<T>(

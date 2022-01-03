@@ -1,3 +1,4 @@
+import { FindAllIterator } from '../../services/helpers';
 import type { JSONSchema7 } from './json-schema';
 import type {
   AffectedRecords,
@@ -607,10 +608,7 @@ export interface DataDocumentsService {
   findAllIterator<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): AsyncGenerator<
-    PagedResult<Document<CustomData, CustomStatus>>,
-    Record<string, never>
-  >;
+  ): FindAllIterator<Document<CustomData, CustomStatus>>;
   /**
    * Shortcut method to find a document by id
    *
@@ -982,9 +980,7 @@ export interface DataSchemasService {
    * @param rql Add filters to the requested list.
    * @returns Schema[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Schema>, Record<string, never>, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Schema>;
   /**
    * Find By Id
    * @param id the Id to search for
