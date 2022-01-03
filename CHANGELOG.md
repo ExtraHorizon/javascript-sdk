@@ -28,11 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `sdk.data.documents.update` now accepts a generic for the update type.
-
-## [v5.4.0]
-
-### Added
-
 - Exported `findAllGeneric` and `findAllIterator` for usage on raw functions
 - Better type for `findAllIterator`
 
