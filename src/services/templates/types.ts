@@ -1,3 +1,4 @@
+import { FindAllIterator } from '../../services/helpers';
 import {
   ObjectId,
   LanguageCode,
@@ -101,9 +102,7 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns TemplateOut[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<TemplateOut>, void, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<TemplateOut>;
   /**
    * Find By Id
    * @param id the Id to search for

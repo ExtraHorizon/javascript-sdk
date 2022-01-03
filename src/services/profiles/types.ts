@@ -1,4 +1,5 @@
 import { Object } from 'ts-toolbelt';
+import { FindAllIterator } from '../../services/helpers';
 import { RQLString } from '../../rql';
 import {
   AffectedRecords,
@@ -269,7 +270,7 @@ export interface ProfilesLogsService {
     profileId: ObjectId,
     groupId: ObjectId,
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<LogEntry>, void, void>;
+  ): FindAllIterator<LogEntry>;
   /**
    * Update a profile log entry
    *
@@ -350,9 +351,7 @@ export interface ProfilesService {
    * @param rql Add filters to the requested list.
    * @returns Profile[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Profile>, void, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Profile>;
   /**
    * Find By Id
    * @param id the Id to search for
