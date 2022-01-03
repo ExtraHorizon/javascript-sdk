@@ -1,3 +1,4 @@
+import { FindAllIterator } from '../../services/helpers';
 import {
   AffectedRecords,
   ObjectId,
@@ -167,9 +168,7 @@ export interface NotificationsService {
    * `VIEW_NOTIFICATIONS` | `global` | View all notifications
    * @returns Notification[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Notification>, Record<string, never>, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Notification>;
   /**
    * Find By Id
    * @param id the Id to search for

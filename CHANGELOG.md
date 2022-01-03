@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Exported `findAllGeneric` and `findAllIterator` for usage on raw functions
+- Better type for `findAllIterator`
 
 ## [v5.3.1]
 
