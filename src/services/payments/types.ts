@@ -536,11 +536,7 @@ export interface PaymentsAppStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<AppStoreSubscription>,
-      Record<string, never>,
-      void
-    >;
+    ): AsyncGenerator<PagedResult<AppStoreSubscription>, void, void>;
   };
   products: {
     /**
@@ -575,11 +571,7 @@ export interface PaymentsAppStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<AppStoreSubscriptionProduct>,
-      Record<string, never>,
-      void
-    >;
+    ): AsyncGenerator<PagedResult<AppStoreSubscriptionProduct>, void, void>;
     /**
      * Create an App Store subscription product
      *
@@ -665,7 +657,7 @@ export interface PaymentsOrdersService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<OrderSchema>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<OrderSchema>, void, void>;
   /**
    * Find By Id
    * @param id the Id to search for
@@ -785,7 +777,7 @@ export interface PaymentsProductsService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<ProductSchema>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<ProductSchema>, void, void>;
   /**
    * Find By Id
    * @param id the Id to search for
@@ -1028,11 +1020,7 @@ export interface PaymentsSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<SubscriptionEntitlement>,
-      Record<string, never>,
-      void
-    >;
+    ): AsyncGenerator<PagedResult<SubscriptionEntitlement>, void, void>;
   };
   events: {
     /**
@@ -1068,11 +1056,7 @@ export interface PaymentsSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<SubscriptionEvent>,
-      Record<string, never>,
-      void
-    >;
+    ): AsyncGenerator<PagedResult<SubscriptionEvent>, void, void>;
   };
 }
 
@@ -1306,11 +1290,7 @@ export interface PaymentsPlayStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<PlayStoreSubscription>,
-      Record<string, never>,
-      void
-    >;
+    ): AsyncGenerator<PagedResult<PlayStoreSubscription>, void, void>;
   };
   products: {
     /**
@@ -1345,11 +1325,7 @@ export interface PaymentsPlayStoreSubscriptionsService {
      */
     findAllIterator(
       options?: OptionsWithRql
-    ): AsyncGenerator<
-      PagedResult<PlayStoreSubscriptionProduct>,
-      Record<string, never>,
-      void
-    >;
+    ): AsyncGenerator<PagedResult<PlayStoreSubscriptionProduct>, void, void>;
     /**
      * Create an Play Store subscription product
      *

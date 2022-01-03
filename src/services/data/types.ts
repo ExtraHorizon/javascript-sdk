@@ -609,7 +609,8 @@ export interface DataDocumentsService {
     options?: OptionsWithRql
   ): AsyncGenerator<
     PagedResult<Document<CustomData, CustomStatus>>,
-    Record<string, never>
+    void,
+    void
   >;
   /**
    * Shortcut method to find a document by id
@@ -984,7 +985,7 @@ export interface DataSchemasService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Schema>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<Schema>, void, void>;
   /**
    * Find By Id
    * @param id the Id to search for

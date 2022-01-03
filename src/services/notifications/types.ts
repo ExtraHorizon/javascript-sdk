@@ -169,7 +169,7 @@ export interface NotificationsService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Notification>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<Notification>, void, void>;
   /**
    * Find By Id
    * @param id the Id to search for

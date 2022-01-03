@@ -722,7 +722,7 @@ export interface UsersService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<User>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<User>, void, void>;
   findFirst(options?: { rql?: RQLString }): Promise<User>;
   /**
    * @deprecated

@@ -103,7 +103,7 @@ export interface TemplatesService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<TemplateOut>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<TemplateOut>, void, void>;
   /**
    * Find By Id
    * @param id the Id to search for

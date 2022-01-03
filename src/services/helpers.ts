@@ -6,7 +6,7 @@ const MAX_LIMIT = 50;
 export async function* findAllIterator<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
   options: OptionsWithRql
-): AsyncGenerator<PagedResult<T>> {
+): AsyncGenerator<PagedResult<T>, void, void> {
   async function* makeRequest(requestOptions: OptionsWithRql) {
     const result = await find(requestOptions);
     yield result;

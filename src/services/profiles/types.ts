@@ -269,7 +269,7 @@ export interface ProfilesLogsService {
     profileId: ObjectId,
     groupId: ObjectId,
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<LogEntry>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<LogEntry>, void, void>;
   /**
    * Update a profile log entry
    *
@@ -352,7 +352,7 @@ export interface ProfilesService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Profile>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<Profile>, void, void>;
   /**
    * Find By Id
    * @param id the Id to search for

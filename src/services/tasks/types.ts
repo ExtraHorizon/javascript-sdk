@@ -78,7 +78,7 @@ export interface TasksService {
    */
   findAllIterator(
     options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Task>, Record<string, never>, void>;
+  ): AsyncGenerator<PagedResult<Task>, void, void>;
   /**
    * Find First
    * @param rql an optional rql string
