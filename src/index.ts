@@ -6,7 +6,14 @@ export * from './types';
 export { recursiveMap } from './http/utils';
 export { parseGlobalPermissions } from './utils';
 
-export { getMockSdk } from './mock';
+export { findAllGeneric, findAllIterator } from './services/helpers';
+
+export {
+  getMockSdkOAuth1,
+  getMockSdkOAuth2,
+  getMockSdkProxy,
+  getMockSdkOAuth2 as getMockSdk,
+} from './mock';
 
 export {
   createClient,

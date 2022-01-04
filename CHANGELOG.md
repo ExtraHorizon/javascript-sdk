@@ -5,7 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v6.0.0]
+
+### Breaking Changes
+
+- `sdk.data.documents.create` now accepts 3 generics.
+
+```diff
+-create<CustomData = null, CustomStatus = null>(
+- schemaId: ObjectId,
+- requestBody: Record<string, any>,
+- options?: OptionsWithRql & { gzip?: boolean }
+-): Promise<Document<CustomData, CustomStatus>>;
+
++create<InputData = null, OutputData = null, CustomStatus = null>(
++ schemaId: ObjectId,
++ requestBody: InputData,
++ options?: OptionsWithRql & { gzip?: boolean }
++): Promise<Document<OutputData, CustomStatus>>;
+```
+
+### Added
+
+- `sdk.data.documents.update` now accepts a generic for the update type.
+- Exported `findAllGeneric` and `findAllIterator` for usage on raw functions
+- Better type for `findAllIterator`
+
+## [v5.3.1]
+
+### Added/Fixed
+
+- Playstore endpoints can handle rql now
+
+## [v5.3.0]
+
+### Added
+
+- There are now 3 mocked exports. `getMockSdkProxy`, `getMockSdkOAuth2` and `getMockSdkOAuth1` with matching types. The `getMockSdk` is also still available and mapped to `getMockSdkOAuth2`.
 
 ## [v5.2.0]
 

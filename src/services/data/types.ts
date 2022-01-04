@@ -1,3 +1,4 @@
+import { FindAllIterator } from '../../services/helpers';
 import type { JSONSchema7 } from './json-schema';
 import type {
   AffectedRecords,
@@ -505,11 +506,15 @@ export interface DataDocumentsService {
    * @returns {Document} document
    * @throws {IllegalArgumentError}
    */
-  create<CustomData = null, CustomStatus = null>(
+  create<
+    InputData = Record<string, any>,
+    OutputData = null,
+    CustomStatus = null
+  >(
     schemaId: ObjectId,
-    requestBody: Record<string, any>,
+    requestBody: InputData,
     options?: OptionsWithRql & { gzip?: boolean }
-  ): Promise<Document<CustomData, CustomStatus>>;
+  ): Promise<Document<OutputData, CustomStatus>>;
   /**
    * Request a list of documents
    *
@@ -607,10 +612,7 @@ export interface DataDocumentsService {
   findAllIterator<CustomData = null, CustomStatus = null>(
     schemaId: ObjectId,
     options?: OptionsWithRql
-  ): AsyncGenerator<
-    PagedResult<Document<CustomData, CustomStatus>>,
-    Record<string, never>
-  >;
+  ): FindAllIterator<Document<CustomData, CustomStatus>>;
   /**
    * Shortcut method to find a document by id
    *
@@ -654,10 +656,10 @@ export interface DataDocumentsService {
    * @param requestBody Record<string, any>
    * @returns AffectedRecords
    */
-  update(
+  update<UpdateData = Record<string, any>>(
     schemaId: ObjectId,
     documentId: ObjectId,
-    requestBody: Record<string, any>,
+    requestBody: UpdateData,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
@@ -982,9 +984,7 @@ export interface DataSchemasService {
    * @param rql Add filters to the requested list.
    * @returns Schema[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Schema>, Record<string, never>, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Schema>;
   /**
    * Find By Id
    * @param id the Id to search for

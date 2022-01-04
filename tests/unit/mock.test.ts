@@ -1,4 +1,4 @@
-import { getMockSdk } from '../../src/mock';
+import { getMockSdk } from '../../src';
 
 describe('mock SDK', () => {
   it('should build a valid mock SDK', async () => {

@@ -1,3 +1,4 @@
+import { FindAllIterator } from '../../services/helpers';
 import { RQLString } from '../../rql';
 import {
   ObjectId,
@@ -720,9 +721,7 @@ export interface UsersService {
    * @param rql Add filters to the requested list.
    * @returns User[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<User>, Record<string, never>, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<User>;
   findFirst(options?: { rql?: RQLString }): Promise<User>;
   /**
    * @deprecated

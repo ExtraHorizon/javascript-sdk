@@ -80,12 +80,14 @@ export default (
 
     async disable(schemaId, options) {
       return (
-        await client.post(httpAuth, `/${schemaId}/disable`, null, options)
+        await client.post(httpAuth, `/${schemaId}/disable`, undefined, options)
       ).data;
     },
 
     async enable(schemaId, options) {
-      return (await client.post(httpAuth, `/${schemaId}/enable`, options)).data;
+      return (
+        await client.post(httpAuth, `/${schemaId}/enable`, undefined, options)
+      ).data;
     },
   };
 };

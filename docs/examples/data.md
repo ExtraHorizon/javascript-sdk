@@ -101,6 +101,26 @@ for await (const schema of schemas) {
 }
 ```
 
+## Custom Iterator
+
+```ts
+interface YourType {}
+
+const endpoint = '';
+
+const rql = RqlBuilder().eq('userId', userId);
+
+const find = (options: OptionsWithRql) => {
+  return await sdk.raw.get(`${endpoint}${options?.rql}`);
+};
+
+const iterator = findAllIterator<YourType>(find, { rql });
+
+for await (const value of iterator) {
+  console.log(value); /* PagedResult<YourType> */
+}
+```
+
 ## Find with pagination
 
 For Schema, Documents and Users the `find` function returns and object with the initial data and two helpers function to get the previous / next page.

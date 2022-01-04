@@ -1,3 +1,4 @@
+import { FindAllIterator } from '../../services/helpers';
 import type {
   AffectedRecords,
   ObjectId,
@@ -76,9 +77,7 @@ export interface TasksService {
    * @param rql Add filters to the requested list.
    * @returns Task[]
    */
-  findAllIterator(
-    options?: OptionsWithRql
-  ): AsyncGenerator<PagedResult<Task>, Record<string, never>, void>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Task>;
   /**
    * Find First
    * @param rql an optional rql string
