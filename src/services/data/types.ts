@@ -506,11 +506,15 @@ export interface DataDocumentsService {
    * @returns {Document} document
    * @throws {IllegalArgumentError}
    */
-  create<CustomData = null, CustomStatus = null>(
+  create<
+    InputData = Record<string, any>,
+    OutputData = null,
+    CustomStatus = null
+  >(
     schemaId: ObjectId,
-    requestBody: Record<string, any>,
+    requestBody: InputData,
     options?: OptionsWithRql & { gzip?: boolean }
-  ): Promise<Document<CustomData, CustomStatus>>;
+  ): Promise<Document<OutputData, CustomStatus>>;
   /**
    * Request a list of documents
    *
@@ -652,10 +656,10 @@ export interface DataDocumentsService {
    * @param requestBody Record<string, any>
    * @returns AffectedRecords
    */
-  update(
+  update<UpdateData = Record<string, any>>(
     schemaId: ObjectId,
     documentId: ObjectId,
-    requestBody: Record<string, any>,
+    requestBody: UpdateData,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**
