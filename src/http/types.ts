@@ -173,11 +173,11 @@ export interface OAuthClient extends HttpInstance {
   userId: Promise<string | undefined>;
 }
 
-export interface ProxyClient extends HttpInstance {
+export interface ProxyInstance extends HttpInstance {
   userId: Promise<string | undefined>;
 }
 
-export type AuthHttpClient = OAuthClient | ProxyClient;
+export type AuthHttpClient = OAuthClient | ProxyInstance;
 
 export interface MfaConfig {
   token: string;

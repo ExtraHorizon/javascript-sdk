@@ -23,4 +23,5 @@ export {
   Client,
   OAuth1Client,
   OAuth2Client,
+  ProxyClient,
 } from './client';
