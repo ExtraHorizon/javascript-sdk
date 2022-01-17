@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v6.0.3]
+
+### Changed
+
+- `Profile` type has been revised
+
+```diff
+-fibricheckInfo?: string;
++fibricheckInfo?: {
++  app?: {
++    version?: string;
++    build?: string;
++    branch?: string;
++  };
++  device?: {
++    os?: string;
++    model?: string;
++    type?: 'android' | 'ios';
++    manufacturer?: string;
++  };
++};
+```
+
 ## [v6.0.2]
 
 ### Changed
