@@ -33,7 +33,19 @@ export interface Profile {
   medication?: Array<Medication>;
   groups?: Array<Group>;
   customFields?: Record<string, string>;
-  fibricheckInfo?: string;
+  fibricheckInfo?: {
+    app?: {
+      version?: string;
+      build?: string;
+      branch?: string;
+    };
+    device?: {
+      os?: string;
+      model?: string;
+      type?: 'android' | 'ios';
+      manufacturer?: string;
+    };
+  };
   creationTimestamp?: Date;
   updateTimestamp?: Date;
 }
