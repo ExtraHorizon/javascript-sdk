@@ -6,18 +6,13 @@
 
 * [Installation](setup/installation.md)
 * [Authentication](setup/authentication.md)
-* [authentication](setup/authentication-1.md)
 
 ## features
 
-* [Page 1](features/page-1.md)
-
-***
-
-* [guide](guide.md)
-* [examples](examples/README.md)
-  * [data](examples/data.md)
-  * [Accept Invitation for Group](examples/users.md)
+* [guide](features/guide.md)
+* [examples](features/examples/README.md)
+  * [data](features/examples/data.md)
+  * [Accept Invitation for Group](features/examples/users.md)
 
 ## other
 
