@@ -1,4 +1,4 @@
-# README
+# Home
 
 [![Quality assurance](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml) [![Code style](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/maintainability)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/test\_coverage)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/test\_coverage)
 
@@ -12,20 +12,22 @@ This package serves as a JavaScript wrapper around all [Extra Horizon](https://w
 [v2](https://app.gitbook.com/o/-MkCjSW-Ht0-VBM7yuP9/s/shlQh9HtXZI8Mk4PQbAj/)
 {% endcontent-ref %}
 
-* [Auth](https://developers.extrahorizon.io/services/?service=auth-service\&redirectToVersion=2): Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
-* [Users](https://developers.extrahorizon.io/services/?service=users-service\&redirectToVersion=1): The user service stands in for managing users themselves, as well as roles related to users and groups of users.
-* [Data](https://developers.extrahorizon.io/services/?service=data-service\&redirectToVersion=1): A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
-* [Files](https://developers.extrahorizon.io/services/?service=files-service\&redirectToVersion=1): A service that handles file storage, metadata & file retrieval based on tokens.
-* [Tasks](https://developers.extrahorizon.io/services/?service=tasks-service\&redirectToVersion=1): Start functions on demand, directly or at a future moment.
-* [Templates](https://developers.extrahorizon.io/services/?service=templates-service\&redirectToVersion=1): The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
-* [Mails](https://developers.extrahorizon.io/services/?service=mail-service\&redirectToVersion=1): Provides mail functionality for other services.
-* [Configurations](https://developers.extrahorizon.io/services/?service=configurations-service\&redirectToVersion=2): Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
-* [Dispatchers](https://developers.extrahorizon.io/services/?service=dispatchers-service\&redirectToVersion=1): Configure actions that need to be invoked when a specific event is/was triggered.
-* [Payments](https://developers.extrahorizon.io/services/?service=payments-service\&redirectToVersion=1): A service that provides payment functionality.
-* [Profiles](https://developers.extrahorizon.io/services/?service=profiles-service\&redirectToVersion=1): Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
-* [Notifications](https://developers.extrahorizon.io/services/?service=notifications-service\&redirectToVersion=1): A service that handles push notifications.
-* [Localizations](https://developers.extrahorizon.io/services/?service=localizations-service\&redirectToVersion=1): Storage and retrieval of text snippets, translated into multiple languages.
-* [Events](https://developers.extrahorizon.io/services/?service=events-service\&redirectToVersion=1): Service that provides event (publish/subscribe) functionality for other services.
+
+
+* [Auth](https://docs.extrahorizon.com/auth-service/): Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
+* [Users](https://docs.extrahorizon.com/user-service/): The user service stands in for managing users themselves, as well as roles related to users and groups of users.
+* [Data](https://docs.extrahorizon.com/data-service/): A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
+* [Files](https://docs.extrahorizon.com/data-service/): A service that handles file storage, metadata & file retrieval based on tokens.
+* [Tasks](https://docs.extrahorizon.com/file-service/): Start functions on demand, directly or at a future moment.
+* [Templates](https://docs.extrahorizon.com/template-service/): The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
+* [Mails](https://docs.extrahorizon.com/mail-service/): Provides mail functionality for other services.
+* [Configurations](https://docs.extrahorizon.com/configuration-service/): Provides storage for custom configuration objects. On different levels (general, groups, users, links between groups and users).
+* [Dispatchers](https://docs.extrahorizon.com/dispatcher-service/): Configure actions that need to be invoked when a specific event is/was triggered.
+* [Payments](https://docs.extrahorizon.com/payment-service/): A service that provides payment functionality.
+* [Profiles](https://docs.extrahorizon.com/profile-service/): Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
+* [Notifications](https://docs.extrahorizon.com/notification-service/): A service that handles push notifications.
+* [Localizations](https://docs.extrahorizon.com/localization-service/): Storage and retrieval of text snippets, translated into multiple languages.
+* [Events](https://docs.extrahorizon.com/event-service/): Service that provides event (publish/subscribe) functionality for other services.
 
 ### Getting started
 
