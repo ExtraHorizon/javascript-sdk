@@ -1,6 +1,6 @@
-## Accept Invitation for Group
+# Accept Invitation for Group
 
-```ts
+```javascript
 try {
   const hash = 'invitation-hash';
 
