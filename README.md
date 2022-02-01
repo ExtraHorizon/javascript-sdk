@@ -1,10 +1,16 @@
-# Home
+---
+description: Getting started with the ExtraHorizon Javascript SDK
+---
+
+# Getting Started
 
 [![Quality assurance](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml) [![Code style](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/maintainability)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/test\_coverage)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/test\_coverage)
 
-## Extra Horizon JavaScript SDK
+This package serves as a JavaScript wrapper around all [Extra Horizon](https://www.extrahorizon.com/cloud-services) cloud services providing you with fast and easy way to integrate with the Extra Horizon platform.
 
-This package serves as a JavaScript wrapper around all [Extra Horizon](https://www.extrahorizon.com/cloud-services) cloud services.
+* [Installation](setup/installation.md)
+* [Authentication](setup/authentication.md)
+* [Features Overview](./#features)
 
 ### Features
 
@@ -23,58 +29,6 @@ This package serves as a JavaScript wrapper around all [Extra Horizon](https://w
 * [Localizations](https://docs.extrahorizon.com/localization-service/): Storage and retrieval of text snippets, translated into multiple languages.
 * [Events](https://docs.extrahorizon.com/event-service/): Service that provides event (publish/subscribe) functionality for other services.
 
-### Getting started
-
-To get started with the ExtraHorizon SDK you'll need to install it, and then get credentials which will allow you to access the backend.
-
-### Installation
-
-In your project, if you are using yarn or npm you need to create a file called `.npmrc` at the root level of your project and add these lines. Replace ${AUTH\_TOKEN} with your personal access token. You can get a new one at https://github.com/settings/tokens/new. Make sure you enable the `read:packages` scope.
-
-```
-@extrahorizon:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${AUTH_TOKEN}
-```
-
-Alternatively, this file can be added/edited in your home directory and it will be applied to all projects.
-
-Explanation from GitHub on how to add your token can be found here https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages
-
-Using npm:
-
-```
-npm install @extrahorizon/javascript-sdk
-```
-
-Using yarn:
-
-```
-yarn add @extrahorizon/javascript-sdk
-```
-
-### Quick Start
-
-```ts
-import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
-
-(async () => {
-  const sdk = createOAuth2Client({
-    host: '',
-    clientId: '',
-  });
-
-  await sdk.auth.authenticate({
-    password: '',
-    username: '',
-  });
-
-  console.log('sdk.users.health()', await sdk.users.health());
-  console.log('sdk.users.me()', await sdk.users.me());
-})();
-```
-
-Please see [authentication examples](https://extrahorizon.github.io/javascript-sdk/#/docs/examples/authentication) for more options.
-
 ### Interceptors
 
 The data returned from the backend is mapped using interceptors:
@@ -82,10 +36,6 @@ The data returned from the backend is mapped using interceptors:
 * Timestamps will be of type Date
 * Keys in objects will be camelCased
 * `records_affected` will be replaced by `affected_records`
-
-### Documentation
-
-* [https://extrahorizon.github.io/javascript-sdk](https://extrahorizon.github.io/javascript-sdk)
 
 ### 🔑 License
 
