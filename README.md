@@ -8,12 +8,6 @@ This package serves as a JavaScript wrapper around all [Extra Horizon](https://w
 
 ### Features
 
-{% content-ref url="https://app.gitbook.com/o/-MkCjSW-Ht0-VBM7yuP9/s/shlQh9HtXZI8Mk4PQbAj/" %}
-[v2](https://app.gitbook.com/o/-MkCjSW-Ht0-VBM7yuP9/s/shlQh9HtXZI8Mk4PQbAj/)
-{% endcontent-ref %}
-
-
-
 * [Auth](https://docs.extrahorizon.com/auth-service/): Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
 * [Users](https://docs.extrahorizon.com/user-service/): The user service stands in for managing users themselves, as well as roles related to users and groups of users.
 * [Data](https://docs.extrahorizon.com/data-service/): A flexible data storage for structured data. Additionally, the service enables you to configure a state machine for instances of the structured data. You can couple actions that need to be triggered by the state machine, when/as the entities (instance of structured data) change their state. Thanks to these actions you can define automation rules (see later for more in depth description). These actions also make it possible to interact with other services.
