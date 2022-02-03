@@ -86,7 +86,7 @@ The data returned from the backend is mapped using interceptors:
 
 ## Documentation
 
-- [https://extrahorizon.github.io/javascript-sdk](https://extrahorizon.github.io/javascript-sdk)
+- [https://docs.extrahorizon.com/javascript-sdk/](https://docs.extrahorizon.com/javascript-sdk/)
 
 ## 🔑 License
 
