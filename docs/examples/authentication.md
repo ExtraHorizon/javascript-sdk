@@ -105,7 +105,10 @@ If you want to use the proxy sdk locally, you need to make some changes to your 
 When you already use the `exh/cli` tool, you can use this snippet to initialize. More info: https://docs.extrahorizon.com/cli/setup/credentials
 
 ```ts
-import { readStoredCredentials } from '@extrahorizon/javascript-sdk';
+import {
+  createOAuth1Client,
+  readStoredCredentials,
+} from '@extrahorizon/javascript-sdk';
 
 try {
   const sdk = createOAuth1Client(readStoredCredentials());
