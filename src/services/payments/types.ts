@@ -404,7 +404,7 @@ export interface PaymentsAppStoreService {
    * @throws {AppStoreTransactionAlreadyLinked}
    * @throws {NoConfiguredAppStoreProduct}
    */
-  createTransaction(
+  completeTransaction(
     requestBody: TransactionCompletionDataSchema,
     options?: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;

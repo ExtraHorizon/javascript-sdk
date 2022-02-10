@@ -43,7 +43,7 @@ describe('App Store Service', () => {
       .post('/appStore/completeTransaction')
       .reply(200, appleReceipt);
 
-    const res = await sdk.payments.appStore.createTransaction({
+    const res = await sdk.payments.appStore.completeTransaction({
       receiptData:
         'ITqTCCE6UCAQExCzAJBgUrDgMCGgUAMIIDWQYJKoZIhvcNAQcBoIIDSgSCA0YxggNCM...',
       transactionId: '1000000472106082',

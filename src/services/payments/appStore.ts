@@ -8,7 +8,7 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): PaymentsAppStoreService => ({
-  async createTransaction(requestBody, options) {
+  async completeTransaction(requestBody, options) {
     return (
       await client.post(
         httpAuth,
