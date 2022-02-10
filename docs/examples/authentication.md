@@ -94,12 +94,25 @@ If you want to use the proxy sdk locally, you need to make some changes to your 
 
 - Add `127.0.0.1 local.yourdomain.com` to your `/etc/hosts` file (or if you are using Windows `c:\Windows\System32\Drivers\etc\hosts`)
 - Start your server with https enabled.
-  - For Mac/Linux, this can be done by running `HTTPS=true yarn start`.  
+  - For Mac/Linux, this can be done by running `HTTPS=true yarn start`.
   - For Windows, you have to add `HTTPS=true` to your user environment. Once the variable has been set, run `yarn start`.
 - Open your browser `https://local.yourdomain.com:3000/` and skip the security warning.
 - Assuming you want to connect to the dev environment:
   - Navigate to `https://pages.dev.fibricheck.com/login/` and login with your account. Once logged in, a cookie will be created named `dev-fibproxy`. To access this cookie on your local domain, set the property `SameSite=None`.
 
+### Snippet for stored credentials
+
+When you already use the `exh/cli` tool, you can use this snippet to initialize. More info: https://docs.extrahorizon.com/cli/setup/credentials
+
+```ts
+import { readStoredCredentials } from '@extrahorizon/javascript-sdk';
+
+try {
+  const sdk = createOAuth1Client(readStoredCredentials());
+} catch (error) {
+  console.log(error);
+}
+```
 
 ## Other examples
 
