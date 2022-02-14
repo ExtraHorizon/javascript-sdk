@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Breaking changes
+
+- renamed `createTransaction` to `completeTransaction` on the payments.appStore service
+
+```diff
+- sdk.payments.appStore.createTransaction
++ sdk.payments.appStore.completeTransaction
+```
+
 ### Changaed
 
 - When passing in `localhost` as host. No prefixing takes places.
