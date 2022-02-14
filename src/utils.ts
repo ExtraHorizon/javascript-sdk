@@ -11,13 +11,15 @@ function hmacSha1Hash(baseString: string, key: string) {
 
 function parseHost(rawHost: string, prefix: 'api' | 'apx') {
   const validHostEnd = rawHost.endsWith('/')
-    ? rawHost.substr(0, rawHost.length - 1)
+    ? rawHost.substring(0, rawHost.length - 1)
     : rawHost;
 
-  return `https://${prefix}.${validHostEnd
-    .replace(/^https?:\/\//, '')
-    .replace(/^api\./, '')
-    .replace(/^apx\./, '')}`;
+  return validHostEnd.includes('localhost')
+    ? validHostEnd
+    : `https://${prefix}.${validHostEnd
+        .replace(/^https?:\/\//, '')
+        .replace(/^api\./, '')
+        .replace(/^apx\./, '')}`;
 }
 
 export function validateConfig({

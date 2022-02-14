@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+
 ### Breaking changes
 
 - renamed `createTransaction` to `completeTransaction` on the payments.appStore service
@@ -13,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - sdk.payments.appStore.createTransaction
 + sdk.payments.appStore.completeTransaction
 ```
+
+### Changaed
+
+- When passing in `localhost` as host. No prefixing takes places.
 
 ## [v6.0.3]
 
