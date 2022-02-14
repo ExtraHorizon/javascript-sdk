@@ -1,9 +1,4 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import { decodeType, record, string } from 'typescript-json-decoder';
-
-const EXH_CONFIG_FILE_DIR = path.join(process.env.HOME, '/.exh');
-const EXH_CONFIG_FILE = `${EXH_CONFIG_FILE_DIR}/credentials`;
 
 export type ExHCredentials = decodeType<typeof exhCredentialsDecoder>;
 
@@ -15,19 +10,9 @@ const exhCredentialsDecoder = record({
   API_OAUTH_TOKEN_SECRET: string,
 });
 
-const readFile = () => {
-  try {
-    return fs.readFileSync(EXH_CONFIG_FILE, 'utf-8');
-  } catch (err) {
-    throw new Error(
-      'Failed to open credentials file. Make sure they are correctly specified in ~/.exh/credentials'
-    );
-  }
-};
-
-export const readStoredCredentials = (): ExHCredentials =>
+export const parseStoredCredentials = (fileContent: string): ExHCredentials =>
   exhCredentialsDecoder(
-    readFile()
+    fileContent
       .split(/\r?\n/)
       .map(line => line.split(/=/))
       .filter(line => line.length === 2)

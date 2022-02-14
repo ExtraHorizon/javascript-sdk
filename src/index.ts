@@ -26,4 +26,7 @@ export {
   ProxyClient,
 } from './client';
 
-export { readStoredCredentials, ExHCredentials } from './readStoredCredentials';
+export {
+  parseStoredCredentials,
+  ExHCredentials,
+} from './parseStoredCredentials';
