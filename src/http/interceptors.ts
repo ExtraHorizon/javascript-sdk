@@ -83,7 +83,7 @@ export const transformResponseData = ({
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
     config?.interceptors?.skipTransformResponseData
       ? data
-      : recursiveMap(mapDateValues)(data),
+      : recursiveMap(mapDateValues, true)(data),
 });
 
 const convertRecordsAffectedKeys = key => {

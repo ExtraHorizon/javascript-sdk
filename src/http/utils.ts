@@ -64,19 +64,29 @@ export function mapObjIndexed(fn, object): Record<string, unknown> {
   );
 }
 
-export const recursiveMap = fn => obj => {
-  // needed for arrays with strings/numbers etc
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-  return Array.isArray(obj)
-    ? obj.map(recursiveMap(fn))
-    : mapObjIndexed(
-        (value, key) =>
-          typeof value !== 'object' ? fn(value, key) : recursiveMap(fn)(value),
-        obj
-      );
-};
+export const recursiveMap =
+  (fn, skipData = false) =>
+  obj => {
+    // needed for arrays with strings/numbers etc
+    if (obj === null || typeof obj !== 'object') {
+      return obj;
+    }
+
+    return Array.isArray(obj)
+      ? obj.map(recursiveMap(fn, skipData))
+      : mapObjIndexed((value, key) => {
+          if (typeof value !== 'object') {
+            return fn(value, key);
+          }
+
+          // if recursively mapping and we find a data property that
+          // is an object, return the object.
+          if (skipData && key === 'data' && !Array.isArray(value)) {
+            return value;
+          }
+          return recursiveMap(fn, skipData)(value);
+        }, obj);
+  };
 
 /**
  * See if an object (`val`) is an instance of the supplied constructor. This
