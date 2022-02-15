@@ -16,9 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 + sdk.payments.appStore.completeTransaction
 ```
 
-### Changaed
+### Changed
 
 - When passing in `localhost` as host. No prefixing takes places.
+- If you are using the `sdk.raw` instance you can now pass in additional parameters to the http verbs.
+
+```ts
+const result = sdk.raw.get('/files/v1', {
+  interceptors: {
+    skipCamelizeResponseData: true, // will recursively rename keys to camelCase
+    skipTransformResponseData: true, // maps the values of certain keys to Dates
+    skipTransformKeysResponseData: true, // renames certain keys for consistency
+  },
+});
+```
 
 ## [v6.0.3]
 
