@@ -7,7 +7,16 @@ import {
   AxiosResponse,
 } from 'axios';
 
+export type HttpResponse<T = any> = AxiosResponse<T> & {
+  config: HttpRequestConfig;
+};
+
 export type HttpRequestConfig = AxiosRequestConfig & {
+  interceptors?: {
+    skipCamelizeResponseData?: boolean;
+    skipTransformResponseData?: boolean;
+    skipTransformKeysResponseData?: boolean;
+  };
   retry?: {
     tries: number;
     retryTimeInMs: number;
@@ -24,40 +33,38 @@ export interface HttpInstance {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
     response: AxiosInterceptorManager<AxiosResponse>;
   };
-  getUri(config?: AxiosRequestConfig): string;
-  request<T = any, R = AxiosResponse<T>>(
-    config: AxiosRequestConfig
-  ): Promise<R>;
+  getUri(config?: HttpRequestConfig): string;
+  request<T = any, R = AxiosResponse<T>>(config: HttpRequestConfig): Promise<R>;
   get<T = any, R = AxiosResponse<T>>(
     url: string,
-    config?: AxiosRequestConfig
+    config?: HttpRequestConfig
   ): Promise<R>;
   delete<T = any, R = AxiosResponse<T>>(
     url: string,
-    config?: AxiosRequestConfig
+    config?: HttpRequestConfig
   ): Promise<R>;
   head<T = any, R = AxiosResponse<T>>(
     url: string,
-    config?: AxiosRequestConfig
+    config?: HttpRequestConfig
   ): Promise<R>;
   options<T = any, R = AxiosResponse<T>>(
     url: string,
-    config?: AxiosRequestConfig
+    config?: HttpRequestConfig
   ): Promise<R>;
   post<T = any, R = AxiosResponse<T>>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: HttpRequestConfig
   ): Promise<R>;
   put<T = any, R = AxiosResponse<T>>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: HttpRequestConfig
   ): Promise<R>;
   patch<T = any, R = AxiosResponse<T>>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: HttpRequestConfig
   ): Promise<R>;
 }
 export interface TokenDataOauth2 {
