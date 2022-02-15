@@ -47,7 +47,9 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     form.append('file', fileData, fileName);
 
     if (options?.tags && options.tags.length > 0) {
-      form.append('tags', JSON.stringify(options.tags));
+      options.tags.forEach(value => {
+        form.append('tags[]', value);
+      });
     }
 
     return (
