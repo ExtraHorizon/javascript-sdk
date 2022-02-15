@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changaed
 
 - When passing in `localhost` as host. No prefixing takes places.
+- Fixed bug when calling `sdk.files.create` with tags as an array. #527
 
 ## [v6.0.3]
 
