@@ -1,7 +1,7 @@
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { delay } from '../utils';
 import { DATA_BASE } from '../constants';
-import { HttpResponseError } from './types';
+import { HttpResponse, HttpResponseError } from './types';
 import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
 
 export const retryInterceptor =
@@ -34,13 +34,14 @@ export const camelizeResponseData = ({
   data,
   config,
   ...response
-}: AxiosResponse): AxiosResponse => ({
+}: HttpResponse): HttpResponse => ({
   ...response,
   config,
   data:
     // Note: the /data endpoint can return custom properties that the user has defined
     config?.url?.startsWith(DATA_BASE) ||
-    ['arraybuffer', 'stream'].includes(config.responseType ?? '')
+    ['arraybuffer', 'stream'].includes(config.responseType ?? '') ||
+    config?.interceptors?.skipCamelizeResponseData
       ? data
       : camelizeKeys(data),
 });
@@ -75,12 +76,14 @@ export const transformResponseData = ({
   data,
   config,
   ...response
-}: AxiosResponse): AxiosResponse => ({
+}: HttpResponse): HttpResponse => ({
   ...response,
   config,
-  data: ['arraybuffer', 'stream'].includes(config?.responseType ?? '')
-    ? data
-    : recursiveMap(mapDateValues)(data),
+  data:
+    ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
+    config?.interceptors?.skipTransformResponseData
+      ? data
+      : recursiveMap(mapDateValues, config?.url?.startsWith(DATA_BASE))(data),
 });
 
 const convertRecordsAffectedKeys = key => {
@@ -94,10 +97,12 @@ export const transformKeysResponseData = ({
   data,
   config,
   ...response
-}: AxiosResponse): AxiosResponse => ({
+}: HttpResponse): HttpResponse => ({
   ...response,
   config,
-  data: ['arraybuffer', 'stream'].includes(config?.responseType ?? '')
-    ? data
-    : recursiveRenameKeys(convertRecordsAffectedKeys, data),
+  data:
+    ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
+    config?.interceptors?.skipTransformKeysResponseData
+      ? data
+      : recursiveRenameKeys(convertRecordsAffectedKeys, data),
 });
