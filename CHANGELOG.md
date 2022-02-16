@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - When passing in `localhost` as host. No prefixing takes places.
 - Fixed bug when calling `sdk.files.create` with tags as an array. See [PR #544](https://github.com/ExtraHorizon/javascript-sdk/pull/544)
+- Properties on your JSONSchema on the data service will no longer have any automatic date parsing. [PR #546](https://github.com/ExtraHorizon/javascript-sdk/pull/546)
 - If you are using the `sdk.raw` instance you can now pass in additional parameters to the http verbs. See [PR #546](https://github.com/ExtraHorizon/javascript-sdk/pull/546)
 
 ```ts
