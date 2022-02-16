@@ -25,3 +25,8 @@ export {
   OAuth2Client,
   ProxyClient,
 } from './client';
+
+export {
+  parseStoredCredentials,
+  ExHCredentials,
+} from './parseStoredCredentials';
