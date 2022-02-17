@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
@@ -42,7 +42,8 @@
     "oauth-1.0a": "^2.2.6",
     "pako": "^2.0.3",
     "platform-specific": "^1.1.0",
-    "ts-toolbelt": "^9.6.0"
+    "ts-toolbelt": "^9.6.0",
+    "typescript-json-decoder": "^1.0.6"
   },
   "devDependencies": {
     "@qompium/eslint-config-q-node": "^1.2.9",

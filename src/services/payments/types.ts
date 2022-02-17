@@ -391,6 +391,13 @@ export interface AppStoreSharedSecretCreation {
 
 export interface PaymentsAppStoreService {
   /**
+   * @deprecated will be removed in v7. Please use `completeTransaction`
+   */
+  createTransaction(
+    requestBody: TransactionCompletionDataSchema,
+    options?: OptionsBase
+  ): Promise<AppleReceiptExampleSchema>;
+  /**
    * Complete a transaction
    *
    * Permission | Scope | Effect
@@ -404,7 +411,7 @@ export interface PaymentsAppStoreService {
    * @throws {AppStoreTransactionAlreadyLinked}
    * @throws {NoConfiguredAppStoreProduct}
    */
-  createTransaction(
+  completeTransaction(
     requestBody: TransactionCompletionDataSchema,
     options?: OptionsBase
   ): Promise<AppleReceiptExampleSchema>;

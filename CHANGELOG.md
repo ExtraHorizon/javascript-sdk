@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v6.1.0]
+
+### Breaking changes
+
+- renamed `createTransaction` to `completeTransaction` on the payments.appStore service
+
+```diff
+- sdk.payments.appStore.createTransaction
++ sdk.payments.appStore.completeTransaction
+```
+
+### Changed
+
+- When passing in `localhost` as host. No prefixing takes places.
+- Fixed bug when calling `sdk.files.create` with tags as an array. See [PR #544](https://github.com/ExtraHorizon/javascript-sdk/pull/544)
+- Properties on your JSONSchema on the data service will no longer have any automatic date parsing. [PR #546](https://github.com/ExtraHorizon/javascript-sdk/pull/546)
+- If you are using the `sdk.raw` instance you can now pass in additional parameters to the http verbs. See [PR #546](https://github.com/ExtraHorizon/javascript-sdk/pull/546)
+
+```ts
+const result = sdk.raw.get('/files/v1', {
+  interceptors: {
+    skipCamelizeResponseData: true, // will recursively rename keys to camelCase
+    skipTransformResponseData: true, // maps the values of certain keys to Dates
+    skipTransformKeysResponseData: true, // renames certain keys for consistency
+  },
+});
+```
+
+- `Profile` type has been revised
+
+```diff
+-fibricheckInfo?: string;
++fibricheckInfo?: {
++  app?: {
++    version?: string;
++    build?: string;
++    branch?: string;
++  };
++  device?: {
++    os?: string;
++    model?: string;
++    type?: 'android' | 'ios';
++    manufacturer?: string;
++  };
++};
+```
+
+- `ProxyClient` existed double. One of those has been renamed to `ProxyInstance`
+
+```diff
+-export interface ProxyClient extends HttpInstance {
++export interface ProxyInstance extends HttpInstance {
+```
+
 ## [v6.0.0]
 
 ### Breaking Changes
