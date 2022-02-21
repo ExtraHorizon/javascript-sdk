@@ -5,11 +5,11 @@ import {
   PagedResult,
 } from '../types';
 
-interface Timestamp {
+export interface Timestamp {
   updateTimestamp: Date;
   creationTimestamp: Date;
 }
-interface OAuth1ApplicationVersion {
+export interface OAuth1ApplicationVersion {
   id: string;
   name: string;
   consumerKey: string;
@@ -17,15 +17,15 @@ interface OAuth1ApplicationVersion {
   creationTimestamp: Date;
 }
 
-interface OAuth1Application extends Timestamp {
+export interface OAuth1Application extends Timestamp {
   id: string;
   name: string;
   description: string;
-  type: string; // 'oauth1'
-  versions: Array<OAuth1ApplicationVersion>;
+  type: 'oauth1';
+  versions: OAuth1ApplicationVersion[];
 }
 
-interface OAuth2ApplicationVersion {
+export interface OAuth2ApplicationVersion {
   id: string;
   name: string;
   clientId: string;
@@ -33,18 +33,22 @@ interface OAuth2ApplicationVersion {
   creationTimestamp: Date;
 }
 
-interface OAuth2Application extends Timestamp {
+export interface OAuth2Application extends Timestamp {
   id: string;
   name: string;
   description: string;
-  type: string; // 'oauth2'
+  type: 'oauth2';
   versions?: OAuth2ApplicationVersion[];
   logo?: string;
   redirectUris: string[];
   confidential?: boolean;
 }
 
-export type Application = OAuth1Application | OAuth2Application;
+export type Application<T = false> = T extends OAuth1ApplicationCreationSchema
+  ? OAuth1Application
+  : T extends OAuth2ApplicationCreationSchema
+  ? OAuth2Application
+  : OAuth1Application | OAuth2Application;
 
 export type OAuth1ApplicationCreationSchema = Pick<
   OAuth1Application,
@@ -98,7 +102,7 @@ export interface OAuth2Authorization extends Timestamp {
   state: string;
 }
 
-interface RecoveryCodesMethod extends Timestamp {
+export interface RecoveryCodesMethod extends Timestamp {
   id: string;
   name: string;
   tags: string[];
@@ -107,7 +111,7 @@ interface RecoveryCodesMethod extends Timestamp {
   codes: string[];
 }
 
-interface TotpMethod {
+export interface TotpMethod {
   id: string;
   name: string;
   tags: string[];
@@ -175,10 +179,10 @@ export interface AuthApplicationsService {
    * @async
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications
    */
-  create(
-    data: ApplicationCreation,
+  create<T extends ApplicationCreation>(
+    data: T,
     options?: OptionsBase
-  ): Promise<Application>;
+  ): Promise<Application<T>>;
   /**
    * Get a list of applications
    *
@@ -203,7 +207,7 @@ export interface AuthApplicationsService {
     applicationId: string,
     data: ApplicationUpdate,
     options?: OptionsBase
-  ): Promise<Application>;
+  ): Promise<AffectedRecords>;
   /**
    * Delete an OAuth application
    *

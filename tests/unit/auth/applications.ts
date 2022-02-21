@@ -40,7 +40,7 @@ describe('Auth - Applications', () => {
       .reply(200, newApplication);
 
     const createdResult = await sdk.auth.applications.create({
-      type: newApplication.type,
+      type: newApplication.type as 'oauth1',
       name: newApplication.name,
       description: newApplication.description,
     });
@@ -68,15 +68,15 @@ describe('Auth - Applications', () => {
 
     nock(`${host}${AUTH_BASE}`)
       .put(`/applications/${applicationId}`)
-      .reply(200, newApplication);
+      .reply(200, { affectedRecords: 1 });
 
     const updatedResult = await sdk.auth.applications.update(applicationId, {
-      type: newApplication.type,
+      type: newApplication.type as 'oauth1',
       name: newApplication.name,
       description: newApplication.description,
     });
 
-    expect(updatedResult.id).toEqual(newApplication.id);
+    expect(updatedResult.affectedRecords).toEqual(1);
   });
 
   it('should delete an application version', async () => {
