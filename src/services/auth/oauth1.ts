@@ -16,4 +16,19 @@ export default (
       await client.post(httpWithAuth, `/oauth1/ssoTokens/consume`, { ssoToken })
     ).data;
   },
+
+  async getTokens(options) {
+    return (
+      await client.get(
+        httpWithAuth,
+        `/oauth1/tokens${options?.rql || ''}`,
+        options
+      )
+    ).data;
+  },
+
+  async removeToken(tokenId) {
+    return (await client.delete(httpWithAuth, `/oauth1/tokens/${tokenId}`))
+      .data;
+  },
 });
