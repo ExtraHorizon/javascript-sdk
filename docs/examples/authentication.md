@@ -287,6 +287,8 @@ const sdk = createClient({
 
 ## Creating applications
 
+### Example
+
 If you want to create an application can you use generic to determine the correct application and application version type.
 
 ie. creating an OAuth1 application with a version.
@@ -302,5 +304,26 @@ const app = await sdk.auth.applications.create({
 // Will return OAuth1ApplicationVersion type
 const version = await sdk.auth.applications.createVersion<typeof app>(app.id, {
   name: '1.0.0',
+});
+```
+
+### Typeguards
+
+If you need a typeguard, you can use the following snippets.
+
+```ts
+function isOAuth1Version(
+  version: OAuth1ApplicationVersion | OAuth2ApplicationVersion
+): version is OAuth1ApplicationVersion {
+  return (version as OAuth1ApplicationVersion).consumerKey !== undefined;
+}
+
+function isOAuth1(app: Application): app is OAuth1Application {
+  return app.type === 'oauth1';
+}
+
+const { data: apps } = await sdk.auth.applications.get();
+apps.filter(isOAuth1).forEach(app => {
+  // app will have type OAuth1Application
 });
 ```
