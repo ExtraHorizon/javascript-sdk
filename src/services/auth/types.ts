@@ -21,7 +21,7 @@ export interface OAuth1Application extends Timestamp {
   id: string;
   name: string;
   description: string;
-  type: 'oauth1';
+  type: string; // 'oauth1';
   versions: OAuth1ApplicationVersion[];
 }
 
@@ -37,7 +37,7 @@ export interface OAuth2Application extends Timestamp {
   id: string;
   name: string;
   description: string;
-  type: 'oauth2';
+  type: string; // 'oauth2';
   versions?: OAuth2ApplicationVersion[];
   logo?: string;
   redirectUris: string[];
@@ -82,9 +82,11 @@ export interface ApplicationVersionCreation {
   name: string;
 }
 
-export type ApplicationVersion =
-  | OAuth1ApplicationVersion
-  | OAuth2ApplicationVersion;
+export type ApplicationVersion<T> = T extends OAuth1Application
+  ? OAuth1ApplicationVersion
+  : T extends OAuth2Application
+  ? OAuth2ApplicationVersion
+  : OAuth1ApplicationVersion | OAuth2ApplicationVersion;
 
 export interface OAuth2AuthorizationCreation {
   responseType: string;
@@ -229,11 +231,11 @@ export interface AuthApplicationsService {
    * CREATE_APPLICATIONS | global | **Required** for this endpoint
    * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications__applicationId__versions
    */
-  createVersion(
+  createVersion<T extends Application>(
     applicationId: string,
     data: ApplicationVersionCreation,
     options?: OptionsBase
-  ): Promise<ApplicationVersion>;
+  ): Promise<ApplicationVersion<T>>;
   /**
    * Delete an application version
    *
