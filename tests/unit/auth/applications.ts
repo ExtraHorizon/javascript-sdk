@@ -40,7 +40,7 @@ describe('Auth - Applications', () => {
       .reply(200, newApplication);
 
     const createdResult = await sdk.auth.applications.create({
-      type: newApplication.type as 'oauth1',
+      type: newApplication.type,
       name: newApplication.name,
       description: newApplication.description,
     });
@@ -71,7 +71,7 @@ describe('Auth - Applications', () => {
       .reply(200, { affectedRecords: 1 });
 
     const updatedResult = await sdk.auth.applications.update(applicationId, {
-      type: newApplication.type as 'oauth1',
+      type: newApplication.type,
       name: newApplication.name,
       description: newApplication.description,
     });
