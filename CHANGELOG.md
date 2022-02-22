@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v6.1.1]
+
+### Changed
+
+- Types for the `sdk.auth.application.create` and `sdk.auth.application.createVersion` have been exported. See Authentication examples for more info.
+- Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords`
+
 ## [v6.1.0]
 
 ### Breaking changes

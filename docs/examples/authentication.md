@@ -284,3 +284,53 @@ const sdk = createClient({
 ```
 
 ![Refresh](../assets/refresh.webp)
+
+## Creating applications
+
+### Example
+
+If you want to create an application can you use generic to determine the correct application and application version type.
+
+ie. creating an OAuth1 application with a version.
+
+```ts
+// Will return OAuth1Application type
+const app = await sdk.auth.applications.create({
+  type: 'oauth1',
+  name: 'test',
+  description: 'test',
+});
+
+// Will return OAuth1ApplicationVersion type
+const version = await sdk.auth.applications.createVersion<typeof app>(app.id, {
+  name: '1.0.0',
+});
+```
+
+### Typeguards
+
+If you need a typeguard, you can use the following snippets.
+
+```ts
+import {
+  Application,
+  ApplicationVersion,
+  OAuth1Application,
+  OAuth1ApplicationVersion,
+} from '@extrahorizon/javascript-sdk';
+
+function isOAuth1Version(
+  version: ApplicationVersion
+): version is OAuth1ApplicationVersion {
+  return `consumerKey` in version;
+}
+
+function isOAuth1(app: Application): app is OAuth1Application {
+  return !('redirectUris' in app);
+}
+
+const { data: apps } = await sdk.auth.applications.get();
+apps.filter(isOAuth1).forEach(app => {
+  // app will have type OAuth1Application
+});
+```
