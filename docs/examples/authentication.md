@@ -284,3 +284,23 @@ const sdk = createClient({
 ```
 
 ![Refresh](../assets/refresh.webp)
+
+## Creating applications
+
+If you want to create an application can you use generic to determine the correct application and application version type.
+
+ie. creating an OAuth1 application with a version.
+
+```ts
+// Will return OAuth1Application type
+const app = await sdk.auth.applications.create({
+  type: 'oauth1',
+  name: 'test',
+  description: 'test',
+});
+
+// Will return OAuth1ApplicationVersion type
+const version = await sdk.auth.applications.createVersion<typeof app>(app.id, {
+  name: '1.0.0',
+});
+```
