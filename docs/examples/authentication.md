@@ -312,14 +312,21 @@ const version = await sdk.auth.applications.createVersion<typeof app>(app.id, {
 If you need a typeguard, you can use the following snippets.
 
 ```ts
+import {
+  Application,
+  ApplicationVersion,
+  OAuth1Application,
+  OAuth1ApplicationVersion,
+} from '@extrahorizon/javascript-sdk';
+
 function isOAuth1Version(
-  version: OAuth1ApplicationVersion | OAuth2ApplicationVersion
+  version: ApplicationVersion
 ): version is OAuth1ApplicationVersion {
-  return (version as OAuth1ApplicationVersion).consumerKey !== undefined;
+  return `consumerKey` in version;
 }
 
 function isOAuth1(app: Application): app is OAuth1Application {
-  return app.type === 'oauth1';
+  return !('redirectUris' in app);
 }
 
 const { data: apps } = await sdk.auth.applications.get();

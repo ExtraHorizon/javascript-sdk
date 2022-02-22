@@ -82,7 +82,7 @@ export interface ApplicationVersionCreation {
   name: string;
 }
 
-export type ApplicationVersion<T> = T extends OAuth1Application
+export type ApplicationVersion<T = false> = T extends OAuth1Application
   ? OAuth1ApplicationVersion
   : T extends OAuth2Application
   ? OAuth2ApplicationVersion
