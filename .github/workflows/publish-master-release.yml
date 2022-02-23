@@ -12,9 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Use Node LTS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: lts/gallium
           registry-url: https://npm.pkg.github.com/
           scope: '@extrahorizon'
       - run: yarn install
@@ -36,9 +36,9 @@ jobs:
         uses: Saionaro/extract-package-version@v1.0.6
       - name: Print version
         run: echo ${{ steps.extract_version.outputs.version }}
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: lts/gallium
           registry-url: https://npm.pkg.github.com/
           scope: '@extrahorizon'
       - run: yarn install
