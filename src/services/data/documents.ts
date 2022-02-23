@@ -27,7 +27,7 @@ export default (
       documentId,
       tries = 5,
       retryTimeInMs = 300,
-      options
+      options = {}
     ) {
       if (tries < 1) {
         throw new Error('Document is in a locked state');

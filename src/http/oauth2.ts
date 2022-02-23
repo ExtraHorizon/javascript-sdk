@@ -1,8 +1,14 @@
 /* eslint-disable no-underscore-dangle */
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import btoa from '../btoa';
 import { ConfigOauth2 } from '../types';
-import { MfaConfig, OAuth2Config, OAuthClient, TokenDataOauth2 } from './types';
+import {
+  HttpInstance,
+  MfaConfig,
+  OAuth2Config,
+  OAuthClient,
+  TokenDataOauth2,
+} from './types';
 import {
   camelizeResponseData,
   retryInterceptor,
@@ -12,12 +18,18 @@ import {
 import { typeReceivedError } from '../errorHandler';
 
 export function createOAuth2HttpClient(
-  http: AxiosInstance,
+  http: HttpInstance,
   options: ConfigOauth2
 ): OAuthClient {
   let tokenData: TokenDataOauth2;
   let authConfig: OAuth2Config;
-  const httpWithAuth = axios.create({ ...http.defaults });
+
+  const httpWithAuth = axios.create({
+    ...http.defaults,
+    headers: {},
+  });
+
+  httpWithAuth.defaults.headers = http.defaults.headers;
 
   const { requestLogger, responseLogger } = options;
   if (requestLogger) {
