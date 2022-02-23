@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { FindAllIterator } from '../../services/helpers';
 import { RQLString } from '../../rql';
 import type {
