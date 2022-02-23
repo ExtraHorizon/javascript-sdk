@@ -83,4 +83,34 @@ describe('Auth - OAuth1', () => {
     );
     expect(ssoTokenResult.token).toEqual(ssoResponse.token);
   });
+
+  it('should get tokens', async () => {
+    const token = {
+      id: 'fakeId',
+    };
+    nock(`${host}${AUTH_BASE}`)
+      .get('/oauth1/tokens')
+      .reply(200, {
+        page: {
+          total: 5,
+          offset: 0,
+          limit: 20,
+        },
+        data: Array(5).fill(token),
+      });
+
+    const getTokensResult = await sdk.auth.oauth1.getTokens();
+
+    expect(getTokensResult.data[0].id).toEqual(token.id);
+  });
+
+  it('should get delete a token', async () => {
+    nock(`${host}${AUTH_BASE}`).delete('/oauth1/tokens/fakeId').reply(200, {
+      affectedRecords: 1,
+    });
+
+    const getTokensResult = await sdk.auth.oauth1.removeToken('fakeId');
+
+    expect(getTokensResult.affectedRecords).toEqual(1);
+  });
 });
