@@ -5,28 +5,28 @@
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
 
 ```ts
-import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+import { rqlBuilder } from "@extrahorizon/javascript-sdk";
 
-const rql = rqlBuilder().select('name').eq('name', 'fitbit').build();
+const rql = rqlBuilder().select("name").eq("name", "fitbit").build();
 // ?select(name)&eq(name,fitbit)
 ```
 
 An example using the rqlBuilder to compose a complex rql request documents having a heartRate between 40 and 50 or indicator = 'warning'
 
 ```ts
-import { rqlBuilder } from '@extrahorizon/javascript-sdk';
+import { rqlBuilder } from "@extrahorizon/javascript-sdk";
 
 const rql = rqlBuilder()
   .or(
     rqlBuilder()
       .and(
-        rqlBuilder().lt('data.heartRate', '50').intermediate(),
-        rqlBuilder().gt('data.heartRate', '40').intermediate()
+        rqlBuilder().lt("data.heartRate", "50").intermediate(),
+        rqlBuilder().gt("data.heartRate", "40").intermediate()
       )
       .intermediate(),
-    rqlBuilder().eq('data.indicator', 'warning').intermediate()
+    rqlBuilder().eq("data.indicator", "warning").intermediate()
   )
-  .select(['id', 'name', 'data.heartRate', 'data.indicator'])
+  .select(["id", "name", "data.heartRate", "data.indicator"])
   .build();
 
 // ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
@@ -38,10 +38,10 @@ const result = await sdk.data.documents.find({ rql });
 You can also use the `rqlParser` function and pass in your own stirng.
 
 ```ts
-import { rqlParser } from '@extrahorizon/javascript-sdk';
+import { rqlParser } from "@extrahorizon/javascript-sdk";
 
 const rql = rqlParser(
-  'or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)'
+  "or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)"
 );
 
 // ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
@@ -53,21 +53,21 @@ const result = await sdk.data.documents.find({ rql });
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
 
 ```ts
-import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
 (async () => {
   const sdk = createOAuth2Client({
-    host: '',
-    clientId: '',
+    host: "",
+    clientId: "",
   });
 
   await sdk.auth.authenticate({
-    password: '',
-    username: '',
+    password: "",
+    username: "",
   });
 
-  const me = (await sdk.raw.get('/users/v1/me')).data;
-  console.log('Me', me);
+  const me = (await sdk.raw.get("/users/v1/me")).data;
+  console.log("Me", me);
 })();
 ```
 
@@ -112,10 +112,10 @@ import {
   JSONSchemaObject,
   JSONSchemaArray,
   JSONSchemaNumber,
-} from '@extrahorizon/javascript-sdk';
+} from "@extrahorizon/javascript-sdk";
 
 interface MySchema extends Schema {
-  statuses?: Record<'start', never>;
+  statuses?: Record<"start", never>;
   properties?: {
     ppg: JSONSchemaArray & {
       maxItems: 2000;
@@ -131,8 +131,8 @@ interface MySchema extends Schema {
 }
 
 const sdk = createOAuth2Client({
-  host: 'dev.fibricheck.com',
-  clientId: '',
+  host: "dev.fibricheck.com",
+  clientId: "",
 });
 
 const { data: schemas } = await sdk.data.schemas.find();
@@ -179,11 +179,11 @@ More info on how to use the can be found here: https://medium.com/@jaedmuva/reac
 The package also exports a mockSdk you can use in your tests. In this example `jest` is used as testing library.
 
 ```ts
-import { getMockSdk } from '@extrahorizon/javascript-sdk';
+import { getMockSdk } from "@extrahorizon/javascript-sdk";
 
-describe('mock SDK', () => {
+describe("mock SDK", () => {
   const sdk = getMockSdk<jest.Mock>(jest.fn);
-  it('should be valid mock', async () => {
+  it("should be valid mock", async () => {
     expect(sdk.data).toBeDefined();
   });
 });
@@ -192,20 +192,20 @@ describe('mock SDK', () => {
 If you are using `jest`. You can create a file under your `__mocks__/@extrahorizon/` called `javascript-sdk.ts` and add the following content:
 
 ```ts
-import { getMockSdk } from '@extrahorizon/javascript-sdk';
+import { getMockSdk } from "@extrahorizon/javascript-sdk";
 
 export const mockSdk = getMockSdk<jest.Mock>(jest.fn);
 
 const createOAuth1Client = () => mockSdk;
 
 module.exports = {
-  ...jest.requireActual('@extrahorizon/javascript-sdk'),
+  ...jest.requireActual("@extrahorizon/javascript-sdk"),
   createOAuth1Client,
   mockSdk,
 };
 ```
 
-### Library
+## Library
 
 To run the unit tests: `yarn start`
 To run them in watch mode: `yarn start:watch`

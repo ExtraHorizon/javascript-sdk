@@ -1,10 +1,10 @@
-# data
+# Data
 
-### Find the schema with name `tests` and only select id, name and transitions
+## Find the schema with name `tests` and only select id, name and transitions
 
-```javascript
-const schema = await sdk.data.schemas.findByName('tests', {
-  rql: rqlBuilder().select(['id', 'name', 'transitions']).build(),
+```ts
+const schema = await sdk.data.schemas.findByName("tests", {
+  rql: rqlBuilder().select(["id", "name", "transitions"]).build(),
 });
 
 console.log(schema.transitions);
@@ -23,9 +23,9 @@ console.log(schema.transitionsByName);
 } */
 ```
 
-### Find a document with custom data typing:
+## Find a document with custom data typing:
 
-```javascript
+```ts
 const schema = await sdk.data.schemas.findFirst();
 
 interface MyData {
@@ -40,48 +40,48 @@ const document = await sdk.data.documents.find<MyData>(schema.id);
 console.log(document.data.ppg);
 ```
 
-### Transition a document based on `data.deviceUid`
+## Transition a document based on `data.deviceUid`
 
-```javascript
-const schema = await sdk.data.schemas.findByName('tests', {
-  rql: rqlBuilder().select(['id', 'name', 'transitions']).build(),
+```ts
+const schema = await sdk.data.schemas.findByName("tests", {
+  rql: rqlBuilder().select(["id", "name", "transitions"]).build(),
 });
 
 const document = await sdk.data.documents.findFirst(schema.id, {
-  rql: rqlBuilder().eq('data.deviceUid', 'testkit').build(),
+  rql: rqlBuilder().eq("data.deviceUid", "testkit").build(),
 });
 
-const transitionId = schema.findTransitionIdByName('ready_to_waiting');
+const transitionId = schema.findTransitionIdByName("ready_to_waiting");
 
 const transitionResult = await sdk.data.documents.transition(
   schema.id,
   document.id,
   {
     id: transitionId,
-    data: { result: 'true' },
+    data: { result: "true" },
   }
 );
 
 if (transitionResult.affectedRecords === 1) {
-  console.log('transition succesful');
+  console.log("transition succesful");
 }
 ```
 
-### Find all schemas
+## Find all schemas
 
-```javascript
+```ts
 const schemas = await sdk.data.schemas.findAll({
-  rql: rqlBuilder().select(['id', 'name']).build(),
+  rql: rqlBuilder().select(["id", "name"]).build(),
 });
 ```
 
-### Find all schemas with Iterator
+## Find all schemas with Iterator
 
-More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols#the\_iterator\_protocol)
+More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol)
 
-```javascript
+```ts
 const schemaIterator = sdk.data.schemas.findAllIterator({
-  rql: rqlBuilder().select(['id', 'name']).build(),
+  rql: rqlBuilder().select(["id", "name"]).build(),
 }); // Let's assume there are 66 schemas
 
 const firstBatch = await schemaIterator.next();
@@ -93,9 +93,9 @@ console.log(secondBatch); // { value: PagedResult with 16 schemas, done: false }
 console.log(thirdBatch); // { value: undefined, done: true }
 ```
 
-```javascript
+```ts
 const schemas = sdk.data.schemas.findAllIterator({
-  rql: rqlBuilder().select(['id', 'name']).build(),
+  rql: rqlBuilder().select(["id", "name"]).build(),
 });
 
 for await (const schema of schemas) {
@@ -103,11 +103,31 @@ for await (const schema of schemas) {
 }
 ```
 
-### Find with pagination
+## Custom Iterator
+
+```ts
+interface YourType {}
+
+const endpoint = "";
+
+const rql = RqlBuilder().eq("userId", userId);
+
+const find = (options: OptionsWithRql) => {
+  return await sdk.raw.get(`${endpoint}${options?.rql}`);
+};
+
+const iterator = findAllIterator<YourType>(find, { rql });
+
+for await (const value of iterator) {
+  console.log(value); /* PagedResult<YourType> */
+}
+```
+
+## Find with pagination
 
 For Schema, Documents and Users the `find` function returns and object with the initial data and two helpers function to get the previous / next page.
 
-```javascript
+```ts
 const users = await sdk.users.find();
 
 const nextPage = await users.next();
@@ -116,26 +136,26 @@ const previousPage = await users.previous();
 
 Or if you are using the [Async](https://caolan.github.io/async/v3/index.html) package.
 
-```javascript
-import async from 'async';
+```ts
+import async from "async";
 
 const users = await sdk.users.find();
 
 await async.timesLimit(5, 1, async function () {
   const batch = await users.next();
-  console.log('batch', batch.page, batch.data.length);
+  console.log("batch", batch.page, batch.data.length);
 });
 
 async.timesLimit(8, 1, async function () {
   const batch = await users.previous();
-  console.log('batch', batch.page, batch.data.length);
+  console.log("batch", batch.page, batch.data.length);
 });
 ```
 
 You can also pass in an offset (for example when you were processing items and something went wrong and want to resume where you left off)
 
-```javascript
-import async from 'async';
+```ts
+import async from "async";
 
 const users = await sdk.users.find();
 const currentOffset = 0;
