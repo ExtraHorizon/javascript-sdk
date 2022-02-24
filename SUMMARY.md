@@ -5,14 +5,17 @@
 ## setup
 
 - [Installation](setup/installation.md)
-- [Quick start](setup/authentication.md)
+- [Quick start](setup/start.md)
+
+## examples
+
+- [authencation](features/examples/authentication.md)
+- [data](features/examples/data.md)
+- [users](features/examples/users.md)
 
 ## features
 
 - [guide](features/guide.md)
-- [examples](features/examples/README.md)
-  - [data](features/examples/data.md)
-  - [Accept Invitation for Group](features/examples/users.md)
 
 ## other
 
