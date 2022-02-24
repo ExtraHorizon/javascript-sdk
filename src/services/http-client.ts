@@ -80,7 +80,6 @@ const httpClient = ({
 
                   // Nodejs uses the http adapter in Axios. Needs a Buffer with the gzip data
                   if (platform.platform === 'nodejs') {
-                    console.log('xxx');
                     return Buffer.from(gzipSync(strToU8(dataInTransform)));
                   }
 
