@@ -1,5 +1,3 @@
-# Authentication
-
 ## Snippet for authentication flow (Oauth2)
 
 Each time the SDK refreshes the `accessToken` the `freshTokensCallback` is called with the response. You can store this data in `localStorage` or any other persistant data store. When you restart your application, you can check the data store for a `refreshToken` and use that to authenticate with the SDK.

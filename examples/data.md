@@ -1,5 +1,3 @@
-# Data
-
 ## Find the schema with name `tests` and only select id, name and transitions
 
 ```ts

@@ -1,5 +1,3 @@
-# Users
-
 ## Accept Invitation for Group
 
 ```javascript
