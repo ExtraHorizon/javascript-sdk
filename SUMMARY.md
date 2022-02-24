@@ -9,9 +9,9 @@
 
 ## examples
 
-- [authencation](features/examples/authentication.md)
-- [data](features/examples/data.md)
-- [users](features/examples/users.md)
+- [authentication](examples/authentication.md)
+- [data](examples/data.md)
+- [users](examples/users.md)
 
 ## features
 
