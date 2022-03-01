@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
@@ -62,7 +63,6 @@ const converters = {
            if (isoDate) {
              date = new Date(Date.UTC(+isoDate[1], +isoDate[2] - 1, +isoDate[3], +isoDate[4], +isoDate[5], +isoDate[6], +isoDate[7] || 0));
            } */
-      // eslint-disable-next-line no-param-reassign
       string = decodeURIComponent(string);
       if (jsonQueryCompatible) {
         if (

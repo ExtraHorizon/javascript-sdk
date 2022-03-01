@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable camelcase */
 import {
+  AxiosDefaults,
   AxiosError,
   AxiosInterceptorManager,
+  AxiosPromise,
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios';
@@ -28,7 +29,9 @@ export type HttpRequestConfig = AxiosRequestConfig & {
 export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
 
 export interface HttpInstance {
-  defaults: AxiosRequestConfig;
+  (config: AxiosRequestConfig): AxiosPromise;
+  (url: string, config?: AxiosRequestConfig): AxiosPromise;
+  defaults: AxiosDefaults;
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
     response: AxiosInterceptorManager<AxiosResponse>;
