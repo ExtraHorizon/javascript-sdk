@@ -21,7 +21,7 @@ export function createOAuth2HttpClient(
   http: HttpInstance,
   options: ConfigOauth2
 ): OAuthClient {
-  let tokenData: TokenDataOauth2;
+  let tokenData: TokenDataOauth2 | null;
   let authConfig: OAuth2Config;
 
   const httpWithAuth = axios.create({
@@ -61,7 +61,7 @@ export function createOAuth2HttpClient(
   const refreshTokens = async () => {
     const tokenResult = await http.post(options.path, {
       grant_type: 'refresh_token',
-      refresh_token: tokenData.refreshToken,
+      refresh_token: tokenData?.refreshToken,
     });
     await setTokenData(tokenResult.data);
     return tokenResult.data;
@@ -77,7 +77,10 @@ export function createOAuth2HttpClient(
     },
   }));
 
-  httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
+  httpWithAuth.interceptors.response.use(
+    data => data,
+    retryInterceptor(httpWithAuth)
+  );
 
   httpWithAuth.interceptors.response.use(
     (response: AxiosResponse) => response,
@@ -97,7 +100,7 @@ export function createOAuth2HttpClient(
             error.response?.data?.code === 117
             // ACCESS_TOKEN_UNKNOWN
           ) {
-            tokenData.accessToken = '';
+            tokenData = null;
             originalRequest.headers.Authorization = `Bearer ${
               (await refreshTokens()).accessToken
             }`;

@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
-import { Results, ResultResponse } from '../types';
+import { Results, ResultResponse, OptionsWithRql } from '../types';
 import { ProfilesLogsService, LogEntry } from './types';
 import { findAllIterator, findAllGeneric } from '../helpers';
 
@@ -8,8 +8,8 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): ProfilesLogsService => {
-  function partialApplyFind(profileId, groupId) {
-    return async (options?) =>
+  function partialApplyFind(profileId: string, groupId: string) {
+    return async (options?: OptionsWithRql) =>
       (
         await client.get(
           httpAuth,

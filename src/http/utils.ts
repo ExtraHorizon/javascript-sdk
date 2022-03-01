@@ -57,7 +57,10 @@ export function parseAuthParams(options: AuthParams): AuthConfig {
   throw new Error('Invalid Oauth config');
 }
 
-export function mapObjIndexed(fn, object): Record<string, unknown> {
+export function mapObjIndexed(
+  fn: any,
+  object: Record<string, any>
+): Record<string, unknown> {
   return Object.keys(object).reduce(
     (memo, key) => ({ ...memo, [key]: fn(object[key], key) }),
     {}
@@ -65,8 +68,8 @@ export function mapObjIndexed(fn, object): Record<string, unknown> {
 }
 
 export const recursiveMap =
-  (fn, skipData = false) =>
-  obj => {
+  (fn: any, skipData = false) =>
+  (obj: unknown): unknown => {
     // needed for arrays with strings/numbers etc
     if (obj === null || typeof obj !== 'object') {
       return obj;
@@ -74,7 +77,7 @@ export const recursiveMap =
 
     return Array.isArray(obj)
       ? obj.map(recursiveMap(fn, skipData))
-      : mapObjIndexed((value, key) => {
+      : mapObjIndexed((value: unknown, key: string) => {
           if (typeof value !== 'object') {
             return fn(value, key);
           }
@@ -92,11 +95,14 @@ export const recursiveMap =
  * See if an object (`val`) is an instance of the supplied constructor. This
  * function will check up the inheritance chain, if any.
  */
-function is(Ctor, value) {
+function is(Ctor: any, value: any) {
   return (value != null && value.constructor === Ctor) || value instanceof Ctor;
 }
 
-export function recursiveRenameKeys(fn: { (arg: string): string }, obj) {
+export function recursiveRenameKeys(
+  fn: { (arg: string): string },
+  obj: any
+): any {
   if (Array.isArray(obj)) {
     return obj.map(value => recursiveRenameKeys(fn, value));
   }

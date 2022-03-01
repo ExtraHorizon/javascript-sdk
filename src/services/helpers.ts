@@ -11,9 +11,11 @@ export type FindAllIterator<T> = AsyncGenerator<
 
 export async function* findAllIterator<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
-  options: OptionsWithRql
+  options?: OptionsWithRql
 ): FindAllIterator<T> {
-  async function* makeRequest(requestOptions: OptionsWithRql) {
+  async function* makeRequest(
+    requestOptions: OptionsWithRql
+  ): FindAllIterator<T> | void {
     const result = await find(requestOptions);
     yield result;
 
@@ -40,7 +42,7 @@ export async function* findAllIterator<T>(
 
 export async function findAllGeneric<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
-  options: OptionsWithRql,
+  options?: OptionsWithRql,
   level = 1
 ): Promise<T[]> {
   if (level === 1 && options?.rql && options.rql.includes('limit(')) {

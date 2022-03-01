@@ -3,12 +3,13 @@ import { rqlBuilder } from '../../rql';
 import { NotificationsService, Notification } from './types';
 import { HttpClient } from '../http-client';
 import { findAllIterator, findAllGeneric, addPagersFn } from '../helpers';
+import { OptionsWithRql } from '../types';
 
 export default (
   client: HttpClient,
   httpAuth: AuthHttpClient
 ): NotificationsService => {
-  async function find(options) {
+  async function find(options?: OptionsWithRql) {
     return (
       await client.get(httpAuth, `/notifications${options?.rql || ''}`, options)
     ).data;
@@ -37,7 +38,7 @@ export default (
 
     async find(options) {
       const result = await find(options);
-      return addPagersFn<Notification>(find, options, result);
+      return addPagersFn<Notification>(find, options as OptionsWithRql, result);
     },
 
     async findAll(options) {

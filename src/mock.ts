@@ -20,7 +20,7 @@ const RAW_VERBS = [
   'all',
   'head',
   'options',
-];
+] as const;
 
 /**
  * Returns a mocked version of the Proxy SDK. Requires a mocking function like `jest.fn`
@@ -37,18 +37,19 @@ const RAW_VERBS = [
  */
 export const getMockSdkProxy = <MockFn>(
   fn: () => MockFn
-): MockClientProxy<MockFn> => ({
-  ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(
-    createProxyClient({ host: '' })
-  ),
-  raw: RAW_VERBS.reduce(
-    (memo, verb) => ({
-      ...memo,
-      [verb]: fn(),
-    }),
-    {}
-  ),
-});
+): MockClientProxy<MockFn> =>
+  ({
+    ...(recursiveMap((value: unknown) =>
+      typeof value === 'function' ? fn() : value
+    )(createProxyClient({ host: '' })) as MockClientProxy<MockFn>),
+    raw: RAW_VERBS.reduce(
+      (memo, verb) => ({
+        ...memo,
+        [verb]: fn(),
+      }),
+      {}
+    ),
+  } as MockClientProxy<MockFn>);
 
 /**
  * Returns a mocked version of the OAuth2 SDK. Requires a mocking function like `jest.fn`
@@ -65,18 +66,21 @@ export const getMockSdkProxy = <MockFn>(
  */
 export const getMockSdkOAuth2 = <MockFn>(
   fn: () => MockFn
-): MockClientOAuth2<MockFn> => ({
-  ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(
-    createOAuth2Client({ host: '', clientId: '' })
-  ),
-  raw: RAW_VERBS.reduce(
-    (memo, verb) => ({
-      ...memo,
-      [verb]: fn(),
-    }),
-    {}
-  ),
-});
+): MockClientOAuth2<MockFn> =>
+  ({
+    ...(recursiveMap((value: unknown) =>
+      typeof value === 'function' ? fn() : value
+    )(
+      createOAuth2Client({ host: '', clientId: '' })
+    ) as MockClientOAuth2<MockFn>),
+    raw: RAW_VERBS.reduce(
+      (memo, verb) => ({
+        ...memo,
+        [verb]: fn(),
+      }),
+      {}
+    ),
+  } as MockClientOAuth2<MockFn>);
 
 /**
  * Returns a mocked version of the OAuth1 SDK. Requires a mocking function like `jest.fn`
@@ -93,19 +97,22 @@ export const getMockSdkOAuth2 = <MockFn>(
  */
 export const getMockSdkOAuth1 = <MockFn>(
   fn: () => MockFn
-): MockClientOAuth1<MockFn> => ({
-  ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(
-    createOAuth1Client({
-      host: '',
-      consumerKey: '',
-      consumerSecret: '',
-    })
-  ),
-  raw: RAW_VERBS.reduce(
-    (memo, verb) => ({
-      ...memo,
-      [verb]: fn(),
-    }),
-    {}
-  ),
-});
+): MockClientOAuth1<MockFn> =>
+  ({
+    ...(recursiveMap((value: unknown) =>
+      typeof value === 'function' ? fn() : value
+    )(
+      createOAuth1Client({
+        host: '',
+        consumerKey: '',
+        consumerSecret: '',
+      })
+    ) as MockClientOAuth1<MockFn>),
+    raw: RAW_VERBS.reduce(
+      (memo, verb) => ({
+        ...memo,
+        [verb]: fn(),
+      }),
+      {}
+    ),
+  } as MockClientOAuth1<MockFn>);

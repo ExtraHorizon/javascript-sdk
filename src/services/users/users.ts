@@ -1,4 +1,5 @@
 import type { HttpInstance } from '../../types';
+import type { OptionsWithRql } from '../types';
 import { Results } from '../types';
 import type { User, UsersService } from './types';
 import { HttpClient } from '../http-client';
@@ -9,7 +10,7 @@ export default (
   httpWithAuth: HttpInstance,
   http: HttpInstance
 ): UsersService => {
-  async function find(options) {
+  async function find(options?: OptionsWithRql) {
     return (
       await userClient.get(httpWithAuth, `/${options?.rql || ''}`, options)
     ).data;
@@ -32,7 +33,7 @@ export default (
 
     async find(options) {
       const result = await find(options);
-      return addPagersFn<User>(find, options, result);
+      return addPagersFn<User>(find, options as OptionsWithRql, result);
     },
 
     async findAll(options) {

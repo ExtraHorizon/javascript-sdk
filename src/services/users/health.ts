@@ -1,7 +1,8 @@
+import type { HttpClient } from '../http-client';
 import type { HttpInstance } from '../../types';
 import { Results, ResultResponse } from '../types';
 
-export default (userClient, http: HttpInstance) => ({
+export default (userClient: HttpClient, http: HttpInstance) => ({
   /**
    * Perform a health check
    * @returns {boolean} success

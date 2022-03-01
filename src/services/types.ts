@@ -36,9 +36,9 @@ export interface ResultResponse {
   status: number;
 }
 
-export enum Results {
-  Success = 200,
-}
+export const Results = {
+  Success: 200,
+} as const;
 
 /**
  * Supported timezones from [Java.time.zoneId](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneId.html#of-java.lang.String-)

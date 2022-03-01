@@ -1,8 +1,17 @@
 import OAuth from 'oauth-1.0a';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { HmacSHA1 } from 'crypto-es/lib/sha1';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { Base64 } from 'crypto-es/lib/enc-base64';
-import { ClientConfig, ClientParams, GlobalPermissionName } from './types';
+import {
+  ClientConfig,
+  ClientParams,
+  GlobalPermissionName,
+  GlobalPermissionNameStrings,
+} from './types';
 import { AUTH_BASE } from './constants';
 
 function hmacSha1Hash(baseString: string, key: string) {
@@ -68,7 +77,7 @@ export function delay(ms: number): Promise<void> {
 }
 
 export function parseGlobalPermissions(
-  permissions: string[]
+  permissions: GlobalPermissionNameStrings[]
 ): GlobalPermissionName[] {
   const GlobalPermissionNameValues = Object.values(GlobalPermissionName);
 

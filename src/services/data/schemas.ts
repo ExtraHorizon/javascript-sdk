@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import type { PagedResult } from '../types';
+import type { OptionsWithRql, PagedResult } from '../types';
 import type { DataSchemasService, Schema } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
@@ -22,7 +22,7 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataSchemasService => {
-  async function find(options) {
+  async function find(options?: OptionsWithRql) {
     const result: PagedResult<Schema> = (
       await client.get(httpAuth, `/${options?.rql || ''}`, options)
     ).data;
@@ -41,15 +41,15 @@ export default (
 
     async find(options) {
       const result = await find(options);
-      return addPagersFn<Schema>(find, options, result);
+      return addPagersFn<Schema>(find, options as OptionsWithRql, result);
     },
 
     async findAll(options) {
-      return findAllGeneric<Schema>(find, options);
+      return findAllGeneric<Schema>(find, options as OptionsWithRql);
     },
 
     findAllIterator(options) {
-      return findAllIterator<Schema>(find, options);
+      return findAllIterator<Schema>(find, options as OptionsWithRql);
     },
 
     async findById(this: DataSchemasService, id, options) {

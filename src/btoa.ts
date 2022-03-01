@@ -1,4 +1,7 @@
 /* eslint-disable no-bitwise */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 /**
  * Lookup table for btoa(), which converts a six-bit number into the
  * corresponding ASCII character.

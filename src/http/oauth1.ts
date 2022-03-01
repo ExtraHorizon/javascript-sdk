@@ -20,7 +20,7 @@ export function createOAuth1HttpClient(
   http: HttpInstance,
   options: ConfigOauth1
 ): OAuthClient {
-  let tokenData: TokenDataOauth1;
+  let tokenData: TokenDataOauth1 | null;
 
   const httpWithAuth = axios.create({
     ...http.defaults,
@@ -36,15 +36,17 @@ export function createOAuth1HttpClient(
     const { data: me } = await http.get(path, {
       headers: {
         'Content-Type': 'application/json',
-        ...options.oauth1.toHeader(
-          options.oauth1.authorize(
-            {
-              url: options.host + path,
-              method: 'get',
-            },
-            tokenData
-          )
-        ),
+        ...(tokenData
+          ? options.oauth1.toHeader(
+              options.oauth1.authorize(
+                {
+                  url: options.host + path,
+                  method: 'get',
+                },
+                tokenData
+              )
+            )
+          : {}),
       },
     });
     return me;
@@ -85,7 +87,7 @@ export function createOAuth1HttpClient(
     headers: {
       ...config.headers,
       'Content-Type': 'application/json',
-      ...(config?.method
+      ...(config?.method && tokenData
         ? options.oauth1.toHeader(
             options.oauth1.authorize(
               {
@@ -99,7 +101,10 @@ export function createOAuth1HttpClient(
     },
   }));
 
-  httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
+  httpWithAuth.interceptors.response.use(
+    data => data,
+    retryInterceptor(httpWithAuth)
+  );
 
   httpWithAuth.interceptors.response.use(
     (response: AxiosResponse) => response,
@@ -209,7 +214,9 @@ export function createOAuth1HttpClient(
           try {
             if (!tokenData?.userId) {
               const me = await getMe();
-              tokenData = { ...tokenData, userId: me.id };
+              if (tokenData) {
+                tokenData = { ...tokenData, userId: me.id };
+              }
               return me.id;
             }
             return tokenData?.userId;

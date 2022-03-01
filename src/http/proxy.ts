@@ -49,7 +49,10 @@ export function createProxyHttpClient(
     );
   }
 
-  httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
+  httpWithAuth.interceptors.response.use(
+    data => data,
+    retryInterceptor(httpWithAuth)
+  );
 
   httpWithAuth.interceptors.response.use(
     (response: AxiosResponse) => response,

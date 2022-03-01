@@ -25,7 +25,11 @@ const defaultRetryConfig = {
   current: 1,
   retryCondition: (error: HttpResponseError) => {
     try {
-      if (error.response?.status >= 500 && error.response?.status <= 599) {
+      if (
+        error.response &&
+        error.response?.status >= 500 &&
+        error.response?.status <= 599
+      ) {
         return true;
       }
       return false;
@@ -48,12 +52,16 @@ const httpClient = ({
       ...config,
       ...(shouldRetry !== false ? { retry: defaultRetryConfig } : {}),
     }),
-  put: (axios: HttpInstance, url: string, data, config?: HttpRequestConfig) =>
-    axios.put(`${basePath}${url}`, transformRequestData(data), config),
+  put: (
+    axios: HttpInstance,
+    url: string,
+    data: any,
+    config?: HttpRequestConfig
+  ) => axios.put(`${basePath}${url}`, transformRequestData(data), config),
   post: (
     axios: HttpInstance,
     url: string,
-    data,
+    data: any,
     config?: HttpRequestConfig,
     options?: Options
   ) =>
@@ -68,7 +76,7 @@ const httpClient = ({
                   ? axios.defaults.transformRequest
                   : [axios.defaults.transformRequest]
                 : []),
-              (dataInTransform, headers) => {
+              (dataInTransform, headers = {}) => {
                 if (typeof dataInTransform === 'string') {
                   // eslint-disable-next-line no-param-reassign
                   headers['Content-Encoding'] = 'gzip';

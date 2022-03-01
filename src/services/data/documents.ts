@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
+import type { OptionsWithRql } from '../types';
 import { delay } from '../../utils';
 import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
@@ -9,8 +10,8 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataDocumentsService => {
-  function partialApplyFind(schemaId) {
-    return async options =>
+  function partialApplyFind(schemaId: string) {
+    return async (options?: OptionsWithRql) =>
       (
         await client.get(
           httpAuth,
@@ -63,7 +64,11 @@ export default (
 
     async find(schemaId, options) {
       const result = await partialApplyFind(schemaId)(options);
-      return addPagersFn<Document>(partialApplyFind(schemaId), options, result);
+      return addPagersFn<Document>(
+        partialApplyFind(schemaId),
+        options as OptionsWithRql,
+        result
+      );
     },
 
     async findAll(this: DataDocumentsService, schemaId, options) {

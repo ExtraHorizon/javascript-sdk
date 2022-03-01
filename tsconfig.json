@@ -7,7 +7,6 @@
     "outDir": "./build",
     "baseUrl": "./",
     "rootDir": "./src",
-    "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
@@ -18,7 +17,8 @@
     },
     "resolveJsonModule": true,
     "strictFunctionTypes": false,
-    "noStrictGenericChecks": true
+    "noStrictGenericChecks": true,
+    "strict": true
   },
   "include": ["src/**/*"]
 }

@@ -272,6 +272,8 @@ export enum GlobalPermissionName {
   UPDATE_PLAY_STORE_SUBSCRIPTION_PRODUCT = 'UPDATE_PLAY_STORE_SUBSCRIPTION_PRODUCT',
 }
 
+export type GlobalPermissionNameStrings = keyof typeof GlobalPermissionName;
+
 export interface GroupRolePermissions {
   permissions: GlobalPermissionName[];
 }

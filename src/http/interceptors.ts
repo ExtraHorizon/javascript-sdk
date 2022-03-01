@@ -12,6 +12,7 @@ export const retryInterceptor =
 
     // tries includes the initial try. So 5 tries equals 4 retries
     if (
+      retry &&
       error?.isAxiosError &&
       retry?.tries > retry?.current &&
       retry?.retryCondition(error)
@@ -46,7 +47,7 @@ export const camelizeResponseData = ({
       : camelizeKeys(data),
 });
 
-const mapDateValues = (value, key) => {
+const mapDateValues = (value: string, key: string) => {
   if (
     [
       'creationTimestamp',
@@ -86,7 +87,7 @@ export const transformResponseData = ({
       : recursiveMap(mapDateValues, config?.url?.startsWith(DATA_BASE))(data),
 });
 
-const convertRecordsAffectedKeys = key => {
+const convertRecordsAffectedKeys = (key: string) => {
   if (['records_affected', 'recordsAffected'].includes(key)) {
     return 'affectedRecords';
   }

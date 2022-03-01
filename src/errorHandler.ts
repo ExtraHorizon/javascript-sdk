@@ -138,14 +138,19 @@ const ErrorClassDefinitionsByErrorMap = {
 
 export function typeReceivedError(error: HttpError) {
   const ErrorClassDefinition =
-    ErrorClassDefinitionsMap[error?.response?.data?.code];
+    ErrorClassDefinitionsMap[
+      error?.response?.data?.code as keyof typeof ErrorClassDefinitionsMap
+    ];
 
   if (ErrorClassDefinition) {
     return ErrorClassDefinition.createFromHttpError(error);
   }
 
   const ErrorClassDefinitionByCode =
-    ErrorClassDefinitionsByErrorMap[error?.response?.data?.error];
+    ErrorClassDefinitionsByErrorMap[
+      error?.response?.data
+        ?.error as keyof typeof ErrorClassDefinitionsByErrorMap
+    ];
 
   if (ErrorClassDefinitionByCode) {
     return ErrorClassDefinitionByCode.createFromHttpError(error);
