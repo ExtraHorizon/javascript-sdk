@@ -77,16 +77,20 @@ export function delay(ms: number): Promise<void> {
 }
 
 export function parseGlobalPermissions(
-  permissions: GlobalPermissionNameStrings[]
+  permissions: string[]
 ): GlobalPermissionName[] {
   const GlobalPermissionNameValues = Object.values(GlobalPermissionName);
 
   return permissions
     .map(element => {
-      if (!GlobalPermissionNameValues.includes(GlobalPermissionName[element])) {
+      if (
+        !GlobalPermissionNameValues.includes(
+          GlobalPermissionName[element as GlobalPermissionNameStrings]
+        )
+      ) {
         console.warn(`${element} is not a valid permission.`);
       }
-      return GlobalPermissionName[element];
+      return GlobalPermissionName[element as GlobalPermissionNameStrings];
     })
     .filter(element => element);
 }

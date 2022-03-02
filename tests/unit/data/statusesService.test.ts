@@ -4,7 +4,7 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { newSchemaCreated } from '../../__helpers__/data';
 
 describe('Statuses Service', () => {
-  const schemaId = newSchemaCreated.id;
+  const schemaId = newSchemaCreated.id as string;
   const statusName = 'pending';
   const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;

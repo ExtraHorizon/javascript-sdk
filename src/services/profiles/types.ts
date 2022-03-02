@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 export interface Profile {
-  id?: ObjectId;
+  id: ObjectId;
   addressLine1?: string;
   addressLine2?: string;
   country?: string;
@@ -103,7 +103,7 @@ export enum MedicationFrequency {
 }
 
 export interface Group {
-  groupId?: ObjectId;
+  groupId: ObjectId;
   reason?: string;
   /**
    * This serves as a field to link a patient to the medical record of a hospital/physician. This field therefor accepts any string, not just an ObjectId.
@@ -116,7 +116,7 @@ export interface Group {
 export type GroupCreation = Object.Required<Group, 'groupId'>;
 
 export interface LogEntry {
-  id?: ObjectId;
+  id: ObjectId;
   profileId?: ObjectId;
   groupId?: ObjectId;
   userId?: ObjectId;

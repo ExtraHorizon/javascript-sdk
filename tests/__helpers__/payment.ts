@@ -259,7 +259,7 @@ export const playStoreSubscriptionPurchaseRecordSchema: PlayStoreSubscriptionPur
     },
     id: 'id',
     creationTimestamp: new Date(),
-    purchaseInfo: undefined,
+    purchaseInfo: undefined as any,
   };
 
 export const appStoreNotification: AppStoreNotification = {

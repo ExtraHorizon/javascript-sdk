@@ -15,7 +15,7 @@ import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Schemas Service', () => {
   const schemasListResponse = createPagedResponse(schemaData);
-  const schemaId = newSchemaCreated.id;
+  const schemaId = newSchemaCreated.id as string;
   const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;
 

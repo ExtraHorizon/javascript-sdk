@@ -69,15 +69,15 @@ export function mapObjIndexed(
 
 export const recursiveMap =
   (fn: any, skipData = false) =>
-  (obj: unknown): unknown => {
+  <T>(obj: T): T => {
     // needed for arrays with strings/numbers etc
     if (obj === null || typeof obj !== 'object') {
       return obj;
     }
 
     return Array.isArray(obj)
-      ? obj.map(recursiveMap(fn, skipData))
-      : mapObjIndexed((value: unknown, key: string) => {
+      ? (obj.map<T>(recursiveMap(fn, skipData)) as unknown as T)
+      : (mapObjIndexed((value: T, key: string) => {
           if (typeof value !== 'object') {
             return fn(value, key);
           }
@@ -88,7 +88,7 @@ export const recursiveMap =
             return value;
           }
           return recursiveMap(fn, skipData)(value);
-        }, obj);
+        }, obj) as T);
   };
 
 /**

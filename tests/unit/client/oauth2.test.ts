@@ -119,9 +119,9 @@ describe('http client', () => {
     try {
       await httpWithAuth.authenticate(authConfig);
       await httpWithAuth.get('test');
-    } catch (error) {
+    } catch (error: any) {
       expect(error).toBeInstanceOf(InvalidGrantError);
-      expect(error.response.error).toBe('invalid_grant');
+      expect(error?.response?.error).toBe('invalid_grant');
     }
   });
 
@@ -209,7 +209,7 @@ describe('http client', () => {
 
     try {
       await httpWithAuth.authenticate(authConfig);
-    } catch (error) {
+    } catch (error: any) {
       expect(error).toBeInstanceOf(MfaRequiredError);
       const { mfa } = error.response;
       const confirmMfaResult = await httpWithAuth.confirmMfa({

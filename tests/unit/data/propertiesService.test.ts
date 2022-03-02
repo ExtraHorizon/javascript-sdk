@@ -5,7 +5,7 @@ import { newSchemaCreated } from '../../__helpers__/data';
 
 describe('Properties Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
-  const schemaId = newSchemaCreated.id;
+  const schemaId = newSchemaCreated.id as string;
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {

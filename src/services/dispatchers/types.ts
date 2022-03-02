@@ -8,7 +8,7 @@ import type {
 } from '../types';
 
 export interface Dispatcher {
-  id?: ObjectId;
+  id: ObjectId;
   eventType: string;
   actions: Array<Action>;
   creationTimestamp?: Date;

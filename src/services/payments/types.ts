@@ -58,7 +58,7 @@ export interface UpdateTagsSchema {
 }
 
 export interface OrderSchema {
-  id?: ObjectId;
+  id: ObjectId;
   creatorId?: ObjectId;
   targetUserId?: ObjectId;
   status?: OrderSchemaStatus;
@@ -300,7 +300,7 @@ export interface AppStoreSubscription {
 }
 
 export interface AppStoreSubscriptionProduct {
-  id?: ObjectId;
+  id: ObjectId;
   name?: string;
   appStoreAppBundleId?: string;
   appStoreProductId?: string;
@@ -331,7 +331,7 @@ export interface StripeUser {
 }
 
 export interface StripePaymentMethod {
-  id?: ObjectId;
+  id: ObjectId;
   stripeId?: string;
   brand?: string;
   expirationYear?: number;

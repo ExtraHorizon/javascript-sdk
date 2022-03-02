@@ -27,7 +27,7 @@ export interface FileDetails {
   creatorId?: ObjectId;
   creationTimestamp?: Date;
   updateTimestamp?: Date;
-  name?: string;
+  name: string;
   mimetype?: string;
   size?: number;
   tags?: Array<string>;

@@ -9,10 +9,10 @@ import {
 } from '../types';
 
 export interface Notification {
-  id?: ObjectId;
+  id: ObjectId;
   type?: string;
   viewed?: boolean;
-  userId?: ObjectId;
+  userId: ObjectId;
   fields?: Record<string, string>;
   important?: boolean;
   creationTimestamp?: Date;

@@ -8,10 +8,12 @@ import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
 const addTransitionHelpersToSchema = (schema: Schema): Schema => ({
   ...schema,
   findTransitionIdByName(name) {
-    return schema.transitions?.find(transition => transition.name === name)?.id;
+    return (schema.transitions || []).find(
+      transition => transition.name === name
+    )?.id;
   },
   get transitionsByName() {
-    return schema.transitions?.reduce(
+    return (schema.transitions || []).reduce(
       (memo, transition) => ({ ...memo, [transition.name]: transition }),
       {}
     );

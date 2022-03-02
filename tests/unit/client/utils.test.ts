@@ -9,7 +9,7 @@ import {
 
 describe('recursiveMap function', () => {
   it('should recursively map with simple object', () => {
-    const result = recursiveMap(value => `-> ${value}`)({
+    const result = recursiveMap((value: unknown) => `-> ${value}`)({
       test: 'value',
       groupIds: ['testGroupIds'],
     });
@@ -18,9 +18,9 @@ describe('recursiveMap function', () => {
   });
 
   it('should recursively map with object with arrays', () => {
-    const result = recursiveMap((value, key) => {
+    const result = recursiveMap((value: unknown, key: string) => {
       if (key.includes('stamp')) {
-        return new Date(value);
+        return new Date(value as string);
       }
       return value;
     })({
@@ -49,9 +49,9 @@ describe('recursiveMap function', () => {
   });
 
   it('should recursively map an array containing object with arrays', () => {
-    const result = recursiveMap((value, key) => {
+    const result = recursiveMap((value: unknown, key: string) => {
       if (key.includes('stamp')) {
-        return new Date(value).toISOString();
+        return new Date(value as string).toISOString();
       }
       return value;
     })([

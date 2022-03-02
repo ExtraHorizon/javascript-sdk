@@ -4,6 +4,7 @@ import {
   Client,
   createClient,
   ParamsOauth2,
+  parseGlobalPermissions,
   rqlBuilder,
 } from '../../../src/index';
 import { permissionData, roleData } from '../../__helpers__/user';
@@ -103,7 +104,7 @@ describe('Group Roles Service', () => {
 
   it('should add permissions to group roles', async () => {
     const rql = rqlBuilder().build();
-    const permissions = [];
+    const permissions: string[] = [];
     nock(`${host}${USER_BASE}`)
       .post(`/groups/${groupId}/roles/add_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
@@ -111,7 +112,7 @@ describe('Group Roles Service', () => {
     const res = await sdk.users.groupRoles.addPermissions(
       groupId,
       {
-        permissions,
+        permissions: parseGlobalPermissions(permissions),
       },
       { rql }
     );
@@ -121,13 +122,13 @@ describe('Group Roles Service', () => {
 
   it('should remove permissions from group roles', async () => {
     const rql = rqlBuilder().build();
-    const permissions = [];
+    const permissions: string[] = [];
     nock(`${host}${USER_BASE}`)
       .post(`/groups/${groupId}/roles/remove_permissions${rql}`)
       .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.users.groupRoles.removePermissions(rql, groupId, {
-      permissions,
+      permissions: parseGlobalPermissions(permissions),
     });
 
     expect(res.affectedRecords).toBe(1);
@@ -135,7 +136,7 @@ describe('Group Roles Service', () => {
 
   it('should assign roles to staff members of a group', async () => {
     const rql = rqlBuilder().build();
-    const roles = [];
+    const roles: string[] = [];
     nock(`${host}${USER_BASE}`)
       .post(`/groups/${groupId}/staff/add_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
@@ -151,7 +152,7 @@ describe('Group Roles Service', () => {
 
   it('should remove roles from staff members of a group', async () => {
     const rql = rqlBuilder().build();
-    const roles = [];
+    const roles: string[] = [];
     nock(`${host}${USER_BASE}`)
       .post(`/groups/${groupId}/staff/remove_roles${rql}`)
       .reply(200, { affectedRecords: 1 });
@@ -165,7 +166,7 @@ describe('Group Roles Service', () => {
 
   it('should add users to staff', async () => {
     const rql = rqlBuilder().build();
-    const groups = [];
+    const groups: string[] = [];
     nock(`${host}${USER_BASE}`)
       .post(`/add_to_staff${rql}`)
       .reply(200, { affectedRecords: 1 });
@@ -177,7 +178,7 @@ describe('Group Roles Service', () => {
 
   it('should remove users from staff', async () => {
     const rql = rqlBuilder().build();
-    const groups = [];
+    const groups: string[] = [];
     nock(`${host}${USER_BASE}`)
       .post(`/remove_from_staff${rql}`)
       .reply(200, { affectedRecords: 1 });

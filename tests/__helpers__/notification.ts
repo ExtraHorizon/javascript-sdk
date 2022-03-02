@@ -17,6 +17,7 @@ export const notificationInput: CreateNotificationRequest = {
 
 export const notificationData: Notification = {
   ...notificationInput,
+  userId: notificationInput.userId as string,
   viewed: true,
   id: '58074804b2148f3b28ad759a',
   creationTimestamp: new Date(1550577829354),

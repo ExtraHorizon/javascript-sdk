@@ -11,7 +11,7 @@ import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Dispatchers Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
-  const dispatcherId = dispatcherData.id;
+  const dispatcherId = dispatcherData.id as string;
   const dispatchersResponse = createPagedResponse(dispatcherData);
 
   let sdk: Client<ParamsOauth2>;

@@ -269,7 +269,7 @@ export type Transition = TransitionInput &
   Required<Pick<TransitionInput, 'id'>>;
 
 export interface Schema {
-  id?: ObjectId;
+  id: ObjectId;
   name?: string;
   description?: string;
   properties?: any;
@@ -285,8 +285,8 @@ export interface Schema {
   maximumLimit?: number;
   updateTimestamp?: Date;
   creationTimestamp?: Date;
-  findTransitionIdByName?: (name: string) => ObjectId | undefined;
-  transitionsByName?: Record<string, Transition>;
+  findTransitionIdByName: (name: string) => ObjectId | undefined;
+  transitionsByName: Record<string, Transition>;
 }
 
 export interface SchemaInput {

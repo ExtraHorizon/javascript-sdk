@@ -8,7 +8,7 @@ import {
 } from '../../__helpers__/data';
 
 describe('Indexes Service', () => {
-  const schemaId = newSchemaCreated.id;
+  const schemaId = newSchemaCreated.id as string;
   const indexId = newIndexCreated.id;
   const host = 'https://api.xxx.fibricheck.com';
   let sdk: Client<ParamsOauth2>;

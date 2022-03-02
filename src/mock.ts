@@ -41,7 +41,7 @@ export const getMockSdkProxy = <MockFn>(
   ({
     ...(recursiveMap((value: unknown) =>
       typeof value === 'function' ? fn() : value
-    )(createProxyClient({ host: '' })) as MockClientProxy<MockFn>),
+    )(createProxyClient({ host: '' })) as unknown as MockClientProxy<MockFn>),
     raw: RAW_VERBS.reduce(
       (memo, verb) => ({
         ...memo,
@@ -72,7 +72,7 @@ export const getMockSdkOAuth2 = <MockFn>(
       typeof value === 'function' ? fn() : value
     )(
       createOAuth2Client({ host: '', clientId: '' })
-    ) as MockClientOAuth2<MockFn>),
+    ) as unknown as MockClientOAuth2<MockFn>),
     raw: RAW_VERBS.reduce(
       (memo, verb) => ({
         ...memo,
@@ -97,22 +97,21 @@ export const getMockSdkOAuth2 = <MockFn>(
  */
 export const getMockSdkOAuth1 = <MockFn>(
   fn: () => MockFn
-): MockClientOAuth1<MockFn> =>
-  ({
-    ...(recursiveMap((value: unknown) =>
-      typeof value === 'function' ? fn() : value
-    )(
-      createOAuth1Client({
-        host: '',
-        consumerKey: '',
-        consumerSecret: '',
-      })
-    ) as MockClientOAuth1<MockFn>),
-    raw: RAW_VERBS.reduce(
-      (memo, verb) => ({
-        ...memo,
-        [verb]: fn(),
-      }),
-      {}
-    ),
-  } as MockClientOAuth1<MockFn>);
+): MockClientOAuth1<MockFn> => ({
+  ...recursiveMap((value: unknown) =>
+    typeof value === 'function' ? fn() : value
+  )(
+    createOAuth1Client({
+      host: '',
+      consumerKey: '',
+      consumerSecret: '',
+    }) as unknown as MockClientOAuth1<MockFn>
+  ),
+  raw: RAW_VERBS.reduce(
+    (memo, verb) => ({
+      ...memo,
+      [verb]: fn(),
+    }),
+    {}
+  ) as MockClientOAuth1<MockFn>['raw'],
+});
