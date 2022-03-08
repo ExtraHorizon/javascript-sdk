@@ -840,10 +840,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@qompium/eslint-config-q-base@^1.3.4":
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-base/-/eslint-config-q-base-1.3.4.tgz#c3962fbbbcb0863cf8e09d519d6f7e450c4f3bab"
-  integrity sha512-O9wyZyjwymqlyTll7v5xYDksO1fFifvpGToOasNr1Yhacz6+62ecnf3y47fM2ozMiyK8UFm6n2h2HtMu9io/aQ==
+"@qompium/eslint-config-q-base@^1.3.9":
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-base/-/eslint-config-q-base-1.3.9.tgz#ecc73baef08b657b2d7144240db61a0ed8528d61"
+  integrity sha512-ruACxJmE12km2Yw3TmJpAKKtmPjOKaW15mHwFmPOcR8L/An5Vi3mHZsQsDxQs5MlLgg/33ATOxHDmDhswcTLjw==
   dependencies:
     "@typescript-eslint/eslint-plugin" "~5.12.0"
     "@typescript-eslint/parser" "^5.12.0"
@@ -851,12 +851,12 @@
     eslint-plugin-eslint-comments "^3.2.0"
     eslint-plugin-import "^2.25.3"
 
-"@qompium/eslint-config-q-node@^1.3.4":
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-node/-/eslint-config-q-node-1.3.4.tgz#e9f077297fe83d7356298aa7c69d95a8aae3e0f9"
-  integrity sha512-TWNS2QOphNVBav3QW/IV5wmvMKiBNbtLP0RpVHrSARZkkaeHGZSoOci7oJFTwWhtE15X0dEY+kZhyPgiVsH0Ag==
+"@qompium/eslint-config-q-node@^1.3.9":
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/@qompium/eslint-config-q-node/-/eslint-config-q-node-1.3.9.tgz#ed505cbecebeb5ae300a95b15d47f19d94cd9fe7"
+  integrity sha512-32vpfKLGiaQeVE2fV+XmIoogLgKwS8iCesdN379fWhtwrdiHS0P+EECsDfN3DOzj9mC4FB1/m17zfomQCr4jqg==
   dependencies:
-    "@qompium/eslint-config-q-base" "^1.3.4"
+    "@qompium/eslint-config-q-base" "^1.3.9"
 
 "@rollup/plugin-babel@^5.3.1":
   version "5.3.1"
