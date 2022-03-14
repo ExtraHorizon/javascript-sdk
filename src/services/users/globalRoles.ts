@@ -26,8 +26,9 @@ export default (
   },
 
   async update(id, requestBody, options) {
-    return (await client.put(httpWithAuth, `/roles${id}`, requestBody, options))
-      .data;
+    return (
+      await client.put(httpWithAuth, `/roles/${id}`, requestBody, options)
+    ).data;
   },
 
   async addPermissions(rql, requestBody, options) {
