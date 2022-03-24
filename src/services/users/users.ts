@@ -222,5 +222,21 @@ export default (
         )
       ).data;
     },
+
+    async passwordPolicy(options) {
+      return (await userClient.get(httpWithAuth, `/password_policy`, options))
+        .data;
+    },
+
+    async updatePasswordPolicy(requestBody, options) {
+      return (
+        await userClient.put(
+          httpWithAuth,
+          `/password_policy`,
+          requestBody,
+          options
+        )
+      ).data;
+    },
   };
 };

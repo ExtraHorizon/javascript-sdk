@@ -12,11 +12,13 @@ import {
   newUserData,
   updatedUserData,
   resourceUnknownError,
+  passwordPolicy,
+  newPasswordPolicy,
 } from '../../__helpers__/user';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Users Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.dev.fibricheck.com';
   const userId = '5a0b2adc265ced65a8cab865';
   const groupId = '5bfbfc3146e0fb321rsa4b28';
   // const oldEmail = 'old@bbb.ccc';
@@ -298,5 +300,25 @@ describe('Users Service', () => {
     const result = await sdk.users.updateProfileImage(userId, { hash: 'xxx' });
 
     expect(result).toBeDefined();
+  });
+
+  it('should get password policy', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get(`/password_policy`)
+      .reply(200, passwordPolicy);
+
+    const result = await sdk.users.passwordPolicy();
+
+    expect(result.minimumLength).toBeDefined();
+  });
+
+  it('should update password policy', async () => {
+    nock(`${host}${USER_BASE}`)
+      .put(`/password_policy`)
+      .reply(200, passwordPolicy);
+
+    const result = await sdk.users.updatePasswordPolicy(newPasswordPolicy);
+
+    expect(result.minimumLength).toBeDefined();
   });
 });
