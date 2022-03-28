@@ -130,6 +130,14 @@ export interface GlobalPermission {
   name?: GlobalPermissionName;
   description?: string;
 }
+export interface PasswordPolicy {
+  minimumLength: number;
+  maximumLength: number;
+  upperCaseRequired: boolean;
+  lowerCaseRequired: boolean;
+  symbolRequired: boolean;
+  numberRequired: boolean;
+}
 
 export enum GlobalPermissionName {
   VIEW_PRESCRIPTIONS = 'VIEW_PRESCRIPTIONS',
@@ -982,4 +990,25 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    */
   deleteProfileImage(userId: ObjectId, options?: OptionsBase): Promise<User>;
+  /**
+   * Retrieve the current pasword policy
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   * @returns {PasswordPolicy} PasswordPolicy
+   */
+  passwordPolicy(options?: OptionsBase): Promise<PasswordPolicy>;
+  /**
+   * Update the current pasword policy
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_PASSWORD_POLICY` | `global` | Update password policy
+   * @returns {PasswordPolicy} PasswordPolicy
+   */
+  updatePasswordPolicy(
+    requestBody: PasswordPolicy,
+    options?: OptionsBase
+  ): Promise<PasswordPolicy>;
 }
