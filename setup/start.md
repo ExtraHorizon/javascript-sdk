@@ -1,6 +1,6 @@
-## Quick Start
+# Quick start
 
-Please see [authentication examples](examples/authentication) for more options.
+Please see [authentication examples](broken-reference) for more options.
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
