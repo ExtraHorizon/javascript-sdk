@@ -91,12 +91,12 @@ describe('Group Roles Service', () => {
   });
 
   it('should remove a role from a group', async () => {
-    const rql = rqlBuilder().build();
+    const rql = rqlBuilder().eq('id', roleId).build();
     nock(`${host}${USER_BASE}`)
-      .delete(`/groups/${groupId}/roles/${roleId}${rql}`)
+      .delete(`/groups/${groupId}/roles${rql}`)
       .reply(200, { affectedRecords: 1 });
 
-    const res = await sdk.users.groupRoles.remove(rql, groupId, roleId);
+    const res = await sdk.users.groupRoles.remove(rql, groupId);
 
     expect(res.affectedRecords).toBe(1);
   });
