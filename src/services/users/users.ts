@@ -224,8 +224,53 @@ export default (
     },
 
     async passwordPolicy(options) {
-      return (await userClient.get(httpWithAuth, `/password_policy`, options))
-        .data;
+      const { data: passwordPolicy } = await userClient.get(
+        httpWithAuth,
+        `/password_policy`,
+        options
+      );
+
+      let regEx = '^\\S*'; // no whitespaces
+      let messageFormat = '{{format}}';
+
+      if (
+        passwordPolicy &&
+        passwordPolicy?.minimumLength &&
+        passwordPolicy?.maximumLength
+      ) {
+        regEx = `([^\\s]){${passwordPolicy.minimumLength},${passwordPolicy.maximumLength}}`;
+        messageFormat = '{{length}}';
+        if (passwordPolicy?.lowerCaseRequired) {
+          regEx = `(?=.*[a-z])${regEx}`;
+          messageFormat += `, {{lowerCaseRequired}}`;
+        }
+        if (passwordPolicy?.upperCaseRequired) {
+          regEx = `(?=.*[A-Z])${regEx}`;
+          messageFormat += `, {{upperCaseRequired}}`;
+        }
+        if (passwordPolicy?.numberRequired) {
+          regEx = `(?=.*\\d)${regEx}`;
+          messageFormat += `, {{numberRequired}}`;
+        }
+        if (passwordPolicy?.symbolRequired) {
+          regEx +=
+            '([`~\\!@#\\$%\\^\\&\\*\\(\\)\\-_\\=\\+\\[\\{\\}\\]\\\\|;:\\\'",<.>\\/\\?€£¥₹§±].*)';
+          messageFormat += `, {{symbolRequired}}`;
+        }
+        const lastIndex = messageFormat.lastIndexOf(',');
+        if (lastIndex > 0) {
+          messageFormat = `${messageFormat.substring(
+            0,
+            lastIndex
+          )} {{and}}${messageFormat.substring(lastIndex + 1)}`;
+        }
+        messageFormat = `${messageFormat}.`;
+      }
+      return {
+        ...passwordPolicy,
+        pattern: `^${regEx}$`,
+        messageFormat,
+      };
     },
 
     async updatePasswordPolicy(requestBody, options) {
