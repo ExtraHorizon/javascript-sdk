@@ -39,8 +39,8 @@ export interface UserEnlistments {
 }
 
 export interface EnlistmentConfiguration {
-  groupId?: ObjectId;
-  data?: Configuration;
+  groupId: ObjectId;
+  data: Configuration;
 }
 
 export type UserConfiguration = UserConfigurationInput &
