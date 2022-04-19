@@ -72,7 +72,7 @@ export interface GroupRole {
   groupId: string;
   name: string;
   description: string;
-  permissions: string;
+  permissions: string[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
@@ -539,7 +539,6 @@ export interface UsersGroupRolesService {
   remove(
     rql: RQLString,
     groupId: ObjectId,
-    roleId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
