@@ -125,10 +125,50 @@ describe('rql string builder', () => {
       .build();
 
     expect(result).toBe(
-      `?contains(staff_enlistments,eq(group_id,${groupId}))&or(like(first_name,${filterValue}),like(last_name,${filterValue}))&limit(${pageSize},${
+      `?contains(staff_enlistments,and(eq(group_id,${groupId})))&or(like(first_name,${filterValue}),like(last_name,${filterValue}))&limit(${pageSize},${
         pageSize * pageIndex
       })`
     );
+  });
+
+  it('creates a query with two expressions in the contains', async () => {
+    const containsStaff = rqlBuilder()
+      .contains(
+        'staff_enlistments',
+        rqlBuilder().gt('id', '60').intermediate(),
+        rqlBuilder().lt('id', '90').intermediate()
+      )
+      .build();
+
+    expect(containsStaff).toBe(
+      '?contains(staff_enlistments,and(gt(id,60),lt(id,90)))'
+    );
+  });
+
+  it('creates a query with only the field in the contains', async () => {
+    const containsStaff = rqlBuilder().contains('staff_enlistments').build();
+
+    expect(containsStaff).toBe('?contains(staff_enlistments)');
+  });
+
+  it('creates a query with two expressions in the excludes', async () => {
+    const excludesStaff = rqlBuilder()
+      .excludes(
+        'staff_enlistments',
+        rqlBuilder().gt('id', '60').intermediate(),
+        rqlBuilder().lt('id', '90').intermediate()
+      )
+      .build();
+
+    expect(excludesStaff).toBe(
+      '?excludes(staff_enlistments,and(gt(id,60),lt(id,90)))'
+    );
+  });
+
+  it('creates a query with only the field in the excludes', async () => {
+    const excludesStaff = rqlBuilder().excludes('staff_enlistments').build();
+
+    expect(excludesStaff).toBe('?excludes(staff_enlistments)');
   });
 
   it('should parse a string to rqlString', async () => {
