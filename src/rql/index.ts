@@ -94,22 +94,19 @@ export interface RQLBuilder {
    * any value that equals the provided value or satisfies the provided expression.
    * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is valid
    * `contains` with a single property is not strictly needed. This can be replaced with `gt(field.itemField,30)`.
-   * When checking multiple fields in the same object as in the example below, make sure to not forget using `and` or `or` to concatenate expressions as
-   * `.contains("data",rqlBuilder().gt("heartrate", "60").lt("heartrate", "90").intermediate())` won't work.
    * @example
    * await sdk.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
    *         .contains(
-   *           "data",
-   *           rqlBuilder().and(
-   *             rqlBuilder().gt("heartrate", "60").intermediate(),
-   *             rqlBuilder().lt("heartrate", "90").intermediate()
-   *           ).intermediate())`
-   *         .build();
+   *              "data",
+   *              rqlBuilder().gt("heartrate", "60").intermediate(),
+   *                rqlBuilder().lt("heartrate", "90").intermediate()
+   *          )
+   *          .build();
    * });
    * @return Only returns documents with a data object containing `heartrate > 60` and `heartrate > 90`
    */
-  contains: (field: string, expression?: RQLString) => RQLBuilder;
+  contains: (field: string, ...expressions: RQLString[]) => RQLBuilder;
   /**
    * @description `excludes(field)` only returns records not having this field as property
    * @example
@@ -122,8 +119,6 @@ export interface RQLBuilder {
    * @description Filters for objects where the specified property's value is an array and the array excludes
    * any value that equals the provided value or satisfies the provided expression.
    * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is invalid
-   * When checking multiple fields in the same object, make sure to not forget using `and` or `or` to concatenate expressions as
-   * `.excludes("data",rqlBuilder().gt("heartrate", "60").lt("heartrate", "90").intermediate())` won't work.
    * @example
    * await sdk.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
@@ -132,7 +127,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents excluding documents where `data.heartrate > 60`
    */
-  excludes: (field: string, expression?: RQLString) => RQLBuilder;
+  excludes: (field: string, ...expressions: RQLString[]) => RQLBuilder;
 
   /**
    * Returns a valid rqlString
@@ -220,16 +215,24 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
     gt(field, value) {
       return processQuery('gt', `${field},${value}`);
     },
-    contains(field, expression) {
+    contains(field, ...expressions) {
       return processQuery(
         'contains',
-        expression ? `${field},${expression}` : field
+        expressions.length > 0
+          ? `${field},${rqlBuilder()
+              .and(...expressions)
+              .intermediate()}`
+          : field
       );
     },
-    excludes(field, expression) {
+    excludes(field, ...expressions) {
       return processQuery(
         'excludes',
-        expression ? `${field},${expression}` : field
+        expressions.length > 0
+          ? `${field},${rqlBuilder()
+              .and(...expressions)
+              .intermediate()}`
+          : field
       );
     },
     build(): RQLString {
