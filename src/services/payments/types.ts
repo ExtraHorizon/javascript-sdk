@@ -450,7 +450,7 @@ export interface PaymentsAppStoreService {
    * @returns PagedResult<AppStoreNotification>
    */
   getNotifications(
-    options?: OptionsBase
+    options?: OptionsWithRql
   ): Promise<PagedResult<AppStoreNotification>>;
   /**
    * Get a list of receipts received and verified by the App Store
@@ -463,7 +463,7 @@ export interface PaymentsAppStoreService {
    * `VIEW_APP_STORE_RECEIPTS` | `global` | **Required** for this endpoint
    * @returns PagedResult<AppStoreReceipt>
    */
-  getReceipts(options?: OptionsBase): Promise<PagedResult<AppStoreReceipt>>;
+  getReceipts(options?: OptionsWithRql): Promise<PagedResult<AppStoreReceipt>>;
 
   /**
    * Get a list of shared secrets

@@ -79,7 +79,7 @@ describe('App Store Service', () => {
 
   it('should get a list of notifications received from the App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/appStore/receivedNotifications')
+      .get('/appStore/receivedNotifications/')
       .reply(200, createPagedResponse(appStoreNotification));
 
     const res = await sdk.payments.appStore.getNotifications();
@@ -89,7 +89,7 @@ describe('App Store Service', () => {
 
   it('should get a list of receipts received and verified by the App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/appStore/receivedReceipts')
+      .get('/appStore/receivedReceipts/')
       .reply(200, createPagedResponse(appStoreReceipt));
 
     const res = await sdk.payments.appStore.getReceipts();
@@ -99,7 +99,7 @@ describe('App Store Service', () => {
 
   it('should get a list of shared secrets with App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/appStore/sharedSecrets')
+      .get('/appStore/sharedSecrets/')
       .reply(200, createPagedResponse(appStoreSharedSecret));
 
     const res = await sdk.payments.appStore.getSharedSecrets();
