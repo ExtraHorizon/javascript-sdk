@@ -51,8 +51,13 @@ export default (
   },
 
   async getReceipts(options) {
-    return (await client.get(httpAuth, '/appStore/receivedReceipts', options))
-      .data;
+    return (
+      await client.get(
+        httpAuth,
+        `/appStore/receivedReceipts/${options?.rql || ''}`,
+        options
+      )
+    ).data;
   },
 
   async getSharedSecrets(options) {

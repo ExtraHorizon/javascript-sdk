@@ -463,7 +463,7 @@ export interface PaymentsAppStoreService {
    * `VIEW_APP_STORE_RECEIPTS` | `global` | **Required** for this endpoint
    * @returns PagedResult<AppStoreReceipt>
    */
-  getReceipts(options?: OptionsBase): Promise<PagedResult<AppStoreReceipt>>;
+  getReceipts(options?: OptionsWithRql): Promise<PagedResult<AppStoreReceipt>>;
 
   /**
    * Get a list of shared secrets
