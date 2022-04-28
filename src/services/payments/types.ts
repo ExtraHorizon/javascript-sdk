@@ -450,7 +450,7 @@ export interface PaymentsAppStoreService {
    * @returns PagedResult<AppStoreNotification>
    */
   getNotifications(
-    options?: OptionsBase
+    options?: OptionsWithRql
   ): Promise<PagedResult<AppStoreNotification>>;
   /**
    * Get a list of receipts received and verified by the App Store

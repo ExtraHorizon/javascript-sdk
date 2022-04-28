@@ -46,7 +46,11 @@ export default (
 
   async getNotifications(options) {
     return (
-      await client.get(httpAuth, '/appStore/receivedNotifications', options)
+      await client.get(
+        httpAuth,
+        `/appStore/receivedNotifications/${options?.rql || ''}`,
+        options
+      )
     ).data;
   },
 
@@ -61,8 +65,13 @@ export default (
   },
 
   async getSharedSecrets(options) {
-    return (await client.get(httpAuth, '/appStore/sharedSecrets', options))
-      .data;
+    return (
+      await client.get(
+        httpAuth,
+        `/appStore/sharedSecrets/${options?.rql || ''}`,
+        options
+      )
+    ).data;
   },
 
   async createSharedSecret(requestBody, options) {
