@@ -89,7 +89,7 @@ describe('App Store Service', () => {
 
   it('should get a list of receipts received and verified by the App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/appStore/receivedReceipts')
+      .get('/appStore/receivedReceipts/')
       .reply(200, createPagedResponse(appStoreReceipt));
 
     const res = await sdk.payments.appStore.getReceipts();
