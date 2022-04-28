@@ -14,7 +14,7 @@
     "clean": "rimraf build",
     "start": "yarn test",
     "start:watch": "yarn test --watch --reporters=\"default\"",
-    "create-version-file": "echo \"export const version = '$(node -p \"require('./package.json').version\")';\" > src/version.ts",
+    "create-version-file": "node -e \"require('fs').promises.writeFile('src/version.ts', 'export const version = \\'' + require('./package.json').version + '\\';\\n')\"",
     "create-mock-sdk": "node generateMockTypes.js > src/mockType.ts",
     "build": "yarn create-version-file && yarn clean && yarn build:library && yarn create-mock-sdk && yarn build:declarations",
     "build:library": "rollup --config rollup.config.js",
@@ -35,7 +35,7 @@
     "build"
   ],
   "dependencies": {
-    "axios": "^0.26.0",
+    "axios": "^0.27.2",
     "buffer": "^6.0.3",
     "crypto-es": "^1.2.7",
     "fflate": "^0.7.3",
