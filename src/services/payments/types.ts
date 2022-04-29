@@ -1119,6 +1119,7 @@ export interface PlayStorePurchaseRecord {
   userId: ObjectId;
   id: ObjectId;
   creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 export interface PlayStoreDeveloperNotificationSchema {
@@ -1184,20 +1185,18 @@ export interface PlayStoreSubscriptionPurchaseRecordSchema {
   purchaseInfo: PlayStoreSubscriptionPurchaseSchema;
   id: string;
   creationTimestamp: Date;
+  updateTimestamp: Date;
+}
+
+export interface PlayStoreSubscriptionReceiptRecordSchema {
+  receipt: PlayStoreReceiptSchema;
+  userId: ObjectId;
+  id: string;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 export interface PaymentsPlayStoreHistoryService {
-  /**
-   * Get a list of recorded Play Store purchase requests
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * `VIEW_PLAY_STORE_PURCHASES` | `global` | **Required** for this endpoint
-   * @returns PagedResult<PlayStorePurchaseRecord>
-   */
-  purchases(
-    options?: OptionsWithRql
-  ): Promise<PagedResult<PlayStorePurchaseRecord>>;
   /**
    * Get a list of recorded Play Store developer notifications received
    *
@@ -1220,6 +1219,17 @@ export interface PaymentsPlayStoreHistoryService {
   purchaseInfos(
     options?: OptionsWithRql
   ): Promise<PagedResult<PlayStoreSubscriptionPurchaseRecordSchema>>;
+  /**
+   * Get a list of the received Play Store purchase receipts
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_PLAY_STORE_PURCHASE_RECEIPTS` | `global` | **Required** for this endpoint
+   * @returns PagedResult<PlayStorePurchaseRecord>
+   */
+  purchaseReceipts(
+    options?: OptionsWithRql
+  ): Promise<PagedResult<PlayStorePurchaseRecord>>;
 }
 
 export interface PlayStoreSubscription {
