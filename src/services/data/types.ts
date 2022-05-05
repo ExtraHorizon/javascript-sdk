@@ -272,7 +272,8 @@ export interface Schema {
   id: ObjectId;
   name: string;
   description: string;
-  properties: Property[];
+  // FIXME: type all possible property types
+  properties: Record<string, any>;
   indexes: Index[];
   statuses: Record<string, never>;
   creationTransition: CreationTransition;
@@ -326,15 +327,6 @@ export interface Index {
   }[];
   options: IndexOptions;
   system?: boolean;
-}
-
-export interface Property {
-  id: string;
-  name: string;
-  type: string;
-  fromStatuses: string[];
-  toStatus: string;
-  actions: { type: string; functionName: string }[];
 }
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
