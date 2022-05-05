@@ -304,7 +304,7 @@ export const newIndexCreated = {
   system: true,
 };
 
-export const newIndexInput: Index = {
+export const newIndexInput: Omit<Index, 'id' | 'name'> = {
   fields: [
     {
       name: 'PropertyNameToIndex',
