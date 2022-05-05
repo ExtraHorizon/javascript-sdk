@@ -269,22 +269,23 @@ export type Transition = TransitionInput &
   Required<Pick<TransitionInput, 'id'>>;
 
 export interface Schema {
-  id?: ObjectId;
-  name?: string;
-  description?: string;
-  properties?: any;
-  statuses?: Record<string, never>;
-  creationTransition?: CreationTransition;
-  transitions?: Transition[];
-  createMode?: CreateMode;
-  readMode?: ReadMode;
-  updateMode?: UpdateMode;
-  deleteMode?: DeleteMode;
-  groupSyncMode?: GroupSyncMode;
+  id: ObjectId;
+  name: string;
+  description: string;
+  properties: Property[];
+  indexes: Index[];
+  statuses: Record<string, never>;
+  creationTransition: CreationTransition;
+  transitions: Transition[];
+  createMode: CreateMode;
+  readMode: ReadMode;
+  updateMode: UpdateMode;
+  deleteMode: DeleteMode;
+  groupSyncMode: GroupSyncMode;
   defaultLimit?: number;
   maximumLimit?: number;
-  updateTimestamp?: Date;
-  creationTimestamp?: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
   findTransitionIdByName?: (name: string) => ObjectId | undefined;
   transitionsByName?: Record<string, Transition>;
 }
@@ -317,32 +318,41 @@ export interface IndexOptions {
 }
 
 export interface Index {
-  id?: ObjectId;
-  name?: string;
-  fields?: {
-    name?: IndexFieldsName;
-    type?: IndexFieldsType;
+  id: ObjectId;
+  name: string;
+  fields: {
+    name: IndexFieldsName;
+    type: IndexFieldsType;
   }[];
-  options?: IndexOptions;
+  options: IndexOptions;
   system?: boolean;
+}
+
+export interface Property {
+  id: string;
+  name: string;
+  type: string;
+  fromStatuses: string[];
+  toStatus: string;
+  actions: { type: string; functionName: string }[];
 }
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
 
 export interface Document<CustomData = null, CustomStatus = null> {
-  id?: ObjectId;
-  userIds?: ObjectId[];
-  groupIds?: ObjectId[];
-  status?: CustomStatus extends null ? string : CustomStatus;
-  data?: CustomData extends null ? Record<string, unknown> : CustomData;
+  id: ObjectId;
+  userIds: ObjectId[];
+  groupIds: ObjectId[];
+  status: CustomStatus extends null ? string : CustomStatus;
+  data: CustomData extends null ? Record<string, unknown> : CustomData;
   transitionLock?: {
     timestamp?: Date;
   };
   commentCount?: number;
-  updateTimestamp?: Date;
-  creationTimestamp?: Date;
-  statusChangedTimestamp?: Date;
-  creatorId?: ObjectId;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
+  statusChangedTimestamp: Date;
+  creatorId: ObjectId;
 }
 
 export type CommentText = string;
