@@ -83,7 +83,7 @@ const httpClient = ({
                     return Buffer.from(gzipSync(strToU8(dataInTransform)));
                   }
 
-                  // In Browser and React Native on Ios, pako is used.
+                  // In Browser and React Native on iOS
                   return gzipSync(strToU8(dataInTransform));
                 }
                 return dataInTransform;

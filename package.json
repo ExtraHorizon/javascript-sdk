@@ -1,7 +1,7 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "6.1.1",
-  "description": "",
+  "version": "7.0.0",
+  "description": "This package serves as a JavaScript wrapper around all Extra Horizon cloud services.",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
   "module": "build/index.mjs",
