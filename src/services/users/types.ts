@@ -72,7 +72,7 @@ export interface GroupRole {
   groupId: string;
   name: string;
   description: string;
-  permissions: string;
+  permissions: string[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
@@ -130,6 +130,16 @@ export interface GlobalPermission {
   name?: GlobalPermissionName;
   description?: string;
 }
+export interface PasswordPolicy {
+  minimumLength: number;
+  maximumLength: number;
+  upperCaseRequired: boolean;
+  lowerCaseRequired: boolean;
+  symbolRequired: boolean;
+  numberRequired: boolean;
+  pattern?: string;
+  messageFormat?: string;
+}
 
 export enum GlobalPermissionName {
   VIEW_PRESCRIPTIONS = 'VIEW_PRESCRIPTIONS',
@@ -181,6 +191,7 @@ export enum GlobalPermissionName {
   UPDATE_STRIPE_PRODUCTS = 'UPDATE_STRIPE_PRODUCTS',
   UPDATE_SENTIANCE_DATA = 'UPDATE_SENTIANCE_DATA',
   CANCEL_TASKS = 'CANCEL_TASKS',
+  CANCEL_TASKS_FUNCTIONS = 'CANCEL_TASKS_FUNCTIONS',
   CREATE_DISPATCHERS = 'CREATE_DISPATCHERS',
   UPDATE_TEMPLATES = 'UPDATE_TEMPLATES',
   VIEW_DOCUMENT_COMMENTS = 'VIEW_DOCUMENT_COMMENTS',
@@ -195,6 +206,7 @@ export enum GlobalPermissionName {
   UPDATE_DOCUMENT_COMMENTS = 'UPDATE_DOCUMENT_COMMENTS',
   CREATE_DOCUMENTS = 'CREATE_DOCUMENTS',
   CREATE_TASKS = 'CREATE_TASKS',
+  CREATE_TASKS_FUNCTIONS = 'CREATE_TASKS_FUNCTIONS',
   DELETE_USER = 'DELETE_USER',
   VIEW_ACTIVE_PERIODS = 'VIEW_ACTIVE_PERIODS',
   VIEW_MAILS = 'VIEW_MAILS',
@@ -224,6 +236,7 @@ export enum GlobalPermissionName {
   ADD_APPLICATION_VERSION = 'ADD_APPLICATION_VERSION',
   UPDATE_USER = 'UPDATE_USER',
   VIEW_TASKS = 'VIEW_TASKS',
+  VIEW_TASKS_FUNCTIONS = 'VIEW_TASKS_FUNCTIONS',
   CREATE_PROFILES = 'CREATE_PROFILES',
   PRERENDER_REPORTS = 'PRERENDER_REPORTS',
   VIEW_SUBSCRIPTIONS = 'VIEW_SUBSCRIPTIONS',
@@ -529,7 +542,6 @@ export interface UsersGroupRolesService {
   remove(
     rql: RQLString,
     groupId: ObjectId,
-    roleId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
@@ -982,4 +994,25 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    */
   deleteProfileImage(userId: ObjectId, options?: OptionsBase): Promise<User>;
+  /**
+   * Retrieve the current pasword policy
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   * @returns {PasswordPolicy} PasswordPolicy
+   */
+  passwordPolicy(options?: OptionsBase): Promise<PasswordPolicy>;
+  /**
+   * Update the current pasword policy
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_PASSWORD_POLICY` | `global` | Update password policy
+   * @returns {PasswordPolicy} PasswordPolicy
+   */
+  updatePasswordPolicy(
+    requestBody: PasswordPolicy,
+    options?: OptionsBase
+  ): Promise<PasswordPolicy>;
 }

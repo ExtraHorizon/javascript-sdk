@@ -59,6 +59,24 @@ export const roleData = {
   update_timestamp: 1565954044301,
 };
 
+export const passwordPolicy = {
+  minimum_length: 8,
+  maximum_length: 128,
+  upper_case_required: true,
+  lower_case_required: true,
+  symbol_required: false,
+  number_required: true,
+};
+
+export const newPasswordPolicy = {
+  minimumLength: 8,
+  maximumLength: 128,
+  upperCaseRequired: true,
+  lowerCaseRequired: true,
+  symbolRequired: false,
+  numberRequired: true,
+};
+
 interface Error {
   code: number;
   name: string;

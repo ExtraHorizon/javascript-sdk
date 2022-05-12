@@ -43,11 +43,11 @@ export default (
     ).data;
   },
 
-  async remove(rql, groupId, roleId, options) {
+  async remove(rql, groupId, options) {
     return (
       await client.delete(
         httpWithAuth,
-        `/groups/${groupId}/roles/${roleId}${rql}`,
+        `/groups/${groupId}/roles${rql}`,
         options
       )
     ).data;

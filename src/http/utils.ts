@@ -96,7 +96,6 @@ function is(Ctor, value) {
   return (value != null && value.constructor === Ctor) || value instanceof Ctor;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function recursiveRenameKeys(fn: { (arg: string): string }, obj) {
   if (Array.isArray(obj)) {
     return obj.map(value => recursiveRenameKeys(fn, value));

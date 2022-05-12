@@ -37,7 +37,7 @@ describe('Play Store History Service', () => {
 
   it('should get a list of notifications received from the Play Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/playStore/history/notifications')
+      .get('/playStore/history/notifications/')
       .reply(200, createPagedResponse(playStoreDeveloperNotificationSchema));
 
     const res = await sdk.payments.playStoreHistory.notifications();
@@ -45,19 +45,19 @@ describe('Play Store History Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should get a list of purchases received and verified by the Play Store', async () => {
+  it('should get a list of received Play Store purchase receipts', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/playStore/history/purchases')
+      .get('/playStore/history/purchaseReceipts/')
       .reply(200, createPagedResponse(playStorePurchaseRecord));
 
-    const res = await sdk.payments.playStoreHistory.purchases();
+    const res = await sdk.payments.playStoreHistory.purchaseReceipts();
 
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   it('should get a list of purchases info (SubscriptionPurchase) received and verified by the Play Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
-      .get('/playStore/history/purchaseInfos')
+      .get('/playStore/history/purchaseInfos/')
       .reply(
         200,
         createPagedResponse(playStoreSubscriptionPurchaseRecordSchema)

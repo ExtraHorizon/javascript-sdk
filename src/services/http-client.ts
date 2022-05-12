@@ -1,4 +1,4 @@
-import pako from 'pako';
+import { gzipSync, strToU8 } from 'fflate';
 import platform from 'platform-specific';
 import {
   HttpInstance,
@@ -80,11 +80,11 @@ const httpClient = ({
 
                   // Nodejs uses the http adapter in Axios. Needs a Buffer with the gzip data
                   if (platform.platform === 'nodejs') {
-                    return Buffer.from(pako.gzip(dataInTransform));
+                    return Buffer.from(gzipSync(strToU8(dataInTransform)));
                   }
 
-                  // In Browser and React Native on Ios, pako is used.
-                  return pako.gzip(dataInTransform);
+                  // In Browser and React Native on iOS
+                  return gzipSync(strToU8(dataInTransform));
                 }
                 return dataInTransform;
               },

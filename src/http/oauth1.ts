@@ -1,6 +1,12 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ConfigOauth1 } from '../types';
-import { TokenDataOauth1, OAuth1Config, OAuthClient, MfaConfig } from './types';
+import {
+  TokenDataOauth1,
+  OAuth1Config,
+  OAuthClient,
+  MfaConfig,
+  HttpInstance,
+} from './types';
 import {
   camelizeResponseData,
   retryInterceptor,
@@ -11,12 +17,17 @@ import { typeReceivedError } from '../errorHandler';
 import { USER_BASE } from '../constants';
 
 export function createOAuth1HttpClient(
-  http: AxiosInstance,
+  http: HttpInstance,
   options: ConfigOauth1
 ): OAuthClient {
   let tokenData: TokenDataOauth1;
 
-  const httpWithAuth = axios.create({ ...http.defaults });
+  const httpWithAuth = axios.create({
+    ...http.defaults,
+    headers: {},
+  });
+
+  httpWithAuth.defaults.headers = http.defaults.headers;
 
   const { requestLogger, responseLogger } = options;
 

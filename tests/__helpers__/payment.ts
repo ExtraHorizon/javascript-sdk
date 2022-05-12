@@ -248,6 +248,7 @@ export const playStorePurchaseRecord: PlayStorePurchaseRecord = {
   userId: 'userId',
   id: 'id',
   creationTimestamp: new Date(),
+  updateTimestamp: new Date(),
 };
 
 export const playStoreSubscriptionPurchaseRecordSchema: PlayStoreSubscriptionPurchaseRecordSchema =
@@ -259,6 +260,7 @@ export const playStoreSubscriptionPurchaseRecordSchema: PlayStoreSubscriptionPur
     },
     id: 'id',
     creationTimestamp: new Date(),
+    updateTimestamp: new Date(),
     purchaseInfo: undefined,
   };
 

@@ -161,7 +161,7 @@ export interface SsoToken {
   updateTimestamp: Date;
 }
 
-export interface SsoResponse {
+export interface OAuth1Token {
   id: string;
   userId: string;
   applicationid: string;
@@ -390,7 +390,6 @@ export interface AuthUsersService {
     options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
-
 export interface AuthOauth1Service {
   /**
    * Generate an SSO token with OAuth 1 authentication
@@ -413,5 +412,25 @@ export interface AuthOauth1Service {
    * @throws {ApplicationNotAuthenticatedError}
    * @throws {ResourceUnknownError}
    */
-  consumeSsoToken(ssoToken: string): Promise<SsoResponse>;
+  consumeSsoToken(ssoToken: string): Promise<OAuth1Token>;
+  /**
+   * Get a list of OAuth1 tokens
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth1 tokens for this account
+   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth1 tokens for any account
+   * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth1/get_oauth1_tokens
+   */
+  getTokens(options?: OptionsWithRql): Promise<PagedResult<OAuth1Token>>;
+  /**
+   * Delete a token
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth1 tokens for this account
+   * VIEW_AUTHORIZATIONS | | Can remove any OAuth1 tokens of any account
+   * * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/OAuth1/post_oauth1_tokens_mfa
+   */
+  removeToken(tokenId: string): Promise<AffectedRecords>;
 }

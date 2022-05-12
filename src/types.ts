@@ -86,9 +86,8 @@ export interface ConfigOauth1 extends ParamsBase {
 export interface ConfigOauth2 extends ParamsBase {
   path: string;
   params: {
-    // eslint-disable-next-line camelcase
     client_id: string;
-    // eslint-disable-next-line camelcase
+
     client_secret?: string;
   };
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;

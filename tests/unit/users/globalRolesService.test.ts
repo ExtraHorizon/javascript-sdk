@@ -89,7 +89,7 @@ describe('Global Roles Service', () => {
       name: 'newRoleName',
       description: 'this is a new role desc',
     };
-    nock(`${host}${USER_BASE}`).put(`/roles${id}`).reply(200, roleData);
+    nock(`${host}${USER_BASE}`).put(`/roles/${id}`).reply(200, roleData);
 
     const res = await sdk.users.globalRoles.update(id, requestBody);
 

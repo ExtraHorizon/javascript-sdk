@@ -1,8 +1,7 @@
-/* eslint-disable no-underscore-dangle */
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { USER_BASE } from '../constants';
 import { ConfigProxy } from '../types';
-import { OAuthClient, AuthHttpClient } from './types';
+import { OAuthClient, AuthHttpClient, HttpInstance } from './types';
 import {
   camelizeResponseData,
   retryInterceptor,
@@ -12,13 +11,16 @@ import {
 import { typeReceivedError } from '../errorHandler';
 
 export function createProxyHttpClient(
-  http: AxiosInstance,
+  http: HttpInstance,
   options: ConfigProxy
 ): AuthHttpClient {
   const httpWithAuth = axios.create({
     ...http.defaults,
+    headers: {},
     withCredentials: true,
   });
+
+  httpWithAuth.defaults.headers = http.defaults.headers;
 
   const { requestLogger, responseLogger } = options;
   if (requestLogger) {
