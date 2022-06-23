@@ -185,6 +185,7 @@ export interface OAuthClient extends HttpInstance {
 
 export interface ProxyInstance extends HttpInstance {
   userId: Promise<string | undefined>;
+  logout: () => Promise<boolean>;
 }
 
 export type AuthHttpClient = OAuthClient | ProxyInstance;
