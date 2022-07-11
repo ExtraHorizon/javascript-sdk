@@ -22,6 +22,20 @@ const RAW_VERBS = [
   'options',
 ];
 
+const getRawMock = <MockFn>(fn: () => MockFn) => {
+  const verbs = RAW_VERBS.reduce(
+    (memo, verb) => ({
+      ...memo,
+      [verb]: fn(),
+    }),
+    {}
+  );
+  return {
+    ...verbs,
+    userId: fn(),
+  };
+};
+
 /**
  * Returns a mocked version of the Proxy SDK. Requires a mocking function like `jest.fn`
  * @param fn  mocking function
@@ -41,13 +55,7 @@ export const getMockSdkProxy = <MockFn>(
   ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(
     createProxyClient({ host: '' })
   ),
-  raw: RAW_VERBS.reduce(
-    (memo, verb) => ({
-      ...memo,
-      [verb]: fn(),
-    }),
-    {}
-  ),
+  raw: getRawMock(fn),
 });
 
 /**
@@ -69,13 +77,7 @@ export const getMockSdkOAuth2 = <MockFn>(
   ...recursiveMap(value => (typeof value === 'function' ? fn() : value))(
     createOAuth2Client({ host: '', clientId: '' })
   ),
-  raw: RAW_VERBS.reduce(
-    (memo, verb) => ({
-      ...memo,
-      [verb]: fn(),
-    }),
-    {}
-  ),
+  raw: getRawMock(fn),
 });
 
 /**
@@ -101,11 +103,5 @@ export const getMockSdkOAuth1 = <MockFn>(
       consumerSecret: '',
     })
   ),
-  raw: RAW_VERBS.reduce(
-    (memo, verb) => ({
-      ...memo,
-      [verb]: fn(),
-    }),
-    {}
-  ),
+  raw: getRawMock(fn),
 });
