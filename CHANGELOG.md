@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v7.1.0]
+
+### Added
+
+- `logout()` can now be performed on a proxy Client
+- Tasks now take an optional generic to set the data type
+- `userId` is now available on the raw mock
+
+### Fixes
+
+- The return type of `sdk.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
+
 ## [v7.0.0]
 
 ### Added
