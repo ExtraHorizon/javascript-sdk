@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { USER_BASE } from '../constants';
 import { ConfigProxy } from '../types';
-import { OAuthClient, AuthHttpClient, HttpInstance } from './types';
+import { AuthHttpClient, HttpInstance, ProxyInstance } from './types';
 import {
   camelizeResponseData,
   retryInterceptor,
@@ -66,6 +66,15 @@ export function createProxyHttpClient(
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
+  async function logout(): Promise<boolean> {
+    try {
+      await httpWithAuth.post(`/logout`);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   /*
    * The default way of adding a getter does not seem to work well with RN at
    * the moment. This way always works.
@@ -73,6 +82,7 @@ export function createProxyHttpClient(
   return Object.defineProperty(
     {
       ...httpWithAuth,
+      logout,
     },
     'userId',
     {
@@ -87,5 +97,5 @@ export function createProxyHttpClient(
         })();
       },
     }
-  ) as OAuthClient;
+  ) as ProxyInstance;
 }

@@ -15,7 +15,7 @@ export enum TaskStatus {
   CANCELED = 'canceled',
 }
 
-export interface Task {
+export interface Task<DataType = any> {
   id?: ObjectId;
   status?: TaskStatus;
   statusChangedTimestamp?: Date;
@@ -26,7 +26,7 @@ export interface Task {
   /**
    * Data send to the function
    */
-  data?: any;
+  data?: DataType;
   startTimestamp?: Date;
   tags?: Array<string>;
   priority?: number;

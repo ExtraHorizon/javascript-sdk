@@ -4317,9 +4317,9 @@ mkdirp@^1.0.4:
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
 moment@^2.27.0:
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 ms@2.0.0:
   version "2.0.0"
@@ -5590,10 +5590,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript-json-decoder@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/typescript-json-decoder/-/typescript-json-decoder-1.0.6.tgz#f5a44c163d9bba8fc5b46881fa5cc823d840c97d"
-  integrity sha512-acSpXrCf7LTEolJbqQDo6eP7h/mpO2u9VGJB4N6WvTcvKQdBIvHOXImXibn7N93kVwIoJbdikAOFdD8VDoeJaQ==
+typescript-json-decoder@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/typescript-json-decoder/-/typescript-json-decoder-1.0.10.tgz#27f6f7e4fce1ac61f8307a69a871758097c71e13"
+  integrity sha512-5cXg4Buq4AeMTp5faLlr4PjY0jQGrBnDIhkPqBqF4HMuTJj2Z9lTsLcvWT/9h0fltTsLmnNMmySrId63E14j+g==
 
 typescript@^4.5.5:
   version "4.5.5"

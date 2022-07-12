@@ -47,6 +47,16 @@ describe('proxy client', () => {
     expect(userId).toBe('mockId');
   });
 
+  it('should log out', async () => {
+    nock(mockParams.host).post(`/logout`).reply(200);
+    await expect(httpWithAuth.logout()).resolves.toBe(true);
+  });
+
+  it("shouldn't log out if function throws", async () => {
+    nock(mockParams.host).post(`/logout`).reply(401);
+    await expect(httpWithAuth.logout()).resolves.toBe(false);
+  });
+
   it('should get userId but return undefined because server error', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(500);
 

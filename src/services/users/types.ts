@@ -695,7 +695,7 @@ export interface UsersService {
     userId: string,
     userData: UserDataUpdate,
     options?: OptionsBase
-  ): Promise<User>;
+  ): Promise<UserData>;
   /**
    * Retrieve a list of users
    *

@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "This package serves as a JavaScript wrapper around all Extra Horizon cloud services.",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
@@ -43,7 +43,7 @@
     "oauth-1.0a": "^2.2.6",
     "platform-specific": "^1.1.0",
     "ts-toolbelt": "^9.6.0",
-    "typescript-json-decoder": "^1.0.6"
+    "typescript-json-decoder": "^1.0.10"
   },
   "devDependencies": {
     "@qompium/eslint-config-q-node": "^1.3.4",

@@ -36,6 +36,7 @@ import {
   TokenDataOauth1,
   TokenDataOauth2,
   AuthHttpClient,
+  ProxyInstance,
 } from './http/types';
 
 export interface OAuth1Authenticate {
@@ -206,7 +207,7 @@ export interface Client<T extends ClientParams> {
     ? ReturnType<typeof authService> &
         Pick<OAuthClient, 'confirmMfa' | 'logout'> &
         Authenticate<T>
-    : ReturnType<typeof authService>;
+    : ReturnType<typeof authService> & Pick<ProxyInstance, 'logout'>;
 }
 
 /**
@@ -259,7 +260,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
           confirmMfa: httpWithAuth.confirmMfa,
           logout: httpWithAuth.logout,
         }
-      : authService(httpWithAuth)) as any,
+      : { ...authService(httpWithAuth), logout: httpWithAuth.logout }) as any,
     raw: httpWithAuth,
   };
 }
