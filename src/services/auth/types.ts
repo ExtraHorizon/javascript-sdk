@@ -164,7 +164,7 @@ export interface SsoToken {
 export interface OAuth1Token {
   id: string;
   userId: string;
-  applicationid: string;
+  applicationId: string;
   token: string;
   tokenSecret: string;
   lastUsedTimestamp: Date;
