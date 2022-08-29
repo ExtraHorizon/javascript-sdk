@@ -30,7 +30,7 @@ export interface UserData {
   updateTimestamp: Date;
 }
 
-export type User = Partial<UserData>;
+export type User = UserData;
 
 export type UserDataUpdate = Partial<
   Pick<
