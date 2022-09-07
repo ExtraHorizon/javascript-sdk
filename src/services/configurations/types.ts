@@ -10,11 +10,11 @@ import {
 export type Configuration = Record<string, any>;
 
 export interface GeneralConfigurationInput {
-  data?: Configuration;
-  userConfiguration?: Configuration;
+  data: Configuration;
+  staffConfiguration: Configuration;
+  patientConfiguration: Configuration;
   groupConfiguration?: Configuration;
-  staffConfiguration?: Configuration;
-  patientConfiguration?: Configuration;
+  userConfiguration?: Configuration;
 }
 
 export type GeneralConfiguration = GeneralConfigurationInput &
