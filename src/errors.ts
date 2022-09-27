@@ -77,6 +77,7 @@ export class ApiError extends Error {
     public response?: Record<string, any>
   ) {
     super(message);
+    this.name = qName;
   }
 
   public static createFromHttpError(error: HttpError): ApiError {
