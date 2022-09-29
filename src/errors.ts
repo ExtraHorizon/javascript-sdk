@@ -59,8 +59,8 @@ const cleanHeaders = (headers: Record<string, unknown>) =>
         Authorization: `${
           headers.Authorization.startsWith('Bearer')
             ? ''
-            : headers.Authorization.substr(0, 75)
-        } ... ${headers.Authorization.substr(-20)}}`,
+            : headers.Authorization.substring(0, 75)
+        } ... ${headers.Authorization.substring(-20)}}`,
       }
     : headers;
 
@@ -105,7 +105,7 @@ export class ApiError extends Error {
       return error;
     }
 
-    const apiError = {
+    const apiError: ApiError = {
       message: getHttpErrorMessage(error),
       name: getHttpErrorName(error),
       status: response?.status,
