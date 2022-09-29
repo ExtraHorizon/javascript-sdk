@@ -64,10 +64,28 @@ const cleanHeaders = (headers: Record<string, unknown>) =>
       }
     : headers;
 
+const getHttpErrorName = (error: HttpError) =>
+  error?.response?.data?.name || error?.response?.data?.error || 'API_ERROR';
+
+const getHttpErrorMessage = (error: HttpError) =>
+  error?.response?.data?.description ||
+  error?.response?.data?.message ||
+  'Received an error without a message';
+
+const getHttpErrorRequestData = (error: HttpError) =>
+  error?.config
+    ? {
+        url: error.config.url,
+        headers: cleanHeaders(error.config.headers), // Obscure the Authorization token
+        method: error.config.method,
+        payloadData: error.config.data,
+      }
+    : {};
+
 export class ApiError extends Error {
   constructor(
     message: string,
-    public qName?: string,
+    public name: string,
     public status?: number,
     public statusText?: string,
     public error?: string,
@@ -77,35 +95,36 @@ export class ApiError extends Error {
     public response?: Record<string, any>
   ) {
     super(message);
-    this.name = qName;
   }
 
   public static createFromHttpError(error: HttpError): ApiError {
-    const { config, response } = error;
+    const { response } = error;
 
     if (!error.response) {
       // Something went wrong before the request. Return the error
       return error;
     }
-    return new this(
-      response?.data?.description ||
-        response?.data?.message ||
-        'Received an error without a message',
-      response?.data?.name || response?.data?.error,
-      response?.status,
-      response?.statusText,
-      response?.data?.error || response?.data?.name,
-      config
-        ? {
-            url: config.url,
-            headers: cleanHeaders(config.headers), // Obscure the Authorization token
-            method: config.method,
-            payloadData: config.data,
-          }
-        : {},
-      {
+
+    const apiError = {
+      message: getHttpErrorMessage(error),
+      name: getHttpErrorName(error),
+      status: response?.status,
+      statusText: response?.statusText,
+      error: response?.data?.error || getHttpErrorName(error),
+      request: getHttpErrorRequestData(error),
+      response: {
         ...response?.data,
-      }
+      },
+    };
+
+    return new this(
+      apiError.message,
+      apiError.name,
+      apiError.status,
+      apiError.statusText,
+      apiError.error,
+      apiError.request,
+      apiError.response
     );
   }
 }
@@ -181,13 +200,19 @@ export class UnauthorizedTokenError extends UnauthorizedError {}
 
 export class UserNotAuthenticatedError extends UnauthorizedError {
   public static createFromHttpError(error: HttpError): ApiError {
-    return new this(getSpecifiedAuthenticationError(error));
+    return new this(
+      getSpecifiedAuthenticationError(error),
+      getHttpErrorName(error)
+    );
   }
 }
 
 export class OauthTokenError extends UnauthorizedError {
   public static createFromHttpError(error: HttpError): ApiError {
-    return new this(getSpecifiedAuthenticationError(error));
+    return new this(
+      getSpecifiedAuthenticationError(error),
+      getHttpErrorName(error)
+    );
   }
 }
 
