@@ -22,7 +22,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
     /**
      * Generate a presence token by supplying a secret to confirm the presence of the owner of the account
      *
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Confirm%20presence/post_confirmPresence
+     * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Confirm%20presence/post_confirmPresence
      * @throws {UserNotAuthenticatedError}
      * @throws {AuthenticationError}
      * @throws {LoginTimeoutError}
@@ -41,7 +41,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
     /**
      * Check the service health
      *
-     * @see https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
+     * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Service%20health/get_health
      * */
     async health(): Promise<boolean> {
       return (

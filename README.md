@@ -103,17 +103,17 @@ find(
 ): Promise<PagedResult<Schema>>;
 ```
 
-[auth]: https://developers.extrahorizon.io/services/?service=auth-service&redirectToVersion=2
-[users]: https://developers.extrahorizon.io/services/?service=users-service&redirectToVersion=1
-[data]: https://developers.extrahorizon.io/services/?service=data-service&redirectToVersion=1
-[files]: https://developers.extrahorizon.io/services/?service=files-service&redirectToVersion=1
-[tasks]: https://developers.extrahorizon.io/services/?service=tasks-service&redirectToVersion=1
-[templates]: https://developers.extrahorizon.io/services/?service=templates-service&redirectToVersion=1
-[mails]: https://developers.extrahorizon.io/services/?service=mail-service&redirectToVersion=1
-[configurations]: https://developers.extrahorizon.io/services/?service=configurations-service&redirectToVersion=2
-[dispatchers]: https://developers.extrahorizon.io/services/?service=dispatchers-service&redirectToVersion=1
-[payments]: https://developers.extrahorizon.io/services/?service=payments-service&redirectToVersion=1
-[profiles]: https://developers.extrahorizon.io/services/?service=profiles-service&redirectToVersion=1
-[notifications]: https://developers.extrahorizon.io/services/?service=notifications-service&redirectToVersion=1
-[localizations]: https://developers.extrahorizon.io/services/?service=localizations-service&redirectToVersion=1
-[events]: https://developers.extrahorizon.io/services/?service=events-service&redirectToVersion=1
+[auth]: https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
+[users]: https://swagger.extrahorizon.com/listing/?service=users-service&redirectToVersion=1
+[data]: https://swagger.extrahorizon.com/listing/?service=data-service&redirectToVersion=1
+[files]: https://swagger.extrahorizon.com/listing/?service=files-service&redirectToVersion=1
+[tasks]: https://swagger.extrahorizon.com/listing/?service=tasks-service&redirectToVersion=1
+[templates]: https://swagger.extrahorizon.com/listing/?service=templates-service&redirectToVersion=1
+[mails]: https://swagger.extrahorizon.com/listing/?service=mail-service&redirectToVersion=1
+[configurations]: https://swagger.extrahorizon.com/listing/?service=configurations-service&redirectToVersion=2
+[dispatchers]: https://swagger.extrahorizon.com/listing/?service=dispatchers-service&redirectToVersion=1
+[payments]: https://swagger.extrahorizon.com/listing/?service=payments-service&redirectToVersion=1
+[profiles]: https://swagger.extrahorizon.com/listing/?service=profiles-service&redirectToVersion=1
+[notifications]: https://swagger.extrahorizon.com/listing/?service=notifications-service&redirectToVersion=1
+[localizations]: https://swagger.extrahorizon.com/listing/?service=localizations-service&redirectToVersion=1
+[events]: https://swagger.extrahorizon.com/listing/?service=events-service&redirectToVersion=1
