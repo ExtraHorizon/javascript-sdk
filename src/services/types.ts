@@ -5,12 +5,12 @@ export type LanguageCode = string;
 export type ObjectId = string;
 
 export interface Entity {
-  id?: ObjectId;
+  id: ObjectId;
 }
 
 export interface Timestamps {
-  updateTimestamp?: Date;
-  creationTimestamp?: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 
 export interface ErrorResponse {

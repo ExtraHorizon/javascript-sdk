@@ -10,11 +10,11 @@ import {
 export type Configuration = Record<string, any>;
 
 export interface GeneralConfigurationInput {
-  data?: Configuration;
-  userConfiguration?: Configuration;
+  data: Configuration;
+  staffConfiguration: Configuration;
+  patientConfiguration: Configuration;
   groupConfiguration?: Configuration;
-  staffConfiguration?: Configuration;
-  patientConfiguration?: Configuration;
+  userConfiguration?: Configuration;
 }
 
 export type GeneralConfiguration = GeneralConfigurationInput &
@@ -30,7 +30,7 @@ export interface GroupConfigurationInput {
 export type GroupConfiguration = GroupConfigurationInput & Entity & Timestamps;
 
 export interface UserConfigurationInput {
-  data?: Configuration;
+  data: Configuration;
 }
 
 export interface UserEnlistments {
@@ -163,7 +163,7 @@ export interface ConfigurationsPatientsService {
   update(
     groupId: ObjectId,
     userId: ObjectId,
-    requestBody: UserConfigurationInput,
+    requestBody: Partial<UserConfigurationInput>,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
@@ -206,7 +206,7 @@ export interface ConfigurationsStaffService {
   update(
     groupId: ObjectId,
     userId: ObjectId,
-    requestBody: UserConfigurationInput,
+    requestBody: Partial<UserConfigurationInput>,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
@@ -263,7 +263,7 @@ export interface ConfigurationsUsersService {
    */
   update(
     userId: ObjectId,
-    requestBody: UserConfigurationInput,
+    requestBody: Partial<UserConfigurationInput>,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
   /**

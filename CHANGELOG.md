@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v7.2.0]
+
+### Added
+
+- For API errors the `qName` variable is mapped to the `name` variable, to improve consistency with default errors.
+
+### Fixes
+
+- Corrected the interfaces to be consistent with the API
+- Updated dead links in documentation
+
 ## [v7.1.0]
 
 ### Added
@@ -168,7 +179,7 @@ const result = sdk.raw.get('/files/v1', {
 
 ### Added
 
-- `oauth1/ssoTokens/generate` and `oauth1/ssoTokens/consume` are added under the `sdk.auth.oauth1` scope. [More info](https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/SSO)
+- `oauth1/ssoTokens/generate` and `oauth1/ssoTokens/consume` are added under the `sdk.auth.oauth1` scope. [More info](https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/SSO)
 
 ### Changes
 

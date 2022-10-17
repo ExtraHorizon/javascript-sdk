@@ -350,14 +350,14 @@ export interface Document<CustomData = null, CustomStatus = null> {
 export type CommentText = string;
 
 export interface Comment {
-  id?: ObjectId;
-  schemaId?: ObjectId;
-  measurementId?: ObjectId;
-  creatorId?: ObjectId;
-  text?: CommentText;
+  id: ObjectId;
+  schemaId: ObjectId;
+  documentId: ObjectId;
+  creatorId: ObjectId;
+  text: CommentText;
   commentedTimestamp?: Date;
-  updateTimestamp?: Date;
-  creationTimestamp?: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 
 export interface DataCommentsService {

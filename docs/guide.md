@@ -103,7 +103,7 @@ await sdk.users.health();
 
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
 
-As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
+As example the typing of the first schema in the example value from the get schema: https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/data-service/1.0.9/openapi.yaml#/Schemas/get_
 
 ```ts
 import {
