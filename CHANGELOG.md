@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v7.2.0]
+
+### Added
+
+- For API errors the `qName` variable is mapped to the `name` variable, to improve consistency with default errors.
+
+### Fixes
+
+- Corrected the interfaces to be consistent with the API
+- Updated dead links in documentation
+
 ## [v7.1.0]
 
 ### Added

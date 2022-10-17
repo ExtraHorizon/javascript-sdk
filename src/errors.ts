@@ -83,6 +83,8 @@ const getHttpErrorRequestData = (error: HttpError) =>
     : {};
 
 export class ApiError extends Error {
+  public qName?: string;
+
   constructor(
     message: string,
     public name: string,
@@ -95,6 +97,7 @@ export class ApiError extends Error {
     public response?: Record<string, any>
   ) {
     super(message);
+    this.qName = name;
   }
 
   public static createFromHttpError(error: HttpError): ApiError {
