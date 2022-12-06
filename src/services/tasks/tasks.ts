@@ -33,7 +33,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   },
 
   async cancel(taskId, options) {
-    return (await client.post(httpAuth, `/${taskId}/cancel`, null, options))
-      .data;
+    return (await client.post(httpAuth, `/${taskId}/cancel`, {}, options)).data;
   },
 });
