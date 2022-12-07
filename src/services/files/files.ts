@@ -60,6 +60,10 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
             ? form.getHeaders()
             : { 'Content-Type': 'multipart/form-data' }),
         },
+        // Since we don't have resumeable uploads yet, re-directs will trigger a connection timeout error
+        maxRedirects: 0,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
       })
     ).data;
   },
