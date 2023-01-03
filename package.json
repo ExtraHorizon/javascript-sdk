@@ -35,7 +35,7 @@
     "build"
   ],
   "dependencies": {
-    "axios": "^0.26.0",
+    "axios": "^1.2.2",
     "buffer": "^6.0.3",
     "crypto-es": "^1.2.7",
     "fflate": "^0.7.3",
