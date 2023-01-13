@@ -1,3 +1,4 @@
+import { RQLString } from '../../rql';
 import {
   AffectedRecords,
   OptionsBase,
@@ -170,6 +171,19 @@ export interface OAuth1Token {
   lastUsedTimestamp: Date;
   creationTimestamp: Date;
 }
+
+export interface OidcProvider {
+  name: string;
+  keyword: string;
+  issuerId: string;
+  clientId: string;
+  clientSecret: string;
+  authorizationEndpoint: string;
+  tokenEndpoint: string;
+  userinfoEndpoint: string;
+  redirectUri: string;
+}
+export type ProviderResponse = Omit<OidcProvider, 'clientSecret'>;
 
 export interface AuthApplicationsService {
   /**
@@ -433,4 +447,44 @@ export interface AuthOauth1Service {
    * * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth1/post_oauth1_tokens_mfa
    */
   removeToken(tokenId: string): Promise<AffectedRecords>;
+}
+
+export interface OidcService {
+  /**
+   * Create an OpenId Connect Provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `CREATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  createProvider(requestBody: OidcProvider): Promise<ProviderResponse>;
+
+  /**
+   * Get a list of OpenId Connect Providers
+   * @param rql Add filters to the requested list.
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_OIDC_PROVIDERS` | `global` | **Required** for this endpoint
+   */
+  getProviders(
+    options?: OptionsWithRql
+  ): Promise<PagedResult<ProviderResponse>>;
+
+  /**
+   * Update an OpenId Connect Provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  updateProvider(
+    providerId: string,
+    requestBody: Partial<OidcProvider>
+  ): Promise<AffectedRecords>;
+
+  /**
+   * Delete a OpenId Connect Provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `DELETE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  deleteProvider(providerId: string): Promise<AffectedRecords>;
 }
