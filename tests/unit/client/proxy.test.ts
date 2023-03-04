@@ -3,7 +3,7 @@ import { validateConfig } from '../../../src/utils';
 import { USER_BASE } from '../../../src/constants';
 import { createHttpClient } from '../../../src/http/client';
 import { createProxyHttpClient } from '../../../src/http';
-import { ConfigOauth2 } from '../../../src/types';
+import { ParamsOauth2 } from '../../../src/types';
 import {
   OauthTokenError,
   UserNotAuthenticatedError,
@@ -14,7 +14,7 @@ const mockParams = {
 };
 
 describe('proxy client', () => {
-  const config = validateConfig(mockParams) as ConfigOauth2;
+  const config = validateConfig(mockParams) as ParamsOauth2;
   const http = createHttpClient({
     ...config,
     packageVersion: '',

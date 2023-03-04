@@ -9,7 +9,7 @@ import {
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth1HttpClient } from '../../../src/http/oauth1';
 import { parseAuthParams } from '../../../src/http/utils';
-import { ConfigOauth1, OAuthClient } from '../../../src/types';
+import { OAuthClient, ParamsOauth1 } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',
@@ -30,7 +30,7 @@ const oauthTokenMock = {
 };
 
 describe('http client', () => {
-  const config = validateConfig(mockParams) as ConfigOauth1;
+  const config = validateConfig(mockParams) as ParamsOauth1;
   const http = createHttpClient({ ...config, packageVersion: '' });
   const authConfig = parseAuthParams(oauthEmailMock);
   let httpWithAuth: OAuthClient;
