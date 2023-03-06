@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { typeReceivedError } from '../errorHandler';
 import { HttpClientConfig, HttpInstance } from '../types';
-import { camelizeResponseData } from './interceptors';
+import {
+  camelizeResponseData,
+  typeReceivedErrorsInterceptor,
+} from './interceptors';
 import { composeUserAgent } from './utils';
 
 export function createHttpClient({
@@ -45,8 +47,9 @@ export function createHttpClient({
     );
   }
 
-  http.interceptors.response.use(camelizeResponseData, async error =>
-    Promise.reject(typeReceivedError(error))
+  http.interceptors.response.use(
+    camelizeResponseData,
+    typeReceivedErrorsInterceptor
   );
 
   return http;

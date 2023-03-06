@@ -1,5 +1,4 @@
-/* eslint-disable no-underscore-dangle */
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import btoa from '../btoa';
 import { ParamsOauth2 } from '../types';
 import {
@@ -14,8 +13,8 @@ import {
   retryInterceptor,
   transformKeysResponseData,
   transformResponseData,
+  typeReceivedErrorsInterceptor,
 } from './interceptors';
-import { typeReceivedError } from '../errorHandler';
 import { AUTH_BASE } from '../constants';
 
 const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
@@ -72,51 +71,45 @@ export function createOAuth2HttpClient(
     return tokenResult.data;
   };
 
-  httpWithAuth.interceptors.request.use(async config => ({
-    ...config,
-    headers: {
-      ...config.headers,
-      ...(tokenData && tokenData.accessToken
-        ? { Authorization: `Bearer ${tokenData.accessToken}` }
-        : {}),
-    },
-  }));
+  // If set, add the access token to each request
+  httpWithAuth.interceptors.request.use(async config => {
+    if (!tokenData?.accessToken) {
+      return config;
+    }
+
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${tokenData.accessToken}`,
+      },
+    };
+  });
 
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
 
-  httpWithAuth.interceptors.response.use(
-    (response: AxiosResponse) => response,
-    async error => {
-      // Only needed if it's an axiosError, otherwise it's already typed
-      if (error && error.isAxiosError) {
-        const originalRequest = error.config;
-        if (
-          error.response &&
-          [400, 401, 403].includes(error.response.status) &&
-          !originalRequest._retry
-        ) {
-          originalRequest._retry = true;
-          if (
-            error.response?.data?.code === 118 ||
-            // ACCESS_TOKEN_EXPIRED_EXCEPTION
-            error.response?.data?.code === 117
-            // ACCESS_TOKEN_UNKNOWN
-          ) {
-            tokenData.accessToken = '';
-            originalRequest.headers.Authorization = `Bearer ${
-              (await refreshTokens()).accessToken
-            }`;
-          } else {
-            return Promise.reject(typeReceivedError(error));
-          }
-          return http(originalRequest);
-        }
-
-        return Promise.reject(typeReceivedError(error));
-      }
-      return Promise.reject(error);
+  // If we receive a expired/unknown access token error, refresh the tokens
+  httpWithAuth.interceptors.response.use(null, async error => {
+    if (!error || !error.isAxiosError || !error.response) {
+      throw error;
     }
-  );
+
+    const originalRequest = error.config;
+    if (
+      [400, 401, 403].includes(error.response.status) &&
+      // ACCESS_TOKEN_EXPIRED_EXCEPTION or ACCESS_TOKEN_UNKNOWN_EXCEPTION
+      [118, 117].includes(error.response?.data?.code) &&
+      !originalRequest.isRetryWithRefreshedTokens
+    ) {
+      originalRequest.isRetryWithRefreshedTokens = true;
+      await refreshTokens();
+      return http(originalRequest);
+    }
+
+    throw error;
+  });
+
+  httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);

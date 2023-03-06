@@ -3,6 +3,8 @@ import { delay } from '../utils';
 import { DATA_BASE } from '../constants';
 import { HttpResponse, HttpResponseError } from './types';
 import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
+import { typeReceivedError } from '../errorHandler';
+import { HttpError } from '../errors';
 
 export const retryInterceptor =
   (axios: AxiosInstance) =>
@@ -106,3 +108,11 @@ export const transformKeysResponseData = ({
       ? data
       : recursiveRenameKeys(convertRecordsAffectedKeys, data),
 });
+
+export const typeReceivedErrorsInterceptor = async (error: HttpError) => {
+  // Only needed if it's an axiosError, otherwise it's already typed
+  if (error && error.isAxiosError) {
+    throw typeReceivedError(error);
+  }
+  throw error;
+};

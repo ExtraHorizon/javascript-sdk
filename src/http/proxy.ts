@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { USER_BASE } from '../constants';
 import { ParamsProxy } from '../types';
 import { AuthHttpClient, HttpInstance, ProxyInstance } from './types';
@@ -7,8 +7,8 @@ import {
   retryInterceptor,
   transformKeysResponseData,
   transformResponseData,
+  typeReceivedErrorsInterceptor,
 } from './interceptors';
-import { typeReceivedError } from '../errorHandler';
 
 export function createProxyHttpClient(
   http: HttpInstance,
@@ -50,17 +50,7 @@ export function createProxyHttpClient(
   }
 
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
-
-  httpWithAuth.interceptors.response.use(
-    (response: AxiosResponse) => response,
-    async error => {
-      // Only needed if it's an axiosError, otherwise it's already typed
-      if (error && error.isAxiosError) {
-        return Promise.reject(typeReceivedError({ ...error, type: 'proxy' }));
-      }
-      return Promise.reject(error);
-    }
-  );
+  httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);

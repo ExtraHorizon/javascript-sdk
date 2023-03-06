@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import OAuth from 'oauth-1.0a';
 import { HmacSHA1 } from 'crypto-es/lib/sha1';
 import { Base64 } from 'crypto-es/lib/enc-base64';
@@ -15,8 +15,8 @@ import {
   retryInterceptor,
   transformKeysResponseData,
   transformResponseData,
+  typeReceivedErrorsInterceptor,
 } from './interceptors';
-import { typeReceivedError } from '../errorHandler';
 import { AUTH_BASE, USER_BASE } from '../constants';
 
 const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth1/tokens`;
@@ -114,17 +114,7 @@ export function createOAuth1HttpClient(
   }));
 
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
-
-  httpWithAuth.interceptors.response.use(
-    (response: AxiosResponse) => response,
-    async error => {
-      // Only needed if it's an axiosError, otherwise it's already typed
-      if (error && error.isAxiosError) {
-        return Promise.reject(typeReceivedError(error));
-      }
-      return Promise.reject(error);
-    }
-  );
+  httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
