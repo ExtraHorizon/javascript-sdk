@@ -5,7 +5,7 @@ import { InvalidGrantError, MfaRequiredError } from '../../../src/errors';
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth2HttpClient } from '../../../src/http/oauth2';
 import { parseAuthParams } from '../../../src/http/utils';
-import { ConfigOauth2 } from '../../../src/types';
+import { ParamsOauth2 } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',
@@ -19,7 +19,7 @@ const mockOAuth = {
 };
 
 describe('http client', () => {
-  const config = validateConfig(mockParams) as ConfigOauth2;
+  const config = validateConfig(mockParams) as ParamsOauth2;
   const http = createHttpClient({ ...config, packageVersion: '' });
   const authConfig = parseAuthParams(mockOAuth);
   let httpWithAuth: ReturnType<typeof createOAuth2HttpClient>;
@@ -234,7 +234,7 @@ describe('http client', () => {
       ...mockParams,
       clientId: 'clientId',
       clientSecret: 'secret',
-    }) as ConfigOauth2;
+    }) as ParamsOauth2;
 
     const confidentialHttpWithAuth = createOAuth2HttpClient(
       http,

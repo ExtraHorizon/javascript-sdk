@@ -227,16 +227,15 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
   const config = validateConfig(rawConfig);
   const http = createHttpClient({ ...config, packageVersion });
 
-  const httpWithAuth = ((_http, _iconfig) => {
-    if ('oauth1' in _iconfig) {
-      return createOAuth1HttpClient(_http, _iconfig);
+  const httpWithAuth = (() => {
+    if ('consumerKey' in config) {
+      return createOAuth1HttpClient(http, config);
     }
-    if ('params' in _iconfig) {
-      return createOAuth2HttpClient(_http, _iconfig);
+    if ('clientId' in config) {
+      return createOAuth2HttpClient(http, config);
     }
-
-    return createProxyHttpClient(_http, _iconfig);
-  })(http, config) as AuthHttpClient;
+    return createProxyHttpClient(http, config);
+  })();
 
   return {
     users: usersService(httpWithAuth, http),

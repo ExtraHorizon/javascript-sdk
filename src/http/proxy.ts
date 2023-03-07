@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { USER_BASE } from '../constants';
-import { ConfigProxy } from '../types';
+import { ParamsProxy } from '../types';
 import { AuthHttpClient, HttpInstance, ProxyInstance } from './types';
 import {
   camelizeResponseData,
@@ -12,7 +12,7 @@ import { typeReceivedError } from '../errorHandler';
 
 export function createProxyHttpClient(
   http: HttpInstance,
-  options: ConfigProxy
+  options: ParamsProxy
 ): AuthHttpClient {
   const httpWithAuth = axios.create({
     ...http.defaults,

@@ -1,5 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
-import { ConfigOauth1 } from '../types';
+import OAuth from 'oauth-1.0a';
+import { HmacSHA1 } from 'crypto-es/lib/sha1';
+import { Base64 } from 'crypto-es/lib/enc-base64';
+import { ParamsOauth1 } from '../types';
 import {
   TokenDataOauth1,
   OAuth1Config,
@@ -14,12 +17,23 @@ import {
   transformResponseData,
 } from './interceptors';
 import { typeReceivedError } from '../errorHandler';
-import { USER_BASE } from '../constants';
+import { AUTH_BASE, USER_BASE } from '../constants';
+
+const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth1/tokens`;
 
 export function createOAuth1HttpClient(
   http: HttpInstance,
-  options: ConfigOauth1
+  options: ParamsOauth1
 ): OAuthClient {
+  const oAuth = new OAuth({
+    consumer: {
+      key: options.consumerKey,
+      secret: options.consumerSecret,
+    },
+    signature_method: 'HMAC-SHA1',
+    hash_function: hmacSha1Hash,
+  });
+
   let tokenData: TokenDataOauth1;
 
   const httpWithAuth = axios.create({
@@ -36,8 +50,8 @@ export function createOAuth1HttpClient(
     const { data: me } = await http.get(path, {
       headers: {
         'Content-Type': 'application/json',
-        ...options.oauth1.toHeader(
-          options.oauth1.authorize(
+        ...oAuth.toHeader(
+          oAuth.authorize(
             {
               url: options.host + path,
               method: 'get',
@@ -86,8 +100,8 @@ export function createOAuth1HttpClient(
       ...config.headers,
       'Content-Type': 'application/json',
       ...(config?.method
-        ? options.oauth1.toHeader(
-            options.oauth1.authorize(
+        ? oAuth.toHeader(
+            oAuth.authorize(
               {
                 url: `${config.baseURL}${config.url}`,
                 method: config.method,
@@ -129,12 +143,12 @@ export function createOAuth1HttpClient(
       return tokenData;
     }
 
-    const tokenResult = await http.post(options.path, data.params, {
+    const tokenResult = await http.post(TOKEN_ENDPOINT, data.params, {
       headers: {
         'Content-Type': 'application/json',
-        ...options.oauth1.toHeader(
-          options.oauth1.authorize({
-            url: options.host + options.path,
+        ...oAuth.toHeader(
+          oAuth.authorize({
+            url: options.host + TOKEN_ENDPOINT,
             method: 'POST',
           })
         ),
@@ -157,7 +171,7 @@ export function createOAuth1HttpClient(
     code,
   }: MfaConfig): Promise<TokenDataOauth1> {
     const tokenResult = await http.post(
-      `${options.path}/mfa`,
+      `${TOKEN_ENDPOINT}/mfa`,
       {
         token,
         code,
@@ -166,9 +180,9 @@ export function createOAuth1HttpClient(
       {
         headers: {
           'Content-Type': 'application/json',
-          ...options.oauth1.toHeader(
-            options.oauth1.authorize({
-              url: `${options.host}${options.path}/mfa`,
+          ...oAuth.toHeader(
+            oAuth.authorize({
+              url: `${options.host}${TOKEN_ENDPOINT}/mfa`,
               method: 'POST',
             })
           ),
@@ -220,4 +234,8 @@ export function createOAuth1HttpClient(
       },
     }
   ) as OAuthClient;
+}
+
+function hmacSha1Hash(baseString: string, key: string) {
+  return HmacSHA1(baseString, key).toString(Base64);
 }

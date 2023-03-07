@@ -1,5 +1,4 @@
 import { AxiosResponse } from 'axios';
-import * as OAuth from 'oauth-1.0a';
 import { TokenDataOauth2, HttpRequestConfig } from './http/types';
 
 export * from './http/types';
@@ -78,23 +77,5 @@ interface HttpClientBase {
   packageVersion: string;
 }
 
-export interface ConfigOauth1 extends ParamsBase {
-  path: string;
-  oauth1: OAuth;
-}
-
-export interface ConfigOauth2 extends ParamsBase {
-  path: string;
-  params: {
-    client_id: string;
-
-    client_secret?: string;
-  };
-  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
-}
-
-export type ConfigProxy = ParamsBase;
-
 export type ClientParams = ParamsOauth1 | ParamsOauth2 | ParamsProxy;
-export type ClientConfig = ConfigOauth1 | ConfigOauth2 | ConfigProxy;
-export type HttpClientConfig = HttpClientBase & ClientConfig;
+export type HttpClientConfig = HttpClientBase & ClientParams;

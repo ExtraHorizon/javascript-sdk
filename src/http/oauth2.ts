@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import axios, { AxiosResponse } from 'axios';
 import btoa from '../btoa';
-import { ConfigOauth2 } from '../types';
+import { ParamsOauth2 } from '../types';
 import {
   HttpInstance,
   MfaConfig,
@@ -16,13 +16,18 @@ import {
   transformResponseData,
 } from './interceptors';
 import { typeReceivedError } from '../errorHandler';
+import { AUTH_BASE } from '../constants';
+
+const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
 
 export function createOAuth2HttpClient(
   http: HttpInstance,
-  options: ConfigOauth2
+  options: ParamsOauth2
 ): OAuthClient {
   let tokenData: TokenDataOauth2;
   let authConfig: OAuth2Config;
+
+  const clientCredentials = getClientCredentials(options);
 
   const httpWithAuth = axios.create({
     ...http.defaults,
@@ -59,7 +64,7 @@ export function createOAuth2HttpClient(
   }
 
   const refreshTokens = async () => {
-    const tokenResult = await http.post(options.path, {
+    const tokenResult = await http.post(TOKEN_ENDPOINT, {
       grant_type: 'refresh_token',
       refresh_token: tokenData.refreshToken,
     });
@@ -128,21 +133,21 @@ export function createOAuth2HttpClient(
     authConfig = data;
 
     /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
-    if (options.params.client_secret && typeof global.btoa !== 'function') {
+    if (clientCredentials.client_secret && typeof global.btoa !== 'function') {
       global.btoa = btoa;
     }
 
     const tokenResult = await http.post(
-      options.path,
+      TOKEN_ENDPOINT,
       {
-        ...options.params,
+        ...clientCredentials,
         ...authConfig.params,
       },
-      options.params.client_secret
+      clientCredentials.client_secret
         ? {
             auth: {
-              username: options.params.client_id,
-              password: options.params.client_secret,
+              username: clientCredentials.client_id,
+              password: clientCredentials.client_secret,
             },
           }
         : {}
@@ -157,20 +162,20 @@ export function createOAuth2HttpClient(
     code,
   }: MfaConfig): Promise<TokenDataOauth2> {
     const tokenResult = await http.post(
-      options.path,
+      TOKEN_ENDPOINT,
       {
-        ...options.params,
+        ...clientCredentials,
         ...authConfig.params,
         grant_type: 'mfa',
         token,
         code,
         method_id: methodId,
       },
-      options.params.client_secret
+      clientCredentials.client_secret
         ? {
             auth: {
-              username: options.params.client_id,
-              password: options.params.client_secret,
+              username: clientCredentials.client_id,
+              password: clientCredentials.client_secret,
             },
           }
         : {}
@@ -202,4 +207,21 @@ export function createOAuth2HttpClient(
       },
     }
   ) as OAuthClient;
+}
+
+function getClientCredentials({ clientId, clientSecret }: ParamsOauth2) {
+  const credentials: OAuth2ClientCredentials = {
+    client_id: clientId,
+  };
+
+  if (clientSecret) {
+    credentials.client_secret = clientSecret;
+  }
+
+  return credentials;
+}
+
+interface OAuth2ClientCredentials {
+  client_id: string;
+  client_secret?: string;
 }
