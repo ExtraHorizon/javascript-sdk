@@ -5,6 +5,11 @@ import {
   OptionsWithRql,
   PagedResult,
 } from '../types';
+import {
+  OidcProviderCreation,
+  OidcProviderResponse,
+  OidcProviderUpdate,
+} from './models/oidc/Providers';
 
 export interface Timestamp {
   updateTimestamp: Date;
@@ -171,19 +176,6 @@ export interface OAuth1Token {
   lastUsedTimestamp: Date;
   creationTimestamp: Date;
 }
-
-export interface OidcProvider {
-  name: string;
-  keyword: string;
-  issuerId: string;
-  clientId: string;
-  clientSecret: string;
-  authorizationEndpoint: string;
-  tokenEndpoint: string;
-  userinfoEndpoint: string;
-  redirectUri: string;
-}
-export type ProviderResponse = Omit<OidcProvider, 'clientSecret'>;
 
 export interface AuthApplicationsService {
   /**
@@ -456,7 +448,9 @@ export interface OidcService {
    * - | - | -
    * `CREATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
    */
-  createProvider(requestBody: OidcProvider): Promise<ProviderResponse>;
+  createProvider(
+    requestBody: OidcProviderCreation
+  ): Promise<OidcProviderResponse>;
 
   /**
    * Get a list of OpenId Connect Providers
@@ -467,7 +461,7 @@ export interface OidcService {
    */
   getProviders(
     options?: OptionsWithRql
-  ): Promise<PagedResult<ProviderResponse>>;
+  ): Promise<PagedResult<OidcProviderResponse>>;
 
   /**
    * Update an OpenId Connect Provider
@@ -477,7 +471,7 @@ export interface OidcService {
    */
   updateProvider(
     providerId: string,
-    requestBody: Partial<OidcProvider>
+    requestBody: Partial<OidcProviderUpdate>
   ): Promise<AffectedRecords>;
 
   /**
@@ -487,4 +481,20 @@ export interface OidcService {
    * `DELETE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
    */
   deleteProvider(providerId: string): Promise<AffectedRecords>;
+
+  /**
+   * Enable a provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  enableProvider(providerId: string): Promise<AffectedRecords>;
+
+  /**
+   * Disable a provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  disableProvider(providerId: string): Promise<AffectedRecords>;
 }

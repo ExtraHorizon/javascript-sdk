@@ -6,29 +6,55 @@ export default (
   httpWithAuth: HttpInstance
 ): OidcService => ({
   async createProvider(requestBody) {
-    return (await oidcClient.post(httpWithAuth, `/oidc/providers`, requestBody))
-      .data;
+    const { data } = await oidcClient.post(
+      httpWithAuth,
+      `/oidc/providers`,
+      requestBody
+    );
+    return data;
   },
 
   async getProviders(options) {
-    return await (
-      await oidcClient.get(httpWithAuth, `/oidc/providers`, options)
-    ).data;
+    const { data } = await oidcClient.get(
+      httpWithAuth,
+      `/oidc/providers`,
+      options
+    );
+    return data;
   },
 
   async updateProvider(providerId, requestBody) {
-    return await (
-      await oidcClient.put(
-        httpWithAuth,
-        `/oidc/providers/${providerId}`,
-        requestBody
-      )
-    ).data;
+    const { data } = await oidcClient.put(
+      httpWithAuth,
+      `/oidc/providers/${providerId}`,
+      requestBody
+    );
+    return data;
   },
 
   async deleteProvider(providerId) {
-    return await (
-      await oidcClient.delete(httpWithAuth, `/oidc/providers/${providerId}`)
-    ).data;
+    const { data } = await oidcClient.delete(
+      httpWithAuth,
+      `/oidc/providers/${providerId}`
+    );
+    return data;
+  },
+
+  async enableProvider(providerId: string) {
+    const { data } = await oidcClient.post(
+      httpWithAuth,
+      `/oidc/providers/${providerId}/enable`,
+      {}
+    );
+    return data;
+  },
+
+  async disableProvider(providerId: string) {
+    const { data } = await oidcClient.post(
+      httpWithAuth,
+      `/oidc/providers/${providerId}/enable`,
+      {}
+    );
+    return data;
   },
 });
