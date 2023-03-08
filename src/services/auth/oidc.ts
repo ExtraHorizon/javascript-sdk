@@ -1,5 +1,5 @@
 import { HttpInstance, OidcService } from '../../types';
-import { HttpClient } from '../http-Client';
+import { HttpClient } from '../http-client';
 
 export default (
   oidcClient: HttpClient,
