@@ -8,7 +8,7 @@ import {
   OidcProviderCreation,
   OidcProviderResponse,
   OidcProviderUpdate,
-} from './models/oidc/Providers';
+} from '../../models/oidc/Providers';
 
 export interface Timestamp {
   updateTimestamp: Date;

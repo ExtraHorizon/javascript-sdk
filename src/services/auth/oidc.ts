@@ -17,7 +17,7 @@ export default (
   async getProviders(options) {
     const { data } = await oidcClient.get(
       httpWithAuth,
-      `/oidc/providers`,
+      `/oidc/providers${options?.rql || ''}`,
       options
     );
     return data;
@@ -52,7 +52,7 @@ export default (
   async disableProvider(providerId: string) {
     const { data } = await oidcClient.post(
       httpWithAuth,
-      `/oidc/providers/${providerId}/enable`,
+      `/oidc/providers/${providerId}/disable`,
       {}
     );
     return data;

@@ -9,6 +9,13 @@ export interface BaseOidcProvider {
   redirectUri: string; // Required we need to send this as well to the token endpoint
 }
 
+export interface OidcProvider extends OidcProviderCreation {
+  id: string;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
+  enabled: boolean;
+}
+
 export interface OidcProviderCreation extends BaseOidcProvider {
   clientSecret: string; // Provided by the provider after registration
 }
