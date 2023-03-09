@@ -91,63 +91,57 @@ export interface TokenDataOauth1 {
   id?: string;
 }
 
-export interface Oauth1Token {
-  tokenData: {
-    key: TokenDataOauth1['key'];
-    secret: TokenDataOauth1['secret'];
-  };
-  skipTokenCheck: boolean;
-}
-
-export interface Oauth1Password {
-  params: {
-    email: string;
-    password: string;
-  };
-}
-
-interface Oauth2ConfigPassword {
-  params: {
-    grant_type: string;
+export interface OAuth2HttpClient extends HttpInstance {
+  /**
+   * Use OAuth2 Authorization Code Grant flow with callback
+   * @example
+   * await sdk.auth.authenticate({
+   *  code: '',
+   * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
+   */
+  authenticate(oauth: { code: string }): Promise<TokenDataOauth2>;
+  /**
+   * Use OAuth2 Password Grant flow
+   * @example
+   * await sdk.auth.authenticate({
+   *  password: '',
+   *  username: '',
+   * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
+   */
+  authenticate(oauth: {
     username: string;
     password: string;
-  };
-}
-
-interface Oauth2ConfigCode {
-  params: {
-    grant_type: string;
-    code: string;
-  };
-}
-
-interface Oauth2Refresh {
-  params: {
-    grant_type: string;
-    refresh_token: string;
-  };
-}
-
-export type OAuth1Config = Oauth1Token | Oauth1Password;
-
-export type OAuth2Config =
-  | Oauth2ConfigPassword
-  | Oauth2ConfigCode
-  | Oauth2Refresh;
-
-export type AuthConfig = OAuth1Config | OAuth2Config;
-
-export interface OAuthClient extends HttpInstance {
-  authenticate: (
-    data: AuthConfig
-  ) => Promise<TokenDataOauth1 | TokenDataOauth2>;
+  }): Promise<TokenDataOauth2>;
+  /**
+   * Use OAuth2 Refresh Token Grant flow
+   * @example
+   * await sdk.auth.authenticate({
+   *  refreshToken: '',
+   * });
+   * @throws {InvalidRequestError}
+   * @throws {InvalidGrantError}
+   * @throws {UnsupportedGrantTypeError}
+   * @throws {MfaRequiredError}
+   * @throws {InvalidClientError}
+   */
+  authenticate(oauth: { refreshToken: string }): Promise<TokenDataOauth2>;
   /**
    *  Confirm MFA method with token, methodId and code
    *  @example
    *  try {
    *    await sdk.auth.authenticate({
-   *      password: '',
    *      username: '',
+   *      password: '',
    *    });
    *  } catch (error) {
    *    if (error instanceof MfaRequiredError) {
@@ -164,15 +158,95 @@ export interface OAuthClient extends HttpInstance {
    *    }
    *  }
    */
-  confirmMfa: (data: MfaConfig) => Promise<TokenDataOauth1 | TokenDataOauth2>;
+  confirmMfa: (data: MfaConfig) => Promise<TokenDataOauth2>;
   /**
    *  Logout
    *  @returns {boolean} Success
    *  @example
    *  try {
    *    await sdk.auth.authenticate({
-   *      password: '',
    *      username: '',
+   *      password: '',
+   *    });
+   *    sdk.auth.logout();
+   *  } catch (error) {
+   *    console.log(error)
+   *  }
+   */
+  logout: () => boolean;
+  userId: Promise<string | undefined>;
+}
+
+export interface OAuth1HttpClient extends HttpInstance {
+  /**
+   * Use OAuth1 Token authentication
+   * @example
+   * await sdk.auth.authenticate({
+   *  token: '',
+   *  tokenSecret: '',
+   * });
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
+   * @throws {MfaRequiredError}
+   */
+  authenticate(oauth: {
+    token: string;
+    tokenSecret: string;
+    skipTokenCheck?: boolean;
+  }): Promise<TokenDataOauth1>;
+  /**
+   * Use OAuth1 Password authentication
+   * @example
+   * await sdk.auth.authenticate({
+   *  email: '',
+   *  password: '',
+   * });
+   * @throws {ApplicationNotAuthenticatedError}
+   * @throws {AuthenticationError}
+   * @throws {LoginTimeoutError}
+   * @throws {LoginFreezeError}
+   * @throws {TooManyFailedAttemptsError}
+   * @throws {MfaRequiredError}
+   */
+  authenticate(oauth: {
+    email: string;
+    password: string;
+  }): Promise<TokenDataOauth1>;
+  /**
+   *  Confirm MFA method with token, methodId and code
+   *  @example
+   *  try {
+   *    await sdk.auth.authenticate({
+   *      email: '',
+   *      password: '',
+   *    });
+   *  } catch (error) {
+   *    if (error instanceof MfaRequiredError) {
+   *      const { mfa } = error.response;
+   *
+   *      // Your logic to request which method the user want to use in case of multiple methods
+   *      const methodId = mfa.methods[0].id;
+   *
+   *      await sdk.auth.confirmMfa({
+   *        token: mfa.token,
+   *        methodId,
+   *        code: '', // code from ie. Google Authenticator
+   *      });
+   *    }
+   *  }
+   */
+  confirmMfa: (data: MfaConfig) => Promise<TokenDataOauth1>;
+  /**
+   *  Logout
+   *  @returns {boolean} Success
+   *  @example
+   *  try {
+   *    await sdk.auth.authenticate({
+   *      email: '',
+   *      password: '',
    *    });
    *    sdk.auth.logout();
    *  } catch (error) {
@@ -188,7 +262,10 @@ export interface ProxyInstance extends HttpInstance {
   logout: () => Promise<boolean>;
 }
 
-export type AuthHttpClient = OAuthClient | ProxyInstance;
+export type AuthHttpClient =
+  | OAuth1HttpClient
+  | OAuth2HttpClient
+  | ProxyInstance;
 
 export interface MfaConfig {
   token: string;

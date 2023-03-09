@@ -4,15 +4,14 @@ import { AUTH_BASE } from '../../../src/constants';
 import { InvalidGrantError, MfaRequiredError } from '../../../src/errors';
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth2HttpClient } from '../../../src/http/oauth2';
-import { parseAuthParams } from '../../../src/http/utils';
-import { ParamsOauth2 } from '../../../src/types';
+import { OAuth2HttpClient, ParamsOauth2 } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',
   clientId: '',
 };
 
-const mockOAuth = {
+const mockAuth = {
   clientId: '',
   password: '',
   username: '',
@@ -21,8 +20,7 @@ const mockOAuth = {
 describe('http client', () => {
   const config = validateConfig(mockParams) as ParamsOauth2;
   const http = createHttpClient({ ...config, packageVersion: '' });
-  const authConfig = parseAuthParams(mockOAuth);
-  let httpWithAuth: ReturnType<typeof createOAuth2HttpClient>;
+  let httpWithAuth: OAuth2HttpClient;
 
   beforeEach(() => {
     nock.cleanAll();
@@ -35,7 +33,7 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    const authenticateResult = await httpWithAuth.authenticate(authConfig);
+    const authenticateResult = await httpWithAuth.authenticate(mockAuth);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -50,7 +48,7 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(authConfig);
+    await httpWithAuth.authenticate(mockAuth);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = httpWithAuth.logout();
@@ -66,7 +64,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(authConfig);
+      await httpWithAuth.authenticate(mockAuth);
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
     }
@@ -78,7 +76,7 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(authConfig);
+    await httpWithAuth.authenticate(mockAuth);
     nock(mockParams.host).get('/test').reply(400, {
       code: 118,
       error: 'invalid_grant',
@@ -117,7 +115,7 @@ describe('http client', () => {
     nock(mockParams.host).get('/test').reply(200, {});
 
     try {
-      await httpWithAuth.authenticate(authConfig);
+      await httpWithAuth.authenticate(mockAuth);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
@@ -148,7 +146,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(authConfig);
+      await httpWithAuth.authenticate(mockAuth);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
@@ -170,8 +168,7 @@ describe('http client', () => {
         return { access_token: mockToken };
       });
 
-    const refreshConfig = parseAuthParams({ refreshToken: 'test' });
-    await httpWithAuth.authenticate(refreshConfig);
+    await httpWithAuth.authenticate({ refreshToken: 'test' });
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -208,7 +205,7 @@ describe('http client', () => {
     nock(mockParams.host).get('/test').reply(200, '');
 
     try {
-      await httpWithAuth.authenticate(authConfig);
+      await httpWithAuth.authenticate(mockAuth);
     } catch (error) {
       expect(error).toBeInstanceOf(MfaRequiredError);
       const { mfa } = error.response;
@@ -242,7 +239,7 @@ describe('http client', () => {
     );
 
     const authenticateResult = await confidentialHttpWithAuth.authenticate(
-      authConfig
+      mockAuth
     );
     nock(mockParams.host).get('/test').reply(200, '');
 

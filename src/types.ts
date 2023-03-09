@@ -42,12 +42,14 @@ export interface ParamsOauth2Refresh {
   refreshToken: string;
 }
 
-export type AuthParams =
-  | ParamsOauth1WithEmail
-  | ParamsOauth1WithToken
+export type Oauth1AuthParams = ParamsOauth1WithEmail | ParamsOauth1WithToken;
+
+export type Oauth2AuthParams =
   | ParamsOauth2AuthorizationCode
   | ParamsOauth2Password
   | ParamsOauth2Refresh;
+
+export type AuthParams = Oauth1AuthParams | Oauth2AuthParams;
 
 interface ParamsBase {
   host: string;

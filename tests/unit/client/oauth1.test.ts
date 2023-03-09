@@ -8,8 +8,7 @@ import {
 } from '../../../src/errors';
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth1HttpClient } from '../../../src/http/oauth1';
-import { parseAuthParams } from '../../../src/http/utils';
-import { OAuthClient, ParamsOauth1 } from '../../../src/types';
+import { OAuth1HttpClient, ParamsOauth1 } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',
@@ -32,8 +31,7 @@ const oauthTokenMock = {
 describe('http client', () => {
   const config = validateConfig(mockParams) as ParamsOauth1;
   const http = createHttpClient({ ...config, packageVersion: '' });
-  const authConfig = parseAuthParams(oauthEmailMock);
-  let httpWithAuth: OAuthClient;
+  let httpWithAuth: OAuth1HttpClient;
 
   beforeEach(() => {
     nock.cleanAll();
@@ -46,7 +44,7 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(authConfig);
+    await httpWithAuth.authenticate(oauthEmailMock);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -62,7 +60,7 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(authConfig);
+    await httpWithAuth.authenticate(oauthEmailMock);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = httpWithAuth.logout();
@@ -79,7 +77,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(authConfig);
+      await httpWithAuth.authenticate(oauthEmailMock);
     } catch (error) {
       expect(error).toBeInstanceOf(AuthenticationError);
     }
@@ -103,7 +101,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(authConfig);
+      await httpWithAuth.authenticate(oauthEmailMock);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(ApiError);
@@ -117,7 +115,7 @@ describe('http client', () => {
       .reply(200, { id: 'mockUserId' });
 
     try {
-      await httpWithAuth.authenticate(parseAuthParams(oauthTokenMock));
+      await httpWithAuth.authenticate(oauthTokenMock);
       const userId = await httpWithAuth.userId;
       expect(userId).toBeDefined();
     } catch (error) {
@@ -132,9 +130,10 @@ describe('http client', () => {
       .reply(200, { id: 'mockUserId' });
 
     try {
-      await httpWithAuth.authenticate(
-        parseAuthParams({ ...oauthTokenMock, skipTokenCheck: true })
-      );
+      await httpWithAuth.authenticate({
+        ...oauthTokenMock,
+        skipTokenCheck: true,
+      });
       const userId = await httpWithAuth.userId;
       expect(userId).toBeDefined();
     } catch (error) {
@@ -151,7 +150,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(parseAuthParams(oauthTokenMock));
+      await httpWithAuth.authenticate(oauthTokenMock);
     } catch (error) {
       expect(error).toBeInstanceOf(OauthTokenError);
     }
