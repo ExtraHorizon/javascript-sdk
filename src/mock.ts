@@ -1,8 +1,8 @@
 import { recursiveMap } from './http/utils';
 import {
-  createProxyClient,
   createOAuth1Client,
   createOAuth2Client,
+  createProxyClient,
 } from './client';
 import type {
   MockClientOAuth1,

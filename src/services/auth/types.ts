@@ -4,6 +4,11 @@ import {
   OptionsWithRql,
   PagedResult,
 } from '../types';
+import {
+  OidcProviderCreation,
+  OidcProviderResponse,
+  OidcProviderUpdate,
+} from './oidcTypes';
 
 export interface Timestamp {
   updateTimestamp: Date;
@@ -433,4 +438,62 @@ export interface AuthOauth1Service {
    * * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth1/post_oauth1_tokens_mfa
    */
   removeToken(tokenId: string): Promise<AffectedRecords>;
+}
+
+export interface OidcService {
+  /**
+   * Create an OpenId Connect Provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `CREATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  createProvider(
+    requestBody: OidcProviderCreation
+  ): Promise<OidcProviderResponse>;
+
+  /**
+   * Get a list of OpenId Connect Providers
+   * @param rql Add filters to the requested list.
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_OIDC_PROVIDERS` | `global` | **Required** for this endpoint
+   */
+  getProviders(
+    options?: OptionsWithRql
+  ): Promise<PagedResult<OidcProviderResponse>>;
+
+  /**
+   * Update an OpenId Connect Provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  updateProvider(
+    providerId: string,
+    requestBody: OidcProviderUpdate
+  ): Promise<AffectedRecords>;
+
+  /**
+   * Delete a OpenId Connect Provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `DELETE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  deleteProvider(providerId: string): Promise<AffectedRecords>;
+
+  /**
+   * Enable a provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  enableProvider(providerId: string): Promise<AffectedRecords>;
+
+  /**
+   * Disable a provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   */
+  disableProvider(providerId: string): Promise<AffectedRecords>;
 }

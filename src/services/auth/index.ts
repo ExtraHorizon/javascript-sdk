@@ -6,6 +6,7 @@ import applications from './applications';
 import oauth2 from './oauth2';
 import oauth1 from './oauth1';
 import users from './users';
+import oidc from './oidc';
 import { AUTH_BASE } from '../../constants';
 
 export const authService = (httpWithAuth: HttpInstance) => {
@@ -18,6 +19,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
     oauth2: oauth2(authClient, httpWithAuth),
     oauth1: oauth1(authClient, httpWithAuth),
     users: users(authClient, httpWithAuth),
+    oidc: oidc(authClient, httpWithAuth),
 
     /**
      * Generate a presence token by supplying a secret to confirm the presence of the owner of the account
