@@ -8,7 +8,7 @@ import {
   OidcProviderCreation,
   OidcProviderResponse,
   OidcProviderUpdate,
-} from '../../models/oidc/Providers';
+} from './oidcTypes';
 
 export interface Timestamp {
   updateTimestamp: Date;
@@ -470,7 +470,7 @@ export interface OidcService {
    */
   updateProvider(
     providerId: string,
-    requestBody: Partial<OidcProviderUpdate>
+    requestBody: OidcProviderUpdate
   ): Promise<AffectedRecords>;
 
   /**

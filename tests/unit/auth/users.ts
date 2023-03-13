@@ -5,7 +5,7 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { mfaSetting } from '../../__helpers__/auth';
 
 describe('Auth - Applications', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.com';
 
   const userId = '60701bf059080100071a3d90';
 
