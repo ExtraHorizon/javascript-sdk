@@ -1,8 +1,8 @@
 ## Find the schema with name `tests` and only select id, name and transitions
 
 ```ts
-const schema = await sdk.data.schemas.findByName('tests', {
-  rql: rqlBuilder().select(['id', 'name', 'transitions']).build(),
+const schema = await sdk.data.schemas.findByName("tests", {
+  rql: rqlBuilder().select(["id", "name", "transitions"]).build(),
 });
 
 console.log(schema.transitions);
@@ -41,27 +41,27 @@ console.log(document.data.ppg);
 ## Transition a document based on `data.deviceUid`
 
 ```ts
-const schema = await sdk.data.schemas.findByName('tests', {
-  rql: rqlBuilder().select(['id', 'name', 'transitions']).build(),
+const schema = await sdk.data.schemas.findByName("tests", {
+  rql: rqlBuilder().select(["id", "name", "transitions"]).build(),
 });
 
 const document = await sdk.data.documents.findFirst(schema.id, {
-  rql: rqlBuilder().eq('data.deviceUid', 'testkit').build(),
+  rql: rqlBuilder().eq("data.deviceUid", "testkit").build(),
 });
 
-const transitionId = schema.findTransitionIdByName('ready_to_waiting');
+const transitionId = schema.findTransitionIdByName("ready_to_waiting");
 
 const transitionResult = await sdk.data.documents.transition(
   schema.id,
   document.id,
   {
     id: transitionId,
-    data: { result: 'true' },
+    data: { result: "true" },
   }
 );
 
 if (transitionResult.affectedRecords === 1) {
-  console.log('transition succesful');
+  console.log("transition succesful");
 }
 ```
 
@@ -69,7 +69,7 @@ if (transitionResult.affectedRecords === 1) {
 
 ```ts
 const schemas = await sdk.data.schemas.findAll({
-  rql: rqlBuilder().select(['id', 'name']).build(),
+  rql: rqlBuilder().select(["id", "name"]).build(),
 });
 ```
 
@@ -79,7 +79,7 @@ More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 ```ts
 const schemaIterator = sdk.data.schemas.findAllIterator({
-  rql: rqlBuilder().select(['id', 'name']).build(),
+  rql: rqlBuilder().select(["id", "name"]).build(),
 }); // Let's assume there are 66 schemas
 
 const firstBatch = await schemaIterator.next();
@@ -93,7 +93,7 @@ console.log(thirdBatch); // { value: undefined, done: true }
 
 ```ts
 const schemas = sdk.data.schemas.findAllIterator({
-  rql: rqlBuilder().select(['id', 'name']).build(),
+  rql: rqlBuilder().select(["id", "name"]).build(),
 });
 
 for await (const schema of schemas) {
@@ -106,9 +106,9 @@ for await (const schema of schemas) {
 ```ts
 interface YourType {}
 
-const endpoint = '';
+const endpoint = "";
 
-const rql = RqlBuilder().eq('userId', userId);
+const rql = RqlBuilder().eq("userId", userId);
 
 const find = (options: OptionsWithRql) => {
   return await sdk.raw.get(`${endpoint}${options?.rql}`);
@@ -135,25 +135,25 @@ const previousPage = await users.previous();
 Or if you are using the [Async](https://caolan.github.io/async/v3/index.html) package.
 
 ```ts
-import async from 'async';
+import async from "async";
 
 const users = await sdk.users.find();
 
 await async.timesLimit(5, 1, async function () {
   const batch = await users.next();
-  console.log('batch', batch.page, batch.data.length);
+  console.log("batch", batch.page, batch.data.length);
 });
 
 async.timesLimit(8, 1, async function () {
   const batch = await users.previous();
-  console.log('batch', batch.page, batch.data.length);
+  console.log("batch", batch.page, batch.data.length);
 });
 ```
 
 You can also pass in an offset (for example when you were processing items and something went wrong and want to resume where you left off)
 
 ```ts
-import async from 'async';
+import async from "async";
 
 const users = await sdk.users.find();
 const currentOffset = 0;

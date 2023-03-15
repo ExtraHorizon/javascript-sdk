@@ -3,18 +3,18 @@
 Each time the SDK refreshes the `accessToken` the `freshTokensCallback` is called with the response. You can store this data in `localStorage` or any other persistant data store. When you restart your application, you can check the data store for a `refreshToken` and use that to authenticate with the SDK.
 
 ```ts
-import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
 const sdk = createOAuth2Client({
-  host: '',
-  clientId: '',
-  freshTokensCallback: tokenData => {
-    localStorage.setItem('refreshToken', tokenData.refreshToken);
+  host: "",
+  clientId: "",
+  freshTokensCallback: (tokenData) => {
+    localStorage.setItem("refreshToken", tokenData.refreshToken);
   },
 });
 
 try {
-  const refreshToken = await localStorage.getItem('refreshToken');
+  const refreshToken = await localStorage.getItem("refreshToken");
 
   if (refreshToken) {
     await sdk.auth.authenticate({
@@ -24,7 +24,7 @@ try {
     // redirect to /login
   }
 } catch (error) {
-  localStorage.removeItem('refreshToken');
+  localStorage.removeItem("refreshToken");
   // redirect to /login
 }
 ```
@@ -34,16 +34,16 @@ try {
 You need to capture the response from the `authenticate` function when logging in with `email` / `password` so that subsequent SDK initializations such as app restarts can use the `key` / `secret` combination stored in persistent data storage to authenticate the current user.
 
 ```ts
-import { createOAuth1Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth1Client } from "@extrahorizon/javascript-sdk";
 
 const sdk = createOAuth1Client({
-  host: 'dev.fibricheck.com',
-  consumerKey: '',
-  consumerSecret: '',
+  host: "dev.fibricheck.com",
+  consumerKey: "",
+  consumerSecret: "",
 });
 
 try {
-  const tokenData = await localStorage.getItem('tokenData');
+  const tokenData = await localStorage.getItem("tokenData");
 
   if (tokenData) {
     await sdk.auth.authenticate({
@@ -53,13 +53,13 @@ try {
   } else {
     // redirect to /login
     const result = await sdk.auth.authenticate({
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     });
-    localStorage.setItem('tokenData', result);
+    localStorage.setItem("tokenData", result);
   }
 } catch (error) {
-  localStorage.removeItem('tokenData');
+  localStorage.removeItem("tokenData");
   // redirect to /login
 }
 ```
@@ -69,13 +69,13 @@ try {
 The package export a client you can use in combination with a proxy service. The client will throw a typed error in case you need to redirect to the login page.
 
 ```ts
-import { createProxyClient } from '@extrahorizon/javascript-sdk';
+import { createProxyClient } from "@extrahorizon/javascript-sdk";
 
-const loginPageUrl = 'https://pages.dev.fibricheck.com/login';
+const loginPageUrl = "https://pages.dev.fibricheck.com/login";
 
 (async () => {
   try {
-    const sdk = createProxyClient({ host: 'apx.dev.fibricheck.com' });
+    const sdk = createProxyClient({ host: "apx.dev.fibricheck.com" });
     await sdk.users.me();
   } catch (error) {
     if (
@@ -105,18 +105,18 @@ If you want to use the proxy sdk locally, you need to make some changes to your 
 When you already use the `exh/cli` tool, you can use this snippet to initialize. More info: https://docs.extrahorizon.com/cli/setup/credentials
 
 ```ts
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 import {
   parseStoredCredentials,
   createOAuth1Client,
-} from '@extrahorizon/javascript-sdk';
+} from "@extrahorizon/javascript-sdk";
 
-const EXH_CONFIG_FILE = path.join(process.env.HOME, '/.exh/credentials');
+const EXH_CONFIG_FILE = path.join(process.env.HOME, "/.exh/credentials");
 
 const readFile = () => {
   try {
-    return fs.readFileSync(EXH_CONFIG_FILE, 'utf-8');
+    return fs.readFileSync(EXH_CONFIG_FILE, "utf-8");
   } catch (err) {
     throw new Error(
       `Failed to open credentials file. Make sure they are correctly specified in ${EXH_CONFIG_FILE}`
@@ -149,17 +149,17 @@ try {
 The `skipTokenCheck` saves ~300ms by skipping validation on your `token` and `tokenSecret`.
 
 ```ts
-import { createOAuth1Client } from '@extrahorion/javascript-sdk';
+import { createOAuth1Client } from "@extrahorion/javascript-sdk";
 
 const sdk = createOAuth1Client({
-  host: 'dev.fibricheck.com',
-  consumerKey: '',
-  consumerSecret: '',
+  host: "dev.fibricheck.com",
+  consumerKey: "",
+  consumerSecret: "",
 });
 
 await sdk.auth.authenticate({
-  token: '',
-  tokenSecret: '',
+  token: "",
+  tokenSecret: "",
   skipTokenCheck: true,
 });
 ```
@@ -167,17 +167,17 @@ await sdk.auth.authenticate({
 #### Email authentication
 
 ```ts
-import { createOAuth1Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth1Client } from "@extrahorizon/javascript-sdk";
 
 const sdk = createOAuth1Client({
-  host: 'dev.fibricheck.com',
-  consumerKey: '',
-  consumerSecret: '',
+  host: "dev.fibricheck.com",
+  consumerKey: "",
+  consumerSecret: "",
 });
 
 await sdk.auth.authenticate({
-  email: '',
-  password: '',
+  email: "",
+  password: "",
 });
 ```
 
@@ -186,16 +186,16 @@ await sdk.auth.authenticate({
 #### Password Grant flow
 
 ```ts
-import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
 const sdk = createOAuth2Client({
-  host: '',
-  clientId: '',
+  host: "",
+  clientId: "",
 });
 
 await sdk.auth.authenticate({
-  password: '',
-  username: '',
+  password: "",
+  username: "",
 });
 ```
 
@@ -207,33 +207,33 @@ await sdk.auth.authenticate({
 - Authenticate with the code query param
 
 ```ts
-import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
 const sdk = createOAuth2Client({
-  host: '',
-  clientId: '',
-  freshTokensCallback: tokenData => {
-    localStorage.setItem('tokenData', tokenData);
+  host: "",
+  clientId: "",
+  freshTokensCallback: (tokenData) => {
+    localStorage.setItem("tokenData", tokenData);
   },
 });
 
 await sdk.auth.authenticate({
-  code: '',
+  code: "",
 });
 ```
 
 #### Refresh Token Grant flow
 
 ```ts
-import { createOAuth2Client } from '@extrahorizon/javascript-sdk';
+import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
 const sdk = createOAuth2Client({
-  host: '',
-  clientId: '',
+  host: "",
+  clientId: "",
 });
 
 await sdk.auth.authenticate({
-  refreshToken: '',
+  refreshToken: "",
 });
 ```
 
@@ -243,17 +243,17 @@ await sdk.auth.authenticate({
 import {
   createOAuth2Client,
   MfaRequiredError,
-} from '@extrahorizon/javascript-sdk';
+} from "@extrahorizon/javascript-sdk";
 
 const sdk = createOAuth2Client({
-  host: '',
-  clientId: '',
+  host: "",
+  clientId: "",
 });
 
 try {
   await sdk.auth.authenticate({
-    password: '',
-    username: '',
+    password: "",
+    username: "",
   });
 } catch (error) {
   if (error instanceof MfaRequiredError) {
@@ -265,7 +265,7 @@ try {
     await sdk.auth.confirmMfa({
       token: mfa.token,
       methodId,
-      code: '', // code from ie. Google Authenticator
+      code: "", // code from ie. Google Authenticator
     });
   }
 }
@@ -277,9 +277,9 @@ If you are using a confidential application in combination with React-Native. Th
 
 ```ts
 const sdk = createClient({
-  host: 'https://api.dev.fibricheck.com',
-  clientId: '',
-  clientSecret: '',
+  host: "https://api.dev.fibricheck.com",
+  clientId: "",
+  clientSecret: "",
 });
 ```
 
@@ -296,14 +296,14 @@ ie. creating an OAuth1 application with a version.
 ```ts
 // Will return OAuth1Application type
 const app = await sdk.auth.applications.create({
-  type: 'oauth1',
-  name: 'test',
-  description: 'test',
+  type: "oauth1",
+  name: "test",
+  description: "test",
 });
 
 // Will return OAuth1ApplicationVersion type
 const version = await sdk.auth.applications.createVersion<typeof app>(app.id, {
-  name: '1.0.0',
+  name: "1.0.0",
 });
 ```
 
@@ -317,7 +317,7 @@ import {
   ApplicationVersion,
   OAuth1Application,
   OAuth1ApplicationVersion,
-} from '@extrahorizon/javascript-sdk';
+} from "@extrahorizon/javascript-sdk";
 
 function isOAuth1Version(
   version: ApplicationVersion
@@ -326,11 +326,11 @@ function isOAuth1Version(
 }
 
 function isOAuth1(app: Application): app is OAuth1Application {
-  return !('redirectUris' in app);
+  return !("redirectUris" in app);
 }
 
 const { data: apps } = await sdk.auth.applications.get();
-apps.filter(isOAuth1).forEach(app => {
+apps.filter(isOAuth1).forEach((app) => {
   // app will have type OAuth1Application
 });
 ```
