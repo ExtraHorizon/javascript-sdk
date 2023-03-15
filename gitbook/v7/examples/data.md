@@ -1,4 +1,6 @@
-## Find the schema with name `tests` and only select id, name and transitions
+# data
+
+### Find the schema with name `tests` and only select id, name and transitions
 
 ```ts
 const schema = await sdk.data.schemas.findByName("tests", {
@@ -21,7 +23,7 @@ console.log(schema.transitionsByName);
 } */
 ```
 
-## Find a document with custom data typing:
+### Find a document with custom data typing:
 
 ```ts
 const schema = await sdk.data.schemas.findFirst();
@@ -38,7 +40,7 @@ const document = await sdk.data.documents.find<MyData>(schema.id);
 console.log(document.data.ppg);
 ```
 
-## Transition a document based on `data.deviceUid`
+### Transition a document based on `data.deviceUid`
 
 ```ts
 const schema = await sdk.data.schemas.findByName("tests", {
@@ -65,7 +67,7 @@ if (transitionResult.affectedRecords === 1) {
 }
 ```
 
-## Find all schemas
+### Find all schemas
 
 ```ts
 const schemas = await sdk.data.schemas.findAll({
@@ -73,9 +75,9 @@ const schemas = await sdk.data.schemas.findAll({
 });
 ```
 
-## Find all schemas with Iterator
+### Find all schemas with Iterator
 
-More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol)
+More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols#the\_iterator\_protocol)
 
 ```ts
 const schemaIterator = sdk.data.schemas.findAllIterator({
@@ -101,7 +103,7 @@ for await (const schema of schemas) {
 }
 ```
 
-## Custom Iterator
+### Custom Iterator
 
 ```ts
 interface YourType {}
@@ -121,7 +123,7 @@ for await (const value of iterator) {
 }
 ```
 
-## Find with pagination
+### Find with pagination
 
 For Schema, Documents and Users the `find` function returns and object with the initial data and two helpers function to get the previous / next page.
 

@@ -9,9 +9,10 @@
 
 ## features
 
-* [authentication](features/authentication.md)
-* [data](features/data.md)
-* [users](features/users.md)
+* [Authentication](features/authentication/README.md)
+  * [Applications](features/authentication/applications.md)
+* [users](examples/users.md)
+* [data](examples/data.md)
 * [guide](features/guide.md)
 
 ## other

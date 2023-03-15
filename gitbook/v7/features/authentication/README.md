@@ -1,4 +1,6 @@
-## Snippet for authentication flow (Oauth2)
+# Authentication
+
+### Snippet for authentication flow (Oauth2)
 
 Each time the SDK refreshes the `accessToken` the `freshTokensCallback` is called with the response. You can store this data in `localStorage` or any other persistant data store. When you restart your application, you can check the data store for a `refreshToken` and use that to authenticate with the SDK.
 
@@ -29,7 +31,7 @@ try {
 }
 ```
 
-## Snippet for authentication flow (Oauth1)
+### Snippet for authentication flow (Oauth1)
 
 You need to capture the response from the `authenticate` function when logging in with `email` / `password` so that subsequent SDK initializations such as app restarts can use the `key` / `secret` combination stored in persistent data storage to authenticate the current user.
 
@@ -64,7 +66,7 @@ try {
 }
 ```
 
-## Proxy client
+### Proxy client
 
 The package export a client you can use in combination with a proxy service. The client will throw a typed error in case you need to redirect to the login page.
 
@@ -88,19 +90,19 @@ const loginPageUrl = "https://pages.dev.fibricheck.com/login";
 })();
 ```
 
-### Local setup
+#### Local setup
 
 If you want to use the proxy sdk locally, you need to make some changes to your local setup.
 
-- Add `127.0.0.1 local.yourdomain.com` to your `/etc/hosts` file (or if you are using Windows `c:\Windows\System32\Drivers\etc\hosts`)
-- Start your server with https enabled.
-  - For Mac/Linux, this can be done by running `HTTPS=true yarn start`.
-  - For Windows, you have to add `HTTPS=true` to your user environment. Once the variable has been set, run `yarn start`.
-- Open your browser `https://local.yourdomain.com:3000/` and skip the security warning.
-- Assuming you want to connect to the dev environment:
-  - Navigate to `https://pages.dev.fibricheck.com/login/` and login with your account. Once logged in, a cookie will be created named `dev-fibproxy`. To access this cookie on your local domain, set the property `SameSite=None`.
+* Add `127.0.0.1 local.yourdomain.com` to your `/etc/hosts` file (or if you are using Windows `c:\Windows\System32\Drivers\etc\hosts`)
+* Start your server with https enabled.
+  * For Mac/Linux, this can be done by running `HTTPS=true yarn start`.
+  * For Windows, you have to add `HTTPS=true` to your user environment. Once the variable has been set, run `yarn start`.
+* Open your browser `https://local.yourdomain.com:3000/` and skip the security warning.
+* Assuming you want to connect to the dev environment:
+  * Navigate to `https://pages.dev.fibricheck.com/login/` and login with your account. Once logged in, a cookie will be created named `dev-fibproxy`. To access this cookie on your local domain, set the property `SameSite=None`.
 
-### Snippet for stored credentials
+#### Snippet for stored credentials
 
 When you already use the `exh/cli` tool, you can use this snippet to initialize. More info: https://docs.extrahorizon.com/cli/setup/credentials
 
@@ -140,13 +142,13 @@ try {
 }
 ```
 
-## Other examples
+### Other examples
 
-### OAuth1
+#### OAuth1
 
-#### Token authentication with optional skip
+**Token authentication with optional skip**
 
-The `skipTokenCheck` saves ~300ms by skipping validation on your `token` and `tokenSecret`.
+The `skipTokenCheck` saves \~300ms by skipping validation on your `token` and `tokenSecret`.
 
 ```ts
 import { createOAuth1Client } from "@extrahorion/javascript-sdk";
@@ -164,7 +166,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-#### Email authentication
+**Email authentication**
 
 ```ts
 import { createOAuth1Client } from "@extrahorizon/javascript-sdk";
@@ -181,9 +183,9 @@ await sdk.auth.authenticate({
 });
 ```
 
-### OAuth2
+#### OAuth2
 
-#### Password Grant flow
+**Password Grant flow**
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
@@ -199,12 +201,12 @@ await sdk.auth.authenticate({
 });
 ```
 
-#### Authorization Code Grant flow with callback (Only for Fibricheck)
+**Authorization Code Grant flow with callback (Only for Fibricheck)**
 
-- Open https://pages.dev.fibricheck.com/authorize/?client_id=CLIENT_ID&response_type=code&redirect_uri=REDIRECT_URI
-- click Authorize
-- Capture the query params on the redirect uri
-- Authenticate with the code query param
+* Open https://pages.dev.fibricheck.com/authorize/?client\_id=CLIENT\_ID\&response\_type=code\&redirect\_uri=REDIRECT\_URI
+* click Authorize
+* Capture the query params on the redirect uri
+* Authenticate with the code query param
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
@@ -222,7 +224,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-#### Refresh Token Grant flow
+**Refresh Token Grant flow**
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
@@ -237,7 +239,7 @@ await sdk.auth.authenticate({
 });
 ```
 
-#### Password Grant flow with two-step MFA in try / catch
+**Password Grant flow with two-step MFA in try / catch**
 
 ```ts
 import {
@@ -271,7 +273,7 @@ try {
 }
 ```
 
-#### Confidential Applications
+**Confidential Applications**
 
 If you are using a confidential application in combination with React-Native. The SDK will add `btoa` function to your global scope. See https://github.com/ExtraHorizon/javascript-sdk/issues/446
 
@@ -283,11 +285,11 @@ const sdk = createClient({
 });
 ```
 
-![Refresh](../assets/refresh.webp)
+![Refresh](../../assets/refresh.webp)
 
-## Creating applications
+### Creating applications
 
-### Example
+#### Example
 
 If you want to create an application can you use generic to determine the correct application and application version type.
 
@@ -307,7 +309,7 @@ const version = await sdk.auth.applications.createVersion<typeof app>(app.id, {
 });
 ```
 
-### Typeguards
+#### Typeguards
 
 If you need a typeguard, you can use the following snippets.
 
