@@ -285,7 +285,7 @@ const sdk = createClient({
 });
 ```
 
-![Refresh](../../assets/refresh.webp)
+![Refresh](../assets/refresh.webp)
 
 ### Creating applications
 

@@ -1,5 +1,5 @@
 ---
-description: Create and Manager oAuth1.0 or oAuth2 applications
+description: Create and manage oAuth1.0 or oAuth2 applications
 ---
 
 # Applications
