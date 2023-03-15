@@ -1,22 +1,19 @@
 # Table of contents
 
-- [Getting Started](README.md)
+* [Getting Started](README.md)
 
 ## setup
 
-- [Installation](setup/installation.md)
-- [Quick start](setup/start.md)
-
-## examples
-
-- [authentication](examples/authentication.md)
-- [data](examples/data.md)
-- [users](examples/users.md)
+* [Installation](setup/installation.md)
+* [Quick start](setup/start.md)
 
 ## features
 
-- [guide](features/guide.md)
+* [authentication](features/authentication.md)
+* [data](features/data.md)
+* [users](features/users.md)
+* [guide](features/guide.md)
 
 ## other
 
-- [Change Log](other/change-log.md)
+* [Change Log](other/change-log.md)
