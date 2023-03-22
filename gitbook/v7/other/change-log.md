@@ -9,6 +9,71 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v7.2.1]
+
+### Added
+
+- Support large file uploads
+
+### Fixes
+
+- Task cancellation
+
+## [v7.2.0]
+
+### Added
+
+- For API errors the `qName` variable is mapped to the `name` variable, to improve consistency with default errors.
+
+### Fixes
+
+- Corrected the interfaces to be consistent with the API
+- Updated dead links in documentation
+
+## [v7.1.0]
+
+### Added
+
+- `logout()` can now be performed on a proxy Client
+- Tasks now take an optional generic to set the data type
+- `userId` is now available on the raw mock
+
+### Fixes
+
+- The return type of `sdk.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
+
+## [v7.0.0]
+
+### Added
+
+- OAuth1 token management -> `sdk.auth.oauth1.getTokens` / `sdk.auth.oauth1.removeToken`. See [issue #465](https://github.com/ExtraHorizon/javascript-sdk/issues/465)
+- Password policy -> `sdk.users.passwordPolicy` and `sdk.users.updatePasswordPolicy`
+- Extra Playstore endpoint -> `payments.playStoreHistory.purchaseReceipts`
+- Extra permissions for the updated task service
+- RQL option to several endpoints
+
+### Changed
+
+- Types for the `sdk.auth.application.create` and `sdk.auth.application.createVersion` have been exported. See Authentication examples for more info.
+- Pako to fflate
+- Refactored the Schema and Document Types
+- Updated the `EnlistmentConfiguration` type. See [issue #596](https://github.com/ExtraHorizon/javascript-sdk/issues/596)
+
+### Fixes
+- Running `yarn` on windows machines resulted in an error [issue #612](https://github.com/ExtraHorizon/javascript-sdk/issues/612)
+- Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords` 
+
+### Breaking changes
+
+- Removed `payments.playStoreHistory.purchases` (deprecated)
+- The `contains` and `excludes` endpoints of the rql builder now accepts an array of expressions iso a single string. See [issue #603](https://github.com/ExtraHorizon/javascript-sdk/issues/603)
+- The removal of the group roles now has the correct parameters
+
+```diff
+- sdk.users.groupRoles.remove(rql, groupId, roleId, options)
++ sdk.users.groupRoles.remove(rql, groupId, options)
+```
+
 ## [v6.2.0]
 
 ### Added
