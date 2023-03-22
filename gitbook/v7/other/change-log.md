@@ -8,8 +8,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## v7.2
+## v7
+### v7.2
 #### [v7.2.1]
 
 ##### Added
@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Corrected the interfaces to be consistent with the API
 - Updated dead links in documentation
-## v7.1
+### v7.1
 #### [v7.1.0]
 
 ##### Added
@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The return type of `sdk.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
 
-## v7.0
+### v7.0
 #### [v7.0.0]
 
 ##### Added
@@ -75,7 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - sdk.users.groupRoles.remove(rql, groupId, roleId, options)
 + sdk.users.groupRoles.remove(rql, groupId, options)
 ```
-## v6.2
+## v6
+### v6.2
 #### [v6.2.0]
 
 ##### Added
@@ -87,7 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Types for the `sdk.auth.application.create` and `sdk.auth.application.createVersion` have been exported. See Authentication examples for more info.
 - Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords`
 
-## v6.1
+### v6.1
 #### [v6.1.0]
 
 ##### Breaking changes
@@ -141,7 +142,7 @@ const result = sdk.raw.get("/files/v1", {
 -export interface ProxyClient extends HttpInstance {
 +export interface ProxyInstance extends HttpInstance {
 ```
-## v6.0
+### v6.0
 #### [v6.0.0]
 
 ##### Breaking Changes
@@ -168,7 +169,8 @@ const result = sdk.raw.get("/files/v1", {
 - Exported `findAllGeneric` and `findAllIterator` for usage on raw functions
 - Better type for `findAllIterator`
 
-## v5.3
+## v5
+### v5.3
 #### [v5.3.1]
 
 ##### Added/Fixed
@@ -181,7 +183,7 @@ const result = sdk.raw.get("/files/v1", {
 
 - There are now 3 mocked exports. `getMockSdkProxy`, `getMockSdkOAuth2` and `getMockSdkOAuth1` with matching types. The `getMockSdk` is also still available and mapped to `getMockSdkOAuth2`.
 
-## v5.2
+### v5.2
 #### [v5.2.0]
 
 ##### Added
@@ -205,7 +207,7 @@ const result = sdk.raw.get("/files/v1", {
 - Refactor of `userId` getter on the `sdk.raw` instance. It now works consistently everywhere (browser/node/react-native). See [PR #462](https://github.com/ExtraHorizon/javascript-sdk/pull/462)
 - Added `findAll` and `findAllIterator` to notifications. The `find` method is also update to have pagination helpers [PR #475](https://github.com/ExtraHorizon/javascript-sdk/pull/475)
 
-## v5.1
+### v5.1
 #### [v5.1.0]
 
 ##### Added
@@ -222,7 +224,7 @@ sdk.users.requestPasswordReset();
 sdk.users.requestEmailActivation();
 sdk.users.isEmailAvailable();
 ```
-## v5.0
+### v5.0
 #### [v5.0.0]
 
 ##### Breaking Changes
@@ -258,7 +260,8 @@ sdk.users.isEmailAvailable();
 
 - `userId` getter on the `OAuthClient` interface now returns a `Promise<string>` in stead of `string`. You can access this on `sdk.raw.userId`
 
-## v4.5
+## v4
+### v4.5
 #### [v4.5.0]
 
 ##### Added
@@ -294,7 +297,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 - rqlBuilder now supports the `excludes` operator
 - several examples had updates to reflect proper usage
 
-## v4.4
+### v4.4
 #### [v4.4.0]
 
 ##### Changes
@@ -312,7 +315,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 
 - `findAll` function added on users and data.documents. See #333
 
-## v4.3
+### v4.3
 #### [v4.3.0]
 
 ##### Changes
@@ -328,7 +331,7 @@ const sdk = createClient({
   clientSecret: "",
 });
 ```
-## v4.2
+### v4.2
 #### [v4.2.1]
 
 ##### Changes
@@ -368,7 +371,7 @@ await sdk.data.documents.create(
   { gzip: true, headers: { "x-test": "test" } }
 );
 ```
-## v4.1
+### v4.1
 #### [v4.1.0]
 
 ##### Added
@@ -382,7 +385,7 @@ await sdk.data.documents.create(
 - Fixed documentation format
 - Updated README installation
 
-## v4.0
+### v4.0
 #### [v4.0.0]
 
 ##### Breaking Changes
@@ -399,7 +402,8 @@ await sdk.data.documents.create(
 - Renamed all methods from `delete` to `remove` and all of them returning `AffectedRecords`
 - Renamed all methods from `deleteFields` to `removeFields`
 
-## v3.2
+## v3
+### v3.2
 #### [3.2.0]
 
 ##### Added
@@ -422,7 +426,7 @@ await sdk.data.documents.create("schemaId", document, {
   gzip: true,
 });
 ```
-## v3.1
+### v3.1
 #### [3.1.0]
 
 ##### Breaking Changes
@@ -492,7 +496,7 @@ const transitionId = schema.findTransitionIdByName("lambda_to_review");
 - Payments Service
 - Added `or`, `and` and `contains` operators to the RQL builder.
 
-## v3.0
+### v3.0
 #### [3.0.2]
 
 ##### Breaking Changes
@@ -754,7 +758,8 @@ const inputFile: CreateFile = {}
 - Every merge into dev will create a tag and package with the current version number suffixed with `-dev.X` where X auto-increments
 - Removed `* @throws {ApiError}` in JSDoc comments, only specific errors are mentioned when mentioned in the Swagger documentation
 
-## v2.0
+## v2
+### v2.0
 #### [2.0.0]
 
 ##### Breaking changes
@@ -805,7 +810,8 @@ await sdk.authenticate({
 - Change to the `RegisterUserData` interface
   - `phoneNumber` is now required
 
-## v1.0
+## v1
+### v1.0
 #### [1.0.1] - 2021-05-05
 
 ##### Changes
@@ -843,7 +849,8 @@ Optional paramaters are now grouped in an options object as last parameters.
 - OAuth1 token/tokenSecret flow is implemented.
 - Functions expecting an RQL should now show a more clear error when passing in a regular string.
 
-## v0.0
+## v0
+### v0.0
 #### [0.0.7] - 2021-04-28
 
 ##### Breaking changes
