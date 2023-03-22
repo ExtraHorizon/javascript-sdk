@@ -176,6 +176,30 @@ export interface OAuth1Token {
   creationTimestamp: Date;
 }
 
+export interface AuthService {
+  /**
+   * # Applications
+   * Applications represent mobile apps, web apps, web services or scripts that can communicate with the Extra Horizon API.
+   *
+   * ### Default applications
+   * When launching a new cluster two default applications are already created for you:
+   *
+   * **ExH Control center**: An oAuth2 app that gives our control center (available on  [app.extrahorizon.com](app.extrahorizon.com)) the ability to communicate with your cluster. You as an admin can use this app to explore and manage your cluster.
+   *
+   * **CLI**: An oAuth1.0 application that you can use when installing our CLI in order to send configurations to your cluster. Credentials are provided to your cluster manager during onboarding.
+   */
+  applications: AuthApplicationsService;
+  oauth2: AuthOauth2Service;
+  oauth1: AuthOauth1Service;
+  users: AuthUsersService;
+  oidc: OidcService;
+  confirmPresence(
+    data: { password: string },
+    options?: OptionsBase
+  ): Promise<Presence>;
+  health(): Promise<boolean>;
+}
+
 export interface AuthApplicationsService {
   /**
    * Create an OAuth application
@@ -328,6 +352,7 @@ export interface AuthUsersService {
     data: PresenceToken,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
    * Disable MFA for a user
    *
@@ -343,6 +368,7 @@ export interface AuthUsersService {
     data: PresenceToken,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
    * Add a MFA method to a user
    *
