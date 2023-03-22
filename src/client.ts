@@ -1,10 +1,4 @@
-import {
-  AuthParams,
-  ClientParams,
-  ParamsOauth1,
-  ParamsOauth2,
-  ParamsProxy,
-} from './types';
+import { ClientParams, ParamsOauth1, ParamsOauth2, ParamsProxy } from './types';
 import { version as packageVersion } from './version';
 
 import {
@@ -26,107 +20,16 @@ import {
 import {
   createHttpClient,
   createOAuth1HttpClient,
-  parseAuthParams,
   createOAuth2HttpClient,
   createProxyHttpClient,
 } from './http';
 import { validateConfig } from './utils';
 import {
-  OAuthClient,
-  TokenDataOauth1,
-  TokenDataOauth2,
   AuthHttpClient,
   ProxyInstance,
+  OAuth1HttpClient,
+  OAuth2HttpClient,
 } from './http/types';
-
-export interface OAuth1Authenticate {
-  /**
-   * Use OAuth1 Token authentication
-   * @example
-   * await sdk.auth.authenticate({
-   *  token: '',
-   *  tokenSecret: '',
-   * });
-   * @throws {ApplicationNotAuthenticatedError}
-   * @throws {AuthenticationError}
-   * @throws {LoginTimeoutError}
-   * @throws {LoginFreezeError}
-   * @throws {TooManyFailedAttemptsError}
-   * @throws {MfaRequiredError}
-   */
-  authenticate(oauth: {
-    token: string;
-    tokenSecret: string;
-    skipTokenCheck?: boolean;
-  }): Promise<TokenDataOauth1>;
-  /**
-   * Use OAuth1 Password authentication
-   * @example
-   * await sdk.auth.authenticate({
-   *  email: '',
-   *  password: '',
-   * });
-   * @throws {ApplicationNotAuthenticatedError}
-   * @throws {AuthenticationError}
-   * @throws {LoginTimeoutError}
-   * @throws {LoginFreezeError}
-   * @throws {TooManyFailedAttemptsError}
-   * @throws {MfaRequiredError}
-   */
-  authenticate(oauth: {
-    email: string;
-    password: string;
-  }): Promise<TokenDataOauth1>;
-}
-
-export interface OAuth2Authenticate {
-  /**
-   * Use OAuth2 Authorization Code Grant flow with callback
-   * @example
-   * await sdk.auth.authenticate({
-   *  code: '',
-   * });
-   * @throws {InvalidRequestError}
-   * @throws {InvalidGrantError}
-   * @throws {UnsupportedGrantTypeError}
-   * @throws {MfaRequiredError}
-   * @throws {InvalidClientError}
-   */
-  authenticate(oauth: { code: string }): Promise<TokenDataOauth2>;
-  /**
-   * Use OAuth2 Password Grant flow
-   * @example
-   * await sdk.auth.authenticate({
-   *  password: '',
-   *  username: '',
-   * });
-   * @throws {InvalidRequestError}
-   * @throws {InvalidGrantError}
-   * @throws {UnsupportedGrantTypeError}
-   * @throws {MfaRequiredError}
-   * @throws {InvalidClientError}
-   */
-  authenticate(oauth: {
-    username: string;
-    password: string;
-  }): Promise<TokenDataOauth2>;
-  /**
-   * Use OAuth2 Refresh Token Grant flow
-   * @example
-   * await sdk.auth.authenticate({
-   *  refreshToken: '',
-   * });
-   * @throws {InvalidRequestError}
-   * @throws {InvalidGrantError}
-   * @throws {UnsupportedGrantTypeError}
-   * @throws {MfaRequiredError}
-   * @throws {InvalidClientError}
-   */
-  authenticate(oauth: { refreshToken: string }): Promise<TokenDataOauth2>;
-}
-
-type Authenticate<T extends ClientParams = ParamsOauth1> =
-  T extends ParamsOauth1 ? OAuth1Authenticate : OAuth2Authenticate;
 
 export interface Client<T extends ClientParams> {
   raw: AuthHttpClient;
@@ -199,14 +102,12 @@ export interface Client<T extends ClientParams> {
    * Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
    * @see https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
    */
-  auth: T extends ParamsOauth2
+  auth: T extends ParamsOauth1
     ? ReturnType<typeof authService> &
-        Pick<OAuthClient, 'confirmMfa' | 'logout'> &
-        Authenticate<T>
-    : T extends ParamsOauth1
+        Pick<OAuth1HttpClient, 'authenticate' | 'confirmMfa' | 'logout'>
+    : T extends ParamsOauth2
     ? ReturnType<typeof authService> &
-        Pick<OAuthClient, 'confirmMfa' | 'logout'> &
-        Authenticate<T>
+        Pick<OAuth2HttpClient, 'authenticate' | 'confirmMfa' | 'logout'>
     : ReturnType<typeof authService> & Pick<ProxyInstance, 'logout'>;
 }
 
@@ -254,8 +155,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     auth: ('authenticate' in httpWithAuth && httpWithAuth.authenticate
       ? {
           ...authService(httpWithAuth),
-          authenticate: (oauth: AuthParams) =>
-            httpWithAuth.authenticate(parseAuthParams(oauth)),
+          authenticate: httpWithAuth.authenticate,
           confirmMfa: httpWithAuth.confirmMfa,
           logout: httpWithAuth.logout,
         }

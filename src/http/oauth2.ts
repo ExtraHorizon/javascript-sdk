@@ -1,11 +1,10 @@
 import axios from 'axios';
 import btoa from '../btoa';
-import { ParamsOauth2 } from '../types';
+import { Oauth2AuthParams, ParamsOauth2 } from '../types';
 import {
   HttpInstance,
   MfaConfig,
-  OAuth2Config,
-  OAuthClient,
+  OAuth2HttpClient,
   TokenDataOauth2,
 } from './types';
 import {
@@ -22,9 +21,8 @@ const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
 export function createOAuth2HttpClient(
   http: HttpInstance,
   options: ParamsOauth2
-): OAuthClient {
+): OAuth2HttpClient {
   let tokenData: TokenDataOauth2;
-  let authConfig: OAuth2Config;
 
   const clientCredentials = getClientCredentials(options);
 
@@ -122,8 +120,10 @@ export function createOAuth2HttpClient(
     tokenData = data;
   }
 
-  async function authenticate(data: OAuth2Config): Promise<TokenDataOauth2> {
-    authConfig = data;
+  async function authenticate(
+    data: Oauth2AuthParams
+  ): Promise<TokenDataOauth2> {
+    const grantData = getGrantData(data);
 
     /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
     if (clientCredentials.client_secret && typeof global.btoa !== 'function') {
@@ -134,7 +134,7 @@ export function createOAuth2HttpClient(
       TOKEN_ENDPOINT,
       {
         ...clientCredentials,
-        ...authConfig.params,
+        ...grantData,
       },
       clientCredentials.client_secret
         ? {
@@ -158,7 +158,6 @@ export function createOAuth2HttpClient(
       TOKEN_ENDPOINT,
       {
         ...clientCredentials,
-        ...authConfig.params,
         grant_type: 'mfa',
         token,
         code,
@@ -199,7 +198,7 @@ export function createOAuth2HttpClient(
         return Promise.resolve(tokenData?.userId);
       },
     }
-  ) as OAuthClient;
+  ) as OAuth2HttpClient;
 }
 
 function getClientCredentials({ clientId, clientSecret }: ParamsOauth2) {
@@ -217,4 +216,30 @@ function getClientCredentials({ clientId, clientSecret }: ParamsOauth2) {
 interface OAuth2ClientCredentials {
   client_id: string;
   client_secret?: string;
+}
+
+function getGrantData(params: Oauth2AuthParams) {
+  if ('username' in params) {
+    return {
+      grant_type: 'password',
+      username: params.username,
+      password: params.password,
+    };
+  }
+
+  if ('code' in params) {
+    return {
+      grant_type: 'authorization_code',
+      code: params.code,
+    };
+  }
+
+  if ('refreshToken' in params) {
+    return {
+      grant_type: 'refresh_token',
+      refresh_token: params.refreshToken,
+    };
+  }
+
+  throw new Error('Invalid Oauth config');
 }
