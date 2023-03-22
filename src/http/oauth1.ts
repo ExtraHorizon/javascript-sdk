@@ -2,13 +2,12 @@ import axios from 'axios';
 import OAuth from 'oauth-1.0a';
 import { HmacSHA1 } from 'crypto-es/lib/sha1';
 import { Base64 } from 'crypto-es/lib/enc-base64';
-import { ParamsOauth1 } from '../types';
+import { Oauth1AuthParams, ParamsOauth1 } from '../types';
 import {
   TokenDataOauth1,
-  OAuth1Config,
-  OAuthClient,
   MfaConfig,
   HttpInstance,
+  OAuth1HttpClient,
 } from './types';
 import {
   camelizeResponseData,
@@ -24,7 +23,7 @@ const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth1/tokens`;
 export function createOAuth1HttpClient(
   http: HttpInstance,
   options: ParamsOauth1
-): OAuthClient {
+): OAuth1HttpClient {
   const oAuth = new OAuth({
     consumer: {
       key: options.consumerKey,
@@ -120,20 +119,32 @@ export function createOAuth1HttpClient(
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
-  async function authenticate(data: OAuth1Config): Promise<TokenDataOauth1> {
+  async function authenticate(
+    data: Oauth1AuthParams
+  ): Promise<TokenDataOauth1> {
     // If the user has passed in a token/tokenSecret combination.
     // Validate it against /users/me on the unauthenticated Axios client unless skipTokenCheck is true
 
-    if ('tokenData' in data) {
-      tokenData = data.tokenData;
+    if ('tokenSecret' in data) {
+      tokenData = {
+        key: data.token,
+        secret: data.tokenSecret,
+      };
+
       if (!data.skipTokenCheck) {
         const me = await getMe();
-        tokenData = { ...data.tokenData, userId: me.id };
+        tokenData.userId = me.id;
       }
+
       return tokenData;
     }
 
-    const tokenResult = await http.post(TOKEN_ENDPOINT, data.params, {
+    const loginData = {
+      email: data.email,
+      password: data.password,
+    };
+
+    const tokenResult = await http.post(TOKEN_ENDPOINT, loginData, {
       headers: {
         'Content-Type': 'application/json',
         ...oAuth.toHeader(
@@ -223,7 +234,7 @@ export function createOAuth1HttpClient(
         })();
       },
     }
-  ) as OAuthClient;
+  ) as OAuth1HttpClient;
 }
 
 function hmacSha1Hash(baseString: string, key: string) {
