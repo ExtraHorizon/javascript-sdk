@@ -38,3 +38,10 @@ export interface OidcProviderResponse extends Partial<BaseOidcProvider> {
 }
 
 export type OidcProviderUpdate = Partial<OidcProviderCreation>;
+
+export interface OidcLinkRequestBody {
+  /** Obtained from the OpenID Connect provider upon successful user login. */
+  authorizationCode: string;
+  /** Optional: include the nonce if it was provided in the authentication request */
+  nonce?: string;
+}

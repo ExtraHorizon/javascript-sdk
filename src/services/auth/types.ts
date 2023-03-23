@@ -5,6 +5,7 @@ import {
   PagedResult,
 } from '../types';
 import {
+  OidcLinkRequestBody,
   OidcProviderCreation,
   OidcProviderResponse,
   OidcProviderUpdate,
@@ -496,4 +497,26 @@ export interface OidcService {
    * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
    */
   disableProvider(providerId: string): Promise<AffectedRecords>;
+
+  /**
+   * Link the currently logged-in user to an OIDC provider
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Only a logged-in user can use this endpoint
+   * @param providerName The name of the OpenID Connect provider that the user will be linked to
+   * @param linkRequestBody
+   * */
+  linkUserToOidcProvider(
+    providerName: string,
+    linkRequestBody: OidcLinkRequestBody
+  ): Promise<AffectedRecords>;
+
+  /**
+   * Unlink a user from OpenID Connect
+   * Permission | Scope | Effect
+   * - | - | -
+   * UNLINK_USER_FROM_OIDC | `global` | **Required** for this endpoint
+   * @param userId The id of the user to be unlinked from OpenID Connect
+   */
+  unlinkUserFromOidc(userId: string): Promise<AffectedRecords>;
 }
