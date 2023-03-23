@@ -4,11 +4,6 @@ import {
   OptionsWithRql,
   PagedResult,
 } from '../../../types';
-import {
-  ResourceUnknownError,
-  NoPermissionError,
-  FieldFormatError,
-} from '../../../errors';
 
 export interface AuthApplicationsService {
   /**
