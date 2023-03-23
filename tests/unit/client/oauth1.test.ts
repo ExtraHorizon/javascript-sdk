@@ -44,7 +44,7 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(oauthEmailMock);
+    await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -60,10 +60,10 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(oauthEmailMock);
+    await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
     nock(mockParams.host).get('/test').reply(200, '');
 
-    const result = httpWithAuth.logout();
+    const result = httpWithAuth.extraAuthMethods.logout();
 
     expect(result).toBe(true);
   });
@@ -77,7 +77,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(oauthEmailMock);
+      await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
     } catch (error) {
       expect(error).toBeInstanceOf(AuthenticationError);
     }
@@ -101,7 +101,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(oauthEmailMock);
+      await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(ApiError);
@@ -115,7 +115,7 @@ describe('http client', () => {
       .reply(200, { id: 'mockUserId' });
 
     try {
-      await httpWithAuth.authenticate(oauthTokenMock);
+      await httpWithAuth.extraAuthMethods.authenticate(oauthTokenMock);
       const userId = await httpWithAuth.userId;
       expect(userId).toBeDefined();
     } catch (error) {
@@ -130,7 +130,7 @@ describe('http client', () => {
       .reply(200, { id: 'mockUserId' });
 
     try {
-      await httpWithAuth.authenticate({
+      await httpWithAuth.extraAuthMethods.authenticate({
         ...oauthTokenMock,
         skipTokenCheck: true,
       });
@@ -150,7 +150,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(oauthTokenMock);
+      await httpWithAuth.extraAuthMethods.authenticate(oauthTokenMock);
     } catch (error) {
       expect(error).toBeInstanceOf(OauthTokenError);
     }

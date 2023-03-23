@@ -33,7 +33,9 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    const authenticateResult = await httpWithAuth.authenticate(mockAuth);
+    const authenticateResult = await httpWithAuth.extraAuthMethods.authenticate(
+      mockAuth
+    );
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -48,10 +50,10 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(mockAuth);
+    await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
     nock(mockParams.host).get('/test').reply(200, '');
 
-    const result = httpWithAuth.logout();
+    const result = httpWithAuth.extraAuthMethods.logout();
 
     expect(result).toBe(true);
   });
@@ -64,7 +66,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(mockAuth);
+      await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
     }
@@ -76,7 +78,7 @@ describe('http client', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.authenticate(mockAuth);
+    await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
     nock(mockParams.host).get('/test').reply(400, {
       code: 118,
       error: 'invalid_grant',
@@ -115,7 +117,7 @@ describe('http client', () => {
     nock(mockParams.host).get('/test').reply(200, {});
 
     try {
-      await httpWithAuth.authenticate(mockAuth);
+      await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
@@ -146,7 +148,7 @@ describe('http client', () => {
     });
 
     try {
-      await httpWithAuth.authenticate(mockAuth);
+      await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
@@ -168,7 +170,7 @@ describe('http client', () => {
         return { access_token: mockToken };
       });
 
-    await httpWithAuth.authenticate({ refreshToken: 'test' });
+    await httpWithAuth.extraAuthMethods.authenticate({ refreshToken: 'test' });
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -205,11 +207,11 @@ describe('http client', () => {
     nock(mockParams.host).get('/test').reply(200, '');
 
     try {
-      await httpWithAuth.authenticate(mockAuth);
+      await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
     } catch (error) {
       expect(error).toBeInstanceOf(MfaRequiredError);
       const { mfa } = error.response;
-      const confirmMfaResult = await httpWithAuth.confirmMfa({
+      const confirmMfaResult = await httpWithAuth.extraAuthMethods.confirmMfa({
         token: mfa.token,
         methodId: mfa.methods[0].id,
         code: 'code',
@@ -238,9 +240,8 @@ describe('http client', () => {
       confidentialConfig
     );
 
-    const authenticateResult = await confidentialHttpWithAuth.authenticate(
-      mockAuth
-    );
+    const authenticateResult =
+      await confidentialHttpWithAuth.extraAuthMethods.authenticate(mockAuth);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await confidentialHttpWithAuth.get('test');

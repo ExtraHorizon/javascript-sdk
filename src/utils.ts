@@ -13,28 +13,24 @@ function parseHost(rawHost: string, prefix: 'api' | 'apx') {
         .replace(/^apx\./, '')}`;
 }
 
-export function validateConfig({
-  host: rawHost,
-  ...params
-}: ClientParams): ClientParams {
+export function validateConfig<T extends ClientParams>(params: T): T {
   if ('consumerKey' in params) {
-    // oauth1
     return {
       ...params,
-      host: parseHost(rawHost, 'api'),
+      host: parseHost(params.host, 'api'),
     };
   }
 
   if ('clientId' in params) {
     return {
       ...params,
-      host: parseHost(rawHost, 'api'),
+      host: parseHost(params.host, 'api'),
     };
   }
 
   return {
     ...params,
-    host: parseHost(rawHost, 'apx'),
+    host: parseHost(params.host, 'apx'),
   };
 }
 

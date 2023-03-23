@@ -188,9 +188,11 @@ export function createOAuth2HttpClient(
   return Object.defineProperty(
     {
       ...httpWithAuth,
-      authenticate,
-      confirmMfa,
-      logout,
+      extraAuthMethods: {
+        authenticate,
+        confirmMfa,
+        logout,
+      },
     },
     'userId',
     {
