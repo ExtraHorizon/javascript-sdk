@@ -4,6 +4,7 @@ import {
   OptionsWithRql,
   PagedResult,
 } from '../types';
+import { AuthApplicationsService } from './applications/types';
 import {
   OidcLinkRequestBody,
   OidcProviderCreation,
@@ -15,84 +16,6 @@ export interface Timestamp {
   updateTimestamp: Date;
   creationTimestamp: Date;
 }
-export interface OAuth1ApplicationVersion {
-  id: string;
-  name: string;
-  consumerKey: string;
-  consumerSecret: string;
-  creationTimestamp: Date;
-}
-
-export interface OAuth1Application extends Timestamp {
-  id: string;
-  name: string;
-  description: string;
-  type: string; // 'oauth1';
-  versions: OAuth1ApplicationVersion[];
-}
-
-export interface OAuth2ApplicationVersion {
-  id: string;
-  name: string;
-  clientId: string;
-  clientSecret: string;
-  creationTimestamp: Date;
-}
-
-export interface OAuth2Application extends Timestamp {
-  id: string;
-  name: string;
-  description: string;
-  type: string; // 'oauth2';
-  versions?: OAuth2ApplicationVersion[];
-  logo?: string;
-  redirectUris: string[];
-  confidential?: boolean;
-}
-
-export type Application<T = false> = T extends OAuth1ApplicationCreationSchema
-  ? OAuth1Application
-  : T extends OAuth2ApplicationCreationSchema
-  ? OAuth2Application
-  : OAuth1Application | OAuth2Application;
-
-export type OAuth1ApplicationCreationSchema = Pick<
-  OAuth1Application,
-  'type' | 'name' | 'description'
->;
-
-export type OAuth2ApplicationCreationSchema = Pick<
-  OAuth2Application,
-  'type' | 'name' | 'description' | 'logo' | 'redirectUris' | 'confidential'
->;
-
-export type ApplicationCreation =
-  | OAuth1ApplicationCreationSchema
-  | OAuth2ApplicationCreationSchema;
-
-export type OAuth1ApplicationUpdateSchema = Pick<
-  OAuth1Application,
-  'type' | 'name' | 'description'
->;
-
-export type OAuth2ApplicationUpdateSchema = Pick<
-  OAuth2Application,
-  'type' | 'name' | 'description' | 'logo' | 'redirectUris'
->;
-
-export type ApplicationUpdate =
-  | OAuth1ApplicationUpdateSchema
-  | OAuth2ApplicationUpdateSchema;
-
-export interface ApplicationVersionCreation {
-  name: string;
-}
-
-export type ApplicationVersion<T = false> = T extends OAuth1Application
-  ? OAuth1ApplicationVersion
-  : T extends OAuth2Application
-  ? OAuth2ApplicationVersion
-  : OAuth1ApplicationVersion | OAuth2ApplicationVersion;
 
 export interface OAuth2AuthorizationCreation {
   responseType: string;
@@ -177,85 +100,28 @@ export interface OAuth1Token {
   creationTimestamp: Date;
 }
 
-export interface AuthApplicationsService {
+export interface AuthService {
   /**
-   * Create an OAuth application
+   * # Applications
+   * Applications represent mobile apps, web apps, web services or scripts that can communicate with the Extra Horizon API.
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * CREATE_APPLICATIONS | global | Required for this endpoint
-   * @async
-   * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications
+   * ### Default applications
+   * When launching a new cluster two default applications are already created for you:
+   *
+   * **ExH Control center**: An oAuth2 app that gives our control center (available on  [app.extrahorizon.com](app.extrahorizon.com)) the ability to communicate with your cluster. You as an admin can use this app to explore and manage your cluster.
+   *
+   * **CLI**: An oAuth1.0 application that you can use when installing our CLI in order to send configurations to your cluster. Credentials are provided to your cluster manager during onboarding.
    */
-  create<T extends ApplicationCreation>(
-    data: T,
+  applications: AuthApplicationsService;
+  oauth2: AuthOauth2Service;
+  oauth1: AuthOauth1Service;
+  users: AuthUsersService;
+  oidc: OidcService;
+  confirmPresence(
+    data: { password: string },
     options?: OptionsBase
-  ): Promise<Application<T>>;
-  /**
-   * Get a list of applications
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none| | 	Returns a limited set of fields of the list (only name, description, logo and type fields)
-   * VIEW_APPLICATIONS | global | Returns all fields of the list
-   * @async
-   * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Applications/get_applications
-   * */
-  get(options?: OptionsWithRql): Promise<PagedResult<Application>>;
-  /**
-   * Update an OAuth application
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * UPDATE_APPLICATIONS | global |
-   * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Applications/put_applications
-   * @throws {ResourceUnknownError}
-   */
-  update(
-    applicationId: string,
-    data: ApplicationUpdate,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
-  /**
-   * Delete an OAuth application
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * DELETE_APPLICATIONS | global | **Required** for this endpoint
-   * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId_
-   * @throws {ResourceUnknownError}
-   */
-  remove(
-    applicationId: string,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
-  /**
-   * Create an application version
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * CREATE_APPLICATIONS | global | **Required** for this endpoint
-   * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Applications/post_applications__applicationId__versions
-   */
-  createVersion<T extends Application>(
-    applicationId: string,
-    data: ApplicationVersionCreation,
-    options?: OptionsBase
-  ): Promise<ApplicationVersion<T>>;
-  /**
-   * Delete an application version
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * DELETE_APPLICATIONS | global | **Required** for this endpoint
-   * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/Applications/delete_applications__applicationId__versions__versionId_
-   * @throws {ResourceUnknownError}
-   */
-  deleteVersion(
-    applicationId: string,
-    versionId: string,
-    options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  ): Promise<Presence>;
+  health(): Promise<boolean>;
 }
 
 export interface AuthOauth2Service {
@@ -329,6 +195,7 @@ export interface AuthUsersService {
     data: PresenceToken,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
    * Disable MFA for a user
    *
@@ -344,6 +211,7 @@ export interface AuthUsersService {
     data: PresenceToken,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
    * Add a MFA method to a user
    *
@@ -520,3 +388,4 @@ export interface OidcService {
    */
   unlinkUserFromOidc(userId: string): Promise<AffectedRecords>;
 }
+export { AuthApplicationsService };
