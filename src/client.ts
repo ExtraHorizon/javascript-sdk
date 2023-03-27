@@ -103,12 +103,10 @@ export interface Client<T extends ClientParams> {
    * @see https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
    */
   auth: T extends ParamsOauth1
-    ? ReturnType<typeof authService> &
-        Pick<OAuth1HttpClient, 'authenticate' | 'confirmMfa' | 'logout'>
+    ? ReturnType<typeof authService> & OAuth1HttpClient['extraAuthMethods']
     : T extends ParamsOauth2
-    ? ReturnType<typeof authService> &
-        Pick<OAuth2HttpClient, 'authenticate' | 'confirmMfa' | 'logout'>
-    : ReturnType<typeof authService> & Pick<ProxyInstance, 'logout'>;
+    ? ReturnType<typeof authService> & OAuth2HttpClient['extraAuthMethods']
+    : ReturnType<typeof authService> & ProxyInstance['extraAuthMethods'];
 }
 
 /**
@@ -152,14 +150,10 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     profiles: profilesService(httpWithAuth),
     notifications: notificationsService(httpWithAuth),
     events: eventsService(httpWithAuth),
-    auth: ('authenticate' in httpWithAuth && httpWithAuth.authenticate
-      ? {
-          ...authService(httpWithAuth),
-          authenticate: httpWithAuth.authenticate,
-          confirmMfa: httpWithAuth.confirmMfa,
-          logout: httpWithAuth.logout,
-        }
-      : { ...authService(httpWithAuth), logout: httpWithAuth.logout }) as any,
+    auth: {
+      ...authService(httpWithAuth),
+      ...httpWithAuth.extraAuthMethods,
+    } as any,
     raw: httpWithAuth,
   };
 }
