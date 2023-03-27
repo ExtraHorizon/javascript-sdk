@@ -72,7 +72,9 @@ export function createProxyHttpClient(
   return Object.defineProperty(
     {
       ...httpWithAuth,
-      logout,
+      extraAuthMethods: {
+        logout,
+      },
     },
     'userId',
     {

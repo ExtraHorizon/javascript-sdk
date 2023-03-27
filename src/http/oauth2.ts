@@ -5,6 +5,8 @@ import {
   HttpInstance,
   MfaConfig,
   OAuth2HttpClient,
+  OidcAuthenticationUrl,
+  OidcAuthenticationUrlRequest,
   TokenDataOauth2,
 } from './types';
 import {
@@ -125,11 +127,6 @@ export function createOAuth2HttpClient(
   ): Promise<TokenDataOauth2> {
     const grantData = getGrantData(data);
 
-    /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
-    if (clientCredentials.client_secret && typeof global.btoa !== 'function') {
-      global.btoa = btoa;
-    }
-
     const tokenResult = await http.post(
       TOKEN_ENDPOINT,
       {
@@ -176,6 +173,43 @@ export function createOAuth2HttpClient(
     return tokenResult.data;
   }
 
+  async function generateOidcAuthenticationUrl(
+    providerName: string,
+    data: OidcAuthenticationUrlRequest
+  ): Promise<OidcAuthenticationUrl> {
+    const response = await http.post(
+      `${AUTH_BASE}/oidc/providers/${providerName}/generateAuthenticationUrl`,
+      data
+    );
+
+    return response.data;
+  }
+
+  async function authenticateWithOidc(
+    providerName: string,
+    data: OidcAuthenticationUrlRequest
+  ): Promise<TokenDataOauth2> {
+    const response = await http.post(
+      `${AUTH_BASE}/oidc/providers/${providerName}/oAuth2Login`,
+      {
+        ...clientCredentials,
+        ...data,
+      },
+      clientCredentials.client_secret
+        ? {
+            auth: {
+              username: clientCredentials.client_id,
+              password: clientCredentials.client_secret,
+            },
+          }
+        : {}
+    );
+
+    await setTokenData(response.data);
+
+    return response.data;
+  }
+
   function logout(): boolean {
     tokenData = null;
     return true;
@@ -188,9 +222,13 @@ export function createOAuth2HttpClient(
   return Object.defineProperty(
     {
       ...httpWithAuth,
-      authenticate,
-      confirmMfa,
-      logout,
+      extraAuthMethods: {
+        authenticate,
+        confirmMfa,
+        logout,
+        generateOidcAuthenticationUrl,
+        authenticateWithOidc,
+      },
     },
     'userId',
     {
@@ -208,6 +246,11 @@ function getClientCredentials({ clientId, clientSecret }: ParamsOauth2) {
 
   if (clientSecret) {
     credentials.client_secret = clientSecret;
+
+    /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
+    if (typeof global.btoa !== 'function') {
+      global.btoa = btoa;
+    }
   }
 
   return credentials;
