@@ -41,6 +41,20 @@ describe('OAuth1HttpClient', () => {
     httpWithAuth = createOAuth1HttpClient(http, config);
   });
 
+  it('should accept token/tokenSecret during creation and be authenticated', async () => {
+    const localHttpWithAuth = createOAuth1HttpClient(http, {
+      ...mockParams,
+      token: 'MyDirectToken',
+      tokenSecret: 'S3cr3t',
+    });
+
+    nock(mockParams.host).get('/test').reply(200);
+
+    const result = await localHttpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toContain('MyDirectToken');
+  });
+
   it('should authorize', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth1/tokens`)

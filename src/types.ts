@@ -62,10 +62,17 @@ interface ParamsBase {
   };
 }
 
-export interface ParamsOauth1 extends ParamsBase {
+export interface ParamsOauth1Consumer extends ParamsBase {
   consumerKey: string;
   consumerSecret: string;
 }
+
+export interface ParamsOauth1Token extends ParamsOauth1Consumer {
+  token: string;
+  tokenSecret: string;
+}
+
+export type ParamsOauth1 = ParamsOauth1Consumer | ParamsOauth1Token;
 
 export interface ParamsOauth2 extends ParamsBase {
   clientId: string;
