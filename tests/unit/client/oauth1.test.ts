@@ -28,7 +28,7 @@ const oauthTokenMock = {
   consumerSecret: '',
 };
 
-describe('http client', () => {
+describe('OAuth1HttpClient', () => {
   const config = validateConfig(mockParams) as ParamsOauth1;
   const http = createHttpClient({ ...config, packageVersion: '' });
   let httpWithAuth: OAuth1HttpClient;

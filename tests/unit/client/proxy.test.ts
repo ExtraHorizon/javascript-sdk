@@ -13,7 +13,7 @@ const mockParams = {
   host: 'https://apx.test.com',
 };
 
-describe('proxy client', () => {
+describe('ProxyHttpClient', () => {
   const config = validateConfig(mockParams) as ParamsOauth2;
   const http = createHttpClient({
     ...config,
