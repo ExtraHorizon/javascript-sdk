@@ -7,7 +7,7 @@ const mockParams = {
   clientId: 'clientId',
 };
 
-describe('http client', () => {
+describe('HttpClient', () => {
   it('should create an http client', async () => {
     const http = createHttpClient({
       ...validateConfig(mockParams),

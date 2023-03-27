@@ -1,5 +1,5 @@
 import type { HttpInstance } from '../../types';
-import type { Presence } from './types';
+import type { AuthService, Presence } from './types';
 import httpClient from '../http-client';
 import { OptionsBase, Results } from '../types';
 import applications from './applications';
@@ -9,7 +9,7 @@ import users from './users';
 import oidc from './oidc';
 import { AUTH_BASE } from '../../constants';
 
-export const authService = (httpWithAuth: HttpInstance) => {
+export function authService(httpWithAuth: HttpInstance): AuthService {
   const authClient = httpClient({
     basePath: AUTH_BASE,
   });
@@ -52,4 +52,4 @@ export const authService = (httpWithAuth: HttpInstance) => {
       );
     },
   };
-};
+}

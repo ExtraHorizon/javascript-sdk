@@ -103,4 +103,32 @@ describe('Auth - OpenID Connect', () => {
     const result = await sdk.auth.oidc.disableProvider(provider.id);
     expect(result).toMatchObject({ affectedRecords: 1 });
   });
+
+  it('Links a user to an OpenID Connect provider', async () => {
+    const linkRequestBody = {
+      authorizationCode: 'some-randomly-generated-string',
+      nonce: 'some-randomly-generated-string',
+    };
+
+    nock(`${host}${AUTH_BASE}`)
+      .post(`/oidc/providers/${provider.name}/link`, linkRequestBody)
+      .reply(200, { affectedRecords: 1 });
+
+    const result = await sdk.auth.oidc.linkUserToOidcProvider(
+      provider.name,
+      linkRequestBody
+    );
+    expect(result).toMatchObject({ affectedRecords: 1 });
+  });
+
+  it('Unlinks a user from OpenID Connect', async () => {
+    const userId = '5a0b2adc265ced65a8cab865';
+
+    nock(`${host}${AUTH_BASE}`)
+      .post(`/oidc/users/${userId}/unlink`)
+      .reply(200, { affectedRecords: 1 });
+
+    const result = await sdk.auth.oidc.unlinkUserFromOidc(userId);
+    expect(result).toMatchObject({ affectedRecords: 1 });
+  });
 });
