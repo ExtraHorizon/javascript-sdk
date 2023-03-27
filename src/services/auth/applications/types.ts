@@ -20,7 +20,7 @@ export interface AuthApplicationsService {
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    * @throws {@link FieldFormatError} when one of the provided parameters is not correctly formatted according to the documentation.
    */
-  create<T extends ApplicationCreation>(
+  create<T extends OAuth1ApplicationCreation | OAuth2ApplicationCreation>(
     data: T,
     options?: OptionsBase
   ): Promise<
@@ -66,7 +66,7 @@ export interface AuthApplicationsService {
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    * @throws {@link FieldFormatError} when one of the provided parameters is not correctly formatted according to the documentation.
    */
-  update<T extends ApplicationUpdate>(
+  update<T extends OAuth1ApplicationUpdate | OAuth2ApplicationUpdate>(
     applicationId: string,
     data: T,
     options?: OptionsBase
