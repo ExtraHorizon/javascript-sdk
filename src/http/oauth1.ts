@@ -34,6 +34,12 @@ export function createOAuth1HttpClient(
   });
 
   let tokenData: TokenDataOauth1;
+  if ('token' in options && 'tokenSecret' in options) {
+    tokenData = {
+      key: options.token,
+      secret: options.tokenSecret,
+    };
+  }
 
   const httpWithAuth = axios.create({
     ...http.defaults,

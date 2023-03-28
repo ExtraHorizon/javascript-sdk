@@ -1,35 +1,38 @@
 import nock from 'nock';
 import { validateConfig } from '../../../src/utils';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import {
-  ApiError,
-  AuthenticationError,
-  OauthTokenError,
-} from '../../../src/errors';
+import { AuthenticationError, OauthTokenError } from '../../../src/errors';
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth1HttpClient } from '../../../src/http/oauth1';
-import { OAuth1HttpClient, ParamsOauth1 } from '../../../src/types';
+import { OAuth1HttpClient } from '../../../src/types';
 
 const mockParams = {
   host: 'https://api.test.com',
-  consumerKey: '',
-  consumerSecret: '',
+  consumerKey: 'MyConsumerKey',
+  consumerSecret: 'S3cr3t',
 };
 
-const oauthEmailMock = {
-  email: '',
-  password: '',
+const authEmailData = {
+  email: 'test@example.com',
+  password: 'S3cr3t',
 };
 
-const oauthTokenMock = {
-  token: '',
-  tokenSecret: '',
-  consumerKey: '',
-  consumerSecret: '',
+const authTokenData = {
+  token: 'MySuppliedToken',
+  tokenSecret: 'S3cr3t',
+};
+
+const tokenResponse = {
+  token: 'MyReceivedToken',
+  tokenSecret: 'S3cr3t',
+};
+
+const userResponse = {
+  id: 'mockUserId',
 };
 
 describe('OAuth1HttpClient', () => {
-  const config = validateConfig(mockParams) as ParamsOauth1;
+  const config = validateConfig(mockParams);
   const http = createHttpClient({ ...config, packageVersion: '' });
   let httpWithAuth: OAuth1HttpClient;
 
@@ -38,34 +41,59 @@ describe('OAuth1HttpClient', () => {
     httpWithAuth = createOAuth1HttpClient(http, config);
   });
 
+  it('should accept token/tokenSecret during creation and be authenticated', async () => {
+    const localHttpWithAuth = createOAuth1HttpClient(http, {
+      ...mockParams,
+      token: 'MyDirectToken',
+      tokenSecret: 'S3cr3t',
+    });
+
+    nock(mockParams.host).get('/test').reply(200);
+
+    const result = await localHttpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toContain('MyDirectToken');
+  });
+
   it('should authorize', async () => {
-    const mockToken = 'test';
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth1/tokens`)
-      .reply(200, { access_token: mockToken });
+      .reply(200, tokenResponse);
 
-    await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
-    nock(mockParams.host).get('/test').reply(200, '');
+    await httpWithAuth.extraAuthMethods.authenticate(authEmailData);
+
+    nock(mockParams.host).get('/test').reply(200);
 
     const result = await httpWithAuth.get('test');
 
-    expect(result.request.headers.authorization).toContain(
-      `OAuth oauth_consumer_key`
-    );
+    expect(result.request.headers.authorization).toContain('MyReceivedToken');
   });
 
   it('should authorize and logout', async () => {
-    const mockToken = 'test';
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth1/tokens`)
-      .reply(200, { access_token: mockToken });
+      .reply(200, tokenResponse);
 
-    await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
-    nock(mockParams.host).get('/test').reply(200, '');
+    await httpWithAuth.extraAuthMethods.authenticate(authEmailData);
+
+    // Expect an authenticated call before logout
+    nock(mockParams.host).get('/test').reply(200);
+
+    const loggedInResult = await httpWithAuth.get('/test');
+    expect(loggedInResult.request.headers.authorization).toContain(
+      `MyReceivedToken`
+    );
 
     const result = httpWithAuth.extraAuthMethods.logout();
-
     expect(result).toBe(true);
+
+    // Expect an unauthenticated call after logout
+    nock(mockParams.host).get('/test').reply(200);
+
+    const loggedOutResult = await httpWithAuth.get('/test');
+    expect(loggedOutResult.request.headers.authorization).not.toContain(
+      `MyReceivedToken`
+    );
   });
 
   it('throws on authorization with wrong password', async () => {
@@ -77,68 +105,51 @@ describe('OAuth1HttpClient', () => {
     });
 
     try {
-      await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
+      await httpWithAuth.extraAuthMethods.authenticate(authEmailData);
     } catch (error) {
       expect(error).toBeInstanceOf(AuthenticationError);
     }
   });
 
   it('throws on authorization with unknown token', async () => {
-    const mockToken = 'unknown access token';
-    nock(mockParams.host)
-      .post(`${AUTH_BASE}/oauth1/tokens`)
-      .reply(200, { access_token: mockToken });
-
-    nock(mockParams.host).get('/test').reply(400, {
-      code: 117,
-      name: 'ACCESS_TOKEN_UNKNOWN_EXCEPTION',
-      message: 'The access token is unknown',
-    });
-
-    nock(mockParams.host).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
-      error: 'invalid_grant',
-      description: 'this password email combination is unknown',
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, {
+      code: 108,
+      name: 'OAUTH_TOKEN_EXCEPTION',
+      message: 'The consumer key and token combination is unknown',
     });
 
     try {
-      await httpWithAuth.extraAuthMethods.authenticate(oauthEmailMock);
-      await httpWithAuth.get('test');
+      await httpWithAuth.extraAuthMethods.authenticate(authTokenData);
     } catch (error) {
-      expect(error).toBeInstanceOf(ApiError);
+      expect(error).toBeInstanceOf(OauthTokenError);
     }
   });
 
   it('should authorize with valid token/tokenSecret', async () => {
-    expect.assertions(1);
-    nock(mockParams.host)
-      .get(`${USER_BASE}/me`)
-      .reply(200, { id: 'mockUserId' });
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, userResponse);
 
-    try {
-      await httpWithAuth.extraAuthMethods.authenticate(oauthTokenMock);
-      const userId = await httpWithAuth.userId;
-      expect(userId).toBeDefined();
-    } catch (error) {
-      console.log(error);
-    }
+    await httpWithAuth.extraAuthMethods.authenticate(authTokenData);
+
+    const userId = await httpWithAuth.userId;
+    expect(userId).toBe(userResponse.id);
+
+    // Expect successive requests to include the supplied token
+    nock(mockParams.host).get('/test').reply(200);
+
+    const result = await httpWithAuth.get('/test');
+    expect(result.request.headers.authorization).toContain(`MySuppliedToken`);
   });
 
   it('should authorize with valid token/tokenSecret/skipTokenCheck and get a userId', async () => {
-    expect.assertions(1);
-    nock(mockParams.host)
-      .get(`${USER_BASE}/me`)
-      .reply(200, { id: 'mockUserId' });
+    nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, userResponse);
 
-    try {
-      await httpWithAuth.extraAuthMethods.authenticate({
-        ...oauthTokenMock,
-        skipTokenCheck: true,
-      });
-      const userId = await httpWithAuth.userId;
-      expect(userId).toBeDefined();
-    } catch (error) {
-      console.log(error);
-    }
+    await httpWithAuth.extraAuthMethods.authenticate({
+      ...authTokenData,
+      skipTokenCheck: true,
+    });
+
+    const userId = await httpWithAuth.userId;
+    expect(userId).toBe(userResponse.id);
   });
 
   it('throws on authorization with invalid token/tokenSecret', async () => {
@@ -150,7 +161,7 @@ describe('OAuth1HttpClient', () => {
     });
 
     try {
-      await httpWithAuth.extraAuthMethods.authenticate(oauthTokenMock);
+      await httpWithAuth.extraAuthMethods.authenticate(authTokenData);
     } catch (error) {
       expect(error).toBeInstanceOf(OauthTokenError);
     }
