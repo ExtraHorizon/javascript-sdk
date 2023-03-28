@@ -1,3 +1,5 @@
+import { OAuthApplicationType } from '../../src/services/auth/applications/types';
+
 export const applicationDataList = {
   data: [
     {
@@ -8,7 +10,7 @@ export const applicationDataList = {
 
 export const newApplication = {
   id: '507f191e810c19729de860ea',
-  type: 'oauth2',
+  type: OAuthApplicationType.oauth2,
   description: 'Test App',
   name: 'Test',
   updateTimestamp: new Date('2019-04-15T11:23:19.670Z'),

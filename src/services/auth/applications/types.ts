@@ -164,14 +164,14 @@ export interface Application {
 
 export interface OAuth1Application extends Application {
   /** type of the application */
-  type?: 'oauth1';
+  type?: OAuthApplicationType.oauth1;
   /** A List cointaining the different versions of the application */
   versions?: OAuth1ApplicationVersion[];
 }
 
 export interface OAuth2Application extends Application {
   /** type of the application */
-  type: 'oauth2';
+  type: OAuthApplicationType.oauth2;
   /** A List containing the different versions of the application */
   versions?: OAuth2ApplicationVersion[];
   /**
@@ -186,6 +186,11 @@ export interface OAuth2Application extends Application {
    * Defines wether your application should be considered a confidential app according to the [oAuth2.0 spec](https://www.rfc-editor.org/rfc/rfc6749). If not provided upon creation this value defaults to false.
    */
   confidential?: boolean;
+}
+
+export enum OAuthApplicationType {
+  oauth1 = 'oauth1',
+  oauth2 = 'oauth2',
 }
 
 export type ApplicationCreation = Required<
