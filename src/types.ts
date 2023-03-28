@@ -74,11 +74,18 @@ export interface ParamsOauth1Token extends ParamsOauth1Consumer {
 
 export type ParamsOauth1 = ParamsOauth1Consumer | ParamsOauth1Token;
 
-export interface ParamsOauth2 extends ParamsBase {
+export interface ParamsOauth2Client extends ParamsBase {
   clientId: string;
   clientSecret?: string;
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
+
+export interface ParamsOauth2AccessToken extends ParamsOauth2Client {
+  refreshToken: string;
+  accessToken: string;
+}
+
+export type ParamsOauth2 = ParamsOauth2Client | ParamsOauth2AccessToken;
 
 export type ParamsProxy = ParamsBase;
 

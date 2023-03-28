@@ -34,6 +34,41 @@ describe('OAuth2HttpClient', () => {
     httpWithAuth = createOAuth2HttpClient(http, config);
   });
 
+  it('should accept refreshToken/accessToken during creation and be authorized', async () => {
+    const localHttpWithAuth = createOAuth2HttpClient(http, {
+      ...mockParams,
+      refreshToken: 'MyRefreshToken',
+      accessToken: 'MyAccessToken',
+    });
+
+    // Expect successive requests to be authenticated with the accessToken
+    nock(mockParams.host).get('/test').reply(200);
+
+    const result = await localHttpWithAuth.get('test');
+    expect(result.request.headers.authorization).toBe(`Bearer MyAccessToken`);
+
+    // Expect the refreshToken to be used when the accessToken is expired
+    nock(mockParams.host).get('/test').reply(400, {
+      code: 118,
+      name: 'ACCESS_TOKEN_EXPIRED_EXCEPTION',
+      description: 'The access token is expired',
+    });
+
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, {
+        grant_type: 'refresh_token',
+        refresh_token: 'MyRefreshToken',
+      })
+      .reply(200, { access_token: 'NewAccessToken' });
+
+    nock(mockParams.host).get('/test').reply(200);
+
+    const resultAfterExpiry = await localHttpWithAuth.get('test');
+    expect(resultAfterExpiry.request.headers.authorization).toBe(
+      'Bearer NewAccessToken'
+    );
+  });
+
   it('should authorize', async () => {
     const mockToken = 'test';
     nock(mockParams.host)
@@ -43,12 +78,13 @@ describe('OAuth2HttpClient', () => {
     const authenticateResult = await httpWithAuth.extraAuthMethods.authenticate(
       emailAuthData
     );
+    expect(authenticateResult).toStrictEqual({ accessToken: mockToken });
+
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
 
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
-    expect(authenticateResult).toStrictEqual({ accessToken: 'test' });
   });
 
   it('should authorize and logout', async () => {
@@ -82,6 +118,7 @@ describe('OAuth2HttpClient', () => {
   it('should authorize but first reply with expired token, but then valid refresh', async () => {
     const expiredToken = 'expired access token';
     const newToken = 'new access token';
+
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: expiredToken });
