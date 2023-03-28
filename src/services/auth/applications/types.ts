@@ -20,7 +20,7 @@ export interface AuthApplicationsService {
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    * @throws {@link FieldFormatError} when one of the provided parameters is not correctly formatted according to the documentation.
    */
-  create<T extends ApplicationCreation>(
+  create<T extends OAuth1ApplicationCreation | OAuth2ApplicationCreation>(
     data: T,
     options?: OptionsBase
   ): Promise<
@@ -66,7 +66,7 @@ export interface AuthApplicationsService {
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    * @throws {@link FieldFormatError} when one of the provided parameters is not correctly formatted according to the documentation.
    */
-  update<T extends ApplicationUpdate>(
+  update<T extends OAuth1ApplicationUpdate | OAuth2ApplicationUpdate>(
     applicationId: string,
     data: T,
     options?: OptionsBase
@@ -151,27 +151,27 @@ export interface AuthApplicationsService {
  */
 export interface Application {
   /** A 24 character long hexadecimal value acting as the identifier of your application */
-  id?: string;
+  id: string;
   /** The name of your application. A minimum 1 and maximm of 100 characters is accepted */
-  name?: string;
+  name: string;
   /** A Description of your application. A minimum 1 and maximm of 250 characters is accepted */
-  description?: string;
+  description: string;
   /** The timestamp when the application was last updated */
-  updateTimestamp?: Date;
+  updateTimestamp: Date;
   /** The timestamp when the application was created */
-  creationTimestamp?: Date;
+  creationTimestamp: Date;
 }
 
 export interface OAuth1Application extends Application {
   /** type of the application */
-  type?: 'oauth1';
+  type: ApplicationType.oauth1;
   /** A List cointaining the different versions of the application */
   versions?: OAuth1ApplicationVersion[];
 }
 
 export interface OAuth2Application extends Application {
   /** type of the application */
-  type: 'oauth2';
+  type: ApplicationType.oauth2;
   /** A List containing the different versions of the application */
   versions?: OAuth2ApplicationVersion[];
   /**
@@ -185,7 +185,12 @@ export interface OAuth2Application extends Application {
   /**
    * Defines wether your application should be considered a confidential app according to the [oAuth2.0 spec](https://www.rfc-editor.org/rfc/rfc6749). If not provided upon creation this value defaults to false.
    */
-  confidential?: boolean;
+  confidential: boolean;
+}
+
+export enum ApplicationType {
+  oauth1 = 'oauth1',
+  oauth2 = 'oauth2',
 }
 
 export type ApplicationCreation = Required<
@@ -197,40 +202,42 @@ export type OAuth1ApplicationCreation = ApplicationCreation &
 
 export type OAuth2ApplicationCreation = ApplicationCreation &
   Required<Pick<OAuth2Application, 'type' | 'redirectUris'>> &
-  Pick<OAuth2Application, 'logo' | 'confidential'>;
+  Partial<Pick<OAuth2Application, 'logo' | 'confidential'>>;
 
 export interface ApplicationVersion {
   /** The identifier of this version */
-  id?: string;
+  id: string;
   /** The name of the application version. We suggest using semantic versioning vX.X.X (e.g. v1.2.0) */
-  name?: string;
+  name: string;
   /** The timestap when this version was created */
-  creationTimestamp?: Date;
+  creationTimestamp: Date;
 }
 
 export interface OAuth1ApplicationVersion extends ApplicationVersion {
   /** the oAuth1 consumerKey */
-  consumerKey?: string;
+  consumerKey: string;
   /** the oAuth1 consumerSecret */
-  consumerSecret?: string;
+  consumerSecret: string;
 }
 
 export interface OAuth2ApplicationVersion extends ApplicationVersion {
   /** The oAuth2 clientId */
-  clientId?: string;
+  clientId: string;
   /** The oAuth2 clientSecret */
-  clientSecret?: string;
+  clientSecret: string;
 }
 
-export type ApplicationUpdate = Pick<Application, 'name' | 'description'>;
+export type ApplicationUpdate = Partial<
+  Pick<Application, 'name' | 'description'>
+>;
 
 export type OAuth1ApplicationUpdate = ApplicationUpdate &
   Required<Pick<OAuth1Application, 'type'>>;
 
 export type OAuth2ApplicationUpdate = ApplicationUpdate &
   Required<Pick<OAuth2Application, 'type'>> &
-  Pick<OAuth2Application, 'logo' | 'redirectUris'>;
+  Partial<Pick<OAuth2Application, 'logo' | 'redirectUris'>>;
 
 export type ApplicationVersionCreation = Required<
-  Pick<ApplicationVersion, 'name'>
+  Partial<Pick<ApplicationVersion, 'name'>>
 >;

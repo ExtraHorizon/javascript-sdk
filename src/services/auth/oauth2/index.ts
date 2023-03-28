@@ -1,6 +1,6 @@
-import type { HttpInstance } from '../../types';
+import type { HttpInstance } from '../../../types';
 import type { AuthOauth2Service } from './types';
-import { HttpClient } from '../http-client';
+import { HttpClient } from '../../http-client';
 
 export default (
   client: HttpClient,
