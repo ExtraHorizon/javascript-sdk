@@ -18,9 +18,9 @@ const mockParams = {
   freshTokensCallback: freshTokensCallbackMock,
 };
 
-const mockAuth = {
-  password: '',
-  username: '',
+const emailAuthData = {
+  username: 'test@example.com',
+  password: 'S3cr3t',
 };
 
 describe('OAuth2HttpClient', () => {
@@ -41,7 +41,7 @@ describe('OAuth2HttpClient', () => {
       .reply(200, { access_token: mockToken });
 
     const authenticateResult = await httpWithAuth.extraAuthMethods.authenticate(
-      mockAuth
+      emailAuthData
     );
     nock(mockParams.host).get('/test').reply(200, '');
 
@@ -57,7 +57,7 @@ describe('OAuth2HttpClient', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
+    await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = httpWithAuth.extraAuthMethods.logout();
@@ -73,34 +73,36 @@ describe('OAuth2HttpClient', () => {
     });
 
     try {
-      await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
+      await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
     }
   });
 
   it('should authorize but first reply with expired token, but then valid refresh', async () => {
-    const mockToken = 'expired access token';
+    const expiredToken = 'expired access token';
+    const newToken = 'new access token';
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
-      .reply(200, { access_token: mockToken });
+      .reply(200, { access_token: expiredToken });
 
-    await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
+    await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
+
     nock(mockParams.host).get('/test').reply(400, {
       code: 118,
-      error: 'invalid_grant',
-      description: 'the associated authorization is expired',
+      name: 'ACCESS_TOKEN_EXPIRED_EXCEPTION',
+      description: 'The access token is expired',
     });
 
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
-      .reply(200, { access_token: 'access token' });
+      .reply(200, { access_token: newToken });
 
     nock(mockParams.host).get('/test').reply(200, {});
 
     const result = await httpWithAuth.get('test');
 
-    expect(result.data).toBeDefined();
+    expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
   });
 
   it('throws with authorization but first reply with expired token, but then fail refresh', async () => {
@@ -110,21 +112,20 @@ describe('OAuth2HttpClient', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
+    await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
+
+    nock(mockParams.host).get('/test').reply(400, {
+      code: 118,
+      name: 'ACCESS_TOKEN_EXPIRED_EXCEPTION',
+      description: 'The access token is expired',
+    });
+
     nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
       error: 'invalid_grant',
       description: 'The refresh token is unknown',
     });
 
-    nock(mockParams.host).get('/test').reply(400, {
-      code: 118,
-      error: 'invalid_grant',
-      description: 'the associated authorization is expired',
-    });
-
-    nock(mockParams.host).get('/test').reply(200, {});
-
     try {
-      await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
       await httpWithAuth.get('test');
     } catch (error) {
       expect(error).toBeInstanceOf(InvalidGrantError);
@@ -143,7 +144,7 @@ describe('OAuth2HttpClient', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, { access_token: mockToken });
 
-    await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
+    await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
 
     nock(mockParams.host).get('/test').reply(400, {
       code: 117,
@@ -175,6 +176,8 @@ describe('OAuth2HttpClient', () => {
       });
 
     await httpWithAuth.extraAuthMethods.authenticate({ refreshToken: 'test' });
+
+    // Expect successive requests to be authenticated
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await httpWithAuth.get('test');
@@ -183,8 +186,9 @@ describe('OAuth2HttpClient', () => {
   });
 
   it('should authorize with MFA Enabled', async () => {
-    expect.assertions(3);
     const mockToken = 'access token';
+
+    // Setup the MFA error to be thrown on login
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(400, {
@@ -204,34 +208,37 @@ describe('OAuth2HttpClient', () => {
         },
       });
 
+    let mfaError;
+    try {
+      await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
+    } catch (error) {
+      mfaError = error;
+    }
+    expect(mfaError).toBeInstanceOf(MfaRequiredError);
+
+    // Return a valid token for the confirm MFA call
     nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(200, {
       accessToken: mockToken,
     });
 
+    const { mfa } = mfaError.response;
+    const confirmMfaResult = await httpWithAuth.extraAuthMethods.confirmMfa({
+      token: mfa.token,
+      methodId: mfa.methods[0].id,
+      code: 'code',
+    });
+    expect(confirmMfaResult).toStrictEqual({ accessToken: 'access token' });
+
+    // Expect successive requests to be authenticated
     nock(mockParams.host).get('/test').reply(200, '');
 
-    try {
-      await httpWithAuth.extraAuthMethods.authenticate(mockAuth);
-    } catch (error) {
-      expect(error).toBeInstanceOf(MfaRequiredError);
-      const { mfa } = error.response;
-      const confirmMfaResult = await httpWithAuth.extraAuthMethods.confirmMfa({
-        token: mfa.token,
-        methodId: mfa.methods[0].id,
-        code: 'code',
-      });
-      const result = await httpWithAuth.get('test');
-      expect(result).toBeDefined();
-      expect(confirmMfaResult).toStrictEqual({ accessToken: 'access token' });
-    }
+    const result = await httpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
   });
 
   it('should authorize with confidential application', async () => {
     const mockToken = 'test';
-    nock(mockParams.host)
-      .post(`${AUTH_BASE}/oauth2/tokens`)
-      .basicAuth({ user: 'clientId', pass: 'secret' })
-      .reply(200, { access_token: mockToken });
 
     const confidentialConfig = validateConfig({
       ...mockParams,
@@ -244,14 +251,23 @@ describe('OAuth2HttpClient', () => {
       confidentialConfig
     );
 
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .basicAuth({ user: 'clientId', pass: 'secret' })
+      .reply(200, { access_token: mockToken });
+
     const authenticateResult =
-      await confidentialHttpWithAuth.extraAuthMethods.authenticate(mockAuth);
+      await confidentialHttpWithAuth.extraAuthMethods.authenticate(
+        emailAuthData
+      );
+    expect(authenticateResult).toStrictEqual({ accessToken: mockToken });
+
+    // Expect successive requests to be authenticated
     nock(mockParams.host).get('/test').reply(200, '');
 
     const result = await confidentialHttpWithAuth.get('test');
 
     expect(result.request.headers.authorization).toBe(`Bearer ${mockToken}`);
-    expect(authenticateResult).toStrictEqual({ accessToken: 'test' });
   });
 
   describe('generateOidcAuthenticationUrl()', () => {
