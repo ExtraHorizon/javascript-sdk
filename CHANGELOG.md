@@ -24,7 +24,7 @@ const exh = createClient({
 const currentUser = await sdk.users.me();
 ```
 
-- While creating an oAuth1 client both `refreshToken` and `accessToken` can now be supplied.
+- While creating an oAuth2 client both `refreshToken` and `accessToken` can now be supplied.
   In which case there is no need for an extra `exh.auth.authenticate` call.
 
 ```ts
