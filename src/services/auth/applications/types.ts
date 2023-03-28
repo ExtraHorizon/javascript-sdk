@@ -164,14 +164,14 @@ export interface Application {
 
 export interface OAuth1Application extends Application {
   /** type of the application */
-  type: OAuthApplicationType.oauth1;
+  type: ApplicationType.oauth1;
   /** A List cointaining the different versions of the application */
   versions?: OAuth1ApplicationVersion[];
 }
 
 export interface OAuth2Application extends Application {
   /** type of the application */
-  type: OAuthApplicationType.oauth2;
+  type: ApplicationType.oauth2;
   /** A List containing the different versions of the application */
   versions?: OAuth2ApplicationVersion[];
   /**
@@ -188,7 +188,7 @@ export interface OAuth2Application extends Application {
   confidential: boolean;
 }
 
-export enum OAuthApplicationType {
+export enum ApplicationType {
   oauth1 = 'oauth1',
   oauth2 = 'oauth2',
 }
