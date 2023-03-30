@@ -1,4 +1,5 @@
 import { AffectedRecords, OptionsWithRql, PagedResult } from '../../types';
+import { LoginAttemptsService } from './loginAttempts/types';
 
 export interface OidcService {
   /**
@@ -78,6 +79,8 @@ export interface OidcService {
    * @param userId The id of the user to be unlinked from OpenID Connect
    */
   unlinkUserFromOidc(userId: string): Promise<AffectedRecords>;
+
+  loginAttempts: LoginAttemptsService;
 }
 
 export interface BaseOidcProvider {
