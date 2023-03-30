@@ -2,31 +2,39 @@ import { AffectedRecords, OptionsWithRql, PagedResult } from '../../types';
 
 export interface OidcService {
   /**
-   * Create an OpenId Connect Provider
-   * Permission | Scope | Effect
-   * - | - | -
-   * `CREATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   * ## Create a new OpenId Connect Provider
+   * You can use this function to create a new OpenId Connect Provider to enable Single Sign On.
+   *
+   * #### Global Permissions
+   * `CREATE_OIDC_PROVIDER` - Is required to use this function and provides you with the ability to create new OIDC Providers.
+   *
+   * @param requestBody {@link OidcProviderCreation}
+   * @returns OidcProvider {@link OidcProvider}
    */
-  createProvider(
-    requestBody: OidcProviderCreation
-  ): Promise<OidcProviderResponse>;
+  createProvider(requestBody: OidcProviderCreation): Promise<OidcProvider>;
 
   /**
-   * Get a list of OpenId Connect Providers
-   * @param rql Add filters to the requested list.
-   * Permission | Scope | Effect
-   * - | - | -
-   * `VIEW_OIDC_PROVIDERS` | `global` | **Required** for this endpoint
+   * ## Get a list OpenId connect providers
+   * You can use this function to retrieve a paginated list of configured OpenId Connect Providers.
+   *
+   * #### Global Permissions
+   * `VIEW_OIDC_PROVIDERS` - Is required to use this function and provides you with the ability to retrieve a paginated list.
+   *
+   * @param options {@link OptionsWithRql} addional options with rql that can be set for your request to the cluster.
+   * @returns Returns a promise of a {@link PagedResult} with {@link OidcProvider}'s
    */
-  getProviders(
-    options?: OptionsWithRql
-  ): Promise<PagedResult<OidcProviderResponse>>;
+  getProviders(options?: OptionsWithRql): Promise<PagedResult<OidcProvider>>;
 
   /**
-   * Update an OpenId Connect Provider
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   * ## Update an openId Connect Provider
+   * You can use this function to update an existing OpenId Connect Provider. Fields left undefined will not be updated.
+   *
+   * #### Global Permissions
+   * `UPDATE_OIDC_PROVIDER` - Is required to use this function and provides you with the ability to update, enable or disable existing providers.
+   *
+   * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
+   * @param requestBody {@link OidcProviderUpdate} A set of updatable fields for existing providers.
+   * @returns Returns a promise of a {@link AffectedRecords}.
    */
   updateProvider(
     providerId: string,
@@ -34,26 +42,44 @@ export interface OidcService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Delete a OpenId Connect Provider
-   * Permission | Scope | Effect
-   * - | - | -
-   * `DELETE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   * ## Delete an OpenId Connect Provider
+   * You can use this function to delete an existing OpenId Connect provider.
+   *
+   * #### Global Permissions
+   * `DELETE_OIDC_PROVIDER` - Is required to use this function and provides you with the ability to delete existing OpenId Connect providers.
+   *
+   * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
+   * @returns Returns a promise of a {@link AffectedRecords}.
    */
   deleteProvider(providerId: string): Promise<AffectedRecords>;
 
   /**
-   * Enable a provider
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   * ## Enable an OpenId Connect Provider
+   * You can use this function to enable an existing OpenId Connect provider. When a provider is enabled client applications will be able to authenticate users using this provider.
+   *
+   * #### Global Permissions
+   * `UPDATE_OIDC_PROVIDER` - Is required to use this function and provides you with the ability to update, enable or disable existing providers.
+   *
+   * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
+   * @returns Returns a promise of a {@link AffectedRecords}.
    */
   enableProvider(providerId: string): Promise<AffectedRecords>;
 
   /**
-   * Disable a provider
-   * Permission | Scope | Effect
-   * - | - | -
-   * `UPDATE_OIDC_PROVIDER` | `global` | **Required** for this endpoint
+   * ## Disable an OpenId Connect Provider
+   * You can use this function to disable an existing OpenId Connect provider. When a provider is disabled client applications will no longer be able to authenticate users using this provider.
+   * When disabled the {@link linkUserToOidcProvider}, {@link TODO: oAuth2Login}, {@link TODO: generateAuthenticationUrl} functions will return an IllegalStateError.
+   * Make sure these clients correctly handle these error's or make sure to update your frontend before disabling.
+   *
+   *  link -> IllegalStateError('The provider is currently disabled and must be enabled to link a user');
+   *  oAuth2Login -> IllegalStateError('The provider is currently disabled and must be enabled to login');
+   *  generateAuthenticationUrl- > IllegalStateError('The provider is currently disabled and must be enabled to generate authentication urls');
+   *
+   * #### Global Permissions
+   * `UPDATE_OIDC_PROVIDER` - Is required to use this function and provides you with the ability to update, enable or disable existing providers.
+   *
+   * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
+   * @returns Returns a promise of a {@link AffectedRecords}.
    */
   disableProvider(providerId: string): Promise<AffectedRecords>;
 
@@ -80,43 +106,51 @@ export interface OidcService {
   unlinkUserFromOidc(userId: string): Promise<AffectedRecords>;
 }
 
-export interface BaseOidcProvider {
-  /** Human friendly name of the provider, which can also be used in the oidc login urls */
-  name: string;
-  /** Description of the provider */
-  description: string;
-  /**  Required for us to validate the ID token jwt ("iss") */
-  issuerId: string;
-  /** Provided by the provider after registration */
-  clientId: string;
-  /** Only used by our customer to redirect the user to */
-  authorizationEndpoint: string;
-  /** Used by us to exchange the code to an ID token */
-  tokenEndpoint: string;
-  /** Required to get the name and email address of the user */
-  userinfoEndpoint: string;
-  /** Required we need to send this as well to the token endpoint */
-  redirectUri: string;
-}
-
-export interface OidcProvider extends OidcProviderCreation {
+export interface OidcProvider {
+  /** A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider */
   id: string;
-  creationTimestamp: Date;
-  updateTimestamp: Date;
+  /** Human friendly name of the provider, which can also be used in the oidc login url. Then name can be between 3 and 40 characters and match pattern: '/^[a-zA-Z0-9_-]+$/' */
+  name: string;
+  /** Description of the provider. With a maximum of 256 characters */
+  description: string;
+  /** Provided by the OpenID Connect provider after registration. With a maximum of 2048 characters */
+  clientId: string;
+  /** A URL of maximum 2048 charactes that acts as a unique identifier for the provider. `Issuer` in the provider's discovery document. */
+  issuerId: string;
+  /** A URL of maximum 2048 character that points to the provider’s URL for authorising the user (i.e., signing the user in). authorization_endpoint in the provider's discovery document. */
+  authorizationEndpoint: string;
+  /** A URL of maximum 2048 character that points to the provider’s OAuth 2.0 protected URL from which user information can be obtained. token_endpoint in the provider's discovery document. */
+  tokenEndpoint: string;
+  /** A URL of maximum 2048 character that points to the provider’s endpoint of the authorization server Extra Horizon can use to obtain the email address and optionally also the family name and given name. userinfo_endpoint in the provider's discovery document. */
+  userinfoEndpoint: string;
+  /** A URL of maximum 2048 character that points to the location where the authorization server sends the user once the app has been successfully authorised and granted an authorization code or access token */
+  redirectUri: string;
+  /** Indicates wether the OpenID Connect provider is active and can be used for SSO */
   enabled: boolean;
+  /** The last four characters of the client secret */
+  clientSecretHint: string;
+  /** The creation timestamp of the OpenID Connectprovider */
+  creationTimestamp: Date;
+  /** The update timestamp of the OpenID Connect provider */
+  updateTimestamp: Date;
 }
 
-export interface OidcProviderCreation extends BaseOidcProvider {
-  /** Provided by the provider after registration */
+export interface OidcProviderCreation
+  extends Required<
+    Pick<
+      OidcProvider,
+      | 'name'
+      | 'description'
+      | 'clientId'
+      | 'authorizationEndpoint'
+      | 'redirectUri'
+      | 'tokenEndpoint'
+      | 'userinfoEndpoint'
+      | 'issuerId'
+    >
+  > {
+  /** The OAuth 2.0 Client Secret you received from your provider. Max 2048 characters */
   clientSecret: string;
-}
-
-export interface OidcProviderResponse extends Partial<BaseOidcProvider> {
-  id?: string;
-  creationTimestamp?: Date;
-  updateTimestamp?: Date;
-  enabled?: boolean;
-  clientSecretHint?: string;
 }
 
 export type OidcProviderUpdate = Partial<OidcProviderCreation>;
