@@ -79,12 +79,8 @@ export interface OidcService {
   /**
    * ## Disable an OpenId Connect Provider
    * You can use this function to disable an existing OpenId Connect provider. When a provider is disabled client applications will no longer be able to authenticate users using this provider.
-   * When disabled the {@link linkUserToOidcProvider}, {@link TODO: oAuth2Login}, {@link TODO: generateAuthenticationUrl} functions will return an IllegalStateError.
+   * When disabled the {@link linkUserToOidcProvider}, {@link generateOidcAuthenticationUrl} the {@link authenticateWithOidc} functions will return an IllegalStateError.
    * Make sure these clients correctly handle these error's or make sure to update your frontend before disabling.
-   *
-   *  link -> IllegalStateError('The provider is currently disabled and must be enabled to link a user');
-   *  oAuth2Login -> IllegalStateError('The provider is currently disabled and must be enabled to login');
-   *  generateAuthenticationUrl- > IllegalStateError('The provider is currently disabled and must be enabled to generate authentication urls');
    *
    * #### Global Permissions
    * `UPDATE_OIDC_PROVIDER` - Is required to use this function and provides you with the ability to update, enable or disable existing providers.
