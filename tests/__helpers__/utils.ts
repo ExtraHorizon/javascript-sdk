@@ -5,7 +5,6 @@ export function createPagedResponse<T>(
   dataObject: T,
   overrides?: any
 ): PagedResult<T> {
-  const isArray = Array.isArray(dataObject);
   return {
     page: {
       total: 1,
@@ -13,7 +12,7 @@ export function createPagedResponse<T>(
       limit: 20,
       ...overrides,
     },
-    data: isArray ? dataObject : [dataObject],
+    data: Array.isArray(dataObject) ? dataObject : [dataObject],
   };
 }
 
