@@ -183,6 +183,11 @@ export class DefaultLocalizationMissingError extends BadRequestError {}
 export class IDFormatError extends BadRequestError {}
 export class ProfileAlreadyExistsError extends BadRequestError {}
 
+export class OAuth2MissingClientCredentialsError extends BadRequestError {}
+export class InvalidNonceError extends BadRequestError {}
+export class OidcProviderResponseError extends BadRequestError {}
+export class OidcInvalidAuthorizationCodeError extends BadRequestError {}
+
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
 export class InvalidClientError extends UnauthorizedError {}
@@ -200,6 +205,9 @@ export class AccessTokenExpiredError extends UnauthorizedError {}
 
 export class NoPermissionError extends UnauthorizedError {}
 export class UnauthorizedTokenError extends UnauthorizedError {}
+
+export class OAuth2ClientIdError extends UnauthorizedError {}
+export class OAuth2ClientSecretError extends UnauthorizedError {}
 
 export class UserNotAuthenticatedError extends UnauthorizedError {
   public static createFromHttpError(error: HttpError): ApiError {
@@ -236,6 +244,10 @@ export class FieldFormatError extends ServerError {}
 // 502 Bad Gateway Server Error
 export class BadGatewayServerError extends ApiError {}
 export class StripeRequestError extends BadGatewayServerError {}
+
+// 503 Service Unavailable Error
+export class ServiceUnavailableError extends ApiError {}
+export class OidcIdTokenError extends ServiceUnavailableError {}
 
 function getSpecifiedAuthenticationError(error: HttpError): string {
   const { type, config } = error;
