@@ -123,6 +123,7 @@ export interface OidcService {
    * @param userId The id of the user to be unlinked from OpenID Connect
    * @returns Returns a promise of a {@link AffectedRecords}.
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * @throws {@link ResourceUnknownError} when no user is found for the specified userId.
    */
   unlinkUserFromOidc(userId: string): Promise<AffectedRecords>;
 }
