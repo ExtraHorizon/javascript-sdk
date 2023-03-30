@@ -107,6 +107,7 @@ export interface OidcService {
    * @param linkRequestBody
    * @returns Returns a promise of a {@link AffectedRecords}.
    * @throws {@link IllegalStateError} when the provider is disabled. The provider must be enabled to link a user.
+   * @throws {@link ResourceUnknownError} when no provider is found for the specified providerName.
    * */
   linkUserToOidcProvider(
     providerName: string,
