@@ -10,6 +10,8 @@ export interface OidcService {
    *
    * @param requestBody {@link OidcProviderCreation}
    * @returns OidcProvider {@link OidcProvider}
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * @throws {@link FieldFormatError} when one of the provided parameters is not correctly formatted according to the documentation.
    */
   createProvider(requestBody: OidcProviderCreation): Promise<OidcProvider>;
 
@@ -22,6 +24,7 @@ export interface OidcService {
    *
    * @param options {@link OptionsWithRql} addional options with rql that can be set for your request to the cluster.
    * @returns Returns a promise of a {@link PagedResult} with {@link OidcProvider}'s
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    */
   getProviders(options?: OptionsWithRql): Promise<PagedResult<OidcProvider>>;
 
@@ -35,6 +38,9 @@ export interface OidcService {
    * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
    * @param requestBody {@link OidcProviderUpdate} A set of updatable fields for existing providers.
    * @returns Returns a promise of a {@link AffectedRecords}.
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * @throws {@link ResourceUnknownError} when no provider is found for the specified providerId.
+   * @throws {@link FieldFormatError} when one of the provided parameters is not correctly formatted according to the documentation.
    */
   updateProvider(
     providerId: string,
@@ -50,6 +56,9 @@ export interface OidcService {
    *
    * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
    * @returns Returns a promise of a {@link AffectedRecords}.
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * @throws {@link ResourceUnknownError} when no provider is found for the specified providerId.
+   * @throws {@link IllegalStateError} when the provider is enabled (Only dissaled providers can be removed) or when there are still users linked to this provider.
    */
   deleteProvider(providerId: string): Promise<AffectedRecords>;
 
@@ -62,6 +71,8 @@ export interface OidcService {
    *
    * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
    * @returns Returns a promise of a {@link AffectedRecords}.
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * @throws {@link ResourceUnknownError} when no provider is found for the specified providerId.
    */
   enableProvider(providerId: string): Promise<AffectedRecords>;
 
@@ -80,16 +91,22 @@ export interface OidcService {
    *
    * @param providerId A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider.
    * @returns Returns a promise of a {@link AffectedRecords}.
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * @throws {@link ResourceUnknownError} when no provider is found for the specified providerId.
    */
   disableProvider(providerId: string): Promise<AffectedRecords>;
 
   /**
-   * Link the currently logged-in user to an OIDC provider
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Only a logged-in user can use this endpoint
-   * @param providerName The name of the OpenID Connect provider that the user will be linked to
+   * ## Link the authenticated user to an OIDC provider
+   * You can use this function to link the authenticated user to a registered OpenId Connect Provider.
+   *
+   * #### Default Permissions
+   * Every authenticated users can use this function.
+   *
+   * @param providerName The name of the OpenID Connect provider that the user will be linked to.
    * @param linkRequestBody
+   * @returns Returns a promise of a {@link AffectedRecords}.
+   * @throws {@link IllegalStateError} when the provider is disabled. The provider must be enabled to link a user.
    * */
   linkUserToOidcProvider(
     providerName: string,
@@ -97,11 +114,15 @@ export interface OidcService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Unlink a user from OpenID Connect
-   * Permission | Scope | Effect
-   * - | - | -
-   * UNLINK_USER_FROM_OIDC | `global` | **Required** for this endpoint
+   * ## Unlink a user from openID connect
+   * You can use this function to unlink a user from an OpenId Connect Provider.
+   *
+   * #### Global Permissions
+   * `UNLINK_USER_FROM_OIDC`- Is required to use this function and provides you with the ability to unlink the OpenId Connect provider from a user.
+   *
    * @param userId The id of the user to be unlinked from OpenID Connect
+   * @returns Returns a promise of a {@link AffectedRecords}.
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    */
   unlinkUserFromOidc(userId: string): Promise<AffectedRecords>;
 }
