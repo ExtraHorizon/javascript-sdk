@@ -1,4 +1,5 @@
 import { AffectedRecords, OptionsWithRql, PagedResult } from '../../types';
+import { LoginAttemptsService } from './loginAttempts/types';
 
 export interface OidcService {
   /**
@@ -123,6 +124,8 @@ export interface OidcService {
    * @throws {@link ResourceUnknownError} when no user is found for the specified userId.
    */
   unlinkUserFromOidc(userId: string): Promise<AffectedRecords>;
+
+  loginAttempts: LoginAttemptsService;
 }
 
 export interface OidcProvider {

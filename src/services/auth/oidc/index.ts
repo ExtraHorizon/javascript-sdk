@@ -1,6 +1,7 @@
 import { HttpInstance } from '../../../types';
 import { HttpClient } from '../../http-client';
 import { OidcLinkRequestBody, OidcService } from './types';
+import loginAttempts from './loginAttempts';
 
 export default (
   oidcClient: HttpClient,
@@ -79,4 +80,6 @@ export default (
     );
     return data;
   },
+
+  loginAttempts: loginAttempts(oidcClient, httpWithAuth),
 });

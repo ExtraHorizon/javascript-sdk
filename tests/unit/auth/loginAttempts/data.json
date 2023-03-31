@@ -1,0 +1,240 @@
+{
+  "data" : [
+    {
+      "id": "63fddd01a2217140d0defa9a",
+      "providerId": "79d3c27d8cb14bfb930fa413da925921",
+      "providerSubjectId": "13dcb41e3ffa680a5c28004566296f71445acfaa",
+      "userId": "63f74665245ea576278df088",
+      "status": "success",
+      "updateTimestamp": "2023-02-28T10:52:49.939Z",
+      "creationTimestamp": "2023-02-28T10:52:49.939Z"
+    },
+    {
+      "id": "63fddd0ea22171557fdefa9e",
+      "providerId": "7c914a7f06e040faa46d909eec51f4ef",
+      "providerSubjectId": "7cba2ea0379565a7b8be8ae7e87c66b9dbeccde3",
+      "userId": "63f74665245ea576278df088",
+      "status": "success",
+      "updateTimestamp": "2023-02-28T10:53:02.062Z",
+      "creationTimestamp": "2023-02-28T10:53:02.062Z"
+    },
+    {
+      "id": "63fdde78a221716b7fdefaaf",
+      "providerId": "63c4694c4714431f8dd2e402e012038f",
+      "providerSubjectId": "fe1d66ba470774141b58fd2d0b0a4868cb8125cb",
+      "status": "failed",
+      "error": {
+        "message": "This email address is already in use",
+        "code": 203,
+        "name": "EMAIL_USED_EXCEPTION"
+      },
+      "updateTimestamp": "2023-02-28T10:59:04.908Z",
+      "creationTimestamp": "2023-02-28T10:59:04.908Z"
+    },
+    {
+      "id": "63fdde7da2217133badefab0",
+      "providerId": "8446d9b8d75c4d95bd439d89f6ded587",
+      "providerSubjectId": "88f3e998a2939a56cbaf463da730ff5ff43ddbf6",
+      "status": "failed",
+      "error": {
+        "message": "This email address is already in use",
+        "code": 203,
+        "name": "EMAIL_USED_EXCEPTION"
+      },
+      "updateTimestamp": "2023-02-28T10:59:09.853Z",
+      "creationTimestamp": "2023-02-28T10:59:09.853Z"
+    },
+    {
+      "id": "63fe01b8a22171bac4defbd5",
+      "providerId": "60b631ab4160410ebea3c481dcf8595c",
+      "providerSubjectId": "849f500c7556eacfa0db89eed59e3829fafbb848",
+      "userId": "63f74665245ea576278df088",
+      "status": "success",
+      "updateTimestamp": "2023-02-28T13:29:28.719Z",
+      "creationTimestamp": "2023-02-28T13:29:28.719Z"
+    },
+    {
+      "id": "63fe01bea221717104defbd6",
+      "providerId": "5f29856a1e7546eaba0e83152916a6ae",
+      "providerSubjectId": "8a12722d6c6249294bed7693e9908900070ec3db",
+      "status": "failed",
+      "error": {
+        "message": "This email address is already in use",
+        "code": 203,
+        "name": "EMAIL_USED_EXCEPTION"
+      },
+      "updateTimestamp": "2023-02-28T13:29:34.977Z",
+      "creationTimestamp": "2023-02-28T13:29:34.977Z"
+    },
+    {
+      "id": "63fe27eba22171002bdefcee",
+      "providerId": "cfd2d54d42cc4bd38ae4e4b0aad3c04f",
+      "status": "failed",
+      "error": {
+        "message": "The token endpoint of the provider gave an unexpected result",
+        "code": 138,
+        "name": "OIDC_PROVIDER_RESPONSE_EXCEPTION"
+      },
+      "updateTimestamp": "2023-02-28T16:12:27.151Z",
+      "creationTimestamp": "2023-02-28T16:12:27.151Z",
+      "providerSubjectId": "18111b51011b76bc512bd1f33345365f91924b8a"
+    },
+    {
+      "id": "6400c43ca22171a61fdf13ca",
+      "providerId": "52aaf92d0c084a328cb4930e3c59b0fa",
+      "status": "failed",
+      "error": {
+        "message": "The token endpoint of the provider gave an unexpected result",
+        "code": 138,
+        "name": "OIDC_PROVIDER_RESPONSE_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-02T15:43:56.973Z",
+      "creationTimestamp": "2023-03-02T15:43:56.973Z",
+      "providerSubjectId": "19005cf5c0d0e1df470aec26a8727905a0ef8f4d"
+    },
+    {
+      "id": "6400df584b50030007678683",
+      "providerId": "ad5f654a888748f98d19374d720e6fbb",
+      "status": "failed",
+      "error": {
+        "message": "The token endpoint of the provider gave an unexpected result",
+        "code": 138,
+        "name": "OIDC_PROVIDER_RESPONSE_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-02T17:39:36.520Z",
+      "creationTimestamp": "2023-03-02T17:39:36.520Z",
+      "providerSubjectId": "9ad40c50d24cb90e03c175762279d5e40023da7e"
+    },
+    {
+      "id": "6405b6cf444bc7529c1cf995",
+      "providerId": "5afffbfa598140f8b0f21233ad3599b6",
+      "providerSubjectId": "e50311e2439de551076db644e1662111d25fca92",
+      "userId": "63fcb7e2245ea576278df097",
+      "status": "success",
+      "updateTimestamp": "2023-03-06T09:47:59.112Z",
+      "creationTimestamp": "2023-03-06T09:47:59.112Z"
+    },
+    {
+      "id": "6405b6fe444bc7763a1cf99a",
+      "providerId": "fc7a0b12bb3c42c582e1bf93db137853",
+      "status": "failed",
+      "error": {
+        "message":
+            "The authorization code was not accepted by the provider: Bad Request",
+        "code": 139,
+        "name": "OIDC_INVALID_AUTHORIZATION_CODE_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-06T09:48:46.081Z",
+      "creationTimestamp": "2023-03-06T09:48:46.081Z",
+      "providerSubjectId": "55cf92df2b51da9957fe065715bfe3f5c0f4e1e2"
+    },
+    {
+      "id": "6405b77f444bc7fe901cf99e",
+      "providerId": "4e5b47337da1426d9131f208982b2e3d",
+      "status": "failed",
+      "error": {
+        "message":
+            "The authorization code was not accepted by the provider: Bad Request",
+        "code": 139,
+        "name": "OIDC_INVALID_AUTHORIZATION_CODE_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-06T09:50:55.660Z",
+      "creationTimestamp": "2023-03-06T09:50:55.660Z",
+      "providerSubjectId": "a80a984e792d160dc15d60db7d424e14217624b9"
+    },
+    {
+      "id": "6405b786444bc7f3311cf99f",
+      "providerId": "15fe5186606c41a1bdadda996580f1b4",
+      "status": "failed",
+      "error": {
+        "message":
+            "The authorization code was not accepted by the provider: Malformed auth code.",
+        "code": 139,
+        "name": "OIDC_INVALID_AUTHORIZATION_CODE_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-06T09:51:02.761Z",
+      "creationTimestamp": "2023-03-06T09:51:02.761Z",
+      "providerSubjectId": "0846d595ea8fd57c0c62e04241111d6728ebd05d"
+    },
+    {
+      "id": "6405b907444bc7977b1cf9b8",
+      "providerId": "82c898fdc03d4e459e58b52168eaf463",
+      "providerSubjectId": "01b47aa22c62817ecb96bc9c67d2d9d2fd857c5f",
+      "userId": "6405b9076b4dac06b55520ee",
+      "status": "success",
+      "updateTimestamp": "2023-03-06T09:57:27.707Z",
+      "creationTimestamp": "2023-03-06T09:57:27.707Z"
+    },
+    {
+      "id": "6405b9e3444bc789721cf9c6",
+      "providerId": "4943ed082e294800aabf2ba1af017195",
+      "status": "failed",
+      "error": {
+        "message":
+            "The authorization code was not accepted by the provider: Malformed auth code.",
+        "code": 139,
+        "name": "OIDC_INVALID_AUTHORIZATION_CODE_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-06T10:01:07.117Z",
+      "creationTimestamp": "2023-03-06T10:01:07.117Z",
+      "providerSubjectId": "de9ce035fbbfc35c0999f8eaa41f297ee54e7a1e"
+    },
+    {
+      "id": "6405b9fa444bc73f861cf9c9",
+      "providerId": "4a690044cde44feba4c5d04e40e4f619",
+      "providerSubjectId": "ffdd9a49c55676478a1d8a5d536bf8d86ada50d0",
+      "userId": "6405b9076b4dac06b55520ee",
+      "status": "success",
+      "updateTimestamp": "2023-03-06T10:01:30.342Z",
+      "creationTimestamp": "2023-03-06T10:01:30.342Z"
+    },
+    {
+      "id": "640719d0444bc7bcec1d05e1",
+      "status": "failed",
+      "error": {
+        "message": "Requested resource is unknown",
+        "code": 16,
+        "name": "RESOURCE_UNKNOWN_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-07T11:02:40.708Z",
+      "creationTimestamp": "2023-03-07T11:02:40.708Z",
+      "providerId": "8075890e32954deda66e865765931b0d",
+      "providerSubjectId": "7d2e752c7e18637b0e0d9505feb01dea8813dd88"
+    },
+    {
+      "id": "640719d6444bc7359c1d05e2",
+      "providerId": "36e9dd127d0f4f338f6dd0a9093adfab",
+      "providerSubjectId": "e5e18281fdb2f1b67d0f5c6e8eb72372b7d3da13",
+      "status": "failed",
+      "error": {
+        "message": "This email address is already in use",
+        "code": 203,
+        "name": "EMAIL_USED_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-07T11:02:46.136Z",
+      "creationTimestamp": "2023-03-07T11:02:46.136Z"
+    },
+    {
+      "id": "640886d7db8bd00bd6f15624",
+      "providerId": "59aaa4b892ab4d15bfe4c7042c5f41d2",
+      "providerSubjectId": "a60e824c1db243af8163a64591c55e3eb79df7b7",
+      "status": "failed",
+      "error": {
+        "message": "This email address is already in use",
+        "code": 203,
+        "name": "EMAIL_USED_EXCEPTION"
+      },
+      "updateTimestamp": "2023-03-08T13:00:07.646Z",
+      "creationTimestamp": "2023-03-08T13:00:07.646Z"
+    },
+    {
+      "id": "6408876cdb8bd07495f1562b",
+      "providerId": "27a61a7c12724773b402e92dd1a08ba5",
+      "providerSubjectId": "eb0cc2f392f762d8557fd9bdfd74d29baee554cd",
+      "userId": "63f74665245ea576278df088",
+      "status": "success",
+      "updateTimestamp": "2023-03-08T13:02:36.633Z",
+      "creationTimestamp": "2023-03-08T13:02:36.633Z"
+    }
+  ]
+}
