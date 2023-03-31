@@ -68,5 +68,6 @@ export interface LoginAttempt {
     message: string;
     code: number;
   };
+  /** The date and time of the login attempt */
   creationTimestamp: Date;
 }

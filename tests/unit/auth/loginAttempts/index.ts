@@ -93,7 +93,7 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
     });
   });
 
-  it('Throws an error if a limit is provided to the findAll method', async () => {
+  it('throws an error if a limit is provided to the findAll method', async () => {
     // Limit is restricted to 50
     const rql = rqlBuilder().limit(50).build();
 
