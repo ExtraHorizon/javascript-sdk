@@ -114,7 +114,7 @@ export interface Client<T extends ClientParams> {
  *
  * @example
  * const sdk = createClient({
- *   host: 'xxx.fibricheck.com',
+ *   host: 'xxx.extrahorizon.io',
  *   clientId: 'string',
  * });
  * await sdk.auth.authenticate({
@@ -164,7 +164,7 @@ export type OAuth1Client = Client<ParamsOauth1>;
  *
  * @example
  * const sdk = createOAuth1Client({
- *   host: 'dev.fibricheck.com',
+ *   host: 'dev.extrahorizon.io',
  *   consumerKey: 'string',
  *   consumerSecret: 'string',
  * });
@@ -182,7 +182,7 @@ export type OAuth2Client = Client<ParamsOauth2>;
  *
  * @example
  * const sdk = createOAuth2Client({
- *   host: 'dev.fibricheck.com',
+ *   host: 'dev.extrahorizon.io',
  *   clientId: 'string',
  * });
  * await sdk.auth.authenticate({
@@ -199,7 +199,7 @@ export type ProxyClient = Client<ParamsProxy>;
  *
  * @example
  * const sdk = createProxyClient({
- *   host: 'apx.dev.fibricheck.com',
+ *   host: 'apx.dev.extrahorizon.io',
  * });
  */
 export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient =>
