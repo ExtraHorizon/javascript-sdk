@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
-import { data } from './data';
+import { data } from './data.json';
 import { AUTH_BASE } from '../../../../src/constants';
 import { createClient } from '../../../../src/index';
 import { createPagedResponse } from '../../../__helpers__/utils';
