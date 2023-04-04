@@ -18,7 +18,7 @@ export interface OidcProviderService {
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    * @throws {@link FieldFormatError} when one of the provided parameters is not correctly formatted according to the documentation.
    */
-  create(body: OidcProviderCreation): Promise<OidcProviderResponse>;
+  create(body: OidcProviderCreation): Promise<OidcProvider>;
 
   /**
    * ## Retrieve a paged list of OpenID Connect providers
@@ -127,84 +127,50 @@ export interface OidcProviderService {
 }
 
 export interface OidcProvider {
-  /** ###The Extra Horizon OpenID Connect provider identifier */
+  /** A 24 character long hexadecimal value acting as the identifier of an OpenId Connect provider */
   id: string;
-  /** ###The user-friendly and unique name of the provider
-   * **Validation:**
-   * - Minimum Length: 3 characters
-   * - Maximum Length: 40 characters
-   * - Matches pattern: /^[a-zA-Z0-9_-]+$/ */
+  /** Human friendly name of the provider, which can also be used in the oidc login url. Then name can be between 3 and 40 characters and match pattern: '/^[a-zA-Z0-9_-]+$/' */
   name: string;
-  /** ###A brief description of the provider
-   * **Validation:**
-   * - Maximum Length: 256 characters */
+  /** Description of the provider. With a maximum of 256 characters */
   description: string;
-  /**  ###Obtained from the OpenID Connect application on registration (client_id)
-   * **Validation:**
-   * - Maximum Length: 256 characters */
+  /** Provided by the OpenID Connect provider after registration. With a maximum of 2048 characters */
   clientId: string;
-  /**  ###Obtained from the OpenID Connect application on registration (Issuer / iss)
-   * **Validation:**
-   * - Maximum Length: 2048 characters */
+  /** A URL of maximum 2048 charactes that acts as a unique identifier for the provider. `Issuer` in the provider's discovery document. */
   issuerId: string;
-  /**  ###Allows a user to sign in to the OpenID Connect application and retrieve an authorization_code
-   * **Validation:**
-   * - The user can sign in to retrieve an authorization_code
-   * - Maximum Length: 2048 characters
-   *
-   * **Notes:**
-   * - The authorization endpoint is obtained from the OpenID application on registration
-   * */
+  /** A URL of maximum 2048 character that points to the provider’s URL for authorising the user (i.e., signing the user in). authorization_endpoint in the provider's discovery document. */
   authorizationEndpoint: string;
-  /**
-   * ###ALlows a user to exchange an authorization_code for access tokens with the provider
-   * **Validation:**
-   * - Maximum length: 2048 characters
-   *
-   * **Notes:**
-   * - The token endpoint is obtained from the OpenID application on registration
-   */
+  /** A URL of maximum 2048 character that points to the provider’s OAuth 2.0 protected URL from which user information can be obtained. token_endpoint in the provider's discovery document. */
   tokenEndpoint: string;
-  /**
-   * ###ALlows a user to exchange an authorization_code for personal information with the provider
-   *
-   * **Validation:**
-   * - Maximum length: 2048 characters
-   *
-   * **Notes:**
-   * - The user info endpoint is obtained from the OpenID application on registration
-   * - The returned user information is defined by the OpenID Connect provider */
+  /** A URL of maximum 2048 character that points to the provider’s endpoint of the authorization server Extra Horizon can use to obtain the email address and optionally also the family name and given name. userinfo_endpoint in the provider's discovery document. */
   userinfoEndpoint: string;
-  /**
-   * ###Redirects the user to the provided URL after a successful user sign in
-   *
-   * **Validation:**
-   * - Must match a redirect URL provided to the OpenID connect application on creation
-   * - Maximum length: 2048 characters
-   * */
+  /** A URL of maximum 2048 character that points to the location where the authorization server sends the user once the app has been successfully authorised and granted an authorization code or access token */
   redirectUri: string;
-  /** ### Indicates if the OpenID Connect provider is active
-   * **Notes:**
-   * - Disabling a provider will not remove the users linked to it
-   * - Disabling a provider will not terminate active user sessions
-   * */
+  /** Indicates wether the OpenID Connect provider is active and can be used for SSO */
   enabled: boolean;
-  /** ###  Obtained from the OpenID Connect application on registration (client_secret)
-   * **validation:**
-   * - Maximum Length: 2048 characters */
-  clientSecret: string;
-  /** ###The creation timestamp of the OpenID Connect provider */
+  /** The last four characters of the client secret */
+  clientSecretHint: string;
+  /** The creation timestamp of the OpenID Connectprovider */
   creationTimestamp: Date;
-  /** ###The last updated timestamp of the OpenID Connect provider */
+  /** The update timestamp of the OpenID Connect provider */
   updateTimestamp: Date;
 }
 
-export type OidcProviderCreation = Omit<
-  OidcProvider,
-  'id' | 'enabled' | 'creationTimestamp' | 'updateTimestamp'
->;
-export type OidcProviderResponse = Omit<OidcProvider, 'clientSecret'> & {
-  /** ###The last four characters of the client secret */
-  clientSecretHint: string;
-};
+export interface OidcProviderCreation
+  extends Required<
+    Pick<
+      OidcProvider,
+      | 'name'
+      | 'description'
+      | 'clientId'
+      | 'authorizationEndpoint'
+      | 'redirectUri'
+      | 'tokenEndpoint'
+      | 'userinfoEndpoint'
+      | 'issuerId'
+    >
+  > {
+  /** The OAuth 2.0 Client Secret you received from your provider. Max 2048 characters */
+  clientSecret: string;
+}
+
 export type OidcProviderUpdate = Partial<OidcProviderCreation>;
