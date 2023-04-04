@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
-import { createClient, rqlBuilder } from '../../../src';
-import { AUTH_BASE } from '../../../src/constants';
+import { createClient, rqlBuilder } from '../../../../src';
+import { AUTH_BASE } from '../../../../src/constants';
 
-describe('Auth - OpenID Connect', () => {
+describe('Auth - OpenID Connect - Providers', () => {
   const host = 'https://api.xxx.extrahorizon.com';
 
   const sdk = createClient({
@@ -49,7 +49,7 @@ describe('Auth - OpenID Connect', () => {
       .post(`/oidc/providers`, data)
       .reply(200, providerResponse);
 
-    const result = await sdk.auth.oidc.createProvider(data);
+    const result = await sdk.auth.oidc.providers.create(data);
     expect(result).toMatchObject(provider);
   });
 
@@ -62,7 +62,7 @@ describe('Auth - OpenID Connect', () => {
         data: [providerResponse, providerResponse, providerResponse],
       });
 
-    const { data } = await sdk.auth.oidc.getProviders({ rql });
+    const { data } = await sdk.auth.oidc.providers.find({ rql });
     expect(data).toMatchObject([provider, provider, provider]);
   });
 
@@ -71,7 +71,7 @@ describe('Auth - OpenID Connect', () => {
       .put(`/oidc/providers/${provider.id}`, { name: 'google-v2' })
       .reply(200, { affectedRecords: 1 });
 
-    const result = await sdk.auth.oidc.updateProvider(provider.id, {
+    const result = await sdk.auth.oidc.providers.update(provider.id, {
       name: 'google-v2',
     });
     expect(result).toMatchObject({ affectedRecords: 1 });
@@ -82,7 +82,7 @@ describe('Auth - OpenID Connect', () => {
       .delete(`/oidc/providers/${provider.id}`)
       .reply(200, { affectedRecords: 1 });
 
-    const result = await sdk.auth.oidc.deleteProvider(provider.id);
+    const result = await sdk.auth.oidc.providers.delete(provider.id);
     expect(result).toMatchObject({ affectedRecords: 1 });
   });
 
@@ -91,7 +91,7 @@ describe('Auth - OpenID Connect', () => {
       .post(`/oidc/providers/${provider.id}/enable`)
       .reply(200, { affectedRecords: 1 });
 
-    const result = await sdk.auth.oidc.enableProvider(provider.id);
+    const result = await sdk.auth.oidc.providers.enable(provider.id);
     expect(result).toMatchObject({ affectedRecords: 1 });
   });
 
@@ -100,14 +100,14 @@ describe('Auth - OpenID Connect', () => {
       .post(`/oidc/providers/${provider.id}/disable`)
       .reply(200, { affectedRecords: 1 });
 
-    const result = await sdk.auth.oidc.disableProvider(provider.id);
+    const result = await sdk.auth.oidc.providers.disable(provider.id);
     expect(result).toMatchObject({ affectedRecords: 1 });
   });
 
   it('Links a user to an OpenID Connect provider', async () => {
     const linkRequestBody = {
+      presenceToken: 'some-randomly-generated-token',
       authorizationCode: 'some-randomly-generated-string',
-      nonce: 'some-randomly-generated-string',
     };
 
     nock(`${host}${AUTH_BASE}`)
