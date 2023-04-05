@@ -34,7 +34,7 @@ export interface LoginAttemptsService {
   findAllIterator(options?: OptionsWithRql): FindAllIterator<LoginAttempt>;
 
   /**
-   * ## Retrieve a list of login attempts
+   * ## Retrieve the first queried login attempt
    *
    * **Global Permissions:**
    * - `VIEW_OIDC_LOGIN_ATTEMPTS` - Allows a user to view login attempts
