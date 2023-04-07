@@ -2,6 +2,9 @@ import { AffectedRecords } from '../../types';
 import { LoginAttemptsService } from './loginAttempts/types';
 import { OidcProviderService } from './providers/types';
 
+export * from './loginAttempts/types';
+export * from './providers/types';
+
 export interface OidcService {
   /**
    * ##Link the authenticated user to a provider
