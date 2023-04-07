@@ -8,7 +8,7 @@ import { FindAllIterator } from '../../../helpers';
 export interface OidcProviderService {
   /**
    * ## Create a new OpenID Connect Provider
-   * ###You can use this function to create a new OpenId Connect Provider to enable Single Sign On.
+   * ### You can use this function to create a new OpenId Connect Provider to enable Single Sign On.
    *
    * **Global Permissions:**
    * `CREATE_OIDC_PROVIDER` - Allows a user to create a new OpenID Connect Provider
@@ -67,7 +67,7 @@ export interface OidcProviderService {
 
   /**
    * ## Update an OpenID Connect provider
-   * ###You can use this function to update an existing OpenId Connect Provider. Fields left undefined will not be updated.
+   * ### You can use this function to update an existing OpenId Connect Provider. Fields left undefined will not be updated.
    *
    * **Global Permissions:**
    * - `UPDATE_OIDC_PROVIDER` - Allows a user to update an OpenID Connect provider
@@ -86,7 +86,7 @@ export interface OidcProviderService {
 
   /**
    * ## Delete an OpenID Connect provider
-   * ###You can use this function to delete an existing OpenId Connect provider.
+   * ### You can use this function to delete an existing OpenId Connect provider.
    *
    * **Global Permissions:**
    * - `DELETE_OIDC_PROVIDER` - Allows a user to delete an OpenID Connect provider

@@ -4,8 +4,8 @@ import { OidcProviderService } from './providers/types';
 
 export interface OidcService {
   /**
-   * ##Link the authenticated user to a provider
-   * ###You can use this function to link the currently logged-in user to a registered provider.
+   * ## Link the authenticated user to a provider
+   * ### You can use this function to link the currently logged-in user to a registered provider.
    *
    * **Default Permissions:**
    * - Any authenticated user can execute this function.
@@ -22,8 +22,8 @@ export interface OidcService {
   ): Promise<AffectedRecords>;
 
   /**
-   * ##Unlink a user from OpenID Connect
-   * ###You can use this function to unlink a user from an OpenId Connect Provider.
+   * ## Unlink a user from OpenID Connect
+   * ### You can use this function to unlink a user from an OpenId Connect Provider.
    *
    * **Global Permissions:**
    * - `UNLINK_USER_FROM_OIDC` - Allows a user to unlink users from OpenID Connect
@@ -38,8 +38,8 @@ export interface OidcService {
 }
 
 export interface OidcLinkRequestBody {
-  /** ###The users Extra Horizon presence token - Obtained from {@link AuthService.confirmPresence confirmPresence} */
+  /** ### The users Extra Horizon presence token - Obtained from {@link AuthService.confirmPresence confirmPresence} */
   presenceToken: string;
-  /** ###Obtained from the OpenID Connect application upon successful user login. */
+  /** ### Obtained from the OpenID Connect application upon successful user login. */
   authorizationCode: string;
 }
