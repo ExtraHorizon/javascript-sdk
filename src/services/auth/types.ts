@@ -5,6 +5,12 @@ import { AuthOauth2Service } from './oauth2/types';
 import { OidcService } from './oidc/types';
 import { AuthUsersService } from './users/types';
 
+export * from './applications/types';
+export * from './oauth1/types';
+export * from './oauth2/types';
+export * from './oidc/types';
+export * from './users/types';
+
 export interface AuthService {
   /**
    * # Applications
