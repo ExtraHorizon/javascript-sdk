@@ -348,6 +348,13 @@ export interface UserRoles {
   roles: ObjectId[];
 }
 
+export interface EmailTemplates {
+  activation_email_template_id: string;
+  reactivation_email_template_id: string;
+  password_reset_email_template_id: string;
+  oidc_unlink_email_template_id: string;
+}
+
 export interface UsersGlobalRolesService {
   /**
    * Retrieve a list of permissions
@@ -1015,4 +1022,32 @@ export interface UsersService {
     requestBody: PasswordPolicy,
     options?: OptionsBase
   ): Promise<PasswordPolicy>;
+
+  /**
+   * ## Retrieve a list of email templates
+   *
+   * **Global Permissions:**
+   * - `VIEW_USER_SERVICE_EMAIL_TEMPLATES` - Allows a user to view the email templates configuration
+   *
+   * **Notes:**
+   * - If an email template has not been set, it will not appear in the response
+   * @param options {@link OptionsBase} - Add options to the request
+   * @returns A list of email templates {@link EmailTemplates}
+   */
+  getEmailTemplates(options: OptionsBase): Promise<EmailTemplates>;
+
+  /**
+   * ## Set the list of email templates
+   *
+   * **Global Permissions:**
+   * - `UPDATE_USER_SERVICE_EMAIL_TEMPLATES` - Allows a user to update the email templates configuration
+   *
+   * **Notes:**
+   * - This operation works as an update and will only update the templates that are provided
+   * @param templates {@link EmailTemplatesUpdate} - A partial list of email templates to update
+   * @returns A list of email templates {@link EmailTemplates}
+   */
+  setEmailTemplates(
+    templates: Partial<EmailTemplates>
+  ): Promise<EmailTemplates>;
 }

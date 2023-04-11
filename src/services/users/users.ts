@@ -1,4 +1,4 @@
-import type { HttpInstance } from '../../types';
+import type { EmailTemplates, HttpInstance } from '../../types';
 import { Results } from '../types';
 import type { User, UsersService } from './types';
 import { HttpClient } from '../http-client';
@@ -282,6 +282,26 @@ export default (
           options
         )
       ).data;
+    },
+
+    async getEmailTemplates(options) {
+      const { data } = await userClient.get(
+        httpWithAuth,
+        '/email_templates',
+        options
+      );
+
+      return data;
+    },
+
+    async setEmailTemplates(templates: Partial<EmailTemplates>) {
+      const { data } = await userClient.put(
+        httpWithAuth,
+        '/email_templates',
+        templates
+      );
+
+      return data;
     },
   };
 };
