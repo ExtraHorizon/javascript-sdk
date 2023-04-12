@@ -1,8 +1,8 @@
-import type { EmailTemplates, HttpInstance } from '../../types';
+import type { HttpInstance } from '../../types';
 import { Results } from '../types';
 import type { User, UsersService } from './types';
 import { HttpClient } from '../http-client';
-import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
+import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
 
 export default (
   userClient: HttpClient,
@@ -294,7 +294,7 @@ export default (
       return data;
     },
 
-    async setEmailTemplates(templates: Partial<EmailTemplates>) {
+    async setEmailTemplates(templates) {
       const { data } = await userClient.put(
         httpWithAuth,
         '/email_templates',
