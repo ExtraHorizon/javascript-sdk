@@ -349,10 +349,10 @@ export interface UserRoles {
 }
 
 export interface EmailTemplates {
-  activation_email_template_id: string;
-  reactivation_email_template_id: string;
-  password_reset_email_template_id: string;
-  oidc_unlink_email_template_id: string;
+  activationEmailTemplateId: string;
+  reactivationEmailTemplateId: string;
+  passwordResetEmailTemplateId: string;
+  oidcUnlinkEmailTemplateId: string;
 }
 
 export interface UsersGlobalRolesService {
@@ -1034,7 +1034,7 @@ export interface UsersService {
    * @param options {@link OptionsBase} - Add options to the request
    * @returns A list of email templates {@link EmailTemplates}
    */
-  getEmailTemplates(options: OptionsBase): Promise<EmailTemplates>;
+  getEmailTemplates(options?: OptionsBase): Promise<EmailTemplates>;
 
   /**
    * ## Set the list of email templates

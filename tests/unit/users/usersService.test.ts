@@ -8,14 +8,14 @@ import {
   rqlBuilder,
 } from '../../../src/index';
 import {
-  userData,
-  newUserData,
-  updatedUserData,
-  resourceUnknownError,
-  passwordPolicy,
   newPasswordPolicy,
+  newUserData,
+  passwordPolicy,
+  resourceUnknownError,
+  updatedUserData,
+  userData,
 } from '../../__helpers__/user';
-import { createPagedResponse } from '../../__helpers__/utils';
+import { createPagedResponse, randomHexString } from '../../__helpers__/utils';
 
 describe('Users Service', () => {
   const host = 'https://api.dev.fibricheck.com';
@@ -320,5 +320,34 @@ describe('Users Service', () => {
     const result = await sdk.users.updatePasswordPolicy(newPasswordPolicy);
 
     expect(result.minimumLength).toBeDefined();
+  });
+
+  it('Should allow a user with permissions to view the email template configurations', async () => {
+    // Response data will be camel cased by the interceptor
+    const templates = {
+      activationEmailTemplateId: randomHexString(24),
+      reactivationEmailTemplateId: randomHexString(24),
+      passwordResetEmailTemplateId: randomHexString(24),
+      oidcUnlinkEmailTemplateId: randomHexString(24),
+    };
+
+    nock(`${host}${USER_BASE}`).get(`/email_templates`).reply(200, templates);
+
+    const result = await sdk.users.getEmailTemplates();
+    expect(result).toEqual(templates);
+  });
+
+  it('Should allow a user with permissions to set the email template configurations', async () => {
+    // The user service will snake case the body
+    const templates = {
+      activationEmailTemplateId: randomHexString(24),
+      reactivationEmailTemplateId: randomHexString(24),
+      oidcUnlinkEmailTemplateId: randomHexString(24),
+    };
+
+    nock(`${host}${USER_BASE}`).put(`/email_templates`).reply(200, templates);
+
+    const result = await sdk.users.setEmailTemplates(templates);
+    expect(result).toEqual(templates);
   });
 });
