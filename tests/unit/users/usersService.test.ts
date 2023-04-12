@@ -323,31 +323,45 @@ describe('Users Service', () => {
   });
 
   it('Should allow a user with permissions to view the email template configurations', async () => {
-    // Response data will be camel cased by the interceptor
-    const templates = {
+    // The user service will respond in snake case and the SDK will convert the response to camel case
+    const data = {
       activationEmailTemplateId: randomHexString(24),
       reactivationEmailTemplateId: randomHexString(24),
-      passwordResetEmailTemplateId: randomHexString(24),
       oidcUnlinkEmailTemplateId: randomHexString(24),
     };
+    const snakeCasedData = {
+      activation_email_template_id: data.activationEmailTemplateId,
+      reactivation_email_template_id: data.reactivationEmailTemplateId,
+      oidc_unlink_email_template_id: data.oidcUnlinkEmailTemplateId,
+    };
 
-    nock(`${host}${USER_BASE}`).get(`/email_templates`).reply(200, templates);
+    nock(`${host}${USER_BASE}`)
+      .get(`/email_templates`)
+      .reply(200, snakeCasedData);
 
     const result = await sdk.users.getEmailTemplates();
-    expect(result).toEqual(templates);
+    expect(result).toEqual(data);
   });
 
   it('Should allow a user with permissions to set the email template configurations', async () => {
-    // The user service will snake case the body
-    const templates = {
+    // The user service will accept a request body and respond in snake case, whilst the SDK will accept a request and respond in camel case
+    const data = {
       activationEmailTemplateId: randomHexString(24),
       reactivationEmailTemplateId: randomHexString(24),
       oidcUnlinkEmailTemplateId: randomHexString(24),
     };
 
-    nock(`${host}${USER_BASE}`).put(`/email_templates`).reply(200, templates);
+    const snakeCasedData = {
+      activation_email_template_id: data.activationEmailTemplateId,
+      reactivation_email_template_id: data.reactivationEmailTemplateId,
+      oidc_unlink_email_template_id: data.oidcUnlinkEmailTemplateId,
+    };
 
-    const result = await sdk.users.setEmailTemplates(templates);
-    expect(result).toEqual(templates);
+    nock(`${host}${USER_BASE}`)
+      .put(`/email_templates`, snakeCasedData)
+      .reply(200, snakeCasedData);
+
+    const result = await sdk.users.setEmailTemplates(data);
+    expect(result).toEqual(data);
   });
 });
