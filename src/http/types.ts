@@ -222,6 +222,7 @@ export interface OAuth2HttpClient extends HttpInstance {
      * ## Authenticate a user with OIDC
      * You can use this method to authenticate a user after obtaining a authorization code from an OIDC provider.
      * The authorization code is obtained when an OIDC provider redirects a user back to your application after a successful authentication.
+     * The authorization code may be URL encoded, so make sure your application decodes it before providing it here.
      * See `auth.generateOidcAuthenticationUrl()` to initiate the authentication process.
      *
      * Like the `auth.authenticate()` method, the SDK uses the returned access token and refresh token to authenticate successive requests.
