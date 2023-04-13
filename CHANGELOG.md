@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Support for OpenID Connect
+  - OAuth 2 clients now allow users to authenticate themselves with OpenID connect. See:
+    - `exh.auth.generateOidcAuthenticationUrl()`
+    - `exh.auth.authenticateWithOidc()`
+  - Manage your OpenID Connect configuration via new methods found in:
+    - `exh.auth.oidc`
+    - `exh.auth.oidc.providers`
+    - `exh.auth.oidc.loginAttempts`
+- Methods to manage the User Service email templates:
+  - `exh.users.getEmailTemplates()`
+  - `exh.users.setEmailTemplates()`
 - While creating an oAuth1 client both `token` and `tokenSecret` can now be supplied.
   In which case there is no need for an extra `exh.auth.authenticate` call.
 
@@ -37,6 +48,11 @@ const exh = createClient({
 
 const currentUser = await sdk.users.me();
 ```
+
+### Changed
+- Improved types and inline documentation (JSDoc) for the `exh.auth.applications` section
+  - More detailed descriptions for the methods
+  - Descriptions for the fields within the data types we accept and return
 
 ## [v7.2.1]
 
