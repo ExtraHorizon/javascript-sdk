@@ -349,9 +349,13 @@ export interface UserRoles {
 }
 
 export interface EmailTemplates {
+  /** Template id used by the User Service for the account activation email. */
   activationEmailTemplateId: string;
+  /** Template id used by the User Service for the account reactivation email. */
   reactivationEmailTemplateId: string;
+  /** Template id used by the User Service for the password reset email. */
   passwordResetEmailTemplateId: string;
+  /** Template id used by the User Service for the OIDC unlink email. */
   oidcUnlinkEmailTemplateId: string;
 }
 
