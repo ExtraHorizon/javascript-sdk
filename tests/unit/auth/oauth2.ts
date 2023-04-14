@@ -1,13 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
-import {
-  ApiError,
-  BodyFormatError,
-  OAuth2LoginError,
-  ResourceUnknownError,
-  UnsupportedGrantTypeError,
-} from '../../../src/errors';
+import { ResourceUnknownError } from '../../../src/errors';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { authorizationData } from '../../__helpers__/auth';
 import { createPagedResponse } from '../../__helpers__/utils';
@@ -99,98 +93,6 @@ describe('Auth - OAuth2', () => {
       await sdk.auth.oauth2.deleteAuthorization(authorizationId);
     } catch (error) {
       expect(error).toBeInstanceOf(ResourceUnknownError);
-    }
-  });
-
-  it('Should allow a user to determine if an error is an instance of an OAuth2 error', async () => {
-    nock(`${host}${AUTH_BASE}`)
-      .post(`/oauth2/tokens`, {
-        grant_type: 'password',
-        client_id: '',
-        username: 'exh+test@extrahorizon.com',
-        password: 'gr8passwrdm8',
-      })
-      .reply(400, {
-        error: 'unsupported_grant_type',
-        description: 'Invalid grant type provided',
-        exh_error: {
-          name: 'UNSUPPORTED_GRANT_EXCEPTION',
-          description: 'Invalid grant type provided',
-          code: 121,
-        },
-      });
-
-    try {
-      await sdk.auth.authenticate({
-        username: 'exh+test@extrahorizon.com',
-        password: 'gr8passwrdm8',
-      });
-    } catch (error) {
-      expect(error).toBeInstanceOf(OAuth2LoginError);
-      expect(error).toBeInstanceOf(UnsupportedGrantTypeError);
-      expect(error).toBeInstanceOf(ApiError);
-    }
-  });
-
-  it('Should allow a user to determine if an Exh error is an instance of an error', async () => {
-    nock(`${host}${AUTH_BASE}`)
-      .post(`/oauth2/tokens`, {
-        grant_type: 'password',
-        client_id: '',
-        username: 'exh+test@extrahorizon.com',
-        password: 'gr8passwrdm8',
-      })
-      .reply(400, {
-        error: 'invalid_request',
-        description:
-          'malformed body: "Unexpected token n in JSON at position 2"',
-        exh_error: {
-          name: 'BODY_FORMAT_EXCEPTION',
-          description:
-            'malformed body: "Unexpected token n in JSON at position 2"',
-          code: 22,
-        },
-      });
-
-    try {
-      await sdk.auth.authenticate({
-        username: 'exh+test@extrahorizon.com',
-        password: 'gr8passwrdm8',
-      });
-    } catch (error) {
-      expect(error.exhError).toBeInstanceOf(BodyFormatError);
-      expect(error.exhError).toBeInstanceOf(ApiError);
-    }
-  });
-
-  it('Should allow a user to receive an Exh error as a generic api error, when the received Exh error code has no error mapping', async () => {
-    nock(`${host}${AUTH_BASE}`)
-      .post(`/oauth2/tokens`, {
-        grant_type: 'password',
-        client_id: '',
-        username: 'exh+test@extrahorizon.com',
-        password: 'gr8passwrdm8',
-      })
-      .reply(400, {
-        error: 'invalid_request',
-        description:
-          'malformed body: "Unexpected token n in JSON at position 2"',
-        exh_error: {
-          name: 'BODY_FORMAT_EXCEPTION',
-          description:
-            'malformed body: "Unexpected token n in JSON at position 2"',
-          code: 69420,
-        },
-      });
-
-    try {
-      await sdk.auth.authenticate({
-        username: 'exh+test@extrahorizon.com',
-        password: 'gr8passwrdm8',
-      });
-    } catch (error) {
-      expect(error.exhError).not.toBeInstanceOf(BodyFormatError);
-      expect(error.exhError).toBeInstanceOf(ApiError);
     }
   });
 });

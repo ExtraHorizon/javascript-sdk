@@ -1,11 +1,15 @@
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
 import {
+  ApiError,
   AuthenticationError,
+  BodyFormatError,
   InvalidGrantError,
   MfaRequiredError,
+  OAuth2LoginError,
   RefreshTokenUnknownError,
   ResourceUnknownError,
+  UnsupportedGrantTypeError,
 } from '../../../src/errors';
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth2HttpClient } from '../../../src/http/oauth2';
@@ -361,6 +365,98 @@ describe('OAuth2HttpClient', () => {
     expect(result.request.headers.authorization).toBe(
       `Bearer ${exampleAccessToken}`
     );
+  });
+
+  it('Should allow a user to determine if an error is an instance of an OAuth2 error', async () => {
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, {
+        grant_type: 'password',
+        client_id: '',
+        username: 'exh+test@extrahorizon.com',
+        password: 'gr8passwrdm8',
+      })
+      .reply(400, {
+        error: 'unsupported_grant_type',
+        description: 'Invalid grant type provided',
+        exh_error: {
+          name: 'UNSUPPORTED_GRANT_EXCEPTION',
+          description: 'Invalid grant type provided',
+          code: 121,
+        },
+      });
+
+    const error = await httpWithAuth.extraAuthMethods
+      .authenticate({
+        username: 'exh+test@extrahorizon.com',
+        password: 'gr8passwrdm8',
+      })
+      .catch(e => e);
+
+    expect(error).toBeInstanceOf(UnsupportedGrantTypeError);
+    expect(error).toBeInstanceOf(OAuth2LoginError);
+    expect(error).toBeInstanceOf(ApiError);
+  });
+
+  it('Should allow a user to determine if an Exh error is an instance of an error', async () => {
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, {
+        grant_type: 'password',
+        client_id: '',
+        username: 'exh+test@extrahorizon.com',
+        password: 'gr8passwrdm8',
+      })
+      .reply(400, {
+        error: 'invalid_request',
+        description:
+          'malformed body: "Unexpected token n in JSON at position 2"',
+        exh_error: {
+          name: 'BODY_FORMAT_EXCEPTION',
+          description:
+            'malformed body: "Unexpected token n in JSON at position 2"',
+          code: 22,
+        },
+      });
+
+    const error = await httpWithAuth.extraAuthMethods
+      .authenticate({
+        username: 'exh+test@extrahorizon.com',
+        password: 'gr8passwrdm8',
+      })
+      .catch(e => e);
+
+    expect(error.exhError).toBeInstanceOf(BodyFormatError);
+    expect(error.exhError).toBeInstanceOf(ApiError);
+  });
+
+  it('Should allow a user to receive an Exh error as a generic api error, when the received Exh error code has no error mapping', async () => {
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, {
+        grant_type: 'password',
+        client_id: '',
+        username: 'exh+test@extrahorizon.com',
+        password: 'gr8passwrdm8',
+      })
+      .reply(400, {
+        error: 'invalid_request',
+        description:
+          'malformed body: "Unexpected token n in JSON at position 2"',
+        exh_error: {
+          name: 'BODY_FORMAT_EXCEPTION',
+          description:
+            'malformed body: "Unexpected token n in JSON at position 2"',
+          code: 69420,
+        },
+      });
+
+    const error = await httpWithAuth.extraAuthMethods
+      .authenticate({
+        username: 'exh+test@extrahorizon.com',
+        password: 'gr8passwrdm8',
+      })
+      .catch(e => e);
+
+    expect(error.exhError).not.toBeInstanceOf(BodyFormatError);
+    expect(error.exhError).toBeInstanceOf(ApiError);
   });
 
   describe('generateOidcAuthenticationUrl()', () => {
