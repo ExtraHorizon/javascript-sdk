@@ -1,8 +1,10 @@
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
 import {
+  AuthenticationError,
   InvalidGrantError,
   MfaRequiredError,
+  RefreshTokenUnknownError,
   ResourceUnknownError,
 } from '../../../src/errors';
 import { createHttpClient } from '../../../src/http/client';
@@ -136,14 +138,12 @@ describe('OAuth2HttpClient', () => {
         },
       });
 
-    const response = await httpWithAuth.extraAuthMethods
+    const error = await httpWithAuth.extraAuthMethods
       .authenticate(emailAuthData)
       .catch(e => e);
 
-    console.log(response);
-    await expect(
-      httpWithAuth.extraAuthMethods.authenticate(emailAuthData)
-    ).rejects.toThrow(InvalidGrantError);
+    expect(error).toBeInstanceOf(InvalidGrantError);
+    expect(error.exhError).toBeInstanceOf(AuthenticationError);
   });
 
   it('should authorize but first reply with expired token, but then valid refresh', async () => {
@@ -201,7 +201,9 @@ describe('OAuth2HttpClient', () => {
         },
       });
 
-    await expect(httpWithAuth.get('test')).rejects.toThrow(InvalidGrantError);
+    const error = await httpWithAuth.get('test').catch(e => e);
+    expect(error).toBeInstanceOf(InvalidGrantError);
+    expect(error.exhError).toBeInstanceOf(RefreshTokenUnknownError);
   });
 
   it('throws on authorization with reply twice with unknown token', async () => {
@@ -234,7 +236,9 @@ describe('OAuth2HttpClient', () => {
         },
       });
 
-    await expect(httpWithAuth.get('test')).rejects.toThrow(InvalidGrantError);
+    const error = await httpWithAuth.get('test').catch(e => e);
+    expect(error).toBeInstanceOf(InvalidGrantError);
+    expect(error.exhError).toBeInstanceOf(RefreshTokenUnknownError);
   });
 
   it('should authorize with a refreshToken', async () => {

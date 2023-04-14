@@ -85,19 +85,29 @@ const getHttpErrorRequestData = (error: HttpError) =>
 export class ApiError extends Error {
   public qName?: string;
 
-  constructor(
-    message: string,
-    public name: string,
-    public status?: number,
-    public statusText?: string,
-    public error?: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public request?: Record<string, any>,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public response?: Record<string, any>
-  ) {
-    super(message);
-    this.qName = name;
+  public name: string;
+
+  public status?: number;
+
+  public statusText?: string;
+
+  public error?: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public request?: Record<string, any>;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public response?: Record<string, any>;
+
+  constructor(data: ApiError) {
+    super(data.message);
+    this.name = data.name;
+    this.status = data.status;
+    this.statusText = data.statusText;
+    this.error = data.error;
+    this.request = data.request;
+    this.response = data.response;
+    this.qName = data.name;
   }
 
   public static createFromHttpError(error: HttpError): ApiError {
@@ -120,15 +130,7 @@ export class ApiError extends Error {
       },
     };
 
-    return new this(
-      apiError.message,
-      apiError.name,
-      apiError.status,
-      apiError.statusText,
-      apiError.error,
-      apiError.request,
-      apiError.response
-    );
+    return new this(apiError);
   }
 }
 
@@ -136,31 +138,25 @@ export class OAuth2LoginError extends ApiError {
   public exhError: ApiError;
 
   constructor(apiError: ApiError) {
-    super(
-      apiError.message,
-      apiError.name,
-      apiError.status,
-      apiError.statusText,
-      apiError.error,
-      apiError.request,
-      apiError.response
-    );
+    super(apiError);
 
-    // An OAuth2 login error will always contain an exh_error
-    const errorData = apiError?.response?.exh_error;
+    const exhErrorData = apiError?.response?.exh_error;
+    if (!exhErrorData) {
+      return;
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    const ErrorClass = ErrorClassMap[errorData?.code] || ApiError;
+    const ExhErrorClass = ErrorClassMap[exhErrorData.code] || ApiError;
 
-    this.exhError = new ErrorClass(
-      errorData?.description || '',
-      errorData?.name || '',
-      apiError?.status || '',
-      apiError?.statusText || '',
-      errorData?.name || '',
-      apiError?.request || '',
-      errorData
-    );
+    this.exhError = new ExhErrorClass({
+      message: exhErrorData.description,
+      name: exhErrorData.name,
+      status: apiError.status,
+      statusText: apiError.statusText,
+      error: exhErrorData.name,
+      request: apiError.request,
+      response: exhErrorData,
+    });
   }
 
   public static createFromHttpError(error: HttpError): OAuth2LoginError {
@@ -249,19 +245,19 @@ export class OAuth2ClientSecretError extends UnauthorizedError {}
 
 export class UserNotAuthenticatedError extends UnauthorizedError {
   public static createFromHttpError(error: HttpError): ApiError {
-    return new this(
-      getSpecifiedAuthenticationError(error),
-      getHttpErrorName(error)
-    );
+    return new this({
+      message: getSpecifiedAuthenticationError(error),
+      name: getHttpErrorName(error),
+    });
   }
 }
 
 export class OauthTokenError extends UnauthorizedError {
   public static createFromHttpError(error: HttpError): ApiError {
-    return new this(
-      getSpecifiedAuthenticationError(error),
-      getHttpErrorName(error)
-    );
+    return new this({
+      message: getSpecifiedAuthenticationError(error),
+      name: getHttpErrorName(error),
+    });
   }
 }
 
@@ -288,6 +284,14 @@ export class StripeRequestError extends BadGatewayServerError {}
 // 503 Service Unavailable Error
 export class ServiceUnavailableError extends ApiError {}
 export class OidcIdTokenError extends ServiceUnavailableError {}
+
+// OAuth2Login Errors
+export class InvalidGrantError extends OAuth2LoginError {}
+export class InvalidClientError extends OAuth2LoginError {}
+export class InvalidRequestError extends OAuth2LoginError {}
+export class UnauthorizedClientError extends OAuth2LoginError {}
+export class UnsupportedGrantTypeError extends OAuth2LoginError {}
+export class MfaRequiredError extends OAuth2LoginError {}
 
 function getSpecifiedAuthenticationError(error: HttpError): string {
   const { type, config } = error;
@@ -351,14 +355,6 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
   }
 }
 
-// OAuth2Login Errors
-export class InvalidGrantError extends OAuth2LoginError {}
-export class InvalidClientError extends OAuth2LoginError {}
-export class InvalidRequestError extends OAuth2LoginError {}
-export class UnauthorizedClientError extends OAuth2LoginError {}
-export class UnsupportedGrantTypeError extends OAuth2LoginError {}
-export class MfaRequiredError extends OAuth2LoginError {}
-
 export const OAuth2ErrorClassMap = {
   invalid_grant: InvalidGrantError,
   invalid_client: InvalidClientError,
@@ -403,7 +399,6 @@ export const ErrorClassMap = {
   124: OAuth2ClientSecretError,
   126: OAuth2MissingClientCredentialsError,
   128: MissingPKCEVerifierError,
-  // TODO: Problem child
   129: MfaRequiredError,
   130: InvalidMfaCodeError,
   131: InvalidMfaTokenError,

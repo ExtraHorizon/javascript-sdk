@@ -1,7 +1,11 @@
 import nock from 'nock';
 import { validateConfig } from '../../../src/utils';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { AuthenticationError, OauthTokenError } from '../../../src/errors';
+import {
+  AuthenticationError,
+  MfaRequiredError,
+  OauthTokenError,
+} from '../../../src/errors';
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth1HttpClient } from '../../../src/http/oauth1';
 import { OAuth1HttpClient } from '../../../src/types';
@@ -61,6 +65,57 @@ describe('OAuth1HttpClient', () => {
       .reply(200, tokenResponse);
 
     await httpWithAuth.extraAuthMethods.authenticate(authEmailData);
+
+    nock(mockParams.host).get('/test').reply(200);
+
+    const result = await httpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toContain('MyReceivedToken');
+  });
+
+  it('should authorize with MFA', async () => {
+    const mfaResponseData = {
+      token: '608c038a830f40d7fe028a3f05c85b84f9040d37',
+      tokenExpiresIn: 900000,
+      methods: [
+        {
+          id: '507f191e810c19729de860ea',
+          type: 'totp',
+          name: 'Google Authenticator',
+          tags: ['selected'],
+        },
+      ],
+    };
+
+    nock(mockParams.host).post(`${AUTH_BASE}/oauth1/tokens`).reply(403, {
+      name: 'MFA_REQUIRED_EXCEPTION',
+      message: 'Multifactor authentication is required for this user',
+      code: 129,
+      mfa: mfaResponseData,
+    });
+
+    const mfaError = await httpWithAuth.extraAuthMethods
+      .authenticate(authEmailData)
+      .catch(error => error);
+    expect(mfaError).toBeInstanceOf(MfaRequiredError);
+
+    const mfaData = mfaError.response.mfa;
+    expect(mfaData).toEqual(mfaResponseData);
+
+    const mfaMethod = mfaData.methods[0];
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth1/tokens/mfa`, {
+        token: mfaData.token,
+        methodId: mfaMethod.id,
+        code: '123',
+      })
+      .reply(200, tokenResponse);
+
+    await httpWithAuth.extraAuthMethods.confirmMfa({
+      token: mfaData.token,
+      methodId: mfaMethod.id,
+      code: '123',
+    });
 
     nock(mockParams.host).get('/test').reply(200);
 
