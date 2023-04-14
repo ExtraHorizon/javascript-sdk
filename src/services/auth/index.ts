@@ -1,14 +1,15 @@
 import type { HttpInstance } from '../../types';
-import type { Presence } from './types';
+import type { AuthService, Presence } from './types';
 import httpClient from '../http-client';
 import { OptionsBase, Results } from '../types';
 import applications from './applications';
 import oauth2 from './oauth2';
 import oauth1 from './oauth1';
 import users from './users';
+import oidc from './oidc';
 import { AUTH_BASE } from '../../constants';
 
-export const authService = (httpWithAuth: HttpInstance) => {
+export function authService(httpWithAuth: HttpInstance): AuthService {
   const authClient = httpClient({
     basePath: AUTH_BASE,
   });
@@ -18,6 +19,7 @@ export const authService = (httpWithAuth: HttpInstance) => {
     oauth2: oauth2(authClient, httpWithAuth),
     oauth1: oauth1(authClient, httpWithAuth),
     users: users(authClient, httpWithAuth),
+    oidc: oidc(authClient, httpWithAuth),
 
     /**
      * Generate a presence token by supplying a secret to confirm the presence of the owner of the account
@@ -50,4 +52,4 @@ export const authService = (httpWithAuth: HttpInstance) => {
       );
     },
   };
-};
+}

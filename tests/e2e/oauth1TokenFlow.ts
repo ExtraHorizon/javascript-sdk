@@ -1,10 +1,10 @@
-import { createClient } from '../../src';
+import { Client, createClient, ParamsOauth1 } from '../../src';
 import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
 import { newSchemaInput } from '../__helpers__/data';
 
 describe('OAuth1 Token Flow', () => {
-  let sdk;
+  let sdk: Client<ParamsOauth1>;
 
   beforeAll(async () => {
     sdk = createClient({

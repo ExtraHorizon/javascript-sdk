@@ -3,7 +3,7 @@ import { validateConfig } from '../../../src/utils';
 import { USER_BASE } from '../../../src/constants';
 import { createHttpClient } from '../../../src/http/client';
 import { createProxyHttpClient } from '../../../src/http';
-import { ConfigOauth2 } from '../../../src/types';
+import { ParamsOauth2 } from '../../../src/types';
 import {
   OauthTokenError,
   UserNotAuthenticatedError,
@@ -13,8 +13,8 @@ const mockParams = {
   host: 'https://apx.test.com',
 };
 
-describe('proxy client', () => {
-  const config = validateConfig(mockParams) as ConfigOauth2;
+describe('ProxyHttpClient', () => {
+  const config = validateConfig(mockParams) as ParamsOauth2;
   const http = createHttpClient({
     ...config,
     packageVersion: '',
@@ -49,12 +49,12 @@ describe('proxy client', () => {
 
   it('should log out', async () => {
     nock(mockParams.host).post(`/logout`).reply(200);
-    await expect(httpWithAuth.logout()).resolves.toBe(true);
+    await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(true);
   });
 
   it("shouldn't log out if function throws", async () => {
     nock(mockParams.host).post(`/logout`).reply(401);
-    await expect(httpWithAuth.logout()).resolves.toBe(false);
+    await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(false);
   });
 
   it('should get userId but return undefined because server error', async () => {

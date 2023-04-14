@@ -5,6 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v7.3.0]
+
+### Added
+
+- Support for OpenID Connect
+  - OAuth 2 clients now allow users to authenticate themselves with OpenID connect. See:
+    - `exh.auth.generateOidcAuthenticationUrl()`
+    - `exh.auth.authenticateWithOidc()`
+  - Manage your OpenID Connect configuration via new methods found in:
+    - `exh.auth.oidc`
+    - `exh.auth.oidc.providers`
+    - `exh.auth.oidc.loginAttempts`
+- Methods to manage the User Service email templates:
+  - `exh.users.getEmailTemplates()`
+  - `exh.users.setEmailTemplates()`
+- While creating an oAuth1 client both `token` and `tokenSecret` can now be supplied.
+  In which case there is no need for an extra `exh.auth.authenticate` call.
+
+```ts
+const exh = createClient({
+  host: 'https://api.example.extrahorizon.io',
+  consumerKey: 'cf29b211b5030202ffce5b2510759d0a53ea5b17',
+  consumerSecret: '9bd34e19b5e1714e2c57ae0127d98dd0d0c0b2a2',
+  token: '409ce9ba49c56cce31b9d2b1b2f5ed5ac01b4011',
+  tokenSecret: '1cc0b97b4c4721bb6da3d85b80cda8165e6ad5a7',
+});
+
+const currentUser = await sdk.users.me();
+```
+
+- While creating an oAuth2 client both `refreshToken` and `accessToken` can now be supplied.
+  In which case there is no need for an extra `exh.auth.authenticate` call.
+
+```ts
+const exh = createClient({
+  host: 'https://api.example.extrahorizon.io',
+  clientId: 'f8d9c891c106131bec970c6da05f887dc82eaff7',
+  refreshToken: 'ca27ada704e5b26a1fca20c130daf4f95f727d3f',
+  accessToken: '019dc6fe1672176f28e8e894ba99aed1f49656c8',
+});
+
+const currentUser = await sdk.users.me();
+```
+
+### Changed
+- Improved types and inline documentation (JSDoc) for the `exh.auth.applications` section
+  - More detailed descriptions for the methods
+  - Descriptions for the fields within the data types we accept and return
+
 ## [v7.2.1]
 
 ### Added

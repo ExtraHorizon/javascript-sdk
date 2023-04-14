@@ -1,5 +1,5 @@
-import type { HttpInstance } from '../../types';
-import { HttpClient } from '../http-client';
+import type { HttpInstance } from '../../../types';
+import { HttpClient } from '../../http-client';
 import type { AuthUsersService } from './types';
 
 export default (

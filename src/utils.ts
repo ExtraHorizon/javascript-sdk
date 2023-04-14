@@ -1,13 +1,4 @@
-import OAuth from 'oauth-1.0a';
-
-import { HmacSHA1 } from 'crypto-es/lib/sha1';
-import { Base64 } from 'crypto-es/lib/enc-base64';
-import { ClientConfig, ClientParams, GlobalPermissionName } from './types';
-import { AUTH_BASE } from './constants';
-
-function hmacSha1Hash(baseString: string, key: string) {
-  return HmacSHA1(baseString, key).toString(Base64);
-}
+import { ClientParams, GlobalPermissionName } from './types';
 
 function parseHost(rawHost: string, prefix: 'api' | 'apx') {
   const validHostEnd = rawHost.endsWith('/')
@@ -22,42 +13,24 @@ function parseHost(rawHost: string, prefix: 'api' | 'apx') {
         .replace(/^apx\./, '')}`;
 }
 
-export function validateConfig({
-  host: rawHost,
-  ...params
-}: ClientParams): ClientConfig {
+export function validateConfig<T extends ClientParams>(params: T): T {
   if ('consumerKey' in params) {
-    // oauth1
     return {
       ...params,
-      host: parseHost(rawHost, 'api'),
-      path: `${AUTH_BASE}/oauth1/tokens`,
-      oauth1: new OAuth({
-        consumer: {
-          key: params.consumerKey,
-          secret: params.consumerSecret,
-        },
-        signature_method: 'HMAC-SHA1',
-        hash_function: hmacSha1Hash,
-      }),
+      host: parseHost(params.host, 'api'),
     };
   }
 
   if ('clientId' in params) {
     return {
       ...params,
-      host: parseHost(rawHost, 'api'),
-      path: `${AUTH_BASE}/oauth2/tokens`,
-      params: {
-        client_id: params.clientId,
-        ...(params.clientSecret ? { client_secret: params.clientSecret } : {}),
-      },
+      host: parseHost(params.host, 'api'),
     };
   }
 
   return {
     ...params,
-    host: parseHost(rawHost, 'apx'),
+    host: parseHost(params.host, 'apx'),
   };
 }
 

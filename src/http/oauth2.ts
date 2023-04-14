@@ -1,12 +1,12 @@
-/* eslint-disable no-underscore-dangle */
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import btoa from '../btoa';
-import { ConfigOauth2 } from '../types';
+import { Oauth2AuthParams, ParamsOauth2 } from '../types';
 import {
   HttpInstance,
   MfaConfig,
-  OAuth2Config,
-  OAuthClient,
+  OAuth2HttpClient,
+  OidcAuthenticationUrl,
+  OidcAuthenticationUrlRequest,
   TokenDataOauth2,
 } from './types';
 import {
@@ -14,15 +14,26 @@ import {
   retryInterceptor,
   transformKeysResponseData,
   transformResponseData,
+  typeReceivedErrorsInterceptor,
 } from './interceptors';
-import { typeReceivedError } from '../errorHandler';
+import { AUTH_BASE } from '../constants';
+
+const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
 
 export function createOAuth2HttpClient(
   http: HttpInstance,
-  options: ConfigOauth2
-): OAuthClient {
-  let tokenData: TokenDataOauth2;
-  let authConfig: OAuth2Config;
+  options: ParamsOauth2
+): OAuth2HttpClient {
+  let tokenData: Partial<TokenDataOauth2>;
+
+  if ('refreshToken' in options && 'accessToken' in options) {
+    tokenData = {
+      refreshToken: options.refreshToken,
+      accessToken: options.accessToken,
+    };
+  }
+
+  const clientCredentials = getClientCredentials(options);
 
   const httpWithAuth = axios.create({
     ...http.defaults,
@@ -59,7 +70,7 @@ export function createOAuth2HttpClient(
   }
 
   const refreshTokens = async () => {
-    const tokenResult = await http.post(options.path, {
+    const tokenResult = await http.post(TOKEN_ENDPOINT, {
       grant_type: 'refresh_token',
       refresh_token: tokenData.refreshToken,
     });
@@ -67,51 +78,45 @@ export function createOAuth2HttpClient(
     return tokenResult.data;
   };
 
-  httpWithAuth.interceptors.request.use(async config => ({
-    ...config,
-    headers: {
-      ...config.headers,
-      ...(tokenData && tokenData.accessToken
-        ? { Authorization: `Bearer ${tokenData.accessToken}` }
-        : {}),
-    },
-  }));
+  // If set, add the access token to each request
+  httpWithAuth.interceptors.request.use(async config => {
+    if (!tokenData?.accessToken) {
+      return config;
+    }
+
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${tokenData.accessToken}`,
+      },
+    };
+  });
 
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
 
-  httpWithAuth.interceptors.response.use(
-    (response: AxiosResponse) => response,
-    async error => {
-      // Only needed if it's an axiosError, otherwise it's already typed
-      if (error && error.isAxiosError) {
-        const originalRequest = error.config;
-        if (
-          error.response &&
-          [400, 401, 403].includes(error.response.status) &&
-          !originalRequest._retry
-        ) {
-          originalRequest._retry = true;
-          if (
-            error.response?.data?.code === 118 ||
-            // ACCESS_TOKEN_EXPIRED_EXCEPTION
-            error.response?.data?.code === 117
-            // ACCESS_TOKEN_UNKNOWN
-          ) {
-            tokenData.accessToken = '';
-            originalRequest.headers.Authorization = `Bearer ${
-              (await refreshTokens()).accessToken
-            }`;
-          } else {
-            return Promise.reject(typeReceivedError(error));
-          }
-          return http(originalRequest);
-        }
-
-        return Promise.reject(typeReceivedError(error));
-      }
-      return Promise.reject(error);
+  // If we receive a expired/unknown access token error, refresh the tokens
+  httpWithAuth.interceptors.response.use(null, async error => {
+    if (!error || !error.isAxiosError || !error.response) {
+      throw error;
     }
-  );
+
+    const originalRequest = error.config;
+    if (
+      [400, 401, 403].includes(error.response.status) &&
+      // ACCESS_TOKEN_EXPIRED_EXCEPTION or ACCESS_TOKEN_UNKNOWN_EXCEPTION
+      [118, 117].includes(error.response?.data?.code) &&
+      !originalRequest.isRetryWithRefreshedTokens
+    ) {
+      originalRequest.isRetryWithRefreshedTokens = true;
+      await refreshTokens();
+      return httpWithAuth(originalRequest);
+    }
+
+    throw error;
+  });
+
+  httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
 
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
@@ -124,25 +129,22 @@ export function createOAuth2HttpClient(
     tokenData = data;
   }
 
-  async function authenticate(data: OAuth2Config): Promise<TokenDataOauth2> {
-    authConfig = data;
-
-    /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
-    if (options.params.client_secret && typeof global.btoa !== 'function') {
-      global.btoa = btoa;
-    }
+  async function authenticate(
+    data: Oauth2AuthParams
+  ): Promise<TokenDataOauth2> {
+    const grantData = getGrantData(data);
 
     const tokenResult = await http.post(
-      options.path,
+      TOKEN_ENDPOINT,
       {
-        ...options.params,
-        ...authConfig.params,
+        ...clientCredentials,
+        ...grantData,
       },
-      options.params.client_secret
+      clientCredentials.client_secret
         ? {
             auth: {
-              username: options.params.client_id,
-              password: options.params.client_secret,
+              username: clientCredentials.client_id,
+              password: clientCredentials.client_secret,
             },
           }
         : {}
@@ -157,26 +159,62 @@ export function createOAuth2HttpClient(
     code,
   }: MfaConfig): Promise<TokenDataOauth2> {
     const tokenResult = await http.post(
-      options.path,
+      TOKEN_ENDPOINT,
       {
-        ...options.params,
-        ...authConfig.params,
+        ...clientCredentials,
         grant_type: 'mfa',
         token,
         code,
         method_id: methodId,
       },
-      options.params.client_secret
+      clientCredentials.client_secret
         ? {
             auth: {
-              username: options.params.client_id,
-              password: options.params.client_secret,
+              username: clientCredentials.client_id,
+              password: clientCredentials.client_secret,
             },
           }
         : {}
     );
     await setTokenData(tokenResult.data);
     return tokenResult.data;
+  }
+
+  async function generateOidcAuthenticationUrl(
+    providerName: string,
+    data: OidcAuthenticationUrlRequest
+  ): Promise<OidcAuthenticationUrl> {
+    const response = await http.post(
+      `${AUTH_BASE}/oidc/providers/${providerName}/generateAuthenticationUrl`,
+      data
+    );
+
+    return response.data;
+  }
+
+  async function authenticateWithOidc(
+    providerName: string,
+    data: OidcAuthenticationUrlRequest
+  ): Promise<TokenDataOauth2> {
+    const response = await http.post(
+      `${AUTH_BASE}/oidc/providers/${providerName}/oAuth2Login`,
+      {
+        ...clientCredentials,
+        ...data,
+      },
+      clientCredentials.client_secret
+        ? {
+            auth: {
+              username: clientCredentials.client_id,
+              password: clientCredentials.client_secret,
+            },
+          }
+        : {}
+    );
+
+    await setTokenData(response.data);
+
+    return response.data;
   }
 
   function logout(): boolean {
@@ -191,9 +229,13 @@ export function createOAuth2HttpClient(
   return Object.defineProperty(
     {
       ...httpWithAuth,
-      authenticate,
-      confirmMfa,
-      logout,
+      extraAuthMethods: {
+        authenticate,
+        confirmMfa,
+        logout,
+        generateOidcAuthenticationUrl,
+        authenticateWithOidc,
+      },
     },
     'userId',
     {
@@ -201,5 +243,53 @@ export function createOAuth2HttpClient(
         return Promise.resolve(tokenData?.userId);
       },
     }
-  ) as OAuthClient;
+  ) as OAuth2HttpClient;
+}
+
+function getClientCredentials({ clientId, clientSecret }: ParamsOauth2) {
+  const credentials: OAuth2ClientCredentials = {
+    client_id: clientId,
+  };
+
+  if (clientSecret) {
+    credentials.client_secret = clientSecret;
+
+    /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
+    if (typeof global.btoa !== 'function') {
+      global.btoa = btoa;
+    }
+  }
+
+  return credentials;
+}
+
+interface OAuth2ClientCredentials {
+  client_id: string;
+  client_secret?: string;
+}
+
+function getGrantData(params: Oauth2AuthParams) {
+  if ('username' in params) {
+    return {
+      grant_type: 'password',
+      username: params.username,
+      password: params.password,
+    };
+  }
+
+  if ('code' in params) {
+    return {
+      grant_type: 'authorization_code',
+      code: params.code,
+    };
+  }
+
+  if ('refreshToken' in params) {
+    return {
+      grant_type: 'refresh_token',
+      refresh_token: params.refreshToken,
+    };
+  }
+
+  throw new Error('Invalid Oauth config');
 }

@@ -1,5 +1,4 @@
 import { AxiosResponse } from 'axios';
-import * as OAuth from 'oauth-1.0a';
 import { TokenDataOauth2, HttpRequestConfig } from './http/types';
 
 export * from './http/types';
@@ -43,12 +42,14 @@ export interface ParamsOauth2Refresh {
   refreshToken: string;
 }
 
-export type AuthParams =
-  | ParamsOauth1WithEmail
-  | ParamsOauth1WithToken
+export type Oauth1AuthParams = ParamsOauth1WithEmail | ParamsOauth1WithToken;
+
+export type Oauth2AuthParams =
   | ParamsOauth2AuthorizationCode
   | ParamsOauth2Password
   | ParamsOauth2Refresh;
+
+export type AuthParams = Oauth1AuthParams | Oauth2AuthParams;
 
 interface ParamsBase {
   host: string;
@@ -61,16 +62,30 @@ interface ParamsBase {
   };
 }
 
-export interface ParamsOauth1 extends ParamsBase {
+export interface ParamsOauth1Consumer extends ParamsBase {
   consumerKey: string;
   consumerSecret: string;
 }
 
-export interface ParamsOauth2 extends ParamsBase {
+export interface ParamsOauth1Token extends ParamsOauth1Consumer {
+  token: string;
+  tokenSecret: string;
+}
+
+export type ParamsOauth1 = ParamsOauth1Consumer | ParamsOauth1Token;
+
+export interface ParamsOauth2Client extends ParamsBase {
   clientId: string;
   clientSecret?: string;
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
+
+export interface ParamsOauth2AccessToken extends ParamsOauth2Client {
+  refreshToken: string;
+  accessToken: string;
+}
+
+export type ParamsOauth2 = ParamsOauth2Client | ParamsOauth2AccessToken;
 
 export type ParamsProxy = ParamsBase;
 
@@ -78,23 +93,5 @@ interface HttpClientBase {
   packageVersion: string;
 }
 
-export interface ConfigOauth1 extends ParamsBase {
-  path: string;
-  oauth1: OAuth;
-}
-
-export interface ConfigOauth2 extends ParamsBase {
-  path: string;
-  params: {
-    client_id: string;
-
-    client_secret?: string;
-  };
-  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
-}
-
-export type ConfigProxy = ParamsBase;
-
 export type ClientParams = ParamsOauth1 | ParamsOauth2 | ParamsProxy;
-export type ClientConfig = ConfigOauth1 | ConfigOauth2 | ConfigProxy;
-export type HttpClientConfig = HttpClientBase & ClientConfig;
+export type HttpClientConfig = HttpClientBase & ClientParams;
