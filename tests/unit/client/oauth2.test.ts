@@ -371,7 +371,7 @@ describe('OAuth2HttpClient', () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
         grant_type: 'password',
-        client_id: '',
+        client_id: mockParams.clientId,
         username: 'exh+test@extrahorizon.com',
         password: 'gr8passwrdm8',
       })
@@ -401,7 +401,7 @@ describe('OAuth2HttpClient', () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
         grant_type: 'password',
-        client_id: '',
+        client_id: mockParams.clientId,
         username: 'exh+test@extrahorizon.com',
         password: 'gr8passwrdm8',
       })
@@ -432,7 +432,7 @@ describe('OAuth2HttpClient', () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
         grant_type: 'password',
-        client_id: '',
+        client_id: mockParams.clientId,
         username: 'exh+test@extrahorizon.com',
         password: 'gr8passwrdm8',
       })
