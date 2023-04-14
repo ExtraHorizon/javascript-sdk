@@ -124,11 +124,23 @@ describe('OAuth2HttpClient', () => {
   });
 
   it('throws on authorization with wrong password', async () => {
-    nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
-      error: 'invalid_grant',
-      description: 'this password email combination is unknown',
-    });
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(400, {
+        error: 'invalid_grant',
+        description: 'this password email combination is unknown',
+        exh_error: {
+          name: 'AUTHENTICATION_EXCEPTION',
+          description: 'This password and email combination is unknown',
+          code: 106,
+        },
+      });
 
+    const response = await httpWithAuth.extraAuthMethods
+      .authenticate(emailAuthData)
+      .catch(e => e);
+
+    console.log(response);
     await expect(
       httpWithAuth.extraAuthMethods.authenticate(emailAuthData)
     ).rejects.toThrow(InvalidGrantError);
@@ -177,10 +189,17 @@ describe('OAuth2HttpClient', () => {
       description: 'The access token is expired',
     });
 
-    nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
-      error: 'invalid_grant',
-      description: 'The refresh token is unknown',
-    });
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(400, {
+        error: 'invalid_grant',
+        description: 'The refresh token is unknown',
+        exh_error: {
+          name: 'REFRESH_TOKEN_UNKNOWN_EXCEPTION',
+          description: 'The refresh token is unknown',
+          code: 119,
+        },
+      });
 
     await expect(httpWithAuth.get('test')).rejects.toThrow(InvalidGrantError);
   });
@@ -203,10 +222,17 @@ describe('OAuth2HttpClient', () => {
       message: 'The access token is unknown',
     });
 
-    nock(mockParams.host).post(`${AUTH_BASE}/oauth2/tokens`).reply(400, {
-      error: 'invalid_grant',
-      description: 'The refresh token is unknown',
-    });
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(400, {
+        error: 'invalid_grant',
+        description: 'The refresh token is unknown',
+        exh_error: {
+          name: 'REFRESH_TOKEN_UNKNOWN_EXCEPTION',
+          description: 'The refresh token is unknown',
+          code: 119,
+        },
+      });
 
     await expect(httpWithAuth.get('test')).rejects.toThrow(InvalidGrantError);
   });
@@ -244,6 +270,11 @@ describe('OAuth2HttpClient', () => {
       .reply(400, {
         error: 'mfa_required',
         description: 'Multifactor authentication is required for this user',
+        exh_error: {
+          name: 'MFA_REQUIRED_EXCEPTION',
+          description: 'Multifactor authentication is required for this user',
+          code: 129,
+        },
         mfa: {
           token: '608c038a830f40d7fe028a3f05c85b84f9040d37',
           tokenExpiresIn: 900000,
@@ -263,6 +294,7 @@ describe('OAuth2HttpClient', () => {
       .catch(error => error);
 
     expect(mfaError).toBeInstanceOf(MfaRequiredError);
+    expect(mfaError.exhError).toBeInstanceOf(MfaRequiredError);
 
     // Return a valid token for the confirm MFA call
     nock(mockParams.host)
