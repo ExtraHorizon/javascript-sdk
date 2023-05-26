@@ -134,15 +134,15 @@ export interface OidcProvider {
   description: string;
   /** Provided by the OpenID Connect provider after registration. With a maximum of 2048 characters */
   clientId: string;
-  /** A URL of maximum 2048 charactes that acts as a unique identifier for the provider. `Issuer` in the provider's discovery document. */
+  /** A URL of maximum 2048 characters that acts as a unique identifier for the provider. `Issuer` in the provider's discovery document. */
   issuerId: string;
-  /** A URL of maximum 2048 character that points to the provider’s URL for authorising the user (i.e., signing the user in). authorization_endpoint in the provider's discovery document. */
+  /** A URL of maximum 2048 characters that points to the provider’s URL for authorising the user (i.e., signing the user in). authorization_endpoint in the provider's discovery document. */
   authorizationEndpoint: string;
-  /** A URL of maximum 2048 character that points to the provider’s OAuth 2.0 protected URL from which user information can be obtained. token_endpoint in the provider's discovery document. */
+  /** A URL of maximum 2048 characters that points to the provider’s OAuth 2.0 protected URL from which user information can be obtained. token_endpoint in the provider's discovery document. */
   tokenEndpoint: string;
-  /** A URL of maximum 2048 character that points to the provider’s endpoint of the authorization server Extra Horizon can use to obtain the email address and optionally also the family name and given name. userinfo_endpoint in the provider's discovery document. */
-  userinfoEndpoint: string;
-  /** A URL of maximum 2048 character that points to the location where the authorization server sends the user once the app has been successfully authorised and granted an authorization code or access token */
+  /** A URL of maximum 2048 characters that points to the provider’s endpoint of the authorization server Extra Horizon can use to obtain the email address and optionally also the family name and given name. userinfo_endpoint in the provider's discovery document. */
+  userInfoEndpoint: string;
+  /** A URL of maximum 2048 characters that points to the location where the authorization server sends the user once the app has been successfully authorised and granted an authorization code or access token */
   redirectUri: string;
   /** Indicates wether the OpenID Connect provider is active and can be used for SSO */
   enabled: boolean;
@@ -164,7 +164,7 @@ export interface OidcProviderCreation
       | 'authorizationEndpoint'
       | 'redirectUri'
       | 'tokenEndpoint'
-      | 'userinfoEndpoint'
+      | 'userInfoEndpoint'
       | 'issuerId'
     >
   > {
