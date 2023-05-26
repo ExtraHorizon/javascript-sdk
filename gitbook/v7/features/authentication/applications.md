@@ -20,20 +20,13 @@ When launching a new cluster two default applications are created by us:
 
 You can create two types of applications: [oAuth1.0](https://www.rfc-editor.org/rfc/rfc5849) applications or [oAuth2](https://www.rfc-editor.org/rfc/rfc6749) applications.
 
-| Property       | Description                                                                                                                                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `name`         | The name or your application                                                                                                                                                                                 |
-| `description`  | A description of your application                                                                                                                                                                            |
-| `type`         | The type of application. Could be set to `oauth1` or `oauth2`                                                                                                                                                |
-| `redirectUris` | A list of approved uri's that can be used when authenticating with an [authorization code grant flow](https://www.rfc-editor.org/rfc/rfc6749#section-1.3.1). Can only be used in an oAuth2 application type. |
-| `confidential` | Defines wether your application should be considered a confidential app according to the [oAuth2.0 spec](https://www.rfc-editor.org/rfc/rfc6749).                                                            |
-| `logo`         | The logo of the application. Can be used in the oAuth2.0 authorization code grant to indicate the user what application he is authorizing. Can only be used in an oAuth2 application type.                   |
+<table><thead><tr><th width="211">Property</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>The name or your application</td></tr><tr><td><code>description</code></td><td>A description of your application</td></tr><tr><td><code>type</code></td><td>The type of application. Could be set to <code>oauth1</code> or <code>oauth2</code> </td></tr><tr><td><code>redirectUris</code></td><td>A list of approved uri's that can be used when authenticating with an <a href="https://www.rfc-editor.org/rfc/rfc6749#section-1.3.1">authorization code grant flow</a>. Can only be used in an oAuth2 application type.</td></tr><tr><td><code>confidential</code></td><td>Defines wether your application should be considered a confidential app according to the <a href="https://www.rfc-editor.org/rfc/rfc6749">oAuth2.0 spec</a>.</td></tr><tr><td><code>logo</code></td><td>The logo of the application. Can be used in the oAuth2.0 authorization code grant to indicate the user what application he is authorizing. Can only be used in an oAuth2 application type.</td></tr></tbody></table>
 
 {% tabs %}
 {% tab title="oAuth1.0" %}
 {% code lineNumbers="true" %}
 ```typescript
-await sdk.auth.applications.create({
+await exh.auth.applications.create({
     name:'myAppName',
     description: 'myAppDescription',
     type:'oauth1'
@@ -45,7 +38,7 @@ await sdk.auth.applications.create({
 {% tab title="oAuth2" %}
 {% code lineNumbers="true" %}
 ```typescript
-await sdk.auth.applications.create({
+await exh.auth.applications.create({
     name:'myAppName',
     description: 'myAppDescription',
     type:'oauth2',

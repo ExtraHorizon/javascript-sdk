@@ -1,6 +1,8 @@
-## RQL
+# guide
 
-### Builder
+### RQL
+
+#### Builder
 
 The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
 
@@ -30,10 +32,10 @@ const rql = rqlBuilder()
   .build();
 
 // ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
-const result = await sdk.data.documents.find({ rql });
+const result = await exh.data.documents.find({ rql });
 ```
 
-### Parser
+#### Parser
 
 You can also use the `rqlParser` function and pass in your own stirng.
 
@@ -45,10 +47,10 @@ const rql = rqlParser(
 );
 
 // ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
-const result = await sdk.data.documents.find({ rql });
+const result = await exh.data.documents.find({ rql });
 ```
 
-## Raw Queries
+### Raw Queries
 
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
 
@@ -56,29 +58,29 @@ You can use the underlying Axios instance (after authentication) to call endpoin
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
 (async () => {
-  const sdk = createOAuth2Client({
+  const exh = createOAuth2Client({
     host: "",
     clientId: "",
   });
 
-  await sdk.auth.authenticate({
+  await exh.auth.authenticate({
     password: "",
     username: "",
   });
 
-  const me = (await sdk.raw.get("/users/v1/me")).data;
+  const me = (await exh.raw.get("/users/v1/me")).data;
   console.log("Me", me);
 })();
 ```
 
-## Logging
+### Logging
 
 You can pass in two logger function that will be called by Axios on every request/response respectively.
 
 ```ts
 import AxiosLogger from "axios-logger";
 
-const sdk = createOAuth2Client({
+const exh = createOAuth2Client({
   host: "https://api.dev.fibricheck.com",
   clientId: '',
   requestLogger: AxiosLogger.requestLogger,
@@ -99,11 +101,11 @@ await sdk.users.health();
 
 ```
 
-## Schema/Document Generics
+### Schema/Document Generics
 
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
 
-As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
+As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get\_
 
 ```ts
 import {
@@ -148,7 +150,7 @@ interface MyData {
 const document = await sdk.data.documents.find<MyData>(mySchema.id);
 ```
 
-## SSL Pinning
+### SSL Pinning
 
 If you are using the SDK in a React Native application, you can use these hashes to enable SSL pinning in your application.
 
@@ -172,9 +174,9 @@ Ios
 
 More info on how to use the can be found here: https://medium.com/@jaedmuva/react-native-ssl-pinning-is-back-e317e6682642
 
-## Tests
+### Tests
 
-### Mock
+#### Mock
 
 The package also exports a mockSdk you can use in your tests. In this example `jest` is used as testing library.
 
@@ -205,9 +207,6 @@ module.exports = {
 };
 ```
 
-## Library
+### Library
 
-To run the unit tests: `yarn start`
-To run them in watch mode: `yarn start:watch`
-To run e2e tests, copy `.env.example` to `.env` and set up the credentials
-Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
+To run the unit tests: `yarn start` To run them in watch mode: `yarn start:watch` To run e2e tests, copy `.env.example` to `.env` and set up the credentials Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
