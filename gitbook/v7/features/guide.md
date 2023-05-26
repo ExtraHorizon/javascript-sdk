@@ -81,17 +81,17 @@ You can pass in two logger function that will be called by Axios on every reques
 import AxiosLogger from "axios-logger";
 
 const exh = createOAuth2Client({
-  host: "https://api.dev.fibricheck.com",
+  host: "https://api.dev.exh-sandbox.extrahorizon.io",
   clientId: '',
   requestLogger: AxiosLogger.requestLogger,
   responseLogger: AxiosLogger.responseLogger,
 });
 
-await sdk.auth.authenticate({
+await exh.auth.authenticate({
   refreshToken: 'refreshToken'
 })
 
-await sdk.users.health();
+await exh.users.health();
 
 [Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"refreshToken"}
 [Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"accessToken","token_type":"bearer","expires_in":299.999,"refresh_token":"refreshToken","user_id":"userId","application_id":"applicationId"}
@@ -132,12 +132,12 @@ interface MySchema extends Schema {
   };
 }
 
-const sdk = createOAuth2Client({
-  host: "dev.fibricheck.com",
+const exh = createOAuth2Client({
+  host: "https://api.dev.exh-sandbox.extrahorizon.io",
   clientId: "",
 });
 
-const { data: schemas } = await sdk.data.schemas.find();
+const { data: schemas } = await exh.data.schemas.find();
 const mySchema: MySchema = schemas[0];
 
 interface MyData {
@@ -147,32 +147,8 @@ interface MyData {
     latitude: Number;
   };
 }
-const document = await sdk.data.documents.find<MyData>(mySchema.id);
+const document = await exh.data.documents.find<MyData>(mySchema.id);
 ```
-
-### SSL Pinning
-
-If you are using the SDK in a React Native application, you can use these hashes to enable SSL pinning in your application.
-
-Android
-
-```
-"sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
-"sha256/f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE="
-"sha256/NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k="
-"sha256/9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U="
-```
-
-Ios
-
-```
-@"++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
-@"f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE="
-@"NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k="
-@"9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U="
-```
-
-More info on how to use the can be found here: https://medium.com/@jaedmuva/react-native-ssl-pinning-is-back-e317e6682642
 
 ### Tests
 
@@ -184,9 +160,9 @@ The package also exports a mockSdk you can use in your tests. In this example `j
 import { getMockSdk } from "@extrahorizon/javascript-sdk";
 
 describe("mock SDK", () => {
-  const sdk = getMockSdk<jest.Mock>(jest.fn);
+  const exh = getMockSdk<jest.Mock>(jest.fn);
   it("should be valid mock", async () => {
-    expect(sdk.data).toBeDefined();
+    expect(exh.data).toBeDefined();
   });
 });
 ```
@@ -196,14 +172,14 @@ If you are using `jest`. You can create a file under your `__mocks__/@extrahoriz
 ```ts
 import { getMockSdk } from "@extrahorizon/javascript-sdk";
 
-export const mockSdk = getMockSdk<jest.Mock>(jest.fn);
+export const exh = getMockSdk<jest.Mock>(jest.fn);
 
-const createOAuth1Client = () => mockSdk;
+const createOAuth1Client = () => exh;
 
 module.exports = {
   ...jest.requireActual("@extrahorizon/javascript-sdk"),
   createOAuth1Client,
-  mockSdk,
+  exh,
 };
 ```
 
