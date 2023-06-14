@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [NEXT]
+
+### Changed
+
+- `VIEW_GROUPS` permission value is changed to the correct `VIEW_GROUP`
+- Improved inline documentation
+  - `ADD_ROLE_PERMISSION` is now described correctly as singular in the inline documentation
+
 ## [v7.3.0]
 
 ### Added
