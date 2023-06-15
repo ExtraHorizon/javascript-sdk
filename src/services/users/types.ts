@@ -197,7 +197,7 @@ export enum GlobalPermissionName {
   VIEW_DOCUMENT_COMMENTS = 'VIEW_DOCUMENT_COMMENTS',
   DELETE_SCHEMAS = 'DELETE_SCHEMAS',
   VIEW_FILES = 'VIEW_FILES',
-  VIEW_GROUPS = 'VIEW_GROUPS',
+  VIEW_GROUPS = 'VIEW_GROUP',
   UPDATE_PACKAGES = 'UPDATE_PACKAGES',
   UPDATE_GROUP_REQUESTS = 'UPDATE_GROUP_REQUESTS',
   CREATE_DOCUMENT_COMMENTS = 'CREATE_DOCUMENT_COMMENTS',
@@ -420,7 +420,7 @@ export interface UsersGlobalRolesService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `ADD_ROLE_PERMISSIONS` | `global` | **Required** for this endpoint
+   * `ADD_ROLE_PERMISSION` | `global` | **Required** for this endpoint
    * @param requestBody RolePermissions
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
