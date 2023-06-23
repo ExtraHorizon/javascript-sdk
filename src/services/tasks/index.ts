@@ -3,15 +3,15 @@ import httpClient from '../http-client';
 import tasks from './tasks';
 import { TASKS_BASE } from '../../constants';
 import { TasksService } from './types';
+import api from './api';
 
 export const tasksService = (httpWithAuth: HttpInstance): TasksService => {
   const client = httpClient({
     basePath: TASKS_BASE,
   });
 
-  const tasksMethods = tasks(client, httpWithAuth);
-
   return {
-    ...tasksMethods,
+    ...tasks(client, httpWithAuth),
+    api: api(client, httpWithAuth),
   };
 };

@@ -1,0 +1,34 @@
+import { OptionsBase } from '../../types';
+
+export interface ApiService {
+  /**
+   * ## Execute a GET request towards an API function
+   *
+   * **Default Permissions:**
+   * - Any party may execute API functions with the `public` permission mode
+   * - Any authenticated user may execute API functions with the `allUsers` permission mode
+   *
+   * **Global Permissions:**
+   * - `EXECUTE_API_FUNCTION` - A user may execute all API functions
+   * - `EXECUTE_API_FUNCTION:{FUNCTION_NAME}` - A user may execute the API function specified by the FUNCTION_NAME
+   *
+   *  @template T
+   *  @param name {@link string} - The name property serves as the unique identifier amongst all Functions
+   *  @param path {@link string} - The targeted route within the Function
+   *  @param options {@link OptionsBase} - Additional options for the request.
+   *  @returns {T} - A user defined type defining the response from the API function
+   */
+  get<T>(name: string, path: string, options: OptionsBase): Promise<T>;
+
+  // TODO: POST
+
+  // TODO: PUT
+
+  // TODO: DELETE
+
+  // TODO: PATCH
+
+  // TODO: OPTIONS
+
+  // TODO: HEAD
+}
