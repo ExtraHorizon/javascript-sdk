@@ -1,3 +1,4 @@
+import { AxiosResponseHeaders } from 'axios';
 import { OptionsBase } from '../../types';
 
 export interface ApiService {
@@ -110,7 +111,22 @@ export interface ApiService {
     options: OptionsBase
   ): Promise<T>;
 
-  // TODO: OPTIONS
+  /**
+   * ## Execute an OPTIONS request towards an API function
+   *
+   * **Default Permissions:**
+   * - Any party may execute API functions with the `public` permission mode
+   * - Any authenticated user may execute API functions with the `allUsers` permission mode
+   *
+   * **Global Permissions:**
+   * - `EXECUTE_API_FUNCTION` - A user may execute all API functions
+   * - `EXECUTE_API_FUNCTION:{FUNCTION_NAME}` - A user may execute the API function specified by the FUNCTION_NAME
+   *
+   *  @param name {@link string} - The name property serves as the unique identifier amongst all Functions
+   *  @param path {@link string} - The targeted route within the Function
+   * @returns {@link AxiosResponseHeaders} - The headers returned from the request
+   */
+  options(name: string, path: string): Promise<AxiosResponseHeaders>;
 
   // TODO: HEAD
 }
