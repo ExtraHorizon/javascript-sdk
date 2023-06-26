@@ -44,4 +44,17 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => ({
 
     return response.data;
   },
+
+  async delete<T>(
+    name: string,
+    path: string,
+    options: OptionsBase
+  ): Promise<T> {
+    const { data } = await client.delete(
+      httpAuth,
+      `/api/${name}/${path}`,
+      options
+    );
+    return data;
+  },
 });
