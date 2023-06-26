@@ -57,4 +57,20 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => ({
     );
     return data;
   },
+
+  async patch<T, U>(
+    name: string,
+    path: string,
+    data: U,
+    options: OptionsBase
+  ): Promise<T> {
+    const response = await client.patch(
+      httpAuth,
+      `/api/${name}/${path}`,
+      data,
+      options
+    );
+
+    return response.data;
+  },
 });
