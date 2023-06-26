@@ -12,4 +12,20 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => ({
     );
     return data;
   },
+
+  async post<T, U>(
+    name: string,
+    path: string,
+    data: U,
+    options: OptionsBase
+  ): Promise<T> {
+    const response = await client.post(
+      httpAuth,
+      `/api/${name}/${path}`,
+      data,
+      options
+    );
+
+    return response.data;
+  },
 });
