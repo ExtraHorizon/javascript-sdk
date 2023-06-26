@@ -28,4 +28,20 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => ({
 
     return response.data;
   },
+
+  async put<T, U>(
+    name: string,
+    path: string,
+    data: U,
+    options: OptionsBase
+  ): Promise<T> {
+    const response = await client.put(
+      httpAuth,
+      `/api/${name}/${path}`,
+      data,
+      options
+    );
+
+    return response.data;
+  },
 });
