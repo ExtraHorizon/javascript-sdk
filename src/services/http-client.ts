@@ -98,6 +98,7 @@ const httpClient = ({
     axios.patch(`${basePath}${url}`, transformRequestData(data), config),
   options: (axios: HttpInstance, url: string) =>
     axios.options(`${basePath}${url}`),
+  head: (axios: HttpInstance, url: string) => axios.head(`${basePath}${url}`),
 });
 
 export default httpClient;

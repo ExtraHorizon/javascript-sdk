@@ -79,4 +79,9 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => ({
     const response = await client.options(httpAuth, `/api/${name}/${path}`);
     return response.headers;
   },
+
+  async head(name, path): Promise<AxiosResponseHeaders> {
+    const response = await client.head(httpAuth, `/api/${name}/${path}`);
+    return response.headers;
+  },
 });
