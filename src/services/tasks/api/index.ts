@@ -1,4 +1,3 @@
-import { AxiosResponseHeaders } from 'axios';
 import { ApiService } from './types';
 import { HttpInstance } from '../../../http/types';
 import { HttpClient } from '../../http-client';
@@ -73,15 +72,5 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => ({
     );
 
     return response.data;
-  },
-
-  async options(name, path): Promise<AxiosResponseHeaders> {
-    const response = await client.options(httpAuth, `/api/${name}/${path}`);
-    return response.headers;
-  },
-
-  async head(name, path): Promise<AxiosResponseHeaders> {
-    const response = await client.head(httpAuth, `/api/${name}/${path}`);
-    return response.headers;
   },
 });
