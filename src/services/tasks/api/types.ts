@@ -1,4 +1,3 @@
-import { AxiosResponseHeaders } from 'axios';
 import { OptionsBase } from '../../types';
 
 export interface ApiService {
