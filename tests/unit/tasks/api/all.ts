@@ -13,47 +13,51 @@ import { randomHexString } from '../../../__helpers__/utils';
 
 describe('Tasks - Functions - API', () => {
   const host = 'https://api.xxx.extrahorizon.com';
-  const name = 'test';
+  const functionName = 'test';
 
   const exh = createClient({
     host,
     clientId: '',
   });
 
-  it('Retrieves data from an API Function', async () => {
+  it('Executes a GET request towards an API Function', async () => {
     nock(`${host}${TASKS_BASE}`)
-      .get(`/api/${name}/users`)
+      .get(`/api/${functionName}/users`)
       .reply(200, { users: userData });
 
-    const { users } = await exh.tasks.api.get<UsersResponse>(name, 'users', {});
+    const { users } = await exh.tasks.api.get<UsersResponse>(
+      functionName,
+      'users',
+      {}
+    );
     expect(users).toMatchObject(userData);
   });
 
-  it('Creates a new user', async () => {
+  it('Executes a POST request towards an API Function', async () => {
     const newUser: User = randomUser();
 
     nock(`${host}${TASKS_BASE}`)
-      .post(`/api/${name}/users`)
+      .post(`/api/${functionName}/users`)
       .reply(200, { user: newUser });
 
     const { user } = await exh.tasks.api.post<UserResponse, User>(
-      name,
-      'users',
+      functionName,
+      '/users',
       newUser,
       {}
     );
     expect(user).toMatchObject(newUser);
   });
 
-  it('Replaces and existing user', async () => {
+  it('Executes a PUT request towards an API Function', async () => {
     const updatedUser = randomUser();
 
     nock(`${host}${TASKS_BASE}`)
-      .put(`/api/${name}/users/${userData[0].id}`)
+      .put(`/api/${functionName}/users/${userData[0].id}`)
       .reply(200, { user: updatedUser });
 
     const { user } = await exh.tasks.api.put<UserResponse, User>(
-      name,
+      functionName,
       `users/${userData[0].id}`,
       updatedUser,
       {}
@@ -61,31 +65,31 @@ describe('Tasks - Functions - API', () => {
     expect(user).toMatchObject(updatedUser);
   });
 
-  it('Removes a user', async () => {
+  it('Executes a DELETE request towards an API Function', async () => {
     const updatedUsers = [...userData].pop();
 
     nock(`${host}${TASKS_BASE}`)
-      .delete(`/api/${name}/users/${userData[userData.length - 1].id}`)
+      .delete(`/api/${functionName}/users/${userData[userData.length - 1].id}`)
       .reply(200, { users: updatedUsers });
 
     const { users } = await exh.tasks.api.delete<UsersResponse>(
-      name,
-      `users/${userData[userData.length - 1].id}`,
+      functionName,
+      `/users/${userData[userData.length - 1].id}`,
       {}
     );
     expect(users).toMatchObject(updatedUsers);
   });
 
-  it('Updates and existing user', async () => {
+  it('Executes a PATCH request towards an API Function', async () => {
     const update = { email: `${randomHexString()}@${randomHexString()}.com` };
     const updatedUser = { ...userData[0], update };
 
     nock(`${host}${TASKS_BASE}`)
-      .patch(`/api/${name}/users/${userData[0].id}`)
+      .patch(`/api/${functionName}/users/${userData[0].id}`)
       .reply(200, { user: updatedUser });
 
     const { user } = await exh.tasks.api.patch<UserResponse, Partial<User>>(
-      name,
+      functionName,
       `users/${userData[0].id}`,
       update,
       {}
