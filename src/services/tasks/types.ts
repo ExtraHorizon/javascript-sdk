@@ -6,6 +6,7 @@ import type {
   OptionsWithRql,
   PagedResult,
 } from '../types';
+import { ApiService } from './api/types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -108,4 +109,6 @@ export interface TasksService {
    * @throws {ResourceUnknownException}
    */
   cancel(taskId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+
+  api: ApiService;
 }

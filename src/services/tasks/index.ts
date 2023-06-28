@@ -9,9 +9,7 @@ export const tasksService = (httpWithAuth: HttpInstance): TasksService => {
     basePath: TASKS_BASE,
   });
 
-  const tasksMethods = tasks(client, httpWithAuth);
-
   return {
-    ...tasksMethods,
+    ...tasks(client, httpWithAuth),
   };
 };
