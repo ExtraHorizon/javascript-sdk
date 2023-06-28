@@ -2,20 +2,21 @@ import { ClientParams, ParamsOauth1, ParamsOauth2, ParamsProxy } from './types';
 import { version as packageVersion } from './version';
 
 import {
-  usersService,
   authService,
-  dataService,
-  tasksService,
-  filesService,
   configurationsService,
-  templatesService,
-  mailsService,
+  dataService,
   dispatchersService,
-  paymentsService,
-  localizationsService,
-  profilesService,
-  notificationsService,
   eventsService,
+  filesService,
+  localizationsService,
+  logsService,
+  mailsService,
+  notificationsService,
+  paymentsService,
+  profilesService,
+  tasksService,
+  templatesService,
+  usersService,
 } from './services';
 import {
   createHttpClient,
@@ -26,9 +27,9 @@ import {
 import { validateConfig } from './utils';
 import {
   AuthHttpClient,
-  ProxyInstance,
   OAuth1HttpClient,
   OAuth2HttpClient,
+  ProxyInstance,
 } from './http/types';
 
 export interface Client<T extends ClientParams> {
@@ -99,6 +100,11 @@ export interface Client<T extends ClientParams> {
    */
   users: ReturnType<typeof usersService>;
   /**
+   * The logs service allows an authorized party to retrieve logs of the system.
+   * @see https://swagger.extrahorizon.com/listing/?service=logs-service&redirectToVersion=1
+   */
+  logs: ReturnType<typeof logsService>;
+  /**
    * Provides authentication functionality. The Authentication service supports both OAuth 1.0a and OAuth 2.0 standards.
    * @see https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
    */
@@ -150,6 +156,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     profiles: profilesService(httpWithAuth),
     notifications: notificationsService(httpWithAuth),
     events: eventsService(httpWithAuth),
+    logs: logsService(httpWithAuth),
     auth: {
       ...authService(httpWithAuth),
       ...httpWithAuth.extraAuthMethods,

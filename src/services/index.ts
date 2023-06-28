@@ -12,3 +12,4 @@ export * from './localizations';
 export * from './profiles';
 export * from './notifications';
 export * from './events';
+export * from './logs';
