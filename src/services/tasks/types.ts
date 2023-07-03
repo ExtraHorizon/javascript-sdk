@@ -50,7 +50,7 @@ export enum ApiFunctionRequestMethod {
 }
 
 export interface ApiFunctionRequestObject {
-  /** The payload formation version of the AWS API Gateway we comply too. */
+  /** The payload formation version of the AWS API Gateway. */
   version: '2.0';
   /** The path portion of the URL that comes after the Function name. */
   rawPath: string;
