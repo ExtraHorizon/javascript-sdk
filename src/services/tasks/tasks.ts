@@ -37,5 +37,15 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
     return (await client.post(httpAuth, `/${taskId}/cancel`, {}, options)).data;
   },
 
+  async execute(functionName, data, options) {
+    const response = await client.post(
+      httpAuth,
+      `/functions/${functionName}/execute`,
+      { data },
+      options
+    );
+    return response.data;
+  },
+
   api: api(client, httpAuth),
 });
