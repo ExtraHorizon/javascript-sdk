@@ -39,6 +39,37 @@ export type TaskInput = Pick<
   'functionName' | 'data' | 'startTimestamp' | 'priority' | 'tags'
 >;
 
+export enum ApiFunctionRequestMethod {
+  "GET" = "GET",
+  "POST" = "POST",
+  "PUT" = "PUT",
+  "DELETE" = "DELETE",
+  "PATCH" = "PATCH",
+  "OPTIONS" = "OPTIONS",
+  "HEAD" = "HEAD",
+}
+
+export interface ApiFunctionRequestObject {
+  version: '2.0',
+  rawPath: string,
+  rawQueryString: string,
+  headers: Record<string, string>,
+  requestContext: {
+    http: {
+      method: ApiFunctionRequestMethod,
+    },
+  },
+  body: string,
+  isBase64Encoded: boolean,
+}
+
+export interface ApiFunctionResponseObject {
+  'statusCode': number,
+  'headers'?: Record<string, string>
+  'body'?: string,
+  'isBase64Encoded'?: boolean,
+}
+
 export interface TasksService {
   /**
    * View a list of tasks
@@ -49,6 +80,7 @@ export interface TasksService {
    * @returns PagedResult<Task>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Task>>;
+
   /**
    * Find By Id
    * @param id the Id to search for
@@ -56,6 +88,7 @@ export interface TasksService {
    * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
+
   /**
    * Request a list of all tasks
    *
@@ -68,6 +101,7 @@ export interface TasksService {
    * @returns Task[]
    */
   findAll(options?: OptionsWithRql): Promise<Task[]>;
+
   /**
    * Request a list of all tasks
    *
@@ -78,12 +112,14 @@ export interface TasksService {
    * @returns Task[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<Task>;
+
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Task>;
+
   /**
    * Create a task
    *
@@ -94,6 +130,7 @@ export interface TasksService {
    * @returns Task Success
    */
   create(requestBody: TaskInput, options?: OptionsBase): Promise<Task>;
+
   /**
    * Cancel a task
    *
