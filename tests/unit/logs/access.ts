@@ -12,10 +12,7 @@ describe('Logs - Access', () => {
   });
 
   it('Lists access logs matching an RQL query', async () => {
-    const rql = rqlBuilder()
-      .ge('timestamp', '2023-06-01T00:00')
-      .limit(10)
-      .build();
+    const rql = rqlBuilder().ge('timestamp', '2023-06-01T00:00').build();
 
     nock(`${host}${LOGS_BASE}`)
       .get(`/access${rql}`)
@@ -26,10 +23,7 @@ describe('Logs - Access', () => {
   });
 
   it('Retrieves the first access log matching an RQL query', async () => {
-    const rql = rqlBuilder()
-      .ge('timestamp', '2023-06-01T00:00')
-      .limit(10)
-      .build();
+    const rql = rqlBuilder().ge('timestamp', '2023-06-01T00:00').build();
 
     nock(`${host}${LOGS_BASE}`)
       .get(`/access${rql}`)

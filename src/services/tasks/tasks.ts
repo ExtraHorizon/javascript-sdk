@@ -4,6 +4,7 @@ import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
 import { findAllIterator, findAllGeneric } from '../helpers';
 import api from './api';
+import logs from './logs';
 
 export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   async find(options) {
@@ -38,4 +39,5 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   },
 
   api: api(client, httpAuth),
+  logs: logs(client, httpAuth),
 });

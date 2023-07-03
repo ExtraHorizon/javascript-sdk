@@ -120,3 +120,26 @@ export const accessLogs = [
     userAgent: 'Mozilla/5.0 (compatible; Uptime/1.0; http://uptime.com)',
   },
 ];
+
+export const taskLogs = [
+  {
+    message: 'First execution log',
+    timestamp: new Date('2023-07-03T07:56:04.470Z'),
+  },
+  {
+    message: 'Second execution log',
+    timestamp: new Date('2023-07-03T07:56:04.470Z'),
+  },
+  {
+    message: 'Third execution log',
+    timestamp: new Date('2023-07-03T07:56:04.470Z'),
+  },
+  {
+    message: 'Fourth execution log',
+    timestamp: new Date('2023-07-03T07:56:04.470Z'),
+  },
+  {
+    message: 'Fifth execution log',
+    timestamp: new Date('2023-07-03T07:56:04.470Z'),
+  },
+];
