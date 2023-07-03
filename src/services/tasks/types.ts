@@ -40,34 +40,34 @@ export type TaskInput = Pick<
 >;
 
 export enum ApiFunctionRequestMethod {
-  "GET" = "GET",
-  "POST" = "POST",
-  "PUT" = "PUT",
-  "DELETE" = "DELETE",
-  "PATCH" = "PATCH",
-  "OPTIONS" = "OPTIONS",
-  "HEAD" = "HEAD",
+  'GET' = 'GET',
+  'POST' = 'POST',
+  'PUT' = 'PUT',
+  'DELETE' = 'DELETE',
+  'PATCH' = 'PATCH',
+  'OPTIONS' = 'OPTIONS',
+  'HEAD' = 'HEAD',
 }
 
 export interface ApiFunctionRequestObject {
-  version: '2.0',
-  rawPath: string,
-  rawQueryString: string,
-  headers: Record<string, string>,
+  version: '2.0';
+  rawPath: string;
+  rawQueryString: string;
+  headers: Record<string, string>;
   requestContext: {
     http: {
-      method: ApiFunctionRequestMethod,
-    },
-  },
-  body: string,
-  isBase64Encoded: boolean,
+      method: ApiFunctionRequestMethod;
+    };
+  };
+  body: string;
+  isBase64Encoded: boolean;
 }
 
 export interface ApiFunctionResponseObject {
-  statusCode: number,
-  headers?: Record<string, string>
-  body?: string,
-  isBase64Encoded?: boolean,
+  statusCode: number;
+  headers?: Record<string, string>;
+  body?: string;
+  isBase64Encoded?: boolean;
 }
 
 export interface TasksService {
