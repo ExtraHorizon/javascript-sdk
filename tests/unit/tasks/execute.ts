@@ -18,9 +18,9 @@ describe('Tasks - Functions - Execute', () => {
   });
 
   const data = {
-    propertyOne: 'value',
-    propertyTwo: 'value',
-    propertyThree: 'value',
+    inputOne: 'value',
+    inputTwo: 'value',
+    inputThree: 'value',
   };
 
   it('Executes a request towards a Function', async () => {
@@ -42,7 +42,7 @@ describe('Tasks - Functions - Execute', () => {
       data,
       {}
     );
-    expect(response.data.propertyOne).toBeDefined();
-    expect(response.result.propertyOne).toBeDefined();
+    expect(response.data.inputOne).toBeDefined();
+    expect(response.result.outputOne).toBeDefined();
   });
 });

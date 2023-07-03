@@ -14,15 +14,15 @@ export const taskData = {
 };
 
 export interface InputType {
-  propertyOne: string;
-  propertyTwo: string;
-  propertyThree: string;
+  inputOne: string;
+  inputTwo: string;
+  inputThree: string;
 }
 
 export interface OutputType {
-  propertyOne: string;
-  propertyTwo: string;
-  propertyThree: string;
+  outputOne: string;
+  outputTwo: string;
+  outputThree: string;
 }
 
 export const directExecutionResponse = {
@@ -43,8 +43,8 @@ export const directExecutionResponse = {
   createdByApplicationId: '757f191a810c19729de860ae',
   createdByUserId: '757f191a810c19729de860ae',
   result: {
-    propertyOne: 'value',
-    propertyTwo: 'value',
-    propertyThree: 'value',
+    outputOne: 'value',
+    outputTwo: 'value',
+    outputThree: 'value',
   },
 };
