@@ -7,6 +7,7 @@ import type {
   PagedResult,
 } from '../types';
 import { ApiService } from './api/types';
+import { LogsService } from './logs/types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -144,4 +145,5 @@ export interface TasksService {
   ): Promise<DirectExecutionResponse<T, U>>;
 
   api: ApiService;
+  logs: LogsService;
 }
