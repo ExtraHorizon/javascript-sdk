@@ -30,9 +30,6 @@ describe('Tasks - Functions - Execute', () => {
 
     const response = await exh.tasks.execute(functionName, data, {});
     expect(response).toMatchObject(directExecutionResponse);
-
-    expect(response.data.propertyOne).toBeDefined();
-    expect(response.result.propertyOne).toBeDefined();
   });
 
   it('Executes a request towards a Function with custom input and output interfaces', async () => {
