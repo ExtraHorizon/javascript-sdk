@@ -14,10 +14,7 @@ describe('Tasks - Logs ', () => {
 
   it('Lists task logs matching an RQL query', async () => {
     const taskId = randomHexString();
-    const rql = rqlBuilder()
-      .ge('timestamp', '2023-06-01T00:00')
-      .limit(10)
-      .build();
+    const rql = rqlBuilder().ge('timestamp', '2023-06-01T00:00').build();
 
     nock(`${host}${TASKS_BASE}`)
       .get(`/${taskId}/logs${rql}`)
@@ -29,10 +26,7 @@ describe('Tasks - Logs ', () => {
 
   it('Retrieves the first access log matching an RQL query', async () => {
     const taskId = randomHexString();
-    const rql = rqlBuilder()
-      .ge('timestamp', '2023-06-01T00:00')
-      .limit(10)
-      .build();
+    const rql = rqlBuilder().ge('timestamp', '2023-06-01T00:00').build();
 
     nock(`${host}${TASKS_BASE}`)
       .get(`/${taskId}/logs${rql}`)
