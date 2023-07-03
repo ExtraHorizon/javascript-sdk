@@ -64,10 +64,10 @@ export interface ApiFunctionRequestObject {
 }
 
 export interface ApiFunctionResponseObject {
-  'statusCode': number,
-  'headers'?: Record<string, string>
-  'body'?: string,
-  'isBase64Encoded'?: boolean,
+  statusCode: number,
+  headers?: Record<string, string>
+  body?: string,
+  isBase64Encoded?: boolean,
 }
 
 export interface TasksService {
