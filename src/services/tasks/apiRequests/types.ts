@@ -1,6 +1,7 @@
 import { ApiRequestLogsService } from './logs/types';
 import { ObjectId, OptionsWithRql, PagedResultWithPager } from '../../types';
 import { FindAllIterator } from '../../helpers';
+import { ApiFunctionRequestMethod } from '../api/types';
 
 export interface ApiRequestService {
   /**
@@ -56,14 +57,15 @@ export interface ApiRequest {
   /** The path portion of the URL that comes after the Function name. */
   path: string;
   /** The Extra Horizon user id */
-  userId: ObjectId;
+  userId?: ObjectId;
   /** The Extra Horizon application id */
-  applicationId: ObjectId;
+  applicationId?: ObjectId;
   /** The status code of the API Function's response */
   statusCode: number;
   /** The time the API Function was executed */
   timestamp: Date;
-  error: ApiRequestError;
+  /** An error thrown during the lifecycle of the API Function's execution  */
+  error?: ApiRequestError;
 }
 
 export interface ApiRequestError {
@@ -83,14 +85,4 @@ export enum ApiRequestErrorType {
   INVOCATION = 'invocation',
   RUNTIME = 'runtime',
   RESPONSE = 'response',
-}
-
-export enum ApiFunctionRequestMethod {
-  'GET' = 'GET',
-  'POST' = 'POST',
-  'PUT' = 'PUT',
-  'DELETE' = 'DELETE',
-  'PATCH' = 'PATCH',
-  'OPTIONS' = 'OPTIONS',
-  'HEAD' = 'HEAD',
 }

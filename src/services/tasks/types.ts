@@ -152,6 +152,5 @@ export interface TasksService {
 
   api: ApiService;
   logs: LogsService;
-  api: ApiService;
   apiRequests: ApiRequestService;
 }

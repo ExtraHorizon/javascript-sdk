@@ -1,5 +1,4 @@
 import { OptionsBase } from '../../types';
-import { ApiFunctionRequestMethod } from '../apiRequests/types';
 
 export interface ApiService {
   /**
@@ -161,4 +160,14 @@ export interface ApiFunctionResponseObject {
    * The isBase64Encoded field must be set to true if the body field of the response object is a Base64 encoded string representing the raw response body.
    * */
   isBase64Encoded?: boolean;
+}
+
+export enum ApiFunctionRequestMethod {
+  'GET' = 'GET',
+  'POST' = 'POST',
+  'PUT' = 'PUT',
+  'DELETE' = 'DELETE',
+  'PATCH' = 'PATCH',
+  'OPTIONS' = 'OPTIONS',
+  'HEAD' = 'HEAD',
 }
