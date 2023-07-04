@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { createClient, rqlBuilder } from '../../../../src';
-import { taskLogs } from '../../../__helpers__/logs';
+import { logLines } from '../../../__helpers__/logs';
 import { TASKS_BASE } from '../../../../src/constants';
 import { randomHexString } from '../../../__helpers__/utils';
 
@@ -18,10 +18,10 @@ describe('Tasks - Logs ', () => {
 
     nock(`${host}${TASKS_BASE}`)
       .get(`/${taskId}/logs${rql}`)
-      .reply(200, { data: taskLogs });
+      .reply(200, { data: logLines });
 
     const logs = await exh.tasks.logs.find(taskId, { rql });
-    expect(logs).toMatchObject(taskLogs);
+    expect(logs).toMatchObject(logLines);
   });
 
   it('Retrieves the first access log matching an RQL query', async () => {
@@ -30,9 +30,9 @@ describe('Tasks - Logs ', () => {
 
     nock(`${host}${TASKS_BASE}`)
       .get(`/${taskId}/logs${rql}`)
-      .reply(200, { data: taskLogs });
+      .reply(200, { data: logLines });
 
     const log = await exh.tasks.logs.findFirst(taskId, { rql });
-    expect(log).toMatchObject(taskLogs[0]);
+    expect(log).toMatchObject(logLines[0]);
   });
 });

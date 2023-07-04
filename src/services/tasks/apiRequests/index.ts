@@ -1,5 +1,3 @@
-import { HttpInstance } from '../../../../http/types';
-import { HttpClient } from '../../../http-client';
 import { ApiRequest, ApiRequestService } from './types';
 import logs from './logs';
 import { OptionsWithRql } from '../../types';
@@ -9,6 +7,8 @@ import {
   findAllIterator,
   FindAllIterator,
 } from '../../helpers';
+import { HttpClient } from '../../http-client';
+import { HttpInstance } from '../../../http/types';
 
 export default (
   client: HttpClient,

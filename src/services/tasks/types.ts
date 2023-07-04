@@ -8,6 +8,7 @@ import type {
 } from '../types';
 import { ApiService } from './api/types';
 import { LogsService } from './logs/types';
+import { ApiRequestService } from './apiRequests/types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -117,6 +118,7 @@ export interface TasksService {
    */
   cancel(taskId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 
-  api: ApiService;
   logs: LogsService;
+  api: ApiService;
+  apiRequests: ApiRequestService;
 }
