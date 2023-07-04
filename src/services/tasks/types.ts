@@ -34,12 +34,21 @@ export interface Task<DataType = any> {
   priority?: number;
   creationTimestamp?: Date;
   updateTimestamp?: Date;
+  /** The Extra Horizon document id for the application used to make the request */
+  createdByApplicationId?: ObjectId;
+  /** The Extra Horizon document id for the user who made the request */
+  createdByUserId?: ObjectId;
 }
 
 export type TaskInput = Pick<
   Task,
   'functionName' | 'data' | 'startTimestamp' | 'priority' | 'tags'
 >;
+
+export interface DirectExecutionResponse<T, U> extends Task<U> {
+  /** The result of the Function execution, this may be user defined */
+  result: T;
+}
 
 export enum ApiFunctionRequestMethod {
   'GET' = 'GET',
@@ -173,6 +182,30 @@ export interface TasksService {
    * @throws {ResourceUnknownException}
    */
   cancel(taskId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+
+  /**
+   * ## Execute a Function directly
+   *
+   * A Function may be executed directly, the function will be executed synchronously and the response may be awaited by the caller.
+   *
+   * **Default Permissions:**
+   * - Any party may execute Functions with the `public` permission mode
+   * - Any authenticated user may execute Functions with the `allUsers` permission mode
+   *
+   * **Global Permissions:**
+   * - `EXECUTE_TASK_FUNCTION` - A user may execute all Functions
+   * - `EXECUTE_TASK_FUNCTION:{FUNCTION_NAME}` - A user may execute the Function specified by the FUNCTION_NAME
+   *
+   * @param functionName {@link string} - The functionName property serves as the unique identifier amongst all Functions
+   * @param data {@link U} - The data to be sent to the Function, the type may be specified by the user
+   * @param options {@link OptionsBase} - Additional options for the request
+   * @returns {@link DirectExecutionResponse} - The response returned from the Function, the response data and results may be user defined
+   */
+  execute<T = any, U = any>(
+    functionName: string,
+    data?: U,
+    options?: OptionsBase
+  ): Promise<DirectExecutionResponse<T, U>>;
 
   api: ApiService;
   logs: LogsService;
