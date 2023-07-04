@@ -31,9 +31,9 @@ export const directExecutionResponse = {
   statusChangedTimestamp: new Date('2023-07-03T14:14:50.698Z'),
   functionName: 'test',
   data: {
-    propertyOne: 'value',
-    propertyTwo: 'value',
-    propertyThree: 'value',
+    inputOne: 'value',
+    inputTwo: 'value',
+    inputThree: 'value',
   },
   startTimestamp: new Date('2023-07-03T14:14:50.698Z'),
   tags: ['nightly', 'test'],
