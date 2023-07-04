@@ -1,5 +1,5 @@
 import { ObjectId, OptionsWithRql } from '../../../types';
-import { LineLog } from '../../logs/types';
+import { LogLine } from '../../logs/types';
 
 export interface ApiRequestLogsService {
   /**
@@ -10,9 +10,9 @@ export interface ApiRequestLogsService {
    *
    * @param apiRequestId {@link string} The id of the targeted API Request
    * @param options {@link OptionsWithRql} - Additional options for the request
-   * @returns An array of API Request logs {@link LineLog LineLog[]}
+   * @returns An array of API Request logs {@link LogLine LineLog[]}
    */
-  find(apiRequestId: ObjectId, options?: OptionsWithRql): Promise<LineLog[]>;
+  find(apiRequestId: ObjectId, options?: OptionsWithRql): Promise<LogLine[]>;
 
   /**
    * ## Retrieve the first queried API Request log
@@ -22,6 +22,6 @@ export interface ApiRequestLogsService {
    *
    * @param apiRequestId {@link string} The id of the targeted API Request
    * @param options {@link OptionsWithRql} - Additional options for the request
-   * @returns The first element of the queried API Request logs {@link LineLog}     */
-  findFirst(apiRequestId: ObjectId, options?: OptionsWithRql): Promise<LineLog>;
+   * @returns The first element of the queried API Request logs {@link LogLine}     */
+  findFirst(apiRequestId: ObjectId, options?: OptionsWithRql): Promise<LogLine>;
 }

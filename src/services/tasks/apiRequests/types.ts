@@ -64,6 +64,8 @@ export interface ApiRequest {
   statusCode: number;
   /** The time the API Function was executed */
   timestamp: Date;
+  /** The duration of the API Function execution in seconds */
+  duration: number;
   /** An error thrown during the lifecycle of the API Function's execution  */
   error?: ApiRequestError;
 }
