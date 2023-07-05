@@ -15,7 +15,9 @@ describe('Tasks - API Requests - Logs', () => {
   const apiRequestId = randomHexString();
 
   it('Lists API Request logs matching an RQL query', async () => {
-    const rql = rqlBuilder().sort('-timestamp').build();
+    const rql = rqlBuilder()
+      .ge('timestamp', '2023-07-04T00:00:00.000Z')
+      .build();
     nock(`${host}${TASKS_BASE}`)
       .get(`/apiRequests/${apiRequestId}/logs${rql}`)
       .reply(200, { data: logLines });

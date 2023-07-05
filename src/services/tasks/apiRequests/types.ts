@@ -56,11 +56,11 @@ export interface ApiRequest {
   method: ApiFunctionRequestMethod;
   /** The path portion of the URL that comes after the Function name. */
   path: string;
-  /** The Extra Horizon user id */
+  /** The id of the user making the request */
   userId?: ObjectId;
-  /** The Extra Horizon application id */
+  /** The application id of the oAuth application */
   applicationId?: ObjectId;
-  /** The status code of the API Function's response */
+  /** The status code of the API Function's response or of a thrown error during its lifecycle */
   statusCode: number;
   /** The time the API Function was executed */
   timestamp: Date;
@@ -71,9 +71,9 @@ export interface ApiRequest {
 }
 
 export interface ApiRequestError {
-  /** The Extra Horizon error name */
+  /** The name of the caught error */
   name: string;
-  /** The Extra Horizon error message */
+  /** The message of the caught error */
   message: string;
   /** The error type defines where the error occurred during the API Function lifecycle and can have one of the following values:
    * - `invocation` - errors that occur before invocation of the API Function
