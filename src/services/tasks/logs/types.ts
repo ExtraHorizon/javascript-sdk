@@ -9,9 +9,9 @@ export interface LogsService {
    *
    * @param taskId {@link string} The id of the targeted task
    * @param options {@link OptionsWithRql} - Additional options for the request
-   * @returns An array of task logs {@link TaskLog TaskLog[]}
+   * @returns An array of task logs {@link LogLine LineLog[]}
    */
-  find(taskId: ObjectId, options?: OptionsWithRql): Promise<TaskLog[]>;
+  find(taskId: ObjectId, options?: OptionsWithRql): Promise<LogLine[]>;
 
   /**
    * ## Retrieve the first queried task log
@@ -21,11 +21,11 @@ export interface LogsService {
    *
    * @param taskId {@link string} The id of the targeted task
    * @param options {@link OptionsWithRql} - Additional options for the request
-   * @returns The first element of the queried task logs {@link TaskLog}     */
-  findFirst(taskId: ObjectId, options?: OptionsWithRql): Promise<TaskLog>;
+   * @returns The first element of the queried task logs {@link LogLine}     */
+  findFirst(taskId: ObjectId, options?: OptionsWithRql): Promise<LogLine>;
 }
 
-export interface TaskLog {
+export interface LogLine {
   // The message logged at the time of the event
   message: string;
   // The timestamp on which the logged event occurred

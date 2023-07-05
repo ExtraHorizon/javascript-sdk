@@ -121,7 +121,7 @@ export const accessLogs = [
   },
 ];
 
-export const taskLogs = [
+export const logLines = [
   {
     message: 'First execution log',
     timestamp: new Date('2023-07-03T07:56:04.470Z'),
