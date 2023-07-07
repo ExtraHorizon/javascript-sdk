@@ -70,7 +70,7 @@ export interface FilesService {
    * **Default Permissions:**
    * Everyone can use this endpoint
    * @param text {@link string} - The text to upload as a file
-   * @param options {@link OptionsWithCallbacks} - Additional options for the request
+   * @param options {@link FileUploadOptions} - Additional options for the request
    * @returns {@link FileDetails} - The persisted metadata after file creation {@link FileDetails}
    * @throws {FileTooLargeError} - An error if the uploaded file exceeds the maximum file size
    */
@@ -86,7 +86,7 @@ export interface FilesService {
    * Everyone can use this endpoint
    * @param fileName {@link string} - The name of the file to upload
    * @param fileData {@link FileDataTypes}  - The data used for file creation
-   * @param options {@link OptionsWithCallbacks} - Additional options for the request
+   * @param options {@link FileUploadOptions} - Additional options for the request
    * @throws {FileTooLargeError} - An error if the uploaded file exceeds the maximum file size
    * @returns {@link FileDetails} - The persisted metadata after file creation
    */
