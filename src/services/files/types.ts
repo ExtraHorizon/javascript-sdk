@@ -95,11 +95,12 @@ export interface FilesService {
     fileData: FileDataTypes,
     options?: FileUploadOptions & { tags?: string[] }
   ): Promise<FileDetails>;
+
   /**
    * Delete a file
    *
    * AccessLevel | Effect
-   * - | -`
+   * - | -
    * `full` | **Required** to be able to delete the file
    * @param token
    * @returns AffectedRecords
