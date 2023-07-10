@@ -8,7 +8,7 @@ import {
   OutputType,
 } from '../../../__helpers__/task';
 
-describe('Tasks - Functions - Post', () => {
+describe('Tasks - Functions - Execute', () => {
   const host = 'https://api.xxx.extrahorizon.com';
   const functionName = 'test';
 
