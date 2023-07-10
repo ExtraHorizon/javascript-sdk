@@ -3,6 +3,7 @@ import type { Task, TasksService } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
 import { findAllIterator, findAllGeneric } from '../helpers';
+import functions from './functions';
 import api from './api';
 import logs from './logs';
 import apiRequests from './apiRequests';
@@ -39,16 +40,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
     return (await client.post(httpAuth, `/${taskId}/cancel`, {}, options)).data;
   },
 
-  async execute(functionName, data, options) {
-    const response = await client.post(
-      httpAuth,
-      `/functions/${functionName}/execute`,
-      { data },
-      options
-    );
-    return response.data;
-  },
-
+  functions: functions(client, httpAuth),
   api: api(client, httpAuth),
   logs: logs(client, httpAuth),
   apiRequests: apiRequests(client, httpAuth),
