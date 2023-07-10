@@ -28,7 +28,7 @@ describe('Tasks - Functions - Execute', () => {
       .post(`/functions/${functionName}/execute`, { data })
       .reply(200, directExecutionResponse);
 
-    const response = await exh.tasks.execute(functionName, data, {});
+    const response = await exh.tasks.functions.execute(functionName, data, {});
     expect(response).toMatchObject(directExecutionResponse);
   });
 
@@ -37,7 +37,7 @@ describe('Tasks - Functions - Execute', () => {
       .post(`/functions/${functionName}/execute`, { data })
       .reply(200, directExecutionResponse);
 
-    const response = await exh.tasks.execute<OutputType, InputType>(
+    const response = await exh.tasks.functions.execute<OutputType, InputType>(
       functionName,
       data,
       {}
