@@ -1,11 +1,18 @@
-import { AffectedRecords, ObjectId, OptionsBase } from '../../types';
+import {
+  AffectedRecords,
+  ObjectId,
+  OptionsBase,
+  OptionsWithRql,
+  PagedResultWithPager,
+} from '../../types';
+import { FindAllIterator } from '../../helpers';
 
 export interface SchedulesService {
   /**
    * ## Create a new Schedule
    *
    * **Global Permissions:**
-   * - `CREATE_TASK_SCHEDULE` - A user may create schedules
+   * - `CREATE_TASK_SCHEDULE` - Allows a user to create schedules
    *
    * @param schedule - The data used to create the schedule
    * @param options - Additional options for the request
@@ -16,12 +23,57 @@ export interface SchedulesService {
    * ## Delete a Schedule
    *
    * **Global Permissions:**
-   * - `DELETE_TASK_SCHEDULE` - A user may delete schedules
+   * - `DELETE_TASK_SCHEDULE` - Allows a user to delete schedules
    *
    * @param scheduleId - The id of the schedule to delete
    * @param options - Additional options for the request
    */
   delete(scheduleId: ObjectId, options: OptionsBase): Promise<AffectedRecords>;
+
+  /**
+   * ## Retrieve a paged list of schedules
+   *
+   * **Global Permissions:**
+   * - `VIEW_TASK_SCHEDULES` - Allows a user to view schedules
+   *
+   * @param options {@link OptionsWithRql} - Add filters to the requested list
+   * @returns A paged list of schedules {@link PagedResultWithPager PagedResultWithPager<Schedule>}
+   */
+  find(options?: OptionsWithRql): Promise<PagedResultWithPager<Schedule>>;
+
+  /**
+   * ## Retrieve a list of all Schedules
+   *
+   * **Global Permissions:**
+   * - `VIEW_TASK_SCHEDULES` - Allows a user to view schedules
+   *
+   * @param options {@link OptionsWithRql} - Add filters to the requested list
+   * @returns An array of Schedules {@link Schedule Schedule[]}
+   * @throws {@link Error} Do not pass in limit operator with findAll
+   */
+  findAll(options?: OptionsWithRql): Promise<Schedule[]>;
+
+  /**
+   * ## Retrieve a paged list of Schedules
+   *
+   * **Global Permissions:**
+   * - `VIEW_TASK_SCHEDULES` - Allows a user to view Schedules
+   *
+   * @param options {@link OptionsWithRql} - Add filters to the requested list
+   * @returns An iterator for the queried schedules {@link FindAllIterator FindAllIterator<Schedule>}
+   */
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Schedule>;
+
+  /**
+   * ## Retrieve the first queried Schedule
+   *
+   * **Global Permissions:**
+   * - `VIEW_TASK_SCHEDULES` - Allows a user to view Schedules
+   *
+   * @param options {@link OptionsWithRql} - Add filters to the requested list
+   * @returns The first element of the queried Schedules {@link Schedule}
+   */
+  findFirst(options?: OptionsWithRql): Promise<Schedule>;
 }
 
 export interface Schedule<T = Record<string, string>> {
