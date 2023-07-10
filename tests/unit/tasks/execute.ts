@@ -1,14 +1,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
-import { createClient } from '../../../../src';
-import { TASKS_BASE } from '../../../../src/constants';
+import { createClient } from '../../../src';
+import { TASKS_BASE } from '../../../src/constants';
 import {
   directExecutionResponse,
   InputType,
   OutputType,
-} from '../../../__helpers__/task';
+} from '../../__helpers__/task';
 
-describe('Tasks - Functions - Post', () => {
+describe('Tasks - Functions - Execute', () => {
   const host = 'https://api.xxx.extrahorizon.com';
   const functionName = 'test';
 
