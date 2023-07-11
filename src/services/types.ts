@@ -63,6 +63,9 @@ export type OptionsBase = {
   shouldRetry?: boolean;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString };
+export interface FileUploadOptions extends OptionsBase {
+  onUploadProgress?: (progress: { loaded: number; total: number }) => void;
+}
 
 export type PagedResultWithPager<T> = PagedResult<T> & {
   previous: () => Promise<PagedResultWithPager<T>>;
