@@ -42,7 +42,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   },
 
   functions: functions(client, httpAuth),
-  schedules: schedules(client, httpAuth),
   api: api(client, httpAuth),
   logs: logs(client, httpAuth),
   apiRequests: apiRequests(client, httpAuth),
