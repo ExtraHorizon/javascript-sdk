@@ -9,6 +9,7 @@ import type {
 import { ApiService } from './api/types';
 import { LogsService } from './logs/types';
 import { ApiRequestService } from './apiRequests/types';
+import { SchedulesService } from './schedules/types';
 import { FunctionsService } from './functions/types';
 
 export enum TaskStatus {
@@ -124,6 +125,7 @@ export interface TasksService {
   cancel(taskId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 
   functions: FunctionsService;
+  schedules: SchedulesService;
   api: ApiService;
   logs: LogsService;
   apiRequests: ApiRequestService;

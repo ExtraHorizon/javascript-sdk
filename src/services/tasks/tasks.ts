@@ -2,11 +2,12 @@ import type { HttpInstance } from '../../types';
 import type { Task, TasksService } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
-import { findAllIterator, findAllGeneric } from '../helpers';
+import { findAllGeneric, findAllIterator } from '../helpers';
 import functions from './functions';
 import api from './api';
 import logs from './logs';
 import apiRequests from './apiRequests';
+import schedules from './schedules';
 
 export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   async find(options) {
@@ -40,6 +41,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
     return (await client.post(httpAuth, `/${taskId}/cancel`, {}, options)).data;
   },
 
+  schedules: schedules(client, httpAuth),
   functions: functions(client, httpAuth),
   api: api(client, httpAuth),
   logs: logs(client, httpAuth),
