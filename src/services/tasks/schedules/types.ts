@@ -17,7 +17,10 @@ export interface SchedulesService {
    * @param schedule - The data used to create the schedule
    * @param options - Additional options for the request
    */
-  create(schedule: ScheduleCreation, options?: OptionsBase): Promise<Schedule>;
+  create<T>(
+    schedule: ScheduleCreation<T>,
+    options?: OptionsBase
+  ): Promise<ScheduleCreation<T>>;
 
   /**
    * ## Delete a Schedule
@@ -39,7 +42,7 @@ export interface SchedulesService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns A paged list of schedules {@link PagedResultWithPager PagedResultWithPager<Schedule>}
    */
-  find(options?: OptionsWithRql): Promise<PagedResultWithPager<Schedule>>;
+  find<T>(options?: OptionsWithRql): Promise<PagedResultWithPager<Schedule<T>>>;
 
   /**
    * ## Retrieve a list of all Schedules
@@ -51,7 +54,7 @@ export interface SchedulesService {
    * @returns An array of Schedules {@link Schedule Schedule[]}
    * @throws {@link Error} Do not pass in limit operator with findAll
    */
-  findAll(options?: OptionsWithRql): Promise<Schedule[]>;
+  findAll<T>(options?: OptionsWithRql): Promise<Schedule<T>[]>;
 
   /**
    * ## Retrieve a paged list of Schedules
@@ -62,7 +65,7 @@ export interface SchedulesService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns An iterator for the queried schedules {@link FindAllIterator FindAllIterator<Schedule>}
    */
-  findAllIterator(options?: OptionsWithRql): FindAllIterator<Schedule>;
+  findAllIterator<T>(options?: OptionsWithRql): FindAllIterator<Schedule<T>>;
 
   /**
    * ## Retrieve the first queried Schedule
@@ -73,7 +76,7 @@ export interface SchedulesService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns The first element of the queried Schedules {@link Schedule}
    */
-  findFirst(options?: OptionsWithRql): Promise<Schedule>;
+  findFirst<T>(options?: OptionsWithRql): Promise<Schedule<T>>;
 }
 
 export interface Schedule<T = Record<string, string>> {
