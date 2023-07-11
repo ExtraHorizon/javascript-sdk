@@ -1,12 +1,7 @@
 import { HttpClient } from '../../http-client';
 import { HttpInstance } from '../../../http/types';
 import { Schedule, ScheduleCreation, SchedulesService } from './types';
-import {
-  AffectedRecords,
-  ObjectId,
-  OptionsBase,
-  OptionsWithRql,
-} from '../../types';
+import { ObjectId, OptionsBase, OptionsWithRql } from '../../types';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../../helpers';
 
 export default (
