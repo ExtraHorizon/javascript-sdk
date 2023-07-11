@@ -34,10 +34,7 @@ export default (
       return data;
     },
 
-    async delete(
-      scheduleId: ObjectId,
-      options: OptionsBase
-    ): Promise<AffectedRecords> {
+    async delete(scheduleId: ObjectId, options: OptionsBase) {
       const { data } = await client.delete(
         httpAuth,
         `/schedules/${scheduleId}`,

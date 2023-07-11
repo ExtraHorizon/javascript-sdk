@@ -79,7 +79,7 @@ export interface SchedulesService {
   findFirst<T>(options?: OptionsWithRql): Promise<Schedule<T>>;
 }
 
-export interface Schedule<T = Record<string, string>> {
+export interface Schedule<T = Record<string, any>> {
   id: ObjectId;
   /** The period in seconds, for which the function defined will execute recurrently */
   interval: number;
@@ -99,7 +99,7 @@ export interface Schedule<T = Record<string, string>> {
   priority?: number;
 }
 
-export interface ScheduleCreation<T = Record<string, string>> {
+export interface ScheduleCreation<T = Record<string, any>> {
   /** The period in seconds, for which the function defined will execute recurrently */
   interval: number;
   /** The functionName property serves as the unique identifier amongst all Functions */
