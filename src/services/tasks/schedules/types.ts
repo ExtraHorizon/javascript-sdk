@@ -20,7 +20,7 @@ export interface SchedulesService {
   create<T>(
     schedule: ScheduleCreation<T>,
     options?: OptionsBase
-  ): Promise<ScheduleCreation<T>>;
+  ): Promise<Schedule<T>>;
 
   /**
    * ## Delete a Schedule
