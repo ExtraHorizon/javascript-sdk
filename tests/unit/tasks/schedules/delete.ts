@@ -2,6 +2,7 @@
 import nock from 'nock';
 import { createClient } from '../../../../src';
 import { TASKS_BASE } from '../../../../src/constants';
+import { randomHexString } from '../../../__helpers__/utils';
 
 describe('Tasks - Schedules - DELETE', () => {
   const host = 'https://api.xxx.extrahorizon.com';
@@ -11,7 +12,7 @@ describe('Tasks - Schedules - DELETE', () => {
   });
 
   it('Deletes a Schedule', async () => {
-    const scheduleId = '64ad169e4d29c1b246ee25df';
+    const scheduleId = randomHexString();
 
     nock(`${host}${TASKS_BASE}`)
       .delete(`/schedules/${scheduleId}`)

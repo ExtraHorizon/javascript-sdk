@@ -79,26 +79,6 @@ export interface SchedulesService {
   findFirst<T>(options?: OptionsWithRql): Promise<Schedule<T>>;
 }
 
-export interface Schedule<T = Record<string, any>> {
-  id: ObjectId;
-  /** The period in seconds, for which the function defined will execute recurrently */
-  interval: number;
-  /** The functionName property serves as the unique identifier amongst all Functions */
-  functionName: string;
-  /** The timestamp at which the schedule will start executing */
-  startTimestamp: Date;
-  /** The timestamp at which the schedule was last updated */
-  updateTimestamp: Date;
-  /** The timestamp at which the schedule was created */
-  creationTimestamp: Date;
-  /** The timestamp at which the schedule will next execute */
-  nextTimestamp: Date;
-  /** The data to be provided to the Function, the type may be user defined */
-  data?: T;
-  /** The priority of the schedule (Higher priorities shall execute first) */
-  priority?: number;
-}
-
 export interface ScheduleCreation<T = Record<string, any>> {
   /** The period in seconds, for which the function defined will execute recurrently */
   interval: number;
@@ -110,4 +90,16 @@ export interface ScheduleCreation<T = Record<string, any>> {
   priority?: number;
   /** The timestamp at which the schedule will start executing */
   startTimestamp?: Date;
+}
+
+export interface Schedule<T = Record<string, any>> extends ScheduleCreation<T> {
+  id: ObjectId;
+  /** The timestamp at which the schedule will start executing */
+  startTimestamp: Date;
+  /** The timestamp at which the schedule was last updated */
+  updateTimestamp: Date;
+  /** The timestamp at which the schedule was created */
+  creationTimestamp: Date;
+  /** The timestamp at which the schedule will next execute */
+  nextTimestamp: Date;
 }
