@@ -9,6 +9,7 @@ import type {
 import { ApiService } from './api/types';
 import { LogsService } from './logs/types';
 import { ApiRequestService } from './apiRequests/types';
+import { SchedulesService } from './schedules/types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -150,6 +151,7 @@ export interface TasksService {
     options?: OptionsBase
   ): Promise<DirectExecutionResponse<T, U>>;
 
+  schedules: SchedulesService;
   api: ApiService;
   logs: LogsService;
   apiRequests: ApiRequestService;

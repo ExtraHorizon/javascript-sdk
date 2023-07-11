@@ -54,6 +54,7 @@ const mapDateValues = (value, key) => {
       'creationTimestamp',
       'expiryTimestamp',
       'expireTimestamp',
+      'nextTimestamp',
       'updateTimestamp',
       'lastFailedTimestamp',
       'statusChangedTimestamp',

@@ -3,6 +3,7 @@ import type { Task, TasksService } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
 import { findAllIterator, findAllGeneric } from '../helpers';
+import schedules from './schedules';
 import api from './api';
 import logs from './logs';
 import apiRequests from './apiRequests';
@@ -49,6 +50,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
     return response.data;
   },
 
+  schedules: schedules(client, httpAuth),
   api: api(client, httpAuth),
   logs: logs(client, httpAuth),
   apiRequests: apiRequests(client, httpAuth),

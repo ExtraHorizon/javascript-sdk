@@ -16,7 +16,7 @@ export default (
   async function query(options: OptionsWithRql) {
     const { data } = await client.get(
       httpAuth,
-      `/schedules/${options?.rql || ''}`,
+      `/schedules${options?.rql || ''}`,
       options
     );
     return data;

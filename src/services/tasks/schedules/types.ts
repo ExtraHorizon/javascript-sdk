@@ -17,7 +17,7 @@ export interface SchedulesService {
    * @param schedule - The data used to create the schedule
    * @param options - Additional options for the request
    */
-  create(schedule: ScheduleCreation, options: OptionsBase): Promise<Schedule>;
+  create(schedule: ScheduleCreation, options?: OptionsBase): Promise<Schedule>;
 
   /**
    * ## Delete a Schedule
@@ -28,7 +28,7 @@ export interface SchedulesService {
    * @param scheduleId - The id of the schedule to delete
    * @param options - Additional options for the request
    */
-  delete(scheduleId: ObjectId, options: OptionsBase): Promise<AffectedRecords>;
+  delete(scheduleId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 
   /**
    * ## Retrieve a paged list of schedules
@@ -91,9 +91,9 @@ export interface Schedule<T = Record<string, string>> {
   /** The timestamp at which the schedule will next execute */
   nextTimestamp: Date;
   /** The data to be provided to the Function, the type may be user defined */
-  data: T;
+  data?: T;
   /** The priority of the schedule (Higher priorities shall execute first) */
-  priority: number;
+  priority?: number;
 }
 
 export interface ScheduleCreation<T = Record<string, string>> {
