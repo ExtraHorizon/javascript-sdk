@@ -83,9 +83,9 @@ export interface RegisterUserData {
   email: string;
   password: string;
   phoneNumber: string;
-  birthday: string;
-  gender: Gender;
-  country: string;
+  birthday?: string;
+  gender?: Gender;
+  country?: string;
   region?: string;
   language: string;
   timeZone?: string;
