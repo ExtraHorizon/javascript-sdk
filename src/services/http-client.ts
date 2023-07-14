@@ -94,6 +94,11 @@ const httpClient = ({
     }),
   delete: (axios: HttpInstance, url: string, config?: HttpRequestConfig) =>
     axios.delete(`${basePath}${url}`, config),
+  patch: (axios: HttpInstance, url: string, data, config?: HttpRequestConfig) =>
+    axios.patch(`${basePath}${url}`, transformRequestData(data), config),
+  options: (axios: HttpInstance, url: string) =>
+    axios.options(`${basePath}${url}`),
+  head: (axios: HttpInstance, url: string) => axios.head(`${basePath}${url}`),
 });
 
 export default httpClient;

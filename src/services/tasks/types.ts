@@ -6,6 +6,11 @@ import type {
   OptionsWithRql,
   PagedResult,
 } from '../types';
+import { ApiService } from './api/types';
+import { LogsService } from './logs/types';
+import { ApiRequestService } from './apiRequests/types';
+import { SchedulesService } from './schedules/types';
+import { FunctionsService } from './functions/types';
 
 export enum TaskStatus {
   NEW = 'new',
@@ -32,6 +37,10 @@ export interface Task<DataType = any> {
   priority?: number;
   creationTimestamp?: Date;
   updateTimestamp?: Date;
+  /** The Extra Horizon document id for the application used to make the request */
+  createdByApplicationId?: ObjectId;
+  /** The Extra Horizon document id for the user who made the request */
+  createdByUserId?: ObjectId;
 }
 
 export type TaskInput = Pick<
@@ -49,6 +58,7 @@ export interface TasksService {
    * @returns PagedResult<Task>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Task>>;
+
   /**
    * Find By Id
    * @param id the Id to search for
@@ -56,6 +66,7 @@ export interface TasksService {
    * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
+
   /**
    * Request a list of all tasks
    *
@@ -68,6 +79,7 @@ export interface TasksService {
    * @returns Task[]
    */
   findAll(options?: OptionsWithRql): Promise<Task[]>;
+
   /**
    * Request a list of all tasks
    *
@@ -78,12 +90,14 @@ export interface TasksService {
    * @returns Task[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<Task>;
+
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Task>;
+
   /**
    * Create a task
    *
@@ -94,6 +108,7 @@ export interface TasksService {
    * @returns Task Success
    */
   create(requestBody: TaskInput, options?: OptionsBase): Promise<Task>;
+
   /**
    * Cancel a task
    *
@@ -108,4 +123,10 @@ export interface TasksService {
    * @throws {ResourceUnknownException}
    */
   cancel(taskId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+
+  functions: FunctionsService;
+  schedules: SchedulesService;
+  api: ApiService;
+  logs: LogsService;
+  apiRequests: ApiRequestService;
 }
