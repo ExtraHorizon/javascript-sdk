@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v7.4.0]
 
 ### Added
+
 - Support for API Functions:
   - An [API Function](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions) may now be executed using methods found in:
     - `exh.tasks.api`
@@ -45,8 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `VIEW_GROUPS` permission value is changed to the correct `VIEW_GROUP`
-- Improved inline documentation
-  - `ADD_ROLE_PERMISSION` is now described correctly as singular in the inline documentation
+- `ADD_ROLE_PERMISSION` is now described correctly as singular in the inline documentation
+- Updated `RegisterUserData` interface optional fields
 
 ## [v7.3.0]
 
