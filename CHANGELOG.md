@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [NEXT]
 
+### [v7.4.0]
+  ## API Functions
+
+  ### Execution:
+  An [API Function](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions) 
+  may now be executed using methods found in:
+  - `exh.tasks.api`
+  
+  ### Monitoring:
+  [API Requests](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-requests) 
+  produced by executing API Functions are accessible using methods found in:
+  - `exh.tasks.apiRequests`
+
+  [API Request Logs](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-request-logs)
+  produced during the execution of an API Function can be accessed using methods found in:
+  - `exh.tasks.apiRequests.logs`
+
+  ## Functions
+  ### Execution:
+  A Function may now be directly executed as a task using the method:
+  - `exh.tasks.functions.execute()`
+
+  ## Tasks
+  ### Schedules
+  Schedules may now be managed using methods found in:
+  - `exh.tasks.schedules.`
+
+  ### Logs
+  Logs produced during the execution of a task can now be accessed using methods found in:
+  - `exh.tasks.logs`
+
+  ## Monitoring file uploads
+  The SDK now supports [monitoring file uploads](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#monitoring-a-file-upload) 
+  in the browser using a callback function.
+  ```js
+  function uploadProgressCallback(event) {
+      const progress = (event.loaded / even.total) * 100;
+      // ... Do something with the progress value
+  }
+    
+  const fileMetaData = await exh.files.create('myRepport.pdf', myBuffer, {
+      onUploadProgress: uploadProgressCallback,
+      tags:['ecg-report']
+  });
+  ```
+
+
 ### Changed
 
 - `VIEW_GROUPS` permission value is changed to the correct `VIEW_GROUP`
