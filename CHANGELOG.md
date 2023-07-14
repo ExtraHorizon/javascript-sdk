@@ -5,42 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### [v7.4.0]
+## [v7.4.0]
 
-  ### Added
-  - Support for API Functions:
-    - An [API Function](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions) may now be executed using methods found in:
-      - `exh.tasks.api`
-    - [API Requests](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-requests) produced by executing API Functions are accessible using methods found in:
-      - `exh.tasks.apiRequests`
-    - [API Request Logs](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-request-logs) produced during the execution of an API Function can be accessed using methods found in:
-      - `exh.tasks.apiRequests.logs`
+### Added
+- Support for API Functions:
+  - An [API Function](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions) may now be executed using methods found in:
+    - `exh.tasks.api`
+  - [API Requests](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-requests) produced by executing API Functions are accessible using methods found in:
+    - `exh.tasks.apiRequests`
+  - [API Request Logs](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-request-logs) produced during the execution of an API Function can be accessed using methods found in:
+    - `exh.tasks.apiRequests.logs`
 
   
-  - A Function may now be directly executed as a task using the method:
-    - `exh.tasks.functions.execute()`
+- A Function may now be directly executed as a task using the method:
+  - `exh.tasks.functions.execute()`
 
 
-  - Support for Tasks
-    - Task Schedules may now be managed using methods found in:
-      - `exh.tasks.schedules`
-    - Task Logs produced during the execution of a task can now be accessed using methods found in:
-      - `exh.tasks.logs`
+- Support for Tasks
+  - Task Schedules may now be managed using methods found in:
+    - `exh.tasks.schedules`
+  - Task Logs produced during the execution of a task can now be accessed using methods found in:
+    - `exh.tasks.logs`
 
 
-  - Monitoring File Uploads 
-    - The SDK now supports [monitoring file uploads](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#monitoring-a-file-upload) in the browser using a callback function.
-    ```js
-    function uploadProgressCallback(event) {
-        const progress = (event.loaded / even.total) * 100;
-        // ... Do something with the progress value
-    }
+- Monitoring File Uploads 
+  - The SDK now supports [monitoring file uploads](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#monitoring-a-file-upload) in the browser using a callback function.
+  ```js
+  function uploadProgressCallback(event) {
+      const progress = (event.loaded / event.total) * 100;
+      // ... Do something with the progress value
+  }
       
-    const fileMetaData = await exh.files.create('myRepport.pdf', myBuffer, {
-        onUploadProgress: uploadProgressCallback,
-        tags:['ecg-report']
-    });
-    ```
+  const fileMetaData = await exh.files.create('myReport.pdf', myBuffer, {
+      onUploadProgress: uploadProgressCallback,
+      tags: ['ecg-report']
+  });
+  ```
 
 ### Changed
 
