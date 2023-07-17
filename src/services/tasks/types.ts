@@ -12,6 +12,12 @@ import { ApiRequestService } from './apiRequests/types';
 import { SchedulesService } from './schedules/types';
 import { FunctionsService } from './functions/types';
 
+export * from './api/types';
+export * from './apiRequests/types';
+export * from './functions/types';
+export * from './logs/types';
+export * from './schedules/types';
+
 export enum TaskStatus {
   NEW = 'new',
   IN_PROGRESS = 'inProgress',
