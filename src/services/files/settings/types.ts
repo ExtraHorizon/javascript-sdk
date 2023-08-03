@@ -33,6 +33,13 @@ export interface FileServiceSettingsUpdate {
 }
 
 export interface FileServiceSettings {
+  /**
+   * All files will have a Content-Disposition header with the Attachment value when fetched, unless their MIME type matches a type in this array exactly.
+   *
+   * The Attachment value ensures files are downloaded rather than displayed directly in the browser, enhancing protection against potential XSS vulnerabilities.
+   *
+   * The value *\/\* can be used to allow any file to be displayed by browsers, use at your own discretion.
+   */
   disableForceDownloadForMimeTypes: string[];
   updateTimestamp: Date;
 }
