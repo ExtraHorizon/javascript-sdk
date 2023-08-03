@@ -1,4 +1,8 @@
-import type { FilesService, HttpInstance } from '../../types';
+import type {
+  FileServiceSettingsService,
+  FilesService,
+  HttpInstance,
+} from '../../types';
 import { FILES_BASE } from '../../constants';
 import httpClient from '../http-client';
 import files from './files';
@@ -8,7 +12,8 @@ import { FileTokensService } from './types';
 
 export const filesService = (
   httpWithAuth: HttpInstance
-): FilesService & FileTokensService => {
+): FilesService &
+  FileTokensService & { settings: FileServiceSettingsService } => {
   const client = httpClient({
     basePath: FILES_BASE,
   });
@@ -20,6 +25,6 @@ export const filesService = (
   return {
     ...filesMethods,
     ...tokensMethods,
-    ...settingsMethods,
+    settings: settingsMethods,
   };
 };
