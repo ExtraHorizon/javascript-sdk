@@ -12,7 +12,7 @@ describe('Files - Settings - GET', () => {
 
   const settingsResponse = {
     disableForceDownloadForMimeTypes: ['image/png', 'image/jpeg', 'image/gif'],
-    updateTimestamp: new Date('2023-08-02T13:53:43.975Z'),
+    updateTimestamp: '2023-08-02T13:53:43.975Z',
   };
 
   it('Retrieves the File Service Settings', async () => {
