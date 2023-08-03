@@ -8,6 +8,8 @@ import type {
 } from '../types';
 import { FileUploadOptions } from '../types';
 
+export * from './settings/types';
+
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
  */
