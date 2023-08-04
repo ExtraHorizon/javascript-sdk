@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [v7.5.0]
 
+### Added
+
+- Support for File Service settings:
+  - File Service [settings](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#settings) may now be managed using methods found in:
+    - `exh.files.settings`
+    
 ## [v7.4.1]
 
 ### Fixes
