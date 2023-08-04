@@ -1,6 +1,6 @@
 import { AffectedRecords, OptionsBase } from '../../types';
 
-export interface FileServiceSettingsService {
+export interface FileSettingsService {
   /**
    * ## Retrieve the File Service settings
    *

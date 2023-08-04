@@ -1,12 +1,12 @@
 import { HttpClient } from '../../http-client';
 import { HttpInstance } from '../../../http/types';
-import { FileServiceSettingsService, FileServiceSettingsUpdate } from './types';
+import { FileSettingsService, FileServiceSettingsUpdate } from './types';
 import { OptionsBase } from '../../types';
 
 export default (
   client: HttpClient,
   httpAuth: HttpInstance
-): FileServiceSettingsService => ({
+): FileSettingsService => ({
   async get(options: OptionsBase) {
     const { data } = await client.get(httpAuth, `/settings`, options);
     return data;
