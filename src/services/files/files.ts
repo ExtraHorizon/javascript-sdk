@@ -40,11 +40,11 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
 
   async create(fileName, fileData, options) {
     const form = new FormData();
-    if (typeof window !== 'undefined' && !(fileData instanceof Blob)) {
-      throw new Error(
-        'In the frontend you should use Blob. https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob'
-      );
-    }
+    // if (typeof window !== 'undefined' && !(fileData instanceof Blob)) {
+    //   throw new Error(
+    //     'In the frontend you should use Blob. https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob'
+    //   );
+    // }
     form.append('name', fileName);
     form.append('file', fileData, fileName);
 
