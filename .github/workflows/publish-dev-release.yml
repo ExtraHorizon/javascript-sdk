@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          ref: dev
       - name: Use Node LTS
         uses: actions/setup-node@v2
         with:
@@ -34,8 +32,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          ref: dev
       - uses: actions/setup-node@v2
         with:
           node-version: lts/gallium
