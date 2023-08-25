@@ -40,7 +40,12 @@ export interface CreateTokenRequest {
   accessLevel?: TokenPermission;
 }
 
-export type FileDataTypes = Blob | Buffer | ReadStream;
+/**
+ * As defined by React Native:
+ * https://github.com/facebook/react-native/blob/v0.72.4/packages/react-native/Libraries/Network/FormData.js#L13
+ */
+export type ReactNativeFile = { name?: string; type?: string; uri: string };
+export type FileDataTypes = Blob | Buffer | ReadStream | ReactNativeFile;
 
 export interface FilesService {
   /**
