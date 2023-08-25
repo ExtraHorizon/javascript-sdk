@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [v7.5.1]
+
+### Added 
+- Type support React Native form data
+
+### Fixes
+- Bumped Axios version to fix content-type header issue
+- Fixed `onUploadProgress` callback event triggering without a provided function
+- Removed discrimination between node and web environments
+
 ## [v7.5.0]
 
 ### Added
