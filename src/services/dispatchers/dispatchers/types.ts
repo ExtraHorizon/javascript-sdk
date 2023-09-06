@@ -5,11 +5,11 @@ import {
   OptionsWithRql,
   PagedResult,
 } from '../../types';
-import { Action } from '../types';
+import { Action } from '../actions/types';
 
 export interface DispatchersService {
   /**
-   * ## Retrieve a paged list of dispatchers
+   * ## Retrieve a paged list of Dispatchers
    *
    * **Global Permissions:**
    * - `VIEW_DISPATCHERS` - Allows a user to view Dispatchers
@@ -43,19 +43,19 @@ export interface DispatchersService {
   findFirst(options?: OptionsWithRql): Promise<Dispatcher>;
 
   /**
-   * ## Create a dispatcher
+   * ## Create a Dispatcher
    *
    * **Global Permissions:**
    * - `CREATE_DISPATCHERS` - Allows a user to create Dispatchers
    *
-   * @param requestBody The data used to create the dispatcher
+   * @param requestBody The data used to create the Dispatcher
    * @param options - Additional options for the request
-   * @returns The created dispatcher {@link Dispatcher}
+   * @returns The created Dispatcher {@link Dispatcher}
    */
   create(requestBody: Dispatcher, options?: OptionsBase): Promise<Dispatcher>;
 
   /**
-   * ## Delete a dispatcher
+   * ## Delete a Dispatcher
    *
    * **Global Permissions:**
    * - `DELETE_DISPATCHERS` - Allows a user to delete Dispatchers
@@ -72,7 +72,7 @@ export interface DispatchersService {
 
 export interface Dispatcher {
   id?: ObjectId;
-  /** The type of event the Dispatcher will respond e.g 'mail' or 'task' */
+  /** The type of event the Dispatcher will respond to e.g 'user_deleted' */
   eventType: string;
   /** The actions the Dispatcher shall execute */
   actions: Array<Action>;
