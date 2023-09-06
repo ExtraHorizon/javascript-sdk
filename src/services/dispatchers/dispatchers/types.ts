@@ -72,8 +72,12 @@ export interface DispatchersService {
 
 export interface Dispatcher {
   id?: ObjectId;
+  /** The type of event the Dispatcher will respond e.g 'mail' or 'task' */
   eventType: string;
+  /** The actions the Dispatcher shall execute */
   actions: Array<Action>;
+  /** The creation timestamp of the Dispatcher */
   creationTimestamp?: Date;
+  /** The update timestamp of the Dispatcher */
   updateTimestamp?: Date;
 }
