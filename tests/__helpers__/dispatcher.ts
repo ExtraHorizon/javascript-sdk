@@ -1,7 +1,7 @@
+import { Dispatcher } from '../../src/services/dispatchers/dispatchers/types';
 import {
-  Dispatcher,
-  ActionType,
   ActionCreation,
+  ActionType,
 } from '../../src/services/dispatchers/types';
 
 export const mailAction = {
