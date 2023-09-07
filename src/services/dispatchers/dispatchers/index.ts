@@ -25,6 +25,17 @@ export default (
       return data;
     },
 
+    async update(dispatcherId, requestBody, options) {
+      const { data } = await client.put(
+        httpAuth,
+        `/${dispatcherId}`,
+        requestBody,
+        options
+      );
+
+      return data;
+    },
+
     async find(options) {
       return await query(options);
     },
