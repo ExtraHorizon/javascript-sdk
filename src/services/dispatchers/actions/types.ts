@@ -66,7 +66,7 @@ export enum ActionType {
 }
 
 export interface ActionBase {
-  id?: ObjectId;
+  id: ObjectId;
   /** The unique name of the dispatcher */
   name?: string;
   /** A description of the dispatcher */
