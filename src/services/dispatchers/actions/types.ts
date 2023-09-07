@@ -71,7 +71,6 @@ export interface ActionBase {
   name?: string;
   /** A description of the dispatcher */
   description?: string;
-  /** The type of event the Dispatcher will respond to e.g 'user_deleted' */
 }
 export interface MailAction extends ActionBase {
   /** The type of Action the Dispatcher will execute */

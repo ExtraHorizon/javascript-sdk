@@ -48,12 +48,12 @@ export interface DispatchersService {
    * **Global Permissions:**
    * - `CREATE_DISPATCHERS` - Allows a user to create Dispatchers
    *
-   * @param requestBody The data used to create the Dispatcher
+   * @param requestBody The data used to create the Dispatcher {@link DispatcherCreation}
    * @param options - Additional options for the request
    * @returns The created Dispatcher {@link Dispatcher}
    */
   create(
-    requestBody: CreateDispatcherBody,
+    requestBody: DispatcherCreation,
     options?: OptionsBase
   ): Promise<Dispatcher>;
 
@@ -64,13 +64,13 @@ export interface DispatchersService {
    * - `UPDATE_DISPATCHERS` - Allows a user to update Dispatchers
    *
    * @param dispatcherId {@link ObjectId} The id of the Dispatcher to be updated
-   * @param requestBody The data used to update the Dispatcher
+   * @param requestBody The data used to update the Dispatcher {@link DispatcherUpdate}
    * @param options - Additional options for the request
    * @returns An affected records response {@link AffectedRecords}
    */
   update(
     dispatcherId: ObjectId,
-    requestBody: UpdateDispatcherBody,
+    requestBody: DispatcherUpdate,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
 
@@ -108,10 +108,10 @@ export interface Dispatcher {
   updateTimestamp: Date;
 }
 
-export type CreateDispatcherBody = Omit<
+export type DispatcherCreation = Omit<
   Dispatcher,
   'id' | 'creationTimestamp' | 'updateTimestamp'
 >;
-export type UpdateDispatcherBody = Partial<
+export type DispatcherUpdate = Partial<
   Omit<Dispatcher, 'id' | 'actions' | 'creationTimestamp' | 'updateTimestamp'>
 >;
