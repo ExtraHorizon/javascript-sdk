@@ -48,8 +48,8 @@ export interface DispatchersService {
    * **Global Permissions:**
    * - `CREATE_DISPATCHERS` - Allows a user to create Dispatchers
    *
-   * @param requestBody The data used to create the Dispatcher {@link DispatcherCreation}
-   * @param options - Additional options for the request
+   * @param requestBody {@link DispatcherCreation} - The data used to create the Dispatcher
+   * @param options {@link OptionsBase} - Additional options for the request
    * @returns The created Dispatcher {@link Dispatcher}
    */
   create(
@@ -63,9 +63,9 @@ export interface DispatchersService {
    * **Global Permissions:**
    * - `UPDATE_DISPATCHERS` - Allows a user to update Dispatchers
    *
-   * @param dispatcherId {@link ObjectId} The id of the Dispatcher to be updated
-   * @param requestBody The data used to update the Dispatcher {@link DispatcherUpdate}
-   * @param options - Additional options for the request
+   * @param dispatcherId {@link ObjectId} - The id of the Dispatcher to be updated
+   * @param requestBody {@link DispatcherUpdate} - The data used to update the Dispatcher
+   * @param options {@link OptionsBase} - Additional options for the request
    * @returns An affected records response {@link AffectedRecords}
    */
   update(
@@ -80,8 +80,8 @@ export interface DispatchersService {
    * **Global Permissions:**
    * - `DELETE_DISPATCHERS` - Allows a user to delete Dispatchers
    *
-   * @param dispatcherId {@link ObjectId} The id of the Dispatcher to be deleted
-   * @param options - Additional options for the request
+   * @param dispatcherId {@link ObjectId} - The id of the Dispatcher to be deleted
+   * @param options {@link OptionsBase} - Additional options for the request
    * @returns An affected records response {@link AffectedRecords}
    */
   remove(
