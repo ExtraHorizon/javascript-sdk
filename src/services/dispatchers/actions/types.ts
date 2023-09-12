@@ -65,8 +65,14 @@ export enum ActionType {
   TASK = 'task',
 }
 
-export interface MailAction {
-  id?: ObjectId;
+export interface ActionBase {
+  id: ObjectId;
+  /** The unique name of the dispatcher */
+  name?: string;
+  /** A description of the dispatcher */
+  description?: string;
+}
+export interface MailAction extends ActionBase {
   /** The type of Action the Dispatcher will execute */
   type?: ActionType.MAIL;
   /** The recipients list of the mail, including to, cc and bcc  */
@@ -75,8 +81,7 @@ export interface MailAction {
   templateId?: ObjectId;
 }
 
-export interface TaskAction {
-  id?: ObjectId;
+export interface TaskAction extends ActionBase {
   /** The type of Action the Dispatcher will execute */
   type?: ActionType.TASK;
   /** The name of the Function to be executed as a task */
@@ -91,46 +96,12 @@ export interface TaskAction {
 
 export type Action = MailAction | TaskAction;
 
-export interface MailActionCreation {
-  /** The type of Action the Dispatcher will execute */
-  type?: ActionType.MAIL;
-  /** The recipients list of the mail, including to, cc and bcc  */
-  recipients: MailRecipients;
-  /** The id of the mail template to be consumed */
-  templateId: ObjectId;
-}
-
-export interface TaskActionCreation {
-  /** The type of Action the Dispatcher will execute */
-  type?: ActionType.TASK;
-  /** The name of the Function to be executed as a task */
-  functionName: string;
-  /** The data to be sent to the Function, the type may be specified by the user */
-  data?: Record<string, string>;
-  /** A list of string identifiers that can be attached to a task */
-  tags?: Array<string>;
-  /** The start timestamp of the task */
-  startTimestamp?: Date;
-}
+export type MailActionCreation = Omit<MailAction, 'id'>;
+export type TaskActionCreation = Omit<TaskAction, 'id'>;
 
 export type ActionCreation = MailActionCreation | TaskActionCreation;
 
-export interface MailActionUpdate {
-  /** The recipients list of the mail, including to, cc and bcc  */
-  recipients?: MailRecipients;
-  /** The id of the mail template to be consumed */
-  templateId?: ObjectId;
-}
-
-export interface TaskActionUpdate {
-  /** The name of the Function to be executed as a task */
-  functionName?: string;
-  /** The data to be sent to the Function, the type may be specified by the user */
-  data?: Record<string, string>;
-  /** A list of string identifiers that can be attached to a task */
-  tags?: Array<string>;
-  /** The start timestamp of the task */
-  startTimestamp?: Date;
-}
+export type MailActionUpdate = Partial<Omit<MailAction, 'id' | 'type'>>;
+export type TaskActionUpdate = Partial<Omit<TaskAction, 'id' | 'type'>>;
 
 export type ActionUpdate = MailActionUpdate | TaskActionUpdate;

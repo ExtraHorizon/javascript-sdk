@@ -48,11 +48,31 @@ export interface DispatchersService {
    * **Global Permissions:**
    * - `CREATE_DISPATCHERS` - Allows a user to create Dispatchers
    *
-   * @param requestBody The data used to create the Dispatcher
-   * @param options - Additional options for the request
+   * @param requestBody {@link DispatcherCreation} - The data used to create the Dispatcher
+   * @param options {@link OptionsBase} - Additional options for the request
    * @returns The created Dispatcher {@link Dispatcher}
    */
-  create(requestBody: Dispatcher, options?: OptionsBase): Promise<Dispatcher>;
+  create(
+    requestBody: DispatcherCreation,
+    options?: OptionsBase
+  ): Promise<Dispatcher>;
+
+  /**
+   * ## Update a Dispatcher
+   *
+   * **Global Permissions:**
+   * - `UPDATE_DISPATCHERS` - Allows a user to update Dispatchers
+   *
+   * @param dispatcherId {@link ObjectId} - The id of the Dispatcher to be updated
+   * @param requestBody {@link DispatcherUpdate} - The data used to update the Dispatcher
+   * @param options {@link OptionsBase} - Additional options for the request
+   * @returns An affected records response {@link AffectedRecords}
+   */
+  update(
+    dispatcherId: ObjectId,
+    requestBody: DispatcherUpdate,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
 
   /**
    * ## Delete a Dispatcher
@@ -60,8 +80,8 @@ export interface DispatchersService {
    * **Global Permissions:**
    * - `DELETE_DISPATCHERS` - Allows a user to delete Dispatchers
    *
-   * @param dispatcherId {@link ObjectId} The id of the Dispatcher to be deleted
-   * @param options - Additional options for the request
+   * @param dispatcherId {@link ObjectId} - The id of the Dispatcher to be deleted
+   * @param options {@link OptionsBase} - Additional options for the request
    * @returns An affected records response {@link AffectedRecords}
    */
   remove(
@@ -71,13 +91,27 @@ export interface DispatchersService {
 }
 
 export interface Dispatcher {
-  id?: ObjectId;
+  id: ObjectId;
+  /** The unique name of the dispatcher */
+  name?: string;
+  /** A description of the dispatcher */
+  description?: string;
   /** The type of event the Dispatcher will respond to e.g 'user_deleted' */
   eventType: string;
   /** The actions the Dispatcher shall execute */
   actions: Array<Action>;
+  /** A list of string identifiers that can be attached to a Dispatcher */
+  tags?: Array<string>;
   /** The creation timestamp of the Dispatcher */
-  creationTimestamp?: Date;
+  creationTimestamp: Date;
   /** The update timestamp of the Dispatcher */
-  updateTimestamp?: Date;
+  updateTimestamp: Date;
 }
+
+export type DispatcherCreation = Omit<
+  Dispatcher,
+  'id' | 'creationTimestamp' | 'updateTimestamp'
+>;
+export type DispatcherUpdate = Partial<
+  Omit<Dispatcher, 'id' | 'actions' | 'creationTimestamp' | 'updateTimestamp'>
+>;
