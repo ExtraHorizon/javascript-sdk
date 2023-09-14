@@ -5,7 +5,7 @@ import {
   OptionsWithRql,
   PagedResult,
 } from '../../types';
-import { Action } from '../actions/types';
+import { Action, ActionCreation } from '../actions/types';
 
 export interface DispatchersService {
   /**
@@ -110,8 +110,9 @@ export interface Dispatcher {
 
 export type DispatcherCreation = Omit<
   Dispatcher,
-  'id' | 'creationTimestamp' | 'updateTimestamp'
->;
+  'id' | 'creationTimestamp' | 'updateTimestamp' | 'actions'
+> & { actions: ActionCreation[] };
+
 export type DispatcherUpdate = Partial<
   Omit<Dispatcher, 'id' | 'actions' | 'creationTimestamp' | 'updateTimestamp'>
 >;
