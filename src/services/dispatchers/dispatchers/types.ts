@@ -1,3 +1,4 @@
+import { FindAllIterator } from '../../helpers';
 import {
   AffectedRecords,
   ObjectId,
@@ -18,6 +19,30 @@ export interface DispatchersService {
    * @returns A paged list of Dispatchers {@link PagedResultWithPager PagedResultWithPager<Dispatcher>}
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Dispatcher>>;
+
+  /**
+   * Request a list of all Dispatchers
+   *
+   * Do not pass in an rql with limit operator!
+   *
+   * **Global Permissions:**
+   * - `VIEW_DISPATCHERS` - Allows a user to view Dispatchers
+   *
+   * @param options {@link OptionsWithRql} - Add filters to the requested list
+   * @returns A list of Dispatchers {@link Dispatcher}[]
+   */
+  findAll(options?: OptionsWithRql): Promise<Dispatcher[]>;
+
+  /**
+   * Request a list of all Dispatchers
+   *
+   * **Global Permissions:**
+   * - `VIEW_DISPATCHERS` - Allows a user to view Dispatchers
+   *
+   * @param rql Add filters to the requested list.
+   * @returns An iterator with Dispatchers {@link Dispatcher}
+   */
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Dispatcher>;
 
   /**
    * ## Retrieve a Dispatcher by id
