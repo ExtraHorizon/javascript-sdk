@@ -20,7 +20,7 @@ interface ActionBase {
   type?: ActionType;
 }
 
-export enum ActionType {
+export const enum ActionType {
   MAIL = 'mail',
   TASK = 'task',
 }
