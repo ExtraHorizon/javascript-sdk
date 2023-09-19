@@ -28,8 +28,6 @@ export interface DispatchersService {
    *
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns An array of Dispatchers {@link Dispatcher Dispatcher[]}
-   * @throws {@link Error} Do not pass in limit operator with findAll
-   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    */
   findAll(options?: OptionsWithRql): Promise<Dispatcher[]>;
 
@@ -40,8 +38,7 @@ export interface DispatchersService {
    * - `VIEW_DISPATCHERS` - Allows a user to view Dispatchers
    *
    * @param options {@link OptionsWithRql} - Add filters to the requested list
-   * @returns An iterator for the queried providers {@link FindAllIterator FindAllIterator<Dispatcher>}
-   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * @returns An iterator for the queried Dispatchers {@link FindAllIterator FindAllIterator<Dispatcher>}
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<Dispatcher>;
 
