@@ -1,5 +1,6 @@
+import { findAllGeneric, findAllIterator } from '../../helpers';
 import { HttpClient } from '../../http-client';
-import { DispatchersService } from './types';
+import { Dispatcher, DispatchersService } from './types';
 import { HttpInstance } from '../../../http/types';
 import { OptionsWithRql } from '../../types';
 import { rqlBuilder } from '../../../rql';
@@ -38,6 +39,14 @@ export default (
 
     async find(options) {
       return await query(options);
+    },
+
+    async findAll(this: DispatchersService, options) {
+      return findAllGeneric<Dispatcher>(query, options);
+    },
+
+    findAllIterator(this: DispatchersService, options) {
+      return findAllIterator<Dispatcher>(query, options);
     },
 
     async findFirst(options) {
