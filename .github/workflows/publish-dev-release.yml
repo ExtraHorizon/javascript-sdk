@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - feature/test-enums
 jobs:
   build:
     runs-on: ubuntu-latest
