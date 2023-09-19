@@ -42,11 +42,11 @@ export default (
     },
 
     async findAll(this: DispatchersService, options) {
-      return findAllGeneric<Dispatcher>(this.find, options);
+      return findAllGeneric<Dispatcher>(query, options);
     },
 
     findAllIterator(this: DispatchersService, options) {
-      return findAllIterator<Dispatcher>(this.find, options);
+      return findAllIterator<Dispatcher>(query, options);
     },
 
     async findFirst(options) {

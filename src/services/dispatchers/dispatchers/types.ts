@@ -21,26 +21,27 @@ export interface DispatchersService {
   find(options?: OptionsWithRql): Promise<PagedResult<Dispatcher>>;
 
   /**
-   * Request a list of all Dispatchers
-   *
-   * Do not pass in an rql with limit operator!
+   * ## Retrieve a list of all Dispatchers
    *
    * **Global Permissions:**
    * - `VIEW_DISPATCHERS` - Allows a user to view Dispatchers
    *
    * @param options {@link OptionsWithRql} - Add filters to the requested list
-   * @returns A list of Dispatchers {@link Dispatcher}[]
+   * @returns An array of Dispatchers {@link Dispatcher Dispatcher[]}
+   * @throws {@link Error} Do not pass in limit operator with findAll
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    */
   findAll(options?: OptionsWithRql): Promise<Dispatcher[]>;
 
   /**
-   * Request a list of all Dispatchers
+   * ## Retrieve a paged list of Dispatchers
    *
    * **Global Permissions:**
    * - `VIEW_DISPATCHERS` - Allows a user to view Dispatchers
    *
-   * @param rql Add filters to the requested list.
-   * @returns An iterator with Dispatchers {@link Dispatcher}
+   * @param options {@link OptionsWithRql} - Add filters to the requested list
+   * @returns An iterator for the queried providers {@link FindAllIterator FindAllIterator<Dispatcher>}
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<Dispatcher>;
 
