@@ -73,6 +73,16 @@ describe('Dispatchers Service', () => {
     expect(res.id).toBe(dispatcherData.id);
   });
 
+  it('should update a dispatcher', async () => {
+    nock(`${host}${DISPATCHERS_BASE}`).put(`/${dispatcherId}`).reply(200, {
+      affectedRecords: 1,
+    });
+
+    const res = await sdk.dispatchers.update(dispatcherId, { name: 'newName' });
+
+    expect(res.affectedRecords).toBe(1);
+  });
+
   it('should delete a dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).delete(`/${dispatcherId}`).reply(200, {
       affectedRecords: 1,
