@@ -8,12 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v7.6.0]
 
 ### Added
-- Exported `RQLString` type
-- `findAll` and `findAllItator` methods added on the Dispatcher service
-- `update` method added on the Dispatcher Service
+- `findAll`, `findAllIterator` and `update` methods to the Dispatcher service
 
-### Fixes
-- Improved types and jsDocs for Dispatcher Service
+### Improvements
+- Updated types and documentation for the Dispatcher service
+- Exported the missing `RQLString` type
 
 ## [v7.5.1]
 
