@@ -130,6 +130,20 @@ export interface RQLBuilder {
   excludes: (field: string, ...expressions: RQLString[]) => RQLBuilder;
 
   /**
+   * @description skipCount() Skips the record counting step of a request to increase performance.
+   *
+   * As a result, the page object in a response will not include the total field.
+   *
+   * @example
+   * await sdk.data.documents.find(schemaId, {
+   *   rql: rqlBuilder()
+   *          .skipCount()
+   *          .build(),
+   * });
+   */
+  skipCount: () => RQLBuilder;
+
+  /**
    * Returns a valid rqlString
    * @returns valid rqlString
    */
@@ -234,6 +248,9 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
               .intermediate()}`
           : field
       );
+    },
+    skipCount() {
+      return processQuery('skipCount', '');
     },
     build(): RQLString {
       return `${

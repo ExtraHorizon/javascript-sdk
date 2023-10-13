@@ -131,6 +131,40 @@ describe('rql string builder', () => {
     );
   });
 
+  it('should build a valid skipCount() operator', async () => {
+    const result = rqlBuilder().skipCount().build();
+
+    expect(result).toBe('?skipCount()');
+  });
+
+  it('should build a valid skipCount() operator within an AND operator', async () => {
+    const result = rqlBuilder()
+      .and(
+        rqlBuilder().eq('firstName', 'Joe').intermediate(),
+        rqlBuilder().eq('secondName', 'Bloggs').intermediate(),
+        rqlBuilder().skipCount().intermediate()
+      )
+      .build();
+
+    expect(result).toBe(
+      '?and(eq(firstName,Joe),eq(secondName,Bloggs),skipCount())'
+    );
+  });
+
+  it('should build a valid skipCount() operator within an OR operator', async () => {
+    const result = rqlBuilder()
+      .or(
+        rqlBuilder().eq('firstName', 'Joe').intermediate(),
+        rqlBuilder().eq('secondName', 'Bloggs').intermediate(),
+        rqlBuilder().skipCount().intermediate()
+      )
+      .build();
+
+    expect(result).toBe(
+      '?or(eq(firstName,Joe),eq(secondName,Bloggs),skipCount())'
+    );
+  });
+
   it('creates a query with two expressions in the contains', async () => {
     const containsStaff = rqlBuilder()
       .contains(
