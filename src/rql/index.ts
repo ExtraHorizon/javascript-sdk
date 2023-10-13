@@ -130,7 +130,7 @@ export interface RQLBuilder {
   excludes: (field: string, ...expressions: RQLString[]) => RQLBuilder;
 
   /**
-   * @description skipCount() Skips the document counting step of a request to increase performance.
+   * @description skipCount() Skips the record counting step of a request to increase performance.
    *
    * As a result, the page object in a response will not include the total field.
    *
