@@ -140,8 +140,6 @@ export interface RQLBuilder {
    *          .skipCount()
    *          .build(),
    * });
-   *
-   *
    */
   skipCount: () => RQLBuilder;
 
