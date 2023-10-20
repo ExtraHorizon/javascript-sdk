@@ -76,12 +76,12 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
     gt(field, value) {
       return processQuery('gt', `${field},${value}`);
     },
-    contains(field, ...conditions) {
+    contains(field, ...expressions) {
       return processQuery(
         'contains',
-        conditions.length > 0
+        expressions.length > 0
           ? `${field},${rqlBuilder()
-              .and(...conditions)
+              .and(...expressions)
               .intermediate()}`
           : field
       );
