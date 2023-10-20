@@ -1,5 +1,10 @@
 import rqlParserFromLibrary from './parser';
-import { RQLBuilder, RQLString } from './types';
+import {
+  RQLBuilder,
+  RqlBuilderFactory,
+  RQLBuilderInput,
+  RQLString,
+} from './types';
 
 export * from './types';
 
@@ -20,8 +25,22 @@ export function rqlParser(rql: string): RQLString {
  * @see https://developers.extrahorizon.io/guide/rql.html
  * @returns
  */
-export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
-  let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
+export const rqlBuilder: RqlBuilderFactory = (
+  input: RQLBuilderInput
+): RQLBuilder => {
+  let returnString = '';
+  let shouldDoubleEncode = rqlBuilder.doubleEncodeValues;
+
+  if (typeof input === 'object') {
+    const { doubleEncode, rql } = input;
+
+    shouldDoubleEncode = doubleEncode ?? rqlBuilder.doubleEncodeValues;
+    returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
+  } else {
+    returnString =
+      input && input.charAt(0) === '?' ? input.substr(1) : input || '';
+  }
+
   rqlParser(returnString);
 
   const builder: RQLBuilder = {
@@ -110,11 +129,12 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
   };
 
   function processQuery(operation: string, value: string) {
-    if (value.includes(' ')) {
+    if (!shouldDoubleEncode && value.includes(' ')) {
       console.log(
         'A space has been detected while building the rql, please be aware that problems can arise'
       );
     }
+
     returnString = returnString
       .concat(returnString.length > 0 ? '&' : '')
       .concat(`${operation}(${value})`);
@@ -122,4 +142,4 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
   }
 
   return builder;
-}
+};
