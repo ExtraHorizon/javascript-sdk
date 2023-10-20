@@ -44,10 +44,10 @@ export const rqlBuilder: RqlBuilderFactory = (
   rqlParser(returnString);
 
   const builder: RQLBuilder = {
-    select(value) {
+    select(fields) {
       return processQuery(
         'select',
-        typeof value === 'string' ? value : value.join(',')
+        typeof fields === 'string' ? fields : fields.join(',')
       );
     },
     limit(limit, offset) {
@@ -56,23 +56,23 @@ export const rqlBuilder: RqlBuilderFactory = (
       }
       return processQuery('limit', `${limit}${offset ? `,${offset}` : ''}`);
     },
-    sort(value) {
+    sort(fields) {
       return processQuery(
         'sort',
-        typeof value === 'string' ? value : value.join(',')
+        typeof fields === 'string' ? fields : fields.join(',')
       );
     },
-    out(field, list) {
-      return processQuery('out', `${field},${list.join(',')}`);
+    out(field, values) {
+      return processQuery('out', `${field},${values.join(',')}`);
     },
-    in(field, list) {
-      return processQuery('in', `${field},${list.join(',')}`);
+    in(field, values) {
+      return processQuery('in', `${field},${values.join(',')}`);
     },
-    or(...list) {
-      return processQuery('or', `${list.join(',')}`);
+    or(...conditions) {
+      return processQuery('or', `${conditions.join(',')}`);
     },
-    and(...list) {
-      return processQuery('and', `${list.join(',')}`);
+    and(...conditions) {
+      return processQuery('and', `${conditions.join(',')}`);
     },
     ge(field, value) {
       return processQuery('ge', `${field},${value}`);
@@ -95,22 +95,22 @@ export const rqlBuilder: RqlBuilderFactory = (
     gt(field, value) {
       return processQuery('gt', `${field},${value}`);
     },
-    contains(field, ...expressions) {
+    contains(field, ...conditions) {
       return processQuery(
         'contains',
-        expressions.length > 0
+        conditions.length > 0
           ? `${field},${rqlBuilder()
-              .and(...expressions)
+              .and(...conditions)
               .intermediate()}`
           : field
       );
     },
-    excludes(field, ...expressions) {
+    excludes(field, ...conditions) {
       return processQuery(
         'excludes',
-        expressions.length > 0
+        conditions.length > 0
           ? `${field},${rqlBuilder()
-              .and(...expressions)
+              .and(...conditions)
               .intermediate()}`
           : field
       );
