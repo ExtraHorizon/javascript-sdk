@@ -18,7 +18,7 @@ export interface RQLBuilder {
    * Trims each object down to the set of properties defined in the arguments
    * - Only return field1 and field2 from the records: select(field1, field2)
    */
-  select: (value: string | string[]) => RQLBuilder;
+  select: (fields: string | string[]) => RQLBuilder;
 
   /**
    * - Only return 1 record: limit(1)
@@ -31,17 +31,17 @@ export interface RQLBuilder {
    * - \+ for ascending
    * - \- for descending
    */
-  sort: (value: string | string[]) => RQLBuilder;
+  sort: (fields: string | string[]) => RQLBuilder;
 
   /**
    * Filters for objects where the specified property's value is not in the provided array
    */
-  out: (field: string, list: string[]) => RQLBuilder;
+  out: (field: string, values: string[]) => RQLBuilder;
 
   /**
    * Filters for objects where the specified property's value is in the provided array
    */
-  in: (field: string, list: string[]) => RQLBuilder;
+  in: (field: string, values: string[]) => RQLBuilder;
 
   /**
    * Filters for objects where the specified property's value is greater than or equal to the provided value
@@ -81,12 +81,12 @@ export interface RQLBuilder {
   /**
    * Allows combining results of 2 or more queries with the logical AND operator.
    */
-  and: (...list: RQLString[]) => RQLBuilder;
+  and: (...conditions: RQLString[]) => RQLBuilder;
 
   /**
    * Allows combining results of 2 or more queries with the logical OR operator.
    */
-  or: (...list: RQLString[]) => RQLBuilder;
+  or: (...conditions: RQLString[]) => RQLBuilder;
   /**
    * @description `contains(field)` only returns records having this field as property
    * @example
@@ -97,8 +97,8 @@ export interface RQLBuilder {
    * @returns returns documents containing the `data.indicator` field
    *
    * @description Filters for objects where the specified property's value is an array and the array contains
-   * any value that equals the provided value or satisfies the provided expression.
-   * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is valid
+   * any value that equals the provided value or satisfies the provided condition.
+   * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is valid
    * `contains` with a single property is not strictly needed. This can be replaced with `gt(field.itemField,30)`.
    * @example
    * await sdk.data.documents.find(schemaId, {
@@ -112,7 +112,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents with a data object containing `heartrate > 60` and `heartrate > 90`
    */
-  contains: (field: string, ...expressions: RQLString[]) => RQLBuilder;
+  contains: (field: string, ...conditions: RQLString[]) => RQLBuilder;
   /**
    * @description `excludes(field)` only returns records not having this field as property
    * @example
@@ -123,8 +123,8 @@ export interface RQLBuilder {
    * @returns returns documents not containing the `data.indicator` field
    *
    * @description Filters for objects where the specified property's value is an array and the array excludes
-   * any value that equals the provided value or satisfies the provided expression.
-   * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is invalid
+   * any value that equals the provided value or satisfies the provided condition.
+   * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is invalid
    * @example
    * await sdk.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
@@ -133,7 +133,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents excluding documents where `data.heartrate > 60`
    */
-  excludes: (field: string, ...expressions: RQLString[]) => RQLBuilder;
+  excludes: (field: string, ...conditions: RQLString[]) => RQLBuilder;
 
   /**
    * @description skipCount() Skips the record counting step of a request to increase performance.
