@@ -88,8 +88,8 @@ export interface RQLBuilder {
    * @returns returns documents containing the `data.indicator` field
    *
    * @description Filters for objects where the specified property's value is an array and the array contains
-   * any value that equals the provided value or satisfies the provided expression.
-   * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is valid
+   * any value that equals the provided value or satisfies the provided condition.
+   * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is valid
    * `contains` with a single property is not strictly needed. This can be replaced with `gt(field.itemField,30)`.
    * @example
    * await sdk.data.documents.find(schemaId, {
@@ -103,7 +103,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents with a data object containing `heartrate > 60` and `heartrate > 90`
    */
-  contains: (field: string, ...expressions: RQLString[]) => RQLBuilder;
+  contains: (field: string, ...conditions: RQLString[]) => RQLBuilder;
   /**
    * @description `excludes(field)` only returns records not having this field as property
    * @example
@@ -114,8 +114,8 @@ export interface RQLBuilder {
    * @returns returns documents not containing the `data.indicator` field
    *
    * @description Filters for objects where the specified property's value is an array and the array excludes
-   * any value that equals the provided value or satisfies the provided expression.
-   * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the expression is invalid
+   * any value that equals the provided value or satisfies the provided condition.
+   * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is invalid
    * @example
    * await sdk.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
@@ -124,7 +124,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents excluding documents where `data.heartrate > 60`
    */
-  excludes: (field: string, ...expressions: RQLString[]) => RQLBuilder;
+  excludes: (field: string, ...conditions: RQLString[]) => RQLBuilder;
 
   /**
    * @description skipCount() Skips the record counting step of a request to increase performance.
