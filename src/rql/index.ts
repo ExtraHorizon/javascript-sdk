@@ -60,11 +60,11 @@ export const rqlBuilder: RqlBuilderFactory = (
       const encodedValues = values.map(value => processValue(value));
       return processQuery('in', `${field},${encodedValues.join(',')}`);
     },
-    or(...conditions) {
-      return processQuery('or', `${conditions.join(',')}`);
+    or(...expressions) {
+      return processQuery('or', `${expressions.join(',')}`);
     },
-    and(...conditions) {
-      return processQuery('and', `${conditions.join(',')}`);
+    and(...expressions) {
+      return processQuery('and', `${expressions.join(',')}`);
     },
     ge(field, value) {
       return processQuery('ge', `${field},${processValue(value)}`);
