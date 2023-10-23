@@ -1,10 +1,12 @@
-# guide
+# Guide
 
-### RQL
+## RQL
 
-#### Builder
+RQL, or Resource Query Language, is a query language used for querying and manipulating resources through the URI. RQL provides the ability to filter, sort, paginate, and project data. More info on the RQL capabilities of the Extra Horizon platform can be found [here](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql).
 
-The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
+### Builder
+
+The Extrahorizon Javascript SDK also export an `rqlBuilder` to build valid RQL strings.
 
 ```ts
 import { rqlBuilder } from "@extrahorizon/javascript-sdk";
@@ -13,7 +15,7 @@ const rql = rqlBuilder().select("name").eq("name", "fitbit").build();
 // ?select(name)&eq(name,fitbit)
 ```
 
-An example using the rqlBuilder to compose a complex rql request documents having a heartRate between 40 and 50 or indicator = 'warning'
+An example using the `rqlBuilder` to compose a complex RQL query to request documents having a `heartRate` between 40 and 50 or where the `indicator` field has the value `warning`.
 
 ```ts
 import { rqlBuilder } from "@extrahorizon/javascript-sdk";
@@ -35,7 +37,7 @@ const rql = rqlBuilder()
 const result = await exh.data.documents.find({ rql });
 ```
 
-#### Parser
+### Parser
 
 You can also use the `rqlParser` function and pass in your own stirng.
 
@@ -50,7 +52,7 @@ const rql = rqlParser(
 const result = await exh.data.documents.find({ rql });
 ```
 
-### Raw Queries
+## Raw Queries
 
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
 
@@ -73,7 +75,7 @@ import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 })();
 ```
 
-### Logging
+## Logging
 
 You can pass in two logger function that will be called by Axios on every request/response respectively.
 
@@ -101,7 +103,7 @@ await exh.users.health();
 
 ```
 
-### Schema/Document Generics
+## Schema/Document Generics
 
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
 
@@ -150,9 +152,9 @@ interface MyData {
 const document = await exh.data.documents.find<MyData>(mySchema.id);
 ```
 
-### Tests
+## Tests
 
-#### Mock
+### Mock
 
 The package also exports a mockSdk you can use in your tests. In this example `jest` is used as testing library.
 
@@ -183,6 +185,6 @@ module.exports = {
 };
 ```
 
-### Library
+## Library
 
 To run the unit tests: `yarn start` To run them in watch mode: `yarn start:watch` To run e2e tests, copy `.env.example` to `.env` and set up the credentials Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
