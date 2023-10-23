@@ -162,3 +162,5 @@ export const rqlBuilder: RqlBuilderFactory = (
 
   return builder;
 };
+
+rqlBuilder.doubleEncodeValues = true;

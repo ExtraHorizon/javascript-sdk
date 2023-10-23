@@ -231,4 +231,83 @@ describe('rql string builder', () => {
       rqlParser(`eq(timestamp,${invalidTimestamp})`);
     }).toThrowError();
   });
+
+  it('Should double encode RQL values', () => {
+    const value = '~> & Tester & <~';
+    const encodedValue =
+      '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
+
+    const rql = rqlBuilder().eq('name', value).build();
+    expect(rql).toStrictEqual(`?eq(name,${encodedValue})`);
+  });
+
+  it('Should double encode nested RQL values', () => {
+    const firstName = '~> Tester <~';
+    const doubleEncodedFirstName = '%257E%253E%2520Tester%2520%253C%257E';
+
+    const lastName = '<! McTestFace !>';
+    const doubleEncodedLastName = '%253C%2521%2520McTestFace%2520%2521%253E';
+
+    const firstCondition = rqlBuilder().eq('name', firstName).intermediate();
+    const secondCondition = rqlBuilder()
+      .eq('lastName', lastName)
+      .intermediate();
+    const rql = rqlBuilder().and(firstCondition, secondCondition).build();
+
+    expect(rql).toStrictEqual(
+      `?and(eq(name,${doubleEncodedFirstName}),eq(lastName,${doubleEncodedLastName}))`
+    );
+  });
+
+  it('Should override the double encoding of RQL values when the global value is set to true', () => {
+    const value = '~> & Tester & <~';
+    const encodedValue =
+      '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
+
+    const unencodedRql = rqlBuilder({ doubleEncode: false })
+      .eq('name', value)
+      .build();
+    expect(unencodedRql).toStrictEqual(`?eq(name,${value})`);
+
+    // When not providing the doubleEncodeValues argument the rql builder should use the global setting
+    const encodedRql = rqlBuilder().eq('name', value).build();
+    expect(encodedRql).toStrictEqual(`?eq(name,${encodedValue})`);
+  });
+
+  it('Should override the double encoding of RQL values when the global value is set to false', () => {
+    rqlBuilder.doubleEncodeValues = false;
+
+    const value = '~> & Tester & <~';
+    const encodedValue =
+      '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
+
+    const encodedRql = rqlBuilder({ doubleEncode: true })
+      .eq('name', value)
+      .build();
+    expect(encodedRql).toStrictEqual(`?eq(name,${encodedValue})`);
+
+    // When not providing the doubleEncodeValues argument the rql builder should use the global setting
+    const unencodedRql = rqlBuilder().eq('name', value).build();
+    expect(unencodedRql).toStrictEqual(`?eq(name,${value})`);
+
+    // Reset the default global value
+    rqlBuilder.doubleEncodeValues = true;
+  });
+
+  it('Should globally override the double encoding of RQL values', () => {
+    rqlBuilder.doubleEncodeValues = false;
+
+    const firstName = '~> Tester <~';
+    const lastName = '<! McTestFace !>';
+
+    // As the global setting is false the rql builder should not double encode the values
+    const firstRql = rqlBuilder().in('firstNames', [firstName]).build();
+    expect(firstRql).toStrictEqual(`?in(firstNames,${firstName})`);
+
+    const secondRql = rqlBuilder().out('lastNames', [lastName]).build();
+    expect(secondRql).toStrictEqual(`?out(lastNames,${lastName})`);
+
+    // Reset the default global value
+    rqlBuilder.doubleEncodeValues = true;
+  });
 });

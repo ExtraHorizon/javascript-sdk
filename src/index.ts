@@ -32,5 +32,3 @@ export {
   parseStoredCredentials,
   ExHCredentials,
 } from './parseStoredCredentials';
-
-rqlBuilder.doubleEncodeValues = true;
