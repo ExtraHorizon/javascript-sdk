@@ -28,7 +28,7 @@ export function rqlParser(rql: string): RQLString {
 export const rqlBuilder: RqlBuilderFactory = (
   input: RQLBuilderInput
 ): RQLBuilder => {
-  const { doubleEncodeValues, rql } = determineInput();
+  const { doubleEncodeValues, rql } = determineInput(input);
 
   let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
   rqlParser(returnString);
@@ -120,32 +120,6 @@ export const rqlBuilder: RqlBuilderFactory = (
     },
   };
 
-  // Resolve the input for a rql builder
-  function determineInput() {
-    const result = {
-      doubleEncodeValues: rqlBuilder.doubleEncodeValues,
-      rql: '',
-    };
-
-    if (!input) {
-      return result;
-    }
-
-    // If the input is RQLBuilderOptions override the result
-    if (typeof input === 'object') {
-      result.doubleEncodeValues =
-        input.doubleEncodeValues ?? result.doubleEncodeValues;
-      result.rql = input.rql ?? result.rql;
-
-      return result;
-    }
-
-    // If the input is an RQLBuilderString override the rql property
-    result.rql = input;
-
-    return result;
-  }
-
   function processValue(value: string) {
     if (!doubleEncodeValues) {
       return value;
@@ -174,5 +148,31 @@ export const rqlBuilder: RqlBuilderFactory = (
 
   return builder;
 };
+
+// Resolve the input for a rql builder
+function determineInput(input: RQLBuilderInput) {
+  const result = {
+    doubleEncodeValues: rqlBuilder.doubleEncodeValues,
+    rql: '',
+  };
+
+  if (!input) {
+    return result;
+  }
+
+  // If the input is RQLBuilderOptions override the result
+  if (typeof input === 'object') {
+    const { doubleEncodeValues, rql } = input;
+    result.doubleEncodeValues = doubleEncodeValues ?? result.doubleEncodeValues;
+    result.rql = rql ?? result.rql;
+
+    return result;
+  }
+
+  // If the input is an RQLBuilderString override the rql property
+  result.rql = input;
+
+  return result;
+}
 
 rqlBuilder.doubleEncodeValues = true;
