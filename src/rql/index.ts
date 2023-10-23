@@ -1,5 +1,11 @@
 import rqlParserFromLibrary from './parser';
-import { RQLBuilder, RQLString } from './types';
+import {
+  RQLBuilder,
+  RqlBuilderFactory,
+  RQLBuilderInput,
+  RQLBuilderString,
+  RQLString,
+} from './types';
 
 export * from './types';
 
@@ -20,8 +26,26 @@ export function rqlParser(rql: string): RQLString {
  * @see https://developers.extrahorizon.io/guide/rql.html
  * @returns
  */
-export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
-  let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
+export const rqlBuilder: RqlBuilderFactory = (
+  input: RQLBuilderInput
+): RQLBuilder => {
+  let returnString = '';
+  let shouldDoubleEncode = rqlBuilder.doubleEncodeValues;
+
+  let rqlString: RQLBuilderString;
+  if (typeof input === 'object') {
+    // If an argument for double encode is provided it takes precedent over the global setting
+    const { doubleEncode, rql } = input;
+    shouldDoubleEncode = doubleEncode ?? rqlBuilder.doubleEncodeValues;
+    rqlString = rql;
+  } else {
+    rqlString = input;
+  }
+
+  returnString =
+    rqlString && rqlString.charAt(0) === '?'
+      ? rqlString.substr(1)
+      : rqlString || '';
   rqlParser(returnString);
 
   const builder: RQLBuilder = {
@@ -44,10 +68,12 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
       );
     },
     out(field, values) {
-      return processQuery('out', `${field},${values.join(',')}`);
+      const encodedValues = values.map(value => processValue(value));
+      return processQuery('out', `${field},${encodedValues.join(',')}`);
     },
     in(field, values) {
-      return processQuery('in', `${field},${values.join(',')}`);
+      const encodedValues = values.map(value => processValue(value));
+      return processQuery('in', `${field},${encodedValues.join(',')}`);
     },
     or(...conditions) {
       return processQuery('or', `${conditions.join(',')}`);
@@ -56,25 +82,25 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
       return processQuery('and', `${conditions.join(',')}`);
     },
     ge(field, value) {
-      return processQuery('ge', `${field},${value}`);
+      return processQuery('ge', `${field},${processValue(value)}`);
     },
     eq(field, value) {
-      return processQuery('eq', `${field},${value}`);
+      return processQuery('eq', `${field},${processValue(value)}`);
     },
     le(field, value) {
-      return processQuery('le', `${field},${value}`);
+      return processQuery('le', `${field},${processValue(value)}`);
     },
     ne(field, value) {
-      return processQuery('ne', `${field},${value}`);
+      return processQuery('ne', `${field},${processValue(value)}`);
     },
     like(field, value) {
-      return processQuery('like', `${field},${value}`);
+      return processQuery('like', `${field},${processValue(value)}`);
     },
     lt(field, value) {
-      return processQuery('lt', `${field},${value}`);
+      return processQuery('lt', `${field},${processValue(value)}`);
     },
     gt(field, value) {
-      return processQuery('gt', `${field},${value}`);
+      return processQuery('gt', `${field},${processValue(value)}`);
     },
     contains(field, ...conditions) {
       return processQuery(
@@ -109,12 +135,25 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
     },
   };
 
-  function processQuery(operation: string, value: string) {
-    if (value.includes(' ')) {
-      console.log(
-        'A space has been detected while building the rql, please be aware that problems can arise'
-      );
+  function processValue(value: string) {
+    if (!shouldDoubleEncode) {
+      return value;
     }
+
+    const singleEncodedValue = encodeValue(value);
+    const doubleEncodedValue = encodeValue(singleEncodedValue);
+
+    return doubleEncodedValue;
+  }
+
+  function encodeValue(value: string) {
+    return encodeURIComponent(value).replace(
+      /[-_.!~*'()]/g,
+      c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
+    );
+  }
+
+  function processQuery(operation: string, value: string) {
     returnString = returnString
       .concat(returnString.length > 0 ? '&' : '')
       .concat(`${operation}(${value})`);
@@ -122,4 +161,4 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
   }
 
   return builder;
-}
+};

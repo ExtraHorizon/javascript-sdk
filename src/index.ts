@@ -1,3 +1,5 @@
+import { rqlBuilder } from './rql';
+
 export { rqlBuilder, rqlParser, RQLString } from './rql';
 
 export * from './errors';
@@ -30,3 +32,5 @@ export {
   parseStoredCredentials,
   ExHCredentials,
 } from './parseStoredCredentials';
+
+rqlBuilder.doubleEncodeValues = true;
