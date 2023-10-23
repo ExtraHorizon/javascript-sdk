@@ -264,7 +264,7 @@ describe('rql string builder', () => {
     const encodedValue =
       '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
 
-    const unencodedRql = rqlBuilder({ doubleEncode: false })
+    const unencodedRql = rqlBuilder({ doubleEncodeValues: false })
       .eq('name', value)
       .build();
     expect(unencodedRql).toStrictEqual(`?eq(name,${value})`);
@@ -281,7 +281,7 @@ describe('rql string builder', () => {
     const encodedValue =
       '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
 
-    const encodedRql = rqlBuilder({ doubleEncode: true })
+    const encodedRql = rqlBuilder({ doubleEncodeValues: true })
       .eq('name', value)
       .build();
     expect(encodedRql).toStrictEqual(`?eq(name,${encodedValue})`);
@@ -309,5 +309,84 @@ describe('rql string builder', () => {
 
     // Reset the default global value
     rqlBuilder.doubleEncodeValues = true;
+  });
+
+  it('Should double encode OUT values', () => {
+    const tags = ['ʘ︵ʘ', 'ಠ_ಠ'];
+    const encodedTags = [
+      '%25CA%2598%25EF%25B8%25B5%25CA%2598',
+      '%25E0%25B2%25A0%255F%25E0%25B2%25A0',
+    ];
+
+    const rql = rqlBuilder().out('tags', tags).build();
+    expect(rql).toStrictEqual(`?out(tags,${encodedTags})`);
+  });
+
+  it('Should double encode IN values', () => {
+    const tags = ['ʘ︵ʘ', 'ಠ_ಠ'];
+    const encodedTags = [
+      '%25CA%2598%25EF%25B8%25B5%25CA%2598',
+      '%25E0%25B2%25A0%255F%25E0%25B2%25A0',
+    ];
+
+    const rql = rqlBuilder().in('tags', tags).build();
+    expect(rql).toStrictEqual(`?in(tags,${encodedTags})`);
+  });
+
+  it('Should double encode GE values', () => {
+    const value = 'B & C';
+    const encodedValue = 'B%2520%2526%2520C';
+
+    const rql = rqlBuilder().ge('category', value).build();
+    expect(rql).toStrictEqual(`?ge(category,${encodedValue})`);
+  });
+
+  it('Should double encode EQ values', () => {
+    const value = 'Blood pressure @130/80 - Hypertension';
+    const encodedValue =
+      'Blood%2520pressure%2520%2540130%252F80%2520%252D%2520Hypertension';
+
+    const rql = rqlBuilder().eq('data.diagnosis', value).build();
+    expect(rql).toStrictEqual(`?eq(data.diagnosis,${encodedValue})`);
+  });
+
+  it('Should double encode LE values', () => {
+    const value = 'A & B';
+    const encodedValue = 'A%2520%2526%2520B';
+
+    const rql = rqlBuilder().le('category', value).build();
+    expect(rql).toStrictEqual(`?le(category,${encodedValue})`);
+  });
+
+  it('Should double encode NE values', () => {
+    const value = 'Hypertension - STAGE 1';
+    const encodedValue = 'Hypertension%2520%252D%2520STAGE%25201';
+
+    const rql = rqlBuilder().ne('data.diagnosis', value).build();
+    expect(rql).toStrictEqual(`?ne(data.diagnosis,${encodedValue})`);
+  });
+
+  it('Should double encode LIKE values', () => {
+    const value = 'Hypertension - STAGE';
+    const encodedValue = 'Hypertension%2520%252D%2520STAGE';
+
+    const rql = rqlBuilder().like('data.diagnosis', value).build();
+    expect(rql).toStrictEqual(`?like(data.diagnosis,${encodedValue})`);
+  });
+
+  it('Should double encode LT values', () => {
+    const value = 'A & B';
+    const encodedValue = 'A%2520%2526%2520B';
+
+    const rql = rqlBuilder().lt('category', value).build();
+    expect(rql).toStrictEqual(`?lt(category,${encodedValue})`);
+  });
+
+  it('Should double encode GT values', () => {
+    const value = 'B & C';
+    const encodedValue = 'B%2520%2526%2520C';
+
+    const rql = rqlBuilder().gt('category', value).build();
+    expect(rql).toStrictEqual(`?gt(category,${encodedValue})`);
   });
 });

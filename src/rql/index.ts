@@ -3,7 +3,6 @@ import {
   RQLBuilder,
   RqlBuilderFactory,
   RQLBuilderInput,
-  RQLBuilderString,
   RQLString,
 } from './types';
 
@@ -29,23 +28,9 @@ export function rqlParser(rql: string): RQLString {
 export const rqlBuilder: RqlBuilderFactory = (
   input: RQLBuilderInput
 ): RQLBuilder => {
-  let returnString = '';
-  let shouldDoubleEncode = rqlBuilder.doubleEncodeValues;
+  const { doubleEncodeValues, rql } = determineInput();
 
-  let rqlString: RQLBuilderString;
-  if (typeof input === 'object') {
-    // If an argument for double encode is provided it takes precedent over the global setting
-    const { doubleEncode, rql } = input;
-    shouldDoubleEncode = doubleEncode ?? rqlBuilder.doubleEncodeValues;
-    rqlString = rql;
-  } else {
-    rqlString = input;
-  }
-
-  returnString =
-    rqlString && rqlString.charAt(0) === '?'
-      ? rqlString.substr(1)
-      : rqlString || '';
+  let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
   rqlParser(returnString);
 
   const builder: RQLBuilder = {
@@ -135,8 +120,34 @@ export const rqlBuilder: RqlBuilderFactory = (
     },
   };
 
+  // Resolve the input for a rql builder
+  function determineInput() {
+    const result = {
+      doubleEncodeValues: rqlBuilder.doubleEncodeValues,
+      rql: '',
+    };
+
+    if (!input) {
+      return result;
+    }
+
+    // If the input is RQLBuilderOptions override the result
+    if (typeof input === 'object') {
+      result.doubleEncodeValues =
+        input.doubleEncodeValues ?? result.doubleEncodeValues;
+      result.rql = input.rql ?? result.rql;
+
+      return result;
+    }
+
+    // If the input is an RQLBuilderString override the rql property
+    result.rql = input;
+
+    return result;
+  }
+
   function processValue(value: string) {
-    if (!shouldDoubleEncode) {
+    if (!doubleEncodeValues) {
       return value;
     }
 
@@ -147,6 +158,7 @@ export const rqlBuilder: RqlBuilderFactory = (
   }
 
   function encodeValue(value: string) {
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#encoding_for_rfc3986
     return encodeURIComponent(value).replace(
       /[-_.!~*'()]/g,
       c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`

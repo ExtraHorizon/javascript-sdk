@@ -4,10 +4,10 @@ type NotAnRQLStringError =
 type RQLCheck<T> = T extends any ? NotAnRQLStringError : T;
 export type RQLString = RQLCheck<string>;
 
-export type RQLBuilderString = RQLString | string;
-type RQLBuilderOptions = {
+type RQLBuilderString = RQLString | string;
+export type RQLBuilderOptions = {
   // Overrides the global `rqlBuilder.doubleEncodeValues` value for this rql builder (Default true).
-  doubleEncode?: boolean;
+  doubleEncodeValues?: boolean;
   rql?: RQLBuilderString;
 };
 export type RQLBuilderInput = RQLBuilderString | RQLBuilderOptions;
