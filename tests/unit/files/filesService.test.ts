@@ -53,8 +53,10 @@ describe('Files Service', () => {
 
   it('should find a file by name', async () => {
     const { name } = fileData;
+    const rql = rqlBuilder().eq('name', name).build();
+
     nock(`${host}${FILES_BASE}`)
-      .get(`/?eq(name,${name})`)
+      .get(`/${rql}`)
       .reply(200, createPagedResponse(fileData));
 
     const file = await sdk.files.findByName(name);

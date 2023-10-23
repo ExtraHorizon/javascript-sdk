@@ -113,9 +113,8 @@ describe('Template Service', () => {
 
   it('should find a template by name', async () => {
     const { name } = templateData;
-    nock(`${host}${TEMPLATE_BASE}`)
-      .get(`/?eq(name,${name})`)
-      .reply(200, templateResponse);
+    const rql = rqlBuilder().eq('name', name).build();
+    nock(`${host}${TEMPLATE_BASE}`).get(`/${rql}`).reply(200, templateResponse);
 
     const template = await sdk.templates.findByName(name);
 
