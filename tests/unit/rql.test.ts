@@ -248,14 +248,27 @@ describe('rql string builder', () => {
     const lastName = '<! McTestFace !>';
     const doubleEncodedLastName = '%253C%2521%2520McTestFace%2520%2521%253E';
 
-    const firstCondition = rqlBuilder().eq('name', firstName).intermediate();
+    const firstCondition = rqlBuilder()
+      .eq('firstName', firstName)
+      .intermediate();
     const secondCondition = rqlBuilder()
       .eq('lastName', lastName)
       .intermediate();
-    const rql = rqlBuilder().and(firstCondition, secondCondition).build();
+
+    const thirdCondition = rqlBuilder()
+      .ne('firstName', lastName)
+      .intermediate();
+    const fourthCondition = rqlBuilder()
+      .ne('lastName', firstName)
+      .intermediate();
+
+    const rql = rqlBuilder()
+      .and(firstCondition, secondCondition)
+      .and(thirdCondition, fourthCondition)
+      .build();
 
     expect(rql).toStrictEqual(
-      `?and(eq(name,${doubleEncodedFirstName}),eq(lastName,${doubleEncodedLastName}))`
+      `?and(eq(firstName,${doubleEncodedFirstName}),eq(lastName,${doubleEncodedLastName}))&and(ne(firstName,${doubleEncodedLastName}),ne(lastName,${doubleEncodedFirstName}))`
     );
   });
 
