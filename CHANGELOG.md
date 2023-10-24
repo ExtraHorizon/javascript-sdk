@@ -8,10 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v8.0.0]
 
 ### Changed 
-- Double encoding values provided to the rql builder is enabled by default
-- Example query: `rqlBuilder().eq(name, '< value >').build()`
-  - Current behaviour: `?eq(name,%253C%2520value%2520%253E)`
-  - Old behaviour: `?eq(name,< value >)`
+- **Breaking:** Double encoding values provided to the rql builder is enabled by default
+  - Whilst upgrading to release `8.0.0` ensure that **either**: 
+    - Instances of encoding values for the rql builder such as `encodeURIComponent()` are removed
+    - The `rqlBuilder.doubleEncodeValues` option is set to `false` after upgrading to release `8.0.0`
+  - Example behaviour change: `rqlBuilder().eq(name, '< value >').build()`
+    - Current behaviour: `?eq(name,%253C%2520value%2520%253E)`
+    - Old behaviour: `?eq(name,< value >)`
 
 ### Added
 - An option to disable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = false`
