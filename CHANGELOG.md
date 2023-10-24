@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v8.0.0]
+
+### Changed 
+- Double encoding values provided to the rql builder is enabled by default
+- Example query: `rqlBuilder().eq(name, '< value >').build()`
+  - Current behaviour: `?eq(name,%253C%2520value%2520%253E)`
+  - Old behaviour: `?eq(name,< value >)`
+
+### Added
+- An option to disable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = false`
+- An option to disable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: false }).eq(name, '< value >').build()`
+
 ## [v7.6.0]
 
 ### Added
