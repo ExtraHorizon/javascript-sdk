@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - An option to disable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = false`
 - An option to disable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: false }).eq(name, '< value >').build()`
+- A skip count operator to the rql builder `rqlBuilder().eq(name, '< value >').skipCount().build()` 
+  - Providing this operator skips the record counting step of a request to increase performance. As a result, the page object in a response will not include the total field.
 
 ## [v7.6.0]
 
