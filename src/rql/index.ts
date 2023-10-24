@@ -1,5 +1,10 @@
 import rqlParserFromLibrary from './parser';
-import { RQLBuilder, RQLString } from './types';
+import {
+  RQLBuilder,
+  RqlBuilderFactory,
+  RQLBuilderInput,
+  RQLString,
+} from './types';
 
 export * from './types';
 
@@ -20,7 +25,11 @@ export function rqlParser(rql: string): RQLString {
  * @see https://developers.extrahorizon.io/guide/rql.html
  * @returns
  */
-export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
+export const rqlBuilder: RqlBuilderFactory = (
+  input: RQLBuilderInput
+): RQLBuilder => {
+  const { doubleEncodeValues, rql } = determineInput(input);
+
   let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
   rqlParser(returnString);
 
@@ -44,37 +53,39 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
       );
     },
     out(field, values) {
-      return processQuery('out', `${field},${values.join(',')}`);
+      const encodedValues = values.map(value => processValue(value));
+      return processQuery('out', `${field},${encodedValues.join(',')}`);
     },
     in(field, values) {
-      return processQuery('in', `${field},${values.join(',')}`);
+      const encodedValues = values.map(value => processValue(value));
+      return processQuery('in', `${field},${encodedValues.join(',')}`);
     },
-    or(...conditions) {
-      return processQuery('or', `${conditions.join(',')}`);
+    or(...expressions) {
+      return processQuery('or', `${expressions.join(',')}`);
     },
-    and(...conditions) {
-      return processQuery('and', `${conditions.join(',')}`);
+    and(...expressions) {
+      return processQuery('and', `${expressions.join(',')}`);
     },
     ge(field, value) {
-      return processQuery('ge', `${field},${value}`);
+      return processQuery('ge', `${field},${processValue(value)}`);
     },
     eq(field, value) {
-      return processQuery('eq', `${field},${value}`);
+      return processQuery('eq', `${field},${processValue(value)}`);
     },
     le(field, value) {
-      return processQuery('le', `${field},${value}`);
+      return processQuery('le', `${field},${processValue(value)}`);
     },
     ne(field, value) {
-      return processQuery('ne', `${field},${value}`);
+      return processQuery('ne', `${field},${processValue(value)}`);
     },
     like(field, value) {
-      return processQuery('like', `${field},${value}`);
+      return processQuery('like', `${field},${processValue(value)}`);
     },
     lt(field, value) {
-      return processQuery('lt', `${field},${value}`);
+      return processQuery('lt', `${field},${processValue(value)}`);
     },
     gt(field, value) {
-      return processQuery('gt', `${field},${value}`);
+      return processQuery('gt', `${field},${processValue(value)}`);
     },
     contains(field, ...conditions) {
       return processQuery(
@@ -109,12 +120,26 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
     },
   };
 
-  function processQuery(operation: string, value: string) {
-    if (value.includes(' ')) {
-      console.log(
-        'A space has been detected while building the rql, please be aware that problems can arise'
-      );
+  function processValue(value: string) {
+    if (!doubleEncodeValues) {
+      return value;
     }
+
+    const singleEncodedValue = encodeValue(value);
+    const doubleEncodedValue = encodeValue(singleEncodedValue);
+
+    return doubleEncodedValue;
+  }
+
+  function encodeValue(value: string) {
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#encoding_for_rfc3986
+    return encodeURIComponent(value).replace(
+      /[-_.!~*'()]/g,
+      c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
+    );
+  }
+
+  function processQuery(operation: string, value: string) {
     returnString = returnString
       .concat(returnString.length > 0 ? '&' : '')
       .concat(`${operation}(${value})`);
@@ -122,4 +147,32 @@ export function rqlBuilder(rql?: RQLString | string): RQLBuilder {
   }
 
   return builder;
+};
+
+// Resolve the input for a rql builder
+function determineInput(input: RQLBuilderInput) {
+  const result = {
+    doubleEncodeValues: rqlBuilder.doubleEncodeValues,
+    rql: '',
+  };
+
+  if (!input) {
+    return result;
+  }
+
+  // If the input is RQLBuilderOptions override the result
+  if (typeof input === 'object') {
+    const { doubleEncodeValues, rql } = input;
+    result.doubleEncodeValues = doubleEncodeValues ?? result.doubleEncodeValues;
+    result.rql = rql ?? result.rql;
+
+    return result;
+  }
+
+  // If the input is an RQLBuilderString override the rql property
+  result.rql = input;
+
+  return result;
 }
+
+rqlBuilder.doubleEncodeValues = true;

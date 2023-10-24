@@ -89,9 +89,9 @@ describe('Schemas Service', () => {
 
   it('should find a schema by name', async () => {
     const { name } = schemaData;
-    nock(`${host}${DATA_BASE}`)
-      .get(`/?eq(name,${name})`)
-      .reply(200, schemasListResponse);
+    const rql = rqlBuilder().eq('name', name).build();
+
+    nock(`${host}${DATA_BASE}`).get(`/${rql}`).reply(200, schemasListResponse);
 
     const schema = await sdk.data.schemas.findByName(name);
 
