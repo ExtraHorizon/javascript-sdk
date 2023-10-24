@@ -37,9 +37,31 @@ const rql = rqlBuilder()
 const result = await exh.data.documents.find({ rql });
 ```
 
+#### Automatic double encoding of values
+
+{% hint style="success" %}
+Available since v8.0.0
+{% endhint %}
+
+Each value passed to the operators of the `rqlBuilder` undergoes double encoding to enable the searching of special characters. More information on why values need to be double encoded can be found [here](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters).
+
+<details>
+
+<summary>Disable automatic double encoding</summary>
+
+We strongly advise against disabling automatic double encoding.\
+\
+To deactivate double encoding for all queries generated with the `rqlBuilder`, you add  the following line to the start of your application:\
+`rqlBuilder.doubleEncodeValues = false;`\
+\
+For disabling double encoding on a per-query basis, you can utilize the `options` parameter in the `rqlBuilder` constructor like this:\
+`rqlBuilder({ doubleEncode: false })`
+
+</details>
+
 ### Parser
 
-You can also use the `rqlParser` function and pass in your own stirng.
+You can also use the `rqlParser` function and pass in your own string.
 
 ```ts
 import { rqlParser } from "@extrahorizon/javascript-sdk";
