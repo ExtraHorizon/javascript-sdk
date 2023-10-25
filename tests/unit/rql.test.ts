@@ -310,9 +310,6 @@ describe('rql string builder', () => {
     // When not providing the doubleEncodeValues argument the rql builder should use the global setting
     const unencodedRql = rqlBuilder().eq('name', value).build();
     expect(unencodedRql).toStrictEqual(`?eq(name,${value})`);
-
-    // Reset the default global value
-    rqlBuilder.doubleEncodeValues = true;
   });
 
   it('Should globally override the double encoding of RQL values', () => {
@@ -330,9 +327,6 @@ describe('rql string builder', () => {
 
     const secondRql = rqlBuilder().out('lastNames', [lastName]).build();
     expect(secondRql).toStrictEqual(`?out(lastNames,${doubleEncodedLastName})`);
-
-    // Reset the default global value
-    rqlBuilder.doubleEncodeValues = true;
   });
 
   it('Should double encode OUT values', () => {
