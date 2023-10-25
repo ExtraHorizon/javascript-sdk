@@ -1,13 +1,16 @@
 import axios from 'axios';
 import OAuth from 'oauth-1.0a';
+import * as oauthSign from 'oauth-sign';
+import * as qs from 'qs';
 import { HmacSHA1 } from 'crypto-es/lib/sha1';
 import { Base64 } from 'crypto-es/lib/enc-base64';
+import { URL } from 'url';
 import { Oauth1AuthParams, ParamsOauth1 } from '../types';
 import {
-  TokenDataOauth1,
-  MfaConfig,
   HttpInstance,
+  MfaConfig,
   OAuth1HttpClient,
+  TokenDataOauth1,
 } from './types';
 import {
   camelizeResponseData,
@@ -99,24 +102,60 @@ export function createOAuth1HttpClient(
     tokenData = data;
   }
 
-  httpWithAuth.interceptors.request.use(async (config = {}) => ({
-    ...config,
-    headers: {
-      ...config.headers,
-      'Content-Type': 'application/json',
-      ...(config?.method
-        ? oAuth.toHeader(
-            oAuth.authorize(
-              {
-                url: `${config.baseURL}${config.url}`,
-                method: config.method,
-              },
-              tokenData
-            )
-          )
-        : {}),
-    },
-  }));
+  httpWithAuth.interceptors.request.use(async (config = {}) => {
+    const decodedUrl = `${config.baseURL}${config.url}`;
+    const { protocol, host, pathname, search } = new URL(decodedUrl);
+
+    const baseUrl = `${protocol}//${host}${pathname}`;
+    const searchParameters = qs.parse(
+      search.startsWith('?') ? search.slice(1) : search
+    );
+
+    const nonce = generateNonce();
+    const timeStamp = getTimeStamp();
+
+    const parameters = {
+      oauth_signature_method: 'HMAC-SHA1',
+      oauth_timestamp: timeStamp,
+      oauth_nonce: nonce,
+      oauth_consumer_key: oAuth.consumer.key,
+      oauth_token: tokenData.token,
+      oauth_version: '1.0',
+    };
+
+    const signatureParameters = {
+      ...searchParameters,
+      ...omit(parameters, ['realm', 'oauth_realm', 'oauth_signature']),
+    };
+
+    const signature = oauthSign.sign(
+      parameters.oauth_signature_method,
+      config.method.toUpperCase(),
+      baseUrl,
+      signatureParameters,
+      oAuth.consumer.secret,
+      tokenData.secret
+    );
+
+    const authorizationHeader = oAuth.toHeader({
+      oauth_signature: signature,
+      oauth_token: tokenData.token,
+      oauth_consumer_key: oAuth.consumer.key,
+      oauth_nonce: nonce,
+      oauth_version: '1.0',
+      oauth_signature_method: 'HMAC-SHA1',
+      oauth_timestamp: timeStamp,
+    });
+
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        'Content-Type': 'application/json',
+        ...(config?.method ? authorizationHeader : {}),
+      },
+    };
+  });
 
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
   httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
@@ -247,4 +286,35 @@ export function createOAuth1HttpClient(
 
 function hmacSha1Hash(baseString: string, key: string) {
   return HmacSHA1(baseString, key).toString(Base64);
+}
+
+function generateNonce() {
+  const characters =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  let result = '';
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < 32; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
+  }
+
+  return result;
+}
+
+function omit<T, K extends keyof any>(source: T, keys: K[]): Omit<T, K> {
+  const result: any = {};
+
+  for (const key of Object.keys(source) as Array<keyof T>) {
+    if (!keys.includes(key as any)) {
+      result[key] = source[key];
+    }
+  }
+
+  return result as Omit<T, K>;
+}
+
+function getTimeStamp() {
+  // TODO: Missing radix 10
+  return Math.floor(new Date().getTime() / 1000);
 }
