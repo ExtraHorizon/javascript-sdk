@@ -175,4 +175,4 @@ function determineInput(input: RQLBuilderInput) {
   return result;
 }
 
-rqlBuilder.doubleEncodeValues = true;
+rqlBuilder.doubleEncodeValues = false;
