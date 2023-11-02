@@ -435,7 +435,7 @@ export interface UsersGlobalRolesService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `REMOVE_ROLE_PERMISSIONS` | `global` | **Required** for this endpoint
+   * `REMOVE_ROLE_PERMISSION` | `global` | **Required** for this endpoint
    * @param rql Add filters to the requested list.
    * @param requestBody RolePermissions
    * @returns AffectedRecords
