@@ -12,8 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Enable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = true`
   - Enable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: true }).eq(name, '< value >').build()`
   - When enabling double encoded values ensure that instances of encoding values for the rql builder such as `encodeURIComponent()` are removed
-- A skip count operator to the rql builder `rqlBuilder().eq(name, '< value >').skipCount().build()` 
+  - Double Encoding of RQL values is currently only supported in `OAuth2` clients and will come to `OAuth1` clients at a later date.
+
+
+- A skip count operator to the rql builder `rqlBuilder().eq(name, '< value >').skipCount().build()`
   - Providing this operator skips the record counting step of a request to increase performance. As a result, the page object in a response will not include the total field.
+  - The skip count operator is currently supported in [select services](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#services-with-the-skip-count-rql-operator), and efforts are underway to make it available for all services.
+
+### Fixed
+- Documentation for an incorrect permission value of `exh.users.globalRoles.addPermissions()`
+  - `REMOVE_ROLE_PERMISSIONS` to `REMOVE_ROLE_PERMISSION`
 
 ## [v7.6.0]
 
