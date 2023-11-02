@@ -51,8 +51,9 @@ describe('Localizations Service', () => {
   });
 
   it('should find a localization by key', async () => {
+    const rql = rqlBuilder().eq('key', localizationKey).build();
     nock(`${host}${LOCALIZATIONS_BASE}`)
-      .get(`/?eq(key,${localizationKey})`)
+      .get(`/${rql}`)
       .reply(200, localizationResponse);
 
     const localization = await sdk.localizations.findByKey(localizationKey);
