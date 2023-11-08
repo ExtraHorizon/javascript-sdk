@@ -134,7 +134,7 @@ function generateNonce() {
 // Improvements includes:
 //  - Inlining the sorting
 //  - Removing the check if there is a realm since we don't use it
-//  - Replacing the weird for-loop and substring concept with a map & replace
+//  - Replacing the weird for-loop and substring concept with a map & join
 //  - Removed the filtering on no oath_parameters since they will all be oAuth
 function generateAuthHeader(oAuthData: OAuth1Parameters) {
   const parameterSeparator = ', ';
@@ -166,7 +166,7 @@ function getUrlInfoFromRequest(url: string) {
 
 // Copied from oauth1.0a https://github.com/call203/oauth-1.0a/blob/0673c1bcd4d0cbcd7f2854dee555d55631610b0c/oauth-1.0a.js#L303
 // Same function was present in oauth-sign https://github.com/request/oauth-sign/blob/18a2513da6ba7a2c0cd8179170d7c296c7625137/index.js#L11
-// Preferred the name of the function in oauth-sign
+// Preferred the name of the function in oauth1.0a
 function percentEncode(str: string) {
   return encodeURIComponent(str)
     .replace(/!/g, '%21')
