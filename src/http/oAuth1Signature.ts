@@ -36,7 +36,7 @@ export function getOAuth1AuthorizationHeader(
   const parameters: OAuth1Parameters = {
     oauth_consumer_key: consumer.key,
     oauth_signature_method: 'HMAC-SHA1',
-    oauth_token: tokenData?.key,
+    oauth_token: tokenData?.key || '',
     oauth_timestamp: timeStamp,
     oauth_nonce: nonce,
     oauth_version: '1.0',
@@ -52,7 +52,7 @@ export function getOAuth1AuthorizationHeader(
     baseUrl,
     signatureParameters,
     consumer.secret,
-    tokenData?.secret
+    tokenData?.secret || ''
   );
 
   const header = generateAuthHeader({
@@ -70,7 +70,7 @@ function generateSignature(
   baseUri: string,
   params: ExtendedOAuth1Parameters,
   consumerSecret: string,
-  tokenSecret?: string
+  tokenSecret: string
 ) {
   const base = generateBase(httpMethod, baseUri, params);
   const key = [consumerSecret || '', tokenSecret || '']
