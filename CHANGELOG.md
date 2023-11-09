@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v7.7.1]
 
 ### Fixed
-- Double Encoding of RQL values is now also supported in `OAuth1` clients
+- New implementation of the oAuth1 signature generation to support double Encoding of RQL values in `OAuth1` clients
 
 ## [v7.7.0]
 
