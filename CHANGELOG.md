@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v7.7.1]
+## [v7.8.0]
 
-### Fixed
+### Changed
 - New implementation of the oAuth1 signature generation to support double Encoding of RQL values in `OAuth1` clients
 
 ## [v7.7.0]
