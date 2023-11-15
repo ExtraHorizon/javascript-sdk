@@ -1,8 +1,6 @@
 import axios from 'axios';
-import OAuth from 'oauth-1.0a';
-import { HmacSHA1 } from 'crypto-es/lib/sha1';
-import { Base64 } from 'crypto-es/lib/enc-base64';
 import { Oauth1AuthParams, ParamsOauth1 } from '../types';
+import { getOAuth1AuthorizationHeader } from './oAuth1Signature';
 import {
   TokenDataOauth1,
   MfaConfig,
@@ -24,14 +22,10 @@ export function createOAuth1HttpClient(
   http: HttpInstance,
   options: ParamsOauth1
 ): OAuth1HttpClient {
-  const oAuth = new OAuth({
-    consumer: {
-      key: options.consumerKey,
-      secret: options.consumerSecret,
-    },
-    signature_method: 'HMAC-SHA1',
-    hash_function: hmacSha1Hash,
-  });
+  const consumer = {
+    key: options.consumerKey,
+    secret: options.consumerSecret,
+  };
 
   let tokenData: TokenDataOauth1;
   if ('token' in options && 'tokenSecret' in options) {
@@ -55,15 +49,12 @@ export function createOAuth1HttpClient(
     const { data: me } = await http.get(path, {
       headers: {
         'Content-Type': 'application/json',
-        ...oAuth.toHeader(
-          oAuth.authorize(
-            {
-              url: options.host + path,
-              method: 'get',
-            },
-            tokenData
-          )
-        ),
+        ...getOAuth1AuthorizationHeader({
+          url: options.host + path,
+          method: 'get',
+          consumer,
+          tokenData,
+        }),
       },
     });
     return me;
@@ -105,15 +96,12 @@ export function createOAuth1HttpClient(
       ...config.headers,
       'Content-Type': 'application/json',
       ...(config?.method
-        ? oAuth.toHeader(
-            oAuth.authorize(
-              {
-                url: `${config.baseURL}${config.url}`,
-                method: config.method,
-              },
-              tokenData
-            )
-          )
+        ? getOAuth1AuthorizationHeader({
+            url: `${config.baseURL}${config.url}`,
+            method: config.method,
+            consumer,
+            tokenData,
+          })
         : {}),
     },
   }));
@@ -153,12 +141,11 @@ export function createOAuth1HttpClient(
     const tokenResult = await http.post(TOKEN_ENDPOINT, loginData, {
       headers: {
         'Content-Type': 'application/json',
-        ...oAuth.toHeader(
-          oAuth.authorize({
-            url: options.host + TOKEN_ENDPOINT,
-            method: 'POST',
-          })
-        ),
+        ...getOAuth1AuthorizationHeader({
+          url: options.host + TOKEN_ENDPOINT,
+          method: 'POST',
+          consumer,
+        }),
       },
     });
 
@@ -187,12 +174,11 @@ export function createOAuth1HttpClient(
       {
         headers: {
           'Content-Type': 'application/json',
-          ...oAuth.toHeader(
-            oAuth.authorize({
-              url: `${options.host}${TOKEN_ENDPOINT}/mfa`,
-              method: 'POST',
-            })
-          ),
+          ...getOAuth1AuthorizationHeader({
+            url: `${options.host}${TOKEN_ENDPOINT}/mfa`,
+            method: 'POST',
+            consumer,
+          }),
         },
       }
     );
@@ -243,8 +229,4 @@ export function createOAuth1HttpClient(
       },
     }
   ) as OAuth1HttpClient;
-}
-
-function hmacSha1Hash(baseString: string, key: string) {
-  return HmacSHA1(baseString, key).toString(Base64);
 }
