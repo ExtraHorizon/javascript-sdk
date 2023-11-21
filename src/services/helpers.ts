@@ -128,19 +128,19 @@ export function addPagersFn<T>(
 export function addCustomPropertiesToConfig(
   customProperties: string[],
   httpInstance: HttpInstance,
-  requestOptions: OptionsBase
+  requestOptions?: OptionsBase
 ) {
   const camilizedCustomProperties = customProperties.map(camelize);
   const snakifiedCustomProperties = customProperties.map(decamelize);
 
   // First check local settings
   // If locally turned off, don't skip on any properties
-  if (requestOptions.skipCaseNormalizationForCustomProperties === false) {
+  if (requestOptions?.skipCaseNormalizationForCustomProperties === false) {
     return requestOptions;
   }
 
   // If locally turned on, skip on the custom properties
-  if (requestOptions.skipCaseNormalizationForCustomProperties === true) {
+  if (requestOptions?.skipCaseNormalizationForCustomProperties === true) {
     return {
       ...requestOptions,
       skipKeyNormalizationForProperties: [

@@ -85,9 +85,13 @@ describe('recursiveMap function', () => {
 
 describe('recursiveRenameKeys function', () => {
   it('should map keys for simple object', () => {
-    const result = recursiveRenameKeys(value => `test_${value}`, {
-      test: 'value',
-    });
+    const result = recursiveRenameKeys(
+      value => `test_${value}`,
+      {
+        test: 'value',
+      },
+      []
+    );
 
     expect(Object.keys(result)).toStrictEqual(['test_test']);
   });
@@ -121,7 +125,8 @@ describe('recursiveRenameKeys function', () => {
             creation_timestamp: 1543240753200,
           },
         ],
-      }
+      },
+      []
     );
     expect(result.patientEnlistments[0].expiry_ts).toBe(1543240753289);
   });
@@ -157,7 +162,8 @@ describe('recursiveRenameKeys function', () => {
             },
           ],
         },
-      ]
+      ],
+      []
     );
     expect(result[0].patientEnlistments[0].expiry_ts).toBe(1543240753289);
   });
@@ -172,9 +178,12 @@ describe('camelize function', () => {
 
 describe('camelizeKeys function', () => {
   it('should camelize keys of an object', () => {
-    const result = camelizeKeys({
-      easy_string_to_test: 'test',
-    });
+    const result = camelizeKeys(
+      {
+        easy_string_to_test: 'test',
+      },
+      []
+    );
     expect(result.easyStringToTest).toBeDefined();
   });
 });
@@ -188,9 +197,12 @@ describe('decamelize function', () => {
 
 describe('decamelizeKeys function', () => {
   it('should decamelize keys of an object', () => {
-    const result = decamelizeKeys({
-      easyStringTo_test: 'test',
-    });
+    const result = decamelizeKeys(
+      {
+        easyStringTo_test: 'test',
+      },
+      []
+    );
     expect(result.easy_string_to_test).toBeDefined();
   });
 });
