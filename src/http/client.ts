@@ -12,6 +12,7 @@ export function createHttpClient({
   requestLogger,
   responseLogger,
   headers = {},
+  skipCaseNormalizationForCustomProperties,
 }: HttpClientConfig): HttpInstance {
   const http = axios.create({
     baseURL: host,
@@ -52,5 +53,6 @@ export function createHttpClient({
     typeReceivedErrorsInterceptor
   );
 
-  return http;
+  // @ts-expect-error: typescript can't handle the de-structuring well here.
+  return { ...http, skipCaseNormalizationForCustomProperties };
 }

@@ -1,8 +1,13 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { delay } from '../utils';
 import { DATA_BASE } from '../constants';
-import { HttpResponse, HttpResponseError } from './types';
-import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
+import { HttpRequestConfig, HttpResponse, HttpResponseError } from './types';
+import {
+  camelizeKeys,
+  decamelizeKeys,
+  recursiveMap,
+  recursiveRenameKeys,
+} from './utils';
 import { typeReceivedError } from '../errorHandler';
 import { HttpError } from '../errors';
 
@@ -45,8 +50,17 @@ export const camelizeResponseData = ({
     ['arraybuffer', 'stream'].includes(config.responseType ?? '') ||
     config?.interceptors?.skipCamelizeResponseData
       ? data
-      : camelizeKeys(data),
+      : camelizeKeys(data, config.skipKeyNormalizationForProperties || []),
 });
+
+export const decamilizeRequestData = (
+  data,
+  httpRequestConfig?: HttpRequestConfig
+) =>
+  decamelizeKeys(
+    data,
+    httpRequestConfig?.skipKeyNormalizationForProperties || []
+  );
 
 const mapDateValues = (value, key) => {
   if (
@@ -107,7 +121,7 @@ export const transformKeysResponseData = ({
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
     config?.interceptors?.skipTransformKeysResponseData
       ? data
-      : recursiveRenameKeys(convertRecordsAffectedKeys, data),
+      : recursiveRenameKeys(convertRecordsAffectedKeys, data, []),
 });
 
 export const typeReceivedErrorsInterceptor = async (error: HttpError) => {

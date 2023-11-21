@@ -228,6 +228,8 @@ export function createOAuth2HttpClient(
    */
   return Object.defineProperty(
     {
+      skipCaseNormalizationForCustomProperties:
+        options.skipCaseNormalizationForCustomProperties !== false,
       ...httpWithAuth,
       extraAuthMethods: {
         authenticate,

@@ -2,14 +2,28 @@ import type { HttpInstance } from '../../types';
 import { rqlBuilder } from '../../rql';
 import { ProfilesService, Profile } from './types';
 import { HttpClient } from '../http-client';
-import { findAllIterator, findAllGeneric } from '../helpers';
+import {
+  findAllIterator,
+  findAllGeneric,
+  addCustomPropertiesToConfig,
+} from '../helpers';
 
 export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): ProfilesService => ({
   async find(options) {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+    const customProperties = [
+      'data.custom_fields',
+      'data.groups.custom_fields',
+    ];
+    return (
+      await client.get(
+        httpAuth,
+        `/${options?.rql || ''}`,
+        addCustomPropertiesToConfig(customProperties, httpAuth, options)
+      )
+    ).data;
   },
 
   async findAll(this: ProfilesService, options) {
@@ -32,11 +46,28 @@ export default (
   },
 
   async create(requestBody, options) {
-    return (await client.post(httpAuth, '/', requestBody, options)).data;
+    const customProperties = ['custom_fields', 'groups.custom_fields'];
+    return (
+      await client.post(
+        httpAuth,
+        '/',
+        requestBody,
+        addCustomPropertiesToConfig(customProperties, httpAuth, options)
+      )
+    ).data;
   },
 
   async update(rql, requestBody, options) {
-    return (await client.put(httpAuth, `/${rql}`, requestBody, options)).data;
+    const customProperties = ['custom_fields', 'groups.custom_fields'];
+
+    return (
+      await client.put(
+        httpAuth,
+        `/${rql}`,
+        requestBody,
+        addCustomPropertiesToConfig(customProperties, httpAuth, options)
+      )
+    ).data;
   },
 
   async removeFields(rql, requestBody, options) {

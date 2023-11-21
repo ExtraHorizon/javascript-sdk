@@ -60,6 +60,7 @@ interface ParamsBase {
     'X-Forwarded-Application'?: string;
     'X-Forwarded-User'?: string;
   };
+  skipCaseNormalizationForCustomProperties?: boolean;
 }
 
 export interface ParamsOauth1Consumer extends ParamsBase {

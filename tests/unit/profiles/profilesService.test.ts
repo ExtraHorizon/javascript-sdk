@@ -49,6 +49,126 @@ describe('Profiles Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('should not convert the custom fields to camel case', async () => {
+    const profile = {
+      id: profileId,
+      custom_fields: {
+        hello_world: 'log hello world',
+        property_1: 'jeej!',
+      },
+    };
+
+    const rql = rqlBuilder().build();
+    nock(`${host}${PROFILES_BASE}`)
+      .get('/')
+      .reply(200, createPagedResponse(profile));
+
+    const res = await sdk.profiles.find({ rql });
+
+    expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);
+  });
+
+  it('should convert the custom fields to camel case if the skipOption is turned off', async () => {
+    const profile = {
+      id: profileId,
+      custom_fields: {
+        hello_world: 'log hello world',
+        property_1: 'jeej!',
+      },
+    };
+
+    const rql = rqlBuilder().build();
+    nock(`${host}${PROFILES_BASE}`)
+      .get('/')
+      .reply(200, createPagedResponse(profile));
+
+    const res = await sdk.profiles.find({
+      rql,
+      skipCaseNormalizationForCustomProperties: false,
+    });
+
+    expect(res.data[0].customFields).toStrictEqual({
+      helloWorld: 'log hello world',
+      property1: 'jeej!',
+    });
+  });
+
+  it('should convert the custom fields to camel case if the skipOption is turned off globally', async () => {
+    sdk = createClient({
+      host,
+      clientId: '',
+      skipCaseNormalizationForCustomProperties: false,
+    });
+
+    const mockToken = 'mockToken';
+    nock(host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: mockToken });
+
+    await sdk.auth.authenticate({
+      username: '',
+      password: '',
+    });
+
+    const profile = {
+      id: profileId,
+      custom_fields: {
+        hello_world: 'log hello world',
+        property_1: 'jeej!',
+      },
+    };
+
+    const rql = rqlBuilder().build();
+    nock(`${host}${PROFILES_BASE}`)
+      .get('/')
+      .reply(200, createPagedResponse(profile));
+
+    const res = await sdk.profiles.find({ rql });
+
+    expect(res.data[0].customFields).toStrictEqual({
+      helloWorld: 'log hello world',
+      property1: 'jeej!',
+    });
+  });
+
+  it('should not convert the custom fields to camel case if the skipOption is turned off globally but overwritten locally', async () => {
+    sdk = createClient({
+      host,
+      clientId: '',
+      skipCaseNormalizationForCustomProperties: false,
+    });
+
+    const mockToken = 'mockToken';
+    nock(host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: mockToken });
+
+    await sdk.auth.authenticate({
+      username: '',
+      password: '',
+    });
+
+    const profile = {
+      id: profileId,
+      custom_fields: {
+        hello_world: 'log hello world',
+        property_1: 'jeej!',
+      },
+    };
+
+    const rql = rqlBuilder().build();
+    nock(`${host}${PROFILES_BASE}`)
+      .get('/')
+      .reply(200, createPagedResponse(profile));
+
+    const res = await sdk.profiles.find({
+      rql,
+      skipCaseNormalizationForCustomProperties: true,
+    });
+
+    expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);
+  });
+
   it('should request a list of all profiles', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get('/?limit(50)')

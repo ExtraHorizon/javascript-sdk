@@ -61,6 +61,8 @@ export type OptionsBase = {
   headers?: Headers;
   /** Only passed to the GET requests. Will retry 4 times on 500 errors */
   shouldRetry?: boolean;
+  /** Set to false when needed */
+  skipCaseNormalizationForCustomProperties?: boolean;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString };
 export interface FileUploadOptions extends OptionsBase {

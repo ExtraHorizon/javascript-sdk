@@ -1,4 +1,11 @@
-import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
+import { HttpInstance } from '../http/types';
+import { camelize, decamelize } from '../http/utils';
+import {
+  OptionsBase,
+  OptionsWithRql,
+  PagedResult,
+  PagedResultWithPager,
+} from './types';
 import { rqlBuilder } from '../rql';
 
 const MAX_LIMIT = 50;
@@ -115,5 +122,46 @@ export function addPagersFn<T>(
     ...result,
     previous,
     next,
+  };
+}
+
+export function addCustomPropertiesToConfig(
+  customProperties: string[],
+  httpInstance: HttpInstance,
+  requestOptions: OptionsBase
+) {
+  const camilizedCustomProperties = customProperties.map(camelize);
+  const snakifiedCustomProperties = customProperties.map(decamelize);
+
+  // First check local settings
+  // If locally turned off, don't skip on any properties
+  if (requestOptions.skipCaseNormalizationForCustomProperties === false) {
+    return requestOptions;
+  }
+
+  // If locally turned on, skip on the custom properties
+  if (requestOptions.skipCaseNormalizationForCustomProperties === true) {
+    return {
+      ...requestOptions,
+      skipKeyNormalizationForProperties: [
+        ...camilizedCustomProperties,
+        ...snakifiedCustomProperties,
+      ],
+    };
+  }
+
+  // If locally it is not set
+  // If globally turned off, don't skip on any properties
+  if (httpInstance.skipCaseNormalizationForCustomProperties === false) {
+    return requestOptions;
+  }
+
+  // If globally turned on, skip on the custom properties
+  return {
+    ...requestOptions,
+    skipKeyNormalizationForProperties: [
+      ...camilizedCustomProperties,
+      ...snakifiedCustomProperties,
+    ],
   };
 }

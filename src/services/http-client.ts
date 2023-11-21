@@ -8,7 +8,10 @@ import {
 
 interface HttpClientOptions {
   basePath: string;
-  transformRequestData?(args: Record<string, unknown>): Record<string, unknown>;
+  transformRequestData?(
+    args: Record<string, unknown>,
+    options?: HttpRequestConfig
+  ): Record<string, unknown>;
 }
 
 interface Options {
@@ -37,7 +40,7 @@ const defaultRetryConfig = {
 
 const httpClient = ({
   basePath,
-  transformRequestData = data => data,
+  transformRequestData = (data, _options) => data,
 }: HttpClientOptions) => ({
   get: (
     axios: HttpInstance,
@@ -49,7 +52,7 @@ const httpClient = ({
       ...(shouldRetry !== false ? { retry: defaultRetryConfig } : {}),
     }),
   put: (axios: HttpInstance, url: string, data, config?: HttpRequestConfig) =>
-    axios.put(`${basePath}${url}`, transformRequestData(data), config),
+    axios.put(`${basePath}${url}`, transformRequestData(data, config), config),
   post: (
     axios: HttpInstance,
     url: string,
@@ -57,7 +60,7 @@ const httpClient = ({
     config?: HttpRequestConfig,
     options?: Options
   ) =>
-    axios.post(`${basePath}${url}`, transformRequestData(data), {
+    axios.post(`${basePath}${url}`, transformRequestData(data, config), {
       ...config,
       ...(options?.gzip
         ? {
@@ -95,7 +98,11 @@ const httpClient = ({
   delete: (axios: HttpInstance, url: string, config?: HttpRequestConfig) =>
     axios.delete(`${basePath}${url}`, config),
   patch: (axios: HttpInstance, url: string, data, config?: HttpRequestConfig) =>
-    axios.patch(`${basePath}${url}`, transformRequestData(data), config),
+    axios.patch(
+      `${basePath}${url}`,
+      transformRequestData(data, config),
+      config
+    ),
   options: (axios: HttpInstance, url: string) =>
     axios.options(`${basePath}${url}`),
   head: (axios: HttpInstance, url: string) => axios.head(`${basePath}${url}`),

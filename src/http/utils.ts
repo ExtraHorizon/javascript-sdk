@@ -37,15 +37,29 @@ function is(Ctor, value) {
   return (value != null && value.constructor === Ctor) || value instanceof Ctor;
 }
 
-export function recursiveRenameKeys(fn: { (arg: string): string }, obj) {
+export function recursiveRenameKeys(
+  fn: { (arg: string): string },
+  obj,
+  skipKeys: string[]
+) {
+  if (skipKeys.includes('*')) return obj;
+
   if (Array.isArray(obj)) {
-    return obj.map(value => recursiveRenameKeys(fn, value));
+    return obj.map(value => recursiveRenameKeys(fn, value, skipKeys));
   }
 
   if (is(Object, obj)) {
     return Object.keys(obj).reduce((memo, key) => {
-      if (is(Object, obj[key]) && !is(Date, obj[key])) {
-        return { ...memo, [fn(key)]: recursiveRenameKeys(fn, obj[key]) };
+      if (
+        is(Object, obj[key]) &&
+        !is(Date, obj[key]) &&
+        !skipKeys.includes(key)
+      ) {
+        const keys = skipKeys
+          .filter(k => k.split('.')[0] === key)
+          .map(k => k.split('.').slice(1).join('.'));
+
+        return { ...memo, [fn(key)]: recursiveRenameKeys(fn, obj[key], keys) };
       }
       return { ...memo, [fn(key)]: obj[key] };
     }, {});
@@ -73,15 +87,17 @@ export function decamelize(string: string): string {
 }
 
 export function camelizeKeys(
-  object: Record<string, unknown>
+  object: Record<string, unknown>,
+  keysToSkip: string[]
 ): Record<string, unknown> {
-  return recursiveRenameKeys(camelize, object);
+  return recursiveRenameKeys(camelize, object, keysToSkip);
 }
 
 export function decamelizeKeys(
-  object: Record<string, unknown>
+  object: Record<string, unknown>,
+  keysToSkip: string[]
 ): Record<string, unknown> {
-  return recursiveRenameKeys(decamelize, object);
+  return recursiveRenameKeys(decamelize, object, keysToSkip);
 }
 
 /**
