@@ -1,4 +1,4 @@
-import { decamilizeRequestData } from '../../http/interceptors';
+import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import localizations from './localizations';
@@ -19,7 +19,7 @@ export const localizationsService = (
   CountriesService &
   LanguagesService => {
   const client = httpClient({
-    transformRequestData: decamilizeRequestData,
+    transformRequestData: decamelizeRequestData,
     basePath: LOCALIZATIONS_BASE,
   });
 

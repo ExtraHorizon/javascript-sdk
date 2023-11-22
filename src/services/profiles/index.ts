@@ -1,4 +1,4 @@
-import { decamilizeRequestData } from '../../http/interceptors';
+import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import profiles from './profiles';
@@ -20,7 +20,7 @@ export const profilesService = (
     logs: ProfilesLogsService;
   } => {
   const client = httpClient({
-    transformRequestData: decamilizeRequestData,
+    transformRequestData: decamelizeRequestData,
     basePath: PROFILES_BASE,
   });
 

@@ -1,7 +1,7 @@
 import { camelizeKeys, decamelizeKeys } from '../../src/http/utils';
 
 describe('http/utils', () => {
-  describe('camlizeKeys', () => {
+  describe('camelizeKeys', () => {
     it('Camelizes all keys', () => {
       const obj = {
         my_id: 123,
@@ -20,7 +20,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips Camelizing custom properties', () => {
+    it('Ignores Camelizing custom keys', () => {
       const obj = {
         my_id: 123,
         custom_props: {
@@ -38,7 +38,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips Camelizing custom properties one level deep', () => {
+    it('Ignores Camelizing custom keys one level deep', () => {
       const obj = {
         my_id: 123,
         data: {
@@ -61,7 +61,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips Camelizing custom properties in an array', () => {
+    it('Ignores Camelizing custom keys in an array', () => {
       const obj = {
         my_id: 123,
         data: [
@@ -100,7 +100,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips camelizing all keys', () => {
+    it('Ignores camelizing all keys', () => {
       const obj = {
         my_id: 123,
         custom_props: {
@@ -138,7 +138,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips Decamelizing custom properties', () => {
+    it('Ignores Decamelizing custom keys', () => {
       const obj = {
         myId: 123,
         customProps: {
@@ -156,7 +156,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips Decamelizing custom properties one level deep', () => {
+    it('Ignores Decamelizing custom keys one level deep', () => {
       const obj = {
         myId: 123,
         data: {
@@ -179,7 +179,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips Decamelizing custom properties in an array', () => {
+    it('Ignores Decamelizing custom keys in an array', () => {
       const obj = {
         myId: 123,
         data: [
@@ -218,7 +218,7 @@ describe('http/utils', () => {
       });
     });
 
-    it('Skips Decamelizing all keys', () => {
+    it('Ignores Decamelizing all keys', () => {
       const obj = {
         myId: 123,
         customProps: {

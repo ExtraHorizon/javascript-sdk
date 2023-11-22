@@ -56,7 +56,7 @@ export const camelizeResponseData = ({
         ),
 });
 
-export const decamilizeRequestData = (
+export const decamelizeRequestData = (
   data,
   httpRequestConfig?: HttpRequestConfig
 ) =>

@@ -1,4 +1,4 @@
-import { decamilizeRequestData } from '../../http/interceptors';
+import { decamelizeRequestData } from '../../http/interceptors';
 import type {
   EventsService,
   HttpInstance,
@@ -16,7 +16,7 @@ export const eventsService = (
   EventsService & { subscriptions: SubscriptionsService } => {
   const client = httpClient({
     basePath: EVENTS_BASE,
-    transformRequestData: decamilizeRequestData,
+    transformRequestData: decamelizeRequestData,
   });
 
   return {

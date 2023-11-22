@@ -130,12 +130,12 @@ export function addCustomKeysToOptions(
   httpInstance: HttpInstance,
   requestOptions?: OptionsBase
 ) {
-  // All custom properties normalization is done on the request and the response
+  // All custom key normalization is done on the request and the response
   // In requests keys are converted from camel to snake case
   // In responses keys are converted from snake to camel case
   // To avoid having to set all keys in the array as camel and as snake manually, each key
   // is converted here to both camel and snake case before being put in the config.
-  const camilizedCustomKeys = customKeys.map(camelize);
+  const camelizedCustomKeys = customKeys.map(camelize);
   const snakifiedCustomKeys = customKeys.map(decamelize);
 
   return {
@@ -143,6 +143,6 @@ export function addCustomKeysToOptions(
     normalizeCustomKeyCasing:
       requestOptions?.normalizeCustomKeyCasing ??
       httpInstance.normalizeCustomKeyCasing,
-    customKeys: [...camilizedCustomKeys, ...snakifiedCustomKeys],
+    customKeys: [...camelizedCustomKeys, ...snakifiedCustomKeys],
   };
 }

@@ -1,4 +1,4 @@
-import { decamilizeRequestData } from '../../http/interceptors';
+import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import health from './health';
@@ -18,7 +18,7 @@ export const usersService = (
   } => {
   const userClient = httpClient({
     basePath: USER_BASE,
-    transformRequestData: decamilizeRequestData,
+    transformRequestData: decamelizeRequestData,
   });
 
   const healthMethods = health(userClient, httpWithAuth);

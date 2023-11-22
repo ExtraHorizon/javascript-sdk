@@ -1,4 +1,4 @@
-import { decamilizeRequestData } from '../../http/interceptors';
+import { decamelizeRequestData } from '../../http/interceptors';
 import type { AuthHttpClient } from '../../types';
 import httpClient from '../http-client';
 import notifications from './notifications';
@@ -15,7 +15,7 @@ export const notificationsService = (
   } => {
   const client = httpClient({
     basePath: NOTIFICATIONS_BASE,
-    transformRequestData: decamilizeRequestData,
+    transformRequestData: decamelizeRequestData,
   });
 
   return {

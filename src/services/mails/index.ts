@@ -1,4 +1,4 @@
-import { decamilizeRequestData } from '../../http/interceptors';
+import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import mails from './mails';
@@ -7,7 +7,7 @@ import { MailsService } from './types';
 
 export const mailsService = (httpWithAuth: HttpInstance): MailsService => {
   const client = httpClient({
-    transformRequestData: decamilizeRequestData,
+    transformRequestData: decamelizeRequestData,
     basePath: MAIL_BASE,
   });
 
