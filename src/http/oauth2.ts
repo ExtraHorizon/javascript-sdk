@@ -228,7 +228,7 @@ export function createOAuth2HttpClient(
    */
   return Object.defineProperty(
     {
-      normalizeCustomPropertyCasing: options.normalizeCustomPropertyCasing,
+      normalizeCustomKeyCasing: options.normalizeCustomKeyCasing,
       ...httpWithAuth,
       extraAuthMethods: {
         authenticate,

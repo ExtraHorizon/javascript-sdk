@@ -40,14 +40,14 @@ function is(Ctor, value) {
 export function recursiveRenameKeys(
   fn: { (arg: string): string },
   obj,
-  skipKeys: string[] = []
+  ignoreKeys: string[] = []
 ) {
   // If skipKeys includes the '*', we don't need to convert anything in this object
-  if (skipKeys.includes('*')) return obj;
+  if (ignoreKeys.includes('*')) return obj;
 
   // If the object is an array, recursively apply the function to each element in the array.
   if (Array.isArray(obj)) {
-    return obj.map(value => recursiveRenameKeys(fn, value, skipKeys));
+    return obj.map(value => recursiveRenameKeys(fn, value, ignoreKeys));
   }
 
   if (is(Object, obj)) {
@@ -57,15 +57,18 @@ export function recursiveRenameKeys(
       if (
         is(Object, obj[key]) &&
         !is(Date, obj[key]) &&
-        !skipKeys.includes(key)
+        !ignoreKeys.includes(key)
       ) {
-        // Filter all keys in `skipKeys` that start with the current `key` before the first `.`
+        // Filter all keys in `ignoreKeys` that start with the current `key` before the first `.`
         // Remove the current `key` from those keys before going into the next iteration.
-        const keys = skipKeys
+        const trimmedKeys = ignoreKeys
           .filter(k => k.split('.')[0] === key)
           .map(k => k.split('.').slice(1).join('.'));
 
-        return { ...memo, [fn(key)]: recursiveRenameKeys(fn, obj[key], keys) };
+        return {
+          ...memo,
+          [fn(key)]: recursiveRenameKeys(fn, obj[key], trimmedKeys),
+        };
       }
       return { ...memo, [fn(key)]: obj[key] };
     }, {});
@@ -94,16 +97,16 @@ export function decamelize(string: string): string {
 
 export function camelizeKeys(
   object: Record<string, unknown>,
-  keysToSkip?: string[]
+  ignoreKeys?: string[]
 ): Record<string, unknown> {
-  return recursiveRenameKeys(camelize, object, keysToSkip);
+  return recursiveRenameKeys(camelize, object, ignoreKeys);
 }
 
 export function decamelizeKeys(
   object: Record<string, unknown>,
-  keysToSkip?: string[]
+  ignoreKeys?: string[]
 ): Record<string, unknown> {
-  return recursiveRenameKeys(decamelize, object, keysToSkip);
+  return recursiveRenameKeys(decamelize, object, ignoreKeys);
 }
 
 /**

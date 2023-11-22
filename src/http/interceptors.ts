@@ -52,7 +52,7 @@ export const camelizeResponseData = ({
       ? data
       : camelizeKeys(
           data,
-          config?.normalizeCustomPropertyCasing ? [] : config?.customProperties
+          config?.normalizeCustomKeyCasing ? [] : config?.customKeys
         ),
 });
 
@@ -62,9 +62,9 @@ export const decamilizeRequestData = (
 ) =>
   decamelizeKeys(
     data,
-    httpRequestConfig?.normalizeCustomPropertyCasing
+    httpRequestConfig?.normalizeCustomKeyCasing
       ? []
-      : httpRequestConfig?.customProperties
+      : httpRequestConfig?.customKeys
   );
 
 const mapDateValues = (value, key) => {

@@ -68,7 +68,7 @@ describe('Profiles Service', () => {
     expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);
   });
 
-  it('should convert the custom fields to camel case if normalizeCustomPropertyCasing is true on the request', async () => {
+  it('should convert the custom fields to camel case if normalizeCustomKeyCasing is true on the request', async () => {
     const profile = {
       id: profileId,
       custom_fields: {
@@ -84,7 +84,7 @@ describe('Profiles Service', () => {
 
     const res = await sdk.profiles.find({
       rql,
-      normalizeCustomPropertyCasing: true,
+      normalizeCustomKeyCasing: true,
     });
 
     expect(res.data[0].customFields).toStrictEqual({
@@ -93,11 +93,11 @@ describe('Profiles Service', () => {
     });
   });
 
-  it('should convert the custom fields to camel case if the normalizeCustomPropertyCasing is true on the client', async () => {
+  it('should convert the custom fields to camel case if the normalizeCustomKeyCasing is true on the client', async () => {
     sdk = createClient({
       host,
       clientId: '',
-      normalizeCustomPropertyCasing: true,
+      normalizeCustomKeyCasing: true,
     });
 
     const mockToken = 'mockToken';
@@ -131,11 +131,11 @@ describe('Profiles Service', () => {
     });
   });
 
-  it('should not convert the custom fields to camel case if the normalizeCustomPropertyCasing true on the client but set to false on the request', async () => {
+  it('should not convert the custom fields to camel case if the normalizeCustomKeyCasing true on the client but set to false on the request', async () => {
     sdk = createClient({
       host,
       clientId: '',
-      normalizeCustomPropertyCasing: true,
+      normalizeCustomKeyCasing: true,
     });
 
     const mockToken = 'mockToken';
@@ -163,7 +163,7 @@ describe('Profiles Service', () => {
 
     const res = await sdk.profiles.find({
       rql,
-      normalizeCustomPropertyCasing: false,
+      normalizeCustomKeyCasing: false,
     });
 
     expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);

@@ -125,8 +125,8 @@ export function addPagersFn<T>(
   };
 }
 
-export function addCustomPropertiesToConfig(
-  customProperties: string[],
+export function addCustomKeysToOptions(
+  customKeys: string[],
   httpInstance: HttpInstance,
   requestOptions?: OptionsBase
 ) {
@@ -135,17 +135,14 @@ export function addCustomPropertiesToConfig(
   // In responses keys are converted from snake to camel case
   // To avoid having to set all keys in the array as camel and as snake manually, each key
   // is converted here to both camel and snake case before being put in the config.
-  const camilizedCustomProperties = customProperties.map(camelize);
-  const snakifiedCustomProperties = customProperties.map(decamelize);
+  const camilizedCustomKeys = customKeys.map(camelize);
+  const snakifiedCustomKeys = customKeys.map(decamelize);
 
   return {
     ...requestOptions,
-    normalizeCustomPropertyCasing:
-      requestOptions?.normalizeCustomPropertyCasing ??
-      httpInstance.normalizeCustomPropertyCasing,
-    customProperties: [
-      ...camilizedCustomProperties,
-      ...snakifiedCustomProperties,
-    ],
+    normalizeCustomKeyCasing:
+      requestOptions?.normalizeCustomKeyCasing ??
+      httpInstance.normalizeCustomKeyCasing,
+    customKeys: [...camilizedCustomKeys, ...snakifiedCustomKeys],
   };
 }

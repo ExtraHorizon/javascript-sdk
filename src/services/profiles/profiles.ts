@@ -5,7 +5,7 @@ import { HttpClient } from '../http-client';
 import {
   findAllIterator,
   findAllGeneric,
-  addCustomPropertiesToConfig,
+  addCustomKeysToOptions,
 } from '../helpers';
 
 export default (
@@ -13,15 +13,12 @@ export default (
   httpAuth: HttpInstance
 ): ProfilesService => ({
   async find(options) {
-    const customProperties = [
-      'data.custom_fields',
-      'data.groups.custom_fields',
-    ];
+    const customKeys = ['data.custom_fields', 'data.groups.custom_fields'];
     return (
       await client.get(
         httpAuth,
         `/${options?.rql || ''}`,
-        addCustomPropertiesToConfig(customProperties, httpAuth, options)
+        addCustomKeysToOptions(customKeys, httpAuth, options)
       )
     ).data;
   },
@@ -46,26 +43,26 @@ export default (
   },
 
   async create(requestBody, options) {
-    const customProperties = ['custom_fields', 'groups.custom_fields'];
+    const customKeys = ['custom_fields', 'groups.custom_fields'];
     return (
       await client.post(
         httpAuth,
         '/',
         requestBody,
-        addCustomPropertiesToConfig(customProperties, httpAuth, options)
+        addCustomKeysToOptions(customKeys, httpAuth, options)
       )
     ).data;
   },
 
   async update(rql, requestBody, options) {
-    const customProperties = ['custom_fields', 'groups.custom_fields'];
+    const customKeys = ['custom_fields', 'groups.custom_fields'];
 
     return (
       await client.put(
         httpAuth,
         `/${rql}`,
         requestBody,
-        addCustomPropertiesToConfig(customProperties, httpAuth, options)
+        addCustomKeysToOptions(customKeys, httpAuth, options)
       )
     ).data;
   },
