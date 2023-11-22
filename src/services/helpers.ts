@@ -138,33 +138,12 @@ export function addCustomPropertiesToConfig(
   const camilizedCustomProperties = customProperties.map(camelize);
   const snakifiedCustomProperties = customProperties.map(decamelize);
 
-  // First check local request settings
-  // If turned off on the request, don't skip on any properties
-  if (requestOptions?.skipCaseNormalizationForCustomProperties === false) {
-    return requestOptions;
-  }
-
-  // If turned on, on the request, skip on the custom properties
-  if (requestOptions?.skipCaseNormalizationForCustomProperties === true) {
-    return {
-      ...requestOptions,
-      skipKeyNormalizationForProperties: [
-        ...camilizedCustomProperties,
-        ...snakifiedCustomProperties,
-      ],
-    };
-  }
-
-  // If nothing is set on the request, we need to check the global settings
-  // If globally turned off, don't skip on any properties
-  if (httpInstance.skipCaseNormalizationForCustomProperties === false) {
-    return requestOptions;
-  }
-
-  // If globally turned on, skip on the custom properties
   return {
     ...requestOptions,
-    skipKeyNormalizationForProperties: [
+    normalizeCustomPropertyCasing:
+      requestOptions?.normalizeCustomPropertyCasing ??
+      httpInstance.normalizeCustomPropertyCasing,
+    customProperties: [
       ...camilizedCustomProperties,
       ...snakifiedCustomProperties,
     ],

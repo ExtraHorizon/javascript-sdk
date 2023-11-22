@@ -40,7 +40,7 @@ function is(Ctor, value) {
 export function recursiveRenameKeys(
   fn: { (arg: string): string },
   obj,
-  skipKeys: string[]
+  skipKeys: string[] = []
 ) {
   // If skipKeys includes the '*', we don't need to convert anything in this object
   if (skipKeys.includes('*')) return obj;
@@ -94,14 +94,14 @@ export function decamelize(string: string): string {
 
 export function camelizeKeys(
   object: Record<string, unknown>,
-  keysToSkip: string[]
+  keysToSkip?: string[]
 ): Record<string, unknown> {
   return recursiveRenameKeys(camelize, object, keysToSkip);
 }
 
 export function decamelizeKeys(
   object: Record<string, unknown>,
-  keysToSkip: string[]
+  keysToSkip?: string[]
 ): Record<string, unknown> {
   return recursiveRenameKeys(decamelize, object, keysToSkip);
 }

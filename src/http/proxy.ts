@@ -71,8 +71,7 @@ export function createProxyHttpClient(
    */
   return Object.defineProperty(
     {
-      skipCaseNormalizationForCustomProperties:
-        options.skipCaseNormalizationForCustomProperties !== false,
+      normalizeCustomPropertyCasing: options.normalizeCustomPropertyCasing,
       ...httpWithAuth,
       extraAuthMethods: {
         logout,

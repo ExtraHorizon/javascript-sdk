@@ -204,8 +204,7 @@ export function createOAuth1HttpClient(
    */
   return Object.defineProperty(
     {
-      skipCaseNormalizationForCustomProperties:
-        options.skipCaseNormalizationForCustomProperties !== false,
+      normalizeCustomPropertyCasing: options.normalizeCustomPropertyCasing,
       ...httpWithAuth,
       extraAuthMethods: {
         authenticate,

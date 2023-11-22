@@ -24,7 +24,8 @@ export type HttpRequestConfig = AxiosRequestConfig & {
     current: number;
     retryCondition: (error: HttpResponseError) => boolean;
   };
-  skipKeyNormalizationForProperties?: string[];
+  normalizeCustomPropertyCasing?: boolean;
+  customProperties?: string[];
 };
 
 export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
@@ -32,7 +33,7 @@ export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
 export interface HttpInstance {
   (config: AxiosRequestConfig): AxiosPromise;
   (url: string, config?: AxiosRequestConfig): AxiosPromise;
-  skipCaseNormalizationForCustomProperties: boolean;
+  normalizeCustomPropertyCasing?: boolean;
   defaults: AxiosDefaults;
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;

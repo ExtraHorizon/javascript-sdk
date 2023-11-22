@@ -68,7 +68,7 @@ describe('Profiles Service', () => {
     expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);
   });
 
-  it('should convert the custom fields to camel case if the skipOption is turned off', async () => {
+  it('should convert the custom fields to camel case if normalizeCustomPropertyCasing is true on the request', async () => {
     const profile = {
       id: profileId,
       custom_fields: {
@@ -84,7 +84,7 @@ describe('Profiles Service', () => {
 
     const res = await sdk.profiles.find({
       rql,
-      skipCaseNormalizationForCustomProperties: false,
+      normalizeCustomPropertyCasing: true,
     });
 
     expect(res.data[0].customFields).toStrictEqual({
@@ -93,11 +93,11 @@ describe('Profiles Service', () => {
     });
   });
 
-  it('should convert the custom fields to camel case if the skipOption is turned off globally', async () => {
+  it('should convert the custom fields to camel case if the normalizeCustomPropertyCasing is true on the client', async () => {
     sdk = createClient({
       host,
       clientId: '',
-      skipCaseNormalizationForCustomProperties: false,
+      normalizeCustomPropertyCasing: true,
     });
 
     const mockToken = 'mockToken';
@@ -131,11 +131,11 @@ describe('Profiles Service', () => {
     });
   });
 
-  it('should not convert the custom fields to camel case if the skipOption is turned off globally but overwritten locally', async () => {
+  it('should not convert the custom fields to camel case if the normalizeCustomPropertyCasing true on the client but set to false on the request', async () => {
     sdk = createClient({
       host,
       clientId: '',
-      skipCaseNormalizationForCustomProperties: false,
+      normalizeCustomPropertyCasing: true,
     });
 
     const mockToken = 'mockToken';
@@ -163,7 +163,7 @@ describe('Profiles Service', () => {
 
     const res = await sdk.profiles.find({
       rql,
-      skipCaseNormalizationForCustomProperties: true,
+      normalizeCustomPropertyCasing: false,
     });
 
     expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);

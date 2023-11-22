@@ -50,7 +50,10 @@ export const camelizeResponseData = ({
     ['arraybuffer', 'stream'].includes(config.responseType ?? '') ||
     config?.interceptors?.skipCamelizeResponseData
       ? data
-      : camelizeKeys(data, config.skipKeyNormalizationForProperties || []),
+      : camelizeKeys(
+          data,
+          config?.normalizeCustomPropertyCasing ? [] : config?.customProperties
+        ),
 });
 
 export const decamilizeRequestData = (
@@ -59,7 +62,9 @@ export const decamilizeRequestData = (
 ) =>
   decamelizeKeys(
     data,
-    httpRequestConfig?.skipKeyNormalizationForProperties || []
+    httpRequestConfig?.normalizeCustomPropertyCasing
+      ? []
+      : httpRequestConfig?.customProperties
   );
 
 const mapDateValues = (value, key) => {
