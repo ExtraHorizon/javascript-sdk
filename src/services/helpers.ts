@@ -130,16 +130,21 @@ export function addCustomPropertiesToConfig(
   httpInstance: HttpInstance,
   requestOptions?: OptionsBase
 ) {
+  // All custom properties normalization is done on the request and the response
+  // In requests keys are converted from camel to snake case
+  // In responses keys are converted from snake to camel case
+  // To avoid having to set all keys in the array as camel and as snake manually, each key
+  // is converted here to both camel and snake case before being put in the config.
   const camilizedCustomProperties = customProperties.map(camelize);
   const snakifiedCustomProperties = customProperties.map(decamelize);
 
-  // First check local settings
-  // If locally turned off, don't skip on any properties
+  // First check local request settings
+  // If turned off on the request, don't skip on any properties
   if (requestOptions?.skipCaseNormalizationForCustomProperties === false) {
     return requestOptions;
   }
 
-  // If locally turned on, skip on the custom properties
+  // If turned on, on the request, skip on the custom properties
   if (requestOptions?.skipCaseNormalizationForCustomProperties === true) {
     return {
       ...requestOptions,
@@ -150,7 +155,7 @@ export function addCustomPropertiesToConfig(
     };
   }
 
-  // If locally it is not set
+  // If nothing is set on the request, we need to check the global settings
   // If globally turned off, don't skip on any properties
   if (httpInstance.skipCaseNormalizationForCustomProperties === false) {
     return requestOptions;

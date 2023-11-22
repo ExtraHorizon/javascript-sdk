@@ -42,19 +42,25 @@ export function recursiveRenameKeys(
   obj,
   skipKeys: string[]
 ) {
+  // If skipKeys includes the '*', we don't need to convert anything in this object
   if (skipKeys.includes('*')) return obj;
 
+  // If the object is an array, recursively apply the function to each element in the array.
   if (Array.isArray(obj)) {
     return obj.map(value => recursiveRenameKeys(fn, value, skipKeys));
   }
 
   if (is(Object, obj)) {
     return Object.keys(obj).reduce((memo, key) => {
+      // Check that `obj[key]` is an object
+      // If it is date or `skipKeys` includes the current key, don't continue the recursion
       if (
         is(Object, obj[key]) &&
         !is(Date, obj[key]) &&
         !skipKeys.includes(key)
       ) {
+        // Filter all keys in `skipKeys` that start with the current `key` before the first `.`
+        // Remove the current `key` from those keys before going into the next iteration.
         const keys = skipKeys
           .filter(k => k.split('.')[0] === key)
           .map(k => k.split('.').slice(1).join('.'));
