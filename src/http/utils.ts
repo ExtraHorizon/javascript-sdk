@@ -36,7 +36,13 @@ export const recursiveMap =
 function is(Ctor, value) {
   return (value != null && value.constructor === Ctor) || value instanceof Ctor;
 }
-
+/**
+ * Recursively renames keys in an object using a provided function.
+ * @param fn A function that takes a string (key) and returns a string (new key).
+ * @param obj The object to rename they keys in.
+ * @param ignoreKeys An array of keys to ignore during the renaming process.
+ * @returns An object with keys renamed according to the provided function.
+ */
 export function recursiveRenameKeys(
   fn: { (arg: string): string },
   obj,
@@ -61,13 +67,13 @@ export function recursiveRenameKeys(
       ) {
         // Filter all keys in `ignoreKeys` that start with the current `key` before the first `.`
         // Remove the current `key` from those keys before going into the next iteration.
-        const trimmedKeys = ignoreKeys
+        const partialIgnoreKeys = ignoreKeys
           .filter(k => k.split('.')[0] === key)
           .map(k => k.split('.').slice(1).join('.'));
 
         return {
           ...memo,
-          [fn(key)]: recursiveRenameKeys(fn, obj[key], trimmedKeys),
+          [fn(key)]: recursiveRenameKeys(fn, obj[key], partialIgnoreKeys),
         };
       }
       return { ...memo, [fn(key)]: obj[key] };
