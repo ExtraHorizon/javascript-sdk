@@ -60,6 +60,13 @@ interface ParamsBase {
     'X-Forwarded-Application'?: string;
     'X-Forwarded-User'?: string;
   };
+  /**
+   * @deprecated this property is only meant to be used for backwards compatibility when upgrading to v8.0.0.
+   *
+   * Key names that are not chosen by Extra Horizon where also affected by the key normalization before v8.0.0.
+   * They were converted from camel case to snake case before sending the request and the other way around before
+   * providing the response. To enable this behaviour again, set to true.
+   */
   normalizeCustomKeyCasing?: boolean;
 }
 
