@@ -71,7 +71,7 @@ export function createProxyHttpClient(
    */
   return Object.defineProperty(
     {
-      normalizeCustomKeyCasing: options.normalizeCustomKeyCasing,
+      normalizeCustomData: options.normalizeCustomKeyCasing,
       ...httpWithAuth,
       extraAuthMethods: {
         logout,

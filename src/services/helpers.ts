@@ -142,7 +142,7 @@ export function addCustomKeysToOptions(
     ...requestOptions,
     normalizeCustomKeyCasing:
       requestOptions?.normalizeCustomKeyCasing ??
-      httpInstance.normalizeCustomKeyCasing,
+      httpInstance.normalizeCustomData,
     customKeys: [...camelizedCustomKeys, ...snakifiedCustomKeys],
   };
 }

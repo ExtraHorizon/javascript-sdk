@@ -33,7 +33,7 @@ export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
 export interface HttpInstance {
   (config: AxiosRequestConfig): AxiosPromise;
   (url: string, config?: AxiosRequestConfig): AxiosPromise;
-  normalizeCustomKeyCasing?: boolean;
+  normalizeCustomData?: boolean;
   defaults: AxiosDefaults;
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
