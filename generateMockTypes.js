@@ -37,7 +37,7 @@ console.log(
     {
       ...recursiveMap(value =>
         typeof value === 'function' ? 'MockFn;' : value
-      )(createOAuth1Client({ host: '', clientId: '' })),
+      ,createOAuth1Client({ host: '', clientId: '' })),
       raw: getRawMock()
     },
     null,
@@ -54,7 +54,7 @@ console.log(
     {
       ...recursiveMap(value =>
         typeof value === 'function' ? 'MockFn;' : value
-      )(createOAuth2Client({ host: '', clientId: '' })),
+      ,createOAuth2Client({ host: '', clientId: '' })),
       raw: getRawMock()
     },
     null,
@@ -71,7 +71,7 @@ console.log(
     {
       ...recursiveMap(value =>
         typeof value === 'function' ? 'MockFn;' : value
-      )(createProxyClient({ host: '' })),
+      ,createProxyClient({ host: '' })),
       raw: getRawMock()
     },
     null,
