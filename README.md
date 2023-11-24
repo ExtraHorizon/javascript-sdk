@@ -103,7 +103,7 @@ find(
 ): Promise<PagedResult<Schema>>;
 ```
 
-## 8.0.0 Migration Guide
+## 8.0.0 Upgrade Guide
 
 ### Double Encoding
 - Ensure that instances of encoding values for the rql builder such as `encodeURIComponent()` are removed
