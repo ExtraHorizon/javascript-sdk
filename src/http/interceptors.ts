@@ -52,7 +52,7 @@ export const camelizeResponseData = ({
       ? data
       : camelizeKeys(
           data,
-          config?.normalizeCustomKeyCasing ? [] : config?.customKeys
+          config?.normalizeCustomData ? [] : config?.customKeys
         ),
 });
 
@@ -62,9 +62,7 @@ export const decamelizeRequestData = (
 ) =>
   decamelizeKeys(
     data,
-    httpRequestConfig?.normalizeCustomKeyCasing
-      ? []
-      : httpRequestConfig?.customKeys
+    httpRequestConfig?.normalizeCustomData ? [] : httpRequestConfig?.customKeys
   );
 
 const mapDateValues = (value, key) => {
@@ -105,7 +103,11 @@ export const transformResponseData = ({
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
     config?.interceptors?.skipTransformResponseData
       ? data
-      : recursiveMap(mapDateValues, config?.url?.startsWith(DATA_BASE))(data),
+      : recursiveMap(
+          mapDateValues,
+          data,
+          config?.normalizeCustomData ? [] : config?.customKeys
+        ),
 });
 
 const convertRecordsAffectedKeys = key => {
@@ -126,7 +128,11 @@ export const transformKeysResponseData = ({
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
     config?.interceptors?.skipTransformKeysResponseData
       ? data
-      : recursiveRenameKeys(convertRecordsAffectedKeys, data, []),
+      : recursiveRenameKeys(
+          convertRecordsAffectedKeys,
+          data,
+          config?.normalizeCustomData ? [] : config?.customKeys
+        ),
 });
 
 export const typeReceivedErrorsInterceptor = async (error: HttpError) => {

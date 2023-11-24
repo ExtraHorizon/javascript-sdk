@@ -5,29 +5,30 @@ export function mapObjIndexed(fn, object): Record<string, unknown> {
   );
 }
 
-export const recursiveMap =
-  (fn, skipData = false) =>
-  obj => {
-    // needed for arrays with strings/numbers etc
-    if (obj === null || typeof obj !== 'object') {
-      return obj;
+export const recursiveMap = (fn, obj, ignoreKeys = []) => {
+  // needed for arrays with strings/numbers etc
+  if (obj === null || typeof obj !== 'object' || ignoreKeys.includes('*')) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(value => recursiveMap(fn, value, ignoreKeys));
+  }
+
+  return mapObjIndexed((value, key) => {
+    if (typeof value !== 'object' || ignoreKeys.includes(key)) {
+      return fn(value, key);
     }
 
-    return Array.isArray(obj)
-      ? obj.map(recursiveMap(fn, skipData))
-      : mapObjIndexed((value, key) => {
-          if (typeof value !== 'object') {
-            return fn(value, key);
-          }
+    // Filter all keys in `ignoreKeys` that start with the current `key` before the first `.`
+    // Remove the current `key` from those keys before going into the next iteration.
+    const partialIgnoreKeys = ignoreKeys
+      .filter(k => k.split('.')[0] === key)
+      .map(k => k.split('.').slice(1).join('.'));
 
-          // if recursively mapping and we find a data property that
-          // is an object, return the object.
-          if (skipData && key === 'data' && !Array.isArray(value)) {
-            return value;
-          }
-          return recursiveMap(fn, skipData)(value);
-        }, obj);
-  };
+    return recursiveMap(fn, value, partialIgnoreKeys);
+  }, obj);
+};
 
 /**
  * See if an object (`val`) is an instance of the supplied constructor. This

@@ -24,7 +24,7 @@ export type HttpRequestConfig = AxiosRequestConfig & {
     current: number;
     retryCondition: (error: HttpResponseError) => boolean;
   };
-  normalizeCustomKeyCasing?: boolean;
+  normalizeCustomData?: boolean;
   customKeys?: string[];
 };
 
