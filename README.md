@@ -105,12 +105,27 @@ find(
 
 ## 8.0.0 Upgrade Guide
 
-### Double Encoding
-- Ensure that instances of encoding values for the rql builder such as `encodeURIComponent()` are removed
-- Disable double encoding for a single rql builder operation `rqlBuilder({ doubleEncodeValues: false })` where double encoding is not desired
+### Double encoding RQL values 
+From version 8.0.0 RQL values are now [double encoded](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters) by default when using the rql builder, to support the use of special characters in rql operations.
 
-#### NOT ADVISED
-- Disable double encoding for all rql builder operations using `rqlBuilder.doubleEncodeValues = false` for the previous behavior
+In your existing application it is likely that you have encoded values provided to the rql builder using methods such as `encodeURIComponent()`. To support the automatic double encoding of special characters, where applicable, these instances of encoding should be removed.
+- Before 8.0.0: `rqlBuilder().eq('diagnosis', encodeURIComponent('Hypertension - STAGE 1'))`
+- After 8.0.0: `rqlBuilder().eq('diagnosis', 'Hypertension - STAGE 1')`
+
+Any use of an rql builder that does not need to support special characters may remain as it is.
+
+#### Reverting double encoding for a single rql builder
+You may disable double encoding for an rql builder by setting the option `rqlBuilder({ doubleEncodeValues: false })`
+- Before 8.0.0: `rqlBuilder().eq('diagnosis', encodeURIComponent('Hypertension - STAGE 1'))`
+- After 8.0.0: `rqlBuilder({ doubleEncodeValues: false }).eq('diagnosis', encodeURIComponent('Hypertension - STAGE 1'))`
+
+#### Reverting double encoding for all rql builders
+The automatic double encoding of values can be reverted to behavior before 8.0.0 using the snippet `rqlBuilder.doubleEncodeValues = false`. This should normally exist alongside the declaration of your Extra Horizon SDK instance at the root of your application.
+- You may then enable double encoding for an rql builder `rqlBuilder({ doubleEncodeValues: true }).eq('diagnosis', 'Hypertension - STAGE 1')`
+- You may manually encode values for an rql builder `rqlBuilder().eq('diagnosis', encodeURIComponent('Hypertension - STAGE 1'))`
+
+For more information regarding manual double encoding please refer to the [RQL documentation](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters).
+
 
 [auth]: https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
 [users]: https://swagger.extrahorizon.com/listing/?service=users-service&redirectToVersion=1
