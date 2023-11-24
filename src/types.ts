@@ -71,6 +71,9 @@ interface ParamsBase {
    * converted to dates. Even though they could be just booleans, strings or numbers. Dates provided in such fields will
    * now be converted to strings while all other types will stay as they are.
    *
+   * 'records_affected', 'recordsAffected' as keys in custom properties were converted to affectedRecords. In v8.0.0
+   * they also stay as they are.
+   *
    * To enable this behaviour again, set to true.
    */
   normalizeCustomData?: boolean;
