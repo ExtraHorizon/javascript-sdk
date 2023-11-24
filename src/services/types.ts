@@ -68,7 +68,7 @@ export type OptionsBase = {
    * They were converted from camel case to snake case before sending the request and the other way around before
    * providing the response. To enable this behaviour again, set to true.
    */
-  normalizeCustomKeyCasing?: boolean;
+  normalizeCustomData?: boolean;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString };
 export interface FileUploadOptions extends OptionsBase {
