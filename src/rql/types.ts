@@ -13,7 +13,28 @@ export type RQLBuilderOptions = {
 export type RQLBuilderInput = RQLBuilderString | RQLBuilderOptions;
 
 export interface RqlBuilderFactory {
-  // Used to set the global value to double encode RQL values using the syntax `rqlBuilder.doubleEncodeValues` (Default true).
+  /**
+   * @deprecated this property is only meant to be used for backwards compatibility when upgrading to v8.0.0
+   *
+   * **Previous behaviour:**
+   * - RQL values could be provided as double encoded to the RQL builder
+   * - `rqlBuilder.doubleEncodeValues` could be set to `true` to automatically double encode RQL values globally
+   * - rqlBuilder({ doubleEncodeValues: true })... would automatically double encode RQL values per builder
+   *
+   *
+   * **New behaviour:**
+   * - RQL values are automatically double encoded when using the RQL builder
+   *
+   * **How to transition to 8.0.0:**
+   * - Update any RQL values to no longer be encoded e.g.
+   * - old value: 'Hypertension%2520%252D%2520STAGE%25201'
+   * - new value: 'Hypertension - STAGE 1'
+   *
+   * **Alternatively and not advised**:
+   * - `rqlBuilder.doubleEncodeValues` can be set to `false` to disable double encoding RQL values globally
+   * - rqlBuilder({ doubleEncodeValues: false })... would disable automatically double encoding RQL values per builder
+   *
+   */
   doubleEncodeValues?: boolean;
   (input?: RQLBuilderInput): RQLBuilder;
 }
