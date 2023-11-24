@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.0.0]
 
 ### Changed
-- RQL values are now [double encoded](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters) by default when using the RQL builder
+- **Breaking Change:** RQL values are now [double encoded](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters) by default when using the RQL builder
   - Disable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = false`
   - Disable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: false }).eq(name, '< value >').build()`
   - Please consult the [README](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/README.md) for a migration guide
