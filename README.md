@@ -103,6 +103,15 @@ find(
 ): Promise<PagedResult<Schema>>;
 ```
 
+## 8.0.0 Migration Guide
+
+### Double Encoding
+- Ensure that instances of encoding values for the rql builder such as `encodeURIComponent()` are removed
+- Disable double encoding for a single rql builder operation `rqlBuilder({ doubleEncodeValues: false })` where double encoding is not desired
+
+#### NOT ADVISED
+- Disable double encoding for all rql builder operations using `rqlBuilder.doubleEncodeValues = false` for the previous behavior
+
 [auth]: https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
 [users]: https://swagger.extrahorizon.com/listing/?service=users-service&redirectToVersion=1
 [data]: https://swagger.extrahorizon.com/listing/?service=data-service&redirectToVersion=1
