@@ -5,19 +5,28 @@ export function mapObjIndexed(fn, object): Record<string, unknown> {
   );
 }
 
-export const recursiveMap = (fn, obj, ignoreKeys = []) => {
+// WARNING: skipData is old behaviour that we can not remove yet for backwards compatibility
+// Removing it would affect raw calls to the data-service
+export const recursiveMap = (fn, obj, ignoreKeys = [], skipData = false) => {
   // needed for arrays with strings/numbers etc
   if (obj === null || typeof obj !== 'object' || ignoreKeys.includes('*')) {
     return obj;
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(value => recursiveMap(fn, value, ignoreKeys));
+    return obj.map(value => recursiveMap(fn, value, ignoreKeys, skipData));
   }
 
   return mapObjIndexed((value, key) => {
     if (typeof value !== 'object' || ignoreKeys.includes(key)) {
       return fn(value, key);
+    }
+
+    // WARNING: this is old stuff that we could not remove yet for backwards compatibility
+    // if recursively mapping and we find a data property that
+    // is an object, return the object.
+    if (skipData && key === 'data' && !Array.isArray(value)) {
+      return value;
     }
 
     // Filter all keys in `ignoreKeys` that start with the current `key` before the first `.`
@@ -26,7 +35,7 @@ export const recursiveMap = (fn, obj, ignoreKeys = []) => {
       .filter(k => k.startsWith(`${key}.`))
       .map(k => k.split('.').slice(1).join('.'));
 
-    return recursiveMap(fn, value, partialIgnoreKeys);
+    return recursiveMap(fn, value, partialIgnoreKeys, skipData);
   }, obj);
 };
 

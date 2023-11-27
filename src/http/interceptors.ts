@@ -108,7 +108,8 @@ export const transformResponseData = ({
       : recursiveMap(
           mapDateValues,
           data,
-          config?.normalizeCustomData ? [] : config?.customResponseKeys
+          config?.normalizeCustomData ? [] : config?.customResponseKeys,
+          config?.url?.startsWith(DATA_BASE)
         ),
 });
 
@@ -136,7 +137,6 @@ export const transformKeysResponseData = ({
           config?.normalizeCustomData ? [] : config?.customResponseKeys
         ),
 });
-
 export const typeReceivedErrorsInterceptor = async (error: HttpError) => {
   // Only needed if it's an axiosError, otherwise it's already typed
   if (error && error.isAxiosError) {
