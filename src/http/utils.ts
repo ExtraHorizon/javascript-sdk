@@ -49,7 +49,7 @@ export function recursiveRenameKeys(
   obj,
   ignoreKeys: string[] = []
 ) {
-  // If skipKeys includes the '*', we don't need to convert anything in this object
+  // If ignoreKeys includes the '*', we don't need to convert anything in this object
   if (ignoreKeys.includes('*')) return obj;
 
   // If the object is an array, recursively apply the function to each element in the array.
@@ -60,7 +60,7 @@ export function recursiveRenameKeys(
   if (is(Object, obj)) {
     return Object.keys(obj).reduce((memo, key) => {
       // Check that `obj[key]` is an object
-      // If it is date or `skipKeys` includes the current key, don't continue the recursion
+      // If it is date or `ignoreKeys` includes the current key, don't continue the recursion
       if (
         is(Object, obj[key]) &&
         !is(Date, obj[key]) &&

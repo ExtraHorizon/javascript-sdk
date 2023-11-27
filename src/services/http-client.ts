@@ -135,7 +135,7 @@ const httpClient = ({
     return axios.patch(
       `${basePath}${url}`,
       transformRequestData(data, requestConfig),
-      config
+      requestConfig
     );
   },
   options: (axios: HttpInstance, url: string) =>
