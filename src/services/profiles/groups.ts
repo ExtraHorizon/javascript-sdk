@@ -8,7 +8,10 @@ export default (
 ): ProfilesGroupsService => ({
   async create(profileId, requestBody, options) {
     return (
-      await client.post(httpAuth, `/${profileId}/groups`, requestBody, options)
+      await client.post(httpAuth, `/${profileId}/groups`, requestBody, {
+        ...options,
+        customKeys: ['custom_fields'],
+      })
     ).data;
   },
 
@@ -18,7 +21,7 @@ export default (
         httpAuth,
         `/${profileId}/groups/${groupId}`,
         requestBody,
-        options
+        { ...options, customKeys: ['custom_fields'] }
       )
     ).data;
   },
@@ -35,7 +38,7 @@ export default (
         httpAuth,
         `/${profileId}/groups/${groupId}/remove_fields`,
         requestBody,
-        options
+        { ...options, customResponseKeys: ['custom_fields'] }
       )
     ).data;
   },

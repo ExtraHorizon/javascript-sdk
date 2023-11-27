@@ -1,3 +1,5 @@
+import { HttpInstance, HttpRequestConfig } from '../http/types';
+import { camelize, decamelize } from '../http/utils';
 import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 import { rqlBuilder } from '../rql';
 
@@ -116,4 +118,33 @@ export function addPagersFn<T>(
     previous,
     next,
   };
+}
+
+export function setCustomKeysConfigurationInRequestConfig(
+  httpInstance: HttpInstance,
+  requestOptions?: HttpRequestConfig
+) {
+  const customRequestKeys =
+    requestOptions?.customRequestKeys || requestOptions?.customKeys;
+  const customResponseKeys =
+    requestOptions?.customResponseKeys || requestOptions?.customKeys;
+
+  return {
+    ...requestOptions,
+    normalizeCustomData:
+      requestOptions?.normalizeCustomData ?? httpInstance.normalizeCustomData,
+    customRequestKeys: createArrayWithCamelAndSnakeVersion(customRequestKeys),
+    customResponseKeys: createArrayWithCamelAndSnakeVersion(customResponseKeys),
+  };
+}
+
+// All custom key normalization is done on the request and the response
+// In requests keys are converted from camel to snake case
+// In responses keys are converted from snake to camel case, then the camelized version should be used in transformDates
+// To avoid having to set all keys in the array as camel and as snake manually, each key
+// is converted here to both camel and snake case before being put in the config.
+function createArrayWithCamelAndSnakeVersion(keys?: string[]) {
+  if (!keys) return undefined;
+
+  return [...keys.map(camelize), ...keys.map(decamelize)];
 }

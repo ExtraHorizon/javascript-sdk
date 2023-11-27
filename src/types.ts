@@ -60,6 +60,23 @@ interface ParamsBase {
     'X-Forwarded-Application'?: string;
     'X-Forwarded-User'?: string;
   };
+  /**
+   * @deprecated this property is only meant to be used for backwards compatibility when upgrading to v8.0.0.
+   *
+   * Key names that are not chosen by Extra Horizon where also affected by the data normalization before v8.0.0.
+   * They were converted from camel case to snake case before sending the request and the other way around before
+   * providing the response.
+   *
+   * Also fields ending with the name timestamp not chosen by extra horizon in custom properties where automatically
+   * converted to dates. Even though they could be just booleans, strings or numbers. Dates provided in such fields will
+   * now be converted to strings while all other types will stay as they are.
+   *
+   * 'records_affected', 'recordsAffected' as keys in custom properties were converted to affectedRecords. In v8.0.0
+   * they also stay as they are.
+   *
+   * To enable this behaviour again, set to true.
+   */
+  normalizeCustomData?: boolean;
 }
 
 export interface ParamsOauth1Consumer extends ParamsBase {
