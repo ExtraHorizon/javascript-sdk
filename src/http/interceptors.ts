@@ -52,7 +52,7 @@ export const camelizeResponseData = ({
       ? data
       : camelizeKeys(
           data,
-          config?.normalizeCustomData ? [] : config?.customKeys
+          config?.normalizeCustomData ? [] : config?.customResponseKeys
         ),
 });
 
@@ -62,7 +62,9 @@ export const decamelizeRequestData = (
 ) =>
   decamelizeKeys(
     data,
-    httpRequestConfig?.normalizeCustomData ? [] : httpRequestConfig?.customKeys
+    httpRequestConfig?.normalizeCustomData
+      ? []
+      : httpRequestConfig?.customRequestKeys
   );
 
 const mapDateValues = (value, key) => {
@@ -106,7 +108,7 @@ export const transformResponseData = ({
       : recursiveMap(
           mapDateValues,
           data,
-          config?.normalizeCustomData ? [] : config?.customKeys
+          config?.normalizeCustomData ? [] : config?.customResponseKeys
         ),
 });
 
@@ -131,7 +133,7 @@ export const transformKeysResponseData = ({
       : recursiveRenameKeys(
           convertRecordsAffectedKeys,
           data,
-          config?.normalizeCustomData ? [] : config?.customKeys
+          config?.normalizeCustomData ? [] : config?.customResponseKeys
         ),
 });
 

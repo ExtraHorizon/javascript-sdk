@@ -2,24 +2,18 @@ import type { HttpInstance } from '../../types';
 import { rqlBuilder } from '../../rql';
 import { ProfilesService, Profile } from './types';
 import { HttpClient } from '../http-client';
-import {
-  findAllIterator,
-  findAllGeneric,
-  addCustomKeysToOptions,
-} from '../helpers';
+import { findAllIterator, findAllGeneric } from '../helpers';
 
 export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): ProfilesService => ({
   async find(options) {
-    const customKeys = ['data.custom_fields', 'data.groups.custom_fields'];
     return (
-      await client.get(
-        httpAuth,
-        `/${options?.rql || ''}`,
-        addCustomKeysToOptions(customKeys, httpAuth, options)
-      )
+      await client.get(httpAuth, `/${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.custom_fields', 'data.groups.custom_fields'],
+      })
     ).data;
   },
 
@@ -43,27 +37,20 @@ export default (
   },
 
   async create(requestBody, options) {
-    const customKeys = ['custom_fields', 'groups.custom_fields'];
     return (
-      await client.post(
-        httpAuth,
-        '/',
-        requestBody,
-        addCustomKeysToOptions(customKeys, httpAuth, options)
-      )
+      await client.post(httpAuth, '/', requestBody, {
+        ...options,
+        customKeys: ['custom_fields', 'groups.custom_fields'],
+      })
     ).data;
   },
 
   async update(rql, requestBody, options) {
-    const customKeys = ['custom_fields', 'groups.custom_fields'];
-
     return (
-      await client.put(
-        httpAuth,
-        `/${rql}`,
-        requestBody,
-        addCustomKeysToOptions(customKeys, httpAuth, options)
-      )
+      await client.put(httpAuth, `/${rql}`, requestBody, {
+        ...options,
+        customRequestKeys: ['custom_fields', 'groups.custom_fields'],
+      })
     ).data;
   },
 

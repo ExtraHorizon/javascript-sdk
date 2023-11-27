@@ -1,5 +1,4 @@
 import type { HttpInstance } from '../../types';
-import { addCustomKeysToOptions } from '../helpers';
 import { HttpClient } from '../http-client';
 import { ProfilesGroupsService } from './types';
 
@@ -8,26 +7,21 @@ export default (
   httpAuth: HttpInstance
 ): ProfilesGroupsService => ({
   async create(profileId, requestBody, options) {
-    const customKeys = ['custom_fields'];
-
     return (
-      await client.post(
-        httpAuth,
-        `/${profileId}/groups`,
-        requestBody,
-        addCustomKeysToOptions(customKeys, httpAuth, options)
-      )
+      await client.post(httpAuth, `/${profileId}/groups`, requestBody, {
+        ...options,
+        customKeys: ['custom_fields'],
+      })
     ).data;
   },
 
   async update(profileId, groupId, requestBody, options) {
-    const customKeys = ['custom_fields'];
     return (
       await client.put(
         httpAuth,
         `/${profileId}/groups/${groupId}`,
         requestBody,
-        addCustomKeysToOptions(customKeys, httpAuth, options)
+        { ...options, customKeys: ['custom_fields'] }
       )
     ).data;
   },
@@ -39,13 +33,12 @@ export default (
   },
 
   async removeFields(profileId, groupId, requestBody, options) {
-    const customKeys = ['custom_fields'];
     return (
       await client.post(
         httpAuth,
         `/${profileId}/groups/${groupId}/remove_fields`,
         requestBody,
-        addCustomKeysToOptions(customKeys, httpAuth, options)
+        { ...options, customResponseKeys: ['custom_fields'] }
       )
     ).data;
   },

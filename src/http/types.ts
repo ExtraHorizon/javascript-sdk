@@ -26,6 +26,8 @@ export type HttpRequestConfig = AxiosRequestConfig & {
   };
   normalizeCustomData?: boolean;
   customKeys?: string[];
+  customRequestKeys?: string[];
+  customResponseKeys?: string[];
 };
 
 export type HttpResponseError = AxiosError & { config: HttpRequestConfig };

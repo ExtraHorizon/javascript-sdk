@@ -1,11 +1,6 @@
-import { HttpInstance } from '../http/types';
+import { HttpInstance, HttpRequestConfig } from '../http/types';
 import { camelize, decamelize } from '../http/utils';
-import {
-  OptionsBase,
-  OptionsWithRql,
-  PagedResult,
-  PagedResultWithPager,
-} from './types';
+import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 import { rqlBuilder } from '../rql';
 
 const MAX_LIMIT = 50;
@@ -125,23 +120,31 @@ export function addPagersFn<T>(
   };
 }
 
-export function addCustomKeysToOptions(
-  customKeys: string[],
+export function setCustomKeysConfigurationInRequestConfig(
   httpInstance: HttpInstance,
-  requestOptions?: OptionsBase
+  requestOptions?: HttpRequestConfig
 ) {
-  // All custom key normalization is done on the request and the response
-  // In requests keys are converted from camel to snake case
-  // In responses keys are converted from snake to camel case
-  // To avoid having to set all keys in the array as camel and as snake manually, each key
-  // is converted here to both camel and snake case before being put in the config.
-  const camelizedCustomKeys = customKeys.map(camelize);
-  const snakifiedCustomKeys = customKeys.map(decamelize);
+  const customRequestKeys =
+    requestOptions?.customRequestKeys || requestOptions?.customKeys;
+  const customResponseKeys =
+    requestOptions?.customResponseKeys || requestOptions?.customKeys;
 
   return {
     ...requestOptions,
     normalizeCustomData:
       requestOptions?.normalizeCustomData ?? httpInstance.normalizeCustomData,
-    customKeys: [...camelizedCustomKeys, ...snakifiedCustomKeys],
+    customRequestKeys: createArrayWithCamelAndSnakeVersion(customRequestKeys),
+    customResponseKeys: createArrayWithCamelAndSnakeVersion(customResponseKeys),
   };
+}
+
+// All custom key normalization is done on the request and the response
+// In requests keys are converted from camel to snake case
+// In responses keys are converted from snake to camel case, then the camelized version should be used in transformDates
+// To avoid having to set all keys in the array as camel and as snake manually, each key
+// is converted here to both camel and snake case before being put in the config.
+function createArrayWithCamelAndSnakeVersion(keys?: string[]) {
+  if (!keys) return undefined;
+
+  return [...keys.map(camelize), ...keys.map(decamelize)];
 }
