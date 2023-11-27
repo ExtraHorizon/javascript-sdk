@@ -23,7 +23,7 @@ export const recursiveMap = (fn, obj, ignoreKeys = []) => {
     // Filter all keys in `ignoreKeys` that start with the current `key` before the first `.`
     // Remove the current `key` from those keys before going into the next iteration.
     const partialIgnoreKeys = ignoreKeys
-      .filter(k => k.split('.')[0] === key)
+      .filter(k => k.startsWith(`${key}.`))
       .map(k => k.split('.').slice(1).join('.'));
 
     return recursiveMap(fn, value, partialIgnoreKeys);
@@ -69,7 +69,7 @@ export function recursiveRenameKeys(
         // Filter all keys in `ignoreKeys` that start with the current `key` before the first `.`
         // Remove the current `key` from those keys before going into the next iteration.
         const partialIgnoreKeys = ignoreKeys
-          .filter(k => k.split('.')[0] === key)
+          .filter(k => k.startsWith(`${key}.`))
           .map(k => k.split('.').slice(1).join('.'));
 
         return {
