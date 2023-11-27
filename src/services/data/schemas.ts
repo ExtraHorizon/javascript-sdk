@@ -24,7 +24,10 @@ export default (
 ): DataSchemasService => {
   async function find(options) {
     const result: PagedResult<Schema> = (
-      await client.get(httpAuth, `/${options?.rql || ''}`, options)
+      await client.get(httpAuth, `/${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.properties', 'data.statuses'],
+      })
     ).data;
     return {
       ...result,
