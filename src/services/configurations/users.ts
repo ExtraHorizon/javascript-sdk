@@ -11,8 +11,8 @@ export default (
       ...options,
       customResponseKeys: [
         'data.*',
-        'staffConfiguration.*',
-        'patientConfiguration.*',
+        'staffConfigurations.data.*',
+        'patientConfigurations.data.*',
       ],
     });
 

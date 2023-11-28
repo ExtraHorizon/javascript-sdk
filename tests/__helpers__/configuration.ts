@@ -104,12 +104,22 @@ export const customUserConfig = {
   data: {
     epic_feature_enabled: true,
   },
-  staffConfiguration: {
-    epic_feature_enabled: true,
-  },
-  patientConfiguration: {
-    epic_feature_enabled: true,
-  },
+  staffConfigurations: [
+    {
+      groupId: randomHexString(24),
+      data: {
+        epic_feature_enabled: true,
+      },
+    },
+  ],
+  patientConfigurations: [
+    {
+      groupId: randomHexString(24),
+      data: {
+        epic_feature_enabled: true,
+      },
+    },
+  ],
 };
 
 export const customUserConfigResponse = {
