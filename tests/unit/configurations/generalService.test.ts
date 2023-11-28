@@ -53,7 +53,7 @@ describe('Configuration: General Service', () => {
   });
 
   it('Should not transform custom data in the response', async () => {
-    // const customResponseKeys = ['data.*', 'userConfiguration.*', 'groupConfiguration.*', 'staffConfiguration.*', 'patientConfiguration.*'];
+    // const customResponseKeys = ['data', 'userConfiguration', 'groupConfiguration', 'staffConfiguration', 'patientConfiguration'];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')
       .reply(200, customGeneralConfigResponse);

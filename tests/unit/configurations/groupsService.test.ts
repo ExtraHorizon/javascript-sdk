@@ -53,7 +53,7 @@ describe('Configuration: Groups Service', () => {
   });
 
   it('Should not transform custom data in the response', async () => {
-    //  const customResponseKeys = [ 'data.*', 'staffConfiguration.*', 'patientConfiguration.*' ];
+    //  const customResponseKeys = [ 'data', 'staffConfiguration', 'patientConfiguration' ];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/groups/${groupId}`)
       .reply(200, customGroupConfigResponse);

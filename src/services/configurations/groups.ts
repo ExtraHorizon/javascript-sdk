@@ -10,9 +10,9 @@ export default (
     const { data } = await client.get(httpAuth, `/groups/${groupId}`, {
       ...options,
       customResponseKeys: [
-        'data.*',
-        'staffConfiguration.*',
-        'patientConfiguration.*',
+        'data',
+        'staffConfiguration',
+        'patientConfiguration',
       ],
     });
 

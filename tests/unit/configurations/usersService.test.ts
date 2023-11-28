@@ -52,7 +52,7 @@ describe('Configuration: Users Service', () => {
   });
 
   it('Should not transform custom data in the response', async () => {
-    //  const customResponseKeys = [ 'data.*', 'staffConfiguration.*', 'patientConfiguration.*' ];
+    //  const customResponseKeys = [ 'data', 'staffConfigurations.data', 'patientConfigurations.data' ];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/users/${userId}`)
       .reply(200, customUserConfigResponse);

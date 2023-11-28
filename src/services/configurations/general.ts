@@ -10,11 +10,11 @@ export default (
     const { data } = await client.get(httpAuth, '/general', {
       ...options,
       customResponseKeys: [
-        'data.*',
-        'userConfiguration.*',
-        'groupConfiguration.*',
-        'staffConfiguration.*',
-        'patientConfiguration.*',
+        'data',
+        'userConfiguration',
+        'groupConfiguration',
+        'staffConfiguration',
+        'patientConfiguration',
       ],
     });
 
