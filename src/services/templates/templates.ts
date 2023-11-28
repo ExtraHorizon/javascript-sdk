@@ -15,7 +15,12 @@ export default (
   },
 
   async find(options) {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+    return (
+      await client.get(httpAuth, `/${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.schema.fields', 'data.fields'],
+      })
+    ).data;
   },
 
   async findAll(this: TemplatesService, options) {
@@ -44,12 +49,21 @@ export default (
   },
 
   async create(requestBody, options) {
-    return (await client.post(httpAuth, '/', requestBody, options)).data;
+    return (
+      await client.post(httpAuth, '/', requestBody, {
+        ...options,
+        customKeys: ['schema.fields', 'fields'],
+      })
+    ).data;
   },
 
   async update(templateId, requestBody, options) {
-    return (await client.put(httpAuth, `/${templateId}`, requestBody, options))
-      .data;
+    return (
+      await client.put(httpAuth, `/${templateId}`, requestBody, {
+        ...options,
+        customKeys: ['schema.fields', 'fields'],
+      })
+    ).data;
   },
 
   async remove(templateId, options) {
@@ -60,6 +74,7 @@ export default (
     return (
       await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
         ...options,
+        customRequestKeys: ['content'],
         responseType: 'arraybuffer',
       })
     ).data;
@@ -78,6 +93,7 @@ export default (
         requestBody,
         {
           ...options,
+          customRequestKeys: ['content'],
           responseType: 'arraybuffer',
         }
       )
@@ -86,12 +102,11 @@ export default (
 
   async resolveAsJson(templateId, requestBody, options) {
     return (
-      await client.post(
-        httpAuth,
-        `/${templateId}/resolve`,
-        requestBody,
-        options
-      )
+      await client.post(httpAuth, `/${templateId}/resolve`, requestBody, {
+        ...options,
+        customRequestKeys: ['content'],
+        customResponseKeys: ['*'],
+      })
     ).data;
   },
 
@@ -106,7 +121,11 @@ export default (
         httpAuth,
         `/${templateId}/resolve/${localizationCode}`,
         requestBody,
-        options
+        {
+          ...options,
+          customRequestKeys: ['content'],
+          customResponseKeys: ['*'],
+        }
       )
     ).data;
   },

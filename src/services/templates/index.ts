@@ -1,3 +1,4 @@
+import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import templates from './templates';
@@ -9,6 +10,7 @@ export const templatesService = (
 ): TemplatesService => {
   const client = httpClient({
     basePath: TEMPLATE_BASE,
+    transformRequestData: decamelizeRequestData,
   });
 
   const templatesMethods = templates(client, httpWithAuth);
