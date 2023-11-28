@@ -7,7 +7,7 @@ import {
   rqlBuilder,
 } from '../../../src/index';
 import {
-  customConfigResponse,
+  customGeneralConfigResponse,
   generalConfig,
   generalConfigResponse,
 } from '../../__helpers__/configuration';
@@ -56,13 +56,15 @@ describe('Configuration: General Service', () => {
     // const customResponseKeys = ['data.*', 'userConfiguration.*', 'groupConfiguration.*', 'staffConfiguration.*', 'patientConfiguration.*'];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')
-      .reply(200, customConfigResponse);
+      .reply(200, customGeneralConfigResponse);
 
     const response = await sdk.configurations.general.get();
     expect(response).toStrictEqual({
-      ...customConfigResponse,
-      creationTimestamp: new Date(customConfigResponse.creationTimestamp),
-      updateTimestamp: new Date(customConfigResponse.updateTimestamp),
+      ...customGeneralConfigResponse,
+      creationTimestamp: new Date(
+        customGeneralConfigResponse.creationTimestamp
+      ),
+      updateTimestamp: new Date(customGeneralConfigResponse.updateTimestamp),
     });
   });
 

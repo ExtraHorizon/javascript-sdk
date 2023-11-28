@@ -18,7 +18,7 @@ export const generalConfig = {
   },
 };
 
-export const customConfig = {
+export const customGeneralConfig = {
   data: {
     epic_feature_enabled: true,
   },
@@ -36,16 +36,16 @@ export const customConfig = {
   },
 };
 
-export const customConfigResponse = {
-  ...customConfig,
-  id: randomHexString(24),
+export const generalConfigResponse = {
+  ...generalConfig,
+  id: 'abcdef123456789abcdef123',
   updateTimestamp: '2018-04-24T11:57:44.525Z',
   creationTimestamp: '2018-04-24T11:57:44.525Z',
 };
 
-export const generalConfigResponse = {
-  ...generalConfig,
-  id: 'abcdef123456789abcdef123',
+export const customGeneralConfigResponse = {
+  ...customGeneralConfig,
+  id: randomHexString(24),
   updateTimestamp: '2018-04-24T11:57:44.525Z',
   creationTimestamp: '2018-04-24T11:57:44.525Z',
 };
@@ -74,13 +74,6 @@ export const customGroupConfig = {
   },
 };
 
-export const customGroupConfigResponse = {
-  ...customGroupConfig,
-  id: randomHexString(24),
-  updateTimestamp: '2018-04-24T11:57:44.525Z',
-  creationTimestamp: '2018-04-24T11:57:44.525Z',
-};
-
 export const groupConfigResponse = {
   ...groupConfig,
   id: 'abcdef123456789abcdef123',
@@ -88,16 +81,33 @@ export const groupConfigResponse = {
   creationTimestamp: '2018-04-24T11:57:44.525Z',
 };
 
-export const groupConfigInput = {
+export const customGroupConfigResponse = {
+  ...customGroupConfig,
+  id: randomHexString(24),
+  updateTimestamp: '2018-04-24T11:57:44.525Z',
+  creationTimestamp: '2018-04-24T11:57:44.525Z',
+};
+
+export const userConfig = {
   data: {
     epicFeatureEnabled: true,
   },
-  staffConfiguration: {
-    epicFeatureEnabled: true,
-  },
-  patientConfiguration: {
-    epicFeatureEnabled: true,
-  },
+  staffConfigurations: [
+    {
+      groupId: 'abcdef123456789abcdef123',
+      data: {
+        epicFeatureEnabled: true,
+      },
+    },
+  ],
+  patientConfigurations: [
+    {
+      groupId: 'abcdef123456789abcdef123',
+      data: {
+        epicFeatureEnabled: true,
+      },
+    },
+  ],
 };
 
 export const customUserConfig = {
@@ -122,6 +132,13 @@ export const customUserConfig = {
   ],
 };
 
+export const userConfigResponse = {
+  ...userConfig,
+  id: 'abcdef123456789abcdef123',
+  updateTimestamp: '2018-04-24T11:57:44.525Z',
+  creationTimestamp: '2018-04-24T11:57:44.525Z',
+};
+
 export const customUserConfigResponse = {
   ...customUserConfig,
   id: randomHexString(24),
@@ -129,35 +146,14 @@ export const customUserConfigResponse = {
   creationTimestamp: '2018-04-24T11:57:44.525Z',
 };
 
-export const userEnlistmentsConfig = {
-  staffConfigurations: [
-    {
-      groupId: 'abcdef123456789abcdef123',
-      data: {
-        epicFeatureEnabled: true,
-      },
-    },
-  ],
-  patientConfigurations: [
-    {
-      groupId: 'abcdef123456789abcdef123',
-      data: {
-        epicFeatureEnabled: true,
-      },
-    },
-  ],
-};
-
-export const userConfigInput = {
+export const groupConfigInput = {
   data: {
     epicFeatureEnabled: true,
   },
-};
-
-export const userConfigResponse = {
-  ...userEnlistmentsConfig,
-  ...userConfigInput,
-  id: 'abcdef123456789abcdef123',
-  updateTimestamp: '2018-04-24T11:57:44.525Z',
-  creationTimestamp: '2018-04-24T11:57:44.525Z',
+  staffConfiguration: {
+    epicFeatureEnabled: true,
+  },
+  patientConfiguration: {
+    epicFeatureEnabled: true,
+  },
 };
