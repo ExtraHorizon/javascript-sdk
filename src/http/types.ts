@@ -25,8 +25,36 @@ export type HttpRequestConfig = AxiosRequestConfig & {
     retryCondition: (error: HttpResponseError) => boolean;
   };
   normalizeCustomData?: boolean;
+  /**
+   * **Providing a key with an object value**:
+   * - The provided key is not ignored for case conversion on a request and response
+   * - The child keys of the object are ignored for case and date conversion on a request and response
+   *
+   * **Providing a key with a non-object value**:
+   * - The provided key is ignored for case and date conversion on a request and response
+   */
   customKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   *
+   * **Providing a key with an object value**:
+   * - The provided key is not ignored for case conversion on a request
+   * - The child keys of the object are ignored for case and date conversion on a request
+   *
+   * **Providing a key with a non-object value**:
+   * - The provided key is ignored for case and date conversion on a request
+   */
   customRequestKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   *
+   * **Providing a key with an object value**:
+   * - The provided key is not ignored for case conversion on a response
+   * - The child keys of the object are ignored for case and date conversion on a response
+   *
+   * **Providing a key with a non-object value**:
+   * - The provided key is ignored for case and date conversion on a request
+   */
   customResponseKeys?: string[];
 };
 
