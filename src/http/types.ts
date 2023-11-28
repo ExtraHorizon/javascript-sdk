@@ -28,10 +28,10 @@ export type HttpRequestConfig = AxiosRequestConfig & {
   /**
    * **Providing a key with an object value**:
    * - The provided key is not ignored for case conversion on a request and response
-   * - The child keys of the object are ignored for case and date conversion on a request and response
+   * - The child keys of the object are ignored for case conversion on a request and response
    *
    * **Providing a key with a non-object value**:
-   * - The provided key is ignored for case and date conversion on a request and response
+   * - The provided key is not ignored for case conversion on a request and response
    */
   customKeys?: string[];
   /**
@@ -39,10 +39,10 @@ export type HttpRequestConfig = AxiosRequestConfig & {
    *
    * **Providing a key with an object value**:
    * - The provided key is not ignored for case conversion on a request
-   * - The child keys of the object are ignored for case and date conversion on a request
+   * - The child keys of the object are ignored for case conversion on a request
    *
    * **Providing a key with a non-object value**:
-   * - The provided key is ignored for case and date conversion on a request
+   * - The provided key is not ignored for case conversion on a request
    */
   customRequestKeys?: string[];
   /**
@@ -53,7 +53,7 @@ export type HttpRequestConfig = AxiosRequestConfig & {
    * - The child keys of the object are ignored for case and date conversion on a response
    *
    * **Providing a key with a non-object value**:
-   * - The provided key is ignored for case and date conversion on a request
+   * - The provided key is not ignored for case conversion on a response
    */
   customResponseKeys?: string[];
 };
