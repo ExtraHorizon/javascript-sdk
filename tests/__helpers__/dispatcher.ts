@@ -27,6 +27,21 @@ export const mailActionInput: ActionCreation = {
   templateId: '5e9fff9d90135a2a9a718e2f',
 };
 
+export const taskActionInput: ActionCreation = {
+  name: 'TaskAction',
+  description: 'Do this now!',
+  type: ActionType.TASK,
+  functionName: 'string',
+  data: {
+    additionalProp1: 'string',
+    additionalProp2: 'string',
+    additionalProp3: 'string',
+    additional_prop_four: 'string',
+  },
+  tags: ['string'],
+  startTimestamp: new Date(),
+};
+
 export const taskAction = {
   id: '5e9fff9d90135a2a9a718e2f',
   name: 'TaskAction',
@@ -37,6 +52,7 @@ export const taskAction = {
     additionalProp1: 'string',
     additionalProp2: 'string',
     additionalProp3: 'string',
+    additional_prop_four: 'string',
   },
   tags: ['string'],
   startTimestamp: new Date(),
