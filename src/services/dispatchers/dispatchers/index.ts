@@ -10,18 +10,20 @@ export default (
   httpAuth: HttpInstance
 ): DispatchersService => {
   async function query(options: OptionsWithRql) {
-    const { data } = await client.get(
-      httpAuth,
-      `/${options?.rql || ''}`,
-      options
-    );
+    const { data } = await client.get(httpAuth, `/${options?.rql || ''}`, {
+      ...options,
+      customResponseKeys: ['data.actions.data'],
+    });
 
     return data;
   }
 
   return {
     async create(requestBody, options) {
-      const { data } = await client.post(httpAuth, '/', requestBody, options);
+      const { data } = await client.post(httpAuth, '/', requestBody, {
+        ...options,
+        customResponseKeys: ['actions.data'],
+      });
 
       return data;
     },
