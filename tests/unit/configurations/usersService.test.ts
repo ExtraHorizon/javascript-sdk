@@ -6,7 +6,10 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import { userConfigResponse } from '../../__helpers__/configuration';
+import {
+  customUserConfigResponse,
+  userConfigResponse,
+} from '../../__helpers__/configuration';
 
 describe('Configuration: Users Service', () => {
   const host = 'https://api.xxx.fibricheck.com';
@@ -46,6 +49,20 @@ describe('Configuration: Users Service', () => {
     expect(res.data).toBeDefined();
     expect(res.staffConfigurations).toBeDefined();
     expect(res.patientConfigurations).toBeDefined();
+  });
+
+  it('Should not transform custom data in the response', async () => {
+    //  const customResponseKeys = [ 'data.*', 'staffConfiguration.*', 'patientConfiguration.*' ];
+    nock(`${host}${CONFIGURATION_BASE}`)
+      .get(`/users/${userId}`)
+      .reply(200, customUserConfigResponse);
+
+    const response = await sdk.configurations.users.get(userId);
+    expect(response).toStrictEqual({
+      ...customUserConfigResponse,
+      creationTimestamp: new Date(customUserConfigResponse.creationTimestamp),
+      updateTimestamp: new Date(customUserConfigResponse.updateTimestamp),
+    });
   });
 
   it('should update a user configuration', async () => {

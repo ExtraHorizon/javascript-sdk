@@ -7,7 +7,17 @@ export default (
   httpAuth: HttpInstance
 ): ConfigurationsUsersService => ({
   async get(userId, options) {
-    return (await client.get(httpAuth, `/users/${userId}`, options)).data;
+    const customResponseKeys = [
+      'data.*',
+      'staffConfiguration.*',
+      'patientConfiguration.*',
+    ];
+    const { data } = await client.get(httpAuth, `/users/${userId}`, {
+      ...options,
+      customResponseKeys,
+    });
+
+    return data;
   },
 
   async update(userId, requestBody, options) {

@@ -100,6 +100,25 @@ export const groupConfigInput = {
   },
 };
 
+export const customUserConfig = {
+  data: {
+    epic_feature_enabled: true,
+  },
+  staffConfiguration: {
+    epic_feature_enabled: true,
+  },
+  patientConfiguration: {
+    epic_feature_enabled: true,
+  },
+};
+
+export const customUserConfigResponse = {
+  ...customUserConfig,
+  id: randomHexString(24),
+  updateTimestamp: '2018-04-24T11:57:44.525Z',
+  creationTimestamp: '2018-04-24T11:57:44.525Z',
+};
+
 export const userEnlistmentsConfig = {
   staffConfigurations: [
     {
