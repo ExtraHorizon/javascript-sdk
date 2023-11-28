@@ -7,6 +7,7 @@ import {
   rqlBuilder,
 } from '../../../src/index';
 import {
+  customConfigResponse,
   generalConfig,
   generalConfigResponse,
 } from '../../__helpers__/configuration';
@@ -49,6 +50,20 @@ describe('Configuration: General Service', () => {
     expect(res.groupConfiguration).toBeDefined();
     expect(res.staffConfiguration).toBeDefined();
     expect(res.patientConfiguration).toBeDefined();
+  });
+
+  it('Should not transform custom data in the response', async () => {
+    // const customResponseKeys = ['data.*', 'userConfiguration.*', 'groupConfiguration.*', 'staffConfiguration.*', 'patientConfiguration.*'];
+    nock(`${host}${CONFIGURATION_BASE}`)
+      .get('/general')
+      .reply(200, customConfigResponse);
+
+    const response = await sdk.configurations.general.get();
+    expect(response).toStrictEqual({
+      ...customConfigResponse,
+      creationTimestamp: new Date(customConfigResponse.creationTimestamp),
+      updateTimestamp: new Date(customConfigResponse.updateTimestamp),
+    });
   });
 
   it('should update the general configuration', async () => {
