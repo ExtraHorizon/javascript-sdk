@@ -52,7 +52,7 @@ describe('Configuration: General Service', () => {
     expect(res.patientConfiguration).toBeDefined();
   });
 
-  it('Should not transform custom data in the response', async () => {
+  it('Should not transform custom data in the get response', async () => {
     // const customResponseKeys = ['data', 'userConfiguration', 'groupConfiguration', 'staffConfiguration', 'patientConfiguration'];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')

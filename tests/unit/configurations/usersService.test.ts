@@ -51,7 +51,7 @@ describe('Configuration: Users Service', () => {
     expect(res.patientConfigurations).toBeDefined();
   });
 
-  it('Should not transform custom data in the response', async () => {
+  it('Should not transform custom data in the get response', async () => {
     //  const customResponseKeys = [ 'data', 'staffConfigurations.data', 'patientConfigurations.data' ];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/users/${userId}`)
