@@ -10,14 +10,16 @@ export default (
   httpAuth: HttpInstance
 ): DataDocumentsService => {
   function partialApplyFind(schemaId) {
-    return async options =>
-      (
+    return async options => {
+      const baseConfig = options?.headers ? { headers: options.headers } : {};
+      return (
         await client.get(
           httpAuth,
           `/${schemaId}/documents${options?.rql || ''}`,
-          options?.headers ? { headers: options.headers } : {}
+          { ...baseConfig, customResponseKeys: ['data.data'] }
         )
       ).data;
+    };
   }
 
   return {
@@ -50,12 +52,16 @@ export default (
     },
 
     async create(schemaId, requestBody, options) {
+      const baseConfig = options?.headers ? { headers: options.headers } : {};
       return (
         await client.post(
           httpAuth,
           `/${schemaId}/documents`,
           requestBody,
-          options?.headers ? { headers: options.headers } : {},
+          {
+            ...baseConfig,
+            customResponseKeys: ['data'],
+          },
           options
         )
       ).data;
