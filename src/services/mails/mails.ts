@@ -11,7 +11,12 @@ export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
   },
 
   async find(options) {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+    return (
+      await client.get(httpAuth, `/${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.content'],
+      })
+    ).data;
   },
 
   async findById(this: MailsService, id, options) {
@@ -26,7 +31,12 @@ export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
   },
 
   async send(requestBody, options) {
-    return (await client.post(httpAuth, '/', requestBody, options)).data;
+    return (
+      await client.post(httpAuth, '/', requestBody, {
+        ...options,
+        customKeys: ['content'],
+      })
+    ).data;
   },
 
   async track(trackingHash, options) {
@@ -34,7 +44,11 @@ export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
   },
 
   async findOutbound(options) {
-    return (await client.get(httpAuth, `/queued${options?.rql || ''}`, options))
-      .data;
+    return (
+      await client.get(httpAuth, `/queued${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.templateDate.content'],
+      })
+    ).data;
   },
 });
