@@ -1,3 +1,5 @@
+import { randomHexString } from './utils';
+
 export const generalConfig = {
   data: {
     epicFeatureEnabled: true,
@@ -36,7 +38,7 @@ export const customConfig = {
 
 export const customConfigResponse = {
   ...customConfig,
-  id: 'abcdef123456789abcdef123',
+  id: randomHexString(24),
   updateTimestamp: '2018-04-24T11:57:44.525Z',
   creationTimestamp: '2018-04-24T11:57:44.525Z',
 };
@@ -58,6 +60,25 @@ export const groupConfig = {
   patientConfiguration: {
     epicFeatureEnabled: true,
   },
+};
+
+export const customGroupConfig = {
+  data: {
+    epic_feature_enabled: true,
+  },
+  staffConfiguration: {
+    epic_feature_enabled: true,
+  },
+  patientConfiguration: {
+    epic_feature_enabled: true,
+  },
+};
+
+export const customGroupConfigResponse = {
+  ...customGroupConfig,
+  id: randomHexString(24),
+  updateTimestamp: '2018-04-24T11:57:44.525Z',
+  creationTimestamp: '2018-04-24T11:57:44.525Z',
 };
 
 export const groupConfigResponse = {

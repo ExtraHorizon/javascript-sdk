@@ -7,7 +7,17 @@ export default (
   httpAuth: HttpInstance
 ): ConfigurationsGroupsService => ({
   async get(groupId, options) {
-    return (await client.get(httpAuth, `/groups/${groupId}`, options)).data;
+    const customResponseKeys = [
+      'data.*',
+      'staffConfiguration.*',
+      'patientConfiguration.*',
+    ];
+    const { data } = await client.get(httpAuth, `/groups/${groupId}`, {
+      ...options,
+      customResponseKeys,
+    });
+
+    return data;
   },
 
   async update(groupId, requestBody, options) {

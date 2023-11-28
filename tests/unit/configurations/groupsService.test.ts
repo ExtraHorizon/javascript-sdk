@@ -7,8 +7,9 @@ import {
   rqlBuilder,
 } from '../../../src/index';
 import {
-  groupConfigResponse,
+  customGroupConfigResponse,
   groupConfigInput,
+  groupConfigResponse,
 } from '../../__helpers__/configuration';
 
 describe('Configuration: Groups Service', () => {
@@ -49,6 +50,20 @@ describe('Configuration: Groups Service', () => {
     expect(res.data).toBeDefined();
     expect(res.staffConfiguration).toBeDefined();
     expect(res.patientConfiguration).toBeDefined();
+  });
+
+  it('Should not transform custom data in the response', async () => {
+    //  const customResponseKeys = [ 'data.*', 'staffConfiguration.*', 'patientConfiguration.*' ];
+    nock(`${host}${CONFIGURATION_BASE}`)
+      .get(`/groups/${groupId}`)
+      .reply(200, customGroupConfigResponse);
+
+    const response = await sdk.configurations.groups.get(groupId);
+    expect(response).toStrictEqual({
+      ...customGroupConfigResponse,
+      creationTimestamp: new Date(customGroupConfigResponse.creationTimestamp),
+      updateTimestamp: new Date(customGroupConfigResponse.updateTimestamp),
+    });
   });
 
   it('should update a group configuration', async () => {
