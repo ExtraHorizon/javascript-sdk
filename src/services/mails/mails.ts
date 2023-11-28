@@ -47,7 +47,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
     return (
       await client.get(httpAuth, `/queued${options?.rql || ''}`, {
         ...options,
-        customResponseKeys: ['data.templateDate.content'],
+        customResponseKeys: ['data.templateData.content'],
       })
     ).data;
   },
