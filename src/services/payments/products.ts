@@ -9,13 +9,20 @@ export default (
   httpAuth: HttpInstance
 ): PaymentsProductsService => ({
   async create(requestBody, options) {
-    return (await client.post(httpAuth, '/products', requestBody, options))
-      .data;
+    return (
+      await client.post(httpAuth, '/products', requestBody, {
+        ...options,
+        customKeys: ['schema.properties'],
+      })
+    ).data;
   },
 
   async find(options) {
     return (
-      await client.get(httpAuth, `/products${options?.rql || ''}`, options)
+      await client.get(httpAuth, `/products${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.schema.properties'],
+      })
     ).data;
   },
 
