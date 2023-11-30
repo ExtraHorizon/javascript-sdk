@@ -35,6 +35,11 @@ export default (
   },
 
   async getByKeys(requestBody, options) {
-    return (await client.post(httpAuth, '/request', requestBody, options)).data;
+    return (
+      await client.post(httpAuth, '/request', requestBody, {
+        ...options,
+        customResponseKeys: ['*'],
+      })
+    ).data;
   },
 });
