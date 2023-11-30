@@ -25,8 +25,15 @@ export type HttpRequestConfig = AxiosRequestConfig & {
     retryCondition: (error: HttpResponseError) => boolean;
   };
   normalizeCustomData?: boolean;
+  // The provided keys should specify an object
   customKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   */
   customRequestKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   */
   customResponseKeys?: string[];
 };
 
