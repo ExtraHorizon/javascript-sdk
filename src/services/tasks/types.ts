@@ -6,11 +6,6 @@ import type {
   OptionsWithRql,
   PagedResult,
 } from '../types';
-import { ApiService } from './api/types';
-import { LogsService } from './logs/types';
-import { ApiRequestService } from './apiRequests/types';
-import { SchedulesService } from './schedules/types';
-import { FunctionsService } from './functions/types';
 
 export * from './api/types';
 export * from './apiRequests/types';
@@ -129,10 +124,4 @@ export interface TasksService {
    * @throws {ResourceUnknownException}
    */
   cancel(taskId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
-
-  functions: FunctionsService;
-  schedules: SchedulesService;
-  api: ApiService;
-  logs: LogsService;
-  apiRequests: ApiRequestService;
 }

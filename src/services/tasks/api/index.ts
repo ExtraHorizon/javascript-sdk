@@ -17,7 +17,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => {
       const { data } = await client.get(
         httpAuth,
         `/api/${functionName}${normalizePath(path)}`,
-        options
+        { ...options, customKeys: ['*'] }
       );
       return data;
     },
@@ -32,7 +32,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => {
         httpAuth,
         `/api/${functionName}${normalizePath(path)}`,
         data,
-        options
+        { ...options, customKeys: ['*'] }
       );
 
       return response.data;
@@ -48,7 +48,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => {
         httpAuth,
         `/api/${functionName}${normalizePath(path)}`,
         data,
-        options
+        { ...options, customKeys: ['*'] }
       );
 
       return response.data;
@@ -62,7 +62,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => {
       const { data } = await client.delete(
         httpAuth,
         `/api/${functionName}${normalizePath(path)}`,
-        options
+        { ...options, customKeys: ['*'] }
       );
       return data;
     },
@@ -77,7 +77,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): ApiService => {
         httpAuth,
         `/api/${functionName}${normalizePath(path)}`,
         data,
-        options
+        { ...options, customKeys: ['*'] }
       );
 
       return response.data;
