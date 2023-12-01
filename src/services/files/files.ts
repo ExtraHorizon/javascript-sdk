@@ -1,10 +1,10 @@
 import FormData from 'form-data';
-import type { HttpInstance, HttpRequestConfig } from '../../types';
-import { ResultResponse, Results } from '../types';
-import type { FilesService } from './types';
 import { rqlBuilder } from '../../rql';
-import { createCustomFormData, generateBoundary } from './formHelpers';
+import type { HttpInstance, HttpRequestConfig } from '../../types';
 import { HttpClient } from '../http-client';
+import { ResultResponse, Results } from '../types';
+import { createCustomFormData, generateBoundary } from './formHelpers';
+import type { FilesService } from './types';
 
 export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
   async find(options) {

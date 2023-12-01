@@ -1,8 +1,8 @@
-import { LogsService } from './types';
+import { LOGS_BASE } from '../../constants';
 import { HttpInstance } from '../../http/types';
 import httpClient from '../http-client';
-import { LOGS_BASE } from '../../constants';
 import access from './access';
+import { LogsService } from './types';
 
 export const logsService = (httpWithAuth: HttpInstance): LogsService => {
   const logsClient = httpClient({

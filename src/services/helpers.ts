@@ -1,7 +1,7 @@
 import { HttpInstance, HttpRequestConfig } from '../http/types';
 import { camelize, decamelize } from '../http/utils';
-import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 import { rqlBuilder } from '../rql';
+import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 
 const MAX_LIMIT = 50;
 

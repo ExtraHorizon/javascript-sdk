@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
+import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
+import { HttpClient } from '../http-client';
 import { Results } from '../types';
 import type { User, UsersService } from './types';
-import { HttpClient } from '../http-client';
-import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
 
 export default (
   userClient: HttpClient,

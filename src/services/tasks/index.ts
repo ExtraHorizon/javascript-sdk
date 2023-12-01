@@ -1,3 +1,4 @@
+import { TASKS_BASE } from '../../constants';
 import { ApiRequestService } from '../../types';
 import type {
   ApiService,
@@ -13,7 +14,6 @@ import functions from './functions';
 import logs from './logs';
 import schedules from './schedules';
 import tasks from './tasks';
-import { TASKS_BASE } from '../../constants';
 import { TasksService } from './types';
 
 export const tasksService = (

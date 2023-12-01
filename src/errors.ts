@@ -18,31 +18,29 @@ interface RequestConfig {
   url?: string;
   method?: Method;
   baseURL?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   headers?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   params?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   data?: any;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Response<T = any> {
   data: T;
   status: number;
   statusText: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   headers: any;
   config: RequestConfig;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   request?: any;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface HttpError<T = any> extends Error {
   config: RequestConfig;
   code?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   request?: any;
   response?: Response<T>;
   isAxiosError: boolean;
@@ -93,10 +91,8 @@ export class ApiError extends Error {
 
   public error?: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public request?: Record<string, any>;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public response?: Record<string, any>;
 
   constructor(data: ApiError) {

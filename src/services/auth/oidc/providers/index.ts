@@ -1,8 +1,8 @@
-import { HttpClient } from '../../../http-client';
 import { HttpInstance } from '../../../../http/types';
-import { OidcProvider, OidcProviderService } from './types';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../../../helpers';
+import { HttpClient } from '../../../http-client';
 import { OptionsWithRql } from '../../../types';
+import { OidcProvider, OidcProviderService } from './types';
 
 export default (
   oidcClient: HttpClient,

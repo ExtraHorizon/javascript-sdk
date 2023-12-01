@@ -1,9 +1,9 @@
-import type { HttpInstance } from '../../types';
-import { ResultResponse, Results } from '../types';
 import { rqlBuilder } from '../../rql';
-import type { TemplateOut, TemplatesService } from './types';
-import { HttpClient } from '../http-client';
+import type { HttpInstance } from '../../types';
 import { findAllIterator, findAllGeneric } from '../helpers';
+import { HttpClient } from '../http-client';
+import { ResultResponse, Results } from '../types';
+import type { TemplateOut, TemplatesService } from './types';
 
 export default (
   client: HttpClient,

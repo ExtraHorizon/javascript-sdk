@@ -1,12 +1,11 @@
 module.exports = {
   extends: [
-    '@qompium/eslint-config-q-node',
-    'plugin:@typescript-eslint/recommended',
+    '@extrahorizon/eslint-config-node',
     'prettier'
   ],
   parserOptions: {
     project: './tsconfig.eslint.json'
-  },  
+  },
   plugins: [
     '@typescript-eslint',
   ],

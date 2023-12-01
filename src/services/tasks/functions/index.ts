@@ -1,5 +1,5 @@
-import { HttpClient } from '../../http-client';
 import { HttpInstance } from '../../../http/types';
+import { HttpClient } from '../../http-client';
 import { FunctionsService } from './types';
 
 export default (

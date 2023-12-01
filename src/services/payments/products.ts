@@ -1,8 +1,8 @@
-import type { HttpInstance } from '../../types';
-import type { PaymentsProductsService, ProductSchema } from './types';
 import { rqlBuilder } from '../../rql';
-import { HttpClient } from '../http-client';
+import type { HttpInstance } from '../../types';
 import { findAllIterator, findAllGeneric } from '../helpers';
+import { HttpClient } from '../http-client';
+import type { PaymentsProductsService, ProductSchema } from './types';
 
 export default (
   client: HttpClient,

@@ -1,6 +1,6 @@
-import * as qs from 'qs';
-import { HmacSHA1 } from 'crypto-es/lib/sha1';
 import { Base64 } from 'crypto-es/lib/enc-base64';
+import { HmacSHA1 } from 'crypto-es/lib/sha1';
+import * as qs from 'qs';
 import { TokenDataOauth1 } from './types';
 
 interface OAuth1RequestInformation {

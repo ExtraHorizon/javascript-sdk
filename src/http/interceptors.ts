@@ -1,6 +1,8 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { delay } from '../utils';
 import { DATA_BASE } from '../constants';
+import { typeReceivedError } from '../errorHandler';
+import { HttpError } from '../errors';
+import { delay } from '../utils';
 import { HttpRequestConfig, HttpResponse, HttpResponseError } from './types';
 import {
   camelizeKeys,
@@ -8,8 +10,6 @@ import {
   recursiveMap,
   recursiveRenameKeys,
 } from './utils';
-import { typeReceivedError } from '../errorHandler';
-import { HttpError } from '../errors';
 
 export const retryInterceptor =
   (axios: AxiosInstance) =>

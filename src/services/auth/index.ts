@@ -1,13 +1,13 @@
+import { AUTH_BASE } from '../../constants';
 import type { HttpInstance } from '../../types';
-import type { AuthService, Presence } from './types';
 import httpClient from '../http-client';
 import { OptionsBase, Results } from '../types';
 import applications from './applications';
-import oauth2 from './oauth2';
 import oauth1 from './oauth1';
-import users from './users';
+import oauth2 from './oauth2';
 import oidc from './oidc';
-import { AUTH_BASE } from '../../constants';
+import type { AuthService, Presence } from './types';
+import users from './users';
 
 export function authService(httpWithAuth: HttpInstance): AuthService {
   const authClient = httpClient({
