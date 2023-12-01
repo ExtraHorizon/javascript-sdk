@@ -12,19 +12,17 @@ export default (
     const { data } = await client.get(
       httpAuth,
       `/schedules${options?.rql || ''}`,
-      options
+      { ...options, customResponseKeys: ['data.data'] }
     );
     return data;
   }
 
   return {
     async create(schedule: ScheduleCreation, options?: OptionsBase) {
-      const { data } = await client.post(
-        httpAuth,
-        `/schedules`,
-        schedule,
-        options
-      );
+      const { data } = await client.post(httpAuth, `/schedules`, schedule, {
+        ...options,
+        customResponseKeys: ['data'],
+      });
 
       return data;
     },
