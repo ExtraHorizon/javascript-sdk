@@ -64,6 +64,8 @@ The normalization of custom keys can be reverted to behavior before 8.0.0 using 
 
 ### Affected Properties
 
+These are the affected properties, listed by the relevant SDK method:
+
 - `sdk.configurations.find`
   - Response: `data`
   - Response: `userConfiguration`
