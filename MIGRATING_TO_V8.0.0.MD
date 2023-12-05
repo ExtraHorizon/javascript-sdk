@@ -114,7 +114,7 @@ The normalization of custom keys can be reverted to behavior before 8.0.0 using 
 - `sdk.tasks.create`
   - Response: `data`
 - `sdk.tasks.api.*`
-    - Response: `ALL`
+    - Response: `ALL KEYS`
 - `sdk.tasks.functions`
   - Response: `data`
 - `sdk.tasks.schedules.find`
@@ -128,6 +128,6 @@ The normalization of custom keys can be reverted to behavior before 8.0.0 using 
   - Response: `schema.fields`
   - Response: `fields`
 - `sdk.templates.resolveAsJson`
-  - Response: `*`
+  - Response: `ALL KEYS`
 - `sdk.templates.resolveAsJsonUsingCode`
-  - Response: `*`
+  - Response: `ALL KEYS`
