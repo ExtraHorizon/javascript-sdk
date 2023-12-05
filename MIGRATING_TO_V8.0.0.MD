@@ -23,6 +23,14 @@ For more information regarding manual double encoding please refer to the [RQL d
 
 ## Disabling custom key normalization
 
+From version 8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
+Before version 8.0.0 all keys were normalized to snake_case in requests and camelCase in responses. This is useful because some of our services still return snake_case keys, while others return camelCase keys. 
+We wanted to keep this behaviour for all keys defined by Extra Horizon services, but we also wanted to allow custom keys to be sent and received as they are provided.
+
+A common problem was that a custom property was defined as `enable_this_feature` in the general configuration, but when it was retrieved from the API it was returned as `enableThisFeature`.
+This meant that the property was not found in the configuration object, because it was looking for `enable_this_feature` instead of `enableThisFeature`.
+In this version we will no longer normalize custom keys, so the property will be found as `enable_this_feature` in the configuration object.
+
 ### Changes required in requests
 
 For all [affected properties](###-affected-properties) with the request mentioned, check if you use any property names that are in `camelCase` and change them to `snake_case`.
