@@ -25,24 +25,24 @@ For more information regarding manual double encoding please refer to the [RQL d
 
 ### Changes required in requests
 
-For all affected properties with the request mentioned, check if you use any property names that are in `camelCase` and change them to `snake_case`.
+For all [affected properties](###-affected-properties) with the request mentioned, check if you use any property names that are in `camelCase` and change them to `snake_case`.
 
-Affected properties in requests had their keys transformed from camelCase to snake_case before sending it to the service.
+[Affected properties](###-affected-properties) in requests had their keys transformed from camelCase to snake_case before sending it to the service.
 An example would be all properties in the `customFields` property of the profile service. Updating this field with a value of
 `{ 'helloWorld': 'test' }` would result in the value being stored as `{ 'hello_world': 'test' }`. 
 
 ### Changes required in  responses
 
-For all affected properties with the response mentioned, check if you use any property names that are in `snake_case` and start addressing them as `snake_case` instead of `camelCase`.
+For all [affected properties](###-affected-properties) with the response mentioned, check if you use any property names that are in `snake_case` and start addressing them as `snake_case` instead of `camelCase`.
 This includes all properties that were normalized in the requests.
 
-For all affected properties with the response mentioned, check if you use any property as if it is a date. If you do, transform it to a Date (`new Date(property)`) before using it. 
+For all [affected properties](###-affected-properties) with the response mentioned, check if you use any property as if it is a date. If you do, transform it to a Date (`new Date(property)`) before using it. 
 
-Affected properties in responses had their keys transformed from snake_case to camelCase before returning the data.
+[Affected properties](###-affected-properties) in responses had their keys transformed from snake_case to camelCase before returning the data.
 An example would be all properties in the `data` property of the configurations service. Returning a field with a value of
 `{ 'hello_world': 'test' }` would result in the value being retrieved as `{ 'helloWorld': 'test' }`.
 
-Timestamps in responses of affected properties were sometimes converted to an actual javascript data object. 
+Timestamps in responses of [affected properties](###-affected-properties) were sometimes converted to an actual javascript data object. 
 They will now always come as what was provided in the request. If a property was provided as Date, it will be returned as a string.
 
 ### Reverting to request normalization of custom keys for a single operation
