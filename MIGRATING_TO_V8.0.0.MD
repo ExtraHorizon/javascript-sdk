@@ -30,7 +30,7 @@ We wanted to keep this behaviour for all keys defined by Extra Horizon services,
 
 ### Changes to request data
 If you are providing custom keys in camel case before v8.0.0, they will now be stored as camel case.
-While before they would be stored as snake case.
+While before they would be stored as snake case for some requests.
 
 For all [affected properties](###-affected-properties) with the request mentioned in v8.0.0 the custom data in the request will be stored as it was provided.
 
