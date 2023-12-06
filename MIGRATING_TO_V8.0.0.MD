@@ -59,7 +59,7 @@ For all [affected properties](###-affected-properties) with the response mention
 
 #### Camel Casing Custom Keys
 
-If you are providing custom keys in snake case before v8.0.0, you will now receive them as snake case in the responses as well.
+If you are providing custom keys in snake case, you will now receive them as snake case in the responses as well.
 While before you would receive them as camel case.
 
 Before v8.0.0 some responses used to be camel cased:
