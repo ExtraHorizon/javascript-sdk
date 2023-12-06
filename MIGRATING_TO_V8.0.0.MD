@@ -125,12 +125,12 @@ If you were providing custom keys with the name `records_affected` or `recordsAf
 While before they would return as `affectedRecords`.
 
 ### Reverting to request normalization of custom keys for a single operation
-You may enable normalization of custom keys by setting the option `exh.service.operation({ normalizeCustomData: true })`
+The normalization of custom keys can be reverted for a single operations to the behavior before 8.0.0 by setting the option `exh.service.operation({ normalizeCustomData: true })`
 - Before 8.0.0: `exh.profiles.update(id, data, options)`
 - After 8.0.0: `exh.profiles.update(id, data, {...options, normalizeCustomData: true ))`
 
-### Reverting to request normalization of custom keys for all operation a client
-The normalization of custom keys can be reverted to behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`.
+### Reverting to request normalization of custom keys for all operations on a client
+The normalization of custom keys can be reverted for all operations on a client to the behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`.
 - You may then disable normalization of custom keys for a single operation by  `exh.service.operation({ normalizeCustomData: false })`
 
 ### Affected Properties
