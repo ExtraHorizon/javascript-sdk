@@ -21,37 +21,108 @@ The automatic double encoding of values can be reverted to behavior before 8.0.0
 
 For more information regarding manual double encoding please refer to the [RQL documentation](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters).
 
-## Disabling custom key normalization
+## Custom data normalization
 
 From version 8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
+
 Before version 8.0.0 all keys were normalized to snake_case in requests and camelCase in responses. This is useful because some of our services still return snake_case keys, while others return camelCase keys. 
 We wanted to keep this behaviour for all keys defined by Extra Horizon services, but we also wanted to allow custom keys to be sent and received as they are provided.
 
-A common problem was that a custom property was defined as `enable_this_feature` in the general configuration, but when it was retrieved from the API it was returned as `enableThisFeature`.
-This meant that the property was not found in the configuration object, because it was looking for `enable_this_feature` instead of `enableThisFeature`.
-In this version we will no longer normalize custom keys, so the property will be found as `enable_this_feature` in the configuration object.
+### Changes to request data
+If you are providing custom keys in camel case before v8.0.0, they will now be stored as camel case.
+While before they would be stored as snake case.
 
-### Changes required in requests
+For all [affected properties](###-affected-properties) with the request mentioned in v8.0.0 the custom data in the request will be stored as it was provided.
 
-For all [affected properties](###-affected-properties) with the request mentioned, check if you use any property names that are in `camelCase` and change them to `snake_case`.
+Before v8.0.0 some custom data in requests was transformed to snake case:
+```js
+// Setting the custom fields of a profile with a camel cased custom key
+await sdk.profiles.update(profile.id, {
+    customFields: {
+        helloWorld: 'test',
+    },
+});
 
-[Affected properties](###-affected-properties) in requests had their keys transformed from camelCase to snake_case before sending it to the service.
-An example would be all properties in the `customFields` property of the profile service. Updating this field with a value of
-`{ 'helloWorld': 'test' }` would result in the value being stored as `{ 'hello_world': 'test' }`. 
+// Before v8.0.0 the customFields of the profile would be stored as
+// {
+//    hello_world: 'test',
+// }
 
-### Changes required in  responses
+// After v8.0.0 the customFields of the profile would be stored as
+// {
+//    helloWorld: 'test',
+// }
+```
 
-For all [affected properties](###-affected-properties) with the response mentioned, check if you use any property names that are in `snake_case` and start addressing them as `snake_case` instead of `camelCase`.
-This includes all properties that were normalized in the requests.
+### Changes to response data
+For all [affected properties](###-affected-properties) with the response mentioned in v8.0.0 the response will be returned as it was provided.
 
-For all [affected properties](###-affected-properties) with the response mentioned, check if you use any property as if it is a date. If you do, transform it to a Date (`new Date(property)`) before using it. 
+#### Camel Casing Custom Keys
 
-[Affected properties](###-affected-properties) in responses had their keys transformed from snake_case to camelCase before returning the data.
-An example would be all properties in the `data` property of the configurations service. Returning a field with a value of
-`{ 'hello_world': 'test' }` would result in the value being retrieved as `{ 'helloWorld': 'test' }`.
+If you are providing custom keys in snake case before v8.0.0, you will now receive them as snake case in the responses as well.
+While before you would receive them as camel case.
 
-Timestamps in responses of [affected properties](###-affected-properties) were sometimes converted to an actual javascript data object. 
-They will now always come as what was provided in the request. If a property was provided as Date, it will be returned as a string.
+Before v8.0.0 some responses used to be camel cased:
+```js
+// Setting the general configuration with a snake cased custom key
+await sdk.configurations.general.update({ 
+  data: {
+      enable_this_feature: true,
+    }
+});
+
+// Retrieving the general configuration with the custom key
+const configuration = await sdk.configurations.general.find();
+
+
+// Before v8.0.0 the custom key would be accessed as
+configuration.data.enableThisFeature
+
+// After v8.0.0 the custom key would be accessed as
+configuration.data.enable_this_feature 
+```
+
+#### Dates
+
+If you are using custom keys with timestamp in the name, they will now not return as Javascript date objects anymore.
+You will now receive them as what was provided in the request.
+Except if you provide a date object, you will receive an iso string.
+
+Before v8.0.0 some timestamps in responses were returned as Javascript date objects:
+
+```js
+// Setting the general configuration with a snake cased custom key
+await sdk.configurations.general.update({ 
+  data: {
+      creationTimestamp: 0,
+      expiryTimestamp: new Date(2012,0,1),
+      updateTimestamp: '2010-02-05T00:00:00.000Z',
+    }
+});
+
+// Retrieving the general configuration with the custom key
+const configuration = await sdk.configurations.general.find();
+
+
+// Before v8.0.0 the data object in the response would be
+// {
+//   creationTimestamp: new Date(0),
+//   expiryTimestamp: new Date(2012,0,1),
+//   updateTimestamp: new Date('2010-02-05T00:00:00.000Z'),
+// }
+
+// After v8.0.0 the data object in the response would be
+// {
+//   creationTimestamp: 0,
+//   expiryTimestamp: '2012-01-01T00:00:00.000Z',
+//   updateTimestamp: '2010-02-05T00:00:00.000Z',
+// }
+```
+
+#### Records Affected
+
+If you are using custom keys with the name `records_affected` or `recordsAffected` they will now return as they are provided.
+While before they would return as `affectedRecords`.
 
 ### Reverting to request normalization of custom keys for a single operation
 You may enable normalization of custom keys by setting the option `sdk.service.operation({ normalizeCustomData: true })`
