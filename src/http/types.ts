@@ -99,8 +99,8 @@ export interface TokenDataOauth1 {
   tokenSecret?: string;
   applicationId?: string;
   userId?: string;
-  updateTimeStamp?: string;
-  creationTimestamp?: string;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
 }
 
 export interface OidcAuthenticationUrlRequest {
