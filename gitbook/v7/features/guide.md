@@ -76,7 +76,7 @@ const result = await exh.data.documents.find({ rql });
 
 ## Raw Queries
 
-You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
+You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK.
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
