@@ -22,19 +22,17 @@ The automatic double encoding of values can be reverted to behavior before 8.0.0
 For more information regarding manual double encoding please refer to the [RQL documentation](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters).
 
 ## Custom data normalization
-
-From version 8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
-
-Before version 8.0.0 all keys were normalized to snake_case in requests and camelCase in responses. This is useful because some of our services still return snake_case keys, while others return camelCase keys. 
+Prior to v8.0.0 all keys were normalized to snake_case in requests and camelCase in responses. This is useful because some of our services still return snake_case keys, while others return camelCase keys.
 We wanted to keep this behaviour for all keys defined by Extra Horizon services, but we also wanted to allow custom keys to be sent and received as they are provided.
 
+Starting from v8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
+
 ### Changes to request data
-If you are providing custom keys in camel case before v8.0.0, they will now be stored as camel case.
-While before they would be stored as snake case for some requests.
+Prior to v8.0.0, when custom keys were supplied in camel case, they were internally stored in snake case. 
+Starting from v8.0.0, custom keys are now preserved in the case provided in the input.
 
 For all [affected properties](###-affected-properties) with the request mentioned in v8.0.0 the custom data in the request will now be stored as it was provided.
 
-Before v8.0.0 some custom data in requests was transformed to snake case:
 ```js
 // Setting the custom fields of a profile with a camel cased custom key
 await exh.profiles.update(profile.id, {
@@ -55,14 +53,13 @@ await exh.profiles.update(profile.id, {
 ```
 
 ### Changes to response data
-For all [affected properties](###-affected-properties) with the response mentioned in v8.0.0 the response will be returned as it was provided.
+For all [affected properties](###-affected-properties) with the response mentioned in v8.0.0 the custom data will be returned as it was provided from the services.
 
 #### Camel Casing Custom Keys
 
-If you are providing custom keys in snake case, you will now receive them as snake case in the responses as well.
-While before you would receive them as camel case.
+Prior to v8.0.0, when custom keys were stored in snake case, you would receive them in camel case.
+Starting from v8.0.0, custom keys are now preserved in the case provided in the input.
 
-Before v8.0.0 some responses used to be camel cased:
 ```js
 // Setting the general configuration with a snake cased custom key
 await exh.configurations.general.update({ 
@@ -84,19 +81,17 @@ configuration.data.enable_this_feature
 
 #### Dates
 
-If you are providing custom keys with timestamp in the name, they will now not return as Javascript date objects anymore.
-You will now receive them as what was provided in the request.
-Except if you provide a date object, you will receive an iso string.
-
-Before v8.0.0 some timestamps in responses were returned as Javascript date objects:
+Prior to v8.0.0, when custom keys had `timestamp` in the name, they would be returned as Javascript date objects.
+Starting from v8.0.0, custom keys are now preserved in the type provided in the input.
+Except if you provide a date object, you will receive an ISO string.
 
 ```js
 // Setting the general configuration with a snake cased custom key
 await exh.configurations.general.update({ 
   data: {
-      creationTimestamp: 0,
-      expiryTimestamp: new Date(2012,0,1),
-      updateTimestamp: '2010-02-05T00:00:00.000Z',
+      creationTimestamp: 1701870409000,
+      expiryTimestamp: new Date(2023,11,6,13,46,49),
+      updateTimestamp: '2023-11-06T13:46:49.000Z',
     }
 });
 
@@ -106,16 +101,16 @@ const configuration = await exh.configurations.general.find();
 
 // Before v8.0.0 the data object in the response would be
 // {
-//     creationTimestamp: new Date(0), 
-//     expiryTimestamp: new Date(2012,0,1), 
-//     updateTimestamp: new Date('2010-02-05T00:00:00.000Z')
+//     creationTimestamp: new Date(1701870409000), 
+//     expiryTimestamp: new Date(2023,11,6,13,46,49), 
+//     updateTimestamp: new Date('2023-11-06T13:46:49.000Z')
 // }
 
 // After v8.0.0 the data object in the response would be
 // {
-//     creationTimestamp: 0,
-//     expiryTimestamp: '2012-01-01T00:00:00.000Z',
-//     updateTimestamp: '2010-02-05T00:00:00.000Z',
+//     creationTimestamp: 1701870409000,
+//     expiryTimestamp: '2023-11-06T13:46:49.000Z',
+//     updateTimestamp: '2023-11-06T13:46:49.000Z',
 // }
 ```
 
@@ -124,13 +119,13 @@ const configuration = await exh.configurations.general.find();
 If you were providing custom keys with the name `records_affected` or `recordsAffected` they will now return as they are provided.
 While before they would return as `affectedRecords`.
 
-### Reverting to request normalization of custom keys for a single operation
-The normalization of custom keys can be reverted for a single operations to the behavior before 8.0.0 by setting the option `exh.service.operation({ normalizeCustomData: true })`
+### Re-enable the request normalization of custom keys for a single operation
+The normalization of custom keys can be re-enabled for a single operation to the behavior before 8.0.0 by setting the option `exh.service.operation({ normalizeCustomData: true })`
 - Before 8.0.0: `exh.profiles.update(id, data, options)`
 - After 8.0.0: `exh.profiles.update(id, data, {...options, normalizeCustomData: true ))`
 
-### Reverting to request normalization of custom keys for all operations on a client
-The normalization of custom keys can be reverted for all operations on a client to the behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`.
+### Re-enable the request normalization of custom keys for all operations on a client
+The normalization of custom keys can be re-enabled for all operations on a client to the behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`.
 - You may then disable normalization of custom keys for a single operation by  `exh.service.operation({ normalizeCustomData: false })`
 
 ### Affected Properties
