@@ -44,13 +44,13 @@ await sdk.profiles.update(profile.id, {
 });
 
 // Before v8.0.0 the customFields of the profile would be stored as
-// {
-//    hello_world: 'test',
+// { 
+//     hello_world: 'test' 
 // }
 
 // After v8.0.0 the customFields of the profile would be stored as
 // {
-//    helloWorld: 'test',
+//     helloWorld: 'test'
 // }
 ```
 
@@ -84,7 +84,7 @@ configuration.data.enable_this_feature
 
 #### Dates
 
-If you are using custom keys with timestamp in the name, they will now not return as Javascript date objects anymore.
+If you are providing custom keys with timestamp in the name, they will now not return as Javascript date objects anymore.
 You will now receive them as what was provided in the request.
 Except if you provide a date object, you will receive an iso string.
 
@@ -106,22 +106,22 @@ const configuration = await sdk.configurations.general.find();
 
 // Before v8.0.0 the data object in the response would be
 // {
-//   creationTimestamp: new Date(0),
-//   expiryTimestamp: new Date(2012,0,1),
-//   updateTimestamp: new Date('2010-02-05T00:00:00.000Z'),
+//     creationTimestamp: new Date(0), 
+//     expiryTimestamp: new Date(2012,0,1), 
+//     updateTimestamp: new Date('2010-02-05T00:00:00.000Z')
 // }
 
 // After v8.0.0 the data object in the response would be
 // {
-//   creationTimestamp: 0,
-//   expiryTimestamp: '2012-01-01T00:00:00.000Z',
-//   updateTimestamp: '2010-02-05T00:00:00.000Z',
+//     creationTimestamp: 0,
+//     expiryTimestamp: '2012-01-01T00:00:00.000Z',
+//     updateTimestamp: '2010-02-05T00:00:00.000Z',
 // }
 ```
 
 #### Records Affected
 
-If you are using custom keys with the name `records_affected` or `recordsAffected` they will now return as they are provided.
+If you were providing custom keys with the name `records_affected` or `recordsAffected` they will now return as they are provided.
 While before they would return as `affectedRecords`.
 
 ### Reverting to request normalization of custom keys for a single operation
