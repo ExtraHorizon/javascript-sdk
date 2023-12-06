@@ -37,7 +37,7 @@ For all [affected properties](###-affected-properties) with the request mentione
 Before v8.0.0 some custom data in requests was transformed to snake case:
 ```js
 // Setting the custom fields of a profile with a camel cased custom key
-await sdk.profiles.update(profile.id, {
+await exh.profiles.update(profile.id, {
     customFields: {
         helloWorld: 'test',
     },
@@ -65,14 +65,14 @@ While before you would receive them as camel case.
 Before v8.0.0 some responses used to be camel cased:
 ```js
 // Setting the general configuration with a snake cased custom key
-await sdk.configurations.general.update({ 
+await exh.configurations.general.update({ 
   data: {
       enable_this_feature: true,
     }
 });
 
 // Retrieving the general configuration with the custom key
-const configuration = await sdk.configurations.general.find();
+const configuration = await exh.configurations.general.find();
 
 
 // Before v8.0.0 the custom key would be accessed as
@@ -92,7 +92,7 @@ Before v8.0.0 some timestamps in responses were returned as Javascript date obje
 
 ```js
 // Setting the general configuration with a snake cased custom key
-await sdk.configurations.general.update({ 
+await exh.configurations.general.update({ 
   data: {
       creationTimestamp: 0,
       expiryTimestamp: new Date(2012,0,1),
@@ -101,7 +101,7 @@ await sdk.configurations.general.update({
 });
 
 // Retrieving the general configuration with the custom key
-const configuration = await sdk.configurations.general.find();
+const configuration = await exh.configurations.general.find();
 
 
 // Before v8.0.0 the data object in the response would be
@@ -125,90 +125,90 @@ If you were providing custom keys with the name `records_affected` or `recordsAf
 While before they would return as `affectedRecords`.
 
 ### Reverting to request normalization of custom keys for a single operation
-You may enable normalization of custom keys by setting the option `sdk.service.operation({ normalizeCustomData: true })`
-- Before 8.0.0: `sdk.profiles.update(id, data, options)`
-- After 8.0.0: `sdk.profiles.update(id, data, {...options, normalizeCustomData: true ))`
+You may enable normalization of custom keys by setting the option `exh.service.operation({ normalizeCustomData: true })`
+- Before 8.0.0: `exh.profiles.update(id, data, options)`
+- After 8.0.0: `exh.profiles.update(id, data, {...options, normalizeCustomData: true ))`
 
 ### Reverting to request normalization of custom keys for all operation a client
-The normalization of custom keys can be reverted to behavior before 8.0.0 using the snippet `sdk = createClient({ ...options, normalizeCustomData: true });`.
-- You may then disable normalization of custom keys for a single operation by  `sdk.service.operation({ normalizeCustomData: false })`
+The normalization of custom keys can be reverted to behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`.
+- You may then disable normalization of custom keys for a single operation by  `exh.service.operation({ normalizeCustomData: false })`
 
 ### Affected Properties
 
 These are the affected properties, listed by the relevant SDK method:
 
-- `sdk.configurations.find`
+- `exh.configurations.find`
   - Response: `data`
   - Response: `userConfiguration`
   - Response: `groupConfiguration`
   - Response: `staffConfiguration`
   - Response: `patientConfiguration`
-- `sdk.configuration.groups.find`
+- `exh.configuration.groups.find`
   - Response: `data`
   - Response: `staff`
   - Response: `patientConfiguration`
-- `sdk.configurations.users.find`
+- `exh.configurations.users.find`
   - Response: `data`
   - Response: `staffConfigurations.data`
   - Response: `patientConfigurations.data`
-- `sdk.dispatchers.actions.create`
+- `exh.dispatchers.actions.create`
   - Response: `data`
-- `sdk.dispatchers.get`
+- `exh.dispatchers.get`
   - Response: `data.actions.data`
-- `sdk.dispatchers.create`
+- `exh.dispatchers.create`
   - Response: `action.data`
-- `sdk.localizations.getByKeys`
+- `exh.localizations.getByKeys`
   - Response: `ALL KEYS`
-- `sdk.mails.find`
+- `exh.mails.find`
   - Response: `data.content`
-- `sdk.mails.send`
+- `exh.mails.send`
   - Request & Response: `content`
-- `sdk.mails.findOutBound`
+- `exh.mails.findOutBound`
   - Response: `data.templateData.content`
-- `sdk.payments.orders.find`
+- `exh.payments.orders.find`
   - Response: `data.data`
   - Response `data.product.schema.properties`
-- `sdk.payments.orders.create`
+- `exh.payments.orders.create`
   - Response: `data`, 
   - Response: `product.schema.properties`
-- `sdk.payments.products.create`
+- `exh.payments.products.create`
   - Response `schema.properties`
-- `sdk.payments.products.find`
+- `exh.payments.products.find`
   - Response `data.schema.properties'`
-- `sdk.profiles.groups.create`
+- `exh.profiles.groups.create`
   - Request & Response: `customFields`
-- `sdk.profiles.groups.update`
+- `exh.profiles.groups.update`
   - Request & Response: `customFields`
-- `sdk.profiles.groups.removeFields`
+- `exh.profiles.groups.removeFields`
   - Response: `customFields`
-- `sdk.profiles.create`
+- `exh.profiles.create`
     - Request & Response: `customFields`
     - Request & Response: `groups.customFields`
-- `sdk.profiles.find`
+- `exh.profiles.find`
     - Request & Response: `data.customFields`
     - Request & Response: `data.groups.customFields`
-- `sdk.profiles.update`
+- `exh.profiles.update`
     - Request: `customFields`
     - Request: `groups.customFields`
-- `sdk.task.find`
+- `exh.task.find`
   - Response: `data.data`
-- `sdk.tasks.create`
+- `exh.tasks.create`
   - Response: `data`
-- `sdk.tasks.api.*`
+- `exh.tasks.api.*`
     - Response: `ALL KEYS`
-- `sdk.tasks.functions`
+- `exh.tasks.functions`
   - Response: `data`
-- `sdk.tasks.schedules.find`
+- `exh.tasks.schedules.find`
   - Response: `data.data`
-- `sdk.tasks.schedules.create`
+- `exh.tasks.schedules.create`
   - Response: `data`
-- `sdk.templates.find`
+- `exh.templates.find`
   - Response: `schema.fields`
   - Response: `fields`
-- `sdk.templates.create`
+- `exh.templates.create`
   - Response: `schema.fields`
   - Response: `fields`
-- `sdk.templates.resolveAsJson`
+- `exh.templates.resolveAsJson`
   - Response: `ALL KEYS`
-- `sdk.templates.resolveAsJsonUsingCode`
+- `exh.templates.resolveAsJsonUsingCode`
   - Response: `ALL KEYS`
