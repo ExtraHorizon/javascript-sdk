@@ -2,6 +2,9 @@ import axios from 'axios';
 import { HttpClientConfig, HttpInstance } from '../types';
 import {
   camelizeResponseData,
+  retryInterceptor,
+  transformKeysResponseData,
+  transformResponseData,
   typeReceivedErrorsInterceptor,
 } from './interceptors';
 import { composeUserAgent } from './utils';
@@ -47,10 +50,12 @@ export function createHttpClient({
     );
   }
 
-  http.interceptors.response.use(
-    camelizeResponseData,
-    typeReceivedErrorsInterceptor
-  );
+  http.interceptors.response.use(null, retryInterceptor(http));
+  http.interceptors.response.use(null, typeReceivedErrorsInterceptor);
+
+  http.interceptors.response.use(camelizeResponseData);
+  http.interceptors.response.use(transformResponseData);
+  http.interceptors.response.use(transformKeysResponseData);
 
   return http;
 }
