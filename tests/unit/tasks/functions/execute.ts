@@ -6,6 +6,7 @@ import {
   directExecutionResponse,
   InputType,
   OutputType,
+  snakeCasedDirectExecutionResponse,
 } from '../../../__helpers__/task';
 
 describe('Tasks - Functions - Execute', () => {
@@ -18,9 +19,9 @@ describe('Tasks - Functions - Execute', () => {
   });
 
   const data = {
-    inputOne: 'value',
+    input_one: 'value',
     inputTwo: 'value',
-    inputThree: 'value',
+    input_three: 'value',
   };
 
   it('Executes a request towards a Function', async () => {
@@ -42,7 +43,32 @@ describe('Tasks - Functions - Execute', () => {
       data,
       {}
     );
-    expect(response.data.inputOne).toBeDefined();
-    expect(response.result.outputOne).toBeDefined();
+
+    expect(response.data.input_one).toBeDefined();
+    expect(response.data.inputTwo).toBeDefined();
+    expect(response.result.output_one).toBeDefined();
+    expect(response.result.outputTwo).toBeDefined();
+  });
+
+  it('Should not transform custom data in execution responses', async () => {
+    nock(`${host}${TASKS_BASE}`)
+      .post(`/functions/${functionName}/execute`, { data })
+      .reply(200, directExecutionResponse);
+
+    const response = await exh.tasks.functions.execute<OutputType, InputType>(
+      functionName,
+      data,
+      {}
+    );
+
+    expect(response).toStrictEqual({
+      ...directExecutionResponse,
+      creationTimestamp: new Date(directExecutionResponse.creationTimestamp),
+      updateTimestamp: new Date(directExecutionResponse.updateTimestamp),
+      statusChangedTimestamp: new Date(
+        directExecutionResponse.statusChangedTimestamp
+      ),
+      startTimestamp: new Date(directExecutionResponse.startTimestamp),
+    });
   });
 });

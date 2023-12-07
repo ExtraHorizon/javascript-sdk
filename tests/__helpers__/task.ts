@@ -14,37 +14,37 @@ export const taskData = {
 };
 
 export interface InputType {
-  inputOne: string;
+  input_one: string;
   inputTwo: string;
-  inputThree: string;
+  input_three: string;
 }
 
 export interface OutputType {
-  outputOne: string;
+  output_one: string;
   outputTwo: string;
-  outputThree: string;
+  output_three: string;
 }
 
 export const directExecutionResponse = {
   id: '757f191a810c19729de860ae',
   status: 'new',
-  statusChangedTimestamp: new Date('2023-07-03T14:14:50.698Z'),
+  statusChangedTimestamp: '2023-07-03T14:14:50.698Z',
   functionName: 'test',
   data: {
-    inputOne: 'value',
+    input_one: 'value',
     inputTwo: 'value',
-    inputThree: 'value',
+    input_three: 'value',
   },
-  startTimestamp: new Date('2023-07-03T14:14:50.698Z'),
+  startTimestamp: '2023-07-03T14:14:50.698Z',
   tags: ['nightly', 'test'],
   priority: 1,
-  creationTimestamp: new Date('2023-07-03T14:14:50.698Z'),
-  updateTimestamp: new Date('2023-07-03T14:14:50.698Z'),
+  creationTimestamp: '2023-07-03T14:14:50.698Z',
+  updateTimestamp: '2023-07-03T14:14:50.698Z',
   createdByApplicationId: '757f191a810c19729de860ae',
   createdByUserId: '757f191a810c19729de860ae',
   result: {
-    outputOne: 'value',
+    output_one: 'value',
     outputTwo: 'value',
-    outputThree: 'value',
+    output_three: 'value',
   },
 };
