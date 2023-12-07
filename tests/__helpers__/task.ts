@@ -14,15 +14,15 @@ export const taskData = {
 };
 
 export interface InputType {
-  input_one: string;
+  inputOne: string;
   inputTwo: string;
-  input_three: string;
+  inputThree: string;
 }
 
 export interface OutputType {
-  output_one: string;
+  outputOne: string;
   outputTwo: string;
-  output_three: string;
+  outputThree: string;
 }
 
 export const directExecutionResponse = {
@@ -31,8 +31,32 @@ export const directExecutionResponse = {
   statusChangedTimestamp: '2023-07-03T14:14:50.698Z',
   functionName: 'test',
   data: {
-    input_one: 'value',
+    inputOne: 'value',
     inputTwo: 'value',
+    inputThree: 'value',
+  },
+  startTimestamp: '2023-07-03T14:14:50.698Z',
+  tags: ['nightly', 'test'],
+  priority: 1,
+  creationTimestamp: '2023-07-03T14:14:50.698Z',
+  updateTimestamp: '2023-07-03T14:14:50.698Z',
+  createdByApplicationId: '757f191a810c19729de860ae',
+  createdByUserId: '757f191a810c19729de860ae',
+  result: {
+    outputOne: 'value',
+    outputTwo: 'value',
+    outputThree: 'value',
+  },
+};
+
+export const directExecutionResponseWithSnakeCasedCustomData = {
+  id: '757f191a810c19729de860ae',
+  status: 'new',
+  statusChangedTimestamp: '2023-07-03T14:14:50.698Z',
+  functionName: 'test',
+  data: {
+    input_one: 'value',
+    input_two: 'value',
     input_three: 'value',
   },
   startTimestamp: '2023-07-03T14:14:50.698Z',
@@ -44,7 +68,7 @@ export const directExecutionResponse = {
   createdByUserId: '757f191a810c19729de860ae',
   result: {
     output_one: 'value',
-    outputTwo: 'value',
+    output_two: 'value',
     output_three: 'value',
   },
 };
