@@ -29,7 +29,15 @@ describe('Tasks - Functions - Execute', () => {
       .reply(200, directExecutionResponse);
 
     const response = await exh.tasks.functions.execute(functionName, data, {});
-    expect(response).toMatchObject(directExecutionResponse);
+    expect(response).toMatchObject({
+      ...directExecutionResponse,
+      creationTimestamp: new Date(directExecutionResponse.creationTimestamp),
+      updateTimestamp: new Date(directExecutionResponse.updateTimestamp),
+      statusChangedTimestamp: new Date(
+        directExecutionResponse.statusChangedTimestamp
+      ),
+      startTimestamp: new Date(directExecutionResponse.startTimestamp),
+    });
   });
 
   it('Executes a request towards a Function with custom input and output interfaces', async () => {
