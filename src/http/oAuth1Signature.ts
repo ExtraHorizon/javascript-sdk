@@ -1,6 +1,5 @@
 import * as qs from 'qs';
-import { HmacSHA1 } from 'crypto-es/lib/sha1';
-import { Base64 } from 'crypto-es/lib/enc-base64';
+import { HmacSHA1 } from '../sha1';
 import { TokenDataOauth1 } from './types';
 
 interface OAuth1RequestInformation {
@@ -81,7 +80,7 @@ function generateSignature(
     .map(percentEncode)
     .join('&');
 
-  return HmacSHA1(base, key).toString(Base64);
+  return HmacSHA1(key, base);
 }
 
 // Copied and linted version of oauth-sign https://github.com/request/oauth-sign/blob/18a2513da6ba7a2c0cd8179170d7c296c7625137/index.js#L44
