@@ -11,7 +11,7 @@ export default (
       httpAuth,
       `/functions/${functionName}/execute`,
       { data },
-      { ...options, customKeys: ['data'] }
+      { ...options, customKeys: ['data', 'result'] }
     );
     return response.data;
   },
