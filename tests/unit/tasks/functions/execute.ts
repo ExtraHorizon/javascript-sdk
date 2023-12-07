@@ -6,7 +6,6 @@ import {
   directExecutionResponse,
   InputType,
   OutputType,
-  snakeCasedDirectExecutionResponse,
 } from '../../../__helpers__/task';
 
 describe('Tasks - Functions - Execute', () => {
