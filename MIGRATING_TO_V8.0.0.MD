@@ -31,7 +31,7 @@ Starting from v8.0.0, the SDK will no longer normalize custom keys in requests a
 Prior to v8.0.0, when custom keys were supplied in camel case, they were internally stored in snake case. 
 Starting from v8.0.0, custom keys are now preserved in the case provided in the input.
 
-For all [affected properties](###-affected-properties) with the request mentioned in v8.0.0 the custom data in the request will now be stored as it was provided.
+For all [affected properties](#affected-properties) with the request mentioned in v8.0.0 the custom data in the request will now be stored as it was provided.
 
 ```js
 // Setting the custom fields of a profile with a camel cased custom key
@@ -53,7 +53,7 @@ await exh.profiles.update(profile.id, {
 ```
 
 ### Changes to response data
-For all [affected properties](###-affected-properties) with the response mentioned in v8.0.0 the custom data will be returned as it was provided from the services.
+For all [affected properties](#affected-properties) with the response mentioned in v8.0.0 the custom data will be returned as it was provided from the services.
 
 #### Camel Casing Custom Keys
 
@@ -207,3 +207,16 @@ These are the affected properties, listed by the relevant SDK method:
   - Response: `ALL KEYS`
 - `exh.templates.resolveAsJsonUsingCode`
   - Response: `ALL KEYS`
+
+## Unauthenticated requests
+For all [unauthenticated methods](#unauthenticated-methods), in v8.0.0 the response will now correctly undergo the same transformation steps as any other request.
+
+Noticeably their timestamps previously returned as strings are now converted to date objects, the types of these methods have been updated to reflect this change.
+
+### Unauthenticated Methods
+
+- `exh.auth.authenticate`
+- `exh.auth.confirmMfa`
+- `exh.users.createAccount`
+
+
