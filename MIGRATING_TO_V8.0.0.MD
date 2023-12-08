@@ -207,3 +207,12 @@ These are the affected properties, listed by the relevant SDK method:
   - Response: `ALL KEYS`
 - `exh.templates.resolveAsJsonUsingCode`
   - Response: `ALL KEYS`
+
+## Unauthenticated requests
+For all [unauthenticated methods](#unauthenticated-methods), in v8.0.0 the response from these requests will now correctly undergo the same transformation steps as any other request.
+
+Noticeably their timestamps previously returned as strings are now converted to date objects.
+
+### Unauthenticated Methods
+- `exh.auth.authenticate`
+- `exh.users.createAccount`
