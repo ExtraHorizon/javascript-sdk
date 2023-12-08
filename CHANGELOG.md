@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
 - New implementation of the hashing for oAuth1 signature generation
     - This change is not expected to have any impact on the SDK usage
+- **Breaking Change** For all unauthenticated methods the response will now undergo the same transformation steps as any other request.
+  - The timestamps previously returned as strings are now converted to date objects in `exh.auth.authenticate`, `exh.auth.confirmMfa` and`exh.users.createAccount`.
+
+### Bug Fixes
+- In the `TokenDataOauth1` interface `updateTimeStamp` is changed to `updateTimestamp`
+- `timeZone` is now accepted as a valid parameter for the resolve functions in the template service
+
 
 ## [v7.8.0]
 
