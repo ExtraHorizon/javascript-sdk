@@ -215,7 +215,8 @@ Noticeably their timestamps previously returned as strings are now converted to 
 
 ### Unauthenticated Methods
 
-- `exh.auth.authenticate` for OAuth1 clients
+- `exh.auth.authenticate`
+- `exh.auth.confirmMfa`
 - `exh.users.createAccount`
-- `exh.auth.confirmMfa` for OAuth1 clients
+
 
