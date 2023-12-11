@@ -12,12 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Disable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = false`
   - Disable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: false }).eq(name, '< value >').build()`
   - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
-- **Breaking Change** Starting from v8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
+- **Breaking Change:** Starting from v8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
   - The normalization of custom keys can be re-enabled for a single operation to the behavior before 8.0.0 by setting the option `exh.service.operation({ normalizeCustomData: true })`
   - The normalization of custom keys can be re-enabled for all operations on a client to the behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`
   - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
+- **Breaking Change:** For all unauthenticated methods the response will now undergo the same transformation steps as any other request.
+  - The timestamps previously returned as strings are now converted to date objects in `exh.auth.authenticate`, `exh.auth.confirmMfa` and`exh.users.createAccount`.
+  - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
 - New implementation of the hashing for oAuth1 signature generation
     - This change is not expected to have any impact on the SDK usage
+
+### Bug Fixes
+- In the `TokenDataOauth1` interface `updateTimeStamp` is changed to `updateTimestamp`
+- `timeZone` is now accepted as a valid parameter for the resolve functions in the template service
+
 
 ## [v7.8.0]
 
