@@ -1,7 +1,7 @@
 module.exports = {
   verbose: true,
   testEnvironment: 'node',
-  setupFiles: ['dotenv/config', './jest/setup.js'],
+  setupFiles: ['dotenv/config'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
   preset: 'ts-jest',
   testRegex: '.*(\\.test|tests).*\\.(ts|js)$',

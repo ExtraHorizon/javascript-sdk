@@ -51,3 +51,15 @@ export const mfaSetting = {
   lastFailedAttemptTimestamp: '2021-05-25T11:28:20.514Z',
   failedAttempts: 2,
 };
+
+export const authenticationResponse = {
+  applicationId: '58074811b2148f3b28ad75bd',
+  userId: '656f1ae851c0f5307421eb96',
+  token: '0be953bf1deb6708e18763787d3e4581d9bda062',
+  tokenSecret: 'd7f4e6516d87659edeab5c1f0e450a186adc03ed',
+  updateTimestamp: '2023-12-05T12:43:20.751Z',
+  creationTimestamp: '2023-12-05T12:43:20.751Z',
+  id: '656f1ae833190297b20641d0',
+  key: '0be953bf1deb6708e18763787d3e4581d9bda062',
+  secret: 'd7f4e6516d87659edeab5c1f0e450a186adc03ed',
+};

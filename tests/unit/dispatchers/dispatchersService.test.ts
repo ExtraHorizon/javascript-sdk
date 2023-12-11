@@ -47,6 +47,13 @@ describe('Dispatchers Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
+  it('Should not transform custom data in the listing response', async () => {
+    nock(`${host}${DISPATCHERS_BASE}`).get('/').reply(200, dispatchersResponse);
+
+    const response = await sdk.dispatchers.find();
+    expect(response.data).toStrictEqual(dispatchersResponse.data);
+  });
+
   it('should find a dispatcher by id', async () => {
     nock(`${host}${DISPATCHERS_BASE}`)
       .get(`/?eq(id,${dispatcherId})`)
@@ -71,6 +78,13 @@ describe('Dispatchers Service', () => {
     const res = await sdk.dispatchers.create(dispatcherData);
 
     expect(res.id).toBe(dispatcherData.id);
+  });
+
+  it('Should not transform custom data in the creation response', async () => {
+    nock(`${host}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
+
+    const response = await sdk.dispatchers.create(dispatcherData);
+    expect(response).toStrictEqual(dispatcherData);
   });
 
   it('should update a dispatcher', async () => {

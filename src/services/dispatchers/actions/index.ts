@@ -11,7 +11,7 @@ export default (
       httpAuth,
       `/${dispatcherId}/actions`,
       requestBody,
-      options
+      { ...options, customResponseKeys: ['data'] }
     );
 
     return data;

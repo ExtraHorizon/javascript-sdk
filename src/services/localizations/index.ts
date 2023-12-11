@@ -1,3 +1,4 @@
+import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import localizations from './localizations';
@@ -5,7 +6,6 @@ import health from './health';
 import countries from './countries';
 import languages from './languages';
 import { LOCALIZATIONS_BASE } from '../../constants';
-import { decamelizeKeys } from '../../http/utils';
 import {
   CountriesService,
   LanguagesService,
@@ -19,7 +19,7 @@ export const localizationsService = (
   CountriesService &
   LanguagesService => {
   const client = httpClient({
-    transformRequestData: decamelizeKeys,
+    transformRequestData: decamelizeRequestData,
     basePath: LOCALIZATIONS_BASE,
   });
 

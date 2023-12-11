@@ -24,6 +24,17 @@ export type HttpRequestConfig = AxiosRequestConfig & {
     current: number;
     retryCondition: (error: HttpResponseError) => boolean;
   };
+  normalizeCustomData?: boolean;
+  // The provided keys should specify an object
+  customKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   */
+  customRequestKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   */
+  customResponseKeys?: string[];
 };
 
 export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
@@ -31,6 +42,7 @@ export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
 export interface HttpInstance {
   (config: AxiosRequestConfig): AxiosPromise;
   (url: string, config?: AxiosRequestConfig): AxiosPromise;
+  normalizeCustomData?: boolean;
   defaults: AxiosDefaults;
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
@@ -87,8 +99,8 @@ export interface TokenDataOauth1 {
   tokenSecret?: string;
   applicationId?: string;
   userId?: string;
-  updateTimeStamp?: string;
-  creationTimestamp?: string;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
 }
 
 export interface OidcAuthenticationUrlRequest {

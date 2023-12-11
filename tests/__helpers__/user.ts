@@ -1,3 +1,5 @@
+import { randomHexString } from './utils';
+
 export const userData = {
   id: '5a0b2adc265ced65a8cab865',
   first_name: 'test',
@@ -87,4 +89,11 @@ export const resourceUnknownError: Error = {
   code: 16,
   name: 'RESOURCE_UNKNOWN_EXCEPTION',
   message: 'Requested resource is unknown',
+};
+
+export const registerUserResponse = {
+  id: randomHexString(24),
+  ...newUserData,
+  creation_timestamp: 1497265621409,
+  update_timestamp: 1565954044301,
 };

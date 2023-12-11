@@ -4,6 +4,7 @@ import { createClient } from '../../../../src';
 import { TASKS_BASE } from '../../../../src/constants';
 import {
   directExecutionResponse,
+  directExecutionResponseWithSnakeCasedCustomData,
   InputType,
   OutputType,
 } from '../../../__helpers__/task';
@@ -17,32 +18,66 @@ describe('Tasks - Functions - Execute', () => {
     clientId: '',
   });
 
-  const data = {
-    inputOne: 'value',
-    inputTwo: 'value',
-    inputThree: 'value',
-  };
-
-  it('Executes a request towards a Function', async () => {
+  it('Executes a Function', async () => {
     nock(`${host}${TASKS_BASE}`)
-      .post(`/functions/${functionName}/execute`, { data })
-      .reply(200, directExecutionResponse);
-
-    const response = await exh.tasks.functions.execute(functionName, data, {});
-    expect(response).toMatchObject(directExecutionResponse);
-  });
-
-  it('Executes a request towards a Function with custom input and output interfaces', async () => {
-    nock(`${host}${TASKS_BASE}`)
-      .post(`/functions/${functionName}/execute`, { data })
+      .post(`/functions/${functionName}/execute`, {
+        data: directExecutionResponse.data,
+      })
       .reply(200, directExecutionResponse);
 
     const response = await exh.tasks.functions.execute<OutputType, InputType>(
       functionName,
-      data,
+      directExecutionResponse.data,
       {}
     );
-    expect(response.data.inputOne).toBeDefined();
-    expect(response.result.outputOne).toBeDefined();
+
+    expect(response).toBeDefined();
+  });
+
+  it('Should not transform custom data in execution responses', async () => {
+    nock(`${host}${TASKS_BASE}`)
+      .post(`/functions/${functionName}/execute`, {
+        data: directExecutionResponseWithSnakeCasedCustomData.data,
+      })
+      .reply(200, directExecutionResponseWithSnakeCasedCustomData);
+
+    const response = await exh.tasks.functions.execute(
+      functionName,
+      directExecutionResponseWithSnakeCasedCustomData.data,
+      {}
+    );
+
+    expect(response.data).toStrictEqual(
+      directExecutionResponseWithSnakeCasedCustomData.data
+    );
+    expect(response.result).toStrictEqual(
+      directExecutionResponseWithSnakeCasedCustomData.result
+    );
+  });
+
+  it('Should transform Extra Horizon timestamps to date objects', async () => {
+    nock(`${host}${TASKS_BASE}`)
+      .post(`/functions/${functionName}/execute`, {
+        data: directExecutionResponseWithSnakeCasedCustomData.data,
+      })
+      .reply(200, directExecutionResponseWithSnakeCasedCustomData);
+
+    const response = await exh.tasks.functions.execute(
+      functionName,
+      directExecutionResponseWithSnakeCasedCustomData.data,
+      {}
+    );
+
+    expect(response).toMatchObject({
+      creationTimestamp: new Date(
+        directExecutionResponseWithSnakeCasedCustomData.creationTimestamp
+      ),
+      updateTimestamp: new Date(
+        directExecutionResponseWithSnakeCasedCustomData.updateTimestamp
+      ),
+      statusChangedTimestamp: new Date(
+        directExecutionResponseWithSnakeCasedCustomData.statusChangedTimestamp
+      ),
+    });
   });
 });

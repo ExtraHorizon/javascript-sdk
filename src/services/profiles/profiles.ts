@@ -9,7 +9,12 @@ export default (
   httpAuth: HttpInstance
 ): ProfilesService => ({
   async find(options) {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+    return (
+      await client.get(httpAuth, `/${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.custom_fields', 'data.groups.custom_fields'],
+      })
+    ).data;
   },
 
   async findAll(this: ProfilesService, options) {
@@ -32,11 +37,21 @@ export default (
   },
 
   async create(requestBody, options) {
-    return (await client.post(httpAuth, '/', requestBody, options)).data;
+    return (
+      await client.post(httpAuth, '/', requestBody, {
+        ...options,
+        customKeys: ['custom_fields', 'groups.custom_fields'],
+      })
+    ).data;
   },
 
   async update(rql, requestBody, options) {
-    return (await client.put(httpAuth, `/${rql}`, requestBody, options)).data;
+    return (
+      await client.put(httpAuth, `/${rql}`, requestBody, {
+        ...options,
+        customRequestKeys: ['custom_fields', 'groups.custom_fields'],
+      })
+    ).data;
   },
 
   async removeFields(rql, requestBody, options) {

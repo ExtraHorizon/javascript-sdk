@@ -1,8 +1,13 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { delay } from '../utils';
 import { DATA_BASE } from '../constants';
-import { HttpResponse, HttpResponseError } from './types';
-import { camelizeKeys, recursiveMap, recursiveRenameKeys } from './utils';
+import { HttpRequestConfig, HttpResponse, HttpResponseError } from './types';
+import {
+  camelizeKeys,
+  decamelizeKeys,
+  recursiveMap,
+  recursiveRenameKeys,
+} from './utils';
 import { typeReceivedError } from '../errorHandler';
 import { HttpError } from '../errors';
 
@@ -45,8 +50,22 @@ export const camelizeResponseData = ({
     ['arraybuffer', 'stream'].includes(config.responseType ?? '') ||
     config?.interceptors?.skipCamelizeResponseData
       ? data
-      : camelizeKeys(data),
+      : camelizeKeys(
+          data,
+          config?.normalizeCustomData ? [] : config?.customResponseKeys
+        ),
 });
+
+export const decamelizeRequestData = (
+  data,
+  httpRequestConfig?: HttpRequestConfig
+) =>
+  decamelizeKeys(
+    data,
+    httpRequestConfig?.normalizeCustomData
+      ? []
+      : httpRequestConfig?.customRequestKeys
+  );
 
 const mapDateValues = (value, key) => {
   if (
@@ -86,7 +105,12 @@ export const transformResponseData = ({
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
     config?.interceptors?.skipTransformResponseData
       ? data
-      : recursiveMap(mapDateValues, config?.url?.startsWith(DATA_BASE))(data),
+      : recursiveMap(
+          mapDateValues,
+          data,
+          config?.normalizeCustomData ? [] : config?.customResponseKeys,
+          config?.url?.startsWith(DATA_BASE)
+        ),
 });
 
 const convertRecordsAffectedKeys = key => {
@@ -107,9 +131,12 @@ export const transformKeysResponseData = ({
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
     config?.interceptors?.skipTransformKeysResponseData
       ? data
-      : recursiveRenameKeys(convertRecordsAffectedKeys, data),
+      : recursiveRenameKeys(
+          convertRecordsAffectedKeys,
+          data,
+          config?.normalizeCustomData ? [] : config?.customResponseKeys
+        ),
 });
-
 export const typeReceivedErrorsInterceptor = async (error: HttpError) => {
   // Only needed if it's an axiosError, otherwise it's already typed
   if (error && error.isAxiosError) {
