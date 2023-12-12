@@ -69,6 +69,7 @@ describe('OAuth2HttpClient', () => {
 
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
+        client_id: 'my-client-id',
         grant_type: 'refresh_token',
         refresh_token: 'MyRefreshToken',
       })
