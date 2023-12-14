@@ -75,6 +75,16 @@ export function createOAuth2HttpClient(
       return config;
     }
 
+    if (tokenData.creationTimestamp) {
+      const accessTokenExpireTime = tokenData.creationTimestamp.getTime() + tokenData.expiresIn * 1000;
+      if (accessTokenExpireTime - 1000 < Date.now() ) {
+        await authenticate({ refreshToken: tokenData.refreshToken });
+      }
+    } else {
+      // TODO We would no longer use a initially provided access token!
+      await authenticate({ refreshToken: tokenData.refreshToken });
+    }
+
     return {
       ...config,
       headers: {
@@ -140,7 +150,11 @@ export function createOAuth2HttpClient(
           }
         : {}
     );
-    await setTokenData(tokenResult.data);
+
+    await setTokenData({
+      ...tokenResult.data,
+      creationTimestamp: new Date(),
+    });
     return tokenResult.data;
   }
 
@@ -167,7 +181,10 @@ export function createOAuth2HttpClient(
           }
         : {}
     );
-    await setTokenData(tokenResult.data);
+    await setTokenData({
+      ...tokenResult.data,
+      creationTimestamp: new Date(),
+    });
     return tokenResult.data;
   }
 
@@ -203,7 +220,10 @@ export function createOAuth2HttpClient(
         : {}
     );
 
-    await setTokenData(response.data);
+    await setTokenData({
+      ...response.data,
+      creationTimestamp: new Date(),
+    });
 
     return response.data;
   }

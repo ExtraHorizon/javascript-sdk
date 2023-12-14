@@ -54,11 +54,24 @@ describe('OAuth2HttpClient', () => {
       accessToken: 'MyAccessToken',
     });
 
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, {
+        client_id: 'my-client-id',
+        grant_type: 'refresh_token',
+        refresh_token: 'MyRefreshToken',
+      })
+      .reply(200, {
+        token_type: 'bearer',
+        refresh_token: 'MyRefreshToken',
+        access_token: 'FreshAccessToken',
+        expires_in: 300,
+      });
+
     // Expect successive requests to be authenticated with the accessToken
     nock(mockParams.host).get('/test').reply(200);
 
     const result = await localHttpWithAuth.get('test');
-    expect(result.request.headers.authorization).toBe(`Bearer MyAccessToken`);
+    expect(result.request.headers.authorization).toBe(`Bearer FreshAccessToken`);
 
     // Expect the refreshToken to be used when the accessToken is expired
     nock(mockParams.host).get('/test').reply(400, {
@@ -602,6 +615,7 @@ describe('OAuth2HttpClient', () => {
         refreshToken: '3e9a827ed143c14e33617315c15789134367224c',
         applicationId: '507f191e810c19729de860ea',
         userId: '507f191e810c19729de860ea',
+        creationTimestamp: expect.any(Date),
       });
     });
   });
