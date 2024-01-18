@@ -24,7 +24,14 @@ export function createOAuth2HttpClient(
   http: HttpInstance,
   options: ParamsOauth2
 ): OAuth2HttpClient {
-  let tokenData: TokenDataOauth2;
+  let tokenData: Partial<TokenDataOauth2>;
+
+  if ('refreshToken' in options && 'accessToken' in options) {
+    tokenData = {
+      refreshToken: options.refreshToken,
+      accessToken: options.accessToken,
+    };
+  }
 
   const clientCredentials = getClientCredentials(options);
 
@@ -103,7 +110,7 @@ export function createOAuth2HttpClient(
     ) {
       originalRequest.isRetryWithRefreshedTokens = true;
       await refreshTokens();
-      return http(originalRequest);
+      return httpWithAuth(originalRequest);
     }
 
     throw error;
@@ -221,6 +228,7 @@ export function createOAuth2HttpClient(
    */
   return Object.defineProperty(
     {
+      normalizeCustomData: options.normalizeCustomData,
       ...httpWithAuth,
       extraAuthMethods: {
         authenticate,

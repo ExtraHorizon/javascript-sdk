@@ -5,6 +5,8 @@ import {
   dispatcherData,
   mailAction,
   mailActionInput,
+  taskAction,
+  taskActionInput,
 } from '../../__helpers__/dispatcher';
 
 describe('Actions Service', () => {
@@ -47,6 +49,18 @@ describe('Actions Service', () => {
     );
 
     expect(res.id).toBe(mailAction.id);
+  });
+
+  it('Should not transform custom data in the creation response', async () => {
+    nock(`${host}${DISPATCHERS_BASE}`)
+      .post(`/${dispatcherId}/actions`)
+      .reply(200, taskAction);
+
+    const response = await sdk.dispatchers.actions.create(
+      dispatcherId,
+      taskActionInput
+    );
+    expect(response).toStrictEqual(taskAction);
   });
 
   it('should update an action for the specified dispatcher', async () => {

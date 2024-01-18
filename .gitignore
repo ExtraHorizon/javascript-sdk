@@ -1,5 +1,5 @@
 # Logs
-logs
+#logs
 *.log
 npm-debug.log*
 
@@ -24,6 +24,9 @@ node_modules/
 
 # Visual Studio Code configuration
 .vscode/
+
+# Jetbrains Code configuration
+.idea/
 
 # TypeScript build
 dist/

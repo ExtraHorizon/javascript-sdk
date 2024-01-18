@@ -103,6 +103,11 @@ find(
 ): Promise<PagedResult<Schema>>;
 ```
 
+## Migration Guides
+[Migrating to v8.0.0](MIGRATING_TO_V8.0.0.MD)
+
+## Swagger files
+
 [auth]: https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
 [users]: https://swagger.extrahorizon.com/listing/?service=users-service&redirectToVersion=1
 [data]: https://swagger.extrahorizon.com/listing/?service=data-service&redirectToVersion=1

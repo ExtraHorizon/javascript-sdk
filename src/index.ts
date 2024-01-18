@@ -1,4 +1,4 @@
-export { rqlBuilder, rqlParser } from './rql';
+export { rqlBuilder, rqlParser, RQLString } from './rql';
 
 export * from './errors';
 export * from './types';

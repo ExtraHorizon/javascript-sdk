@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import type { HttpInstance } from '../../types';
+import type { HttpInstance, HttpRequestConfig } from '../../types';
 import { ResultResponse, Results } from '../types';
 import type { FilesService } from './types';
 import { rqlBuilder } from '../../rql';
@@ -28,6 +28,8 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
 
     return (
       await client.post(httpAuth, '/', formData, {
+        onUploadProgress: ({ loaded, total }) =>
+          options?.onUploadProgress({ loaded, total }),
         headers: {
           ...(options?.headers ? options.headers : {}),
           'Content-Type': `multipart/form-data; boundary=${boundary}`,
@@ -38,11 +40,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
 
   async create(fileName, fileData, options) {
     const form = new FormData();
-    if (typeof window !== 'undefined' && !(fileData instanceof Blob)) {
-      throw new Error(
-        'In the frontend you should use Blob. https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob'
-      );
-    }
     form.append('name', fileName);
     form.append('file', fileData, fileName);
 
@@ -52,20 +49,31 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
       });
     }
 
-    return (
-      await client.post(httpAuth, '/', form, {
-        headers: {
-          ...(options?.headers ? options.headers : {}),
-          ...(typeof window === 'undefined'
-            ? form.getHeaders()
-            : { 'Content-Type': 'multipart/form-data' }),
-        },
-        // Since we don't have resumeable uploads yet, re-directs will trigger a connection timeout error
-        maxRedirects: 0,
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-      })
-    ).data;
+    const config: HttpRequestConfig = {
+      headers: {},
+      // Since we don't have resumeable uploads yet, re-directs will trigger a connection timeout error
+      maxRedirects: 0,
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    };
+
+    if (options?.onUploadProgress) {
+      config.onUploadProgress = ({ loaded, total }) =>
+        options.onUploadProgress({ loaded, total });
+    }
+
+    if (options?.headers) {
+      config.headers = { ...config.headers, ...options.headers };
+    }
+
+    if (form.getHeaders) {
+      config.headers = { ...config.headers, ...form.getHeaders() };
+    } else {
+      config.headers['Content-Type'] = 'multipart/form-data';
+    }
+
+    const response = await client.post(httpAuth, '/', form, config);
+    return response.data;
   },
 
   async remove(token, options) {

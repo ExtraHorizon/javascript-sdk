@@ -43,6 +43,7 @@ describe('Auth - Applications', () => {
       type: newApplication.type,
       name: newApplication.name,
       description: newApplication.description,
+      redirectUris: [],
     });
 
     expect(createdResult.id).toEqual(newApplication.id);

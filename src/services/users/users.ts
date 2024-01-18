@@ -2,7 +2,7 @@ import type { HttpInstance } from '../../types';
 import { Results } from '../types';
 import type { User, UsersService } from './types';
 import { HttpClient } from '../http-client';
-import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
+import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
 
 export default (
   userClient: HttpClient,
@@ -282,6 +282,26 @@ export default (
           options
         )
       ).data;
+    },
+
+    async getEmailTemplates(options) {
+      const { data } = await userClient.get(
+        httpWithAuth,
+        '/email_templates',
+        options
+      );
+
+      return data;
+    },
+
+    async setEmailTemplates(templates) {
+      const { data } = await userClient.put(
+        httpWithAuth,
+        '/email_templates',
+        templates
+      );
+
+      return data;
     },
   };
 };

@@ -1,6 +1,10 @@
 import { rqlBuilder, rqlParser } from '../../src/rql';
 
 describe('rql string builder', () => {
+  afterEach(() => {
+    rqlBuilder.doubleEncodeValues = true;
+  });
+
   it('should build a valid select', async () => {
     const rql = rqlBuilder();
     const result = rql.select(['name', 'id']).build();
@@ -131,6 +135,40 @@ describe('rql string builder', () => {
     );
   });
 
+  it('should build a valid skipCount() operator', async () => {
+    const result = rqlBuilder().skipCount().build();
+
+    expect(result).toBe('?skipCount()');
+  });
+
+  it('should build a valid skipCount() operator within an AND operator', async () => {
+    const result = rqlBuilder()
+      .and(
+        rqlBuilder().eq('firstName', 'Joe').intermediate(),
+        rqlBuilder().eq('secondName', 'Bloggs').intermediate(),
+        rqlBuilder().skipCount().intermediate()
+      )
+      .build();
+
+    expect(result).toBe(
+      '?and(eq(firstName,Joe),eq(secondName,Bloggs),skipCount())'
+    );
+  });
+
+  it('should build a valid skipCount() operator within an OR operator', async () => {
+    const result = rqlBuilder()
+      .or(
+        rqlBuilder().eq('firstName', 'Joe').intermediate(),
+        rqlBuilder().eq('secondName', 'Bloggs').intermediate(),
+        rqlBuilder().skipCount().intermediate()
+      )
+      .build();
+
+    expect(result).toBe(
+      '?or(eq(firstName,Joe),eq(secondName,Bloggs),skipCount())'
+    );
+  });
+
   it('creates a query with two expressions in the contains', async () => {
     const containsStaff = rqlBuilder()
       .contains(
@@ -196,5 +234,171 @@ describe('rql string builder', () => {
     expect(() => {
       rqlParser(`eq(timestamp,${invalidTimestamp})`);
     }).toThrowError();
+  });
+
+  it('Should double encode RQL values', () => {
+    const value = '~> & Tester & <~';
+    const encodedValue =
+      '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
+
+    const rql = rqlBuilder().eq('name', value).build();
+    expect(rql).toStrictEqual(`?eq(name,${encodedValue})`);
+  });
+
+  it('Should double encode nested RQL values', () => {
+    const firstName = '~> Tester <~';
+    const doubleEncodedFirstName = '%257E%253E%2520Tester%2520%253C%257E';
+
+    const lastName = '<! McTestFace !>';
+    const doubleEncodedLastName = '%253C%2521%2520McTestFace%2520%2521%253E';
+
+    const firstCondition = rqlBuilder()
+      .eq('firstName', firstName)
+      .intermediate();
+    const secondCondition = rqlBuilder()
+      .eq('lastName', lastName)
+      .intermediate();
+
+    const thirdCondition = rqlBuilder()
+      .ne('firstName', lastName)
+      .intermediate();
+    const fourthCondition = rqlBuilder()
+      .ne('lastName', firstName)
+      .intermediate();
+
+    const rql = rqlBuilder()
+      .and(firstCondition, secondCondition)
+      .and(thirdCondition, fourthCondition)
+      .build();
+
+    expect(rql).toStrictEqual(
+      `?and(eq(firstName,${doubleEncodedFirstName}),eq(lastName,${doubleEncodedLastName}))&and(ne(firstName,${doubleEncodedLastName}),ne(lastName,${doubleEncodedFirstName}))`
+    );
+  });
+
+  it('Should override the double encoding of RQL values when the global value is set to true', () => {
+    const value = '~> & Tester & <~';
+    const encodedValue =
+      '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
+
+    const unencodedRql = rqlBuilder({ doubleEncodeValues: false })
+      .eq('name', value)
+      .build();
+    expect(unencodedRql).toStrictEqual(`?eq(name,${value})`);
+
+    // When not providing the doubleEncodeValues argument the rql builder should use the global setting
+    const encodedRql = rqlBuilder().eq('name', value).build();
+    expect(encodedRql).toStrictEqual(`?eq(name,${encodedValue})`);
+  });
+
+  it('Should override the double encoding of RQL values when the global value is set to false', () => {
+    rqlBuilder.doubleEncodeValues = false;
+
+    const value = '~> & Tester & <~';
+    const encodedValue =
+      '%257E%253E%2520%2526%2520Tester%2520%2526%2520%253C%257E';
+
+    const encodedRql = rqlBuilder({ doubleEncodeValues: true })
+      .eq('name', value)
+      .build();
+    expect(encodedRql).toStrictEqual(`?eq(name,${encodedValue})`);
+
+    // When not providing the doubleEncodeValues argument the rql builder should use the global setting
+    const unencodedRql = rqlBuilder().eq('name', value).build();
+    expect(unencodedRql).toStrictEqual(`?eq(name,${value})`);
+  });
+
+  it('Should globally override the double encoding of RQL values', () => {
+    rqlBuilder.doubleEncodeValues = false;
+
+    const firstName = '~> Tester <~';
+
+    const lastName = '<! McTestFace !>';
+
+    // As the global setting is false the rql builder should not double encode the values
+    const firstRql = rqlBuilder().in('firstNames', [firstName]).build();
+    expect(firstRql).toStrictEqual(`?in(firstNames,${firstName})`);
+
+    const secondRql = rqlBuilder().out('lastNames', [lastName]).build();
+    expect(secondRql).toStrictEqual(`?out(lastNames,${lastName})`);
+  });
+
+  it('Should double encode OUT values', () => {
+    const tags = ['ʘ︵ʘ', 'ಠ_ಠ'];
+    const encodedTags = [
+      '%25CA%2598%25EF%25B8%25B5%25CA%2598',
+      '%25E0%25B2%25A0%255F%25E0%25B2%25A0',
+    ];
+
+    const rql = rqlBuilder().out('tags', tags).build();
+    expect(rql).toStrictEqual(`?out(tags,${encodedTags})`);
+  });
+
+  it('Should double encode IN values', () => {
+    const tags = ['ʘ︵ʘ', 'ಠ_ಠ'];
+    const encodedTags = [
+      '%25CA%2598%25EF%25B8%25B5%25CA%2598',
+      '%25E0%25B2%25A0%255F%25E0%25B2%25A0',
+    ];
+
+    const rql = rqlBuilder().in('tags', tags).build();
+    expect(rql).toStrictEqual(`?in(tags,${encodedTags})`);
+  });
+
+  it('Should double encode GE values', () => {
+    const value = 'B & C';
+    const encodedValue = 'B%2520%2526%2520C';
+
+    const rql = rqlBuilder().ge('category', value).build();
+    expect(rql).toStrictEqual(`?ge(category,${encodedValue})`);
+  });
+
+  it('Should double encode EQ values', () => {
+    const value = 'Blood pressure @130/80 - Hypertension';
+    const encodedValue =
+      'Blood%2520pressure%2520%2540130%252F80%2520%252D%2520Hypertension';
+
+    const rql = rqlBuilder().eq('data.diagnosis', value).build();
+    expect(rql).toStrictEqual(`?eq(data.diagnosis,${encodedValue})`);
+  });
+
+  it('Should double encode LE values', () => {
+    const value = 'A & B';
+    const encodedValue = 'A%2520%2526%2520B';
+
+    const rql = rqlBuilder().le('category', value).build();
+    expect(rql).toStrictEqual(`?le(category,${encodedValue})`);
+  });
+
+  it('Should double encode NE values', () => {
+    const value = 'Hypertension - STAGE 1';
+    const encodedValue = 'Hypertension%2520%252D%2520STAGE%25201';
+
+    const rql = rqlBuilder().ne('data.diagnosis', value).build();
+    expect(rql).toStrictEqual(`?ne(data.diagnosis,${encodedValue})`);
+  });
+
+  it('Should double encode LIKE values', () => {
+    const value = 'Hypertension - STAGE';
+    const encodedValue = 'Hypertension%2520%252D%2520STAGE';
+
+    const rql = rqlBuilder().like('data.diagnosis', value).build();
+    expect(rql).toStrictEqual(`?like(data.diagnosis,${encodedValue})`);
+  });
+
+  it('Should double encode LT values', () => {
+    const value = 'A & B';
+    const encodedValue = 'A%2520%2526%2520B';
+
+    const rql = rqlBuilder().lt('category', value).build();
+    expect(rql).toStrictEqual(`?lt(category,${encodedValue})`);
+  });
+
+  it('Should double encode GT values', () => {
+    const value = 'B & C';
+    const encodedValue = 'B%2520%2526%2520C';
+
+    const rql = rqlBuilder().gt('category', value).build();
+    expect(rql).toStrictEqual(`?gt(category,${encodedValue})`);
   });
 });

@@ -7,6 +7,12 @@ import type {
   PagedResult,
 } from '../types';
 
+export * from './api/types';
+export * from './apiRequests/types';
+export * from './functions/types';
+export * from './logs/types';
+export * from './schedules/types';
+
 export enum TaskStatus {
   NEW = 'new',
   IN_PROGRESS = 'inProgress',
@@ -32,6 +38,10 @@ export interface Task<DataType = any> {
   priority?: number;
   creationTimestamp?: Date;
   updateTimestamp?: Date;
+  /** The Extra Horizon document id for the application used to make the request */
+  createdByApplicationId?: ObjectId;
+  /** The Extra Horizon document id for the user who made the request */
+  createdByUserId?: ObjectId;
 }
 
 export type TaskInput = Pick<
@@ -49,6 +59,7 @@ export interface TasksService {
    * @returns PagedResult<Task>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Task>>;
+
   /**
    * Find By Id
    * @param id the Id to search for
@@ -56,6 +67,7 @@ export interface TasksService {
    * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
+
   /**
    * Request a list of all tasks
    *
@@ -68,6 +80,7 @@ export interface TasksService {
    * @returns Task[]
    */
   findAll(options?: OptionsWithRql): Promise<Task[]>;
+
   /**
    * Request a list of all tasks
    *
@@ -78,12 +91,14 @@ export interface TasksService {
    * @returns Task[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<Task>;
+
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Task>;
+
   /**
    * Create a task
    *
@@ -94,6 +109,7 @@ export interface TasksService {
    * @returns Task Success
    */
   create(requestBody: TaskInput, options?: OptionsBase): Promise<Task>;
+
   /**
    * Cancel a task
    *

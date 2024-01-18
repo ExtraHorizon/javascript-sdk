@@ -2,11 +2,16 @@ import type { HttpInstance } from '../../types';
 import type { Task, TasksService } from './types';
 import { rqlBuilder } from '../../rql';
 import { HttpClient } from '../http-client';
-import { findAllIterator, findAllGeneric } from '../helpers';
+import { findAllGeneric, findAllIterator } from '../helpers';
 
 export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   async find(options) {
-    return (await client.get(httpAuth, `/${options?.rql || ''}`, options)).data;
+    return (
+      await client.get(httpAuth, `/${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.data'],
+      })
+    ).data;
   },
 
   async findAll(this: TasksService, options) {
@@ -29,7 +34,12 @@ export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   },
 
   async create(requestBody, options) {
-    return (await client.post(httpAuth, '/', requestBody, options)).data;
+    return (
+      await client.post(httpAuth, '/', requestBody, {
+        ...options,
+        customKeys: ['data'],
+      })
+    ).data;
   },
 
   async cancel(taskId, options) {

@@ -9,8 +9,12 @@ export default (
   httpAuth: HttpInstance
 ): PaymentsOrdersService => ({
   async find(options) {
-    return (await client.get(httpAuth, `/orders${options?.rql || ''}`, options))
-      .data;
+    return (
+      await client.get(httpAuth, `/orders${options?.rql || ''}`, {
+        ...options,
+        customResponseKeys: ['data.data', 'data.product.schema.properties'],
+      })
+    ).data;
   },
 
   async findAll(this: PaymentsOrdersService, options) {
@@ -33,7 +37,12 @@ export default (
   },
 
   async create(requestBody, options) {
-    return (await client.post(httpAuth, '/orders', requestBody, options)).data;
+    return (
+      await client.post(httpAuth, '/orders', requestBody, {
+        ...options,
+        customKeys: ['data', 'product.schema.properties'],
+      })
+    ).data;
   },
 
   async update(orderId, requestBody, options) {

@@ -61,8 +61,25 @@ export type OptionsBase = {
   headers?: Headers;
   /** Only passed to the GET requests. Will retry 4 times on 500 errors */
   shouldRetry?: boolean;
+  /**
+   * @deprecated this property is only meant to be used for backwards compatibility when upgrading to v8.0.0.
+   *
+   * Key names that are not chosen by Extra Horizon where also affected by the data normalization before v8.0.0.
+   * They were converted from camel case to snake case before sending the request and the other way around before
+   * providing the response.
+   *
+   * Also fields ending with the name timestamp not chosen by extra horizon in custom properties where automatically
+   * converted to dates. Even though they could be just booleans, strings or numbers. Dates provided in such fields will
+   * now be converted to strings while all other types will stay as they are.
+   *
+   * To enable this behaviour again, set to true.
+   */
+  normalizeCustomData?: boolean;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString };
+export interface FileUploadOptions extends OptionsBase {
+  onUploadProgress?: (progress: { loaded: number; total: number }) => void;
+}
 
 export type PagedResultWithPager<T> = PagedResult<T> & {
   previous: () => Promise<PagedResultWithPager<T>>;

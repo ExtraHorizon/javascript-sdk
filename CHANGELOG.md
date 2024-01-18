@@ -5,6 +5,177 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0]
+
+### Changed
+- **Breaking Change:** RQL values are now [double encoded](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters) by default when using the RQL builder
+  - Disable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = false`
+  - Disable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: false }).eq(name, '< value >').build()`
+  - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
+- **Breaking Change:** Starting from v8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
+  - The normalization of custom keys can be re-enabled for a single operation to the behavior before 8.0.0 by setting the option `exh.service.operation({ normalizeCustomData: true })`
+  - The normalization of custom keys can be re-enabled for all operations on a client to the behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`
+  - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
+- **Breaking Change:** For all unauthenticated methods the response will now undergo the same transformation steps as any other request.
+  - The timestamps previously returned as strings are now converted to date objects in `exh.auth.authenticate`, `exh.auth.confirmMfa` and`exh.users.createAccount`.
+  - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
+- New implementation of the hashing for oAuth1 signature generation
+    - This change is not expected to have any impact on the SDK usage
+
+### Bug Fixes
+- In the `TokenDataOauth1` interface `updateTimeStamp` is changed to `updateTimestamp`
+- `timeZone` is now accepted as a valid parameter for the resolve functions in the template service
+
+
+## [v7.8.0]
+
+### Changed
+- New implementation of the oAuth1 signature generation to support double Encoding of RQL values in `OAuth1` clients
+
+## [v7.7.0]
+
+### Added
+- Functionality to allow the [double encoding](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters) of values when using the RQL builder
+  - Enable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = true`
+  - Enable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: true }).eq(name, '< value >').build()`
+  - When enabling double encoded values ensure that instances of encoding values for the rql builder such as `encodeURIComponent()` are removed
+  - Double Encoding of RQL values is currently only supported in `OAuth2` clients and will come to `OAuth1` clients at a later date.
+
+
+- A skip count operator to the rql builder `rqlBuilder().eq(name, '< value >').skipCount().build()`
+  - Providing this operator skips the record counting step of a request to increase performance. As a result, the page object in a response will not include the total field.
+  - The skip count operator is currently supported in [select services](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#services-with-the-skip-count-rql-operator), and efforts are underway to make it available for all services.
+
+### Fixed
+- Documentation for an incorrect permission value of `exh.users.globalRoles.addPermissions()`
+  - `REMOVE_ROLE_PERMISSIONS` to `REMOVE_ROLE_PERMISSION`
+
+## [v7.6.0]
+
+### Added
+- `findAll`, `findAllIterator` and `update` methods to the Dispatcher service
+
+### Improvements
+- Updated types and documentation for the Dispatcher service
+- Exported the missing `RQLString` type
+
+## [v7.5.1]
+
+### Added 
+- Type support React Native form data
+
+### Fixes
+- Bumped Axios version to fix content-type header issue
+- Fixed `onUploadProgress` callback event triggering without a provided function
+- Removed discrimination between node and web environments
+
+## [v7.5.0]
+
+### Added
+
+- Support for File Service settings:
+  - File Service [settings](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#settings) may now be managed using methods found in:
+    - `exh.files.settings`
+    
+## [v7.4.1]
+
+### Fixes
+
+- Correctly export the interfaces of the tasks component
+
+## [v7.4.0]
+
+### Added
+
+- Support for API Functions:
+  - An [API Function](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions) may now be executed using methods found in:
+    - `exh.tasks.api`
+  - [API Requests](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-requests) produced by executing API Functions are accessible using methods found in:
+    - `exh.tasks.apiRequests`
+  - [API Request Logs](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-request-logs) produced during the execution of an API Function can be accessed using methods found in:
+    - `exh.tasks.apiRequests.logs`
+
+  
+- A Function may now be directly executed as a task using the method:
+  - `exh.tasks.functions.execute()`
+
+
+- Support for Tasks
+  - Task Schedules may now be managed using methods found in:
+    - `exh.tasks.schedules`
+  - Task Logs produced during the execution of a task can now be accessed using methods found in:
+    - `exh.tasks.logs`
+
+
+- Monitoring File Uploads 
+  - The SDK now supports [monitoring file uploads](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#monitoring-a-file-upload) in the browser using a callback function.
+  ```js
+  function uploadProgressCallback(event) {
+      const progress = (event.loaded / event.total) * 100;
+      // ... Do something with the progress value
+  }
+      
+  const fileMetaData = await exh.files.create('myReport.pdf', myBuffer, {
+      onUploadProgress: uploadProgressCallback,
+      tags: ['ecg-report']
+  });
+  ```
+
+### Changed
+
+- `VIEW_GROUPS` permission value is changed to the correct `VIEW_GROUP`
+- `ADD_ROLE_PERMISSION` is now described correctly as singular in the inline documentation
+- Updated `RegisterUserData` interface optional fields
+
+## [v7.3.0]
+
+### Added
+
+- Support for OpenID Connect
+  - OAuth 2 clients now allow users to authenticate themselves with OpenID connect. See:
+    - `exh.auth.generateOidcAuthenticationUrl()`
+    - `exh.auth.authenticateWithOidc()`
+  - Manage your OpenID Connect configuration via new methods found in:
+    - `exh.auth.oidc`
+    - `exh.auth.oidc.providers`
+    - `exh.auth.oidc.loginAttempts`
+- Methods to manage the User Service email templates:
+  - `exh.users.getEmailTemplates()`
+  - `exh.users.setEmailTemplates()`
+- While creating an oAuth1 client both `token` and `tokenSecret` can now be supplied.
+  In which case there is no need for an extra `exh.auth.authenticate` call.
+
+```ts
+const exh = createClient({
+  host: 'https://api.example.extrahorizon.io',
+  consumerKey: 'cf29b211b5030202ffce5b2510759d0a53ea5b17',
+  consumerSecret: '9bd34e19b5e1714e2c57ae0127d98dd0d0c0b2a2',
+  token: '409ce9ba49c56cce31b9d2b1b2f5ed5ac01b4011',
+  tokenSecret: '1cc0b97b4c4721bb6da3d85b80cda8165e6ad5a7',
+});
+
+const currentUser = await sdk.users.me();
+```
+
+- While creating an oAuth2 client both `refreshToken` and `accessToken` can now be supplied.
+  In which case there is no need for an extra `exh.auth.authenticate` call.
+
+```ts
+const exh = createClient({
+  host: 'https://api.example.extrahorizon.io',
+  clientId: 'f8d9c891c106131bec970c6da05f887dc82eaff7',
+  refreshToken: 'ca27ada704e5b26a1fca20c130daf4f95f727d3f',
+  accessToken: '019dc6fe1672176f28e8e894ba99aed1f49656c8',
+});
+
+const currentUser = await sdk.users.me();
+```
+
+### Changed
+- Improved types and inline documentation (JSDoc) for the `exh.auth.applications` section
+  - More detailed descriptions for the methods
+  - Descriptions for the fields within the data types we accept and return
+
 ## [v7.2.1]
 
 ### Added

@@ -60,18 +60,49 @@ interface ParamsBase {
     'X-Forwarded-Application'?: string;
     'X-Forwarded-User'?: string;
   };
+  /**
+   * @deprecated this property is only meant to be used for backwards compatibility when upgrading to v8.0.0.
+   *
+   * Key names that are not chosen by Extra Horizon where also affected by the data normalization before v8.0.0.
+   * They were converted from camel case to snake case before sending the request and the other way around before
+   * providing the response.
+   *
+   * Also fields ending with the name timestamp not chosen by extra horizon in custom properties where automatically
+   * converted to dates. Even though they could be just booleans, strings or numbers. Dates provided in such fields will
+   * now be converted to strings while all other types will stay as they are.
+   *
+   * 'records_affected', 'recordsAffected' as keys in custom properties were converted to affectedRecords. In v8.0.0
+   * they also stay as they are.
+   *
+   * To enable this behaviour again, set to true.
+   */
+  normalizeCustomData?: boolean;
 }
 
-export interface ParamsOauth1 extends ParamsBase {
+export interface ParamsOauth1Consumer extends ParamsBase {
   consumerKey: string;
   consumerSecret: string;
 }
 
-export interface ParamsOauth2 extends ParamsBase {
+export interface ParamsOauth1Token extends ParamsOauth1Consumer {
+  token: string;
+  tokenSecret: string;
+}
+
+export type ParamsOauth1 = ParamsOauth1Consumer | ParamsOauth1Token;
+
+export interface ParamsOauth2Client extends ParamsBase {
   clientId: string;
   clientSecret?: string;
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
+
+export interface ParamsOauth2AccessToken extends ParamsOauth2Client {
+  refreshToken: string;
+  accessToken: string;
+}
+
+export type ParamsOauth2 = ParamsOauth2Client | ParamsOauth2AccessToken;
 
 export type ParamsProxy = ParamsBase;
 

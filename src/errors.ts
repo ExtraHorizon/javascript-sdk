@@ -85,19 +85,29 @@ const getHttpErrorRequestData = (error: HttpError) =>
 export class ApiError extends Error {
   public qName?: string;
 
-  constructor(
-    message: string,
-    public name: string,
-    public status?: number,
-    public statusText?: string,
-    public error?: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public request?: Record<string, any>,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public response?: Record<string, any>
-  ) {
-    super(message);
-    this.qName = name;
+  public name: string;
+
+  public status?: number;
+
+  public statusText?: string;
+
+  public error?: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public request?: Record<string, any>;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public response?: Record<string, any>;
+
+  constructor(data: ApiError) {
+    super(data.message);
+    this.name = data.name;
+    this.status = data.status;
+    this.statusText = data.statusText;
+    this.error = data.error;
+    this.request = data.request;
+    this.response = data.response;
+    this.qName = data.name;
   }
 
   public static createFromHttpError(error: HttpError): ApiError {
@@ -120,32 +130,51 @@ export class ApiError extends Error {
       },
     };
 
-    return new this(
-      apiError.message,
-      apiError.name,
-      apiError.status,
-      apiError.statusText,
-      apiError.error,
-      apiError.request,
-      apiError.response
-    );
+    return new this(apiError);
+  }
+}
+
+export class OAuth2LoginError extends ApiError {
+  public exhError: ApiError;
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+
+    const exhErrorData = apiError?.response?.exh_error;
+    if (!exhErrorData) {
+      return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    const ExhErrorClass = ErrorClassMap[exhErrorData.code] || ApiError;
+
+    this.exhError = new ExhErrorClass({
+      message: exhErrorData.description,
+      name: exhErrorData.name,
+      status: apiError.status,
+      statusText: apiError.statusText,
+      error: exhErrorData.name,
+      request: apiError.request,
+      response: exhErrorData,
+    });
+  }
+
+  public static createFromHttpError(error: HttpError): OAuth2LoginError {
+    return new this(ApiError.createFromHttpError(error));
   }
 }
 
 // HTTP status code error
 
 // 400 Bad Request
+export class BodyFormatError extends ApiError {}
 export class BadRequestError extends ApiError {}
 export class ResourceAlreadyExistsError extends BadRequestError {}
 export class IllegalArgumentError extends BadRequestError {}
 export class ApplicationUnknownError extends BadRequestError {}
 export class CallbackNotValidError extends BadRequestError {}
 export class UnsupportedResponseTypeError extends BadRequestError {}
-export class InvalidRequestError extends BadRequestError {}
-export class InvalidGrantError extends BadRequestError {}
-export class UnsupportedGrantTypeError extends BadRequestError {}
-export class MfaRequiredError extends BadRequestError {}
-
+export class UnsupportedGrantError extends BadRequestError {}
 export class InvalidMfaCodeError extends BadRequestError {}
 export class InvalidMfaTokenError extends BadRequestError {}
 export class MfaReattemptDelayError extends BadRequestError {}
@@ -183,9 +212,19 @@ export class DefaultLocalizationMissingError extends BadRequestError {}
 export class IDFormatError extends BadRequestError {}
 export class ProfileAlreadyExistsError extends BadRequestError {}
 
+export class OAuth2MissingClientCredentialsError extends BadRequestError {}
+export class InvalidNonceError extends BadRequestError {}
+export class OidcProviderResponseError extends BadRequestError {}
+export class OidcInvalidAuthorizationCodeError extends BadRequestError {}
+export class InvalidPKCEError extends BadRequestError {}
+export class AuthorizationUnknownError extends BadRequestError {}
+export class AuthorizationCodeExpiredError extends BadRequestError {}
+export class MissingPKCEVerifierError extends BadRequestError {}
+export class RefreshTokenUnknownError extends BadRequestError {}
+export class RefreshTokenExpiredError extends BadRequestError {}
+
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
-export class InvalidClientError extends UnauthorizedError {}
 export class ApplicationNotAuthenticatedError extends UnauthorizedError {}
 export class AuthenticationError extends UnauthorizedError {}
 export class LoginTimeoutError extends UnauthorizedError {}
@@ -201,21 +240,24 @@ export class AccessTokenExpiredError extends UnauthorizedError {}
 export class NoPermissionError extends UnauthorizedError {}
 export class UnauthorizedTokenError extends UnauthorizedError {}
 
+export class OAuth2ClientIdError extends UnauthorizedError {}
+export class OAuth2ClientSecretError extends UnauthorizedError {}
+
 export class UserNotAuthenticatedError extends UnauthorizedError {
   public static createFromHttpError(error: HttpError): ApiError {
-    return new this(
-      getSpecifiedAuthenticationError(error),
-      getHttpErrorName(error)
-    );
+    return new this({
+      message: getSpecifiedAuthenticationError(error),
+      name: getHttpErrorName(error),
+    });
   }
 }
 
 export class OauthTokenError extends UnauthorizedError {
   public static createFromHttpError(error: HttpError): ApiError {
-    return new this(
-      getSpecifiedAuthenticationError(error),
-      getHttpErrorName(error)
-    );
+    return new this({
+      message: getSpecifiedAuthenticationError(error),
+      name: getHttpErrorName(error),
+    });
   }
 }
 
@@ -223,6 +265,8 @@ export class OauthTokenError extends UnauthorizedError {
 export class ForbiddenError extends ApiError {}
 export class TokenNotDeleteableError extends ForbiddenError {}
 export class RemoveFieldError extends ForbiddenError {}
+export class DisabledForOidcUsersError extends ForbiddenError {}
+export class NewMFARequiredError extends ForbiddenError {}
 
 // 404 Not Found
 export class NotFoundError extends ApiError {}
@@ -236,6 +280,18 @@ export class FieldFormatError extends ServerError {}
 // 502 Bad Gateway Server Error
 export class BadGatewayServerError extends ApiError {}
 export class StripeRequestError extends BadGatewayServerError {}
+
+// 503 Service Unavailable Error
+export class ServiceUnavailableError extends ApiError {}
+export class OidcIdTokenError extends ServiceUnavailableError {}
+
+// OAuth2Login Errors
+export class InvalidGrantError extends OAuth2LoginError {}
+export class InvalidClientError extends OAuth2LoginError {}
+export class InvalidRequestError extends OAuth2LoginError {}
+export class UnauthorizedClientError extends OAuth2LoginError {}
+export class UnsupportedGrantTypeError extends OAuth2LoginError {}
+export class MfaRequiredError extends OAuth2LoginError {}
 
 function getSpecifiedAuthenticationError(error: HttpError): string {
   const { type, config } = error;
@@ -298,3 +354,90 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
     }
   }
 }
+
+export const OAuth2ErrorClassMap = {
+  invalid_grant: InvalidGrantError,
+  invalid_client: InvalidClientError,
+  invalid_request: InvalidRequestError,
+  unauthorized_client: UnauthorizedClientError,
+  unsupported_grant_type: UnsupportedGrantTypeError,
+  mfa_required: MfaRequiredError,
+};
+
+export const ErrorClassMap = {
+  1: ServerError,
+  10: NoPermissionError,
+  11: RemoveFieldError,
+  12: IDFormatError,
+  13: EmptyBodyError,
+  14: MissingRequiredFieldsError,
+  15: FieldFormatError,
+  16: ResourceUnknownError,
+  17: ResourceAlreadyExistsError,
+  22: BodyFormatError,
+  26: IllegalArgumentError,
+  27: IllegalStateError,
+  101: ApplicationNotAuthenticatedError,
+  103: ApplicationUnknownError,
+  104: UserNotAuthenticatedError,
+  106: AuthenticationError,
+  107: OauthKeyError,
+  108: OauthTokenError,
+  109: OauthSignatureError,
+  110: DuplicateRequestError,
+  113: CallbackNotValidError,
+  114: UnsupportedResponseTypeError,
+  115: AuthorizationUnknownError,
+  116: AuthorizationCodeExpiredError,
+  117: AccessTokenUnknownError,
+  118: AccessTokenExpiredError,
+  119: RefreshTokenUnknownError,
+  120: RefreshTokenExpiredError,
+  121: UnsupportedGrantError,
+  122: InvalidPKCEError,
+  123: OAuth2ClientIdError,
+  124: OAuth2ClientSecretError,
+  126: OAuth2MissingClientCredentialsError,
+  128: MissingPKCEVerifierError,
+  129: MfaRequiredError,
+  130: InvalidMfaCodeError,
+  131: InvalidMfaTokenError,
+  132: InvalidPresenceTokenError,
+  133: NotEnoughMfaMethodsError,
+  134: MfaReattemptDelayError,
+  136: OidcIdTokenError,
+  137: InvalidNonceError,
+  138: OidcProviderResponseError,
+  139: OidcInvalidAuthorizationCodeError,
+  202: EmailUnknownError,
+  203: EmailUsedError,
+  204: NotActivatedError,
+  205: ActivationUnknownError,
+  206: AlreadyActivatedError,
+  207: NewPasswordHashUnknownError,
+  208: PasswordError,
+  211: LoginTimeoutError,
+  212: LoginFreezeError,
+  213: TooManyFailedAttemptsError,
+  215: DisabledForOidcUsersError,
+  301: ProfileAlreadyExistsError,
+  414: StatusInUseError,
+  415: LockedDocumentError,
+  801: DefaultLocalizationMissingError,
+  1002: LocalizationKeyMissingError,
+  1003: TemplateFillingError,
+  2605: InvalidTokenError,
+  2606: UnauthorizedTokenError,
+  2607: TokenNotDeleteableError,
+  2610: FileTooLargeError,
+  2707: InvalidReceiptDataError,
+  2708: UnknownReceiptTransactionError,
+  2712: StripeRequestError,
+  2713: StripePaymentMethodError,
+  2714: InvalidCurrencyForProductPrice,
+  2716: NoConfiguredAppStoreProduct,
+  2717: AppStoreTransactionAlreadyLinked,
+  2718: NoMatchingPlayStoreLinkedSubscription,
+  2719: NoConfiguredPlayStoreProduct,
+  2720: PlayStoreTransactionAlreadyLinked,
+};

@@ -6,6 +6,9 @@ import type {
   OptionsWithRql,
   PagedResult,
 } from '../types';
+import { FileUploadOptions } from '../types';
+
+export * from './settings/types';
 
 /**
  * The combination of a uuid and id that is used to retrieve the file and decide an access level for the request
@@ -37,6 +40,13 @@ export interface CreateTokenRequest {
   accessLevel?: TokenPermission;
 }
 
+/**
+ * As defined by React Native:
+ * https://github.com/facebook/react-native/blob/v0.72.4/packages/react-native/Libraries/Network/FormData.js#L13
+ */
+export type ReactNativeFile = { name?: string; type?: string; uri: string };
+export type FileDataTypes = Blob | Buffer | ReadStream | ReactNativeFile;
+
 export interface FilesService {
   /**
    * List all files
@@ -62,32 +72,37 @@ export interface FilesService {
    */
   findFirst(options?: OptionsWithRql): Promise<FileDetails>;
   /**
-   * Add a new file from a plain text source
+   * ## Add a new file from a plain text source
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   * @param string text
-   * @returns FileDetails Success
-   * @throws {FileTooLargeError}
+   * **Default Permissions:**
+   * Everyone can use this endpoint
+   * @param text {@link string} - The text to upload as a file
+   * @param options {@link FileUploadOptions} - Additional options for the request
+   * @returns {@link FileDetails} - The persisted metadata after file creation {@link FileDetails}
+   * @throws {FileTooLargeError} - An error if the uploaded file exceeds the maximum file size
    */
-  createFromText(text: string, options?: OptionsBase): Promise<FileDetails>;
+  createFromText(
+    text: string,
+    options?: FileUploadOptions
+  ): Promise<FileDetails>;
+
   /**
-   * Add a new file
+   * ## Add a new file
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Everyone can use this endpoint
-   * @param fileName string
-   * @param fileData the file data
-   * @returns FileDetails
-   * @throws {FileTooLargeError}
+   * **Default Permissions:**
+   * Everyone can use this endpoint
+   * @param fileName {@link string} - The name of the file to upload
+   * @param fileData {@link FileDataTypes}  - The data used for file creation
+   * @param options {@link FileUploadOptions} - Additional options for the request
+   * @throws {FileTooLargeError} - An error if the uploaded file exceeds the maximum file size
+   * @returns {@link FileDetails} - The persisted metadata after file creation
    */
   create(
     fileName: string,
-    fileData: Blob | Buffer | ReadStream,
-    options?: OptionsBase & { tags: string[] }
+    fileData: FileDataTypes,
+    options?: FileUploadOptions & { tags?: string[] }
   ): Promise<FileDetails>;
+
   /**
    * Delete a file
    *

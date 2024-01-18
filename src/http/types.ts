@@ -24,6 +24,17 @@ export type HttpRequestConfig = AxiosRequestConfig & {
     current: number;
     retryCondition: (error: HttpResponseError) => boolean;
   };
+  normalizeCustomData?: boolean;
+  // The provided keys should specify an object
+  customKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   */
+  customRequestKeys?: string[];
+  /**
+   * Overrides values provided in {@Link customKeys}
+   */
+  customResponseKeys?: string[];
 };
 
 export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
@@ -31,6 +42,7 @@ export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
 export interface HttpInstance {
   (config: AxiosRequestConfig): AxiosPromise;
   (url: string, config?: AxiosRequestConfig): AxiosPromise;
+  normalizeCustomData?: boolean;
   defaults: AxiosDefaults;
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
@@ -87,8 +99,8 @@ export interface TokenDataOauth1 {
   tokenSecret?: string;
   applicationId?: string;
   userId?: string;
-  updateTimeStamp?: string;
-  creationTimestamp?: string;
+  updateTimestamp?: Date;
+  creationTimestamp?: Date;
 }
 
 export interface OidcAuthenticationUrlRequest {
@@ -184,8 +196,15 @@ export interface OAuth2HttpClient extends HttpInstance {
      * You can use this endpoint to generate a fully configured OIDC authentication URL.
      * You can use the authentication URL to redirect the user to the specified OIDC provider to initiate the authentication process.
      *
-     * - A `state` parameter can be added to the URL by supplying it to this functions data.
-     * - A `nonce` parameter is automatically added and will be validated during the authorization code exchange by ExH.
+     * Once the user is authenticated, the OIDC provider will redirect the user to the configured `redirectUri` with an authorization code.
+     * The authorization code can then be used to login (see `auth.authenticateWithOidc()`).
+     *
+     * A state parameter can be added to the URL.
+     * Supply the `state` property to this function and the state parameter will be included in the URL.
+     * If supplied, the provider will add the same state parameter and value again to the URL when redirecting the user is back to your application (the configured `redirectUri`).
+     * This can (and should) be used to protect against Cross-Site Request Forgery (CSRF) attacks.
+     *
+     * A `nonce` parameter is automatically added and will be validated during the authorization code exchange by ExH.
      *
      * #### Example URL
      * An example of a fully configured authentication URL: (new lines added for readability)
@@ -202,6 +221,8 @@ export interface OAuth2HttpClient extends HttpInstance {
      * @param providerName The name of the OIDC provider to generate an authentication URL for
      * @param data {@link OidcAuthenticationUrlRequest}
      *
+     * @returns An object containing the authentication URL
+     *
      * @throws {@link IllegalStateError} When targeting a disabled provider. A provider must be enabled to allow users to use this endpoint.
      */
     generateOidcAuthenticationUrl(
@@ -211,16 +232,29 @@ export interface OAuth2HttpClient extends HttpInstance {
 
     /**
      * ## Authenticate a user with OIDC
-     * You can use this endpoint to authenticate a user after obtaining a authorization code from a OIDC provider.
-     * Like the other authenticate endpoints, the SDK uses the returned oAuth2 access token in successive requests.
+     * You can use this method to authenticate a user after obtaining a authorization code from an OIDC provider.
+     * The authorization code is obtained when an OIDC provider redirects a user back to your application after a successful authentication.
+     * The authorization code may be URL encoded, so make sure the authorization code is in the correct format before providing it here.
+     * See `auth.generateOidcAuthenticationUrl()` to initiate the authentication process.
      *
-     * All (successful and failed) login attempts are logged. See `auth.oidc.getLoginAttempts`.
+     * Like the `auth.authenticate()` method, the SDK uses the returned access token and refresh token to authenticate successive requests.
+     *
+     * All (successful and failed) login attempts are logged. See `auth.oidc.getLoginAttempts()`.
      *
      * #### Function details
      * @param providerName The name of the OIDC provider to login with
      * @param data {@link OidcAuthenticateRequest}
      *
+     * @returns The OAuth2 tokens generated for the user.
+     *
      * @throws {@link IllegalStateError} When targeting a disabled provider. A provider must be enabled to allow users to use this endpoint.
+     * @throws {@link OAuth2MissingClientCredentialsError} When no client credentials are specified or, for a confidential application, the `clientSecret` is missing.
+     * @throws {@link OidcProviderResponseError} When the provider is incorrectly configured or the provider gave us an unexpected response. Please check the provider configuration.
+     * @throws {@link OidcInvalidAuthorizationCodeError} When the provided `authorizationCode` is not accepted or recognized by the provider.
+     * @throws {@link EmailUsedError} When a new ExH account is being created for the user trying to login with an email address which is already in use by an existing ExH account.
+     * @throws {@link OAuth2ClientIdError} When the supplied `clientId` could not be found.
+     * @throws {@link OAuth2ClientSecretError} When the supplied `clientSecret` is incorrect.
+     * @throws {@link OidcIdTokenError} When we understood the response of the provider but the id token returned is invalid.
      */
     authenticateWithOidc(
       providerName: string,
