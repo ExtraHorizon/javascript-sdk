@@ -1,8 +1,6 @@
 module.exports = {
   extends: [
-    '@qompium/eslint-config-q-node',
-    'plugin:@typescript-eslint/recommended',
-    'prettier'
+    '@extrahorizon/eslint-config-node',
   ],
   parserOptions: {
     project: './tsconfig.eslint.json'
@@ -13,6 +11,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   rules: {
     "max-classes-per-file": 0,
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.spec.ts"]}]
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.spec.ts"]}],
+    "max-len": ["error", { "ignoreComments": true }]
   }
 };
