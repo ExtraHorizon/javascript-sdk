@@ -1,10 +1,10 @@
+import { DISPATCHERS_BASE } from '../../constants';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import dispatchers from './dispatchers';
 import actions from './actions';
-import { DISPATCHERS_BASE } from '../../constants';
-import { DispatchersService } from './dispatchers/types';
 import { ActionsService } from './actions/types';
+import dispatchers from './dispatchers';
+import { DispatchersService } from './dispatchers/types';
 
 export const dispatchersService = (
   httpWithAuth: HttpInstance

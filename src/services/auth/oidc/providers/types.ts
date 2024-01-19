@@ -1,9 +1,9 @@
+import { FindAllIterator } from '../../../helpers';
 import {
   AffectedRecords,
   OptionsWithRql,
   PagedResultWithPager,
 } from '../../../types';
-import { FindAllIterator } from '../../../helpers';
 
 export interface OidcProviderService {
   /**

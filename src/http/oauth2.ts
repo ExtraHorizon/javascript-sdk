@@ -1,6 +1,14 @@
 import axios from 'axios';
 import btoa from '../btoa';
+import { AUTH_BASE } from '../constants';
 import { Oauth2AuthParams, ParamsOauth2 } from '../types';
+import {
+  camelizeResponseData,
+  retryInterceptor,
+  transformKeysResponseData,
+  transformResponseData,
+  typeReceivedErrorsInterceptor,
+} from './interceptors';
 import {
   HttpInstance,
   MfaConfig,
@@ -9,14 +17,6 @@ import {
   OidcAuthenticationUrlRequest,
   TokenDataOauth2,
 } from './types';
-import {
-  camelizeResponseData,
-  retryInterceptor,
-  transformKeysResponseData,
-  transformResponseData,
-  typeReceivedErrorsInterceptor,
-} from './interceptors';
-import { AUTH_BASE } from '../constants';
 
 const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
 
@@ -140,14 +140,14 @@ export function createOAuth2HttpClient(
         ...clientCredentials,
         ...grantData,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
     await setTokenData(tokenResult.data);
     return tokenResult.data;
@@ -167,14 +167,14 @@ export function createOAuth2HttpClient(
         code,
         method_id: methodId,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
     await setTokenData(tokenResult.data);
     return tokenResult.data;
@@ -202,14 +202,14 @@ export function createOAuth2HttpClient(
         ...clientCredentials,
         ...data,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
 
     await setTokenData(response.data);

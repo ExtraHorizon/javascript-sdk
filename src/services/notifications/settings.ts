@@ -1,7 +1,7 @@
-import type { HttpInstance } from '../../types';
 import { rqlBuilder } from '../../rql';
-import type { NotificationSettingsServices } from './types';
+import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
+import type { NotificationSettingsServices } from './types';
 
 export default (
   client: HttpClient,

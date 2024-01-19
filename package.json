@@ -71,8 +71,7 @@
   },
   "lint-staged": {
     "*.ts": [
-      "yarn lint --fix",
-      "yarn prettier src --write"
+      "yarn lint --fix"
     ]
   }
 }

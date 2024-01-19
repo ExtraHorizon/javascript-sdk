@@ -1,8 +1,8 @@
-import { HttpClient } from '../../http-client';
 import { HttpInstance } from '../../../http/types';
-import { Schedule, ScheduleCreation, SchedulesService } from './types';
-import { ObjectId, OptionsBase, OptionsWithRql } from '../../types';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../../helpers';
+import { HttpClient } from '../../http-client';
+import { ObjectId, OptionsBase, OptionsWithRql } from '../../types';
+import { Schedule, ScheduleCreation, SchedulesService } from './types';
 
 export default (
   client: HttpClient,
@@ -19,7 +19,7 @@ export default (
 
   return {
     async create(schedule: ScheduleCreation, options?: OptionsBase) {
-      const { data } = await client.post(httpAuth, `/schedules`, schedule, {
+      const { data } = await client.post(httpAuth, '/schedules', schedule, {
         ...options,
         customKeys: ['data'],
       });

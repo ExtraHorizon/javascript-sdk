@@ -12,6 +12,6 @@ module.exports = {
   rules: {
     "max-classes-per-file": 0,
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.spec.ts"]}],
-    "max-len": ["error", { "ignoreComments": true }]
+    "max-len": ["error", { "code": 150, "ignoreComments": true }]
   }
 };

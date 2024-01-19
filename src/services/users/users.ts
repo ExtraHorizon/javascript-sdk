@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
+import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
+import { HttpClient } from '../http-client';
 import { Results } from '../types';
 import type { User, UsersService } from './types';
-import { HttpClient } from '../http-client';
-import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
 
 export default (
   userClient: HttpClient,
@@ -226,7 +226,7 @@ export default (
     async passwordPolicy(options) {
       const { data: passwordPolicy } = await userClient.get(
         httpWithAuth,
-        `/password_policy`,
+        '/password_policy',
         options
       );
 
@@ -242,20 +242,20 @@ export default (
         messageFormat = '{{length}}';
         if (passwordPolicy?.lowerCaseRequired) {
           regEx = `(?=.*[a-z])${regEx}`;
-          messageFormat += `, {{lowerCaseRequired}}`;
+          messageFormat += ', {{lowerCaseRequired}}';
         }
         if (passwordPolicy?.upperCaseRequired) {
           regEx = `(?=.*[A-Z])${regEx}`;
-          messageFormat += `, {{upperCaseRequired}}`;
+          messageFormat += ', {{upperCaseRequired}}';
         }
         if (passwordPolicy?.numberRequired) {
           regEx = `(?=.*\\d)${regEx}`;
-          messageFormat += `, {{numberRequired}}`;
+          messageFormat += ', {{numberRequired}}';
         }
         if (passwordPolicy?.symbolRequired) {
           regEx +=
             '([`~\\!@#\\$%\\^\\&\\*\\(\\)\\-_\\=\\+\\[\\{\\}\\]\\\\|;:\\\'",<.>\\/\\?€£¥₹§±].*)';
-          messageFormat += `, {{symbolRequired}}`;
+          messageFormat += ', {{symbolRequired}}';
         }
         const lastIndex = messageFormat.lastIndexOf(',');
         if (lastIndex > 0) {
@@ -277,7 +277,7 @@ export default (
       return (
         await userClient.put(
           httpWithAuth,
-          `/password_policy`,
+          '/password_policy',
           requestBody,
           options
         )

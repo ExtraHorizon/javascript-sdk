@@ -1,6 +1,6 @@
+import { HttpInstance } from '../../../http/types';
 import { HttpClient } from '../../http-client';
 import { ObjectId, OptionsWithRql } from '../../types';
-import { HttpInstance } from '../../../http/types';
 import { LogsService, LogLine } from './types';
 
 export default (
