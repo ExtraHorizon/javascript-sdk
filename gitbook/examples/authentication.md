@@ -7,7 +7,7 @@ Each time the SDK refreshes the `accessToken` the `freshTokensCallback` is calle
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
-const sdk = createOAuth2Client({
+const exh = createOAuth2Client({
   host: "",
   clientId: "",
   freshTokensCallback: (tokenData) => {
@@ -19,7 +19,7 @@ try {
   const refreshToken = await localStorage.getItem("refreshToken");
 
   if (refreshToken) {
-    await sdk.auth.authenticate({
+    await exh.auth.authenticate({
       refreshToken,
     });
   } else {
@@ -38,8 +38,8 @@ You need to capture the response from the `authenticate` function when logging i
 ```ts
 import { createOAuth1Client } from "@extrahorizon/javascript-sdk";
 
-const sdk = createOAuth1Client({
-  host: "dev.fibricheck.com",
+const exh = createOAuth1Client({
+  host: "https://api.dev.exh-sandbox.extrahorizon.io",
   consumerKey: "",
   consumerSecret: "",
 });
@@ -48,13 +48,13 @@ try {
   const tokenData = await localStorage.getItem("tokenData");
 
   if (tokenData) {
-    await sdk.auth.authenticate({
+    await exh.auth.authenticate({
       token: tokenData.key,
       tokenSecret: tokenData.secret,
     });
   } else {
     // redirect to /login
-    const result = await sdk.auth.authenticate({
+    const result = await exh.auth.authenticate({
       email: "",
       password: "",
     });
@@ -73,12 +73,12 @@ The package export a client you can use in combination with a proxy service. The
 ```ts
 import { createProxyClient } from "@extrahorizon/javascript-sdk";
 
-const loginPageUrl = "https://pages.dev.fibricheck.com/login";
+const loginPageUrl = "https://yourDomain.com/login";
 
 (async () => {
   try {
-    const sdk = createProxyClient({ host: "apx.dev.fibricheck.com" });
-    await sdk.users.me();
+    const exh = createProxyClient({ host: "api.dev.exh-sandbox.extrahorizon.io" });
+    await exh.users.me();
   } catch (error) {
     if (
       error instanceof UserNotAuthenticatedError ||
@@ -128,12 +128,12 @@ const readFile = () => {
 
 try {
   const credentials = parseStoredCredentials(readFile());
-  const sdk = createOAuth1Client({
+  const exh = createOAuth1Client({
     consumerKey: credentials.API_OAUTH_CONSUMER_KEY,
     consumerSecret: credentials.API_OAUTH_CONSUMER_SECRET,
     host: credentials.API_HOST,
   });
-  await sdk.auth.authenticate({
+  await exh.auth.authenticate({
     token: credentials.API_OAUTH_TOKEN,
     tokenSecret: credentials.API_OAUTH_TOKEN_SECRET,
   });
@@ -153,13 +153,13 @@ The `skipTokenCheck` saves \~300ms by skipping validation on your `token` and `t
 ```ts
 import { createOAuth1Client } from "@extrahorion/javascript-sdk";
 
-const sdk = createOAuth1Client({
+const exh = createOAuth1Client({
   host: "dev.fibricheck.com",
   consumerKey: "",
   consumerSecret: "",
 });
 
-await sdk.auth.authenticate({
+await exh.auth.authenticate({
   token: "",
   tokenSecret: "",
   skipTokenCheck: true,
@@ -171,13 +171,13 @@ await sdk.auth.authenticate({
 ```ts
 import { createOAuth1Client } from "@extrahorizon/javascript-sdk";
 
-const sdk = createOAuth1Client({
+const exh = createOAuth1Client({
   host: "dev.fibricheck.com",
   consumerKey: "",
   consumerSecret: "",
 });
 
-await sdk.auth.authenticate({
+await exh.auth.authenticate({
   email: "",
   password: "",
 });
@@ -190,12 +190,12 @@ await sdk.auth.authenticate({
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
-const sdk = createOAuth2Client({
+const exh = createOAuth2Client({
   host: "",
   clientId: "",
 });
 
-await sdk.auth.authenticate({
+await exh.auth.authenticate({
   password: "",
   username: "",
 });
@@ -211,7 +211,7 @@ await sdk.auth.authenticate({
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
-const sdk = createOAuth2Client({
+const exh = createOAuth2Client({
   host: "",
   clientId: "",
   freshTokensCallback: (tokenData) => {
@@ -219,7 +219,7 @@ const sdk = createOAuth2Client({
   },
 });
 
-await sdk.auth.authenticate({
+await exh.auth.authenticate({
   code: "",
 });
 ```
@@ -229,12 +229,12 @@ await sdk.auth.authenticate({
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
-const sdk = createOAuth2Client({
+const exh = createOAuth2Client({
   host: "",
   clientId: "",
 });
 
-await sdk.auth.authenticate({
+await exh.auth.authenticate({
   refreshToken: "",
 });
 ```
@@ -247,13 +247,13 @@ import {
   MfaRequiredError,
 } from "@extrahorizon/javascript-sdk";
 
-const sdk = createOAuth2Client({
+const exh = createOAuth2Client({
   host: "",
   clientId: "",
 });
 
 try {
-  await sdk.auth.authenticate({
+  await exh.auth.authenticate({
     password: "",
     username: "",
   });
@@ -264,7 +264,7 @@ try {
     // Your logic to request which method the user want to use in case of multiple methods
     const methodId = mfa.methods[0].id;
 
-    await sdk.auth.confirmMfa({
+    await exh.auth.confirmMfa({
       token: mfa.token,
       methodId,
       code: "", // code from ie. Google Authenticator
@@ -278,8 +278,8 @@ try {
 If you are using a confidential application in combination with React-Native. The SDK will add `btoa` function to your global scope. See https://github.com/ExtraHorizon/javascript-sdk/issues/446
 
 ```ts
-const sdk = createClient({
-  host: "https://api.dev.fibricheck.com",
+const exh = createClient({
+  host: "https://api.dev.exh-sandbox.extrahorizon.io",
   clientId: "",
   clientSecret: "",
 });
@@ -297,14 +297,14 @@ ie. creating an OAuth1 application with a version.
 
 ```ts
 // Will return OAuth1Application type
-const app = await sdk.auth.applications.create({
+const app = await exh.auth.applications.create({
   type: "oauth1",
   name: "test",
   description: "test",
 });
 
 // Will return OAuth1ApplicationVersion type
-const version = await sdk.auth.applications.createVersion<typeof app>(app.id, {
+const version = await exh.auth.applications.createVersion<typeof app>(app.id, {
   name: "1.0.0",
 });
 ```
@@ -331,7 +331,7 @@ function isOAuth1(app: Application): app is OAuth1Application {
   return !("redirectUris" in app);
 }
 
-const { data: apps } = await sdk.auth.applications.get();
+const { data: apps } = await exh.auth.applications.get();
 apps.filter(isOAuth1).forEach((app) => {
   // app will have type OAuth1Application
 });

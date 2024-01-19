@@ -1,8 +1,12 @@
+# Guide
+
 ## RQL
+
+RQL, or Resource Query Language, is a query language used for querying and manipulating resources through the URI. RQL provides the ability to filter, sort, paginate, and project data. More info on the RQL capabilities of the Extra Horizon platform can be found [here](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql).
 
 ### Builder
 
-The Extrahorizon Javascript SDK also export an rqlBuilder to build valid RQL strings. For more info see: https://developers.extrahorizon.io/guide/rql.html
+The Extrahorizon Javascript SDK also export an `rqlBuilder` to build valid RQL strings.
 
 ```ts
 import { rqlBuilder } from "@extrahorizon/javascript-sdk";
@@ -11,7 +15,7 @@ const rql = rqlBuilder().select("name").eq("name", "fitbit").build();
 // ?select(name)&eq(name,fitbit)
 ```
 
-An example using the rqlBuilder to compose a complex rql request documents having a heartRate between 40 and 50 or indicator = 'warning'
+An example using the `rqlBuilder` to compose a complex RQL query to request documents having a `heartRate` between 40 and 50 or where the `indicator` field has the value `warning`.
 
 ```ts
 import { rqlBuilder } from "@extrahorizon/javascript-sdk";
@@ -30,12 +34,34 @@ const rql = rqlBuilder()
   .build();
 
 // ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
-const result = await sdk.data.documents.find({ rql });
+const result = await exh.data.documents.find({ rql });
 ```
+
+#### Automatic double encoding of values
+
+{% hint style="success" %}
+Available since v8.0.0
+{% endhint %}
+
+Each value passed to the operators of the `rqlBuilder` undergoes double encoding to enable the searching of special characters. More information on why values need to be double encoded can be found [here](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters).
+
+<details>
+
+<summary>Disable automatic double encoding</summary>
+
+We strongly advise against disabling automatic double encoding.\
+\
+To deactivate double encoding for all queries generated with the `rqlBuilder`, you add  the following line to the start of your application:\
+`rqlBuilder.doubleEncodeValues = false;`\
+\
+For disabling double encoding on a per-query basis, you can utilize the `options` parameter in the `rqlBuilder` constructor like this:\
+`rqlBuilder({ doubleEncode: false })`
+
+</details>
 
 ### Parser
 
-You can also use the `rqlParser` function and pass in your own stirng.
+You can also use the `rqlParser` function and pass in your own string.
 
 ```ts
 import { rqlParser } from "@extrahorizon/javascript-sdk";
@@ -45,28 +71,28 @@ const rql = rqlParser(
 );
 
 // ?or(and(lt(data.heartRate,50),gt(data.heartRate,40)),eq(data.indicator,warning))&select(id,name,data.heartRate,data.indicator)
-const result = await sdk.data.documents.find({ rql });
+const result = await exh.data.documents.find({ rql });
 ```
 
 ## Raw Queries
 
-You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK. Please note that the response does pass through the interceptors:
+You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK.
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 
 (async () => {
-  const sdk = createOAuth2Client({
+  const exh = createOAuth2Client({
     host: "",
     clientId: "",
   });
 
-  await sdk.auth.authenticate({
+  await exh.auth.authenticate({
     password: "",
     username: "",
   });
 
-  const me = (await sdk.raw.get("/users/v1/me")).data;
+  const me = (await exh.raw.get("/users/v1/me")).data;
   console.log("Me", me);
 })();
 ```
@@ -78,18 +104,18 @@ You can pass in two logger function that will be called by Axios on every reques
 ```ts
 import AxiosLogger from "axios-logger";
 
-const sdk = createOAuth2Client({
-  host: "https://api.dev.fibricheck.com",
+const exh = createOAuth2Client({
+  host: "https://api.dev.exh-sandbox.extrahorizon.io",
   clientId: '',
   requestLogger: AxiosLogger.requestLogger,
   responseLogger: AxiosLogger.responseLogger,
 });
 
-await sdk.auth.authenticate({
+await exh.auth.authenticate({
   refreshToken: 'refreshToken'
 })
 
-await sdk.users.health();
+await exh.users.health();
 
 [Axios][Request] POST /auth/v2/oauth2/token {"grant_type":"refresh_token","refresh_token":"refreshToken"}
 [Axios][Response] POST /auth/v2/oauth2/token 200:OK {"access_token":"accessToken","token_type":"bearer","expires_in":299.999,"refresh_token":"refreshToken","user_id":"userId","application_id":"applicationId"}
@@ -103,7 +129,7 @@ await sdk.users.health();
 
 If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
 
-As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get_
+As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get\_
 
 ```ts
 import {
@@ -130,12 +156,12 @@ interface MySchema extends Schema {
   };
 }
 
-const sdk = createOAuth2Client({
-  host: "dev.fibricheck.com",
+const exh = createOAuth2Client({
+  host: "https://api.dev.exh-sandbox.extrahorizon.io",
   clientId: "",
 });
 
-const { data: schemas } = await sdk.data.schemas.find();
+const { data: schemas } = await exh.data.schemas.find();
 const mySchema: MySchema = schemas[0];
 
 interface MyData {
@@ -145,32 +171,8 @@ interface MyData {
     latitude: Number;
   };
 }
-const document = await sdk.data.documents.find<MyData>(mySchema.id);
+const document = await exh.data.documents.find<MyData>(mySchema.id);
 ```
-
-## SSL Pinning
-
-If you are using the SDK in a React Native application, you can use these hashes to enable SSL pinning in your application.
-
-Android
-
-```
-"sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
-"sha256/f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE="
-"sha256/NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k="
-"sha256/9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U="
-```
-
-Ios
-
-```
-@"++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
-@"f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE="
-@"NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k="
-@"9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U="
-```
-
-More info on how to use the can be found here: https://medium.com/@jaedmuva/react-native-ssl-pinning-is-back-e317e6682642
 
 ## Tests
 
@@ -182,9 +184,9 @@ The package also exports a mockSdk you can use in your tests. In this example `j
 import { getMockSdk } from "@extrahorizon/javascript-sdk";
 
 describe("mock SDK", () => {
-  const sdk = getMockSdk<jest.Mock>(jest.fn);
+  const exh = getMockSdk<jest.Mock>(jest.fn);
   it("should be valid mock", async () => {
-    expect(sdk.data).toBeDefined();
+    expect(exh.data).toBeDefined();
   });
 });
 ```
@@ -194,20 +196,17 @@ If you are using `jest`. You can create a file under your `__mocks__/@extrahoriz
 ```ts
 import { getMockSdk } from "@extrahorizon/javascript-sdk";
 
-export const mockSdk = getMockSdk<jest.Mock>(jest.fn);
+export const exh = getMockSdk<jest.Mock>(jest.fn);
 
-const createOAuth1Client = () => mockSdk;
+const createOAuth1Client = () => exh;
 
 module.exports = {
   ...jest.requireActual("@extrahorizon/javascript-sdk"),
   createOAuth1Client,
-  mockSdk,
+  exh,
 };
 ```
 
 ## Library
 
-To run the unit tests: `yarn start`
-To run them in watch mode: `yarn start:watch`
-To run e2e tests, copy `.env.example` to `.env` and set up the credentials
-Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
+To run the unit tests: `yarn start` To run them in watch mode: `yarn start:watch` To run e2e tests, copy `.env.example` to `.env` and set up the credentials Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`

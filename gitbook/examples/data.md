@@ -26,7 +26,7 @@ console.log(schema.transitionsByName);
 ### Find a document with custom data typing:
 
 ```ts
-const schema = await sdk.data.schemas.findFirst();
+const schema = await exh.data.schemas.findFirst();
 
 interface MyData {
   ppg: Number[];
@@ -35,7 +35,7 @@ interface MyData {
     latitude: Number;
   };
 }
-const document = await sdk.data.documents.find<MyData>(schema.id);
+const document = await exh.data.documents.find<MyData>(schema.id);
 
 console.log(document.data.ppg);
 ```
@@ -43,17 +43,17 @@ console.log(document.data.ppg);
 ### Transition a document based on `data.deviceUid`
 
 ```ts
-const schema = await sdk.data.schemas.findByName("tests", {
+const schema = await exh.data.schemas.findByName("tests", {
   rql: rqlBuilder().select(["id", "name", "transitions"]).build(),
 });
 
-const document = await sdk.data.documents.findFirst(schema.id, {
+const document = await exh.data.documents.findFirst(schema.id, {
   rql: rqlBuilder().eq("data.deviceUid", "testkit").build(),
 });
 
 const transitionId = schema.findTransitionIdByName("ready_to_waiting");
 
-const transitionResult = await sdk.data.documents.transition(
+const transitionResult = await exh.data.documents.transition(
   schema.id,
   document.id,
   {
@@ -70,7 +70,7 @@ if (transitionResult.affectedRecords === 1) {
 ### Find all schemas
 
 ```ts
-const schemas = await sdk.data.schemas.findAll({
+const schemas = await exh.data.schemas.findAll({
   rql: rqlBuilder().select(["id", "name"]).build(),
 });
 ```
@@ -80,7 +80,7 @@ const schemas = await sdk.data.schemas.findAll({
 More info on [Iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols#the\_iterator\_protocol)
 
 ```ts
-const schemaIterator = sdk.data.schemas.findAllIterator({
+const schemaIterator = exh.data.schemas.findAllIterator({
   rql: rqlBuilder().select(["id", "name"]).build(),
 }); // Let's assume there are 66 schemas
 
@@ -94,7 +94,7 @@ console.log(thirdBatch); // { value: undefined, done: true }
 ```
 
 ```ts
-const schemas = sdk.data.schemas.findAllIterator({
+const schemas = exh.data.schemas.findAllIterator({
   rql: rqlBuilder().select(["id", "name"]).build(),
 });
 
@@ -113,7 +113,7 @@ const endpoint = "";
 const rql = RqlBuilder().eq("userId", userId);
 
 const find = (options: OptionsWithRql) => {
-  return await sdk.raw.get(`${endpoint}${options?.rql}`);
+  return await exh.raw.get(`${endpoint}${options?.rql}`);
 };
 
 const iterator = findAllIterator<YourType>(find, { rql });
@@ -128,7 +128,7 @@ for await (const value of iterator) {
 For Schema, Documents and Users the `find` function returns and object with the initial data and two helpers function to get the previous / next page.
 
 ```ts
-const users = await sdk.users.find();
+const users = await exh.users.find();
 
 const nextPage = await users.next();
 const previousPage = await users.previous();
@@ -139,7 +139,7 @@ Or if you are using the [Async](https://caolan.github.io/async/v3/index.html) pa
 ```ts
 import async from "async";
 
-const users = await sdk.users.find();
+const users = await exh.users.find();
 
 await async.timesLimit(5, 1, async function () {
   const batch = await users.next();
@@ -157,14 +157,14 @@ You can also pass in an offset (for example when you were processing items and s
 ```ts
 import async from "async";
 
-const users = await sdk.users.find();
+const users = await exh.users.find();
 const currentOffset = 0;
 await async.timesLimit(5, 1, async function () {
   const batch = await users.next();
   currentOffset = batch.page.offset;
 });
 
-const usersWithOffset = await sdk.users.find({
+const usersWithOffset = await exh.users.find({
   rql: rqlBuilder().limit(50, currentOffset).build(),
 });
 

@@ -34,7 +34,7 @@ The data returned from the backend is mapped using interceptors:
 
 * Timestamps will be of type Date
 * Keys in objects will be camelCased
-* `records_affected` will be replaced by `affected_records`
+* `records_affected` will be replaced by `affectedRecords`
 
 ### 🔑 License
 
