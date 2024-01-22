@@ -30,16 +30,8 @@ jobs:
           scope: '@extrahorizon'
       - run: yarn
       - run: yarn lint
-      - run: yarn run prettier --check
       - run: yarn build
       - run: yarn test
-      - uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
-        with:
-          debug: true
-          coverageLocations: |
-            ${{github.workspace}}/test-results/coverage/lcov.info:lcov
       - run: |
           if [ "${{github.ref}}" == "refs/heads/master" ]
           then
