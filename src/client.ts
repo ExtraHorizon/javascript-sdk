@@ -1,6 +1,15 @@
-import { ClientParams, ParamsOauth1, ParamsOauth2, ParamsProxy } from './types';
-import { version as packageVersion } from './version';
-
+import {
+  createHttpClient,
+  createOAuth1HttpClient,
+  createOAuth2HttpClient,
+  createProxyHttpClient,
+} from './http';
+import {
+  AuthHttpClient,
+  OAuth1HttpClient,
+  OAuth2HttpClient,
+  ProxyInstance,
+} from './http/types';
 import {
   authService,
   configurationsService,
@@ -18,19 +27,9 @@ import {
   templatesService,
   usersService,
 } from './services';
-import {
-  createHttpClient,
-  createOAuth1HttpClient,
-  createOAuth2HttpClient,
-  createProxyHttpClient,
-} from './http';
+import { ClientParams, ParamsOauth1, ParamsOauth2, ParamsProxy } from './types';
 import { validateConfig } from './utils';
-import {
-  AuthHttpClient,
-  OAuth1HttpClient,
-  OAuth2HttpClient,
-  ProxyInstance,
-} from './http/types';
+import { version as packageVersion } from './version';
 
 export interface Client<T extends ClientParams> {
   raw: AuthHttpClient;

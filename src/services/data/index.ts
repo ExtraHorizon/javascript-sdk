@@ -1,14 +1,14 @@
+import { DATA_BASE } from '../../constants';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import infrastructure from './infrastructure';
-import schemas from './schemas';
-import indexes from './indexes';
-import statuses from './statuses';
-import properties from './properties';
 import comments from './comments';
 import documents from './documents';
+import indexes from './indexes';
+import infrastructure from './infrastructure';
+import properties from './properties';
+import schemas from './schemas';
+import statuses from './statuses';
 import transitions from './transitions';
-import { DATA_BASE } from '../../constants';
 import {
   DataCommentsService,
   DataDocumentsService,

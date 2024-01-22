@@ -1,7 +1,7 @@
-import { HttpClient } from '../../http-client';
-import { AccessLog, LogsAccessService } from './types';
-import { OptionsWithRql } from '../../types';
 import { HttpInstance } from '../../../http/types';
+import { HttpClient } from '../../http-client';
+import { OptionsWithRql } from '../../types';
+import { AccessLog, LogsAccessService } from './types';
 
 export default (
   client: HttpClient,

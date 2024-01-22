@@ -1,11 +1,11 @@
+import { PROFILES_BASE } from '../../constants';
 import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import profiles from './profiles';
 import groups from './groups';
-import logs from './logs';
 import health from './health';
-import { PROFILES_BASE } from '../../constants';
+import logs from './logs';
+import profiles from './profiles';
 import {
   ProfilesGroupsService,
   ProfilesLogsService,

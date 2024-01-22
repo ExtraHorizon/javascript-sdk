@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { USER_BASE } from '../constants';
 import { ParamsProxy } from '../types';
-import { AuthHttpClient, HttpInstance, ProxyInstance } from './types';
 import {
   camelizeResponseData,
   retryInterceptor,
@@ -9,6 +8,7 @@ import {
   transformResponseData,
   typeReceivedErrorsInterceptor,
 } from './interceptors';
+import { AuthHttpClient, HttpInstance, ProxyInstance } from './types';
 
 export function createProxyHttpClient(
   http: HttpInstance,

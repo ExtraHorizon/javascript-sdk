@@ -1,7 +1,7 @@
-import { HttpClient } from '../../http-client';
 import { HttpInstance } from '../../../http/types';
-import { FileSettingsService, FileServiceSettingsUpdate } from './types';
+import { HttpClient } from '../../http-client';
 import { OptionsBase } from '../../types';
+import { FileSettingsService, FileServiceSettingsUpdate } from './types';
 
 export default (
   client: HttpClient,

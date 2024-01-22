@@ -1,8 +1,8 @@
-import type { HttpInstance } from '../../types';
-import type { Task, TasksService } from './types';
 import { rqlBuilder } from '../../rql';
-import { HttpClient } from '../http-client';
+import type { HttpInstance } from '../../types';
 import { findAllGeneric, findAllIterator } from '../helpers';
+import { HttpClient } from '../http-client';
+import type { Task, TasksService } from './types';
 
 export default (client: HttpClient, httpAuth: HttpInstance): TasksService => ({
   async find(options) {

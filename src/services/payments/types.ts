@@ -1,5 +1,5 @@
-import { FindAllIterator } from '../../services/helpers';
 import { RQLString } from '../../rql';
+import { FindAllIterator } from '../../services/helpers';
 import type {
   AffectedRecords,
   ObjectId,

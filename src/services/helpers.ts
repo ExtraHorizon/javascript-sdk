@@ -1,7 +1,7 @@
 import { HttpInstance, HttpRequestConfig } from '../http/types';
 import { camelize, decamelize } from '../http/utils';
-import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 import { rqlBuilder } from '../rql';
+import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 
 const MAX_LIMIT = 50;
 
@@ -144,7 +144,7 @@ export function setCustomKeysConfigurationInRequestConfig(
 // To avoid having to set all keys in the array as camel and as snake manually, each key
 // is converted here to both camel and snake case before being put in the config.
 function createArrayWithCamelAndSnakeVersion(keys?: string[]) {
-  if (!keys) return undefined;
+  if (!keys) { return undefined; }
 
   return [...keys.map(camelize), ...keys.map(decamelize)];
 }

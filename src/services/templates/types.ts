@@ -1,4 +1,5 @@
 import { FindAllIterator } from '../../services/helpers';
+import { TypeConfiguration } from '../data/types';
 import {
   ObjectId,
   LanguageCode,
@@ -8,7 +9,6 @@ import {
   OptionsWithRql,
   OptionsBase,
 } from '../types';
-import { TypeConfiguration } from '../data/types';
 
 export interface TemplateOut {
   id?: ObjectId;

@@ -1,7 +1,7 @@
-import { ApiRequestLogsService } from './logs/types';
-import { ObjectId, OptionsWithRql, PagedResultWithPager } from '../../types';
 import { FindAllIterator } from '../../helpers';
+import { ObjectId, OptionsWithRql, PagedResultWithPager } from '../../types';
 import { ApiFunctionRequestMethod } from '../api/types';
+import { ApiRequestLogsService } from './logs/types';
 
 export interface ApiRequestService {
   /**

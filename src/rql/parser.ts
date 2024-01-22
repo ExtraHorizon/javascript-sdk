@@ -140,10 +140,8 @@ const converters = {
       .replace(/([\\|\||\(|\)|\[|\{|\^|\$|\*|\+|\?|\.|\<|\>])/g, x => `\\${x}`)
       .replace(/\\\*/g, '.*')
       .replace(/\\\?/g, '.?');
-    if (s.substring(0, 2) !== '.*') s = `^${s}`;
-    else s = s.substring(2);
-    if (s.substring(s.length - 2) !== '.*') s += '$';
-    else s = s.substring(0, s.length - 2);
+    if (s.substring(0, 2) !== '.*') { s = `^${s}`; } else { s = s.substring(2); }
+    if (s.substring(s.length - 2) !== '.*') { s += '$'; } else { s = s.substring(0, s.length - 2); }
     return new RegExp(s, 'i');
   },
 };
@@ -253,7 +251,7 @@ export default function parse(
         // cache the last seen id equality
         if (term.name === 'eq' && term.args[0] === primaryKeyName) {
           let id = term.args[1];
-          if (id && !(id instanceof RegExp)) id = id.toString();
+          if (id && !(id instanceof RegExp)) { id = id.toString(); }
           topTerm.cache[primaryKeyName] = id;
         }
       }
