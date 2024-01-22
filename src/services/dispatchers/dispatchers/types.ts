@@ -134,7 +134,7 @@ export interface Dispatcher {
 export type DispatcherCreation = Omit<
   Dispatcher,
   'id' | 'creationTimestamp' | 'updateTimestamp' | 'actions'
-> & { actions: ActionCreation[] };
+> & { actions: ActionCreation[]; };
 
 export type DispatcherUpdate = Partial<
   Omit<Dispatcher, 'id' | 'actions' | 'creationTimestamp' | 'updateTimestamp'>

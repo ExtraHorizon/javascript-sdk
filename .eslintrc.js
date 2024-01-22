@@ -12,6 +12,8 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   rules: {
     "max-classes-per-file": 0,
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.spec.ts"]}]
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.spec.ts"]}],
+    "max-len": ["error", { "code": 150, "ignoreComments": true }],
+    "@typescript-eslint/no-explicit-any": ["off"]
   }
 };

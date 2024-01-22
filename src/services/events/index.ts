@@ -13,7 +13,7 @@ import { EVENTS_BASE } from '../../constants';
 export const eventsService = (
   httpWithAuth: HttpInstance
 ): ReturnType<typeof health> &
-  EventsService & { subscriptions: SubscriptionsService } => {
+  EventsService & { subscriptions: SubscriptionsService; } => {
   const client = httpClient({
     basePath: EVENTS_BASE,
     transformRequestData: decamelizeRequestData,

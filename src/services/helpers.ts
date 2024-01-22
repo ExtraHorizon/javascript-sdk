@@ -32,9 +32,9 @@ export async function* findAllIterator<T>(
   yield* makeRequest({
     ...options,
     rql:
-      options?.rql && options.rql.includes('limit(')
-        ? options.rql
-        : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+      options?.rql && options.rql.includes('limit(') ?
+        options.rql :
+        rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
   });
 
   return {};
@@ -54,9 +54,9 @@ export async function findAllGeneric<T>(
   // But on the first run, we need to set the limit to the max to optimize
   const result: PagedResult<T> = await find({
     rql:
-      options?.rql && options.rql.includes('limit(')
-        ? options.rql
-        : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+      options?.rql && options.rql.includes('limit(') ?
+        options.rql :
+        rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
   });
 
   if (result.page.total > 2000 && result.page.offset === 0) {
@@ -65,20 +65,20 @@ export async function findAllGeneric<T>(
     );
   }
 
-  return result.page.total > result.page.offset + result.page.limit
-    ? [
-        ...result.data,
-        ...(await findAllGeneric(
-          find,
-          {
-            rql: rqlBuilder(options?.rql)
-              .limit(result.page.limit, result.page.offset + result.page.limit)
-              .build(),
-          },
-          level + 1
-        )),
-      ]
-    : result.data;
+  return result.page.total > result.page.offset + result.page.limit ?
+    [
+      ...result.data,
+      ...(await findAllGeneric(
+        find,
+        {
+          rql: rqlBuilder(options?.rql)
+            .limit(result.page.limit, result.page.offset + result.page.limit)
+            .build(),
+        },
+        level + 1
+      )),
+    ] :
+    result.data;
 }
 
 export function addPagersFn<T>(
@@ -105,9 +105,9 @@ export function addPagersFn<T>(
       rql: rqlBuilder(options?.rql)
         .limit(
           result.page.limit,
-          result.page.offset + result.page.limit < result.page.total
-            ? result.page.offset + result.page.limit
-            : result.page.offset + result.page.limit
+          result.page.offset + result.page.limit < result.page.total ?
+            result.page.offset + result.page.limit :
+            result.page.offset + result.page.limit
         )
         .build(),
     });

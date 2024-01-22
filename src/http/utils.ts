@@ -54,7 +54,7 @@ function is(Ctor, value) {
  * @returns An object with keys renamed according to the provided function.
  */
 export function recursiveRenameKeys(
-  fn: { (arg: string): string },
+  fn: { (arg: string): string; },
   obj,
   ignoreKeys: string[] = []
 ) {
@@ -95,20 +95,18 @@ export function recursiveRenameKeys(
 export function camelize(string: string): string {
   return string
     .split(/_/)
-    .map((word, index) =>
-      index > 0 ? word.substr(0, 1).toUpperCase() + word.substr(1) : word
-    )
+    .map((word, index) => (index > 0 ? word.substr(0, 1).toUpperCase() + word.substr(1) : word))
     .join('');
 }
 
 export function decamelize(string: string): string {
   // If all characters are uppercase, no need to decamelize as this is very likely a language code
-  return string.toUpperCase() === string
-    ? string
-    : string
-        .split(/(?=[A-Z])/)
-        .join('_')
-        .toLowerCase();
+  return string.toUpperCase() === string ?
+    string :
+    string
+      .split(/(?=[A-Z])/)
+      .join('_')
+      .toLowerCase();
 }
 
 export function camelizeKeys(
@@ -131,9 +129,9 @@ export function decamelizeKeys(
  */
 export function composeUserAgent(packageVersion: string): string {
   return [
-    typeof process !== 'undefined' && process?.release?.name === 'node'
-      ? `Node/${process.version} OS/${process.platform}-${process.arch}`
-      : '',
+    typeof process !== 'undefined' && process?.release?.name === 'node' ?
+      `Node/${process.version} OS/${process.platform}-${process.arch}` :
+      '',
     `SDK/${packageVersion}`,
   ].join(' ');
 }

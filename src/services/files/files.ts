@@ -28,8 +28,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
 
     return (
       await client.post(httpAuth, '/', formData, {
-        onUploadProgress: ({ loaded, total }) =>
-          options?.onUploadProgress({ loaded, total }),
+        onUploadProgress: ({ loaded, total }) => options?.onUploadProgress({ loaded, total }),
         headers: {
           ...(options?.headers ? options.headers : {}),
           'Content-Type': `multipart/form-data; boundary=${boundary}`,
@@ -58,8 +57,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     };
 
     if (options?.onUploadProgress) {
-      config.onUploadProgress = ({ loaded, total }) =>
-        options.onUploadProgress({ loaded, total });
+      config.onUploadProgress = ({ loaded, total }) => options.onUploadProgress({ loaded, total });
     }
 
     if (options?.headers) {

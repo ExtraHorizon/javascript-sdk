@@ -745,7 +745,7 @@ export interface UsersService {
    * @returns User[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<User>;
-  findFirst(options?: { rql?: RQLString }): Promise<User>;
+  findFirst(options?: { rql?: RQLString; }): Promise<User>;
   /**
    * @deprecated
    * Delete a list of users

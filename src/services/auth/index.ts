@@ -32,11 +32,11 @@ export function authService(httpWithAuth: HttpInstance): AuthService {
      * @throws {TooManyFailedAttemptsError}
      * */
     async confirmPresence(
-      data: { password: string },
+      data: { password: string; },
       options?: OptionsBase
     ): Promise<Presence> {
       return (
-        await authClient.post(httpWithAuth, `/confirmPresence`, data, options)
+        await authClient.post(httpWithAuth, '/confirmPresence', data, options)
       ).data;
     },
 

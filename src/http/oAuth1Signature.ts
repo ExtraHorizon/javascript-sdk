@@ -5,7 +5,7 @@ import { TokenDataOauth1 } from './types';
 interface OAuth1RequestInformation {
   method: string;
   url: string;
-  consumer: { key: string; secret: string };
+  consumer: { key: string; secret: string; };
   tokenData?: Pick<TokenDataOauth1, 'key' | 'secret'>;
 }
 
@@ -199,13 +199,12 @@ function compare(a: string, b: string) {
 function map(obj: object) {
   const arr = [];
   for (const [key, val] of Object.entries(obj)) {
-    if (Array.isArray(val))
-      for (let i = 0; i < val.length; i += 1) arr.push([key, val[i]]);
-    else if (typeof val === 'object')
+    if (Array.isArray(val)) for (let i = 0; i < val.length; i += 1) arr.push([key, val[i]]);
+    else if (typeof val === 'object') {
       for (const [propKey, propValue] of Object.entries(val)) {
         arr.push([`${key}[${propKey}]`, propValue]);
       }
-    else arr.push([key, val]);
+    } else arr.push([key, val]);
   }
   return arr;
 }

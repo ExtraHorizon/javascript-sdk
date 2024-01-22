@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   AxiosDefaults,
   AxiosError,
@@ -37,7 +36,7 @@ export type HttpRequestConfig = AxiosRequestConfig & {
   customResponseKeys?: string[];
 };
 
-export type HttpResponseError = AxiosError & { config: HttpRequestConfig };
+export type HttpResponseError = AxiosError & { config: HttpRequestConfig; };
 
 export interface HttpInstance {
   (config: AxiosRequestConfig): AxiosPromise;
@@ -132,7 +131,7 @@ export interface OAuth2HttpClient extends HttpInstance {
      * @throws {MfaRequiredError}
      * @throws {InvalidClientError}
      */
-    authenticate(oauth: { code: string }): Promise<TokenDataOauth2>;
+    authenticate(oauth: { code: string; }): Promise<TokenDataOauth2>;
 
     /**
      * Use OAuth2 Password Grant flow
@@ -164,7 +163,7 @@ export interface OAuth2HttpClient extends HttpInstance {
      * @throws {MfaRequiredError}
      * @throws {InvalidClientError}
      */
-    authenticate(oauth: { refreshToken: string }): Promise<TokenDataOauth2>;
+    authenticate(oauth: { refreshToken: string; }): Promise<TokenDataOauth2>;
 
     /**
      *  Confirm MFA method with token, methodId and code

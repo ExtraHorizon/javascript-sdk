@@ -58,7 +58,7 @@ export function createProxyHttpClient(
 
   async function logout(): Promise<boolean> {
     try {
-      await httpWithAuth.post(`/logout`);
+      await httpWithAuth.post('/logout');
       return true;
     } catch (err) {
       return false;

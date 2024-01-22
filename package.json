@@ -23,7 +23,7 @@
     "watch:declarations": "tsc -w --project tsconfig.declarations.json",
     "add-suffix": "node ./node_modules/npm-version-suffix/run-add-suffix.js",
     "remove-suffix": "node ./node_modules/npm-version-suffix/run-remove-suffix.js",
-    "prepare": "yarn build",
+    "prepare": "yarn build && yarn lint",
     "test": "jest",
     "test:e2e": "jest tests/e2e",
     "lint": "eslint src --ext .ts",

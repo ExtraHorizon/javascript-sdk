@@ -515,7 +515,7 @@ export interface DataDocumentsService {
   >(
     schemaId: ObjectId,
     requestBody: InputData,
-    options?: OptionsWithRql & { gzip?: boolean }
+    options?: OptionsWithRql & { gzip?: boolean; }
   ): Promise<Document<OutputData, CustomStatus>>;
   /**
    * Request a list of documents

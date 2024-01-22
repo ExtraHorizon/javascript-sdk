@@ -140,14 +140,14 @@ export function createOAuth2HttpClient(
         ...clientCredentials,
         ...grantData,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
     await setTokenData(tokenResult.data);
     return tokenResult.data;
@@ -167,14 +167,14 @@ export function createOAuth2HttpClient(
         code,
         method_id: methodId,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
     await setTokenData(tokenResult.data);
     return tokenResult.data;
@@ -202,14 +202,14 @@ export function createOAuth2HttpClient(
         ...clientCredentials,
         ...data,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
 
     await setTokenData(response.data);
