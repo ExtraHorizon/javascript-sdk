@@ -21,7 +21,7 @@ export default (
     async create(body) {
       const { data } = await oidcClient.post(
         httpWithAuth,
-        `/oidc/providers`,
+        '/oidc/providers',
         body
       );
       return data;

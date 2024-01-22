@@ -21,14 +21,14 @@ export default (
           '/',
           {
             ...requestBody,
-            ...(requestBody.type === 'message'
-              ? {
-                  fields: {
-                    ...requestBody.fields,
-                    senderId: await httpAuth.userId,
-                  },
-                }
-              : {}),
+            ...(requestBody.type === 'message' ?
+              {
+                fields: {
+                  ...requestBody.fields,
+                  senderId: await httpAuth.userId,
+                },
+              } :
+              {}),
           },
           options
         )

@@ -12,7 +12,7 @@ import { FileTokensService } from './types';
 
 export const filesService = (
   httpWithAuth: HttpInstance
-): FilesService & FileTokensService & { settings: FileSettingsService } => {
+): FilesService & FileTokensService & { settings: FileSettingsService; } => {
   const client = httpClient({
     basePath: FILES_BASE,
   });

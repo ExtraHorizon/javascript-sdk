@@ -95,14 +95,14 @@ export function createOAuth1HttpClient(
     headers: {
       ...config.headers,
       'Content-Type': 'application/json',
-      ...(config?.method
-        ? getOAuth1AuthorizationHeader({
-            url: `${config.baseURL}${config.url}`,
-            method: config.method,
-            consumer,
-            tokenData,
-          })
-        : {}),
+      ...(config?.method ?
+        getOAuth1AuthorizationHeader({
+          url: `${config.baseURL}${config.url}`,
+          method: config.method,
+          consumer,
+          tokenData,
+        }) :
+        {}),
     },
   }));
 

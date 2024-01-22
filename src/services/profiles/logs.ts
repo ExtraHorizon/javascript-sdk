@@ -9,14 +9,13 @@ export default (
   httpAuth: HttpInstance
 ): ProfilesLogsService => {
   function partialApplyFind(profileId, groupId) {
-    return async (options?) =>
-      (
-        await client.get(
-          httpAuth,
-          `/${profileId}/groups/${groupId}/logs/${options?.rql || ''}`,
-          options
-        )
-      ).data;
+    return async options => (
+      await client.get(
+        httpAuth,
+        `/${profileId}/groups/${groupId}/logs/${options?.rql || ''}`,
+        options
+      )
+    ).data;
   }
 
   return {

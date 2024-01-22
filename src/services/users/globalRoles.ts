@@ -17,7 +17,7 @@ export default (
   },
 
   async create(requestBody, options) {
-    return (await client.post(httpWithAuth, `/roles`, requestBody, options))
+    return (await client.post(httpWithAuth, '/roles', requestBody, options))
       .data;
   },
 

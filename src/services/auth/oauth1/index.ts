@@ -7,13 +7,13 @@ export default (
   httpWithAuth: HttpInstance
 ): AuthOauth1Service => ({
   async generateSsoToken() {
-    return (await client.post(httpWithAuth, `/oauth1/ssoTokens/generate`, {}))
+    return (await client.post(httpWithAuth, '/oauth1/ssoTokens/generate', {}))
       .data;
   },
 
   async consumeSsoToken(ssoToken) {
     return (
-      await client.post(httpWithAuth, `/oauth1/ssoTokens/consume`, { ssoToken })
+      await client.post(httpWithAuth, '/oauth1/ssoTokens/consume', { ssoToken })
     ).data;
   },
 

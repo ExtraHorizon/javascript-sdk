@@ -19,7 +19,7 @@ export default (
 
   return {
     async create(schedule: ScheduleCreation, options?: OptionsBase) {
-      const { data } = await client.post(httpAuth, `/schedules`, schedule, {
+      const { data } = await client.post(httpAuth, '/schedules', schedule, {
         ...options,
         customKeys: ['data'],
       });

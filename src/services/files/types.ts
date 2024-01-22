@@ -44,7 +44,7 @@ export interface CreateTokenRequest {
  * As defined by React Native:
  * https://github.com/facebook/react-native/blob/v0.72.4/packages/react-native/Libraries/Network/FormData.js#L13
  */
-export type ReactNativeFile = { name?: string; type?: string; uri: string };
+export type ReactNativeFile = { name?: string; type?: string; uri: string; };
 export type FileDataTypes = Blob | Buffer | ReadStream | ReactNativeFile;
 
 export interface FilesService {
@@ -100,7 +100,7 @@ export interface FilesService {
   create(
     fileName: string,
     fileData: FileDataTypes,
-    options?: FileUploadOptions & { tags?: string[] }
+    options?: FileUploadOptions & { tags?: string[]; }
   ): Promise<FileDetails>;
 
   /**
@@ -141,7 +141,7 @@ export interface FilesService {
   retrieveStream(
     token: Token,
     options?: OptionsBase
-  ): Promise<{ data: ReadStream }>;
+  ): Promise<{ data: ReadStream; }>;
   /**
    * Get file details
    *

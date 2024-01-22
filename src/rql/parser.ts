@@ -46,7 +46,7 @@ const autoConverted = {
   '-Infinity': -Infinity,
 };
 
-const Query = function () {
+const Query = function query() {
   this.name = 'and';
   this.args = [];
 };

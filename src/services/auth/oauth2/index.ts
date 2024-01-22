@@ -8,7 +8,7 @@ export default (
 ): AuthOauth2Service => ({
   async createAuthorization(data, options) {
     return (
-      await client.post(httpWithAuth, `/oauth2/authorizations`, data, options)
+      await client.post(httpWithAuth, '/oauth2/authorizations', data, options)
     ).data;
   },
 

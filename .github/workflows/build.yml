@@ -1,0 +1,30 @@
+name: Build @extrahorizon/javascript-sdk
+
+on:
+  push:
+    branches-ignore:
+      - dev
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Create .npmrc
+        run: |
+          echo "@extrahorizon:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" >> .npmrc
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+          scope: '@extrahorizon'
+      - run: yarn
+      - run: yarn lint
+      - run: yarn build
+      - run: yarn test
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
