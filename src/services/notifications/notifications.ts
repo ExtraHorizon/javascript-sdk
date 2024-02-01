@@ -1,8 +1,8 @@
-import type { AuthHttpClient } from '../../types';
 import { rqlBuilder } from '../../rql';
-import { NotificationsService, Notification } from './types';
-import { HttpClient } from '../http-client';
+import type { AuthHttpClient } from '../../types';
 import { findAllIterator, findAllGeneric, addPagersFn } from '../helpers';
+import { HttpClient } from '../http-client';
+import { NotificationsService, Notification } from './types';
 
 export default (
   client: HttpClient,

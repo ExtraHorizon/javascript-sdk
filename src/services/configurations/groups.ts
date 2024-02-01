@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { ConfigurationsGroupsService } from './types';
 import { HttpClient } from '../http-client';
+import type { ConfigurationsGroupsService } from './types';
 
 export default (
   client: HttpClient,

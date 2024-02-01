@@ -1,8 +1,8 @@
 import { HttpInstance } from '../../../types';
 import { HttpClient } from '../../http-client';
-import { OidcLinkRequestBody, OidcService } from './types';
-import providers from './providers';
 import loginAttempts from './loginAttempts';
+import providers from './providers';
+import { OidcLinkRequestBody, OidcService } from './types';
 
 export default (
   oidcClient: HttpClient,

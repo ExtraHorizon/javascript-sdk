@@ -1,6 +1,6 @@
 module.exports = {
   extends: [
-    '@qompium/eslint-config-q-node'
+    '@extrahorizon/eslint-config-node'
   ],
   parserOptions: {
     project: './tsconfig.eslint.json'

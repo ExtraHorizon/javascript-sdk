@@ -59,7 +59,7 @@ export function recursiveRenameKeys(
   ignoreKeys: string[] = []
 ) {
   // If ignoreKeys includes the '*', we don't need to convert anything in this object
-  if (ignoreKeys.includes('*')) return obj;
+  if (ignoreKeys.includes('*')) { return obj; }
 
   // If the object is an array, recursively apply the function to each element in the array.
   if (Array.isArray(obj)) {

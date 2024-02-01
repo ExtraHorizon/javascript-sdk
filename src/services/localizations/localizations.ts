@@ -1,7 +1,7 @@
-import type { HttpInstance } from '../../types';
 import { rqlBuilder } from '../../rql';
-import type { LocalizationsService } from './types';
+import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
+import type { LocalizationsService } from './types';
 
 export default (
   client: HttpClient,

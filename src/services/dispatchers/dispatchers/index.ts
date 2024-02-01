@@ -1,9 +1,9 @@
+import { HttpInstance } from '../../../http/types';
+import { rqlBuilder } from '../../../rql';
 import { findAllGeneric, findAllIterator } from '../../helpers';
 import { HttpClient } from '../../http-client';
-import { Dispatcher, DispatchersService } from './types';
-import { HttpInstance } from '../../../http/types';
 import { OptionsWithRql } from '../../types';
-import { rqlBuilder } from '../../../rql';
+import { Dispatcher, DispatchersService } from './types';
 
 export default (
   client: HttpClient,

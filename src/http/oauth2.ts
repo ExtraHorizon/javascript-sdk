@@ -1,6 +1,14 @@
 import axios from 'axios';
 import btoa from '../btoa';
+import { AUTH_BASE } from '../constants';
 import { Oauth2AuthParams, ParamsOauth2 } from '../types';
+import {
+  camelizeResponseData,
+  retryInterceptor,
+  transformKeysResponseData,
+  transformResponseData,
+  typeReceivedErrorsInterceptor,
+} from './interceptors';
 import {
   HttpInstance,
   MfaConfig,
@@ -9,14 +17,6 @@ import {
   OidcAuthenticationUrlRequest,
   TokenDataOauth2,
 } from './types';
-import {
-  camelizeResponseData,
-  retryInterceptor,
-  transformKeysResponseData,
-  transformResponseData,
-  typeReceivedErrorsInterceptor,
-} from './interceptors';
-import { AUTH_BASE } from '../constants';
 
 const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
 
