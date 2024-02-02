@@ -275,7 +275,7 @@ export interface Schema {
   // FIXME: type all possible property types
   properties: Record<string, any>;
   indexes: Index[];
-  statuses: Record<string, never>;
+  statuses: Record<string, Record<string, string>>;
   creationTransition: CreationTransition;
   transitions: Transition[];
   createMode: CreateMode;
