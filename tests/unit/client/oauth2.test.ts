@@ -69,6 +69,7 @@ describe('OAuth2HttpClient', () => {
 
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
+        client_id: 'my-client-id',
         grant_type: 'refresh_token',
         refresh_token: 'MyRefreshToken',
       })
@@ -365,6 +366,51 @@ describe('OAuth2HttpClient', () => {
     expect(result.request.headers.authorization).toBe(
       `Bearer ${exampleAccessToken}`
     );
+  });
+
+  it('Authorizes an automatic token refresh as an confidential application', async () => {
+    const expiredToken = 'expired access token';
+    const newToken = 'new access token';
+    const refreshToken = 'the refresh token';
+
+    const client = createOAuth2HttpClient(http, {
+      ...mockParams,
+      clientId: 'clientId',
+      clientSecret: 'secret',
+      accessToken: expiredToken,
+      refreshToken,
+    });
+
+    // Mock the expected call with the expired token
+    nock(mockParams.host)
+      .get('/test')
+      .matchHeader('Authorization', `Bearer ${expiredToken}`)
+      .reply(400, {
+        code: 118,
+        name: 'ACCESS_TOKEN_EXPIRED_EXCEPTION',
+        description: 'The access token is expired',
+      });
+
+    // Mock the expected refresh call
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, {
+        client_id: 'clientId',
+        client_secret: 'secret',
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      })
+      .basicAuth({ user: 'clientId', pass: 'secret' })
+      .reply(200, { access_token: newToken });
+
+    // Mock the expected retry with the new token
+    nock(mockParams.host)
+      .get('/test')
+      .reply(200, {});
+
+    // Initiate the request
+    const result = await client.get('test');
+
+    expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
   });
 
   it('Should allow a user to determine if an error is an instance of an OAuth2 error', async () => {

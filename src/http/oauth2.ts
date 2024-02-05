@@ -69,15 +69,6 @@ export function createOAuth2HttpClient(
     );
   }
 
-  const refreshTokens = async () => {
-    const tokenResult = await http.post(TOKEN_ENDPOINT, {
-      grant_type: 'refresh_token',
-      refresh_token: tokenData.refreshToken,
-    });
-    await setTokenData(tokenResult.data);
-    return tokenResult.data;
-  };
-
   // If set, add the access token to each request
   httpWithAuth.interceptors.request.use(async config => {
     if (!tokenData?.accessToken) {
@@ -109,7 +100,7 @@ export function createOAuth2HttpClient(
       !originalRequest.isRetryWithRefreshedTokens
     ) {
       originalRequest.isRetryWithRefreshedTokens = true;
-      await refreshTokens();
+      await authenticate({ refreshToken: tokenData.refreshToken });
       return httpWithAuth(originalRequest);
     }
 
