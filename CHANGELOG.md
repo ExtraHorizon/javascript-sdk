@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.1.0]
 
+### Fixed
+
+- `exh.auth.applications.deleteVersion` now calls the correct endpoint
+
 ## [8.0.0]
 
 ### Changed
