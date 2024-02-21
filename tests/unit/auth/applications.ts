@@ -89,7 +89,7 @@ describe('Auth - Applications', () => {
       .reply(200, { access_token: mockToken });
 
     nock(`${host}${AUTH_BASE}`)
-      .delete(`/applications/${applicationId}/${versionId}`)
+      .delete(`/applications/${applicationId}/versions/${versionId}`)
       .reply(200, {
         affectedRecords: 1,
       });

@@ -57,7 +57,7 @@ export default (
     return (
       await client.delete(
         httpWithAuth,
-        `/applications/${applicationId}/${versionId}`,
+        `/applications/${applicationId}/versions/${versionId}`,
         options
       )
     ).data;
