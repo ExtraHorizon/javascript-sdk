@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.1.0]
 
+## Added
+
+- Methods to work with the user verification settings:
+  - `exh.users.settings.getVerificationSettings`
+  - `exh.users.settings.updateVerificationSettings`
+
 ### Fixed
 
 - `exh.auth.applications.deleteVersion` now calls the correct endpoint
