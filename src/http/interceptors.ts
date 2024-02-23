@@ -85,6 +85,8 @@ const mapDateValues = (value, key) => {
       'reevaluateDate',
       'autoRenewStatusChange',
       'commentedTimestamp',
+      'lastRequestTimestamp',
+      'lastFailedAttemptTimestamp',
     ].includes(key)
   ) {
     return new Date(value);
