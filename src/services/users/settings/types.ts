@@ -1,6 +1,6 @@
 import { OptionsBase } from '../../types';
 
-export interface UsersSettingsService {
+export interface SettingsService {
   /**
    * Retrieve the verification settings
    *

@@ -6,7 +6,7 @@ import {
   ParamsOauth2,
 } from '../../../src/index';
 
-describe('User Settings Service', () => {
+describe('Settings Service', () => {
   const host = 'https://api.xxx.extrahorizon.com';
   const exampleSettings = {
     limitActivationRequests: false,
