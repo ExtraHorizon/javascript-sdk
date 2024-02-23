@@ -24,8 +24,30 @@ export interface UsersSettingsService {
 }
 
 export interface VerificationSettings {
-  limitActivationRequests: boolean;
-  limitForgotPasswordRequests: boolean;
+
+  /**
+   * Allow use of the pin code mode for the account activation flow.
+   */
   enablePinCodeActivationRequests: boolean;
+
+  /**
+   * Allow use of the pin code mode for the forgot password flow.
+   */
   enablePinCodeForgotPasswordRequests: boolean;
+
+  /**
+   * - Limits the amount of times the account activation flow can be initiated without success to 3.
+   * - Requires the time between account activation flow initiations to be at least 15 minutes.
+   *
+   * @deprecated Security feature. Only should be disabled while existing applications implement the feature, otherwise we strongly advise keep this feature enabled.
+   */
+  limitActivationRequests: boolean;
+
+  /**
+   * - Limits the amount of times the forgot password flow can be initiated without success to 3.
+   * - Requires the time between forgot password flow initiations to be at least 15 minutes.
+   *
+   * @deprecated Security feature. Only should be disabled while existing applications implement the feature, otherwise we strongly advise keep this feature enabled.
+   */
+  limitForgotPasswordRequests: boolean;
 }
