@@ -1,6 +1,15 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { ResourceUnknownError } from '../../../src/errors';
+import {
+  ForgotPasswordRequestLimitError,
+  ForgotPasswordRequestTimeoutError,
+  IllegalStateError,
+  IncorrectPinCodeError,
+  NewPasswordPinCodeUnknownError,
+  PinCodesNotEnabledError,
+  ResourceUnknownError,
+  TooManyFailedAttemptsError,
+} from '../../../src/errors';
 import {
   Client,
   createClient,
@@ -254,24 +263,6 @@ describe('Users Service', () => {
     expect(result).toBeDefined();
   });
 
-  it('should request a password reset', async () => {
-    nock(`${host}${USER_BASE}`)
-      .get(`/forgot_password?email=${newEmail}`)
-      .reply(200);
-
-    const result = await sdk.users.requestPasswordReset(newEmail);
-
-    expect(result).toBeDefined();
-  });
-
-  it('should complete a password reset', async () => {
-    nock(`${host}${USER_BASE}`).post('/forgot_password').reply(200);
-
-    const result = await sdk.users.validatePasswordReset({ hash, newPassword });
-
-    expect(result).toBeDefined();
-  });
-
   it('should confirm the password for the user making the request', async () => {
     nock(`${host}${USER_BASE}`).post('/confirm_password').reply(200);
 
@@ -322,46 +313,227 @@ describe('Users Service', () => {
     expect(result.minimumLength).toBeDefined();
   });
 
-  it('Should allow a user with permissions to view the email template configurations', async () => {
-    // The user service will respond in snake case and the SDK will convert the response to camel case
+  it('Gets the email template configuration', async () => {
     const data = {
       activationEmailTemplateId: randomHexString(24),
       reactivationEmailTemplateId: randomHexString(24),
+      passwordResetEmailTemplateId: randomHexString(24),
       oidcUnlinkEmailTemplateId: randomHexString(24),
+      oidcUnlinkPinEmailTemplateId: randomHexString(24),
+      activationPinEmailTemplateId: randomHexString(24),
+      reactivationPinEmailTemplateId: randomHexString(24),
+      passwordResetPinEmailTemplateId: randomHexString(24),
     };
+
     const snakeCasedData = {
       activation_email_template_id: data.activationEmailTemplateId,
       reactivation_email_template_id: data.reactivationEmailTemplateId,
+      password_reset_email_template_id: data.passwordResetEmailTemplateId,
       oidc_unlink_email_template_id: data.oidcUnlinkEmailTemplateId,
+      oidc_unlink_pin_email_template_id: data.oidcUnlinkPinEmailTemplateId,
+      activation_pin_email_template_id: data.activationPinEmailTemplateId,
+      reactivation_pin_email_template_id: data.reactivationPinEmailTemplateId,
+      password_reset_pin_email_template_id: data.passwordResetPinEmailTemplateId,
     };
 
     nock(`${host}${USER_BASE}`)
-      .get(`/email_templates`)
+      .get('/email_templates')
       .reply(200, snakeCasedData);
 
     const result = await sdk.users.getEmailTemplates();
-    expect(result).toEqual(data);
+    expect(result).toStrictEqual(data);
   });
 
-  it('Should allow a user with permissions to set the email template configurations', async () => {
-    // The user service will accept a request body and respond in snake case, whilst the SDK will accept a request and respond in camel case
+  it('Sets the email template configuration', async () => {
     const data = {
       activationEmailTemplateId: randomHexString(24),
       reactivationEmailTemplateId: randomHexString(24),
+      passwordResetEmailTemplateId: randomHexString(24),
       oidcUnlinkEmailTemplateId: randomHexString(24),
+      oidcUnlinkPinEmailTemplateId: randomHexString(24),
+      activationPinEmailTemplateId: randomHexString(24),
+      reactivationPinEmailTemplateId: randomHexString(24),
+      passwordResetPinEmailTemplateId: randomHexString(24),
     };
 
     const snakeCasedData = {
       activation_email_template_id: data.activationEmailTemplateId,
       reactivation_email_template_id: data.reactivationEmailTemplateId,
+      password_reset_email_template_id: data.passwordResetEmailTemplateId,
       oidc_unlink_email_template_id: data.oidcUnlinkEmailTemplateId,
+      oidc_unlink_pin_email_template_id: data.oidcUnlinkPinEmailTemplateId,
+      activation_pin_email_template_id: data.activationPinEmailTemplateId,
+      reactivation_pin_email_template_id: data.reactivationPinEmailTemplateId,
+      password_reset_pin_email_template_id: data.passwordResetPinEmailTemplateId,
     };
 
     nock(`${host}${USER_BASE}`)
-      .put(`/email_templates`, snakeCasedData)
+      .put('/email_templates', snakeCasedData)
       .reply(200, snakeCasedData);
 
     const result = await sdk.users.setEmailTemplates(data);
-    expect(result).toEqual(data);
+    expect(result).toStrictEqual(data);
+  });
+
+  describe('requestPasswordReset()', () => {
+    it('Requests a password reset', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/forgot_password?email=${newEmail}`)
+        .reply(200);
+
+      const result = await sdk.users.requestPasswordReset(newEmail);
+
+      expect(result).toBe(true);
+    });
+
+    it('Requests a pin code password reset', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/forgot_password?email=${newEmail}&mode=pin_code`)
+        .reply(200);
+
+      const result = await sdk.users.requestPasswordReset({
+        email: newEmail,
+        mode: 'pin_code',
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('Throws an IllegalStateError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/forgot_password?email=${newEmail}`)
+        .reply(400, { code: 27 });
+
+      const promise = sdk.users.requestPasswordReset(newEmail);
+
+      await expect(promise).rejects.toBeInstanceOf(IllegalStateError);
+    });
+
+    it('Throws a PinCodesNotEnabledError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/forgot_password?email=${newEmail}&mode=pin_code`)
+        .reply(403, { code: 218 });
+
+      const promise = sdk.users.requestPasswordReset({
+        email: newEmail,
+        mode: 'pin_code',
+      });
+
+      await expect(promise).rejects.toBeInstanceOf(PinCodesNotEnabledError);
+    });
+
+    it('Throws a ForgotPasswordRequestLimitError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/forgot_password?email=${newEmail}`)
+        .reply(403, { code: 220 });
+
+      const promise = sdk.users.requestPasswordReset(newEmail);
+
+      await expect(promise).rejects.toBeInstanceOf(ForgotPasswordRequestLimitError);
+    });
+
+    it('Throws a ForgotPasswordRequestTimeoutError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/forgot_password?email=${newEmail}`)
+        .reply(403, { code: 221 });
+
+      const promise = sdk.users.requestPasswordReset(newEmail);
+
+      await expect(promise).rejects.toBeInstanceOf(ForgotPasswordRequestTimeoutError);
+    });
+  });
+
+  describe('validatePasswordReset()', () => {
+    it('Completes a hash password reset', async () => {
+      nock(`${host}${USER_BASE}`)
+        .post('/forgot_password', {
+          hash,
+          new_password: newPassword,
+        })
+        .reply(200, {});
+
+      const result = await sdk.users.validatePasswordReset({ hash, newPassword });
+      expect(result).toBe(true);
+    });
+
+    it('Completes a pin code password reset', async () => {
+      const email = 'john@example.com';
+      const pinCode = '12345678';
+
+      nock(`${host}${USER_BASE}`)
+        .post('/forgot_password', {
+          email,
+          pin_code: pinCode,
+          new_password: newPassword,
+        })
+        .reply(200, {});
+
+      const result = await sdk.users.validatePasswordReset({
+        email,
+        pinCode,
+        newPassword,
+      });
+      expect(result).toBe(true);
+    });
+
+    it('Throws a NewPasswordPinCodeUnknownError', async () => {
+      const email = 'john@example.com';
+      const pinCode = '12345678';
+
+      nock(`${host}${USER_BASE}`)
+        .post('/forgot_password', {
+          email,
+          pin_code: pinCode,
+          new_password: newPassword,
+        })
+        .reply(400, { code: 219 });
+
+      const promise = sdk.users.validatePasswordReset({
+        email,
+        pinCode,
+        newPassword,
+      });
+      await expect(promise).rejects.toBeInstanceOf(NewPasswordPinCodeUnknownError);
+    });
+
+    it('Throws a TooManyFailedAttemptsError', async () => {
+      const email = 'john@example.com';
+      const pinCode = '12345678';
+
+      nock(`${host}${USER_BASE}`)
+        .post('/forgot_password', {
+          email,
+          pin_code: pinCode,
+          new_password: newPassword,
+        })
+        .reply(400, { code: 213 });
+
+      const promise = sdk.users.validatePasswordReset({
+        email,
+        pinCode,
+        newPassword,
+      });
+      await expect(promise).rejects.toBeInstanceOf(TooManyFailedAttemptsError);
+    });
+
+    it('Throws an IncorrectPinCodeError', async () => {
+      const email = 'john@example.com';
+      const pinCode = '12345678';
+
+      nock(`${host}${USER_BASE}`)
+        .post('/forgot_password', {
+          email,
+          pin_code: pinCode,
+          new_password: newPassword,
+        })
+        .reply(400, { code: 224 });
+
+      const promise = sdk.users.validatePasswordReset({
+        email,
+        pinCode,
+        newPassword,
+      });
+      await expect(promise).rejects.toBeInstanceOf(IncorrectPinCodeError);
+    });
   });
 });

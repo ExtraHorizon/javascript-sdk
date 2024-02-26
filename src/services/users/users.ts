@@ -2,7 +2,7 @@ import type { HttpInstance } from '../../types';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
 import { HttpClient } from '../http-client';
 import { Results } from '../types';
-import type { User, UsersService } from './types';
+import type { PasswordResetRequestData, User, UsersService } from './types';
 
 export default (
   userClient: HttpClient,
@@ -157,17 +157,25 @@ export default (
       );
     },
 
-    async requestPasswordReset(email, options) {
-      return (
-        (
-          await userClient.get(http, '/forgot_password', {
-            ...options,
-            params: {
-              email,
-            },
-          })
-        ).status === Results.Success
-      );
+    async requestPasswordReset(data: string | PasswordResetRequestData, options) {
+      const clientOptions = {
+        ...options,
+        params: {},
+      };
+
+      if (typeof data === 'string') {
+        clientOptions.params.email = data;
+      } else {
+        clientOptions.params.email = data.email;
+
+        if (data.mode) {
+          clientOptions.params.mode = data.mode;
+        }
+      }
+
+      const response = await userClient.get(http, '/forgot_password', clientOptions);
+
+      return response.status === Results.Success;
     },
 
     async validatePasswordReset(requestBody, options) {

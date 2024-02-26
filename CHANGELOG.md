@@ -7,7 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.1.0]
 
-## Added
+### Changed
+
+- `exh.users.requestPasswordReset`
+  - Now also accepts an object with an `email` and `mode` field
+  - Additional errors are thrown when forgot password request limiting is enabled or the pin code mode is used
+- `exh.users.validatePasswordReset`
+  - Alternatively now also accepts a `email` and `pinCode` field
+  - Additional errors are thrown when using the pin code mode
+- `exh.users.getEmailTemplates` and `exh.users.setEmailTemplates` now support the new pin code email templates:
+  - `oidcUnlinkPinEmailTemplateId`
+  - `activationPinEmailTemplateId`
+  - `reactivationPinEmailTemplateId`
+  - `passwordResetPinEmailTemplateId`
+
+### Added
 
 - Methods to work with the activation requests:
   - `exh.users.activationRequests.find`
