@@ -2,7 +2,7 @@ import type { HttpInstance } from '../../types';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
 import { HttpClient } from '../http-client';
 import { Results } from '../types';
-import type { PasswordResetRequestData, User, UsersService } from './types';
+import type { ActivationRequestData, PasswordResetRequestData, User, UsersService } from './types';
 
 export default (
   userClient: HttpClient,
@@ -131,17 +131,25 @@ export default (
       ).data;
     },
 
-    async requestEmailActivation(email, options) {
-      return (
-        (
-          await userClient.get(http, '/activation', {
-            ...options,
-            params: {
-              email,
-            },
-          })
-        ).status === Results.Success
-      );
+    async requestEmailActivation(data: string | ActivationRequestData, options) {
+      const clientOptions = {
+        ...options,
+        params: {},
+      };
+
+      if (typeof data === 'string') {
+        clientOptions.params.email = data;
+      } else {
+        clientOptions.params.email = data.email;
+
+        if (data.mode) {
+          clientOptions.params.mode = data.mode;
+        }
+      }
+
+      const response = await userClient.get(http, '/activation', clientOptions);
+
+      return response.status === Results.Success;
     },
 
     async validateEmailActivation(requestBody, options) {

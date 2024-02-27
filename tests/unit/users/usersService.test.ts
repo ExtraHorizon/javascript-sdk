@@ -1,6 +1,9 @@
 import nock from 'nock';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import {
+  ActivationRequestLimitError,
+  ActivationRequestTimeoutError,
+  ActivationUnknownError,
   ForgotPasswordRequestLimitError,
   ForgotPasswordRequestTimeoutError,
   IllegalStateError,
@@ -177,19 +180,6 @@ describe('Users Service', () => {
     expect(result).toEqual({ affectedRecords: 1 });
   });
 
-  it('should update a users email', async () => {
-    nock(`${host}${USER_BASE}`)
-      .put(`/${userId}/email`)
-      .reply(200, {
-        ...updatedUserData,
-        email: newEmail,
-      });
-
-    const user = await sdk.users.updateEmail(userId, { email: newEmail });
-
-    expect(user.email).toBe(newEmail);
-  });
-
   it('should add a patient enlistment to a user', async () => {
     nock(`${host}${USER_BASE}`)
       .post(`/${userId}/patient_enlistments`)
@@ -208,19 +198,6 @@ describe('Users Service', () => {
     const result = await sdk.users.removePatientEnlistment(userId, groupId);
 
     expect(result).toEqual({ affectedRecords: 1 });
-  });
-
-  it('should register a new user', async () => {
-    nock(`${host}${USER_BASE}`)
-      .post('/register')
-      .reply(200, {
-        ...newUserData,
-        id: userId,
-      });
-
-    const newUser = await sdk.users.createAccount(newUserData);
-
-    expect(newUser.id).toBeDefined();
   });
 
   it('should update a users password', async () => {
@@ -245,14 +222,6 @@ describe('Users Service', () => {
     });
 
     expect(authenticatedUser.id).toBeDefined();
-  });
-
-  it('should request activation mail', async () => {
-    nock(`${host}${USER_BASE}`).get(`/activation?email=${newEmail}`).reply(200);
-
-    const result = await sdk.users.requestEmailActivation(newEmail);
-
-    expect(result).toBeDefined();
   });
 
   it('should complete an email activation', async () => {
@@ -373,6 +342,285 @@ describe('Users Service', () => {
 
     const result = await sdk.users.setEmailTemplates(data);
     expect(result).toStrictEqual(data);
+  });
+
+  describe('createAccount()', () => {
+    it('Registers a new user', async () => {
+      const data = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        password: 'MyP4$$word',
+        phoneNumber: '7692837456',
+        birthday: '1969-06-20',
+        gender: 1,
+        country: 'NL',
+        region: 'NL-GR',
+        language: 'NL',
+        timeZone: 'Europe/Brussels',
+        activationMode: 'pin_code' as const,
+      };
+
+      const requestData = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        password: data.password,
+        phone_number: data.phoneNumber,
+        birthday: data.birthday,
+        gender: data.gender,
+        country: data.country,
+        region: data.region,
+        language: data.language,
+        time_zone: data.timeZone,
+        activation_mode: data.activationMode,
+      };
+
+      const responseData = {
+        ...requestData,
+        id: userId,
+        creation_timestamp: 1708961922056,
+        update_timestamp: 1708961922056,
+      };
+
+      const expectedResult = {
+        ...data,
+        id: userId,
+        creationTimestamp: new Date(1708961922056),
+        updateTimestamp: new Date(1708961922056),
+      };
+
+      delete responseData.password;
+      delete expectedResult.password;
+
+      nock(`${host}${USER_BASE}`)
+        .post('/register', requestData)
+        .reply(200, responseData);
+
+      const newUser = await sdk.users.createAccount(data);
+
+      expect(newUser).toStrictEqual(expectedResult);
+    });
+
+    it('Throws a PinCodesNotEnabledError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .post('/register', {
+          first_name: 'John',
+          last_name: 'Doe',
+          email: 'john.doe@example.com',
+          phone_number: '7692837456',
+          password: 'MyP4$$word',
+          language: 'EN',
+          activation_mode: 'pin_code',
+        })
+        .reply(403, { code: 218 });
+
+      const promise = sdk.users.createAccount({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        phoneNumber: '7692837456',
+        password: 'MyP4$$word',
+        language: 'EN',
+        activationMode: 'pin_code',
+      });
+
+      await expect(promise).rejects.toBeInstanceOf(PinCodesNotEnabledError);
+    });
+  });
+
+  describe('updateEmail()', () => {
+    it('Updates a user its email', async () => {
+      nock(`${host}${USER_BASE}`)
+        .put(`/${userId}/email`, {
+          email: newEmail,
+        })
+        .reply(200, {
+          ...updatedUserData,
+          email: newEmail,
+        });
+
+      const user = await sdk.users.updateEmail(userId, { email: newEmail });
+
+      expect(user.email).toBe(newEmail);
+    });
+
+    it('Accepts an activationMode', async () => {
+      nock(`${host}${USER_BASE}`)
+        .put(`/${userId}/email`, {
+          email: newEmail,
+          activation_mode: 'manual',
+        })
+        .reply(200, {
+          ...updatedUserData,
+          email: newEmail,
+        });
+
+      const user = await sdk.users.updateEmail(userId, {
+        email: newEmail,
+        activationMode: 'manual',
+      });
+
+      expect(user.email).toBe(newEmail);
+    });
+
+    it('Throws a PinCodesNotEnabledError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .put(`/${userId}/email`, {
+          email: newEmail,
+          activation_mode: 'pin_code',
+        })
+        .reply(403, { code: 218 });
+
+      const promise = sdk.users.updateEmail(userId, {
+        email: newEmail,
+        activationMode: 'pin_code',
+      });
+
+      await expect(promise).rejects.toBeInstanceOf(PinCodesNotEnabledError);
+    });
+  });
+
+  describe('requestEmailActivation()', () => {
+    it('Requests an activation mail', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/activation?email=${newEmail}`)
+        .reply(200);
+
+      const result = await sdk.users.requestEmailActivation(newEmail);
+
+      expect(result).toBe(true);
+    });
+
+    it('Requests a pin code activation mail', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/activation?email=${newEmail}&mode=pin_code`)
+        .reply(200);
+
+      const result = await sdk.users.requestEmailActivation({
+        email: newEmail,
+        mode: 'pin_code',
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('Throws an IllegalStateError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/activation?email=${newEmail}`)
+        .reply(400, { code: 27 });
+
+      const promise = sdk.users.requestEmailActivation(newEmail);
+
+      await expect(promise).rejects.toBeInstanceOf(IllegalStateError);
+    });
+
+    it('Throws a PinCodesNotEnabledError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/activation?email=${newEmail}&mode=pin_code`)
+        .reply(403, { code: 218 });
+
+      const promise = sdk.users.requestEmailActivation({
+        email: newEmail,
+        mode: 'pin_code',
+      });
+
+      await expect(promise).rejects.toBeInstanceOf(PinCodesNotEnabledError);
+    });
+
+    it('Throws a ActivationRequestLimitError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/activation?email=${newEmail}`)
+        .reply(403, { code: 222 });
+
+      const promise = sdk.users.requestEmailActivation(newEmail);
+
+      await expect(promise).rejects.toBeInstanceOf(ActivationRequestLimitError);
+    });
+
+    it('Throws a ActivationRequestTimeoutError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/activation?email=${newEmail}`)
+        .reply(403, { code: 223 });
+
+      const promise = sdk.users.requestEmailActivation(newEmail);
+
+      await expect(promise).rejects.toBeInstanceOf(ActivationRequestTimeoutError);
+    });
+  });
+
+  describe('validateEmailActivation()', () => {
+    it('Completes a hash activation', async () => {
+      nock(`${host}${USER_BASE}`)
+        .post('/activation', { hash })
+        .reply(200, {});
+
+      const result = await sdk.users.validateEmailActivation({ hash });
+      expect(result).toBe(true);
+    });
+
+    it('Completes a pin code activation', async () => {
+      const email = 'john@example.com';
+      const pinCode = '12345678';
+
+      nock(`${host}${USER_BASE}`)
+        .post('/activation', {
+          email,
+          pin_code: pinCode,
+        })
+        .reply(200, {});
+
+      const result = await sdk.users.validateEmailActivation({
+        email,
+        pinCode,
+      });
+      expect(result).toBe(true);
+    });
+
+    it('Throws an ActivationUnknownError', async () => {
+      nock(`${host}${USER_BASE}`)
+        .post('/activation', { hash })
+        .reply(400, { code: 205 });
+
+      const promise = sdk.users.validateEmailActivation({ hash });
+      await expect(promise).rejects.toBeInstanceOf(ActivationUnknownError);
+    });
+
+    it('Throws a TooManyFailedAttemptsError', async () => {
+      const email = 'john@example.com';
+      const pinCode = '12345678';
+
+      nock(`${host}${USER_BASE}`)
+        .post('/activation', {
+          email,
+          pin_code: pinCode,
+        })
+        .reply(400, { code: 213 });
+
+      const promise = sdk.users.validateEmailActivation({
+        email,
+        pinCode,
+      });
+      await expect(promise).rejects.toBeInstanceOf(TooManyFailedAttemptsError);
+    });
+
+    it('Throws an IncorrectPinCodeError', async () => {
+      const email = 'john@example.com';
+      const pinCode = '12345678';
+
+      nock(`${host}${USER_BASE}`)
+        .post('/activation', {
+          email,
+          pin_code: pinCode,
+        })
+        .reply(400, { code: 224 });
+
+      const promise = sdk.users.validateEmailActivation({
+        email,
+        pinCode,
+      });
+      await expect(promise).rejects.toBeInstanceOf(IncorrectPinCodeError);
+    });
   });
 
   describe('requestPasswordReset()', () => {

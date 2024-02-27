@@ -89,6 +89,9 @@ export interface RegisterUserData {
   region?: string;
   language: string;
   timeZone?: string;
+
+  /** The activation mode to use. Defaults to `hash`. */
+  activationMode?: 'hash' | 'pin_code' | 'manual';
 }
 
 export enum Gender {
@@ -98,8 +101,9 @@ export enum Gender {
   NotApplicable = 9,
 }
 
-export interface Email {
+export interface EmailUpdate {
   email: string;
+  activationMode?: 'hash' | 'pin_code' | 'manual';
 }
 
 export interface AddPatientEnlistment {
@@ -117,6 +121,17 @@ export interface Authenticate {
   password: string;
 }
 
+export type ActivationCompletion = ActivationHashCompletion | ActivationPinCodeCompletion;
+
+export interface ActivationHashCompletion {
+  hash: string;
+}
+
+export interface ActivationPinCodeCompletion {
+  email: string;
+  pinCode: string;
+}
+
 export type PasswordResetCompletion = PasswordResetHashCompletion | PasswordResetPinCodeCompletion;
 
 export interface PasswordResetHashCompletion {
@@ -125,8 +140,8 @@ export interface PasswordResetHashCompletion {
 }
 
 export interface PasswordResetPinCodeCompletion {
-  pinCode: string;
   email: string;
+  pinCode: string;
   newPassword: string;
 }
 
@@ -383,6 +398,13 @@ export interface EmailTemplates {
 }
 
 export interface PasswordResetRequestData {
+  email: string;
+
+  /** The verification mode to use. Defaults to `hash`. */
+  mode?: 'hash' | 'pin_code';
+}
+
+export interface ActivationRequestData {
   email: string;
 
   /** The verification mode to use. Defaults to `hash`. */
@@ -822,25 +844,40 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    */
   remove(userId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+
   /**
-   * Update the email address of a specific user
-   * An email is send to validate and activate the new address.
+   * Update the email address of a specific user.
+   *
+   * An email is send to the new email address with a token and instructions to reactivate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * By default the email send to the user is the email template configured by `reactivationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
+   * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `reactivationPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   *
+   * If a custom (or no) account activation flow is desired, the `activationMode` field can be set to `manual`.
+   * No email will be send.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Update your own data
    * `UPDATE_USER_EMAIL` | `global` | Update any user
-   * @param userId Id of the targeted user
-   * @param requestBody Email
-   * @returns User
+   *
    * @throws {EmailUsedError}
    * @throws {ResourceUnknownError}
+   * @throws {PinCodesNotEnabledError} Pin codes are not enabled, please check the verification settings
    */
   updateEmail(
     userId: ObjectId,
-    requestBody: Email,
+    requestBody: EmailUpdate,
     options?: OptionsBase
   ): Promise<User>;
+
   /**
    * Add a patient enlistment to a user
    *
@@ -875,20 +912,37 @@ export interface UsersService {
     groupId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
-   * Create an account
+   * Create an account.
+   *
+   * An email is send to the supplied email address with a token and instructions to activate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
+   * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   *
+   * If a custom (or no) account activation flow is desired, the `activationMode` field can be set to `manual`.
+   * No email will be send.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   * @param requestBody RegisterUserData
-   * @returns User
+   *
    * @throws {EmailUsedError}
+   * @throws {PinCodesNotEnabledError} Pin codes are not enabled, please check the verification settings
    */
   createAccount(
     requestBody: RegisterUserData,
     options?: OptionsBase
   ): Promise<User>;
+
   /**
    * Change your password
    *
@@ -917,33 +971,77 @@ export interface UsersService {
    * @throws {TooManyFailedAttemptsError}
    */
   authenticate(requestBody: Authenticate, options?: OptionsBase): Promise<User>;
+
   /**
-   * Request an email activation
+   * Request an email activation.
+   *
+   * An email is send to the supplied email address with a token and instructions to activate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * The email send to the user is the email template configured by `activationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param email
-   * @returns {boolean} true on success
+   *
    * @throws {EmailUnknownError}
    * @throws {AlreadyActivatedError}
+   * @throws {IllegalStateError} Attempting to use `activationEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {ActivationRequestLimitError} The maximum allowed consecutive activation requests is reached
+   * @throws {ActivationRequestTimeoutError} Activation request too short after the previous one
    */
   requestEmailActivation(
     email: string,
     options?: OptionsBase
   ): Promise<boolean>;
+
   /**
-   * Complete an email activation
+   * Request an email activation.
+   *
+   * An email is send to the supplied email address with a token and instructions to activate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
+   * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param requestBody Hash
-   * @returns {boolean} true on success
+   *
+   * @throws {EmailUnknownError}
+   * @throws {AlreadyActivatedError}
+   * @throws {IllegalStateError} Attempting to use either `activationEmailTemplateId` or `activationPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {ActivationRequestLimitError} The maximum allowed consecutive activation requests is reached
+   * @throws {ActivationRequestTimeoutError} Activation request too short after the previous one
+   */
+  requestEmailActivation(
+    data: ActivationRequestData,
+    options?: OptionsBase
+  ): Promise<boolean>;
+
+  /**
+   * Complete an email activation.
+   *
+   * Either a hash activation with just the `hash` field.
+   * Or a pin code activation with the `email` and `pinCode` fields.
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
    * @throws {ActivationUnknownError}
+   * @throws {TooManyFailedAttemptsError} Attempts are blocked due to too many failed attempts, a new activation request needs to be generated before new attempts can be made
+   * @throws {IncorrectPinCodeError} The provided pin code was incorrect
    */
   validateEmailActivation(
-    requestBody: Hash,
+    requestBody: ActivationCompletion,
     options?: OptionsBase
   ): Promise<boolean>;
 
@@ -1001,7 +1099,7 @@ export interface UsersService {
    * Complete a password reset.
    *
    * Either a hash password reset with the `hash` and `newPassword` fields.
-   * Or a pin code password reset with the `pinCode`, `email` and `newPassword` fields.
+   * Or a pin code password reset with the `email`, `pinCode` and `newPassword` fields.
    *
    * Permission | Scope | Effect
    * - | - | -

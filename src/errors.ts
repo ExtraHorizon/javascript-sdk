@@ -264,6 +264,8 @@ export class NewMFARequiredError extends ForbiddenError {}
 export class PinCodesNotEnabledError extends ForbiddenError {}
 export class ForgotPasswordRequestLimitError extends ForbiddenError {}
 export class ForgotPasswordRequestTimeoutError extends ForbiddenError {}
+export class ActivationRequestLimitError extends ForbiddenError {}
+export class ActivationRequestTimeoutError extends ForbiddenError {}
 
 // 404 Not Found
 export class NotFoundError extends ApiError {}
@@ -421,6 +423,8 @@ export const ErrorClassMap = {
   219: NewPasswordPinCodeUnknownError,
   220: ForgotPasswordRequestLimitError,
   221: ForgotPasswordRequestTimeoutError,
+  222: ActivationRequestLimitError,
+  223: ActivationRequestTimeoutError,
   224: IncorrectPinCodeError,
   301: ProfileAlreadyExistsError,
   414: StatusInUseError,
