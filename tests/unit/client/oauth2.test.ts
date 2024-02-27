@@ -58,7 +58,7 @@ describe('OAuth2HttpClient', () => {
     nock(mockParams.host).get('/test').reply(200);
 
     const result = await localHttpWithAuth.get('test');
-    expect(result.request.headers.authorization).toBe(`Bearer MyAccessToken`);
+    expect(result.request.headers.authorization).toBe('Bearer MyAccessToken');
 
     // Expect the refreshToken to be used when the accessToken is expired
     nock(mockParams.host).get('/test').reply(400, {
@@ -91,9 +91,10 @@ describe('OAuth2HttpClient', () => {
     const authenticateResult = await httpWithAuth.extraAuthMethods.authenticate(
       emailAuthData
     );
-    expect(authenticateResult).toStrictEqual({
+    expect(authenticateResult).toMatchObject({
       refreshToken: exampleRefreshToken,
       accessToken: exampleAccessToken,
+      creationTimestamp: expect.any(Date),
     });
 
     nock(mockParams.host).get('/test').reply(200, '');
@@ -151,7 +152,62 @@ describe('OAuth2HttpClient', () => {
     expect(error.exhError).toBeInstanceOf(AuthenticationError);
   });
 
-  it('should authorize but first reply with expired token, but then valid refresh', async () => {
+  it('Automatically refreshes if a token is estimated to be expired', async () => {
+    const initialToken = 'initial token';
+    const refreshToken = 'refresh token';
+    const newToken = 'new access token';
+
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, {
+        access_token: initialToken,
+        refresh_token: refreshToken,
+        expiresIn: -1, // Tell the SDK the token is expired
+      });
+
+    // Let the SDK pick up the expired token
+    await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
+
+    // Setup the refresh call the SDK is about to make
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, {
+        client_id: 'my-client-id',
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      })
+      .reply(200, { access_token: newToken });
+
+    nock(mockParams.host).get('/test').reply(200, {});
+
+    // Make the call
+    const result = await httpWithAuth.get('test');
+
+    expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
+  });
+
+  it('Does not try to refresh if a token is considered valid', async () => {
+    const initialToken = 'initial token';
+    const refreshToken = 'refresh token';
+
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, {
+        access_token: initialToken,
+        refresh_token: refreshToken,
+        expiresIn: 300, // Tell the SDK the token is valid for the coming 5 minutes
+      });
+
+    // Let the SDK pick up the valid token
+    await httpWithAuth.extraAuthMethods.authenticate(emailAuthData);
+
+    nock(mockParams.host).get('/test').reply(200, {});
+
+    // Make a normal call
+    const result = await httpWithAuth.get('test');
+    expect(result.request.headers.authorization).toBe(`Bearer ${initialToken}`);
+  });
+
+  it('Automatically refreshes if an "access token expired" error is encountered', async () => {
     const expiredToken = 'expired access token';
     const newToken = 'new access token';
 
@@ -181,7 +237,7 @@ describe('OAuth2HttpClient', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
   });
 
-  it('throws with authorization but first reply with expired token, but then fail refresh', async () => {
+  it('Throws if the automatic refresh fails after an "access token expired" error', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, tokenCreationResponse);
@@ -211,7 +267,7 @@ describe('OAuth2HttpClient', () => {
     expect(error.exhError).toBeInstanceOf(RefreshTokenUnknownError);
   });
 
-  it('throws on authorization with reply twice with unknown token', async () => {
+  it('Throws if the automatic refresh fails after an "unknown access token" error', async () => {
     /*  Authenticate => returns unknown access token
      *  The get call fails because ACCESS_TOKEN_UNKNOWN_EXCEPTION is returned
      *  this trigger the sdk to try and refresh the token
@@ -317,9 +373,10 @@ describe('OAuth2HttpClient', () => {
       code: 'code',
     });
 
-    expect(confirmMfaResult).toStrictEqual({
+    expect(confirmMfaResult).toMatchObject({
       refreshToken: exampleRefreshToken,
       accessToken: exampleAccessToken,
+      creationTimestamp: expect.any(Date),
     });
 
     // Expect successive requests to be authenticated
@@ -332,7 +389,7 @@ describe('OAuth2HttpClient', () => {
     );
   });
 
-  it('should authorize with confidential application', async () => {
+  it('should authorize with a confidential application', async () => {
     const confidentialConfig = validateConfig({
       ...mockParams,
       clientId: 'clientId',
@@ -349,14 +406,7 @@ describe('OAuth2HttpClient', () => {
       .basicAuth({ user: 'clientId', pass: 'secret' })
       .reply(200, tokenCreationResponse);
 
-    const authenticateResult =
-      await confidentialHttpWithAuth.extraAuthMethods.authenticate(
-        emailAuthData
-      );
-    expect(authenticateResult).toStrictEqual({
-      refreshToken: exampleRefreshToken,
-      accessToken: exampleAccessToken,
-    });
+    await confidentialHttpWithAuth.extraAuthMethods.authenticate(emailAuthData);
 
     // Expect successive requests to be authenticated
     nock(mockParams.host).get('/test').reply(200, '');
@@ -617,13 +667,14 @@ describe('OAuth2HttpClient', () => {
         providerName,
         data
       );
-      expect(result).toEqual({
+      expect(result).toMatchObject({
         tokenType: 'bearer',
         accessToken: '3e9a827ed143c14e33617315c15789134367224c',
         expiresIn: 86400,
         refreshToken: '3e9a827ed143c14e33617315c15789134367224c',
         applicationId: '507f191e810c19729de860ea',
         userId: '507f191e810c19729de860ea',
+        creationTimestamp: expect.any(Date),
       });
     });
 
@@ -647,6 +698,7 @@ describe('OAuth2HttpClient', () => {
         refreshToken: '3e9a827ed143c14e33617315c15789134367224c',
         applicationId: '507f191e810c19729de860ea',
         userId: '507f191e810c19729de860ea',
+        creationTimestamp: expect.any(Date),
       });
     });
   });

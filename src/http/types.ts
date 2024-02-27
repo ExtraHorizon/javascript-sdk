@@ -88,6 +88,7 @@ export interface TokenDataOauth2 {
   refreshToken: string;
   applicationId: string;
   userId: string;
+  creationTimestamp: Date;
 }
 
 export interface TokenDataOauth1 {
