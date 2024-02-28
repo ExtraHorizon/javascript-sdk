@@ -183,6 +183,8 @@ export class NotActivatedError extends BadRequestError {}
 export class EmptyBodyError extends BadRequestError {}
 
 export class NewPasswordHashUnknownError extends BadRequestError {}
+export class NewPasswordPinCodeUnknownError extends BadRequestError {}
+export class IncorrectPinCodeError extends BadRequestError {}
 export class IllegalStateError extends BadRequestError {}
 export class StatusInUseError extends BadRequestError {}
 export class LockedDocumentError extends BadRequestError {}
@@ -259,6 +261,9 @@ export class TokenNotDeleteableError extends ForbiddenError {}
 export class RemoveFieldError extends ForbiddenError {}
 export class DisabledForOidcUsersError extends ForbiddenError {}
 export class NewMFARequiredError extends ForbiddenError {}
+export class PinCodesNotEnabledError extends ForbiddenError {}
+export class ForgotPasswordRequestLimitError extends ForbiddenError {}
+export class ForgotPasswordRequestTimeoutError extends ForbiddenError {}
 
 // 404 Not Found
 export class NotFoundError extends ApiError {}
@@ -412,6 +417,11 @@ export const ErrorClassMap = {
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
   215: DisabledForOidcUsersError,
+  218: PinCodesNotEnabledError,
+  219: NewPasswordPinCodeUnknownError,
+  220: ForgotPasswordRequestLimitError,
+  221: ForgotPasswordRequestTimeoutError,
+  224: IncorrectPinCodeError,
   301: ProfileAlreadyExistsError,
   414: StatusInUseError,
   415: LockedDocumentError,

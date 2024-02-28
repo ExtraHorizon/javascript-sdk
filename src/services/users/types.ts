@@ -117,8 +117,16 @@ export interface Authenticate {
   password: string;
 }
 
-export interface PasswordReset {
-  hash?: string;
+export type PasswordResetCompletion = PasswordResetHashCompletion | PasswordResetPinCodeCompletion;
+
+export interface PasswordResetHashCompletion {
+  hash: string;
+  newPassword: string;
+}
+
+export interface PasswordResetPinCodeCompletion {
+  pinCode: string;
+  email: string;
   newPassword: string;
 }
 
@@ -351,12 +359,34 @@ export interface UserRoles {
 export interface EmailTemplates {
   /** Template id used by the User Service for the account activation email. */
   activationEmailTemplateId: string;
+
   /** Template id used by the User Service for the account reactivation email. */
   reactivationEmailTemplateId: string;
+
   /** Template id used by the User Service for the password reset email. */
   passwordResetEmailTemplateId: string;
+
   /** Template id used by the User Service for the OIDC unlink email. */
   oidcUnlinkEmailTemplateId: string;
+
+  /** Template id used by the User Service for the OIDC unlink pin code email. */
+  oidcUnlinkPinEmailTemplateId: string;
+
+  /** Template id used by the User Service for the account activation pin code email. */
+  activationPinEmailTemplateId: string;
+
+  /** Template id used by the User Service for the account reactivation pin code email. */
+  reactivationPinEmailTemplateId: string;
+
+  /** Template id used by the User Service for the password reset pin code email. */
+  passwordResetPinEmailTemplateId: string;
+}
+
+export interface PasswordResetRequestData {
+  email: string;
+
+  /** The verification mode to use. Defaults to `hash`. */
+  mode?: 'hash' | 'pin_code';
 }
 
 export interface UsersGlobalRolesService {
@@ -916,33 +946,79 @@ export interface UsersService {
     requestBody: Hash,
     options?: OptionsBase
   ): Promise<boolean>;
+
   /**
-   * Request a password reset
+   * Request a password reset.
+   *
+   * An email is send to the targeted user with a token and instructions to reset their password.
+   * The token should be used to complete the password reset via `exh.users.validatePasswordReset`.
+   *
+   * The email send to the user is the email template configured by `passwordResetEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param email
-   * @returns {boolean} true on success
+   *
    * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
+   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateId` or `passwordResetPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {ForgotPasswordRequestLimitError} The maximum allowed consecutive forgot password requests is reached
+   * @throws {ForgotPasswordRequestTimeoutError} Forgot password request too short after the previous one
    */
   requestPasswordReset(email: string, options?: OptionsBase): Promise<boolean>;
+
   /**
-   * Complete a password reset
+   * Request a password reset.
+   *
+   * An email is send to the targeted user with a token and instructions to reset their password.
+   * The token should be used to complete the password reset via `exh.users.validatePasswordReset`.
+   *
+   * By default the email send to the user is the email template configured by `passwordResetEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeForgotPasswordRequests` verification setting.
+   * To use the pin code mode, the `mode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `passwordResetPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param requestBody PasswordReset
-   * @returns {boolean} true if completed a password reset
+   *
+   * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
-   * @throws {NewPasswordHashUnknownError}
+   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateId` or `passwordResetPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {DisabledForOidcUsersError}
+   * @throws {PinCodesNotEnabledError} Pin codes are not enabled, please check the verification settings
+   * @throws {ForgotPasswordRequestLimitError} The maximum allowed consecutive forgot password requests is reached
+   * @throws {ForgotPasswordRequestTimeoutError} Forgot password request too short after the previous one
+   */
+  requestPasswordReset(data: PasswordResetRequestData, options?: OptionsBase): Promise<boolean>;
+
+  /**
+   * Complete a password reset.
+   *
+   * Either a hash password reset with the `hash` and `newPassword` fields.
+   * Or a pin code password reset with the `pinCode`, `email` and `newPassword` fields.
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @throws {NotActivatedError}
+   * @throws {NewPasswordHashUnknownError} The provided hash either does not exist or is expired
+   * @throws {NewPasswordPinCodeUnknownError} No password reset request was found or it is expired for the provided email
+   * @throws {TooManyFailedAttemptsError} Attempts are blocked due to too many failed attempts, a new password reset request needs to be generated before new attempts can be made
+   * @throws {IncorrectPinCodeError} The provided pin code was incorrect
+   * @throws {DisabledForOidcUsersError}
    */
   validatePasswordReset(
-    requestBody: PasswordReset,
+    requestBody: PasswordResetCompletion,
     options?: OptionsBase
   ): Promise<boolean>;
+
   /**
    * Confirm the password for the user making the request
    *
