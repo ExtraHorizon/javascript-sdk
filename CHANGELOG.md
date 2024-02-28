@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `activationPinEmailTemplateId`
   - `reactivationPinEmailTemplateId`
   - `passwordResetPinEmailTemplateId`
+- Improved oAuth2 access token refreshing
+  - If we're able to estimate the expiry time of a token, the token is refreshed before it expires
+  - This done just before a request is about to made
+  - Preventing the extra request to just receive an expired token error 
 
 ### Added
 
@@ -40,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `exh.auth.applications.deleteVersion` now calls the correct endpoint
+- Automatic oAuth2 access token refreshing now properly uses client credentials
 
 ## [8.0.0]
 

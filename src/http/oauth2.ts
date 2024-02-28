@@ -75,6 +75,17 @@ export function createOAuth2HttpClient(
       return config;
     }
 
+    // If we have an estimate of when the token is about to expire, try to refresh before it expires
+    if (tokenData.expiresIn && tokenData.creationTimestamp) {
+      const expireTime = tokenData.creationTimestamp.getTime() + tokenData.expiresIn * 1000;
+
+      // Refresh 10 seconds before the token is about to expire.
+      // This is to prevent being just too late with a refresh of the token due to latencies
+      if (Date.now() > expireTime - 10 * 1000) {
+        await authenticate({ refreshToken: tokenData.refreshToken });
+      }
+    }
+
     return {
       ...config,
       headers: {
@@ -113,11 +124,24 @@ export function createOAuth2HttpClient(
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
-  async function setTokenData(data: TokenDataOauth2) {
+  /**
+   * - Adds a creationTimestamp to the token
+   * - Notifies the user
+   * - Stores the token to authenticate future requests
+   * - Returns the token
+   */
+  async function dateAndSetTokenData(data: TokenDataOauth2) {
+    const datedData = {
+      ...data,
+      creationTimestamp: new Date(),
+    };
+
     if (options.freshTokensCallback) {
-      await options.freshTokensCallback(data);
+      await options.freshTokensCallback(datedData);
     }
-    tokenData = data;
+    tokenData = datedData;
+
+    return datedData;
   }
 
   async function authenticate(
@@ -140,8 +164,8 @@ export function createOAuth2HttpClient(
         } :
         {}
     );
-    await setTokenData(tokenResult.data);
-    return tokenResult.data;
+
+    return await dateAndSetTokenData(tokenResult.data);
   }
 
   async function confirmMfa({
@@ -167,8 +191,8 @@ export function createOAuth2HttpClient(
         } :
         {}
     );
-    await setTokenData(tokenResult.data);
-    return tokenResult.data;
+
+    return await dateAndSetTokenData(tokenResult.data);
   }
 
   async function generateOidcAuthenticationUrl(
@@ -203,9 +227,7 @@ export function createOAuth2HttpClient(
         {}
     );
 
-    await setTokenData(response.data);
-
-    return response.data;
+    return await dateAndSetTokenData(response.data);
   }
 
   function logout(): boolean {
