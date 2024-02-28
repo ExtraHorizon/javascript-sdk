@@ -158,22 +158,19 @@ export default (
     },
 
     async requestPasswordReset(data: string | PasswordResetRequestData, options) {
-      const clientOptions = {
-        ...options,
-        params: {},
-      };
+      const params: Record<string, string> = {};
 
       if (typeof data === 'string') {
-        clientOptions.params.email = data;
+        params.email = data;
       } else {
-        clientOptions.params.email = data.email;
+        params.email = data.email;
 
         if (data.mode) {
-          clientOptions.params.mode = data.mode;
+          params.mode = data.mode;
         }
       }
 
-      const response = await userClient.get(http, '/forgot_password', clientOptions);
+      const response = await userClient.get(http, '/forgot_password', { ...options, params });
 
       return response.status === Results.Success;
     },
