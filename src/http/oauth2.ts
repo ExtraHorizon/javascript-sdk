@@ -31,6 +31,18 @@ export function createOAuth2HttpClient(
       refreshToken: options.refreshToken,
       accessToken: options.accessToken,
     };
+
+    if (options.expiresIn != null) {
+      tokenData.expiresIn = options.expiresIn;
+    }
+
+    if (options.creationTimestamp) {
+      if (options.creationTimestamp instanceof Date) {
+        tokenData.creationTimestamp = options.creationTimestamp;
+      } else {
+        tokenData.creationTimestamp = new Date(options.creationTimestamp);
+      }
+    }
   }
 
   const clientCredentials = getClientCredentials(options);
