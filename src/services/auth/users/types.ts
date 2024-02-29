@@ -129,8 +129,8 @@ export interface MfaSetting {
 export interface MfaMethodCreation {
   presenceToken: string;
   type: string; // totp or recoveryCodes
-  name: string;
-  tags: string[];
+  name?: string;
+  tags?: string[];
 }
 
 export interface MfaMethodVerification {
