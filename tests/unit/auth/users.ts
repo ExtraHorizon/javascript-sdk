@@ -81,6 +81,20 @@ describe('Auth - Applications', () => {
     expect(addedMethod.id).toEqual('609b8ad0c0de01f7b1e8b54d');
   });
 
+  it('Adds an MFA method for user with just the minimal required fields set', async () => {
+    const exampleMethod = mfaSetting.methods[0];
+    nock(`${host}${AUTH_BASE}`)
+      .post(`/mfa/users/${userId}/methods`)
+      .reply(200, exampleMethod);
+
+    const addedMethod = await sdk.auth.users.addMfaMethod(userId, {
+      presenceToken: 'test',
+      type: 'totp',
+    });
+
+    expect(addedMethod.id).toStrictEqual(exampleMethod.id);
+  });
+
   it('should verify mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(
