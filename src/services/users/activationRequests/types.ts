@@ -11,6 +11,33 @@ export interface ActivationRequestsService {
   find(options?: OptionsWithRql): Promise<PagedResult<ActivationRequest>>;
 
   /**
+   * Find an activation request
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ACTIVATION_REQUESTS` | global | **Required** for this endpoint
+   */
+  findFirst(options?: OptionsWithRql): Promise<ActivationRequest>;
+
+  /**
+   * Find an activation request by its id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ACTIVATION_REQUESTS` | global | **Required** for this endpoint
+   */
+  findById(id: string, options?: OptionsWithRql): Promise<ActivationRequest>;
+
+  /**
+   * Find an activation request for a user id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ACTIVATION_REQUESTS` | global | **Required** for this endpoint
+   */
+  findByUserId(userId: string, options?: OptionsWithRql): Promise<ActivationRequest>;
+
+  /**
    * Remove an activation request
    *
    * Permission | Scope | Effect

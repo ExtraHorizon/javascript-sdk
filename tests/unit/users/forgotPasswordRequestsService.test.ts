@@ -57,6 +57,36 @@ describe('Forgot Password Requests Service', () => {
     expect(result).toStrictEqual(createPagedResponse(exampleForgotPasswordRequest));
   });
 
+  it('Returns a single password reset request', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/forgot_password_requests/?eq(user_id,64a4278da7b5c90d6975cab2)')
+      .reply(200, createPagedResponse(exampleForgotPasswordRequestResponse));
+
+    const result = await sdk.users.forgotPasswordRequests.findByUserId('64a4278da7b5c90d6975cab2');
+
+    expect(result).toStrictEqual(exampleForgotPasswordRequest);
+  });
+
+  it('Returns a password reset request by its id', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/forgot_password_requests/?eq(id,649be612a20eef8147f25f81)')
+      .reply(200, createPagedResponse(exampleForgotPasswordRequestResponse));
+
+    const result = await sdk.users.forgotPasswordRequests.findById('649be612a20eef8147f25f81');
+
+    expect(result).toStrictEqual(exampleForgotPasswordRequest);
+  });
+
+  it('Returns a password reset request by a user id', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/forgot_password_requests/?eq(user_id,64a4278da7b5c90d6975cab2)')
+      .reply(200, createPagedResponse(exampleForgotPasswordRequestResponse));
+
+    const result = await sdk.users.forgotPasswordRequests.findByUserId('64a4278da7b5c90d6975cab2');
+
+    expect(result).toStrictEqual(exampleForgotPasswordRequest);
+  });
+
   it('Removes a forgot password request', async () => {
     const id = '649be612a20eef8147f25f81';
 

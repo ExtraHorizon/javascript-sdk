@@ -33,9 +33,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Methods to work with the activation requests:
   - `exh.users.activationRequests.find`
+  - `exh.users.activationRequests.findFirst`
+  - `exh.users.activationRequests.findById`
+  - `exh.users.activationRequests.findByUserId`
   - `exh.users.activationRequests.remove`
 - Methods to work with the forgot password requests:
   - `exh.users.forgotPasswordRequests.find`
+  - `exh.users.forgotPasswordRequests.findFirst`
+  - `exh.users.forgotPasswordRequests.findById`
+  - `exh.users.forgotPasswordRequests.findByUserId`
   - `exh.users.forgotPasswordRequests.remove`
 - Methods to work with the user verification settings:
   - `exh.users.settings.getVerificationSettings`
