@@ -57,6 +57,38 @@ describe('Activation Requests Service', () => {
     expect(result).toStrictEqual(createPagedResponse(exampleActivationRequest));
   });
 
+  it('Returns a single activation request', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/activation_requests/?eq(user_id,64a4278da7b5c90d6975cab2)')
+      .reply(200, createPagedResponse(exampleActivationRequestResponse));
+
+    const result = await sdk.users.activationRequests.findFirst({
+      rql: rqlBuilder().eq('user_id', '64a4278da7b5c90d6975cab2').build(),
+    });
+
+    expect(result).toStrictEqual(exampleActivationRequest);
+  });
+
+  it('Returns a activation request by its id', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/activation_requests/?eq(id,649be612a20eef8147f25f81)')
+      .reply(200, createPagedResponse(exampleActivationRequestResponse));
+
+    const result = await sdk.users.activationRequests.findById('649be612a20eef8147f25f81');
+
+    expect(result).toStrictEqual(exampleActivationRequest);
+  });
+
+  it('Returns a activation request by a user id', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/activation_requests/?eq(user_id,64a4278da7b5c90d6975cab2)')
+      .reply(200, createPagedResponse(exampleActivationRequestResponse));
+
+    const result = await sdk.users.activationRequests.findByUserId('64a4278da7b5c90d6975cab2');
+
+    expect(result).toStrictEqual(exampleActivationRequest);
+  });
+
   it('Removes an activation request', async () => {
     const id = '649be612a20eef8147f25f81';
 
