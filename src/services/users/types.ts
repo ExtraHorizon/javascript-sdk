@@ -956,7 +956,8 @@ export interface UsersService {
   changePassword(
     requestBody: ChangePassword,
     options?: OptionsBase
-  ): Promise<User>;
+  ): Promise<boolean>;
+
   /**
    * Authenticate a user
    *

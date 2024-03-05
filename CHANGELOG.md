@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `exh.auth.applications.deleteVersion` now calls the correct endpoint
 - Automatic oAuth2 access token refreshing now properly uses client credentials
 - Optional fields for `exh.auth.users.addMfaMethod` are now correctly marked as optional
+- The return value of `exh.users.changePassword` is now correctly typed as a boolean
 
 ## [8.0.0]
 
