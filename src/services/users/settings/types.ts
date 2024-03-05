@@ -36,18 +36,22 @@ export interface VerificationSettings {
   enablePinCodeForgotPasswordRequests: boolean;
 
   /**
+   * - Limits the time a hash is valid to 60 minutes.
+   * - Limits the time a pin code is valid to 15 minutes.
    * - Limits the amount of times the account activation flow can be initiated without success to 3.
    * - Requires the time between account activation flow initiations to be at least 15 minutes.
    *
-   * @deprecated Security feature. Only should be disabled while existing applications implement the feature, otherwise we strongly advise keep this feature enabled.
+   * @deprecated Security feature. Only should be disabled while existing applications implement the feature, otherwise this feature should always be enabled.
    */
   limitActivationRequests: boolean;
 
   /**
+   * - Limits the time a hash is valid to 60 minutes.
+   * - Limits the time a pin code is valid to 15 minutes.
    * - Limits the amount of times the forgot password flow can be initiated without success to 3.
    * - Requires the time between forgot password flow initiations to be at least 15 minutes.
    *
-   * @deprecated Security feature. Only should be disabled while existing applications implement the feature, otherwise we strongly advise keep this feature enabled.
+   * @deprecated Security feature. Only should be disabled while existing applications implement the feature, otherwise this feature should always be enabled.
    */
   limitForgotPasswordRequests: boolean;
 }

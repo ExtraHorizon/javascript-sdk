@@ -853,12 +853,14 @@ export interface UsersService {
    *
    * By default the email send to the user is the email template configured by `reactivationEmailTemplateId`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
    * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
    * Then the email send to the user is the email template configured by `reactivationPinEmailTemplateId`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
    * If a custom (or no) account activation flow is desired, the `activationMode` field can be set to `manual`.
    * No email will be send.
@@ -921,12 +923,14 @@ export interface UsersService {
    *
    * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
    * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
    * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
    * If a custom (or no) account activation flow is desired, the `activationMode` field can be set to `manual`.
    * No email will be send.
@@ -981,6 +985,7 @@ export interface UsersService {
    *
    * The email send to the user is the email template configured by `activationEmailTemplateId`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -1005,12 +1010,14 @@ export interface UsersService {
    *
    * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
    * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
    * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -1054,6 +1061,7 @@ export interface UsersService {
    *
    * The email send to the user is the email template configured by `passwordResetEmailTemplateId`.
    * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -1075,12 +1083,14 @@ export interface UsersService {
    *
    * By default the email send to the user is the email template configured by `passwordResetEmailTemplateId`.
    * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeForgotPasswordRequests` verification setting.
    * To use the pin code mode, the `mode` field can be set to `pin_code`.
    * Then the email send to the user is the email template configured by `passwordResetPinEmailTemplateId`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
