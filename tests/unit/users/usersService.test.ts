@@ -200,12 +200,14 @@ describe('Users Service', () => {
     expect(result).toEqual({ affectedRecords: 1 });
   });
 
-  it('should update a users password', async () => {
-    nock(`${host}${USER_BASE}`).put(`/password`).reply(200, userData);
+  it('Updates a users password', async () => {
+    nock(`${host}${USER_BASE}`)
+      .put('/password')
+      .reply(200);
 
     const result = await sdk.users.changePassword({ oldPassword, newPassword });
 
-    expect(result.id).toEqual(userData.id);
+    expect(result).toBe(true);
   });
 
   it('should authenticate', async () => {

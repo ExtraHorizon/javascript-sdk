@@ -115,9 +115,9 @@ export default (
     },
 
     async changePassword(requestBody, options) {
-      return (
-        await userClient.put(httpWithAuth, '/password', requestBody, options)
-      ).data;
+      const response = await userClient.put(httpWithAuth, '/password', requestBody, options);
+
+      return response.status === Results.Success;
     },
 
     async authenticate(requestBody, options) {
