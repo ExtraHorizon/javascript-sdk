@@ -9,14 +9,14 @@ import {
 describe('Settings Service', () => {
   const host = 'https://api.xxx.extrahorizon.com';
   const exampleSettings = {
-    limitActivationRequests: false,
-    limitForgotPasswordRequests: false,
+    limitHashActivationRequests: false,
+    limitHashForgotPasswordRequests: false,
     enablePinCodeActivationRequests: false,
     enablePinCodeForgotPasswordRequests: false,
   };
   const exampleResponse = {
-    limit_activation_requests: false,
-    limit_forgot_password_requests: false,
+    limit_hash_activation_requests: false,
+    limit_hash_forgot_password_requests: false,
     enable_pin_code_activation_requests: false,
     enable_pin_code_forgot_password_requests: false,
   };
@@ -42,8 +42,8 @@ describe('Settings Service', () => {
   });
 
   it('Updates the verification settings', async () => {
-    const updateData = { limitActivationRequests: true };
-    const requestData = { limit_activation_requests: true };
+    const updateData = { limitHashActivationRequests: true };
+    const requestData = { limit_hash_activation_requests: true };
     const responseData = { ...exampleResponse, ...requestData };
     const updatedSettings = { ...exampleSettings, ...updateData };
 
