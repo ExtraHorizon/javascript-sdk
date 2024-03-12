@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic oAuth2 access token refreshing now properly uses client credentials
 - Optional fields for `exh.auth.users.addMfaMethod` are now correctly marked as optional
 - The return value of `exh.users.changePassword` is now correctly typed as a boolean
+- Corrected the `VIEW_API_FUNCTION_REQUEST_LOGS` permission name mentioned in the inline documentation
 
 ## [8.0.0]
 
