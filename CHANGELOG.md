@@ -25,9 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `reactivationPinEmailTemplateId`
   - `passwordResetPinEmailTemplateId`
 - Improved oAuth2 access token refreshing
-  - If we're able to estimate the expiry time of a token, the token is refreshed before it expires
-  - This done just before a request is about to made
-  - Preventing the extra request to just receive an expired token error 
+  - If the SDK is able to estimate the expiry time of an access token, the token is refreshed before it expires
+  - This done just before a request is about to made, preventing the extra request to just receive an expired token error
+  - Tokens received from the `exh.auth.authenticate` method, next to `expiresIn`, now also include an `creationTimestamp` field
+  - `createClient` and `createOAuth2Client` now accept an `expiresIn` and `creationTimestamp` field 
 
 ### Added
 
@@ -54,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional fields for `exh.auth.users.addMfaMethod` are now correctly marked as optional
 - The return value of `exh.users.changePassword` is now correctly typed as a boolean
 - Corrected the `VIEW_API_FUNCTION_REQUEST_LOGS` permission name mentioned in the inline documentation
+- The `statuses` field of the data service `Schema` entity is now typed correctly
 
 ## [8.0.0]
 
