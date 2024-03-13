@@ -18,31 +18,29 @@ interface RequestConfig {
   url?: string;
   method?: Method;
   baseURL?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   headers?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   params?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   data?: any;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Response<T = any> {
   data: T;
   status: number;
   statusText: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   headers: any;
   config: RequestConfig;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   request?: any;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface HttpError<T = any> extends Error {
   config: RequestConfig;
   code?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   request?: any;
   response?: Response<T>;
   isAxiosError: boolean;
@@ -50,37 +48,33 @@ export interface HttpError<T = any> extends Error {
   toJSON: () => Record<string, unknown>;
 }
 
-const cleanHeaders = (headers: Record<string, unknown>) =>
-  headers &&
+const cleanHeaders = (headers: Record<string, unknown>) => (headers &&
   'Authorization' in headers &&
-  typeof headers.Authorization === 'string'
-    ? {
-        ...headers,
-        Authorization: `${
-          headers.Authorization.startsWith('Bearer')
-            ? ''
-            : headers.Authorization.substring(0, 75)
-        } ... ${headers.Authorization.substring(-20)}}`,
-      }
-    : headers;
+  typeof headers.Authorization === 'string' ?
+  {
+    ...headers,
+    Authorization: `${
+      headers.Authorization.startsWith('Bearer') ?
+        '' :
+        headers.Authorization.substring(0, 75)
+    } ... ${headers.Authorization.substring(-20)}}`,
+  } :
+  headers);
 
-const getHttpErrorName = (error: HttpError) =>
-  error?.response?.data?.name || error?.response?.data?.error || 'API_ERROR';
+const getHttpErrorName = (error: HttpError) => error?.response?.data?.name || error?.response?.data?.error || 'API_ERROR';
 
-const getHttpErrorMessage = (error: HttpError) =>
-  error?.response?.data?.description ||
+const getHttpErrorMessage = (error: HttpError) => error?.response?.data?.description ||
   error?.response?.data?.message ||
   'Received an error without a message';
 
-const getHttpErrorRequestData = (error: HttpError) =>
-  error?.config
-    ? {
-        url: error.config.url,
-        headers: cleanHeaders(error.config.headers), // Obscure the Authorization token
-        method: error.config.method,
-        payloadData: error.config.data,
-      }
-    : {};
+const getHttpErrorRequestData = (error: HttpError) => (error?.config ?
+  {
+    url: error.config.url,
+    headers: cleanHeaders(error.config.headers), // Obscure the Authorization token
+    method: error.config.method,
+    payloadData: error.config.data,
+  } :
+  {});
 
 export class ApiError extends Error {
   public qName?: string;
@@ -93,10 +87,8 @@ export class ApiError extends Error {
 
   public error?: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public request?: Record<string, any>;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public response?: Record<string, any>;
 
   constructor(data: ApiError) {
@@ -191,6 +183,8 @@ export class NotActivatedError extends BadRequestError {}
 export class EmptyBodyError extends BadRequestError {}
 
 export class NewPasswordHashUnknownError extends BadRequestError {}
+export class NewPasswordPinCodeUnknownError extends BadRequestError {}
+export class IncorrectPinCodeError extends BadRequestError {}
 export class IllegalStateError extends BadRequestError {}
 export class StatusInUseError extends BadRequestError {}
 export class LockedDocumentError extends BadRequestError {}
@@ -267,6 +261,11 @@ export class TokenNotDeleteableError extends ForbiddenError {}
 export class RemoveFieldError extends ForbiddenError {}
 export class DisabledForOidcUsersError extends ForbiddenError {}
 export class NewMFARequiredError extends ForbiddenError {}
+export class PinCodesNotEnabledError extends ForbiddenError {}
+export class ForgotPasswordRequestLimitError extends ForbiddenError {}
+export class ForgotPasswordRequestTimeoutError extends ForbiddenError {}
+export class ActivationRequestLimitError extends ForbiddenError {}
+export class ActivationRequestTimeoutError extends ForbiddenError {}
 
 // 404 Not Found
 export class NotFoundError extends ApiError {}
@@ -420,6 +419,13 @@ export const ErrorClassMap = {
   212: LoginFreezeError,
   213: TooManyFailedAttemptsError,
   215: DisabledForOidcUsersError,
+  218: PinCodesNotEnabledError,
+  219: NewPasswordPinCodeUnknownError,
+  220: ForgotPasswordRequestLimitError,
+  221: ForgotPasswordRequestTimeoutError,
+  222: ActivationRequestLimitError,
+  223: ActivationRequestTimeoutError,
+  224: IncorrectPinCodeError,
   301: ProfileAlreadyExistsError,
   414: StatusInUseError,
   415: LockedDocumentError,

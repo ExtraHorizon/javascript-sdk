@@ -1,8 +1,8 @@
-import type { HttpInstance } from '../../types';
-import { ResultResponse, Results } from '../types';
 import { rqlBuilder } from '../../rql';
-import { MailsService } from './types';
+import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
+import { ResultResponse, Results } from '../types';
+import { MailsService } from './types';
 
 export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
   async health(): Promise<boolean> {

@@ -1,6 +1,14 @@
 import axios from 'axios';
 import btoa from '../btoa';
+import { AUTH_BASE } from '../constants';
 import { Oauth2AuthParams, ParamsOauth2 } from '../types';
+import {
+  camelizeResponseData,
+  retryInterceptor,
+  transformKeysResponseData,
+  transformResponseData,
+  typeReceivedErrorsInterceptor,
+} from './interceptors';
 import {
   HttpInstance,
   MfaConfig,
@@ -9,14 +17,6 @@ import {
   OidcAuthenticationUrlRequest,
   TokenDataOauth2,
 } from './types';
-import {
-  camelizeResponseData,
-  retryInterceptor,
-  transformKeysResponseData,
-  transformResponseData,
-  typeReceivedErrorsInterceptor,
-} from './interceptors';
-import { AUTH_BASE } from '../constants';
 
 const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
 
@@ -31,6 +31,18 @@ export function createOAuth2HttpClient(
       refreshToken: options.refreshToken,
       accessToken: options.accessToken,
     };
+
+    if (options.expiresIn != null) {
+      tokenData.expiresIn = options.expiresIn;
+    }
+
+    if (options.creationTimestamp) {
+      if (options.creationTimestamp instanceof Date) {
+        tokenData.creationTimestamp = options.creationTimestamp;
+      } else {
+        tokenData.creationTimestamp = new Date(options.creationTimestamp);
+      }
+    }
   }
 
   const clientCredentials = getClientCredentials(options);
@@ -69,19 +81,21 @@ export function createOAuth2HttpClient(
     );
   }
 
-  const refreshTokens = async () => {
-    const tokenResult = await http.post(TOKEN_ENDPOINT, {
-      grant_type: 'refresh_token',
-      refresh_token: tokenData.refreshToken,
-    });
-    await setTokenData(tokenResult.data);
-    return tokenResult.data;
-  };
-
   // If set, add the access token to each request
   httpWithAuth.interceptors.request.use(async config => {
     if (!tokenData?.accessToken) {
       return config;
+    }
+
+    // If we have an estimate of when the token is about to expire, try to refresh before it expires
+    if (tokenData.expiresIn && tokenData.creationTimestamp) {
+      const expireTime = tokenData.creationTimestamp.getTime() + tokenData.expiresIn * 1000;
+
+      // Refresh 10 seconds before the token is about to expire.
+      // This is to prevent being just too late with a refresh of the token due to latencies
+      if (Date.now() > expireTime - 10 * 1000) {
+        await authenticate({ refreshToken: tokenData.refreshToken });
+      }
     }
 
     return {
@@ -109,7 +123,7 @@ export function createOAuth2HttpClient(
       !originalRequest.isRetryWithRefreshedTokens
     ) {
       originalRequest.isRetryWithRefreshedTokens = true;
-      await refreshTokens();
+      await authenticate({ refreshToken: tokenData.refreshToken });
       return httpWithAuth(originalRequest);
     }
 
@@ -122,11 +136,24 @@ export function createOAuth2HttpClient(
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
-  async function setTokenData(data: TokenDataOauth2) {
+  /**
+   * - Adds a creationTimestamp to the token
+   * - Notifies the user
+   * - Stores the token to authenticate future requests
+   * - Returns the token
+   */
+  async function dateAndSetTokenData(data: TokenDataOauth2) {
+    const datedData = {
+      ...data,
+      creationTimestamp: new Date(),
+    };
+
     if (options.freshTokensCallback) {
-      await options.freshTokensCallback(data);
+      await options.freshTokensCallback(datedData);
     }
-    tokenData = data;
+    tokenData = datedData;
+
+    return datedData;
   }
 
   async function authenticate(
@@ -140,17 +167,17 @@ export function createOAuth2HttpClient(
         ...clientCredentials,
         ...grantData,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
-    await setTokenData(tokenResult.data);
-    return tokenResult.data;
+
+    return await dateAndSetTokenData(tokenResult.data);
   }
 
   async function confirmMfa({
@@ -167,17 +194,17 @@ export function createOAuth2HttpClient(
         code,
         method_id: methodId,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
-    await setTokenData(tokenResult.data);
-    return tokenResult.data;
+
+    return await dateAndSetTokenData(tokenResult.data);
   }
 
   async function generateOidcAuthenticationUrl(
@@ -202,19 +229,17 @@ export function createOAuth2HttpClient(
         ...clientCredentials,
         ...data,
       },
-      clientCredentials.client_secret
-        ? {
-            auth: {
-              username: clientCredentials.client_id,
-              password: clientCredentials.client_secret,
-            },
-          }
-        : {}
+      clientCredentials.client_secret ?
+        {
+          auth: {
+            username: clientCredentials.client_id,
+            password: clientCredentials.client_secret,
+          },
+        } :
+        {}
     );
 
-    await setTokenData(response.data);
-
-    return response.data;
+    return await dateAndSetTokenData(response.data);
   }
 
   function logout(): boolean {

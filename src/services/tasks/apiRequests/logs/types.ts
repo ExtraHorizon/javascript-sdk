@@ -6,7 +6,7 @@ export interface ApiRequestLogsService {
    * ## Retrieve a list of logs for an API Request
    *
    * **Global Permissions:**
-   * - `VIEW_API_REQUEST_LOGS` - **Required** for this endpoint
+   * - `VIEW_API_FUNCTION_REQUEST_LOGS` - **Required** for this endpoint
    *
    * @param apiRequestId {@link string} The id of the targeted API Request
    * @param options {@link OptionsWithRql} - Additional options for the request
@@ -18,7 +18,7 @@ export interface ApiRequestLogsService {
    * ## Retrieve the first queried API Request log
    *
    * **Global Permissions:**
-   * - `VIEW_API_REQUEST_LOGS` - **Required** for this endpoint
+   * - `VIEW_API_FUNCTION_REQUEST_LOGS` - **Required** for this endpoint
    *
    * @param apiRequestId {@link string} The id of the targeted API Request
    * @param options {@link OptionsWithRql} - Additional options for the request

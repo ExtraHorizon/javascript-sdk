@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.0]
+
+### Changed
+
+- `exh.users.createAccount` and `exh.users.updateEmail`:
+  - Now accept an `activationMode` field
+  - After enabling in the verification settings, this field can be set to use the pin code mode
+- `exh.users.requestEmailActivation` and `exh.users.requestPasswordReset`:
+  - Alternatively now also accept an object with an `email` and `mode` field
+  - After enabling in the verification settings, the `mode` field can be set to use the pin code mode
+  - Additional errors are thrown when request limiting is enabled via the verification settings
+- `exh.users.validatePasswordReset` and `exh.users.validateEmailActivation`:
+  - Alternatively now also accept an `email` and `pinCode` field
+  - Additional errors are thrown when using the pin code mode
+- `exh.users.getEmailTemplates` and `exh.users.setEmailTemplates` now support the new pin code email templates:
+  - `oidcUnlinkPinEmailTemplateId`
+  - `activationPinEmailTemplateId`
+  - `reactivationPinEmailTemplateId`
+  - `passwordResetPinEmailTemplateId`
+- Improved oAuth2 access token refreshing
+  - If the SDK is able to estimate the expiry time of an access token, the token is refreshed before it expires
+  - This done just before a request is about to made, preventing the extra request to just receive an expired token error
+  - Tokens received from the `exh.auth.authenticate` method, next to `expiresIn`, now also include an `creationTimestamp` field
+  - `createClient` and `createOAuth2Client` now accept an `expiresIn` and `creationTimestamp` field 
+
+### Added
+
+- Methods to work with the activation requests:
+  - `exh.users.activationRequests.find`
+  - `exh.users.activationRequests.findFirst`
+  - `exh.users.activationRequests.findById`
+  - `exh.users.activationRequests.findByUserId`
+  - `exh.users.activationRequests.remove`
+- Methods to work with the forgot password requests:
+  - `exh.users.forgotPasswordRequests.find`
+  - `exh.users.forgotPasswordRequests.findFirst`
+  - `exh.users.forgotPasswordRequests.findById`
+  - `exh.users.forgotPasswordRequests.findByUserId`
+  - `exh.users.forgotPasswordRequests.remove`
+- Methods to work with the user verification settings:
+  - `exh.users.settings.getVerificationSettings`
+  - `exh.users.settings.updateVerificationSettings`
+
+### Fixed
+
+- `exh.auth.applications.deleteVersion` now calls the correct endpoint
+- Automatic oAuth2 access token refreshing now properly uses client credentials
+- Optional fields for `exh.auth.users.addMfaMethod` are now correctly marked as optional
+- The return value of `exh.users.changePassword` is now correctly typed as a boolean
+- Corrected the `VIEW_API_FUNCTION_REQUEST_LOGS` permission name mentioned in the inline documentation
+- The `statuses` field of the data service `Schema` entity is now typed correctly
+
 ## [8.0.0]
 
 ### Changed

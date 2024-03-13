@@ -9,42 +9,265 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.0]
+
+### Changed
+
+- `exh.users.createAccount` and `exh.users.updateEmail`:
+  - Now accept an `activationMode` field
+  - After enabling in the verification settings, this field can be set to use the pin code mode
+- `exh.users.requestEmailActivation` and `exh.users.requestPasswordReset`:
+  - Alternatively now also accept an object with an `email` and `mode` field
+  - After enabling in the verification settings, the `mode` field can be set to use the pin code mode
+  - Additional errors are thrown when request limiting is enabled via the verification settings
+- `exh.users.validatePasswordReset` and `exh.users.validateEmailActivation`:
+  - Alternatively now also accept an `email` and `pinCode` field
+  - Additional errors are thrown when using the pin code mode
+- `exh.users.getEmailTemplates` and `exh.users.setEmailTemplates` now support the new pin code email templates:
+  - `oidcUnlinkPinEmailTemplateId`
+  - `activationPinEmailTemplateId`
+  - `reactivationPinEmailTemplateId`
+  - `passwordResetPinEmailTemplateId`
+- Improved oAuth2 access token refreshing
+  - If the SDK is able to estimate the expiry time of an access token, the token is refreshed before it expires
+  - This done just before a request is about to made, preventing the extra request to just receive an expired token error
+  - Tokens received from the `exh.auth.authenticate` method, next to `expiresIn`, now also include an `creationTimestamp` field
+  - `createClient` and `createOAuth2Client` now accept an `expiresIn` and `creationTimestamp` field 
+
+### Added
+
+- Methods to work with the activation requests:
+  - `exh.users.activationRequests.find`
+  - `exh.users.activationRequests.findFirst`
+  - `exh.users.activationRequests.findById`
+  - `exh.users.activationRequests.findByUserId`
+  - `exh.users.activationRequests.remove`
+- Methods to work with the forgot password requests:
+  - `exh.users.forgotPasswordRequests.find`
+  - `exh.users.forgotPasswordRequests.findFirst`
+  - `exh.users.forgotPasswordRequests.findById`
+  - `exh.users.forgotPasswordRequests.findByUserId`
+  - `exh.users.forgotPasswordRequests.remove`
+- Methods to work with the user verification settings:
+  - `exh.users.settings.getVerificationSettings`
+  - `exh.users.settings.updateVerificationSettings`
+
+### Fixed
+
+- `exh.auth.applications.deleteVersion` now calls the correct endpoint
+- Automatic oAuth2 access token refreshing now properly uses client credentials
+- Optional fields for `exh.auth.users.addMfaMethod` are now correctly marked as optional
+- The return value of `exh.users.changePassword` is now correctly typed as a boolean
+- Corrected the `VIEW_API_FUNCTION_REQUEST_LOGS` permission name mentioned in the inline documentation
+- The `statuses` field of the data service `Schema` entity is now typed correctly
+
+## [8.0.0]
+
+### Changed
+- **Breaking Change:** RQL values are now [double encoded](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters) by default when using the RQL builder
+  - Disable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = false`
+  - Disable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: false }).eq(name, '< value >').build()`
+  - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
+- **Breaking Change:** Starting from v8.0.0, the SDK will no longer normalize custom keys in requests and responses. This means that all custom keys will be sent and received as they are provided.
+  - The normalization of custom keys can be re-enabled for a single operation to the behavior before 8.0.0 by setting the option `exh.service.operation({ normalizeCustomData: true })`
+  - The normalization of custom keys can be re-enabled for all operations on a client to the behavior before 8.0.0 using the snippet `exh = createClient({ ...options, normalizeCustomData: true });`
+  - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
+- **Breaking Change:** For all unauthenticated methods the response will now undergo the same transformation steps as any other request.
+  - The timestamps previously returned as strings are now converted to date objects in `exh.auth.authenticate`, `exh.auth.confirmMfa` and`exh.users.createAccount`.
+  - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
+- New implementation of the hashing for oAuth1 signature generation
+  - This change is not expected to have any impact on the SDK usage
+
+### Bug Fixes
+- In the `TokenDataOauth1` interface `updateTimeStamp` is changed to `updateTimestamp`
+- `timeZone` is now accepted as a valid parameter for the resolve functions in the template service
+
+
+## [v7.8.0]
+
+### Changed
+- New implementation of the oAuth1 signature generation to support double Encoding of RQL values in `OAuth1` clients
+
+## [v7.7.0]
+
+### Added
+- Functionality to allow the [double encoding](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#double-encoding-of-special-characters) of values when using the RQL builder
+  - Enable double encoding for all RQL operations with `rqlBuilder.doubleEncodeValues = true`
+  - Enable double encoding for a single RQL operation `rqlBuilder({ doubleEncodeValues: true }).eq(name, '< value >').build()`
+  - When enabling double encoded values ensure that instances of encoding values for the rql builder such as `encodeURIComponent()` are removed
+  - Double Encoding of RQL values is currently only supported in `OAuth2` clients and will come to `OAuth1` clients at a later date.
+
+
+- A skip count operator to the rql builder `rqlBuilder().eq(name, '< value >').skipCount().build()`
+  - Providing this operator skips the record counting step of a request to increase performance. As a result, the page object in a response will not include the total field.
+  - The skip count operator is currently supported in [select services](https://docs.extrahorizon.com/extrahorizon/additional-resources/resource-query-language-rql#services-with-the-skip-count-rql-operator), and efforts are underway to make it available for all services.
+
+### Fixed
+- Documentation for an incorrect permission value of `exh.users.globalRoles.addPermissions()`
+  - `REMOVE_ROLE_PERMISSIONS` to `REMOVE_ROLE_PERMISSION`
+
+## [v7.6.0]
+
+### Added
+- `findAll`, `findAllIterator` and `update` methods to the Dispatcher service
+
+### Improvements
+- Updated types and documentation for the Dispatcher service
+- Exported the missing `RQLString` type
+
+## [v7.5.1]
+
+### Added
+- Type support React Native form data
+
+### Fixes
+- Bumped Axios version to fix content-type header issue
+- Fixed `onUploadProgress` callback event triggering without a provided function
+- Removed discrimination between node and web environments
+
+## [v7.5.0]
+
+### Added
+
+- Support for File Service settings:
+  - File Service [settings](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#settings) may now be managed using methods found in:
+    - `exh.files.settings`
+
+## [v7.4.1]
+
+### Fixes
+
+- Correctly export the interfaces of the tasks component
+
+## [v7.4.0]
+
+### Added
+
+- Support for API Functions:
+  - An [API Function](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions) may now be executed using methods found in:
+    - `exh.tasks.api`
+  - [API Requests](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-requests) produced by executing API Functions are accessible using methods found in:
+    - `exh.tasks.apiRequests`
+  - [API Request Logs](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-request-logs) produced during the execution of an API Function can be accessed using methods found in:
+    - `exh.tasks.apiRequests.logs`
+
+
+- A Function may now be directly executed as a task using the method:
+  - `exh.tasks.functions.execute()`
+
+
+- Support for Tasks
+  - Task Schedules may now be managed using methods found in:
+    - `exh.tasks.schedules`
+  - Task Logs produced during the execution of a task can now be accessed using methods found in:
+    - `exh.tasks.logs`
+
+
+- Monitoring File Uploads
+  - The SDK now supports [monitoring file uploads](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#monitoring-a-file-upload) in the browser using a callback function.
+  ```js
+  function uploadProgressCallback(event) {
+      const progress = (event.loaded / event.total) * 100;
+      // ... Do something with the progress value
+  }
+      
+  const fileMetaData = await exh.files.create('myReport.pdf', myBuffer, {
+      onUploadProgress: uploadProgressCallback,
+      tags: ['ecg-report']
+  });
+  ```
+
+### Changed
+
+- `VIEW_GROUPS` permission value is changed to the correct `VIEW_GROUP`
+- `ADD_ROLE_PERMISSION` is now described correctly as singular in the inline documentation
+- Updated `RegisterUserData` interface optional fields
+
+## [v7.3.0]
+
+### Added
+
+- Support for OpenID Connect
+  - OAuth 2 clients now allow users to authenticate themselves with OpenID connect. See:
+    - `exh.auth.generateOidcAuthenticationUrl()`
+    - `exh.auth.authenticateWithOidc()`
+  - Manage your OpenID Connect configuration via new methods found in:
+    - `exh.auth.oidc`
+    - `exh.auth.oidc.providers`
+    - `exh.auth.oidc.loginAttempts`
+- Methods to manage the User Service email templates:
+  - `exh.users.getEmailTemplates()`
+  - `exh.users.setEmailTemplates()`
+- While creating an oAuth1 client both `token` and `tokenSecret` can now be supplied.
+  In which case there is no need for an extra `exh.auth.authenticate` call.
+
+```ts
+const exh = createClient({
+  host: 'https://api.example.extrahorizon.io',
+  consumerKey: 'cf29b211b5030202ffce5b2510759d0a53ea5b17',
+  consumerSecret: '9bd34e19b5e1714e2c57ae0127d98dd0d0c0b2a2',
+  token: '409ce9ba49c56cce31b9d2b1b2f5ed5ac01b4011',
+  tokenSecret: '1cc0b97b4c4721bb6da3d85b80cda8165e6ad5a7',
+});
+
+const currentUser = await sdk.users.me();
+```
+
+- While creating an oAuth2 client both `refreshToken` and `accessToken` can now be supplied.
+  In which case there is no need for an extra `exh.auth.authenticate` call.
+
+```ts
+const exh = createClient({
+  host: 'https://api.example.extrahorizon.io',
+  clientId: 'f8d9c891c106131bec970c6da05f887dc82eaff7',
+  refreshToken: 'ca27ada704e5b26a1fca20c130daf4f95f727d3f',
+  accessToken: '019dc6fe1672176f28e8e894ba99aed1f49656c8',
+});
+
+const currentUser = await sdk.users.me();
+```
+
+### Changed
+- Improved types and inline documentation (JSDoc) for the `exh.auth.applications` section
+  - More detailed descriptions for the methods
+  - Descriptions for the fields within the data types we accept and return
+
 ## [v7.2.1]
 
-#### Added
+### Added
 
 - Support large file uploads
 
-#### Fixes
+### Fixes
 
 - Task cancellation
 
 ## [v7.2.0]
 
-#### Added
+### Added
 
 - For API errors the `qName` variable is mapped to the `name` variable, to improve consistency with default errors.
 
-#### Fixes
+### Fixes
 
 - Corrected the interfaces to be consistent with the API
 - Updated dead links in documentation
 
 ## [v7.1.0]
 
-#### Added
+### Added
 
 - `logout()` can now be performed on a proxy Client
 - Tasks now take an optional generic to set the data type
 - `userId` is now available on the raw mock
 
-#### Fixes
+### Fixes
 
 - The return type of `sdk.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
 
 ## [v7.0.0]
 
-#### Added
+### Added
 
 - OAuth1 token management -> `sdk.auth.oauth1.getTokens` / `sdk.auth.oauth1.removeToken`. See [issue #465](https://github.com/ExtraHorizon/javascript-sdk/issues/465)
 - Password policy -> `sdk.users.passwordPolicy` and `sdk.users.updatePasswordPolicy`
@@ -52,18 +275,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extra permissions for the updated task service
 - RQL option to several endpoints
 
-#### Changed
+### Changed
 
 - Types for the `sdk.auth.application.create` and `sdk.auth.application.createVersion` have been exported. See Authentication examples for more info.
 - Pako to fflate
 - Refactored the Schema and Document Types
 - Updated the `EnlistmentConfiguration` type. See [issue #596](https://github.com/ExtraHorizon/javascript-sdk/issues/596)
 
-#### Fixes
+### Fixes
 - Running `yarn` on windows machines resulted in an error [issue #612](https://github.com/ExtraHorizon/javascript-sdk/issues/612)
-- Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords` 
+- Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords`
 
-#### Breaking changes
+### Breaking changes
 
 - Removed `payments.playStoreHistory.purchases` (deprecated)
 - The `contains` and `excludes` endpoints of the rql builder now accepts an array of expressions iso a single string. See [issue #603](https://github.com/ExtraHorizon/javascript-sdk/issues/603)
@@ -74,20 +297,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 + sdk.users.groupRoles.remove(rql, groupId, options)
 ```
 
-## [v6.2.0]
-
-#### Added
-
-- `sdk.auth.oauth1.getTokens` / `sdk.auth.oauth1.removeToken`. See [issue #465](https://github.com/ExtraHorizon/javascript-sdk/issues/465)
-
-#### Changed
-
-- Types for the `sdk.auth.application.create` and `sdk.auth.application.createVersion` have been exported. See Authentication examples for more info.
-- Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords`
-
 ## [v6.1.0]
 
-#### Breaking changes
+### Breaking changes
 
 - renamed `createTransaction` to `completeTransaction` on the payments.appStore service
 
@@ -96,7 +308,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 + sdk.payments.appStore.completeTransaction
 ```
 
-#### Changed
+### Changed
 
 - When passing in `localhost` as host. No prefixing takes places.
 - Fixed bug when calling `sdk.files.create` with tags as an array. See [PR #544](https://github.com/ExtraHorizon/javascript-sdk/pull/544)
@@ -104,7 +316,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If you are using the `sdk.raw` instance you can now pass in additional parameters to the http verbs. See [PR #546](https://github.com/ExtraHorizon/javascript-sdk/pull/546)
 
 ```ts
-const result = sdk.raw.get("/files/v1", {
+const result = sdk.raw.get('/files/v1', {
   interceptors: {
     skipCamelizeResponseData: true, // will recursively rename keys to camelCase
     skipTransformResponseData: true, // maps the values of certain keys to Dates
@@ -141,7 +353,7 @@ const result = sdk.raw.get("/files/v1", {
 
 ## [v6.0.0]
 
-#### Breaking Changes
+### Breaking Changes
 
 - `sdk.data.documents.create` now accepts 3 generics.
 
@@ -159,7 +371,7 @@ const result = sdk.raw.get("/files/v1", {
 +): Promise<Document<OutputData, CustomStatus>>;
 ```
 
-#### Added
+### Added
 
 - `sdk.data.documents.update` now accepts a generic for the update type.
 - Exported `findAllGeneric` and `findAllIterator` for usage on raw functions
@@ -167,26 +379,26 @@ const result = sdk.raw.get("/files/v1", {
 
 ## [v5.3.1]
 
-#### Added/Fixed
+### Added/Fixed
 
 - Playstore endpoints can handle rql now
 
 ## [v5.3.0]
 
-#### Added
+### Added
 
 - There are now 3 mocked exports. `getMockSdkProxy`, `getMockSdkOAuth2` and `getMockSdkOAuth1` with matching types. The `getMockSdk` is also still available and mapped to `getMockSdkOAuth2`.
 
 ## [v5.2.0]
 
-#### Added
+### Added
 
 - `btoa` function to be used when you are using React-Native in combination with a Confidential Application. See documentation for more info.
 - `createOAuth1Client` and `createOAuth2Client` have had their type signatures updated. The `freshTokensCallback` will now have the correct type.
 - Updated payments service to reflect v1.2.0 payments REST API
 - `createProxyClient` is a new way to initialize the SDK using a proxy service.
 
-#### Changed
+### Changed
 
 - `Comment` interface.
 
@@ -202,11 +414,11 @@ const result = sdk.raw.get("/files/v1", {
 
 ## [v5.1.0]
 
-#### Added
+### Added
 
-- `oauth1/ssoTokens/generate` and `oauth1/ssoTokens/consume` are added under the `sdk.auth.oauth1` scope. [More info](https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/auth-service/2.0.4-dev/openapi.yaml#/SSO)
+- `oauth1/ssoTokens/generate` and `oauth1/ssoTokens/consume` are added under the `sdk.auth.oauth1` scope. [More info](https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/SSO)
 
-#### Changes
+### Changes
 
 - Calls not needing authentication are now correctly skipping this
 
@@ -219,7 +431,7 @@ sdk.users.isEmailAvailable();
 
 ## [v5.0.0]
 
-#### Breaking Changes
+### Breaking Changes
 
 - The payments services has had some refactoring.
 
@@ -244,22 +456,22 @@ sdk.users.isEmailAvailable();
 + sdk.payments.appStoreSubscriptions.products.update();
 ```
 
-#### Added
+### Added
 
 - `parseGlobalPermissions` is a function to parse strings are return valid permissions
 
-#### Changed
+### Changed
 
 - `userId` getter on the `OAuthClient` interface now returns a `Promise<string>` in stead of `string`. You can access this on `sdk.raw.userId`
 
 ## [v4.5.0]
 
-#### Added
+### Added
 
 - services that have a `findAll` method now also have `findAllIterator`.
 
 ```ts
-const iterator = sdk.data.documents.findAllIterator("5a9552adcfd7f200016728d5");
+const iterator = sdk.data.documents.findAllIterator('5a9552adcfd7f200016728d5');
 
 for await (const page of iterator) {
   console.log(page); /* PagedResult<Document> */
@@ -271,7 +483,7 @@ for await (const page of iterator) {
 ```ts
 const users = await sdk.users.find();
 
-console.log("users,", users.page); // { total: 8268, offset: 0, limit: 20 }
+console.log('users,', users.page); // { total: 8268, offset: 0, limit: 20 }
 
 console.log((await users.next()).page); // { total: 8268, offset: 20, limit: 20 }
 console.log((await users.next()).page); // { total: 8268, offset: 40, limit: 20 }
@@ -281,7 +493,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 
 - rqlParser accepts a regular string which will be checked using the parser function and returns a valid RQLString.
 
-#### Changes
+### Changes
 
 - added `endTimestamp` to list of fieldnames that are parsed at Date
 - rqlBuilder now supports the `excludes` operator
@@ -289,7 +501,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 
 ## [v4.4.0]
 
-#### Changes
+### Changes
 
 - Fixed `sdk.files.create` options types. See #352
 
@@ -306,7 +518,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 
 ## [v4.3.0]
 
-#### Changes
+### Changes
 
 - OAuth2 `authenticate` returns `tokenData`.
 - OAuth2 `authenticate` can now be used with an authorization code. See Docs.
@@ -314,21 +526,21 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 
 ```ts
 const sdk = createClient({
-  host: "https://api.dev.fibricheck.com",
-  clientId: "",
-  clientSecret: "",
+  host: 'https://api.dev.fibricheck.com',
+  clientId: '',
+  clientSecret: '',
 });
 ```
 
 ## [v4.2.1]
 
-#### Changes
+### Changes
 
 - removed console.log in `sdk.data.documents.find` function
 
 ## [v4.2.0]
 
-#### Added
+### Added
 
 - Fixed documentation tables
 - OAuth1 `authenticate` returns `tokenData`
@@ -340,10 +552,10 @@ const sdk = createClient({
 
 ```ts
 const sdk = createClient({
-  host: "https://api.dev.fibricheck.com",
-  clientId: "",
+  host: 'https://api.dev.fibricheck.com',
+  clientId: '',
   headers: {
-    "X-Forwarded-Application": "test",
+    'X-Forwarded-Application': 'test',
   },
 });
 ```
@@ -352,22 +564,22 @@ const sdk = createClient({
 
 ```ts
 await sdk.data.documents.create(
-  "5f3511c7e9ae42283ae2eb29",
+  '5f3511c7e9ae42283ae2eb29',
   {
-    model: "string",
+    model: 'string',
   },
-  { gzip: true, headers: { "x-test": "test" } }
+  { gzip: true, headers: { 'x-test': 'test' } }
 );
 ```
 
 ## [v4.1.0]
 
-#### Added
+### Added
 
 - Added missing permissions
 - Added findFirst method in users service
 
-#### Changes
+### Changes
 
 - Fixed bug to show a clear error when the user is not authenticated
 - Fixed documentation format
@@ -375,7 +587,7 @@ await sdk.data.documents.create(
 
 ## [v4.0.0]
 
-#### Breaking Changes
+### Breaking Changes
 
 - Updated rql parameter type. Is always `rql: RQLString` now. Functions affected:
   - sdk.payments.orders.addTagsToOrder
@@ -391,7 +603,7 @@ await sdk.data.documents.create(
 
 ## [3.2.0]
 
-#### Added
+### Added
 
 - Localizations Service
 - Profiles Service
@@ -399,7 +611,7 @@ await sdk.data.documents.create(
 - optional `skipTokenCheck` parameter to Oauth1 authentication flow with token/tokenSecret.
 - Events Service
 
-#### Changes
+### Changes
 
 - Fixed return types of `sdk.users.getStaff` and `sdk.users.getPatients`
 - Updated docs links
@@ -407,14 +619,14 @@ await sdk.data.documents.create(
 - Gzip option `sdk.data.documents.create`
 
 ```ts
-await sdk.data.documents.create("schemaId", document, {
+await sdk.data.documents.create('schemaId', document, {
   gzip: true,
 });
 ```
 
 ## [3.1.0]
 
-#### Breaking Changes
+### Breaking Changes
 
 - `sdk.files.create` signature has changed.
 
@@ -449,12 +661,12 @@ await sdk.data.documents.create("schemaId", document, {
 + const document = await sdk.data.documents.find<MyData>();
 ```
 
-#### Added
+### Added
 
 - `sdk.files.createFromText` where you can pass in your text directly.
 
 ```ts
-await sdk.files.createFromText("this-is-a-string");
+await sdk.files.createFromText('this-is-a-string');
 ```
 
 - Added `transitionsByName` getter to easily get the transition you need.
@@ -474,7 +686,7 @@ const {
   data: [schema],
 } = await sdk.data.schemas.find();
 
-const transitionId = schema.findTransitionIdByName("lambda_to_review");
+const transitionId = schema.findTransitionIdByName('lambda_to_review');
 ```
 
 - Added `findById`, `findByName` and `findFirst` helpers to services having a generic `find` function.
@@ -483,7 +695,7 @@ const transitionId = schema.findTransitionIdByName("lambda_to_review");
 
 ## [3.0.2]
 
-#### Breaking Changes
+### Breaking Changes
 
 - `apiHost` has been renamed to `host` and should not include the protocol or `api` subdomain. Example `
 
@@ -504,14 +716,14 @@ const transitionId = schema.findTransitionIdByName("lambda_to_review");
 
 - `rawAxios` is renamed to `raw`
 
-#### Added
+### Added
 
 - `createOAuth1Client` and `createOAuth2Client` are now exported as more specifically typed versions of `createClient`
 - Additional http header is added with every request. Which includes the package version and when running in node the node version.
 - Added Test Reports
 - `getMockSdk` function to get back a mocked SDK. See README for more info
 
-#### Changes
+### Changes
 
 - Templates `resolveAsPdf` will return a `Buffer`
 - `sdk.authenticate` now includes possible error responses in the JSDoc annotations
@@ -522,13 +734,13 @@ const transitionId = schema.findTransitionIdByName("lambda_to_review");
 
 ## [3.0.1]
 
-#### Changes
+### Changes
 
 - Templates basepath fix
 
 ## [3.0.0]
 
-#### Breaking Changes
+### Breaking Changes
 
 - Services scoping:
 
@@ -716,14 +928,14 @@ users: {
 }
 ```
 
-#### Added
+### Added
 
 - Configurations Service
 - Dispatchers Service
 - Mails Service
 - Templates Service
 
-#### Changes
+### Changes
 
 - Types are now exposed within modules, so the usage will be:
 
@@ -744,7 +956,7 @@ const inputFile: CreateFile = {}
 
 ## [2.0.0] - 2021-05-12
 
-#### Breaking changes
+### Breaking changes
 
 - ClientId for OAuth2 and consumerkey/secret for Oauth1 are now passed in during client initialization in stead of authentication. This way on not authenicated calls the clientId and consumerkey/secret information is added to the requests.
 
@@ -780,7 +992,7 @@ await sdk.authenticate({
 });
 ```
 
-#### Changes
+### Changes
 
 - Removed `query` from list results
 - `PartialUserData` is renamed to `User`
@@ -794,13 +1006,13 @@ await sdk.authenticate({
 
 ## [1.0.1] - 2021-05-05
 
-#### Changes
+### Changes
 
 - Correctly exporting all the possible errors.
 
 ## [1.0.0] - 2021-05-05
 
-#### Breaking changes
+### Breaking changes
 
 Optional paramaters are now grouped in an options object as last parameters.
 
@@ -814,7 +1026,7 @@ Optional paramaters are now grouped in an options object as last parameters.
 + await sdk.tasks.getGroupsRoles(groupId, { rql });
 ```
 
-#### Added
+### Added
 
 - The Axios instance used by the SDK is now directly accessible
 - Data Service now includes:
@@ -824,14 +1036,14 @@ Optional paramaters are now grouped in an options object as last parameters.
 - You can pass in your own interface when calling the `sdk.data.findDocuments<CustomDocument>(schemaId);` endpoint
 - The SDK also expose JSON-schema interface you can use to compose your own
 
-#### Changes
+### Changes
 
 - OAuth1 token/tokenSecret flow is implemented.
 - Functions expecting an RQL should now show a more clear error when passing in a regular string.
 
 ## [0.0.7] - 2021-04-28
 
-#### Breaking changes
+### Breaking changes
 
 The `authenticate` and `confirmMfa` methods have been scoped under the `auth` namespace.
 
@@ -875,7 +1087,7 @@ Removed `debug` option. Use `responseLogger` and `requestLogger` options in stea
 +});
 ```
 
-#### Added
+### Added
 
 - Tasks Service
 - Data Service now includes:
@@ -886,7 +1098,7 @@ Removed `debug` option. Use `responseLogger` and `requestLogger` options in stea
 
 ## [0.0.6] - 2021-04-21
 
-#### Breaking changes
+### Breaking changes
 
 Client initialization is changed. For example if you want to use the OAuth2 password flow, you no longer pass in the credentials as `oauth` property in the client. But you have to call the `authenticate` function. See README for other flows.
 
@@ -911,7 +1123,7 @@ Client initialization is changed. For example if you want to use the OAuth2 pass
 +});
 ```
 
-#### Added
+### Added
 
 - Multi-factor authentication via (authenticate / confirmMfa functions).
 - `freshTokensCallback` option when creating the client. Pass in a function to retrieve the response when new tokens are received.
@@ -919,7 +1131,7 @@ Client initialization is changed. For example if you want to use the OAuth2 pass
 - `files` service.
 - `data` service: only to create a schema at the moment.
 
-#### Changes
+### Changes
 
 - Functions that accept an RQL parameter no longer accepts regular string, but expect the output of and rqlBuilder -> build().
 - `ApiError` now extends the built-in `Error`.

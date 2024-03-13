@@ -1,7 +1,7 @@
-import { ApiService } from './types';
 import { HttpInstance } from '../../../http/types';
 import { HttpClient } from '../../http-client';
 import { OptionsBase } from '../../types';
+import { ApiService } from './types';
 
 export default (client: HttpClient, httpAuth: HttpInstance): ApiService => {
   function normalizePath(path: string) {

@@ -1,11 +1,10 @@
+import { CONFIGURATION_BASE } from '../../constants';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
 import general from './general';
 import groups from './groups';
-import users from './users';
 import patients from './patients';
 import staff from './staff';
-import { CONFIGURATION_BASE } from '../../constants';
 import {
   ConfigurationsGeneralService,
   ConfigurationsGroupsService,
@@ -13,6 +12,7 @@ import {
   ConfigurationsStaffService,
   ConfigurationsUsersService,
 } from './types';
+import users from './users';
 
 export type ConfigurationsService = {
   general: ConfigurationsGeneralService;

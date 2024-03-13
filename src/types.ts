@@ -100,6 +100,18 @@ export interface ParamsOauth2Client extends ParamsBase {
 export interface ParamsOauth2AccessToken extends ParamsOauth2Client {
   refreshToken: string;
   accessToken: string;
+
+  /**
+   * Can be supplied just as it is returned by the different authentication methods and the `freshTokensCallback`.
+   * Allows the SDK to continue using the supplied access token until just before it expires, then it is automatically refreshed.
+   */
+  expiresIn?: number;
+
+  /**
+   * Can be supplied just as it is returned by the different authentication methods and the `freshTokensCallback`.
+   * Allows the SDK to continue using the supplied access token until just before it expires, then it is automatically refreshed.
+   */
+  creationTimestamp?: Date | string;
 }
 
 export type ParamsOauth2 = ParamsOauth2Client | ParamsOauth2AccessToken;

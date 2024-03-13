@@ -1,13 +1,13 @@
-import { HttpClient } from '../../../http-client';
 import { HttpInstance } from '../../../../http/types';
-import { LoginAttempt, LoginAttemptsService } from './types';
-import { OptionsWithRql, PagedResultWithPager } from '../../../types';
 import {
   addPagersFn,
   findAllGeneric,
   findAllIterator,
   FindAllIterator,
 } from '../../../helpers';
+import { HttpClient } from '../../../http-client';
+import { OptionsWithRql, PagedResultWithPager } from '../../../types';
+import { LoginAttempt, LoginAttemptsService } from './types';
 
 export default (
   oidcClient: HttpClient,

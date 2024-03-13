@@ -76,9 +76,9 @@ export type OptionsBase = {
    */
   normalizeCustomData?: boolean;
 };
-export type OptionsWithRql = OptionsBase & { rql?: RQLString };
+export type OptionsWithRql = OptionsBase & { rql?: RQLString; };
 export interface FileUploadOptions extends OptionsBase {
-  onUploadProgress?: (progress: { loaded: number; total: number }) => void;
+  onUploadProgress?: (progress: { loaded: number; total: number; }) => void;
 }
 
 export type PagedResultWithPager<T> = PagedResult<T> & {

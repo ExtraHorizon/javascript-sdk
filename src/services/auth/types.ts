@@ -29,7 +29,7 @@ export interface AuthService {
   users: AuthUsersService;
   oidc: OidcService;
   confirmPresence(
-    data: { password: string },
+    data: { password: string; },
     options?: OptionsBase
   ): Promise<Presence>;
   health(): Promise<boolean>;

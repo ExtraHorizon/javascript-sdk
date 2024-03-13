@@ -1,6 +1,8 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { delay } from '../utils';
 import { DATA_BASE } from '../constants';
+import { typeReceivedError } from '../errorHandler';
+import { HttpError } from '../errors';
+import { delay } from '../utils';
 import { HttpRequestConfig, HttpResponse, HttpResponseError } from './types';
 import {
   camelizeKeys,
@@ -8,12 +10,9 @@ import {
   recursiveMap,
   recursiveRenameKeys,
 } from './utils';
-import { typeReceivedError } from '../errorHandler';
-import { HttpError } from '../errors';
 
 export const retryInterceptor =
-  (axios: AxiosInstance) =>
-  async (error: HttpResponseError): Promise<unknown> => {
+  (axios: AxiosInstance) => async (error: HttpResponseError): Promise<unknown> => {
     const { config } = error;
     const { retry } = config;
 
@@ -48,24 +47,23 @@ export const camelizeResponseData = ({
     // Note: the /data endpoint can return custom properties that the user has defined
     config?.url?.startsWith(DATA_BASE) ||
     ['arraybuffer', 'stream'].includes(config.responseType ?? '') ||
-    config?.interceptors?.skipCamelizeResponseData
-      ? data
-      : camelizeKeys(
-          data,
-          config?.normalizeCustomData ? [] : config?.customResponseKeys
-        ),
+    config?.interceptors?.skipCamelizeResponseData ?
+      data :
+      camelizeKeys(
+        data,
+        config?.normalizeCustomData ? [] : config?.customResponseKeys
+      ),
 });
 
 export const decamelizeRequestData = (
   data,
   httpRequestConfig?: HttpRequestConfig
-) =>
-  decamelizeKeys(
-    data,
-    httpRequestConfig?.normalizeCustomData
-      ? []
-      : httpRequestConfig?.customRequestKeys
-  );
+) => decamelizeKeys(
+  data,
+  httpRequestConfig?.normalizeCustomData ?
+    [] :
+    httpRequestConfig?.customRequestKeys
+);
 
 const mapDateValues = (value, key) => {
   if (
@@ -87,6 +85,8 @@ const mapDateValues = (value, key) => {
       'reevaluateDate',
       'autoRenewStatusChange',
       'commentedTimestamp',
+      'lastRequestTimestamp',
+      'lastFailedAttemptTimestamp',
     ].includes(key)
   ) {
     return new Date(value);
@@ -103,14 +103,14 @@ export const transformResponseData = ({
   config,
   data:
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
-    config?.interceptors?.skipTransformResponseData
-      ? data
-      : recursiveMap(
-          mapDateValues,
-          data,
-          config?.normalizeCustomData ? [] : config?.customResponseKeys,
-          config?.url?.startsWith(DATA_BASE)
-        ),
+    config?.interceptors?.skipTransformResponseData ?
+      data :
+      recursiveMap(
+        mapDateValues,
+        data,
+        config?.normalizeCustomData ? [] : config?.customResponseKeys,
+        config?.url?.startsWith(DATA_BASE)
+      ),
 });
 
 const convertRecordsAffectedKeys = key => {
@@ -129,13 +129,13 @@ export const transformKeysResponseData = ({
   config,
   data:
     ['arraybuffer', 'stream'].includes(config?.responseType ?? '') ||
-    config?.interceptors?.skipTransformKeysResponseData
-      ? data
-      : recursiveRenameKeys(
-          convertRecordsAffectedKeys,
-          data,
-          config?.normalizeCustomData ? [] : config?.customResponseKeys
-        ),
+    config?.interceptors?.skipTransformKeysResponseData ?
+      data :
+      recursiveRenameKeys(
+        convertRecordsAffectedKeys,
+        data,
+        config?.normalizeCustomData ? [] : config?.customResponseKeys
+      ),
 });
 export const typeReceivedErrorsInterceptor = async (error: HttpError) => {
   // Only needed if it's an axiosError, otherwise it's already typed

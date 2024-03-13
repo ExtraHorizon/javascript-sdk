@@ -4,8 +4,6 @@ description: Getting started with the ExtraHorizon Javascript SDK
 
 # Getting Started
 
-[![Quality assurance](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/qualilty-assurance.yml) [![Code style](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml/badge.svg?branch=master)](https://github.com/ExtraHorizon/javascript-sdk/actions/workflows/code-style.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/maintainability)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/baa71ad27c3ce167cd7d/test\_coverage)](https://codeclimate.com/github/ExtraHorizon/javascript-sdk/test\_coverage)
-
 This package serves as a JavaScript wrapper around all [Extra Horizon](https://www.extrahorizon.com/cloud-services) cloud services providing you with fast and easy way to integrate with the Extra Horizon platform.
 
 * [Installation](setup/installation.md)
@@ -34,7 +32,7 @@ The data returned from the backend is mapped using interceptors:
 
 * Timestamps will be of type Date
 * Keys in objects will be camelCased
-* `records_affected` will be replaced by `affected_records`
+* `records_affected` will be replaced by `affectedRecords`
 
 ### 🔑 License
 

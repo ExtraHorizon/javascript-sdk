@@ -1,13 +1,16 @@
+import { PAYMENTS_BASE } from '../../constants';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import health from './health';
-import products from './products';
-import orders from './orders';
-import subscriptions from './subscriptions';
 import appStore from './appStore';
 import appStoreSubscriptions from './appStoreSubscriptions';
+import health from './health';
+import orders from './orders';
+import playStore from './playStore';
+import playStoreHistory from './playStoreHistory';
+import playStoreSubscriptions from './playStoreSubscriptions';
+import products from './products';
 import stripe from './stripe';
-import { PAYMENTS_BASE } from '../../constants';
+import subscriptions from './subscriptions';
 import {
   PaymentsAppStoreService,
   PaymentsAppStoreSubscriptionsService,
@@ -19,9 +22,6 @@ import {
   PaymentsPlayStoreSubscriptionsService,
   PaymentsPlayStoreHistoryService,
 } from './types';
-import playStore from './playStore';
-import playStoreSubscriptions from './playStoreSubscriptions';
-import playStoreHistory from './playStoreHistory';
 
 export type PaymentsService = ReturnType<typeof health> & {
   products: PaymentsProductsService;

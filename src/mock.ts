@@ -1,9 +1,9 @@
-import { recursiveMap } from './http/utils';
 import {
   createOAuth1Client,
   createOAuth2Client,
   createProxyClient,
 } from './client';
+import { recursiveMap } from './http/utils';
 import type {
   MockClientOAuth1,
   MockClientOAuth2,
@@ -52,12 +52,12 @@ const getRawMock = <MockFn>(fn: () => MockFn) => {
 export const getMockSdkProxy = <MockFn>(
   fn: () => MockFn
 ): MockClientProxy<MockFn> => ({
-  ...recursiveMap(
-    value => (typeof value === 'function' ? fn() : value),
-    createProxyClient({ host: '' })
-  ),
-  raw: getRawMock(fn),
-});
+    ...recursiveMap(
+      value => (typeof value === 'function' ? fn() : value),
+      createProxyClient({ host: '' })
+    ),
+    raw: getRawMock(fn),
+  });
 
 /**
  * Returns a mocked version of the OAuth2 SDK. Requires a mocking function like `jest.fn`
@@ -75,12 +75,12 @@ export const getMockSdkProxy = <MockFn>(
 export const getMockSdkOAuth2 = <MockFn>(
   fn: () => MockFn
 ): MockClientOAuth2<MockFn> => ({
-  ...recursiveMap(
-    value => (typeof value === 'function' ? fn() : value),
-    createOAuth2Client({ host: '', clientId: '' })
-  ),
-  raw: getRawMock(fn),
-});
+    ...recursiveMap(
+      value => (typeof value === 'function' ? fn() : value),
+      createOAuth2Client({ host: '', clientId: '' })
+    ),
+    raw: getRawMock(fn),
+  });
 
 /**
  * Returns a mocked version of the OAuth1 SDK. Requires a mocking function like `jest.fn`
@@ -98,13 +98,13 @@ export const getMockSdkOAuth2 = <MockFn>(
 export const getMockSdkOAuth1 = <MockFn>(
   fn: () => MockFn
 ): MockClientOAuth1<MockFn> => ({
-  ...recursiveMap(
-    value => (typeof value === 'function' ? fn() : value),
-    createOAuth1Client({
-      host: '',
-      consumerKey: '',
-      consumerSecret: '',
-    })
-  ),
-  raw: getRawMock(fn),
-});
+    ...recursiveMap(
+      value => (typeof value === 'function' ? fn() : value),
+      createOAuth1Client({
+        host: '',
+        consumerKey: '',
+        consumerSecret: '',
+      })
+    ),
+    raw: getRawMock(fn),
+  });

@@ -47,14 +47,13 @@ const httpClient = ({
     axios: HttpInstance,
     url: string,
     { shouldRetry, ...config }: HttpRequestConfig & GetOptions = {}
-  ) =>
-    axios.get(
-      `${basePath}${url}`,
-      setCustomKeysConfigurationInRequestConfig(axios, {
-        ...config,
-        ...(shouldRetry !== false ? { retry: defaultRetryConfig } : {}),
-      })
-    ),
+  ) => axios.get(
+    `${basePath}${url}`,
+    setCustomKeysConfigurationInRequestConfig(axios, {
+      ...config,
+      ...(shouldRetry !== false ? { retry: defaultRetryConfig } : {}),
+    })
+  ),
   put: (axios: HttpInstance, url: string, data, config?: HttpRequestConfig) => {
     const requestConfig = setCustomKeysConfigurationInRequestConfig(
       axios,
@@ -82,46 +81,45 @@ const httpClient = ({
       transformRequestData(data, requestConfig),
       {
         ...requestConfig,
-        ...(options?.gzip
-          ? {
-              transformRequest: [
-                // eslint-disable-next-line no-nested-ternary
-                ...(axios.defaults.transformRequest
-                  ? Array.isArray(axios.defaults.transformRequest)
-                    ? axios.defaults.transformRequest
-                    : [axios.defaults.transformRequest]
-                  : []),
-                (dataInTransform, headers) => {
-                  if (typeof dataInTransform === 'string') {
-                    // eslint-disable-next-line no-param-reassign
-                    headers['Content-Encoding'] = 'gzip';
+        ...(options?.gzip ?
+          {
+            transformRequest: [
+              // eslint-disable-next-line no-nested-ternary
+              ...(axios.defaults.transformRequest ?
+                Array.isArray(axios.defaults.transformRequest) ?
+                  axios.defaults.transformRequest :
+                  [axios.defaults.transformRequest] :
+                []),
+              (dataInTransform, headers) => {
+                if (typeof dataInTransform === 'string') {
+                  // eslint-disable-next-line no-param-reassign
+                  headers['Content-Encoding'] = 'gzip';
 
-                    // React Native on Android gzips the data implicitly. DO NOT TOUCH!
-                    if (platform.platform === 'android') {
-                      return dataInTransform;
-                    }
-
-                    // Nodejs uses the http adapter in Axios. Needs a Buffer with the gzip data
-                    if (platform.platform === 'nodejs') {
-                      return Buffer.from(gzipSync(strToU8(dataInTransform)));
-                    }
-
-                    // In Browser and React Native on iOS
-                    return gzipSync(strToU8(dataInTransform));
+                  // React Native on Android gzips the data implicitly. DO NOT TOUCH!
+                  if (platform.platform === 'android') {
+                    return dataInTransform;
                   }
-                  return dataInTransform;
-                },
-              ],
-            }
-          : {}),
+
+                  // Nodejs uses the http adapter in Axios. Needs a Buffer with the gzip data
+                  if (platform.platform === 'nodejs') {
+                    return Buffer.from(gzipSync(strToU8(dataInTransform)));
+                  }
+
+                  // In Browser and React Native on iOS
+                  return gzipSync(strToU8(dataInTransform));
+                }
+                return dataInTransform;
+              },
+            ],
+          } :
+          {}),
       }
     );
   },
-  delete: (axios: HttpInstance, url: string, config?: HttpRequestConfig) =>
-    axios.delete(
-      `${basePath}${url}`,
-      setCustomKeysConfigurationInRequestConfig(axios, config)
-    ),
+  delete: (axios: HttpInstance, url: string, config?: HttpRequestConfig) => axios.delete(
+    `${basePath}${url}`,
+    setCustomKeysConfigurationInRequestConfig(axios, config)
+  ),
   patch: (
     axios: HttpInstance,
     url: string,
@@ -138,8 +136,7 @@ const httpClient = ({
       requestConfig
     );
   },
-  options: (axios: HttpInstance, url: string) =>
-    axios.options(`${basePath}${url}`),
+  options: (axios: HttpInstance, url: string) => axios.options(`${basePath}${url}`),
   head: (axios: HttpInstance, url: string) => axios.head(`${basePath}${url}`),
 });
 

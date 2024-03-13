@@ -16,7 +16,7 @@ export interface AuthUsersService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * none	|	| Enable MFA for your own account
+   * none | | Enable MFA for your own account
    * UPDATE_USER_MFA_SETTINGS | global | Enable MFA for any account
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__enable
    * @throws {InvalidPresenceTokenError}
@@ -77,7 +77,7 @@ export interface AuthUsersService {
     methodId: string,
     data: MfaMethodVerification,
     options?: OptionsBase
-  ): Promise<{ description: string }>;
+  ): Promise<{ description: string; }>;
   /**
    * Remove a MFA method from a user
    *
@@ -129,8 +129,8 @@ export interface MfaSetting {
 export interface MfaMethodCreation {
   presenceToken: string;
   type: string; // totp or recoveryCodes
-  name: string;
-  tags: string[];
+  name?: string;
+  tags?: string[];
 }
 
 export interface MfaMethodVerification {

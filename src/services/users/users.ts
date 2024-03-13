@@ -1,8 +1,8 @@
 import type { HttpInstance } from '../../types';
-import { Results } from '../types';
-import type { User, UsersService } from './types';
-import { HttpClient } from '../http-client';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
+import { HttpClient } from '../http-client';
+import { Results } from '../types';
+import type { ActivationRequestData, PasswordResetRequestData, User, UsersService } from './types';
 
 export default (
   userClient: HttpClient,
@@ -115,9 +115,9 @@ export default (
     },
 
     async changePassword(requestBody, options) {
-      return (
-        await userClient.put(httpWithAuth, '/password', requestBody, options)
-      ).data;
+      const response = await userClient.put(httpWithAuth, '/password', requestBody, options);
+
+      return response.status === Results.Success;
     },
 
     async authenticate(requestBody, options) {
@@ -131,17 +131,25 @@ export default (
       ).data;
     },
 
-    async requestEmailActivation(email, options) {
-      return (
-        (
-          await userClient.get(http, '/activation', {
-            ...options,
-            params: {
-              email,
-            },
-          })
-        ).status === Results.Success
-      );
+    async requestEmailActivation(data: string | ActivationRequestData, options) {
+      const clientOptions = {
+        ...options,
+        params: {},
+      };
+
+      if (typeof data === 'string') {
+        clientOptions.params.email = data;
+      } else {
+        clientOptions.params.email = data.email;
+
+        if (data.mode) {
+          clientOptions.params.mode = data.mode;
+        }
+      }
+
+      const response = await userClient.get(http, '/activation', clientOptions);
+
+      return response.status === Results.Success;
     },
 
     async validateEmailActivation(requestBody, options) {
@@ -157,17 +165,22 @@ export default (
       );
     },
 
-    async requestPasswordReset(email, options) {
-      return (
-        (
-          await userClient.get(http, '/forgot_password', {
-            ...options,
-            params: {
-              email,
-            },
-          })
-        ).status === Results.Success
-      );
+    async requestPasswordReset(data: string | PasswordResetRequestData, options) {
+      const params: Record<string, string> = {};
+
+      if (typeof data === 'string') {
+        params.email = data;
+      } else {
+        params.email = data.email;
+
+        if (data.mode) {
+          params.mode = data.mode;
+        }
+      }
+
+      const response = await userClient.get(http, '/forgot_password', { ...options, params });
+
+      return response.status === Results.Success;
     },
 
     async validatePasswordReset(requestBody, options) {
@@ -226,7 +239,7 @@ export default (
     async passwordPolicy(options) {
       const { data: passwordPolicy } = await userClient.get(
         httpWithAuth,
-        `/password_policy`,
+        '/password_policy',
         options
       );
 
@@ -242,20 +255,20 @@ export default (
         messageFormat = '{{length}}';
         if (passwordPolicy?.lowerCaseRequired) {
           regEx = `(?=.*[a-z])${regEx}`;
-          messageFormat += `, {{lowerCaseRequired}}`;
+          messageFormat += ', {{lowerCaseRequired}}';
         }
         if (passwordPolicy?.upperCaseRequired) {
           regEx = `(?=.*[A-Z])${regEx}`;
-          messageFormat += `, {{upperCaseRequired}}`;
+          messageFormat += ', {{upperCaseRequired}}';
         }
         if (passwordPolicy?.numberRequired) {
           regEx = `(?=.*\\d)${regEx}`;
-          messageFormat += `, {{numberRequired}}`;
+          messageFormat += ', {{numberRequired}}';
         }
         if (passwordPolicy?.symbolRequired) {
           regEx +=
             '([`~\\!@#\\$%\\^\\&\\*\\(\\)\\-_\\=\\+\\[\\{\\}\\]\\\\|;:\\\'",<.>\\/\\?€£¥₹§±].*)';
-          messageFormat += `, {{symbolRequired}}`;
+          messageFormat += ', {{symbolRequired}}';
         }
         const lastIndex = messageFormat.lastIndexOf(',');
         if (lastIndex > 0) {
@@ -277,7 +290,7 @@ export default (
       return (
         await userClient.put(
           httpWithAuth,
-          `/password_policy`,
+          '/password_policy',
           requestBody,
           options
         )

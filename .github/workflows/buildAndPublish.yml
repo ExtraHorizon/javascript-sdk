@@ -1,0 +1,59 @@
+name: Build and Publish @extrahorizon/javascript-sdk
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - master
+      - dev
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Extract version
+        id: extract_version
+        uses: Saionaro/extract-package-version@v1.0.6
+      - name: Print version
+        run: echo ${{ steps.extract_version.outputs.version }}
+      - name: Create .npmrc
+        run: |
+          echo "@extrahorizon:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" >> .npmrc
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+          scope: '@extrahorizon'
+      - run: yarn
+      - run: yarn lint
+      - run: yarn build
+      - run: yarn test
+      - run: |
+          if [ "${{github.ref}}" == "refs/heads/master" ]
+          then
+            version_tag=${{steps.extract_version.outputs.version}}
+            branch_tag="latest"
+          else
+            if [ "${{github.ref}}" == "refs/heads/dev" ]
+            then
+              branch_tag="dev"
+            else
+              branch_tag="feat"
+            fi
+            sha=${{github.sha}}
+            short_commit_hash=${sha:0:7}
+            version_tag=${{steps.extract_version.outputs.version}}-$branch_tag-${{github.run_number}}-$short_commit_hash
+          fi
+          
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
+          
+          # Tag the commit with the correct version
+          git tag -a $version_tag -m "Tagging $version_tag"
+          git push origin $version_tag
+          yarn publish --registry https://npm.pkg.github.com/ --new-version $version_tag --tag=$branch_tag
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
