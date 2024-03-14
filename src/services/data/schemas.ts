@@ -1,9 +1,9 @@
+import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
+import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
+import { HttpClient } from '../http-client';
 import type { PagedResult } from '../types';
 import type { DataSchemasService, Schema } from './types';
-import { rqlBuilder } from '../../rql';
-import { HttpClient } from '../http-client';
-import { addPagersFn, findAllIterator, findAllGeneric } from '../helpers';
 
 const addTransitionHelpersToSchema = (schema: Schema): Schema => ({
   ...schema,

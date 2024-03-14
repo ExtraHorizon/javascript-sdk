@@ -1,5 +1,4 @@
 import { FindAllIterator } from '../../services/helpers';
-import type { JSONSchema7 } from './json-schema';
 import type {
   AffectedRecords,
   ObjectId,
@@ -8,6 +7,7 @@ import type {
   PagedResult,
   PagedResultWithPager,
 } from '../types';
+import type { JSONSchema7 } from './json-schema';
 
 export enum JSONSchemaType {
   OBJECT = 'object',
@@ -275,7 +275,7 @@ export interface Schema {
   // FIXME: type all possible property types
   properties: Record<string, any>;
   indexes: Index[];
-  statuses: Record<string, never>;
+  statuses: Record<string, Record<string, string>>;
   creationTransition: CreationTransition;
   transitions: Transition[];
   createMode: CreateMode;
@@ -515,7 +515,7 @@ export interface DataDocumentsService {
   >(
     schemaId: ObjectId,
     requestBody: InputData,
-    options?: OptionsWithRql & { gzip?: boolean }
+    options?: OptionsWithRql & { gzip?: boolean; }
   ): Promise<Document<OutputData, CustomStatus>>;
   /**
    * Request a list of documents

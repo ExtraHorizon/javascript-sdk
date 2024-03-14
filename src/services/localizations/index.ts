@@ -1,11 +1,11 @@
+import { LOCALIZATIONS_BASE } from '../../constants';
 import { decamelizeRequestData } from '../../http/interceptors';
 import type { HttpInstance } from '../../types';
 import httpClient from '../http-client';
-import localizations from './localizations';
-import health from './health';
 import countries from './countries';
+import health from './health';
 import languages from './languages';
-import { LOCALIZATIONS_BASE } from '../../constants';
+import localizations from './localizations';
 import {
   CountriesService,
   LanguagesService,

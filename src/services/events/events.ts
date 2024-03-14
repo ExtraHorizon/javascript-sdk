@@ -1,7 +1,7 @@
-import type { HttpInstance } from '../../types';
 import { rqlBuilder } from '../../rql';
-import type { EventsService } from './types';
+import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
+import type { EventsService } from './types';
 
 export default (client: HttpClient, httpAuth: HttpInstance): EventsService => ({
   async find(options) {

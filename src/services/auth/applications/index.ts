@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../../types';
-import type { AuthApplicationsService } from '../types';
 import { HttpClient } from '../../http-client';
+import type { AuthApplicationsService } from '../types';
 
 export default (
   client: HttpClient,
@@ -57,7 +57,7 @@ export default (
     return (
       await client.delete(
         httpWithAuth,
-        `/applications/${applicationId}/${versionId}`,
+        `/applications/${applicationId}/versions/${versionId}`,
         options
       )
     ).data;

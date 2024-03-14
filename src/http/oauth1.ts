@@ -1,12 +1,6 @@
 import axios from 'axios';
+import { AUTH_BASE, USER_BASE } from '../constants';
 import { Oauth1AuthParams, ParamsOauth1 } from '../types';
-import { getOAuth1AuthorizationHeader } from './oAuth1Signature';
-import {
-  TokenDataOauth1,
-  MfaConfig,
-  HttpInstance,
-  OAuth1HttpClient,
-} from './types';
 import {
   camelizeResponseData,
   retryInterceptor,
@@ -14,7 +8,13 @@ import {
   transformResponseData,
   typeReceivedErrorsInterceptor,
 } from './interceptors';
-import { AUTH_BASE, USER_BASE } from '../constants';
+import { getOAuth1AuthorizationHeader } from './oAuth1Signature';
+import {
+  TokenDataOauth1,
+  MfaConfig,
+  HttpInstance,
+  OAuth1HttpClient,
+} from './types';
 
 const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth1/tokens`;
 
@@ -95,14 +95,14 @@ export function createOAuth1HttpClient(
     headers: {
       ...config.headers,
       'Content-Type': 'application/json',
-      ...(config?.method
-        ? getOAuth1AuthorizationHeader({
-            url: `${config.baseURL}${config.url}`,
-            method: config.method,
-            consumer,
-            tokenData,
-          })
-        : {}),
+      ...(config?.method ?
+        getOAuth1AuthorizationHeader({
+          url: `${config.baseURL}${config.url}`,
+          method: config.method,
+          consumer,
+          tokenData,
+        }) :
+        {}),
     },
   }));
 

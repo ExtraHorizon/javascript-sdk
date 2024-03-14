@@ -1,16 +1,16 @@
 import { ClientParams, GlobalPermissionName } from './types';
 
 function parseHost(rawHost: string, prefix: 'api' | 'apx') {
-  const validHostEnd = rawHost.endsWith('/')
-    ? rawHost.substring(0, rawHost.length - 1)
-    : rawHost;
+  const validHostEnd = rawHost.endsWith('/') ?
+    rawHost.substring(0, rawHost.length - 1) :
+    rawHost;
 
-  return validHostEnd.includes('localhost')
-    ? validHostEnd
-    : `https://${prefix}.${validHostEnd
-        .replace(/^https?:\/\//, '')
-        .replace(/^api\./, '')
-        .replace(/^apx\./, '')}`;
+  return validHostEnd.includes('localhost') ?
+    validHostEnd :
+    `https://${prefix}.${validHostEnd
+      .replace(/^https?:\/\//, '')
+      .replace(/^api\./, '')
+      .replace(/^apx\./, '')}`;
 }
 
 export function validateConfig<T extends ClientParams>(params: T): T {

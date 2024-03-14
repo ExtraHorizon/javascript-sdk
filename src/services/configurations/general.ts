@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../types';
-import type { ConfigurationsGeneralService } from './types';
 import { HttpClient } from '../http-client';
+import type { ConfigurationsGeneralService } from './types';
 
 export default (
   client: HttpClient,

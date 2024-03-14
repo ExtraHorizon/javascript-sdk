@@ -1,6 +1,15 @@
-import { ClientParams, ParamsOauth1, ParamsOauth2, ParamsProxy } from './types';
-import { version as packageVersion } from './version';
-
+import {
+  createHttpClient,
+  createOAuth1HttpClient,
+  createOAuth2HttpClient,
+  createProxyHttpClient,
+} from './http';
+import {
+  AuthHttpClient,
+  OAuth1HttpClient,
+  OAuth2HttpClient,
+  ProxyInstance,
+} from './http/types';
 import {
   authService,
   configurationsService,
@@ -18,19 +27,9 @@ import {
   templatesService,
   usersService,
 } from './services';
-import {
-  createHttpClient,
-  createOAuth1HttpClient,
-  createOAuth2HttpClient,
-  createProxyHttpClient,
-} from './http';
+import { ClientParams, ParamsOauth1, ParamsOauth2, ParamsProxy } from './types';
 import { validateConfig } from './utils';
-import {
-  AuthHttpClient,
-  OAuth1HttpClient,
-  OAuth2HttpClient,
-  ProxyInstance,
-} from './http/types';
+import { version as packageVersion } from './version';
 
 export interface Client<T extends ClientParams> {
   raw: AuthHttpClient;
@@ -180,8 +179,7 @@ export type OAuth1Client = Client<ParamsOauth1>;
  *   password: 'string',
  * });
  */
-export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client =>
-  createClient(rawConfig);
+export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client => createClient(rawConfig);
 
 export type OAuth2Client = Client<ParamsOauth2>;
 /**
@@ -197,8 +195,7 @@ export type OAuth2Client = Client<ParamsOauth2>;
  *   password: 'string',
  * });
  */
-export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client =>
-  createClient(rawConfig);
+export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client => createClient(rawConfig);
 
 export type ProxyClient = Client<ParamsProxy>;
 /**
@@ -209,5 +206,4 @@ export type ProxyClient = Client<ParamsProxy>;
  *   host: 'apx.dev.extrahorizon.io',
  * });
  */
-export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient =>
-  createClient(rawConfig);
+export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient => createClient(rawConfig);

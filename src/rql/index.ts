@@ -90,21 +90,21 @@ export const rqlBuilder: RqlBuilderFactory = (
     contains(field, ...conditions) {
       return processQuery(
         'contains',
-        conditions.length > 0
-          ? `${field},${rqlBuilder()
-              .and(...conditions)
-              .intermediate()}`
-          : field
+        conditions.length > 0 ?
+          `${field},${rqlBuilder()
+            .and(...conditions)
+            .intermediate()}` :
+          field
       );
     },
     excludes(field, ...conditions) {
       return processQuery(
         'excludes',
-        conditions.length > 0
-          ? `${field},${rqlBuilder()
-              .and(...conditions)
-              .intermediate()}`
-          : field
+        conditions.length > 0 ?
+          `${field},${rqlBuilder()
+            .and(...conditions)
+            .intermediate()}` :
+          field
       );
     },
     skipCount() {

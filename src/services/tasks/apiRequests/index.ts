@@ -1,6 +1,4 @@
-import { ApiRequest, ApiRequestService } from './types';
-import logs from './logs';
-import { OptionsWithRql } from '../../types';
+import { HttpInstance } from '../../../http/types';
 import {
   addPagersFn,
   findAllGeneric,
@@ -8,7 +6,9 @@ import {
   FindAllIterator,
 } from '../../helpers';
 import { HttpClient } from '../../http-client';
-import { HttpInstance } from '../../../http/types';
+import { OptionsWithRql } from '../../types';
+import logs from './logs';
+import { ApiRequest, ApiRequestService } from './types';
 
 export default (
   client: HttpClient,

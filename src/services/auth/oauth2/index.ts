@@ -1,6 +1,6 @@
 import type { HttpInstance } from '../../../types';
-import type { AuthOauth2Service } from './types';
 import { HttpClient } from '../../http-client';
+import type { AuthOauth2Service } from './types';
 
 export default (
   client: HttpClient,
@@ -8,7 +8,7 @@ export default (
 ): AuthOauth2Service => ({
   async createAuthorization(data, options) {
     return (
-      await client.post(httpWithAuth, `/oauth2/authorizations`, data, options)
+      await client.post(httpWithAuth, '/oauth2/authorizations', data, options)
     ).data;
   },
 

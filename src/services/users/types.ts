@@ -1,5 +1,5 @@
-import { FindAllIterator } from '../../services/helpers';
 import { RQLString } from '../../rql';
+import { FindAllIterator } from '../../services/helpers';
 import {
   ObjectId,
   LanguageCode,
@@ -89,6 +89,9 @@ export interface RegisterUserData {
   region?: string;
   language: string;
   timeZone?: string;
+
+  /** The activation mode to use. Defaults to `hash`. */
+  activationMode?: 'hash' | 'pin_code' | 'manual';
 }
 
 export enum Gender {
@@ -98,8 +101,9 @@ export enum Gender {
   NotApplicable = 9,
 }
 
-export interface Email {
+export interface EmailUpdate {
   email: string;
+  activationMode?: 'hash' | 'pin_code' | 'manual';
 }
 
 export interface AddPatientEnlistment {
@@ -117,8 +121,27 @@ export interface Authenticate {
   password: string;
 }
 
-export interface PasswordReset {
-  hash?: string;
+export type ActivationCompletion = ActivationHashCompletion | ActivationPinCodeCompletion;
+
+export interface ActivationHashCompletion {
+  hash: string;
+}
+
+export interface ActivationPinCodeCompletion {
+  email: string;
+  pinCode: string;
+}
+
+export type PasswordResetCompletion = PasswordResetHashCompletion | PasswordResetPinCodeCompletion;
+
+export interface PasswordResetHashCompletion {
+  hash: string;
+  newPassword: string;
+}
+
+export interface PasswordResetPinCodeCompletion {
+  email: string;
+  pinCode: string;
   newPassword: string;
 }
 
@@ -351,12 +374,41 @@ export interface UserRoles {
 export interface EmailTemplates {
   /** Template id used by the User Service for the account activation email. */
   activationEmailTemplateId: string;
+
   /** Template id used by the User Service for the account reactivation email. */
   reactivationEmailTemplateId: string;
+
   /** Template id used by the User Service for the password reset email. */
   passwordResetEmailTemplateId: string;
+
   /** Template id used by the User Service for the OIDC unlink email. */
   oidcUnlinkEmailTemplateId: string;
+
+  /** Template id used by the User Service for the OIDC unlink pin code email. */
+  oidcUnlinkPinEmailTemplateId: string;
+
+  /** Template id used by the User Service for the account activation pin code email. */
+  activationPinEmailTemplateId: string;
+
+  /** Template id used by the User Service for the account reactivation pin code email. */
+  reactivationPinEmailTemplateId: string;
+
+  /** Template id used by the User Service for the password reset pin code email. */
+  passwordResetPinEmailTemplateId: string;
+}
+
+export interface PasswordResetRequestData {
+  email: string;
+
+  /** The verification mode to use. Defaults to `hash`. */
+  mode?: 'hash' | 'pin_code';
+}
+
+export interface ActivationRequestData {
+  email: string;
+
+  /** The verification mode to use. Defaults to `hash`. */
+  mode?: 'hash' | 'pin_code';
 }
 
 export interface UsersGlobalRolesService {
@@ -745,7 +797,7 @@ export interface UsersService {
    * @returns User[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<User>;
-  findFirst(options?: { rql?: RQLString }): Promise<User>;
+  findFirst(options?: { rql?: RQLString; }): Promise<User>;
   /**
    * @deprecated
    * Delete a list of users
@@ -792,25 +844,42 @@ export interface UsersService {
    * @throws {ResourceUnknownError}
    */
   remove(userId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+
   /**
-   * Update the email address of a specific user
-   * An email is send to validate and activate the new address.
+   * Update the email address of a specific user.
+   *
+   * An email is send to the new email address with a token and instructions to reactivate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * By default the email send to the user is the email template configured by `reactivationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
+   * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `reactivationPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
+   *
+   * If a custom (or no) account activation flow is desired, the `activationMode` field can be set to `manual`.
+   * No email will be send.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Update your own data
    * `UPDATE_USER_EMAIL` | `global` | Update any user
-   * @param userId Id of the targeted user
-   * @param requestBody Email
-   * @returns User
+   *
    * @throws {EmailUsedError}
    * @throws {ResourceUnknownError}
+   * @throws {PinCodesNotEnabledError} Pin codes are not enabled, please check the verification settings
    */
   updateEmail(
     userId: ObjectId,
-    requestBody: Email,
+    requestBody: EmailUpdate,
     options?: OptionsBase
   ): Promise<User>;
+
   /**
    * Add a patient enlistment to a user
    *
@@ -845,20 +914,39 @@ export interface UsersService {
     groupId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
-   * Create an account
+   * Create an account.
+   *
+   * An email is send to the supplied email address with a token and instructions to activate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
+   * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
+   *
+   * If a custom (or no) account activation flow is desired, the `activationMode` field can be set to `manual`.
+   * No email will be send.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   * @param requestBody RegisterUserData
-   * @returns User
+   *
    * @throws {EmailUsedError}
+   * @throws {PinCodesNotEnabledError} Pin codes are not enabled, please check the verification settings
    */
   createAccount(
     requestBody: RegisterUserData,
     options?: OptionsBase
   ): Promise<User>;
+
   /**
    * Change your password
    *
@@ -872,7 +960,8 @@ export interface UsersService {
   changePassword(
     requestBody: ChangePassword,
     options?: OptionsBase
-  ): Promise<User>;
+  ): Promise<boolean>;
+
   /**
    * Authenticate a user
    *
@@ -887,62 +976,158 @@ export interface UsersService {
    * @throws {TooManyFailedAttemptsError}
    */
   authenticate(requestBody: Authenticate, options?: OptionsBase): Promise<User>;
+
   /**
-   * Request an email activation
+   * Request an email activation.
+   *
+   * An email is send to the supplied email address with a token and instructions to activate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * The email send to the user is the email template configured by `activationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param email
-   * @returns {boolean} true on success
+   *
    * @throws {EmailUnknownError}
    * @throws {AlreadyActivatedError}
+   * @throws {IllegalStateError} Attempting to use `activationEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {ActivationRequestLimitError} The maximum allowed consecutive activation requests is reached
+   * @throws {ActivationRequestTimeoutError} Activation request too short after the previous one
    */
   requestEmailActivation(
     email: string,
     options?: OptionsBase
   ): Promise<boolean>;
+
   /**
-   * Complete an email activation
+   * Request an email activation.
+   *
+   * An email is send to the supplied email address with a token and instructions to activate the account.
+   * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
+   *
+   * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
+   * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param requestBody Hash
-   * @returns {boolean} true on success
+   *
+   * @throws {EmailUnknownError}
+   * @throws {AlreadyActivatedError}
+   * @throws {IllegalStateError} Attempting to use either `activationEmailTemplateId` or `activationPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {ActivationRequestLimitError} The maximum allowed consecutive activation requests is reached
+   * @throws {ActivationRequestTimeoutError} Activation request too short after the previous one
+   */
+  requestEmailActivation(
+    data: ActivationRequestData,
+    options?: OptionsBase
+  ): Promise<boolean>;
+
+  /**
+   * Complete an email activation.
+   *
+   * Either a hash activation with just the `hash` field.
+   * Or a pin code activation with the `email` and `pinCode` fields.
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
    * @throws {ActivationUnknownError}
+   * @throws {TooManyFailedAttemptsError} Attempts are blocked due to too many failed attempts, a new activation request needs to be generated before new attempts can be made
+   * @throws {IncorrectPinCodeError} The provided pin code was incorrect
    */
   validateEmailActivation(
-    requestBody: Hash,
+    requestBody: ActivationCompletion,
     options?: OptionsBase
   ): Promise<boolean>;
+
   /**
-   * Request a password reset
+   * Request a password reset.
+   *
+   * An email is send to the targeted user with a token and instructions to reset their password.
+   * The token should be used to complete the password reset via `exh.users.validatePasswordReset`.
+   *
+   * The email send to the user is the email template configured by `passwordResetEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param email
-   * @returns {boolean} true on success
+   *
    * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
+   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateId` or `passwordResetPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {ForgotPasswordRequestLimitError} The maximum allowed consecutive forgot password requests is reached
+   * @throws {ForgotPasswordRequestTimeoutError} Forgot password request too short after the previous one
    */
   requestPasswordReset(email: string, options?: OptionsBase): Promise<boolean>;
+
   /**
-   * Complete a password reset
+   * Request a password reset.
+   *
+   * An email is send to the targeted user with a token and instructions to reset their password.
+   * The token should be used to complete the password reset via `exh.users.validatePasswordReset`.
+   *
+   * By default the email send to the user is the email template configured by `passwordResetEmailTemplateId`.
+   * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
+   * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
+   *
+   * If enabled, a pin code can be used rather than a hash.
+   * The pin code mode must be enabled by the `enablePinCodeForgotPasswordRequests` verification setting.
+   * To use the pin code mode, the `mode` field can be set to `pin_code`.
+   * Then the email send to the user is the email template configured by `passwordResetPinEmailTemplateId`.
+   * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
+   * The pin code should be used within 15 minutes, otherwise this method should be called again to request a new email.
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param requestBody PasswordReset
-   * @returns {boolean} true if completed a password reset
+   *
+   * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
-   * @throws {NewPasswordHashUnknownError}
+   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateId` or `passwordResetPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {DisabledForOidcUsersError}
+   * @throws {PinCodesNotEnabledError} Pin codes are not enabled, please check the verification settings
+   * @throws {ForgotPasswordRequestLimitError} The maximum allowed consecutive forgot password requests is reached
+   * @throws {ForgotPasswordRequestTimeoutError} Forgot password request too short after the previous one
+   */
+  requestPasswordReset(data: PasswordResetRequestData, options?: OptionsBase): Promise<boolean>;
+
+  /**
+   * Complete a password reset.
+   *
+   * Either a hash password reset with the `hash` and `newPassword` fields.
+   * Or a pin code password reset with the `email`, `pinCode` and `newPassword` fields.
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none |  | Everyone can use this endpoint
+   *
+   * @throws {NotActivatedError}
+   * @throws {NewPasswordHashUnknownError} The provided hash either does not exist or is expired
+   * @throws {NewPasswordPinCodeUnknownError} No password reset request was found or it is expired for the provided email
+   * @throws {TooManyFailedAttemptsError} Attempts are blocked due to too many failed attempts, a new password reset request needs to be generated before new attempts can be made
+   * @throws {IncorrectPinCodeError} The provided pin code was incorrect
+   * @throws {DisabledForOidcUsersError}
    */
   validatePasswordReset(
-    requestBody: PasswordReset,
+    requestBody: PasswordResetCompletion,
     options?: OptionsBase
   ): Promise<boolean>;
+
   /**
    * Confirm the password for the user making the request
    *

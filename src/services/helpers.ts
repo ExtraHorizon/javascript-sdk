@@ -1,7 +1,7 @@
 import { HttpInstance, HttpRequestConfig } from '../http/types';
 import { camelize, decamelize } from '../http/utils';
-import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 import { rqlBuilder } from '../rql';
+import { OptionsWithRql, PagedResult, PagedResultWithPager } from './types';
 
 const MAX_LIMIT = 50;
 
@@ -32,9 +32,9 @@ export async function* findAllIterator<T>(
   yield* makeRequest({
     ...options,
     rql:
-      options?.rql && options.rql.includes('limit(')
-        ? options.rql
-        : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+      options?.rql && options.rql.includes('limit(') ?
+        options.rql :
+        rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
   });
 
   return {};
@@ -54,9 +54,9 @@ export async function findAllGeneric<T>(
   // But on the first run, we need to set the limit to the max to optimize
   const result: PagedResult<T> = await find({
     rql:
-      options?.rql && options.rql.includes('limit(')
-        ? options.rql
-        : rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
+      options?.rql && options.rql.includes('limit(') ?
+        options.rql :
+        rqlBuilder(options?.rql).limit(MAX_LIMIT).build(),
   });
 
   if (result.page.total > 2000 && result.page.offset === 0) {
@@ -65,20 +65,20 @@ export async function findAllGeneric<T>(
     );
   }
 
-  return result.page.total > result.page.offset + result.page.limit
-    ? [
-        ...result.data,
-        ...(await findAllGeneric(
-          find,
-          {
-            rql: rqlBuilder(options?.rql)
-              .limit(result.page.limit, result.page.offset + result.page.limit)
-              .build(),
-          },
-          level + 1
-        )),
-      ]
-    : result.data;
+  return result.page.total > result.page.offset + result.page.limit ?
+    [
+      ...result.data,
+      ...(await findAllGeneric(
+        find,
+        {
+          rql: rqlBuilder(options?.rql)
+            .limit(result.page.limit, result.page.offset + result.page.limit)
+            .build(),
+        },
+        level + 1
+      )),
+    ] :
+    result.data;
 }
 
 export function addPagersFn<T>(
@@ -105,9 +105,9 @@ export function addPagersFn<T>(
       rql: rqlBuilder(options?.rql)
         .limit(
           result.page.limit,
-          result.page.offset + result.page.limit < result.page.total
-            ? result.page.offset + result.page.limit
-            : result.page.offset + result.page.limit
+          result.page.offset + result.page.limit < result.page.total ?
+            result.page.offset + result.page.limit :
+            result.page.offset + result.page.limit
         )
         .build(),
     });
@@ -144,7 +144,7 @@ export function setCustomKeysConfigurationInRequestConfig(
 // To avoid having to set all keys in the array as camel and as snake manually, each key
 // is converted here to both camel and snake case before being put in the config.
 function createArrayWithCamelAndSnakeVersion(keys?: string[]) {
-  if (!keys) return undefined;
+  if (!keys) { return undefined; }
 
   return [...keys.map(camelize), ...keys.map(decamelize)];
 }
