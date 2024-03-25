@@ -281,7 +281,7 @@ function getClientCredentials({ clientId, clientSecret }: ParamsOauth2) {
     credentials.client_secret = clientSecret;
 
     /* Monkeypatch the btoa function. See https://github.com/ExtraHorizon/javascript-sdk/issues/446 */
-    if (typeof global.btoa !== 'function') {
+    if (global && typeof global.btoa !== 'function') {
       global.btoa = btoa;
     }
   }
