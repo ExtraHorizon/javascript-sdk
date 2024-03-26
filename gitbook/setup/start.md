@@ -1,6 +1,6 @@
 # Quick start
 
-Please see [authentication examples](broken-reference/) for more options.
+Please see [authentication examples](../v7/setup/broken-reference/) for more options.
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
@@ -16,7 +16,6 @@ import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
     username: "",
   });
 
-  console.log("exh.users.health()", await exh.users.health());
   console.log("exh.users.me()", await exh.users.me());
 })();
 ```

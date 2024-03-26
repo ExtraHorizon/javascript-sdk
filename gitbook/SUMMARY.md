@@ -11,8 +11,8 @@
 
 * [Authentication](examples/authentication.md)
   * [Applications](features/authentication/applications.md)
-* [users](examples/users.md)
-* [data](examples/data.md)
+* [Users](examples/users.md)
+* [Data](examples/data.md)
 * [Guide](features/guide.md)
 
 ## other

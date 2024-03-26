@@ -51,7 +51,7 @@ Each value passed to the operators of the `rqlBuilder` undergoes double encoding
 
 We strongly advise against disabling automatic double encoding.\
 \
-To deactivate double encoding for all queries generated with the `rqlBuilder`, you add  the following line to the start of your application:\
+To deactivate double encoding for all queries generated with the `rqlBuilder`, you add the following line to the start of your application:\
 `rqlBuilder.doubleEncodeValues = false;`\
 \
 For disabling double encoding on a per-query basis, you can utilize the `options` parameter in the `rqlBuilder` constructor like this:\
@@ -74,7 +74,7 @@ const rql = rqlParser(
 const result = await exh.data.documents.find({ rql });
 ```
 
-## Raw Queries
+## Raw Requests
 
 You can use the underlying Axios instance (after authentication) to call endpoints not yet wrapped by this SDK.
 
@@ -125,55 +125,6 @@ await exh.users.health();
 
 ```
 
-## Schema/Document Generics
-
-If you know the type info of your schemas, you can pass in the Typescript info when initializing the client. You will need to import the `Schema` and extend it with different JSONSchema types that are exported by the SDK.
-
-As example the typing of the first schema in the example value from the get schema: https://developers.extrahorizon.io/swagger-ui/?url=https://developers.extrahorizon.io/services/data-service/1.0.9/openapi.yaml#/Schemas/get\_
-
-```ts
-import {
-  createOAuth2Client,
-  Schema,
-  JSONSchemaObject,
-  JSONSchemaArray,
-  JSONSchemaNumber,
-} from "@extrahorizon/javascript-sdk";
-
-interface MySchema extends Schema {
-  statuses?: Record<"start", never>;
-  properties?: {
-    ppg: JSONSchemaArray & {
-      maxItems: 2000;
-      items: JSONSchemaNumber & { maximum: 255 }[];
-    };
-    location: JSONSchemaObject & {
-      properties: {
-        longitutde: JSONSchemaNumber & { minium: -180; maximum: 180 };
-        latitude: JSONSchemaNumber & { minium: -90; maximum: 90 };
-      };
-    };
-  };
-}
-
-const exh = createOAuth2Client({
-  host: "https://api.dev.exh-sandbox.extrahorizon.io",
-  clientId: "",
-});
-
-const { data: schemas } = await exh.data.schemas.find();
-const mySchema: MySchema = schemas[0];
-
-interface MyData {
-  ppg: Number[];
-  location: {
-    longitude: Number;
-    latitude: Number;
-  };
-}
-const document = await exh.data.documents.find<MyData>(mySchema.id);
-```
-
 ## Tests
 
 ### Mock
@@ -206,7 +157,3 @@ module.exports = {
   exh,
 };
 ```
-
-## Library
-
-To run the unit tests: `yarn start` To run them in watch mode: `yarn start:watch` To run e2e tests, copy `.env.example` to `.env` and set up the credentials Then in `jest.config.js` comment line '/tests/e2e/' and run `yarn test:e2e`
