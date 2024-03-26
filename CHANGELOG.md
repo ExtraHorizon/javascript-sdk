@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Using an oAuth2 confidential client on web no longer causes a `global not defined` error
+- `exh.files.create` now works correctly while using oAuth1 in React Native
 
 ## [8.1.1]
 
