@@ -61,11 +61,19 @@ const cleanHeaders = (headers: Record<string, unknown>) => (headers &&
   } :
   headers);
 
-const getHttpErrorName = (error: HttpError) => error?.response?.data?.name || error?.response?.data?.error || 'API_ERROR';
+const getHttpErrorName = (error: HttpError) => (
+  error?.response?.data?.name ||
+  error?.response?.data?.error ||
+  error?.name ||
+  'API_ERROR'
+);
 
-const getHttpErrorMessage = (error: HttpError) => error?.response?.data?.description ||
+const getHttpErrorMessage = (error: HttpError) => (
+  error?.response?.data?.description ||
   error?.response?.data?.message ||
-  'Received an error without a message';
+  error?.message ||
+  'Received an error without a message'
+);
 
 const getHttpErrorRequestData = (error: HttpError) => (error?.config ?
   {
