@@ -118,11 +118,11 @@ export interface Client<T extends ClientParams> {
  * Create ExtraHorizon client.
  *
  * @example
- * const sdk = createClient({
+ * const exh = createClient({
  *   host: 'xxx.extrahorizon.io',
  *   clientId: 'string',
  * });
- * await sdk.auth.authenticate({
+ * await exh.auth.authenticate({
  *   username: 'string',
  *   password: 'string',
  * });
@@ -169,12 +169,12 @@ export type OAuth1Client = Client<ParamsOauth1>;
  * Create ExtraHorizon OAuth1 client.
  *
  * @example
- * const sdk = createOAuth1Client({
+ * const exh = createOAuth1Client({
  *   host: 'dev.extrahorizon.io',
  *   consumerKey: 'string',
  *   consumerSecret: 'string',
  * });
- * await sdk.auth.authenticate({
+ * await exh.auth.authenticate({
  *   email: 'string',
  *   password: 'string',
  * });
@@ -186,11 +186,11 @@ export type OAuth2Client = Client<ParamsOauth2>;
  * Create ExtraHorizon OAuth2 client.
  *
  * @example
- * const sdk = createOAuth2Client({
+ * const exh = createOAuth2Client({
  *   host: 'dev.extrahorizon.io',
  *   clientId: 'string',
  * });
- * await sdk.auth.authenticate({
+ * await exh.auth.authenticate({
  *   username: 'string',
  *   password: 'string',
  * });
@@ -202,7 +202,7 @@ export type ProxyClient = Client<ParamsProxy>;
  * Create ExtraHorizon Proxy client.
  *
  * @example
- * const sdk = createProxyClient({
+ * const exh = createProxyClient({
  *   host: 'apx.dev.extrahorizon.io',
  * });
  */

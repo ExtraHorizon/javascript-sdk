@@ -116,7 +116,7 @@ export interface RQLBuilder {
   /**
    * @description `contains(field)` only returns records having this field as property
    * @example
-   * await sdk.data.documents.find(
+   * await exh.data.documents.find(
    *   schemaId,
    *   { rql: rqlBuilder().contains('data.indicator').build()
    * });
@@ -127,7 +127,7 @@ export interface RQLBuilder {
    * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is valid
    * `contains` with a single property is not strictly needed. This can be replaced with `gt(field.itemField,30)`.
    * @example
-   * await sdk.data.documents.find(schemaId, {
+   * await exh.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
    *         .contains(
    *              "data",
@@ -142,7 +142,7 @@ export interface RQLBuilder {
   /**
    * @description `excludes(field)` only returns records not having this field as property
    * @example
-   * await sdk.data.documents.find(
+   * await exh.data.documents.find(
    *   schemaId,
    *   { rql: rqlBuilder().excludes('data.indicator').build()
    * });
@@ -152,7 +152,7 @@ export interface RQLBuilder {
    * any value that equals the provided value or satisfies the provided condition.
    * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is invalid
    * @example
-   * await sdk.data.documents.find(schemaId, {
+   * await exh.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
    *     .excludes("data", rqlBuilder().gt("heartrate", "60").intermediate())
    *     .build(),
@@ -167,7 +167,7 @@ export interface RQLBuilder {
    * As a result, the page object in a response will not include the total field.
    *
    * @example
-   * await sdk.data.documents.find(schemaId, {
+   * await exh.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
    *          .skipCount()
    *          .build(),

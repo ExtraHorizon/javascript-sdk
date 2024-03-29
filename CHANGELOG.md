@@ -218,7 +218,7 @@ const exh = createClient({
   tokenSecret: '1cc0b97b4c4721bb6da3d85b80cda8165e6ad5a7',
 });
 
-const currentUser = await sdk.users.me();
+const currentUser = await exh.users.me();
 ```
 
 - While creating an oAuth2 client both `refreshToken` and `accessToken` can now be supplied.
@@ -232,7 +232,7 @@ const exh = createClient({
   accessToken: '019dc6fe1672176f28e8e894ba99aed1f49656c8',
 });
 
-const currentUser = await sdk.users.me();
+const currentUser = await exh.users.me();
 ```
 
 ### Changed
@@ -271,28 +271,28 @@ const currentUser = await sdk.users.me();
 
 ### Fixes
 
-- The return type of `sdk.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
+- The return type of `exh.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
 
 ## [v7.0.0]
 
 ### Added
 
-- OAuth1 token management -> `sdk.auth.oauth1.getTokens` / `sdk.auth.oauth1.removeToken`. See [issue #465](https://github.com/ExtraHorizon/javascript-sdk/issues/465)
-- Password policy -> `sdk.users.passwordPolicy` and `sdk.users.updatePasswordPolicy`
+- OAuth1 token management -> `exh.auth.oauth1.getTokens` / `exh.auth.oauth1.removeToken`. See [issue #465](https://github.com/ExtraHorizon/javascript-sdk/issues/465)
+- Password policy -> `exh.users.passwordPolicy` and `exh.users.updatePasswordPolicy`
 - Extra Playstore endpoint -> `payments.playStoreHistory.purchaseReceipts`
 - Extra permissions for the updated task service
 - RQL option to several endpoints
 
 ### Changed
 
-- Types for the `sdk.auth.application.create` and `sdk.auth.application.createVersion` have been exported. See Authentication examples for more info.
+- Types for the `exh.auth.application.create` and `exh.auth.application.createVersion` have been exported. See Authentication examples for more info.
 - Pako to fflate
 - Refactored the Schema and Document Types
 - Updated the `EnlistmentConfiguration` type. See [issue #596](https://github.com/ExtraHorizon/javascript-sdk/issues/596)
 
 ### Fixes
 - Running `yarn` on windows machines resulted in an error [issue #612](https://github.com/ExtraHorizon/javascript-sdk/issues/612)
-- Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords` 
+- Return type of `exh.auth.application.update` is now correctly typed as `AffectedRecords` 
 
 ### Breaking changes
 
@@ -301,8 +301,8 @@ const currentUser = await sdk.users.me();
 - The removal of the group roles now has the correct parameters
 
 ```diff
-- sdk.users.groupRoles.remove(rql, groupId, roleId, options)
-+ sdk.users.groupRoles.remove(rql, groupId, options)
+- exh.users.groupRoles.remove(rql, groupId, roleId, options)
++ exh.users.groupRoles.remove(rql, groupId, options)
 ```
 
 ## [v6.1.0]
