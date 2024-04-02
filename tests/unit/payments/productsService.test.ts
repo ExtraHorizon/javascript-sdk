@@ -10,7 +10,7 @@ import { newProductData, productData } from '../../__helpers__/payment';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Products Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const productId = productData.id;
   const productResponse = createPagedResponse(productData);
 

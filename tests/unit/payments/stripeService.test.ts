@@ -10,7 +10,7 @@ import {
 } from '../../__helpers__/payment';
 
 describe('Stripe Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const userId = '507f191e810c19729de860ea';
   const paymentMethodId = stripePaymentMethod.id;
   const orderId = orderData.id;

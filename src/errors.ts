@@ -312,11 +312,11 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
       As example you can authenticate using this snippet:
       
       try {
-        const sdk = createProxyClient({
+        const exh = createProxyClient({
           host: '${config ? config.baseURL : ''}',
         });
 
-        sdk.users.me(); 
+        exh.users.me(); 
       
       } catch (error) {
         // redirect to login page of your proxy service
@@ -327,13 +327,13 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
       return `${messageHeader}
       As example if you want to use the Oauth1 you can authenticate using this snippet:
       
-      const sdk = createClient({
+      const exh = createClient({
         host: '${config ? config.baseURL : ''}',
         consumerKey: '',
         consumerSecret: '',
       });
       
-      await sdk.auth.authenticate({
+      await exh.auth.authenticate({
         email: '',
         password: '',
       });  
@@ -344,12 +344,12 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
       return `${messageHeader}
       As example if you want to use the Oauth2 Password Grant Flow you can authenticate using this snippet:
       
-      const sdk = createClient({
+      const exh = createClient({
         host: '${config ? config.baseURL : ''}',
         clientId: '',
       });
       
-      await sdk.auth.authenticate({
+      await exh.auth.authenticate({
         username: '',
         password: '',
       });  

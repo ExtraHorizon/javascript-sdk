@@ -5,7 +5,7 @@ import { Client, createOAuth1Client, ParamsOauth1 } from '../../../src/index';
 import { userData } from '../../__helpers__/user';
 
 describe('Auth - OAuth1', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
 
   let sdk: Client<ParamsOauth1>;
 

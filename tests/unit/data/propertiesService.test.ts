@@ -4,7 +4,7 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { newSchemaCreated } from '../../__helpers__/data';
 
 describe('Properties Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const schemaId = newSchemaCreated.id;
   let sdk: Client<ParamsOauth2>;
 

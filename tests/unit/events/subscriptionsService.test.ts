@@ -10,7 +10,7 @@ import { subscriptionsInput, subscriptionsData } from '../../__helpers__/event';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Subscriptions Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const subscriptionId = subscriptionsData.id;
   const subscriptionsResponse = createPagedResponse(subscriptionsData);
 

@@ -13,7 +13,7 @@ import {
 } from '../../__helpers__/configuration';
 
 describe('Configuration: General Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
 
   let sdk: Client<ParamsOauth2>;
 

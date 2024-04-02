@@ -9,7 +9,7 @@ import {
 } from '../../__helpers__/auth';
 
 describe('Auth - Applications', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
 
   let sdk: Client<ParamsOauth2>;
 

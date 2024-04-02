@@ -8,7 +8,7 @@ import {
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('App Store Subscriptions Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const appStoreSubscriptionProductId = appStoreSubscriptionProduct.id;
 
   let sdk: Client<ParamsOauth2>;

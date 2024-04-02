@@ -123,7 +123,7 @@ export interface OAuth2HttpClient extends HttpInstance {
     /**
      * Use OAuth2 Authorization Code Grant flow with callback
      * @example
-     * await sdk.auth.authenticate({
+     * await exh.auth.authenticate({
      *  code: '',
      * });
      * @throws {InvalidRequestError}
@@ -137,7 +137,7 @@ export interface OAuth2HttpClient extends HttpInstance {
     /**
      * Use OAuth2 Password Grant flow
      * @example
-     * await sdk.auth.authenticate({
+     * await exh.auth.authenticate({
      *  password: '',
      *  username: '',
      * });
@@ -155,7 +155,7 @@ export interface OAuth2HttpClient extends HttpInstance {
     /**
      * Use OAuth2 Refresh Token Grant flow
      * @example
-     * await sdk.auth.authenticate({
+     * await exh.auth.authenticate({
      *  refreshToken: '',
      * });
      * @throws {InvalidRequestError}
@@ -170,7 +170,7 @@ export interface OAuth2HttpClient extends HttpInstance {
      *  Confirm MFA method with token, methodId and code
      *  @example
      *  try {
-     *    await sdk.auth.authenticate({
+     *    await exh.auth.authenticate({
      *      username: '',
      *      password: '',
      *    });
@@ -181,7 +181,7 @@ export interface OAuth2HttpClient extends HttpInstance {
      *      // Your logic to request which method the user want to use in case of multiple methods
      *      const methodId = mfa.methods[0].id;
      *
-     *      await sdk.auth.confirmMfa({
+     *      await exh.auth.confirmMfa({
      *        token: mfa.token,
      *        methodId,
      *        code: '', // code from ie. Google Authenticator
@@ -266,11 +266,11 @@ export interface OAuth2HttpClient extends HttpInstance {
      *  @returns {boolean} Success
      *  @example
      *  try {
-     *    await sdk.auth.authenticate({
+     *    await exh.auth.authenticate({
      *      username: '',
      *      password: '',
      *    });
-     *    sdk.auth.logout();
+     *    exh.auth.logout();
      *  } catch (error) {
      *    console.log(error)
      *  }
@@ -286,7 +286,7 @@ export interface OAuth1HttpClient extends HttpInstance {
     /**
      * Use OAuth1 Token authentication
      * @example
-     * await sdk.auth.authenticate({
+     * await exh.auth.authenticate({
      *  token: '',
      *  tokenSecret: '',
      * });
@@ -306,7 +306,7 @@ export interface OAuth1HttpClient extends HttpInstance {
     /**
      * Use OAuth1 Password authentication
      * @example
-     * await sdk.auth.authenticate({
+     * await exh.auth.authenticate({
      *  email: '',
      *  password: '',
      * });
@@ -326,7 +326,7 @@ export interface OAuth1HttpClient extends HttpInstance {
      *  Confirm MFA method with token, methodId and code
      *  @example
      *  try {
-     *    await sdk.auth.authenticate({
+     *    await exh.auth.authenticate({
      *      email: '',
      *      password: '',
      *    });
@@ -337,7 +337,7 @@ export interface OAuth1HttpClient extends HttpInstance {
      *      // Your logic to request which method the user want to use in case of multiple methods
      *      const methodId = mfa.methods[0].id;
      *
-     *      await sdk.auth.confirmMfa({
+     *      await exh.auth.confirmMfa({
      *        token: mfa.token,
      *        methodId,
      *        code: '', // code from ie. Google Authenticator
@@ -352,11 +352,11 @@ export interface OAuth1HttpClient extends HttpInstance {
      *  @returns {boolean} Success
      *  @example
      *  try {
-     *    await sdk.auth.authenticate({
+     *    await exh.auth.authenticate({
      *      email: '',
      *      password: '',
      *    });
-     *    sdk.auth.logout();
+     *    exh.auth.logout();
      *  } catch (error) {
      *    console.log(error)
      *  }

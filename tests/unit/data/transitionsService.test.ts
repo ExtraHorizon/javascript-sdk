@@ -6,7 +6,7 @@ import { transitionInput, newTransition } from '../../__helpers__/data';
 describe('Transitions Service', () => {
   const schemaId = '2e9fff9d90135a2a9a718e2f';
   const transitionId = '1e9fff9d90135a2a9a718e2f';
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
