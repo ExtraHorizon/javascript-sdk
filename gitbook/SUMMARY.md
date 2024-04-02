@@ -13,6 +13,7 @@
   * [Applications](features/authentication/applications.md)
 * [Users](examples/users.md)
 * [Data](examples/data.md)
+* [Files](features/files.md)
 * [Guide](features/guide.md)
 
 ## other
