@@ -16,7 +16,7 @@ import {
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Localizations Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const localizationKey = localizationData.key;
   const localizationResponse = createPagedResponse(localizationData);
 

@@ -10,7 +10,7 @@ import { taskData } from '../../__helpers__/task';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Tasks Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const taskId = taskData.id;
   const tasksResponse = createPagedResponse(taskData);
 

@@ -170,7 +170,7 @@ export type OAuth1Client = Client<ParamsOauth1>;
  *
  * @example
  * const exh = createOAuth1Client({
- *   host: 'dev.extrahorizon.io',
+ *   host: 'sandbox.extrahorizon.io',
  *   consumerKey: 'string',
  *   consumerSecret: 'string',
  * });
@@ -187,7 +187,7 @@ export type OAuth2Client = Client<ParamsOauth2>;
  *
  * @example
  * const exh = createOAuth2Client({
- *   host: 'dev.extrahorizon.io',
+ *   host: 'sandbox.extrahorizon.io',
  *   clientId: 'string',
  * });
  * await exh.auth.authenticate({
@@ -203,7 +203,7 @@ export type ProxyClient = Client<ParamsProxy>;
  *
  * @example
  * const exh = createProxyClient({
- *   host: 'apx.dev.extrahorizon.io',
+ *   host: 'apx.sandbox.extrahorizon.io',
  * });
  */
 export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient => createClient(rawConfig);

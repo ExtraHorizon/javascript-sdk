@@ -531,7 +531,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 
 ```ts
 const sdk = createClient({
-  host: 'https://api.dev.fibricheck.com',
+  host: 'https://api.sandbox.extrahorizon.io',
   clientId: '',
   clientSecret: '',
 });
@@ -557,7 +557,7 @@ const sdk = createClient({
 
 ```ts
 const sdk = createClient({
-  host: 'https://api.dev.fibricheck.com',
+  host: 'https://api.sandbox.extrahorizon.io',
   clientId: '',
   headers: {
     'X-Forwarded-Application': 'test',
@@ -706,7 +706,7 @@ const transitionId = schema.findTransitionIdByName('lambda_to_review');
 
 ```diff
 + const sdk = createClient({
-+   host: 'dev.fibricheck.com',
++   host: 'sandbox.extrahorizon.io',
 +   consumerKey: '',
 +   consumerSecret: '',
 + });
