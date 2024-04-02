@@ -44,8 +44,12 @@ export interface CreateTokenRequest {
  * As defined by React Native:
  * https://github.com/facebook/react-native/blob/v0.72.4/packages/react-native/Libraries/Network/FormData.js#L13
  */
-export type ReactNativeFile = { name?: string; type?: string; uri: string; };
-export type FileDataTypes = Blob | Buffer | ReadStream | ReactNativeFile;
+export type ReactNativeFile = {
+  uri: string;
+  name?: string;
+  type?: string; // Must be a valid MIME type for Android to accept the file
+};
+export type FileDataTypes = Blob | string | Buffer | ReadStream | ReactNativeFile;
 
 export interface FilesService {
   /**
@@ -89,6 +93,11 @@ export interface FilesService {
   /**
    * ## Add a new file
    *
+   * Based on the platform `fileData` accepts different types:
+   * - Web browsers: `Blob` or `File`
+   * - Node.js: `string`, `Buffer` or `ReadStream`
+   * - React Native: `{ uri: string, name?: string, type?: string }`
+   *
    * **Default Permissions:**
    * Everyone can use this endpoint
    * @param fileName {@link string} - The name of the file to upload
@@ -115,8 +124,11 @@ export interface FilesService {
    * @throws {UnauthorizedTokenError}
    */
   remove(token: Token, options?: OptionsBase): Promise<AffectedRecords>;
+
   /**
    * Retrieve a file from the object store
+   *
+   * Returns an `ArrayBuffer` in web browsers and React Native, a `Buffer` in Node.js
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -127,8 +139,11 @@ export interface FilesService {
    * @throws {UnauthorizedTokenError}
    */
   retrieve(token: Token, options?: OptionsBase): Promise<Buffer>;
+
   /**
    * Retrieve a file stream from the object store
+   *
+   * Currently only supported in Node.js
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -142,6 +157,7 @@ export interface FilesService {
     token: Token,
     options?: OptionsBase
   ): Promise<{ data: ReadStream; }>;
+
   /**
    * Get file details
    *
