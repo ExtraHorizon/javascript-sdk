@@ -25,19 +25,19 @@ export function rqlParser(rql: string): RQLString {
  * @see https://developers.extrahorizon.io/guide/rql.html
  * @returns
  */
-export const rqlBuilder: RqlBuilderFactory = (
+export const rqlBuilder: RqlBuilderFactory = <T extends Record<string, any>>(
   input: RQLBuilderInput
-): RQLBuilder => {
+): RQLBuilder<T> => {
   const { doubleEncodeValues, rql } = determineInput(input);
 
   let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
   rqlParser(returnString);
 
-  const builder: RQLBuilder = {
+  const builder: RQLBuilder<T> = {
     select(fields) {
       return processQuery(
         'select',
-        typeof fields === 'string' ? fields : fields.join(',')
+        Array.isArray(fields) ? fields.join(',') : fields as string
       );
     },
     limit(limit, offset) {
@@ -49,7 +49,7 @@ export const rqlBuilder: RqlBuilderFactory = (
     sort(fields) {
       return processQuery(
         'sort',
-        typeof fields === 'string' ? fields : fields.join(',')
+        Array.isArray(fields) ? fields.join(',') : fields as string
       );
     },
     out(field, values) {
@@ -87,7 +87,7 @@ export const rqlBuilder: RqlBuilderFactory = (
     gt(field, value) {
       return processQuery('gt', `${field},${processValue(value)}`);
     },
-    contains(field, ...conditions) {
+    contains(field: string, ...conditions) {
       return processQuery(
         'contains',
         conditions.length > 0 ?
@@ -97,7 +97,7 @@ export const rqlBuilder: RqlBuilderFactory = (
           field
       );
     },
-    excludes(field, ...conditions) {
+    excludes(field: string, ...conditions) {
       return processQuery(
         'excludes',
         conditions.length > 0 ?

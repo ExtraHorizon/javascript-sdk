@@ -36,83 +36,83 @@ export interface RqlBuilderFactory {
    *
    */
   doubleEncodeValues?: boolean;
-  (input?: RQLBuilderInput): RQLBuilder;
+  <T=Record<string, any>>(input?: RQLBuilderInput): RQLBuilder<T>;
 }
 
-export interface RQLBuilder {
+export interface RQLBuilder<T extends Record<string, any>> {
   /**
    * Trims each object down to the set of properties defined in the arguments
    * - Only return field1 and field2 from the records: select(field1, field2)
    */
-  select: (fields: string | string[]) => RQLBuilder;
+  select: (fields: keyof T | (keyof T)[]) => RQLBuilder<T>;
 
   /**
    * - Only return 1 record: limit(1)
    * - Only return 10 records and skip the first 50: limit(10, 50)
    */
-  limit: (limit: number, offset?: number) => RQLBuilder;
+  limit: (limit: number, offset?: number) => RQLBuilder<T>;
 
   /**
    * Sorts by the given property in order specified by the prefix
    * - \+ for ascending
    * - \- for descending
    */
-  sort: (fields: string | string[]) => RQLBuilder;
+  sort: (fields: (keyof T) | (keyof T)[]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is not in the provided array
    */
-  out: (field: string, values: string[]) => RQLBuilder;
+  out: (field: (keyof T), value: T[keyof T][]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is in the provided array
    */
-  in: (field: string, values: string[]) => RQLBuilder;
+  in: (field: (keyof T), value: T[keyof T][]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is greater than or equal to the provided value
    */
-  ge: (field: string, value: string) => RQLBuilder;
+  ge: (field: (keyof T), value: T[keyof T]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is equal to the provided value
    */
-  eq: (field: string, value: string) => RQLBuilder;
+  eq: (field: (keyof T), value: T[keyof T]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is less than or equal to the provided value
    */
-  le: (field: string, value: string) => RQLBuilder;
+  le: (field: (keyof T), value: T[keyof T]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is not equal to the provided value
    */
-  ne: (field: string, value: string) => RQLBuilder;
+  ne: (field: (keyof T), value: T[keyof T]) => RQLBuilder<T>;
 
   /**
-   * Filters for objects where the specified string field contains the substring provided in the value.
+   * Filters for objects where the specified (keyof T) field contains the sub(keyof T) provided in the value.
    */
-  like: (field: string, value: string) => RQLBuilder;
+  like: (field: (keyof T), value: T[keyof T]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is less than the provided value
    */
-  lt: (field: string, value: string) => RQLBuilder;
+  lt: (field: (keyof T), value: T[keyof T]) => RQLBuilder<T>;
 
   /**
    * Filters for objects where the specified property's value is greater than the provided value
    */
-  gt: (field: string, value: string) => RQLBuilder;
+  gt: (field: (keyof T), value: T[keyof T]) => RQLBuilder<T>;
 
   /**
    * Allows combining results of 2 or more queries with the logical AND operator.
    */
-  and: (...conditions: RQLString[]) => RQLBuilder;
+  and: (...conditions: RQLString[]) => RQLBuilder<T>;
 
   /**
    * Allows combining results of 2 or more queries with the logical OR operator.
    */
-  or: (...conditions: RQLString[]) => RQLBuilder;
+  or: (...conditions: RQLString[]) => RQLBuilder<T>;
   /**
    * @description `contains(field)` only returns records having this field as property
    * @example
@@ -138,7 +138,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents with a data object containing `heartrate > 60` and `heartrate > 90`
    */
-  contains: (field: string, ...conditions: RQLString[]) => RQLBuilder;
+  contains: (field: (keyof T), ...conditions: RQLString[]) => RQLBuilder<T>;
   /**
    * @description `excludes(field)` only returns records not having this field as property
    * @example
@@ -159,7 +159,7 @@ export interface RQLBuilder {
    * });
    * @return Only returns documents excluding documents where `data.heartrate > 60`
    */
-  excludes: (field: string, ...conditions: RQLString[]) => RQLBuilder;
+  excludes: (field: (keyof T), ...conditions: RQLString[]) => RQLBuilder<T>;
 
   /**
    * @description skipCount() Skips the record counting step of a request to increase performance.
@@ -173,7 +173,7 @@ export interface RQLBuilder {
    *          .build(),
    * });
    */
-  skipCount: () => RQLBuilder;
+  skipCount: () => RQLBuilder<T>;
 
   /**
    * Returns a valid rqlString
