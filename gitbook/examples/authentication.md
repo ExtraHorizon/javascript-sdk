@@ -99,8 +99,6 @@ If you want to use the proxy sdk locally, you need to make some changes to your 
   * For Mac/Linux, this can be done by running `HTTPS=true yarn start`.
   * For Windows, you have to add `HTTPS=true` to your user environment. Once the variable has been set, run `yarn start`.
 * Open your browser `https://local.yourdomain.com:3000/` and skip the security warning.
-* Assuming you want to connect to the dev environment:
-  * Navigate to `https://pages.dev.fibricheck.com/login/` and login with your account. Once logged in, a cookie will be created named `dev-fibproxy`. To access this cookie on your local domain, set the property `SameSite=None`.
 
 #### Snippet for stored credentials
 
@@ -154,7 +152,7 @@ The `skipTokenCheck` saves \~300ms by skipping validation on your `token` and `t
 import { createOAuth1Client } from "@extrahorion/javascript-sdk";
 
 const exh = createOAuth1Client({
-  host: "dev.fibricheck.com",
+  host: "sandbox.extrahorizon.io",
   consumerKey: "",
   consumerSecret: "",
 });
@@ -172,7 +170,7 @@ await exh.auth.authenticate({
 import { createOAuth1Client } from "@extrahorizon/javascript-sdk";
 
 const exh = createOAuth1Client({
-  host: "dev.fibricheck.com",
+  host: "sandbox.extrahorizon.io",
   consumerKey: "",
   consumerSecret: "",
 });
@@ -201,12 +199,16 @@ await exh.auth.authenticate({
 });
 ```
 
-**Authorization Code Grant flow with callback (Only for Fibricheck)**
+**Authorization Code Grant flow with callback**
 
-* Open https://pages.dev.fibricheck.com/authorize/?client\_id=CLIENT\_ID\&response\_type=code\&redirect\_uri=REDIRECT\_URI
-* click Authorize
+* Generating an Authorization Code is out of scope for this snippet, but generally:
+  * Your application has a login/authorization page
+  * It allows the user to login to your application
+  * Shows the information about the (other, 3rd party) application requesting access
+  * After consent to give access to the user its account, redirects the user to the application
+* The (3rd party) application then receives the Authorization Code in the query parameters
 * Capture the query params on the redirect uri
-* Authenticate with the code query param
+* Authenticate with the `code` query param
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
@@ -214,9 +216,6 @@ import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
 const exh = createOAuth2Client({
   host: "",
   clientId: "",
-  freshTokensCallback: (tokenData) => {
-    localStorage.setItem("tokenData", tokenData);
-  },
 });
 
 await exh.auth.authenticate({
