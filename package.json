@@ -38,7 +38,7 @@
     "fflate": "0.8.2",
     "form-data": "4.0.0",
     "platform-specific": "1.1.0",
-    "qs": "6.11.2",
+    "qs": "6.12.0",
     "ts-toolbelt": "9.6.0",
     "typescript-json-decoder": "1.0.11"
   },

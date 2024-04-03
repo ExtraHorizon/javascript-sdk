@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - All runtime dependencies are now pinned to their specific version
-- `axios` version updated to `0.28.1`
-- `fflate` version updated to `0.8.2`
-- `typescript-json-decoder` version updated to `1.0.11`
+- `axios` updated to `0.28.1`
+- `fflate` updated to `0.8.2`
+- `typescript-json-decoder` updated to `1.0.11`
+- `qs` updated to `6.12.0`
 
 ### Fixed
 - Using an oAuth2 confidential client on web no longer causes a `global not defined` error
