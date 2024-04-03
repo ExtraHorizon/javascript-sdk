@@ -123,7 +123,7 @@ export function addPagersFn<T>(
 export function setCustomKeysConfigurationInRequestConfig(
   httpInstance: HttpInstance,
   requestOptions?: HttpRequestConfig
-) {
+): HttpRequestConfig {
   const customRequestKeys =
     requestOptions?.customRequestKeys || requestOptions?.customKeys;
   const customResponseKeys =

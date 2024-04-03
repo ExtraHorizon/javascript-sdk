@@ -1,6 +1,6 @@
 import {
-  AxiosDefaults,
   AxiosError,
+  AxiosInstance,
   AxiosInterceptorManager,
   AxiosPromise,
   AxiosRequestConfig,
@@ -42,7 +42,7 @@ export interface HttpInstance {
   (config: AxiosRequestConfig): AxiosPromise;
   (url: string, config?: AxiosRequestConfig): AxiosPromise;
   normalizeCustomData?: boolean;
-  defaults: AxiosDefaults;
+  defaults: AxiosInstance['defaults'];
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
     response: AxiosInterceptorManager<AxiosResponse>;

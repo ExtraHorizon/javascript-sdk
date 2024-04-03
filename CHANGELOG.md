@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Axios version updated to 0.28.1
+
 ### Fixed
 - Using an oAuth2 confidential client on web no longer causes a `global not defined` error
 - `exh.files.create` and `exh.files.createFromText` now work correctly while using oAuth1 in React Native
