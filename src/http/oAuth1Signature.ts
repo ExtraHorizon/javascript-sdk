@@ -160,7 +160,8 @@ function getUrlInfoFromRequest(url: string) {
   return {
     baseUrl: `${protocol}//${host}${pathname}`,
     searchParameters: qs.parse(
-      search.startsWith('?') ? search.slice(1) : search
+      search.startsWith('?') ? search.slice(1) : search,
+      { decodeDotInKeys: false } // Without this oAuth1 signatures will break, opened an issue in qs: https://github.com/ljharb/qs/issues/500
     ),
   };
 }
