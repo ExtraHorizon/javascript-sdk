@@ -21,18 +21,18 @@ export enum TokenPermission {
 }
 
 export interface TokenObject {
-  token?: Token;
-  accessLevel?: TokenPermission;
+  token: Token;
+  accessLevel: TokenPermission;
 }
 
 export interface FileDetails {
-  tokens?: Array<TokenObject>;
-  creatorId?: ObjectId;
-  creationTimestamp?: Date;
-  updateTimestamp?: Date;
-  name?: string;
-  mimetype?: string;
-  size?: number;
+  tokens: Array<TokenObject>;
+  creatorId: ObjectId;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
+  name: string;
+  mimetype: string;
+  size: number;
   tags?: Array<string>;
 }
 

@@ -20,12 +20,12 @@ export interface UserData {
   email: string;
   phoneNumber: string;
   activation: boolean;
-  patientEnlistments: PatientEnlistment[];
-  roles: Role[];
-  staffEnlistments: StaffEnlistment[];
-  lastFailedTimestamp: Date;
-  failedCount: number;
-  profileImage: string;
+  patientEnlistments?: PatientEnlistment[];
+  roles?: Role[];
+  staffEnlistments?: StaffEnlistment[];
+  lastFailedTimestamp?: Date;
+  failedCount?: number;
+  profileImage?: string;
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
@@ -50,7 +50,7 @@ export interface Role {
   id: string;
   name: string;
   description: string;
-  permissions: Permission[];
+  permissions?: Permission[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
@@ -62,7 +62,7 @@ export interface Permission {
 
 export interface StaffEnlistment {
   groupId: string;
-  roles: GroupRole[];
+  roles?: GroupRole[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
