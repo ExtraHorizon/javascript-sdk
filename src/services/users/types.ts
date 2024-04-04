@@ -703,8 +703,8 @@ export interface UsersGroupRolesService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `ADD_STAFF` | `staff enlistment` | Remove staff from the group
-   * `ADD_STAFF` | `global` | Remove staff from any group
+   * `REMOVE_STAFF` | `staff enlistment` | Remove staff from the group
+   * `REMOVE_STAFF` | `global` | Remove staff from any group
    * @param rql Add filters to the requested list.
    * @param requestBody StaffGroups
    * @returns AffectedRecords
@@ -750,7 +750,7 @@ export interface UsersService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Update your own data
-   * UPDATE_USER | global | Update any user
+   * `UPDATE_USER` | global | Update any user
    * @throws {ResourceUnknownError}
    * @returns {UserData} UserData
    */
