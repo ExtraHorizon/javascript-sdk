@@ -5,16 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [8.2.0]
+
+### Added
+- `MfaRequiredError` now exposes a typed `mfa` property to complete the MFA flow type safe
 
 ### Changed
-- Axios version updated to 0.28.1
+- All runtime dependencies are now pinned to their specific version
+- `axios` updated to `0.28.1`
+- `fflate` updated to `0.8.2`
+- `typescript-json-decoder` updated to `1.0.11`
+- `qs` updated to `6.12.0`
 
 ### Fixed
 - Using an oAuth2 confidential client on web no longer causes a `global not defined` error
 - `exh.files.create` and `exh.files.createFromText` now work correctly while using oAuth1 in React Native
 - The generic `API_ERROR` name is no longer shown for errors with more specific information available
-- Type corrections for the user, file and index entities 
+- Type corrections for the user, file, index and mfa entities 
 
 ## [8.1.1]
 
