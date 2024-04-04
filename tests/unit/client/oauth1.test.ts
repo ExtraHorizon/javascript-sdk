@@ -94,12 +94,12 @@ describe('OAuth1HttpClient', () => {
       mfa: mfaResponseData,
     });
 
-    const mfaError = await httpWithAuth.extraAuthMethods
+    const mfaError: MfaRequiredError = await httpWithAuth.extraAuthMethods
       .authenticate(authEmailData)
       .catch(error => error);
     expect(mfaError).toBeInstanceOf(MfaRequiredError);
 
-    const mfaData = mfaError.response.mfa;
+    const mfaData = mfaError.mfa;
     expect(mfaData).toEqual(mfaResponseData);
 
     const mfaMethod = mfaData.methods[0];

@@ -1,3 +1,5 @@
+import { MfaMethod } from './types';
+
 type Method =
   | 'get'
   | 'GET'
@@ -298,7 +300,18 @@ export class InvalidClientError extends OAuth2LoginError {}
 export class InvalidRequestError extends OAuth2LoginError {}
 export class UnauthorizedClientError extends OAuth2LoginError {}
 export class UnsupportedGrantTypeError extends OAuth2LoginError {}
-export class MfaRequiredError extends OAuth2LoginError {}
+export class MfaRequiredError extends OAuth2LoginError {
+  mfa: {
+    token: string;
+    tokenExpiresIn: number;
+    methods: Array<Pick<MfaMethod, 'id' | 'type' | 'name' | 'tags'>>;
+  };
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.mfa = apiError.response.mfa;
+  }
+}
 
 function getSpecifiedAuthenticationError(error: HttpError): string {
   const { type, config } = error;
