@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The generic `API_ERROR` name is no longer shown for errors with more specific information available
 - Type corrections for the user, file, index and mfa entities
 - Corrected the places where the name of a schema can also be used rather than just the id
+- The `groupIds` for `exh.data.documents.unlinkGroups` is now correctly marked as optional
 
 ## [8.1.1]
 

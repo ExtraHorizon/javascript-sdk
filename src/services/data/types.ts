@@ -770,7 +770,7 @@ export interface DataDocumentsService {
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
-      groupIds: Array<ObjectId>;
+      groupIds?: Array<ObjectId>;
     },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
