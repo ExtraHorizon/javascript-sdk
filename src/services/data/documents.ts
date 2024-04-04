@@ -155,7 +155,7 @@ export default (
         await client.post(
           httpAuth,
           `/${schemaIdOrName}/documents/${documentId}/unlinkGroups`,
-          requestBody || {}, // Allow requestBody to be optional, but always send an empty object
+          requestBody,
           options
         )
       ).data;

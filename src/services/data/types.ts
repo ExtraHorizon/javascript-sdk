@@ -769,7 +769,7 @@ export interface DataDocumentsService {
   unlinkGroups(
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
-    requestBody?: {
+    requestBody: {
       groupIds?: Array<ObjectId>;
     },
     options?: OptionsBase

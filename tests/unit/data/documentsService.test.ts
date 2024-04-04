@@ -166,18 +166,10 @@ describe('Documents Service', () => {
 
     it('Unlinks all groups from a document', async () => {
       nock(`${host}${DATA_BASE}`)
-        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, body => {
-          // The body must be an empty object, the data service does not accept an empty request body
-          try {
-            expect(body).toStrictEqual({});
-            return true;
-          } catch (error) {
-            return false;
-          }
-        })
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
         .reply(200, { affectedRecords: 1 });
 
-      const response = await sdk.data.documents.unlinkGroups(schemaId, documentId);
+      const response = await sdk.data.documents.unlinkGroups(schemaId, documentId, {});
 
       expect(response.affectedRecords).toBe(1);
     });
