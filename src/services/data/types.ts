@@ -313,7 +313,6 @@ export type IndexFieldsName = string;
 export type IndexFieldsType = 'asc' | 'desc' | 'text';
 
 export interface IndexOptions {
-  background?: boolean;
   unique?: boolean;
   sparse?: boolean;
 }
@@ -325,7 +324,7 @@ export interface Index {
     name: IndexFieldsName;
     type: IndexFieldsType;
   }[];
-  options: IndexOptions;
+  options?: IndexOptions;
   system?: boolean;
 }
 

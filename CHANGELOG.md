@@ -14,8 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using an oAuth2 confidential client on web no longer causes a `global not defined` error
 - `exh.files.create` and `exh.files.createFromText` now work correctly while using oAuth1 in React Native
 - The generic `API_ERROR` name is no longer shown for errors with more specific information available
-- Optional user fields are now correctly marked as optional
-- File fields always returned are now correctly marked as such 
+- Type corrections for the user, file and index entities 
 
 ## [8.1.1]
 
