@@ -176,7 +176,7 @@ export interface OAuth2HttpClient extends HttpInstance {
      *    });
      *  } catch (error) {
      *    if (error instanceof MfaRequiredError) {
-     *      const { mfa } = error.response;
+     *      const { mfa } = error;
      *
      *      // Your logic to request which method the user want to use in case of multiple methods
      *      const methodId = mfa.methods[0].id;
@@ -332,7 +332,7 @@ export interface OAuth1HttpClient extends HttpInstance {
      *    });
      *  } catch (error) {
      *    if (error instanceof MfaRequiredError) {
-     *      const { mfa } = error.response;
+     *      const { mfa } = error;
      *
      *      // Your logic to request which method the user want to use in case of multiple methods
      *      const methodId = mfa.methods[0].id;

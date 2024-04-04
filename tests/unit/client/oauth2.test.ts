@@ -446,7 +446,7 @@ describe('OAuth2HttpClient', () => {
         },
       });
 
-    const mfaError = await httpWithAuth.extraAuthMethods
+    const mfaError: MfaRequiredError = await httpWithAuth.extraAuthMethods
       .authenticate(emailAuthData)
       .catch(error => error);
 
@@ -458,7 +458,7 @@ describe('OAuth2HttpClient', () => {
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, tokenCreationResponse);
 
-    const { mfa } = mfaError.response;
+    const { mfa } = mfaError;
     const confirmMfaResult = await httpWithAuth.extraAuthMethods.confirmMfa({
       token: mfa.token,
       methodId: mfa.methods[0].id,

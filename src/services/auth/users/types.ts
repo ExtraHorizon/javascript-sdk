@@ -54,11 +54,11 @@ export interface AuthUsersService {
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/MFA/post_mfa_users__userId__disable
    * @throws {InvalidPresenceTokenError}
    */
-  addMfaMethod(
+  addMfaMethod<T extends RecoveryCodesMethodCreation | TotpMethodCreation>(
     userId: string,
-    data: MfaMethodCreation,
+    data: T,
     options?: OptionsBase
-  ): Promise<MfaMethod>;
+  ): Promise<T extends RecoveryCodesMethodCreation ? RecoveryCodesMethod : TotpMethod>;
   /**
    * Confirm the correct functioning of a MFA method
    *
@@ -102,7 +102,7 @@ export interface RecoveryCodesMethod {
   name: string;
   tags: string[];
   verified: boolean;
-  type: string; // recoveryCodes
+  type: 'recoveryCodes';
   codes: string[];
   updateTimestamp: Date;
   creationTimestamp: Date;
@@ -113,8 +113,10 @@ export interface TotpMethod {
   name: string;
   tags: string[];
   verified: boolean;
-  type: string; // totp
+  type: 'totp';
   secret: string;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 
 export type MfaMethod = RecoveryCodesMethod | TotpMethod;
@@ -126,11 +128,18 @@ export interface MfaSetting {
   updateTimestamp: Date;
 }
 
-export interface MfaMethodCreation {
+interface MfaMethodCreationBase {
   presenceToken: string;
-  type: string; // totp or recoveryCodes
   name?: string;
   tags?: string[];
+}
+
+export interface RecoveryCodesMethodCreation extends MfaMethodCreationBase {
+  type: 'recoveryCodes';
+}
+
+export interface TotpMethodCreation extends MfaMethodCreationBase {
+  type: 'totp';
 }
 
 export interface MfaMethodVerification {
