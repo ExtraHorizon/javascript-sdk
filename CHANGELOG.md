@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type corrections for the user, profile, file, index and mfa entities
 - Corrected the places where the name of a schema can also be used rather than just the id
 - The `groupIds` for `exh.data.documents.unlinkGroups` is now correctly marked as optional
+- Corrected the permission mentioned for `exh.users.groupRoles.removeUsersFromStaff`
 
 ## [8.1.1]
 
