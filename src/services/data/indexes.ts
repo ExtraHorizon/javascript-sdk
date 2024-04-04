@@ -6,15 +6,15 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataIndexesService => ({
-  async create(schemaId, requestBody, options) {
+  async create(schemaIdOrName, requestBody, options) {
     return (
-      await client.post(httpAuth, `/${schemaId}/indexes`, requestBody, options)
+      await client.post(httpAuth, `/${schemaIdOrName}/indexes`, requestBody, options)
     ).data;
   },
 
-  async remove(indexId, schemaId, options) {
+  async remove(indexId, schemaIdOrName, options) {
     return (
-      await client.delete(httpAuth, `/${schemaId}/indexes/${indexId}`, options)
+      await client.delete(httpAuth, `/${schemaIdOrName}/indexes/${indexId}`, options)
     ).data;
   },
 });

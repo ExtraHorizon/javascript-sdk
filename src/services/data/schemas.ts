@@ -72,24 +72,24 @@ export default (
       return res.data[0];
     },
 
-    async update(schemaId, requestBody, options) {
-      return (await client.put(httpAuth, `/${schemaId}`, requestBody, options))
+    async update(schemaIdOrName, requestBody, options) {
+      return (await client.put(httpAuth, `/${schemaIdOrName}`, requestBody, options))
         .data;
     },
 
-    async remove(schemaId, options) {
-      return (await client.delete(httpAuth, `/${schemaId}`, options)).data;
+    async remove(schemaIdOrName, options) {
+      return (await client.delete(httpAuth, `/${schemaIdOrName}`, options)).data;
     },
 
-    async disable(schemaId, options) {
+    async disable(schemaIdOrName, options) {
       return (
-        await client.post(httpAuth, `/${schemaId}/disable`, undefined, options)
+        await client.post(httpAuth, `/${schemaIdOrName}/disable`, undefined, options)
       ).data;
     },
 
-    async enable(schemaId, options) {
+    async enable(schemaIdOrName, options) {
       return (
-        await client.post(httpAuth, `/${schemaId}/enable`, undefined, options)
+        await client.post(httpAuth, `/${schemaIdOrName}/enable`, undefined, options)
       ).data;
     },
   };

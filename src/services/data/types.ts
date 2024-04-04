@@ -370,14 +370,14 @@ export interface DataCommentsService {
    * none | | Comment on your own documents
    * `CREATE_DOCUMENT_COMMENTS` | `staff enlistment`  | Comment on any document belonging to the group
    * `CREATE_DOCUMENT_COMMENTS` | `global` | Comment on any document
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody
    * @returns {Promise<Comment>}
    * @throws {LockedDocumentError}
    */
   create(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
@@ -394,39 +394,36 @@ export interface DataCommentsService {
    * none | | View comments for your own documents
    * `VIEW_DOCUMENT_COMMENTS` | `staff enlistment`  | View comments for any document belonging to the group
    * `VIEW_DOCUMENT_COMMENTS` | `global` | View the comments for any document
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param rql Add filters to the requested list.
    * @returns {Promise<PagedResult<Comment>>}
    */
   find(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsWithRql
   ): Promise<PagedResult<Comment>>;
   /**
    * Find By Id
    * @param id the Id to search for
-   * @param schemaId the schema Id
-   * @param documentId the document Id
-   * @param rql an optional rql string
+   * @param schemaIdOrName The id or name of the targeted schema.
+   * @param documentId The id of the targeted document.
    * @returns the first element found
    */
   findById(
     id: ObjectId,
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsWithRql
   ): Promise<Comment>;
   /**
    * Find First
-   * @param schemaId the schema Id
-   * @param documentId the document Id
-   * @param rql an optional rql string
+   * @param schemaIdOrName The id or name of the targeted schema.
+   * @param documentId The id of the targeted document.
    * @returns the first element found
    */
   findFirst(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsWithRql
   ): Promise<Comment>;
@@ -440,13 +437,13 @@ export interface DataCommentsService {
    * none | | Update your comments
    * `UPDATE_DOCUMENT_COMMENTS` | `global` | Update comments
    * @param commentId The id of the targeted comment.
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
    */
   update(
     commentId: ObjectId,
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       text: CommentText;
@@ -464,13 +461,13 @@ export interface DataCommentsService {
    * `UPDATE_DOCUMENT_COMMENTS` | `staff enlistment`  | Delete comments for any document belonging to the group
    * `UPDATE_DOCUMENT_COMMENTS` | `global` | Delete the comments for any document
    * @param commentId The id of the targeted comment.
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns {Promise<AffectedRecords>}
    */
   remove(
     commentId: ObjectId,
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -482,13 +479,13 @@ export interface DataDocumentsService {
    *
    * Actions cannot be performed if the document has a transitionLock
    *
-   * @param schemaId the schema Id
-   * @param documentId the document Id
+   * @param schemaIdOrName The id or name of the targeted schema.
+   * @param documentId The id of the targeted document.
    * @returns boolean success
    * @throws {Error} If the document is in a locked state after the specified tries
    */
   assertNonLockedState(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     tries: number,
     retryTimeInMs: number,
@@ -502,7 +499,7 @@ export interface DataDocumentsService {
    * none |  | Everyone can use this endpoint
    *
    * `CREATE_DOCUMENTS` | `global` | When the schema.createMode is set to permissionRequired then this permission is required to make a group
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody
    * @returns {Document} document
    * @throws {IllegalArgumentError}
@@ -512,7 +509,7 @@ export interface DataDocumentsService {
     OutputData = null,
     CustomStatus = null
   >(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     requestBody: InputData,
     options?: OptionsWithRql & { gzip?: boolean; }
   ): Promise<Document<OutputData, CustomStatus>>;
@@ -540,12 +537,11 @@ export interface DataDocumentsService {
    * none | `patient enlistment` | See the documents belonging to the group
    * none | `staff enlistment` | See the documents belonging to the group
    * `VIEW_DOCUMENTS` | `global` | See any document
-   * @param schemaId The id of the targeted schema.
-   * @param rql Add filters to the requested list.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns PagedResultWithPager<Document>
    */
   find<CustomData = null, CustomStatus = null>(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): Promise<PagedResultWithPager<Document<CustomData, CustomStatus>>>;
   /**
@@ -574,12 +570,11 @@ export interface DataDocumentsService {
    * none | `patient enlistment` | See the documents belonging to the group
    * none | `staff enlistment` | See the documents belonging to the group
    * `VIEW_DOCUMENTS` | `global` | See any document
-   * @param schemaId The id of the targeted schema.
-   * @param rql Add filters to the requested list.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns Document[]
    */
   findAll<CustomData = null, CustomStatus = null>(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): Promise<Document<CustomData, CustomStatus>[]>;
   /**
@@ -606,12 +601,11 @@ export interface DataDocumentsService {
    * none | `patient enlistment` | See the documents belonging to the group
    * none | `staff enlistment` | See the documents belonging to the group
    * `VIEW_DOCUMENTS` | `global` | See any document
-   * @param schemaId The id of the targeted schema.
-   * @param rql Add filters to the requested list.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns Document[]
    */
   findAllIterator<CustomData = null, CustomStatus = null>(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): FindAllIterator<Document<CustomData, CustomStatus>>;
   /**
@@ -619,13 +613,12 @@ export interface DataDocumentsService {
    *
    * Same Permissions as the find() method
    *
-   * @param schemaId the schema Id
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId the Id to search for
-   * @param rql an optional rql string
    * @returns {Document} document
    */
   findById<CustomData = null, CustomStatus = null>(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsWithRql
   ): Promise<Document<CustomData, CustomStatus>>;
@@ -633,12 +626,11 @@ export interface DataDocumentsService {
    * Returns the first document that is found with the applied filter
    *
    * Same Permissions as the find() method
-   * @param schemaId the schema Id
-   * @param rql an optional rql string
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns {Document} document
    */
   findFirst<CustomData = null, CustomStatus = null>(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): Promise<Document<CustomData, CustomStatus>>;
   /**
@@ -651,14 +643,13 @@ export interface DataDocumentsService {
    * none | | Update your own documents
    * none | `staff enlistment`  | Update all the documents belonging to the group
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param rql Add filters to the requested list.
    * @param requestBody Record<string, any>
    * @returns AffectedRecords
    */
   update<UpdateData = Record<string, any>>(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: UpdateData,
     options?: OptionsWithRql
@@ -679,12 +670,12 @@ export interface DataDocumentsService {
    * none | | Delete the document if the userId is linked to the document
    * none | `staff enlistment`  | Delete the document if the groupId is linked
    * `DELETE_DOCUMENTS` | `global` | Delete the document
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns AffectedRecords
    */
   remove(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -698,14 +689,13 @@ export interface DataDocumentsService {
    * none | | Update your own documents
    * none | `staff enlistment`  | Update all the documents belonging to the group
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param rql Add filters to the requested list.
    * @param requestBody list of fields
    * @returns AffectedRecords
    */
   removeFields(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       fields: Array<string>;
@@ -722,16 +712,15 @@ export interface DataDocumentsService {
    * none | | Update your own documents
    * none | `staff enlistment`  | Update all the documents belonging to the group
    * `UPDATE_DOCUMENTS` | `global` | Update all the documents
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
-   * @param rql Add filters to the requested list.
    * @param requestBody
    * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
   transition(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       id: ObjectId;
@@ -747,13 +736,13 @@ export interface DataDocumentsService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of groupIds
    * @returns AffectedRecords
    */
   linkGroups(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
@@ -772,13 +761,13 @@ export interface DataDocumentsService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of groupIds
    * @returns AffectedRecords
    */
   unlinkGroups(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       groupIds: Array<ObjectId>;
@@ -795,13 +784,13 @@ export interface DataDocumentsService {
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be added to the document.
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of userIds
    * @returns AffectedRecords
    */
   linkUsers(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
@@ -822,13 +811,13 @@ export interface DataDocumentsService {
    * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of userIds
    * @returns AffectedRecords
    */
   unlinkUsers(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
       userIds: Array<ObjectId>;
@@ -846,7 +835,7 @@ export interface DataIndexesService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Create an index
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody
    * @returns Index Success
    * @throws {ResourceAlreadyExistsError}
@@ -854,7 +843,7 @@ export interface DataIndexesService {
    * @throws {IllegalStateError}
    */
   create(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     requestBody: IndexInput,
     options?: OptionsBase
   ): Promise<Index>;
@@ -867,14 +856,14 @@ export interface DataIndexesService {
    * - | - | -
    * `UPDATE_SCHEMAS` | `global`  | **Required** for this endpoint: Delete an index
    * @param indexId The id of the targeted index.
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns AffectedRecords
    * @throws {NoPermissionError}
    * @throws {ResourceUnknownError}
    */
   remove(
     indexId: ObjectId,
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
 }
@@ -886,7 +875,7 @@ export interface DataPropertiesService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody The name and configuration
    * @returns AffectedRecords
    * @throws {ResourceAlreadyExistsError}
@@ -895,7 +884,7 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownException}
    */
   create(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     requestBody: {
       name: string;
       configuration: TypeConfiguration;
@@ -908,14 +897,14 @@ export interface DataPropertiesService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param propertyPath The path to the property
    * @returns AffectedRecords
    * @throws {IllegalArgumentError}
    * @throws {ResourceUnknownError}
    */
   remove(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     propertyPath: string,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -925,7 +914,7 @@ export interface DataPropertiesService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param propertyPath The path to the property
    * @param requestBody The configuration
    * @returns AffectedRecords
@@ -933,7 +922,7 @@ export interface DataPropertiesService {
    * @throws {ResourceUnknownError}
    */
   update(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     propertyPath: string,
     requestBody: TypeConfiguration,
     options?: OptionsBase
@@ -958,7 +947,6 @@ export interface DataSchemasService {
    * - | - | -
    * none | | Every one can use this endpoint
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
-   * @param rql Add filters to the requested list.
    * @returns PagedResultWithPager<Schema>
    */
   find(options?: OptionsWithRql): Promise<PagedResultWithPager<Schema>>;
@@ -971,7 +959,6 @@ export interface DataSchemasService {
    * - | - | -
    * none | | Every one can use this endpoint
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
-   * @param rql Add filters to the requested list.
    * @returns Schema[]
    */
   findAll(options?: OptionsWithRql): Promise<Schema[]>;
@@ -982,27 +969,23 @@ export interface DataSchemasService {
    * - | - | -
    * none | | Every one can use this endpoint
    * `DISABLE_SCHEMAS` | `global` | Includes disabled schemas in the response
-   * @param rql Add filters to the requested list.
    * @returns Schema[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<Schema>;
   /**
    * Find By Id
    * @param id the Id to search for
-   * @param rql an optional rql string
    * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Schema>;
   /**
    * Find By Name
    * @param name the name to search for
-   * @param rql an optional rql string
    * @returns the first element found
    */
   findByName(name: string, options?: OptionsWithRql): Promise<Schema>;
   /**
    * Find First
-   * @param rql an optional rql string
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Schema>;
@@ -1012,12 +995,12 @@ export interface DataSchemasService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody The schema input
    * @returns AffectedRecords
    */
   update(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     requestBody: UpdateSchemaInput,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
@@ -1027,31 +1010,31 @@ export interface DataSchemasService {
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns AffectedRecords
    * @throws {IllegalStateError}
    */
-  remove(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+  remove(schemaIdOrName: ObjectId | string, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Disable a schema
    *
    * Permission | Scope | Effect
    * - | - | -
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns AffectedRecords
    */
-  disable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+  disable(schemaIdOrName: ObjectId | string, options?: OptionsBase): Promise<AffectedRecords>;
   /**
    * Enable a schema
    *
    * Permission | Scope | Effect
    * - | - | -
    * `DISABLE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @returns AffectedRecords
    */
-  enable(schemaId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+  enable(schemaIdOrName: ObjectId | string, options?: OptionsBase): Promise<AffectedRecords>;
 }
 
 export interface DataStatusesService {
@@ -1061,13 +1044,13 @@ export interface DataStatusesService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody The name and status data
    * @returns AffectedRecords
    * @throws {ResourceAlreadyExistsError}
    */
   create(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     requestBody: {
       name: string;
       data?: StatusData;
@@ -1080,14 +1063,14 @@ export interface DataStatusesService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param name The name of the targeted status.
    * @param requestBody The status data
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
   update(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     name: string,
     requestBody: StatusData,
     options?: OptionsBase
@@ -1098,14 +1081,14 @@ export interface DataStatusesService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param name The name of the targeted status.
    * @returns AffectedRecords
    * @throws {StatusInUseError}
    * @throws {ResourceUnknownError}
    */
   remove(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     name: string,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -1118,13 +1101,13 @@ export interface DataTransitionsService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody
    * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
   updateCreation(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     requestBody: CreationTransition,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -1134,13 +1117,13 @@ export interface DataTransitionsService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody TransitionInput
    * @returns {Promise<AffectedRecords>}
    * @throws {IllegalArgumentError}
    */
   create(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     requestBody: TransitionInput,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
@@ -1150,7 +1133,7 @@ export interface DataTransitionsService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param transitionId The id of the targeted transition.
    * @param requestBody
    * @returns {Promise<AffectedRecords>}
@@ -1158,7 +1141,7 @@ export interface DataTransitionsService {
    * @throws {ResourceUnknownError}
    */
   update(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     transitionId: ObjectId,
     requestBody: TransitionInput,
     options?: OptionsBase
@@ -1169,13 +1152,13 @@ export interface DataTransitionsService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_SCHEMAS` | `global` | **Required** for this endpoint
-   * @param schemaId The id of the targeted schema.
+   * @param schemaIdOrName The id or name of the targeted schema.
    * @param transitionId The id of the targeted transition.
    * @returns {Promise<AffectedRecords>}
    * @throws {ResourceUnknownError}
    */
   remove(
-    schemaId: ObjectId,
+    schemaIdOrName: ObjectId | string,
     transitionId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
