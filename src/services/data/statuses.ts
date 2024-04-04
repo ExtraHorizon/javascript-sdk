@@ -6,26 +6,26 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataStatusesService => ({
-  async create(schemaId, requestBody, options) {
+  async create(schemaIdOrName, requestBody, options) {
     return (
-      await client.post(httpAuth, `/${schemaId}/statuses`, requestBody, options)
+      await client.post(httpAuth, `/${schemaIdOrName}/statuses`, requestBody, options)
     ).data;
   },
 
-  async update(schemaId, name, requestBody, options) {
+  async update(schemaIdOrName, name, requestBody, options) {
     return (
       await client.put(
         httpAuth,
-        `/${schemaId}/statuses/${name}`,
+        `/${schemaIdOrName}/statuses/${name}`,
         requestBody,
         options
       )
     ).data;
   },
 
-  async remove(schemaId, name, options) {
+  async remove(schemaIdOrName, name, options) {
     return (
-      await client.delete(httpAuth, `/${schemaId}/statuses/${name}`, options)
+      await client.delete(httpAuth, `/${schemaIdOrName}/statuses/${name}`, options)
     ).data;
   },
 });

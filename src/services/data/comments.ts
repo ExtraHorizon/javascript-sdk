@@ -7,57 +7,57 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataCommentsService => ({
-  async create(schemaId, documentId, requestBody, options) {
+  async create(schemaIdOrName, documentId, requestBody, options) {
     return (
       await client.post(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments`,
+        `/${schemaIdOrName}/documents/${documentId}/comments`,
         requestBody,
         options
       )
     ).data;
   },
 
-  async find(schemaId, documentId, options) {
+  async find(schemaIdOrName, documentId, options) {
     return (
       await client.get(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments${options?.rql || ''}`,
+        `/${schemaIdOrName}/documents/${documentId}/comments${options?.rql || ''}`,
         options
       )
     ).data;
   },
 
-  async findById(this: DataCommentsService, id, schemaId, documentId, options) {
+  async findById(this: DataCommentsService, id, schemaIdOrName, documentId, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find(schemaId, documentId, {
+    const res = await this.find(schemaIdOrName, documentId, {
       ...options,
       rql: rqlWithId,
     });
     return res.data[0];
   },
 
-  async findFirst(this: DataCommentsService, schemaId, documentId, options) {
-    const res = await this.find(schemaId, documentId, options);
+  async findFirst(this: DataCommentsService, schemaIdOrName, documentId, options) {
+    const res = await this.find(schemaIdOrName, documentId, options);
     return res.data[0];
   },
 
-  async update(commentId, schemaId, documentId, requestBody, options) {
+  async update(commentId, schemaIdOrName, documentId, requestBody, options) {
     return (
       await client.put(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments/${commentId}`,
+        `/${schemaIdOrName}/documents/${documentId}/comments/${commentId}`,
         requestBody,
         options
       )
     ).data;
   },
 
-  async remove(commentId, schemaId, documentId, options) {
+  async remove(commentId, schemaIdOrName, documentId, options) {
     return (
       await client.delete(
         httpAuth,
-        `/${schemaId}/documents/${documentId}/comments/${commentId}`,
+        `/${schemaIdOrName}/documents/${documentId}/comments/${commentId}`,
         options
       )
     ).data;
