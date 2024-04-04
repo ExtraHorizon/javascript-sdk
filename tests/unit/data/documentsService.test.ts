@@ -151,14 +151,36 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should unlink groups from a document', async () => {
-    nock(`${host}${DATA_BASE}`)
-      .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
-      .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.documents.unlinkGroups(schemaId, documentId, {
-      groupIds: ['5e9fff9d90135a2a9a718e2f'],
+  describe('unlinkGroups', () => {
+    it('Unlinks specific groups from a document', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
+        .reply(200, { affectedRecords: 1 });
+
+      const response = await sdk.data.documents.unlinkGroups(schemaId, documentId, {
+        groupIds: ['5e9fff9d90135a2a9a718e2f'],
+      });
+
+      expect(response.affectedRecords).toBe(1);
     });
-    expect(res.affectedRecords).toBe(1);
+
+    it('Unlinks all groups from a document', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, body => {
+          // The body must be an empty object, the data service does not accept an empty request body
+          try {
+            expect(body).toStrictEqual({});
+            return true;
+          } catch (error) {
+            return false;
+          }
+        })
+        .reply(200, { affectedRecords: 1 });
+
+      const response = await sdk.data.documents.unlinkGroups(schemaId, documentId);
+
+      expect(response.affectedRecords).toBe(1);
+    });
   });
 
   it('should link users to a document', async () => {

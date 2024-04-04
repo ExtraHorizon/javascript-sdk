@@ -769,8 +769,8 @@ export interface DataDocumentsService {
   unlinkGroups(
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
-    requestBody: {
-      groupIds: Array<ObjectId>;
+    requestBody?: {
+      groupIds?: Array<ObjectId>;
     },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
