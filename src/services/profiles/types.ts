@@ -1,4 +1,3 @@
-import { Object } from 'ts-toolbelt';
 import { RQLString } from '../../rql';
 import { FindAllIterator } from '../../services/helpers';
 import {
@@ -10,18 +9,18 @@ import {
 } from '../types';
 
 export interface Profile {
-  id?: ObjectId;
+  id: ObjectId;
   addressLine1?: string;
   addressLine2?: string;
-  country?: string;
+  country: string;
   region?: string;
   city?: string;
   postalCode?: string;
-  birthday?: string;
+  birthday: string;
   /**
    * See ISO 5218
    */
-  gender?: number;
+  gender: number;
   length?: number;
   weight?: number;
   afHistory?: boolean;
@@ -50,10 +49,7 @@ export interface Profile {
   updateTimestamp?: Date;
 }
 
-export type ProfileCreation = Object.Required<
-  Pick<Profile, 'id' | 'country' | 'region' | 'birthday' | 'gender'>,
-  'id' | 'country' | 'birthday' | 'gender'
->;
+export type ProfileCreation = Pick<Profile, 'id' | 'country' | 'region' | 'birthday' | 'gender'>;
 
 export enum ProfileActivity {
   NOT_ACTIVE = 'NOT_ACTIVE',
@@ -103,7 +99,7 @@ export enum MedicationFrequency {
 }
 
 export interface Group {
-  groupId?: ObjectId;
+  groupId: ObjectId;
   reason?: string;
   /**
    * This serves as a field to link a patient to the medical record of a hospital/physician. This field therefor accepts any string, not just an ObjectId.
@@ -113,7 +109,7 @@ export interface Group {
   customFields?: Record<string, string>;
 }
 
-export type GroupCreation = Object.Required<Group, 'groupId'>;
+export type GroupCreation = Group;
 
 export interface LogEntry {
   id?: ObjectId;

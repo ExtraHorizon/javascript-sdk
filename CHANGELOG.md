@@ -16,12 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `fflate` updated to `0.8.2`
 - `typescript-json-decoder` updated to `1.0.11`
 - `qs` updated to `6.12.0`
+- Removed the dependency on `ts-toolbelt` as it was no longer required
 
 ### Fixed
 - Using an oAuth2 confidential client on web no longer causes a `global not defined` error
 - `exh.files.create` and `exh.files.createFromText` now work correctly while using oAuth1 in React Native
 - The generic `API_ERROR` name is no longer shown for errors with more specific information available
-- Type corrections for the user, file, index and mfa entities
+- Type corrections for the user, profile, file, index and mfa entities
 - Corrected the places where the name of a schema can also be used rather than just the id
 - The `groupIds` for `exh.data.documents.unlinkGroups` is now correctly marked as optional
 

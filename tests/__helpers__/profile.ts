@@ -13,6 +13,8 @@ import {
 
 export const profileData: Profile = {
   id: '58074804b2148f3b28ad759a',
+  country: 'BE',
+  birthday: '1970-01-01',
   addressLine1: 'string',
   addressLine2: 'string',
   city: 'string',
