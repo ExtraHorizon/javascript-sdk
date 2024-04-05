@@ -10,7 +10,7 @@ import { templateData, templateInput } from '../../__helpers__/template';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Template Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const templateId = templateData.id;
   const templateResponse = createPagedResponse(templateData);
 

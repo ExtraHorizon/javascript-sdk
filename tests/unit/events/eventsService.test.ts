@@ -10,7 +10,7 @@ import { eventInput, eventData } from '../../__helpers__/event';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Events Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const eventId = eventData.id;
   const eventsResponse = createPagedResponse(eventData);
 

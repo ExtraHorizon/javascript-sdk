@@ -30,7 +30,7 @@ import {
 import { createPagedResponse, randomHexString } from '../../__helpers__/utils';
 
 describe('Users Service', () => {
-  const host = 'https://api.dev.fibricheck.com';
+  const host = 'https://api.sandbox.extrahorizon.io';
   const userId = '5a0b2adc265ced65a8cab865';
   const groupId = '5bfbfc3146e0fb321rsa4b28';
   // const oldEmail = 'old@bbb.ccc';

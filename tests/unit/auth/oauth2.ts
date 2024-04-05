@@ -7,7 +7,7 @@ import { authorizationData } from '../../__helpers__/auth';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Auth - OAuth2', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
 
   let sdk: Client<ParamsOauth2>;
 

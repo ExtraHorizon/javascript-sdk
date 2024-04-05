@@ -9,13 +9,13 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataDocumentsService => {
-  function partialApplyFind(schemaId) {
+  function partialApplyFind(schemaIdOrName) {
     return async options => {
       const baseConfig = options?.headers ? { headers: options.headers } : {};
       return (
         await client.get(
           httpAuth,
-          `/${schemaId}/documents${options?.rql || ''}`,
+          `/${schemaIdOrName}/documents${options?.rql || ''}`,
           { ...baseConfig, customResponseKeys: ['data.data'] }
         )
       ).data;
@@ -25,7 +25,7 @@ export default (
   return {
     // TypeScript limitation. Function using optional generic with fallback can not be first function.
     async assertNonLockedState(
-      schemaId,
+      schemaIdOrName,
       documentId,
       tries = 5,
       retryTimeInMs = 300,
@@ -35,7 +35,7 @@ export default (
         throw new Error('Document is in a locked state');
       }
 
-      const res = await this.findById(schemaId, documentId, options);
+      const res = await this.findById(schemaIdOrName, documentId, options);
       if (!res.transitionLock) {
         return true;
       }
@@ -43,7 +43,7 @@ export default (
       await delay(retryTimeInMs);
 
       return this.assertNonLockedState(
-        schemaId,
+        schemaIdOrName,
         documentId,
         tries - 1,
         retryTimeInMs,
@@ -51,12 +51,12 @@ export default (
       );
     },
 
-    async create(schemaId, requestBody, options) {
+    async create(schemaIdOrName, requestBody, options) {
       const baseConfig = options?.headers ? { headers: options.headers } : {};
       return (
         await client.post(
           httpAuth,
-          `/${schemaId}/documents`,
+          `/${schemaIdOrName}/documents`,
           requestBody,
           {
             ...baseConfig,
@@ -67,57 +67,57 @@ export default (
       ).data;
     },
 
-    async find(schemaId, options) {
-      const result = await partialApplyFind(schemaId)(options);
-      return addPagersFn<Document>(partialApplyFind(schemaId), options, result);
+    async find(schemaIdOrName, options) {
+      const result = await partialApplyFind(schemaIdOrName)(options);
+      return addPagersFn<Document>(partialApplyFind(schemaIdOrName), options, result);
     },
 
-    async findAll(this: DataDocumentsService, schemaId, options) {
-      return findAllGeneric<Document>(partialApplyFind(schemaId), options);
+    async findAll(this: DataDocumentsService, schemaIdOrName, options) {
+      return findAllGeneric<Document>(partialApplyFind(schemaIdOrName), options);
     },
 
-    findAllIterator(schemaId, options) {
-      return findAllIterator<Document>(partialApplyFind(schemaId), options);
+    findAllIterator(schemaIdOrName, options) {
+      return findAllIterator<Document>(partialApplyFind(schemaIdOrName), options);
     },
 
-    async findById(this: DataDocumentsService, schemaId, documentId, options?) {
+    async findById(this: DataDocumentsService, schemaIdOrName, documentId, options?) {
       const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
-      const res = await this.find(schemaId, { ...options, rql: rqlWithId });
+      const res = await this.find(schemaIdOrName, { ...options, rql: rqlWithId });
 
       return res.data[0];
     },
 
-    async findFirst(this: DataDocumentsService, schemaId, options) {
-      const res = await this.find(schemaId, options);
+    async findFirst(this: DataDocumentsService, schemaIdOrName, options) {
+      const res = await this.find(schemaIdOrName, options);
       return res.data[0];
     },
 
-    async update(schemaId, documentId, requestBody, options) {
+    async update(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.put(
           httpAuth,
-          `/${schemaId}/documents/${documentId}${options?.rql || ''}`,
+          `/${schemaIdOrName}/documents/${documentId}${options?.rql || ''}`,
           requestBody,
           options
         )
       ).data;
     },
 
-    async remove(schemaId, documentId, options) {
+    async remove(schemaIdOrName, documentId, options) {
       return (
         await client.delete(
           httpAuth,
-          `/${schemaId}/documents/${documentId}`,
+          `/${schemaIdOrName}/documents/${documentId}`,
           options
         )
       ).data;
     },
 
-    async removeFields(schemaId, documentId, requestBody, options) {
+    async removeFields(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.post(
           httpAuth,
-          `/${schemaId}/documents/${documentId}/deleteFields${
+          `/${schemaIdOrName}/documents/${documentId}/deleteFields${
             options?.rql || ''
           }`,
           requestBody,
@@ -126,11 +126,11 @@ export default (
       ).data;
     },
 
-    async transition(schemaId, documentId, requestBody, options) {
+    async transition(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.post(
           httpAuth,
-          `/${schemaId}/documents/${documentId}/transition${
+          `/${schemaIdOrName}/documents/${documentId}/transition${
             options?.rql || ''
           }`,
           requestBody,
@@ -139,44 +139,44 @@ export default (
       ).data;
     },
 
-    async linkGroups(schemaId, documentId, requestBody, options) {
+    async linkGroups(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.post(
           httpAuth,
-          `/${schemaId}/documents/${documentId}/linkGroups`,
+          `/${schemaIdOrName}/documents/${documentId}/linkGroups`,
           requestBody,
           options
         )
       ).data;
     },
 
-    async unlinkGroups(schemaId, documentId, requestBody, options) {
+    async unlinkGroups(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.post(
           httpAuth,
-          `/${schemaId}/documents/${documentId}/unlinkGroups`,
+          `/${schemaIdOrName}/documents/${documentId}/unlinkGroups`,
           requestBody,
           options
         )
       ).data;
     },
 
-    async linkUsers(schemaId, documentId, requestBody, options) {
+    async linkUsers(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.post(
           httpAuth,
-          `/${schemaId}/documents/${documentId}/linkUsers`,
+          `/${schemaIdOrName}/documents/${documentId}/linkUsers`,
           requestBody,
           options
         )
       ).data;
     },
 
-    async unlinkUsers(schemaId, documentId, requestBody, options) {
+    async unlinkUsers(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.post(
           httpAuth,
-          `/${schemaId}/documents/${documentId}/unlinkUsers`,
+          `/${schemaIdOrName}/documents/${documentId}/unlinkUsers`,
           requestBody,
           options
         )

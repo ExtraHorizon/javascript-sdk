@@ -11,7 +11,7 @@ import { permissionData, roleData } from '../../__helpers__/user';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Global Roles Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const roleId = '5bfbfc3146e0fb321rsa4b21';
 
   let sdk: Client<ParamsOauth2>;

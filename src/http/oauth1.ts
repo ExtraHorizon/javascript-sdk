@@ -94,7 +94,6 @@ export function createOAuth1HttpClient(
     ...config,
     headers: {
       ...config.headers,
-      'Content-Type': 'application/json',
       ...(config?.method ?
         getOAuth1AuthorizationHeader({
           url: `${config.baseURL}${config.url}`,

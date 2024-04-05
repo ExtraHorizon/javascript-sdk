@@ -5,7 +5,7 @@ import { profileData, groupData, logData } from '../../__helpers__/profile';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Logs Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const profileId = profileData.id;
   const { groupId } = groupData;
   const logId = logData.id;

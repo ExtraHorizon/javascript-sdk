@@ -6,32 +6,32 @@ export default (
   client: HttpClient,
   httpAuth: HttpInstance
 ): DataPropertiesService => ({
-  async create(schemaId, requestBody, options) {
+  async create(schemaIdOrName, requestBody, options) {
     return (
       await client.post(
         httpAuth,
-        `/${schemaId}/properties`,
+        `/${schemaIdOrName}/properties`,
         requestBody,
         options
       )
     ).data;
   },
 
-  async remove(schemaId, propertyPath, options) {
+  async remove(schemaIdOrName, propertyPath, options) {
     return (
       await client.delete(
         httpAuth,
-        `/${schemaId}/properties/${propertyPath}`,
+        `/${schemaIdOrName}/properties/${propertyPath}`,
         options
       )
     ).data;
   },
 
-  async update(schemaId, propertyPath, requestBody, options) {
+  async update(schemaIdOrName, propertyPath, requestBody, options) {
     return (
       await client.put(
         httpAuth,
-        `/${schemaId}/properties/${propertyPath}`,
+        `/${schemaIdOrName}/properties/${propertyPath}`,
         requestBody,
         options
       )

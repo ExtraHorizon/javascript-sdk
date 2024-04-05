@@ -43,9 +43,9 @@ const getRawMock = <MockFn>(fn: () => MockFn) => {
  * @example
  * import { getMockSdkProxy } from "@extrahorizon/javascript-sdk";
  * describe("mock SDK", () => {
- *   const sdk = getMockSdkProxy(jest.fn);
+ *   const exh = getMockSdkProxy(jest.fn);
  *   it("should be valid mock", async () => {
- *     expect(sdk.data).toBeDefined();
+ *     expect(exh.data).toBeDefined();
  *   });
  * });
  */
@@ -66,9 +66,9 @@ export const getMockSdkProxy = <MockFn>(
  * @example
  * import { getMockSdkOAuth2 } from "@extrahorizon/javascript-sdk";
  * describe("mock SDK", () => {
- *   const sdk = getMockSdkOAuth2(jest.fn);
+ *   const exh = getMockSdkOAuth2(jest.fn);
  *   it("should be valid mock", async () => {
- *     expect(sdk.data).toBeDefined();
+ *     expect(exh.data).toBeDefined();
  *   });
  * });
  */
@@ -89,9 +89,9 @@ export const getMockSdkOAuth2 = <MockFn>(
  * @example
  * import { getMockSdkOAuth1 } from "@extrahorizon/javascript-sdk";
  * describe("mock SDK", () => {
- *   const sdk = getMockSdkOAuth1(jest.fn);
+ *   const exh = getMockSdkOAuth1(jest.fn);
  *   it("should be valid mock", async () => {
- *     expect(sdk.data).toBeDefined();
+ *     expect(exh.data).toBeDefined();
  *   });
  * });
  */
