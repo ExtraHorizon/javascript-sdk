@@ -13,7 +13,7 @@ import {
 } from '../../__helpers__/configuration';
 
 describe('Configuration: Groups Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const groupId = 'abcdef123456789abcdef123';
 
   let sdk: Client<ParamsOauth2>;

@@ -4,7 +4,7 @@ import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 import { profileData, groupData, groupInput } from '../../__helpers__/profile';
 
 describe('Groups Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const profileId = profileData.id;
   const { groupId } = groupData;
 

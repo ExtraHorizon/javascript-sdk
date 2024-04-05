@@ -10,7 +10,7 @@ import { mailInput, mailData, queuedMailData } from '../../__helpers__/mail';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Mail Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const mailId = mailData.id;
   const mailsResponse = createPagedResponse(mailData);
   const queuedMailsResponse = createPagedResponse(queuedMailData);

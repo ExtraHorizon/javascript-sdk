@@ -14,7 +14,7 @@ import {
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Settings Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const notificationId = notificationData.id;
   const settingsId = settingsData.id;
   const settingsResponse = createPagedResponse(settingsData);

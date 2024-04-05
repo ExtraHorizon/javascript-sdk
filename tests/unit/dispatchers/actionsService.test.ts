@@ -10,7 +10,7 @@ import {
 } from '../../__helpers__/dispatcher';
 
 describe('Actions Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const dispatcherId = dispatcherData.id;
   const actionId = mailAction.id;
 

@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.0]
+
+### Added
+- `MfaRequiredError` now exposes a typed `mfa` property to complete the MFA flow type safe
+
+### Changed
+- All runtime dependencies are now pinned to their specific version
+- `axios` updated to `0.28.1`
+- `fflate` updated to `0.8.2`
+- `typescript-json-decoder` updated to `1.0.11`
+- `qs` updated to `6.12.0`
+- Removed the dependency on `ts-toolbelt` as it was no longer required
+
+### Fixed
+- Using an oAuth2 confidential client on web no longer causes a `global not defined` error
+- `exh.files.create` and `exh.files.createFromText` now work correctly while using oAuth1 in React Native
+- The generic `API_ERROR` name is no longer shown for errors with more specific information available
+- Type corrections for the user, profile, file, index and mfa entities
+- Corrected the places where the name of a schema can also be used rather than just the id
+- The `groupIds` for `exh.data.documents.unlinkGroups` is now correctly marked as optional
+- Corrected the permission mentioned for `exh.users.groupRoles.removeUsersFromStaff`
+
 ## [8.1.1]
 
 ### Fixed
@@ -211,7 +233,7 @@ const exh = createClient({
   tokenSecret: '1cc0b97b4c4721bb6da3d85b80cda8165e6ad5a7',
 });
 
-const currentUser = await sdk.users.me();
+const currentUser = await exh.users.me();
 ```
 
 - While creating an oAuth2 client both `refreshToken` and `accessToken` can now be supplied.
@@ -225,7 +247,7 @@ const exh = createClient({
   accessToken: '019dc6fe1672176f28e8e894ba99aed1f49656c8',
 });
 
-const currentUser = await sdk.users.me();
+const currentUser = await exh.users.me();
 ```
 
 ### Changed
@@ -264,28 +286,28 @@ const currentUser = await sdk.users.me();
 
 ### Fixes
 
-- The return type of `sdk.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
+- The return type of `exh.users.update()` is returning the correct `UserData`. See [issue #605](https://github.com/ExtraHorizon/javascript-sdk/issues/605)
 
 ## [v7.0.0]
 
 ### Added
 
-- OAuth1 token management -> `sdk.auth.oauth1.getTokens` / `sdk.auth.oauth1.removeToken`. See [issue #465](https://github.com/ExtraHorizon/javascript-sdk/issues/465)
-- Password policy -> `sdk.users.passwordPolicy` and `sdk.users.updatePasswordPolicy`
+- OAuth1 token management -> `exh.auth.oauth1.getTokens` / `exh.auth.oauth1.removeToken`. See [issue #465](https://github.com/ExtraHorizon/javascript-sdk/issues/465)
+- Password policy -> `exh.users.passwordPolicy` and `exh.users.updatePasswordPolicy`
 - Extra Playstore endpoint -> `payments.playStoreHistory.purchaseReceipts`
 - Extra permissions for the updated task service
 - RQL option to several endpoints
 
 ### Changed
 
-- Types for the `sdk.auth.application.create` and `sdk.auth.application.createVersion` have been exported. See Authentication examples for more info.
+- Types for the `exh.auth.application.create` and `exh.auth.application.createVersion` have been exported. See Authentication examples for more info.
 - Pako to fflate
 - Refactored the Schema and Document Types
 - Updated the `EnlistmentConfiguration` type. See [issue #596](https://github.com/ExtraHorizon/javascript-sdk/issues/596)
 
 ### Fixes
 - Running `yarn` on windows machines resulted in an error [issue #612](https://github.com/ExtraHorizon/javascript-sdk/issues/612)
-- Return type of `sdk.auth.application.update` is now correctly typed as `AffectedRecords` 
+- Return type of `exh.auth.application.update` is now correctly typed as `AffectedRecords` 
 
 ### Breaking changes
 
@@ -294,8 +316,8 @@ const currentUser = await sdk.users.me();
 - The removal of the group roles now has the correct parameters
 
 ```diff
-- sdk.users.groupRoles.remove(rql, groupId, roleId, options)
-+ sdk.users.groupRoles.remove(rql, groupId, options)
+- exh.users.groupRoles.remove(rql, groupId, roleId, options)
++ exh.users.groupRoles.remove(rql, groupId, options)
 ```
 
 ## [v6.1.0]
@@ -527,7 +549,7 @@ console.log((await users.previous()).page); // { total: 8268, offset: 40, limit:
 
 ```ts
 const sdk = createClient({
-  host: 'https://api.dev.fibricheck.com',
+  host: 'https://api.sandbox.extrahorizon.io',
   clientId: '',
   clientSecret: '',
 });
@@ -553,7 +575,7 @@ const sdk = createClient({
 
 ```ts
 const sdk = createClient({
-  host: 'https://api.dev.fibricheck.com',
+  host: 'https://api.sandbox.extrahorizon.io',
   clientId: '',
   headers: {
     'X-Forwarded-Application': 'test',
@@ -702,7 +724,7 @@ const transitionId = schema.findTransitionIdByName('lambda_to_review');
 
 ```diff
 + const sdk = createClient({
-+   host: 'dev.fibricheck.com',
++   host: 'sandbox.extrahorizon.io',
 +   consumerKey: '',
 +   consumerSecret: '',
 + });

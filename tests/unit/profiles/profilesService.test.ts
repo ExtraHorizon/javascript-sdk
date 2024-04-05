@@ -12,7 +12,7 @@ import { profileData } from '../../__helpers__/profile';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Profiles Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const profileId = profileData.id;
   const profilesResponse = createPagedResponse(profileData);
 

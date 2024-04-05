@@ -6,7 +6,7 @@ import { TokenPermission } from '../../../src/services/files/types';
 jest.mock('fs');
 
 describe('Token Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const token = '5a0b2adc265ced65a8cab861';
 
   let sdk: Client<ParamsOauth2>;

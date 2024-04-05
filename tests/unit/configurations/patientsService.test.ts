@@ -3,7 +3,7 @@ import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 
 describe('Configuration: Patients Service', () => {
-  const host = 'https://api.xxx.fibricheck.com';
+  const host = 'https://api.xxx.extrahorizon.io';
   const userId = '52adef123456789abcdef123';
   const groupId = 'abcdef123456789abcdef123';
 

@@ -1,3 +1,5 @@
+import { MfaMethod } from './types';
+
 type Method =
   | 'get'
   | 'GET'
@@ -61,11 +63,19 @@ const cleanHeaders = (headers: Record<string, unknown>) => (headers &&
   } :
   headers);
 
-const getHttpErrorName = (error: HttpError) => error?.response?.data?.name || error?.response?.data?.error || 'API_ERROR';
+const getHttpErrorName = (error: HttpError) => (
+  error?.response?.data?.name ||
+  error?.response?.data?.error ||
+  error?.name ||
+  'API_ERROR'
+);
 
-const getHttpErrorMessage = (error: HttpError) => error?.response?.data?.description ||
+const getHttpErrorMessage = (error: HttpError) => (
+  error?.response?.data?.description ||
   error?.response?.data?.message ||
-  'Received an error without a message';
+  error?.message ||
+  'Received an error without a message'
+);
 
 const getHttpErrorRequestData = (error: HttpError) => (error?.config ?
   {
@@ -290,7 +300,18 @@ export class InvalidClientError extends OAuth2LoginError {}
 export class InvalidRequestError extends OAuth2LoginError {}
 export class UnauthorizedClientError extends OAuth2LoginError {}
 export class UnsupportedGrantTypeError extends OAuth2LoginError {}
-export class MfaRequiredError extends OAuth2LoginError {}
+export class MfaRequiredError extends OAuth2LoginError {
+  mfa: {
+    token: string;
+    tokenExpiresIn: number;
+    methods: Array<Pick<MfaMethod, 'id' | 'type' | 'name' | 'tags'>>;
+  };
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.mfa = apiError.response.mfa;
+  }
+}
 
 function getSpecifiedAuthenticationError(error: HttpError): string {
   const { type, config } = error;
@@ -304,11 +325,11 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
       As example you can authenticate using this snippet:
       
       try {
-        const sdk = createProxyClient({
+        const exh = createProxyClient({
           host: '${config ? config.baseURL : ''}',
         });
 
-        sdk.users.me(); 
+        exh.users.me(); 
       
       } catch (error) {
         // redirect to login page of your proxy service
@@ -319,13 +340,13 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
       return `${messageHeader}
       As example if you want to use the Oauth1 you can authenticate using this snippet:
       
-      const sdk = createClient({
+      const exh = createClient({
         host: '${config ? config.baseURL : ''}',
         consumerKey: '',
         consumerSecret: '',
       });
       
-      await sdk.auth.authenticate({
+      await exh.auth.authenticate({
         email: '',
         password: '',
       });  
@@ -336,12 +357,12 @@ function getSpecifiedAuthenticationError(error: HttpError): string {
       return `${messageHeader}
       As example if you want to use the Oauth2 Password Grant Flow you can authenticate using this snippet:
       
-      const sdk = createClient({
+      const exh = createClient({
         host: '${config ? config.baseURL : ''}',
         clientId: '',
       });
       
-      await sdk.auth.authenticate({
+      await exh.auth.authenticate({
         username: '',
         password: '',
       });  
