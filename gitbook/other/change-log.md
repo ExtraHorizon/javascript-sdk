@@ -9,6 +9,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.0]
+
+### Added
+- `MfaRequiredError` now exposes a typed `mfa` property to complete the MFA flow type safe
+
+### Changed
+- All runtime dependencies are now pinned to their specific version
+- `axios` updated to `0.28.1`
+- `fflate` updated to `0.8.2`
+- `typescript-json-decoder` updated to `1.0.11`
+- `qs` updated to `6.12.0`
+- Removed the dependency on `ts-toolbelt` as it was no longer required
+
+### Fixed
+- Using an oAuth2 confidential client on web no longer causes a `global not defined` error
+- `exh.files.create` and `exh.files.createFromText` now work correctly while using oAuth1 in React Native
+- The generic `API_ERROR` name is no longer shown for errors with more specific information available
+- Type corrections for the user, profile, file, index and mfa entities
+- Corrected the places where the name of a schema can also be used rather than just the id
+- The `groupIds` for `exh.data.documents.unlinkGroups` is now correctly marked as optional
+- Corrected the permission mentioned for `exh.users.groupRoles.removeUsersFromStaff`
+
 ## [8.1.1]
 
 ### Fixed
