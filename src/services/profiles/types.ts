@@ -50,6 +50,7 @@ export interface Profile {
 }
 
 export type ProfileCreation = Pick<Profile, 'id' | 'country' | 'region' | 'birthday' | 'gender'>;
+export type ProfileUpdate = Partial<Omit<Profile, 'id' | 'groups' | 'medication' | 'creationTimestamp' | 'updateTimestamp'>>;
 
 export enum ProfileActivity {
   NOT_ACTIVE = 'NOT_ACTIVE',
@@ -399,7 +400,7 @@ export interface ProfilesService {
    */
   update(
     rql: RQLString,
-    requestBody: Profile,
+    requestBody: ProfileUpdate,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
