@@ -421,16 +421,55 @@ export interface UsersGlobalRolesService {
    * @returns PagedResult<GlobalPermission>
    */
   getPermissions(options?: OptionsBase): Promise<PagedResult<GlobalPermission>>;
+
   /**
    * Retrieve a list of roles
    *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_ROLE` | `global` | **Required** for this endpoint
-   * @param rql Add filters to the requested list.
+   */
+  find(options?: OptionsWithRql): Promise<PagedResult<Role>>;
+
+  /**
+   * Returns the first role found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ROLE` | `global` | **Required** for this endpoint
+   */
+  findFirst(options?: OptionsWithRql): Promise<Role>;
+
+  /**
+   * Returns the first role with a specific id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ROLE` | `global` | **Required** for this endpoint
+   */
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Role>;
+
+  /**
+   * Returns the first role with a specific name
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ROLE` | `global` | **Required** for this endpoint
+   */
+  findByName(name: string, options?: OptionsWithRql): Promise<Role>;
+
+  /**
+   * @deprecated Use `find` instead
+   *
+   * Retrieve a list of roles
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ROLE` | `global` | **Required** for this endpoint
    * @returns PagedResult<Role>
    */
   get(options?: OptionsWithRql): Promise<PagedResult<Role>>;
+
   /**
    * Create a role
    *
@@ -539,6 +578,7 @@ export interface UsersGroupRolesService {
    * @returns PagedResult<GlobalPermission>
    */
   getPermissions(options?: OptionsBase): Promise<PagedResult<GlobalPermission>>;
+
   /**
    * Retrieve a list of group roles
    *
@@ -546,14 +586,70 @@ export interface UsersGroupRolesService {
    * - | - | -
    * none | `staff enlistment` | View the roles for the group
    * `VIEW_GROUP` | `global` | View any group its roles
+   */
+  find(
+    groupId: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<PagedResult<GroupRole>>;
+
+  /**
+   * Returns the first group role found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `staff enlistment` | View the roles for the group
+   * `VIEW_GROUP` | `global` | View any group its roles
+   */
+  findFirst(
+    groupId: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<GroupRole>;
+
+  /**
+   * Finds a group role by its id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `staff enlistment` | View the roles for the group
+   * `VIEW_GROUP` | `global` | View any group its roles
+   */
+  findById(
+    groupId: ObjectId,
+    roleId: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<GroupRole>;
+
+  /**
+   * Returns the first group role found by a specific name
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `staff enlistment` | View the roles for the group
+   * `VIEW_GROUP` | `global` | View any group its roles
+   */
+  findByName(
+    groupId: ObjectId,
+    roleName: string,
+    options?: OptionsWithRql
+  ): Promise<GroupRole>;
+
+  /**
+   * @deprecated Use `find` instead
+   *
+   * Retrieve a list of group roles
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `staff enlistment` | View the roles for the group
+   * `VIEW_GROUP` | `global` | View any group its roles
    * @param groupId Id of the targeted group
-   * @param rql Add filters to the requested list.
    * @returns PagedResult<GroupRole>
    */
   get(
     groupId: ObjectId,
     options?: OptionsWithRql
   ): Promise<PagedResult<GroupRole>>;
+
   /**
    * Add role to a group
    *
@@ -596,9 +692,8 @@ export interface UsersGroupRolesService {
    * - | - | -
    * `DELETE_GROUP_ROLE` | `staff enlistment` | Delete a role for the group
    * `DELETE_GROUP_ROLE` | `global` | Delete a role from any group
-   * @param groupId Id of the targeted group
-   * @param roleId Id of the targeted role
    * @param rql Add filters to the requested list.
+   * @param groupId Id of the targeted group
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
    */
@@ -615,7 +710,6 @@ export interface UsersGroupRolesService {
    * `ADD_GROUP_ROLE_PERMISSION` | `staff enlistment` | Add permissions to roles of the group
    * `ADD_GROUP_ROLE_PERMISSION` | `global` | Add permissions to roles of any group
    * @param groupId Id of the targeted group
-   * @param rql Add filters to the requested list.
    * @param requestBody GroupRolePermissions
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -632,8 +726,8 @@ export interface UsersGroupRolesService {
    * - | - | -
    * `REMOVE_GROUP_ROLE_PERMISSION` | `staff enlistment` | Remove permissions from roles of the group
    * `REMOVE_GROUP_ROLE_PERMISSION` | `global` | Remove permissions from roles of any group
-   * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
+   * @param groupId Id of the targeted group
    * @param requestBody GroupRolePermissions
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -652,7 +746,6 @@ export interface UsersGroupRolesService {
    * `ADD_GROUP_ROLE_TO_STAFF` | `staff enlistment` | Assign roles for the group
    * `ADD_GROUP_ROLE_TO_STAFF` | `global` | Assign roles for any group
    * @param groupId Id of the targeted group
-   * @param rql Add filters to the requested list.
    * @param requestBody StaffRoles
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -669,8 +762,8 @@ export interface UsersGroupRolesService {
    * - | - | -
    * `REMOVE_GROUP_ROLE_FROM_STAFF` | `staff enlistment` | Remove roles from staff of the group
    * `REMOVE_GROUP_ROLE_FROM_STAFF` | `global` | Remove roles from staff of any group
-   * @param groupId Id of the targeted group
    * @param rql Add filters to the requested list.
+   * @param groupId Id of the targeted group
    * @param requestBody StaffRoles
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -688,7 +781,6 @@ export interface UsersGroupRolesService {
    * - | - | -
    * `ADD_STAFF` | `staff enlistment` | Add staff to the group
    * `ADD_STAFF` | `global` | Add staff to any group
-   * @param rql Add filters to the requested list.
    * @param requestBody StaffGroups
    * @returns AffectedRecords
    * @throws {ResourceUnknownError}
@@ -767,7 +859,6 @@ export interface UsersService {
    * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
    * `VIEW_USER` | `global` | See all fields of all users
-   * @param rql Add filters to the requested list.
    * @returns PagedResultWithPager<User>
    */
   find(options?: OptionsWithRql): Promise<PagedResultWithPager<User>>;
@@ -781,7 +872,6 @@ export interface UsersService {
    * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
    * `VIEW_USER` | `global` | See all fields of all users
-   * @param rql Add filters to the requested list.
    * @returns User[]
    */
   findAll(options?: OptionsWithRql): Promise<User[]>;
@@ -793,7 +883,6 @@ export interface UsersService {
    * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
    * `VIEW_USER` | `global` | See all fields of all users
-   * @param rql Add filters to the requested list.
    * @returns User[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<User>;
@@ -817,7 +906,6 @@ export interface UsersService {
    * - | - | -
    * none | `staff enlistment` | View the patients of the group
    * `VIEW_PATIENTS` | `global`  | View all patients
-   * @param rql Add filters to the requested list.
    * @returns Patient Success
    */
   patients(options?: OptionsWithRql): Promise<PagedResult<Patient>>;
@@ -828,7 +916,6 @@ export interface UsersService {
    * - | - | -
    * none | `staff enlistment` | View the other staff members of the group
    * `VIEW_STAFF` | `global`  | View all staff members
-   * @param rql Add filters to the requested list.
    * @returns StaffMember Success
    */
   staff(options?: OptionsWithRql): Promise<PagedResult<StaffMember>>;

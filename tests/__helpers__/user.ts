@@ -49,14 +49,24 @@ export const permissionData = {
 
 export const roleData = {
   id: '5bfbfc3146e0fb321rsa4b28',
-  name: 'string',
-  description: 'string',
+  name: 'admin',
+  description: 'The admin role',
   permissions: [
     {
       name: 'VIEW_PRESCRIPTIONS',
       description: 'string',
     },
   ],
+  creation_timestamp: 1497265621409,
+  update_timestamp: 1565954044301,
+};
+
+export const groupRoleData = {
+  id: '5bfbfc3146e0fb321rsa4b28',
+  group_id: '5bfbfc3146e0fb321rsa4b28',
+  name: 'group_admin',
+  description: 'The admin group role',
+  permissions: ['VIEW_PATIENTS'],
   creation_timestamp: 1497265621409,
   update_timestamp: 1565954044301,
 };

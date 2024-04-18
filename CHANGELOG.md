@@ -5,9 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] 
- 
-### Fixed 
+## [Unreleased]
+
+### Added
+- `exh.users.globalRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
+- `exh.users.groupRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
+
+### Deprecated
+- `exh.users.globalRoles.get` is deprecated in favor of `exh.users.globalRoles.find`
+- `exh.users.groupRoles.get` is deprecated in favor of `exh.users.groupRoles.find`
+
+### Fixed
 - The `data` for `exh.profiles.update` is now correctly typed.
 
 ## [8.2.0]
