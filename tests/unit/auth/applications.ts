@@ -1,12 +1,13 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
+import { Client, createClient, ParamsOauth2, rqlBuilder } from '../../../src/index';
 import {
-  applicationDataList,
+  applicationData,
   newApplication,
   newApplicationVersion,
 } from '../../__helpers__/auth';
+import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Auth - Applications', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -49,18 +50,74 @@ describe('Auth - Applications', () => {
     expect(createdResult.id).toEqual(newApplication.id);
   });
 
+  describe('find', () => {
+    it('Returns a list response of applications', async () => {
+      const rql = rqlBuilder().eq('name', applicationData.name).build();
+
+      nock(`${host}${AUTH_BASE}`)
+        .get(`/applications${rql}`)
+        .reply(200, createPagedResponse(applicationData));
+
+      const result = await sdk.auth.applications.find({ rql });
+
+      expect(result.data[0]).toMatchObject(applicationData);
+    });
+  });
+
+  describe('findFirst', () => {
+    it('Returns the first application found', async () => {
+      const rql = rqlBuilder().eq('name', applicationData.name).build();
+
+      nock(`${host}${AUTH_BASE}`)
+        .get(`/applications${rql}`)
+        .reply(200, createPagedResponse(applicationData));
+
+      const application = await sdk.auth.applications.findFirst({ rql });
+
+      expect(application.name).toBe(applicationData.name);
+    });
+  });
+
+  describe('findById', () => {
+    it('Finds a application by its id', async () => {
+      const rql = rqlBuilder().eq('id', applicationData.id).build();
+
+      nock(`${host}${AUTH_BASE}`)
+        .get(`/applications${rql}`)
+        .reply(200, createPagedResponse(applicationData));
+
+      const application = await sdk.auth.applications.findById(applicationData.id);
+
+      expect(application.id).toBe(applicationData.id);
+    });
+  });
+
+  describe('findByName', () => {
+    it('Finds the first application by its name', async () => {
+      const rql = rqlBuilder().eq('name', applicationData.name).build();
+
+      nock(`${host}${AUTH_BASE}`)
+        .get(`/applications${rql}`)
+        .reply(200, createPagedResponse(applicationData));
+
+      const application = await sdk.auth.applications.findByName(applicationData.name);
+
+      expect(application.name).toBe(applicationData.name);
+    });
+  });
+
   it('should get applications', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/applications')
-      .reply(200, applicationDataList);
+      .reply(200, createPagedResponse(applicationData));
 
     const applications = await sdk.auth.applications.get();
 
     expect(applications.data).toBeDefined();
-    expect(applications.data[0].name).toEqual(applicationDataList.data[0].name);
+    expect(applications.data[0].name).toBe(applicationData.name);
   });
 
-  it('sould update an pplication', async () => {
+  it('should update an application', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(host)

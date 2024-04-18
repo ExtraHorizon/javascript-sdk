@@ -1,3 +1,4 @@
+import { rqlBuilder } from '../../../rql';
 import type { HttpInstance } from '../../../types';
 import { HttpClient } from '../../http-client';
 import type { AuthApplicationsService } from '../types';
@@ -11,7 +12,7 @@ export default (
       .data;
   },
 
-  async get(options) {
+  async find(options) {
     return (
       await client.get(
         httpWithAuth,
@@ -19,6 +20,25 @@ export default (
         options
       )
     ).data;
+  },
+
+  async findFirst(options) {
+    const res = await this.find(options);
+    return res.data[0];
+  },
+
+  async findById(id, options) {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+    return await this.findFirst({ ...options, rql: rqlWithId });
+  },
+
+  async findByName(name, options?) {
+    const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
+    return await this.findFirst({ ...options, rql: rqlWithName });
+  },
+
+  async get(options) {
+    return this.find(options);
   },
 
   async update(applicationId, data, options) {
