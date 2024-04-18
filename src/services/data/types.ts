@@ -213,11 +213,11 @@ export interface TransitionActionLinkEnlistedGroups {
 }
 
 export interface TransitionActionLinkUserFromData {
-  type: 'linkGroupFromData';
+  type: 'linkUserFromData';
   userIdField: string;
 }
 export interface TransitionActionLinkGroupFromData {
-  type: 'linkUserFromData';
+  type: 'linkGroupFromData';
   groupIdField: string;
 }
 
@@ -621,7 +621,7 @@ export interface DataDocumentsService {
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<Document<CustomData, CustomStatus>>;
+  ): Promise<Document<CustomData, CustomStatus> | undefined>;
   /**
    * Returns the first document that is found with the applied filter
    *
@@ -632,7 +632,7 @@ export interface DataDocumentsService {
   findFirst<CustomData = null, CustomStatus = null>(
     schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
-  ): Promise<Document<CustomData, CustomStatus>>;
+  ): Promise<Document<CustomData, CustomStatus> | undefined>;
   /**
    * Update a document
    *
