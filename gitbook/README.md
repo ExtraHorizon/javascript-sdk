@@ -36,7 +36,7 @@ The data returned from the backend is mapped using interceptors:
 
 ### 🔑 License
 
-The MIT License (MIT). Please see [License File](v7/LICENSE/) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/LICENSE) for more information.
 
 ### Developer Notes
 
