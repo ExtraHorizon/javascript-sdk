@@ -6,7 +6,7 @@ import {
   ParamsOauth2,
   rqlBuilder,
 } from '../../../src/index';
-import { permissionData, roleData } from '../../__helpers__/user';
+import { permissionData, groupRoleData } from '../../__helpers__/user';
 import { createPagedResponse } from '../../__helpers__/utils';
 
 describe('Group Roles Service', () => {
@@ -41,11 +41,75 @@ describe('Group Roles Service', () => {
     expect(permissions.data.length).toBeGreaterThan(0);
   });
 
+  describe('find', () => {
+    it('Returns a list response of roles', async () => {
+      const rql = rqlBuilder().eq('name', groupRoleData.name).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/groups/${groupId}/roles${rql}`)
+        .reply(200, createPagedResponse(groupRoleData));
+
+      const result = await sdk.users.groupRoles.find(groupId, { rql });
+
+      expect(result.data[0]).toMatchObject({
+        id: groupRoleData.id,
+        groupId: groupRoleData.group_id,
+        name: groupRoleData.name,
+        description: groupRoleData.description,
+        permissions: groupRoleData.permissions,
+        creationTimestamp: new Date(groupRoleData.creation_timestamp),
+        updateTimestamp: new Date(groupRoleData.update_timestamp),
+      });
+    });
+  });
+
+  describe('findFirst', () => {
+    it('Returns the first role found', async () => {
+      const rql = rqlBuilder().eq('name', groupRoleData.name).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/groups/${groupId}/roles${rql}`)
+        .reply(200, createPagedResponse(groupRoleData));
+
+      const role = await sdk.users.groupRoles.findFirst(groupId, { rql });
+
+      expect(role.name).toBe(groupRoleData.name);
+    });
+  });
+
+  describe('findById', () => {
+    it('Finds a role by its id', async () => {
+      const rql = rqlBuilder().eq('id', groupRoleData.id).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/groups/${groupId}/roles${rql}`)
+        .reply(200, createPagedResponse(groupRoleData));
+
+      const role = await sdk.users.groupRoles.findById(groupId, groupRoleData.id);
+
+      expect(role.id).toBe(groupRoleData.id);
+    });
+  });
+
+  describe('findByName', () => {
+    it('Finds the first role by its name', async () => {
+      const rql = rqlBuilder().eq('name', groupRoleData.name).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/groups/${groupId}/roles${rql}`)
+        .reply(200, createPagedResponse(groupRoleData));
+
+      const role = await sdk.users.groupRoles.findByName(groupId, groupRoleData.name);
+
+      expect(role.name).toBe(groupRoleData.name);
+    });
+  });
+
   it('should retrieve a list of group roles', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${USER_BASE}`)
       .get(`/groups/${groupId}/roles${rql}`)
-      .reply(200, createPagedResponse(roleData));
+      .reply(200, createPagedResponse(groupRoleData));
 
     const roles = await sdk.users.groupRoles.get(groupId, { rql });
 
