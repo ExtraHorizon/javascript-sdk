@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Now also publishing to the NPM registry, no longer needing to authenticate with GitHub Packages to install the SDK
 - `exh.users.globalRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
 - `exh.users.groupRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
 - `exh.auth.applications` now has `find`, `findFirst`, `findById` and `findByName` methods
