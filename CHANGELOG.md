@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [8.3.0]
 
 ### Added
 - Now also publishing to the NPM registry, no longer needing to authenticate with GitHub Packages to install the SDK
@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Role permissions are now correctly typed
   - Any string is now accepted as a permission, but the `GlobalPermissionName` can still be used as a source of known permissions
   - This affects the methods for adding/removing permissions for both global roles and group roles
+- Data service transition action types corrected. Thank you, `tran-simon`!
 
 ## [8.2.0]
 
