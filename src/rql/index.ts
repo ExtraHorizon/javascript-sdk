@@ -118,6 +118,10 @@ export const rqlBuilder: RqlBuilderFactory = (
       return processQuery('skipCount', '');
     },
     build(): RQLString {
+      if (operations.length < 1) {
+        return '' as unknown as RQLString;
+      }
+
       return `?${operations.join('&')}` as unknown as RQLString;
     },
     intermediate(): RQLString {
