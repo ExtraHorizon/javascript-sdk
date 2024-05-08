@@ -401,4 +401,34 @@ describe('rql string builder', () => {
     const rql = rqlBuilder().gt('category', value).build();
     expect(rql).toStrictEqual(`?gt(category,${encodedValue})`);
   });
+
+  describe('limit()', () => {
+    it('Replaces previous limit statements', () => {
+      const rql = rqlBuilder()
+        .eq('name', 'test')
+        .limit(5)
+        .eq('name2', 'test')
+        .limit(6)
+        .build();
+
+      expect(rql).toBe('?eq(name,test)&eq(name2,test)&limit(6)');
+    });
+  });
+
+  describe('intermediate()', () => {
+    it('Returns a single operation as is', () => {
+      const rql = rqlBuilder().eq('name', 'test').intermediate();
+
+      expect(rql).toBe('eq(name,test)');
+    });
+
+    it('Wraps multiple operations in an `and` operation', () => {
+      const rql = rqlBuilder()
+        .eq('name', 'test')
+        .lt('age', '20')
+        .intermediate();
+
+      expect(rql).toBe('and(eq(name,test),lt(age,20))');
+    });
+  });
 });

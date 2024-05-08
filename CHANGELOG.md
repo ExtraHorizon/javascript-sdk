@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - The `data` for `exh.profiles.update` is now correctly typed.
+- The `rqlBuilder.intermediate()` method now correctly wraps multiple expressions in an `and` expression.
 
 ## [8.2.0]
 
