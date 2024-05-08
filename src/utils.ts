@@ -40,6 +40,7 @@ export function delay(ms: number): Promise<void> {
   });
 }
 
+/** @deprecated Any permission string is now accepted by the permission add/removing methods. The GlobalPermissionName enum can still be used as a source of known permissions. */
 export function parseGlobalPermissions(
   permissions: string[]
 ): GlobalPermissionName[] {
