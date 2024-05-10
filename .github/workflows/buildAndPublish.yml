@@ -14,28 +14,28 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Extract version
-        id: extract_version
-        uses: Saionaro/extract-package-version@v1.0.6
-      - name: Print version
-        run: echo ${{ steps.extract_version.outputs.version }}
-      - name: Create .npmrc
-        run: |
-          echo "@extrahorizon:registry=https://npm.pkg.github.com" > .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" >> .npmrc
+
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           registry-url: https://npm.pkg.github.com/
           scope: '@extrahorizon'
+
       - run: yarn
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
       - run: yarn lint
       - run: yarn build
       - run: yarn test
-      - run: |
+
+      - name: Determine version number and branch tag
+        run: |
+          package_version=$(node -p "require('./package.json').version")
+
           if [ "${{github.ref}}" == "refs/heads/master" ]
           then
-            version_tag=${{steps.extract_version.outputs.version}}
+            version_tag=$package_version
             branch_tag="latest"
           else
             if [ "${{github.ref}}" == "refs/heads/dev" ]
@@ -46,14 +46,33 @@ jobs:
             fi
             sha=${{github.sha}}
             short_commit_hash=${sha:0:7}
-            version_tag=${{steps.extract_version.outputs.version}}-$branch_tag-${{github.run_number}}-$short_commit_hash
+            version_tag=$package_version-$branch_tag-${{github.run_number}}-$short_commit_hash
           fi
-          
+
+          echo "VERSION_TAG=$version_tag" >> $GITHUB_ENV
+          echo "BRANCH_TAG=$branch_tag" >> $GITHUB_ENV
+
+      - name: Publish a git tag
+        run: |
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
           
           # Tag the commit with the correct version
-          git tag -a $version_tag -m "Tagging $version_tag"
-          git push origin $version_tag
-          yarn publish --registry https://npm.pkg.github.com/ --new-version $version_tag --tag=$branch_tag
+          git tag -a $VERSION_TAG -m "Tagging $VERSION_TAG"
+          git push origin $VERSION_TAG
+
+
+      - name: Publish to the GitHub Packages registry
+        run: yarn publish --new-version $VERSION_TAG --tag=$BRANCH_TAG
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+          scope: '@extrahorizon'
+
+      - name: Publish to the NPM Registry
+        run: yarn publish --new-version $VERSION_TAG --tag=$BRANCH_TAG
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_EXH_PUBLISH_TOKEN}}

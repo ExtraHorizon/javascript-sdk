@@ -43,6 +43,72 @@ describe('Global Roles Service', () => {
     expect(permissions.data.length).toBeGreaterThan(0);
   });
 
+  describe('find', () => {
+    it('Returns a list response of roles', async () => {
+      const rql = rqlBuilder().eq('name', roleData.name).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/roles${rql}`)
+        .reply(200, createPagedResponse(roleData));
+
+      const result = await sdk.users.globalRoles.find({ rql });
+
+      expect(result.data[0]).toMatchObject({
+        id: roleData.id,
+        name: roleData.name,
+        description: roleData.description,
+        permissions: [{
+          name: roleData.permissions[0].name,
+          description: roleData.permissions[0].description,
+        }],
+        creationTimestamp: new Date(roleData.creation_timestamp),
+        updateTimestamp: new Date(roleData.update_timestamp),
+      });
+    });
+  });
+
+  describe('findFirst', () => {
+    it('Returns the first role found', async () => {
+      const rql = rqlBuilder().eq('name', roleData.name).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/roles${rql}`)
+        .reply(200, createPagedResponse(roleData));
+
+      const role = await sdk.users.globalRoles.findFirst({ rql });
+
+      expect(role.name).toBe(roleData.name);
+    });
+  });
+
+  describe('findById', () => {
+    it('Finds a role by its id', async () => {
+      const rql = rqlBuilder().eq('id', roleData.id).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/roles${rql}`)
+        .reply(200, createPagedResponse(roleData));
+
+      const role = await sdk.users.globalRoles.findById(roleData.id);
+
+      expect(role.id).toBe(roleData.id);
+    });
+  });
+
+  describe('findByName', () => {
+    it('Finds the first role by its name', async () => {
+      const rql = rqlBuilder().eq('name', roleData.name).build();
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/roles${rql}`)
+        .reply(200, createPagedResponse(roleData));
+
+      const role = await sdk.users.globalRoles.findByName(roleData.name);
+
+      expect(role.name).toBe(roleData.name);
+    });
+  });
+
   it('should retrieve a list of roles', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${USER_BASE}`)

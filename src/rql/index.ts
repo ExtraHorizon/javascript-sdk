@@ -28,10 +28,16 @@ export function rqlParser(rql: string): RQLString {
 export const rqlBuilder: RqlBuilderFactory = (
   input: RQLBuilderInput
 ): RQLBuilder => {
-  const { doubleEncodeValues, rql } = determineInput(input);
+  const { doubleEncodeValues, rql: inputString } = determineInput(input);
 
-  let returnString = rql && rql.charAt(0) === '?' ? rql.substr(1) : rql || '';
-  rqlParser(returnString);
+  let operations = [];
+
+  if (inputString) {
+    const normalizedInputString = inputString.charAt(0) === '?' ? inputString.substr(1) : inputString;
+    rqlParser(normalizedInputString);
+
+    operations.push(normalizedInputString);
+  }
 
   const builder: RQLBuilder = {
     select(fields) {
@@ -41,9 +47,10 @@ export const rqlBuilder: RqlBuilderFactory = (
       );
     },
     limit(limit, offset) {
-      if (returnString.includes('limit(')) {
-        returnString = returnString.replace(/&?limit\(\d*,*\d*\)&*/, '');
-      }
+      operations = operations
+        .filter(operation => !operation.match(/^limit\(\d*,*\d*\)$/)) // Remove any standalone limit operations
+        .map(operation => operation.replace(/&?limit\(\d*,*\d*\)&*/, '')); // Remove any limit operations in existing queries (broken, consumes both surrounding `&`, ticket #910)
+
       return processQuery('limit', `${limit}${offset ? `,${offset}` : ''}`);
     },
     sort(fields) {
@@ -111,12 +118,18 @@ export const rqlBuilder: RqlBuilderFactory = (
       return processQuery('skipCount', '');
     },
     build(): RQLString {
-      return `${
-        returnString.length > 0 && returnString.charAt(0) !== '?' ? '?' : ''
-      }${returnString}` as RQLString;
+      if (operations.length < 1) {
+        return '' as unknown as RQLString;
+      }
+
+      return `?${operations.join('&')}` as unknown as RQLString;
     },
     intermediate(): RQLString {
-      return returnString as RQLString;
+      if (operations.length > 1) {
+        return `and(${operations.join(',')})` as unknown as RQLString;
+      }
+
+      return operations[0] || '';
     },
   };
 
@@ -140,9 +153,7 @@ export const rqlBuilder: RqlBuilderFactory = (
   }
 
   function processQuery(operation: string, value: string) {
-    returnString = returnString
-      .concat(returnString.length > 0 ? '&' : '')
-      .concat(`${operation}(${value})`);
+    operations.push(`${operation}(${value})`);
     return builder;
   }
 
