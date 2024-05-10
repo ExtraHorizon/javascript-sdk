@@ -8,17 +8,19 @@ This package serves as a JavaScript wrapper around all [Extra Horizon](https://w
 
 ## Installation
 
-Using npm:
-
+{% tabs %}
+{% tab title="NPM" %}
 ```
 npm install @extrahorizon/javascript-sdk
 ```
+{% endtab %}
 
-Using yarn:
-
+{% tab title="Yarn" %}
 ```
 yarn add @extrahorizon/javascript-sdk
 ```
+{% endtab %}
+{% endtabs %}
 
 ### Quick start
 
