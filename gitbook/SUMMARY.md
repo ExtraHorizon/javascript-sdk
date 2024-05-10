@@ -4,8 +4,7 @@
 
 ## features
 
-* [Authentication](examples/authentication.md)
-  * [Applications](features/authentication/applications.md)
+* [Authentication](features/authentication.md)
 * [Users](examples/users.md)
 * [Data](examples/data.md)
 * [Files](features/files.md)
