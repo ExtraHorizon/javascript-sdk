@@ -6,8 +6,41 @@ description: Getting started with the ExtraHorizon Javascript SDK
 
 This package serves as a JavaScript wrapper around all [Extra Horizon](https://www.extrahorizon.com/cloud-services) cloud services providing you with fast and easy way to integrate with the Extra Horizon platform.
 
-* [Installation](setup/installation.md)
-* [Quick start](setup/start.md)
+## Installation
+
+Using npm:
+
+```
+npm install @extrahorizon/javascript-sdk
+```
+
+Using yarn:
+
+```
+yarn add @extrahorizon/javascript-sdk
+```
+
+### Quick start
+
+Please see [authentication examples](v7/setup/broken-reference/) for more options.
+
+```ts
+import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
+
+(async () => {
+  const exh = createOAuth2Client({
+    host: "",
+    clientId: "",
+  });
+
+  await exh.auth.authenticate({
+    password: "",
+    username: "",
+  });
+
+  console.log("exh.users.me()", await exh.users.me());
+})();
+```
 
 ### Features
 
@@ -26,25 +59,6 @@ This package serves as a JavaScript wrapper around all [Extra Horizon](https://w
 * [Localizations:](https://docs.extrahorizon.com/extrahorizon/services/other/localizations-service) Storage and retrieval of text snippets, translated into multiple languages.
 * [Events:](https://docs.extrahorizon.com/extrahorizon/services/automation/event-service) Service that provides event (publish/subscribe) functionality for other services.
 
-### Interceptors
-
-The data returned from the backend is mapped using interceptors:
-
-* Timestamps will be of type Date
-* Keys in objects will be camelCased
-* `records_affected` will be replaced by `affectedRecords`
-
 ### 🔑 License
 
 The MIT License (MIT). Please see [License File](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/LICENSE) for more information.
-
-### Developer Notes
-
-Throughout the different services we use `this` for easy access to other functions in each service. The usage of `this` as first parameter is explained here: https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function. This parameter is excluded from all exported types.
-
-```ts
-find(
-  this: DataSchemasService,
-  options?: { rql?: RQLString }
-): Promise<PagedResult<Schema>>;
-```

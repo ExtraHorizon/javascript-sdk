@@ -2,11 +2,6 @@
 
 * [Getting Started](README.md)
 
-## setup
-
-* [Installation](setup/installation.md)
-* [Quick start](setup/start.md)
-
 ## features
 
 * [Authentication](examples/authentication.md)
