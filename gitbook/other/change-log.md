@@ -9,6 +9,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0]
+
+### Added
+- Now also publishing to the NPM registry, no longer needing to authenticate with GitHub Packages to install the SDK
+- `exh.users.globalRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
+- `exh.users.groupRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
+- `exh.auth.applications` now has `find`, `findFirst`, `findById` and `findByName` methods
+
+### Deprecated
+- `exh.users.globalRoles.get` is deprecated in favor of `exh.users.globalRoles.find`
+- `exh.users.groupRoles.get` is deprecated in favor of `exh.users.groupRoles.find`
+- `exh.auth.applications.get` is deprecated in favor of `exh.auth.applications.find`
+
+### Fixed
+- The `data` for `exh.profiles.update` is now correctly typed.
+- The `rqlBuilder.intermediate()` method now correctly wraps multiple expressions in an `and` expression.
+- Synced the values of `GlobalPermissionName` with the current API permissions.
+- Role permissions are now correctly typed
+  - Any string is now accepted as a permission, but the `GlobalPermissionName` can still be used as a source of known permissions
+  - This affects the methods for adding/removing permissions for both global roles and group roles
+- Data service transition action types corrected. Thank you, `tran-simon`!
+
 ## [8.2.0]
 
 ### Added
