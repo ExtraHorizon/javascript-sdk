@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - The `data` for `exh.profiles.update` is now correctly typed.
+- The `rqlBuilder.intermediate()` method now correctly wraps multiple expressions in an `and` expression.
+- Synced the values of `GlobalPermissionName` with the current API permissions.
+- Role permissions are now correctly typed
+  - Any string is now accepted as a permission, but the `GlobalPermissionName` can still be used as a source of known permissions
+  - This affects the methods for adding/removing permissions for both global roles and group roles
 
 ## [8.2.0]
 
