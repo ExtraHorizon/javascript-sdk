@@ -72,7 +72,7 @@ export interface GroupRole {
   groupId: string;
   name: string;
   description: string;
-  permissions: string[];
+  permissions: (GlobalPermissionName | string)[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
@@ -150,7 +150,7 @@ export interface ConfirmPassword {
 }
 
 export interface GlobalPermission {
-  name?: GlobalPermissionName;
+  name?: GlobalPermissionName | string;
   description?: string;
 }
 export interface PasswordPolicy {
@@ -396,7 +396,7 @@ export enum GlobalPermissionName {
 }
 
 export interface GroupRolePermissions {
-  permissions: string[];
+  permissions: (GlobalPermissionName | string)[];
 }
 
 export interface Hash {
@@ -432,7 +432,7 @@ export interface AddRole {
 }
 
 export interface RolePermissions {
-  permissions: string[];
+  permissions: (GlobalPermissionName | string)[];
 }
 
 export interface StaffGroups {
