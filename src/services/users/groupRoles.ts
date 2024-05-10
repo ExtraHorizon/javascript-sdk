@@ -1,3 +1,4 @@
+import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { HttpClient } from '../http-client';
 import type { UsersGroupRolesService } from './types';
@@ -11,7 +12,7 @@ export default (
       .data;
   },
 
-  async get(groupId, options) {
+  async find(groupId, options) {
     return (
       await client.get(
         httpWithAuth,
@@ -19,6 +20,25 @@ export default (
         options
       )
     ).data;
+  },
+
+  async findFirst(groupId, options) {
+    const res = await this.find(groupId, options);
+    return res.data[0];
+  },
+
+  async findById(groupId, roleId, options) {
+    const rqlWithId = rqlBuilder(options?.rql).eq('id', roleId).build();
+    return await this.findFirst(groupId, { ...options, rql: rqlWithId });
+  },
+
+  async findByName(groupId, roleName, options?) {
+    const rqlWithName = rqlBuilder(options?.rql).eq('name', roleName).build();
+    return await this.findFirst(groupId, { ...options, rql: rqlWithName });
+  },
+
+  async get(groupId, options) {
+    return this.find(groupId, options);
   },
 
   async add(groupId, requestBody, options) {

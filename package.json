@@ -1,15 +1,17 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "8.2.0",
+  "version": "8.3.0",
   "description": "This package serves as a JavaScript wrapper around all Extra Horizon cloud services.",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
   "module": "build/index.mjs",
-  "author": "Qompium",
-  "license": "MIT",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+  "author": "ExtraHorizon",
+  "homepage": "https://docs.extrahorizon.com/javascript-sdk/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExtraHorizon/javascript-sdk.git"
   },
+  "license": "MIT",
   "scripts": {
     "clean": "rimraf build",
     "start": "yarn test",

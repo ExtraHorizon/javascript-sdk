@@ -1,5 +1,6 @@
 import {
   AffectedRecords,
+  ObjectId,
   OptionsBase,
   OptionsWithRql,
   PagedResult,
@@ -26,17 +27,102 @@ export interface AuthApplicationsService {
   ): Promise<
     T extends OAuth1ApplicationCreation ? OAuth1Application : OAuth2Application
   >;
+
   /**
    * ## Get a list of applications
    * Provides a paginated list of applications currently registered in the cluster.
    *
-   * Every logged-in user is able to retrieve a limited set of fields (only `name`, `description`, `logo` and `type').
+   * Every logged-in user is able to retrieve a limited set of fields (only `name`, `description`, `logo` and `type`).
    *
    * #### Global Permissions
    * `VIEW_APPLICATIONS` - Returns all applications fields
    *
    * #### Function details
-   * @param options {@link OptionsWithRql} addional options with rql that can be set for your request to the cluster.
+   * @param options {@link OptionsWithRql} additional options with rql that can be set for your request to the cluster.
+   *
+   * @returns Provides a paginated list of applications currently registered in the cluster.
+   *
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * */
+  find(
+    options?: OptionsWithRql
+  ): Promise<PagedResult<OAuth1Application | OAuth2Application>>;
+
+  /**
+   * ## Get the first application found
+   * Gets the first application from the paginated list of applications currently registered in the cluster.
+   *
+   * Every logged-in user is able to retrieve a limited set of fields (only `name`, `description`, `logo` and `type`).
+   *
+   * #### Global Permissions
+   * `VIEW_APPLICATIONS` - Returns all applications fields
+   *
+   * #### Function details
+   * @param options {@link OptionsWithRql} additional options with rql that can be set for your request to the cluster.
+   *
+   * @returns Provides a paginated list of applications currently registered in the cluster.
+   *
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * */
+  findFirst(
+    options?: OptionsWithRql
+  ): Promise<OAuth1Application | OAuth2Application>;
+
+  /**
+   * ## Get an application by its id
+   * Gets the application currently registered in the cluster by its id.
+   *
+   * Every logged-in user is able to retrieve a limited set of fields (only `name`, `description`, `logo` and `type`).
+   *
+   * #### Global Permissions
+   * `VIEW_APPLICATIONS` - Returns all applications fields
+   *
+   * #### Function details
+   * @param options {@link OptionsWithRql} additional options with rql that can be set for your request to the cluster.
+   *
+   * @returns Provides a paginated list of applications currently registered in the cluster.
+   *
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * */
+  findById(
+    id: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<OAuth1Application | OAuth2Application>;
+
+  /**
+   * ## Get an application by its name
+   * Gets the application currently registered in the cluster by its name.
+   *
+   * Every logged-in user is able to retrieve a limited set of fields (only `name`, `description`, `logo` and `type`).
+   *
+   * #### Global Permissions
+   * `VIEW_APPLICATIONS` - Returns all applications fields
+   *
+   * #### Function details
+   * @param options {@link OptionsWithRql} additional options with rql that can be set for your request to the cluster.
+   *
+   * @returns Provides a paginated list of applications currently registered in the cluster.
+   *
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * */
+  findByName(
+    name: string,
+    options?: OptionsWithRql
+  ): Promise<OAuth1Application | OAuth2Application>;
+
+  /**
+   * @deprecated Use `find` instead
+   *
+   * ## Get a list of applications
+   * Provides a paginated list of applications currently registered in the cluster.
+   *
+   * Every logged-in user is able to retrieve a limited set of fields (only `name`, `description`, `logo` and `type`).
+   *
+   * #### Global Permissions
+   * `VIEW_APPLICATIONS` - Returns all applications fields
+   *
+   * #### Function details
+   * @param options {@link OptionsWithRql} additional options with rql that can be set for your request to the cluster.
    *
    * @returns Provides a paginated list of applications currently registered in the cluster.
    *
@@ -45,6 +131,7 @@ export interface AuthApplicationsService {
   get(
     options?: OptionsWithRql
   ): Promise<PagedResult<OAuth1Application | OAuth2Application>>;
+
   /**
    * ## Update an existing application
    * You can use this function to update an existing `oAuth1` or `oAuth2` application.
@@ -58,7 +145,7 @@ export interface AuthApplicationsService {
    * @param applicationId A hexadecimal identifier of 24 characters of the application you want to update.
    * @param data {@link OAuth1ApplicationUpdate} or {@link OAuth2ApplicationUpdate} containing the fields you want to update.
    * The fields that are left undefined will not be updated.
-   * @param options {@link OptionsBase} addional options that can be set for your request to the cluster.
+   * @param options {@link OptionsBase} additional options that can be set for your request to the cluster.
    *
    * @returns {Promise} A Promise with the number of affected records.
    *
@@ -82,7 +169,7 @@ export interface AuthApplicationsService {
    *
    * #### Function details
    * @param applicationId A hexadecimal identifier of 24 characters of the application you want to remove.
-   * @param options {@link OptionsBase} addional options that can be set for your request to the cluster.
+   * @param options {@link OptionsBase} additional options that can be set for your request to the cluster.
    *
    * @returns {Promise} A Promise with the number of affected records.
    *
@@ -105,7 +192,7 @@ export interface AuthApplicationsService {
    * #### Function details
    * @param applicationId A hexadecimal identifier of 24 characters of the application.
    * @param data An {@link ApplicationVersionCreation} object
-   * @param options {@link OptionsBase} addional options that can be set for your request to the cluster.
+   * @param options {@link OptionsBase} additional options that can be set for your request to the cluster.
    *
    * @returns The newly created {@link OAuth1ApplicationVersion} or {@link OAuth2ApplicationVersion}.
    *
@@ -133,7 +220,7 @@ export interface AuthApplicationsService {
    * #### Function details
    * @param applicationId A hexadecimal identifier of 24 characters of the application.
    * @param versionId the version Identifier or `name` of the application version.
-   * @param options {@link OptionsBase} addional options that can be set for your request to the cluster.
+   * @param options {@link OptionsBase} additional options that can be set for your request to the cluster.
    *
    * @returns {Promise} A Promise with the number of affected records.
    *
