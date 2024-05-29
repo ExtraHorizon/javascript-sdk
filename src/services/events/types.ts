@@ -17,6 +17,7 @@ export type Event = CreateEvent & Entity & Timestamps;
 export interface CreateSubscription {
   service: Service;
   eventTypes: Array<string>;
+  retriable?: boolean;
 }
 
 export type Subscription = CreateSubscription & Entity & Timestamps;
@@ -92,7 +93,10 @@ export interface SubscriptionsService {
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Subscription>;
+
   /**
+   * @deprecated Should not be used, services manage subscriptions themselves
+   *
    * Creates an event subscription
    *
    * Permission | Scope | Effect

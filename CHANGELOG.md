@@ -12,11 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `exh.users.globalRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
 - `exh.users.groupRoles` now has `find`, `findFirst`, `findById` and `findByName` methods
 - `exh.auth.applications` now has `find`, `findFirst`, `findById` and `findByName` methods
+- The `exh.events.subscriptions` methods now also support the new `retriable` field
 
 ### Deprecated
 - `exh.users.globalRoles.get` is deprecated in favor of `exh.users.globalRoles.find`
 - `exh.users.groupRoles.get` is deprecated in favor of `exh.users.groupRoles.find`
 - `exh.auth.applications.get` is deprecated in favor of `exh.auth.applications.find`
+- `exh.events.subscriptions.create` should no longer be used, this is managed by the system
 
 ### Fixed
 - The `data` for `exh.profiles.update` is now correctly typed.
