@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
-import { AUTH_BASE } from '../../../src/constants';
-import { ResourceUnknownError } from '../../../src/errors';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { authorizationData } from '../../__helpers__/auth';
-import { createPagedResponse } from '../../__helpers__/utils';
+import { AUTH_BASE } from '../../../../src/constants';
+import { ResourceUnknownError } from '../../../../src/errors';
+import { Client, createClient, ParamsOauth2 } from '../../../../src/index';
+import { authorizationData } from '../../../__helpers__/auth';
+import { createPagedResponse } from '../../../__helpers__/utils';
 
 describe('Auth - OAuth2', () => {
   const host = 'https://api.xxx.extrahorizon.io';

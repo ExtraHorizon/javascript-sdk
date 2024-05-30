@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
-import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import { Client, createOAuth1Client, ParamsOauth1 } from '../../../src/index';
-import { userData } from '../../__helpers__/user';
+import { AUTH_BASE, USER_BASE } from '../../../../src/constants';
+import { Client, createOAuth1Client, ParamsOauth1 } from '../../../../src/index';
+import { userData } from '../../../__helpers__/user';
 
 describe('Auth - OAuth1', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -104,7 +104,7 @@ describe('Auth - OAuth1', () => {
     expect(getTokensResult.data[0].id).toEqual(token.id);
   });
 
-  it('should get delete a token', async () => {
+  it('should delete a token', async () => {
     nock(`${host}${AUTH_BASE}`).delete('/oauth1/tokens/fakeId').reply(200, {
       affectedRecords: 1,
     });
