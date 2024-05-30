@@ -5,14 +5,15 @@ export function createPagedResponse<T>(
   dataObject: T,
   overrides?: any
 ): PagedResult<T> {
+  const data = Array.isArray(dataObject) ? dataObject : [dataObject];
   return {
     page: {
-      total: 1,
+      total: data.length,
       offset: 0,
       limit: 20,
       ...overrides,
     },
-    data: Array.isArray(dataObject) ? dataObject : [dataObject],
+    data,
   };
 }
 
