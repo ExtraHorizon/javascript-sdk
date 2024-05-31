@@ -1,10 +1,9 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
-import { data } from './data.json';
 import { AUTH_BASE } from '../../../../src/constants';
 import { createClient } from '../../../../src/index';
-import { createPagedResponse } from '../../../__helpers__/utils';
 import { rqlBuilder } from '../../../../src/rql';
+import { createPagedResponse } from '../../../__helpers__/utils';
+import { data } from './data.json';
 
 describe('Auth - OpenID Connect - Login Attempts', () => {
   const host = 'https://api.xxx.extrahorizon.com';

@@ -1,8 +1,7 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { createClient, rqlBuilder } from '../../../../src';
-import { logLines } from '../../../__helpers__/logs';
 import { TASKS_BASE } from '../../../../src/constants';
+import { logLines } from '../../../__helpers__/logs';
 import { randomHexString } from '../../../__helpers__/utils';
 
 describe('Tasks - Logs ', () => {
