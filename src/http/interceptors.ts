@@ -74,6 +74,7 @@ const mapDateValues = (value, key) => {
       'nextTimestamp',
       'updateTimestamp',
       'lastFailedTimestamp',
+      'lastUsedTimestamp',
       'statusChangedTimestamp',
       'startTimestamp',
       'endTimestamp',

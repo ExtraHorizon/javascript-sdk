@@ -1,7 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
-import { FILES_BASE } from '../../../../src/constants';
 import { createClient } from '../../../../src';
+import { FILES_BASE } from '../../../../src/constants';
 
 describe('Files - Settings - GET', () => {
   const host = 'https://api.xxx.extrahorizon.com';

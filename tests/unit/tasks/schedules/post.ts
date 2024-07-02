@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { createClient } from '../../../../src';
 import { TASKS_BASE } from '../../../../src/constants';
@@ -16,7 +15,7 @@ describe('Tasks - Schedules - POST', () => {
 
   it('Creates a Schedule', async () => {
     nock(`${host}${TASKS_BASE}`)
-      .post(`/schedules`)
+      .post('/schedules')
       .reply(200, scheduleCreation);
 
     const data = await exh.tasks.schedules.create(scheduleCreation);
@@ -25,7 +24,7 @@ describe('Tasks - Schedules - POST', () => {
 
   it('Creates a Schedule using a user defined data type', async () => {
     nock(`${host}${TASKS_BASE}`)
-      .post(`/schedules`)
+      .post('/schedules')
       .reply(200, scheduleCreation);
 
     const data = await exh.tasks.schedules.create<ScheduleDataType>(

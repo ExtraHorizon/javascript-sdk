@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import nock from 'nock';
 import { rqlBuilder, createClient } from '../../../src';
 import { LOGS_BASE } from '../../../src/constants';
