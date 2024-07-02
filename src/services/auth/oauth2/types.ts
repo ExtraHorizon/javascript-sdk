@@ -6,6 +6,8 @@ import {
 } from '../../types';
 
 export interface AuthOauth2Service {
+  tokens: AuthOauth2TokenService;
+
   /**
    * Create an OAuth2 authorization
    *
@@ -49,6 +51,47 @@ export interface AuthOauth2Service {
   ): Promise<AffectedRecords>;
 }
 
+export interface AuthOauth2TokenService {
+  /**
+   * Get a list of OAuth2 tokens
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth2 tokens for this account
+   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
+   */
+  find(options?: OptionsWithRql): Promise<PagedResult<OAuth2Token>>;
+
+  /**
+   * Get the first OAuth2 token found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth2 tokens for this account
+   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
+   */
+  findFirst(options?: OptionsWithRql): Promise<OAuth2Token>;
+
+  /**
+   * Get an oAuth2 token by its id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth2 tokens for this account
+   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
+   */
+  findById(id: string, options?: OptionsWithRql): Promise<OAuth2Token>;
+
+  /**
+   * Remove an oAuth2 token
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * DELETE_AUTHORIZATIONS | | Required for this endpoint
+   */
+  remove(id: string): Promise<AffectedRecords>;
+}
+
 export interface OAuth2AuthorizationCreation {
   responseType: string;
   clientId: string;
@@ -67,4 +110,15 @@ export interface OAuth2Authorization {
   updateTimestamp?: Date;
   /** The timestamp when the authorization was created */
   creationTimestamp?: Date;
+}
+
+export interface OAuth2Token {
+  id: string;
+  applicationId: string;
+  userId: string;
+  refreshTokenId: string;
+  accessToken: string;
+  expiryTimestamp: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }

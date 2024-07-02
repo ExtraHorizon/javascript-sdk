@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.0]
+
+### Added
+- `exh.auth.oauth1.tokens` now has `find`, `findFirst`, `findById` and `remove` methods
+- `exh.auth.oauth2.tokens` now has `find`, `findFirst`, `findById` and `remove` methods
+- The `exh.events.subscriptions` methods now also support the new `retriable` field
+
+### Deprecated
+- `exh.auth.oauth1.getTokens` is deprecated in favor of `exh.auth.oauth1.tokens.find`
+- `exh.auth.oauth1.removeToken` is deprecated in favor of `exh.auth.oauth1.tokens.remove`
+- `exh.events.subscriptions.create` should no longer be used, this is managed by the system
+
 ## [8.3.0]
 
 ### Added
