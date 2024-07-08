@@ -303,10 +303,7 @@ export interface SchemaInput {
   maximumLimit?: number;
 }
 
-export type UpdateSchemaInput = Pick<
-  Partial<SchemaInput>,
-  'name' | 'description' | 'defaultLimit' | 'maximumLimit'
->;
+export type UpdateSchemaInput = Partial<SchemaInput>;
 
 export type IndexFieldsName = string;
 
