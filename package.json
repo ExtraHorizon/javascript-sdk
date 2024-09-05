@@ -55,7 +55,6 @@
     "nock": "^13.5.4",
     "rimraf": "^5.0.5",
     "rollup": "^2.68.0",
-    "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^29.1.2",
     "typescript": "^4.5.5"
   }
