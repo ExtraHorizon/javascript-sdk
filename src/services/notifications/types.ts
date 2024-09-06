@@ -111,15 +111,23 @@ export enum FieldType {
   URL = 'URL',
 }
 
-export interface Setting {
+export interface NotificationSettings {
   id?: ObjectId;
   key?: string;
-  preferences?: Record<string, boolean>;
+  preferences?: {
+    passwordChanged?: boolean;
+    activated?: boolean;
+    prescriptionExpiry?: boolean;
+    measurementComment?: boolean;
+    measurementReviewed?: boolean;
+    message?: boolean;
+    link?: boolean;
+  };
   creationTimestamp?: Date;
   updateTimestamp?: Date;
 }
 
-export type SettingCreation = Required<Pick<Setting, 'key' | 'preferences'>>;
+export type SettingCreation = Required<Pick<NotificationSettings, 'key' | 'preferences'>>;
 
 export interface NotificationsService {
   /**
@@ -224,20 +232,20 @@ export interface NotificationSettingsServices {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Setting>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<Setting>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<NotificationSettings>>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Setting>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<NotificationSettings>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Setting>;
+  findFirst(options?: OptionsWithRql): Promise<NotificationSettings>;
   /**
    * Update the notification settings for a user
    *
@@ -253,7 +261,7 @@ export interface NotificationSettingsServices {
     userId: string,
     requestBody: SettingCreation,
     options?: OptionsBase
-  ): Promise<Setting>;
+  ): Promise<NotificationSettings>;
   /**
    * Delete the notifications settings for a user
    *

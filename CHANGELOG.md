@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No longer minifying to prevent huge error stack traces, we expect that where it matters bundlers are in use anyway 
 - `exh.data.schemas.update` now correctly accepts all the `*Mode` and `*Limit` schema properties
 - Added missing `Schema` and `TypeConfiguration` properties
+- Corrected the notification settings type
 
 ## [8.4.0]
 

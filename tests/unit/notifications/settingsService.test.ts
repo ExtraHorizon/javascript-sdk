@@ -8,7 +8,6 @@ import {
 } from '../../../src/index';
 import {
   notificationData,
-  settingsInput,
   settingsData,
 } from '../../__helpers__/notification';
 import { createPagedResponse } from '../../__helpers__/utils';
@@ -42,11 +41,38 @@ describe('Settings Service', () => {
     const rql = rqlBuilder().build();
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get(`/settings${rql}`)
-      .reply(200, settingsResponse);
+      .reply(200, createPagedResponse({
+        id: '58074804b2148f3b28ad759a',
+        key: 'firebase-cloud-messaging-key',
+        preferences: {
+          password_changed: true,
+          activated: true,
+          prescription_expiry: true,
+          measurement_comment: true,
+          measurement_reviewed: true,
+          message: true,
+          link: true,
+        },
+        update_timestamp: 1550577829354,
+      }));
 
     const res = await sdk.notifications.settings.find({ rql });
 
     expect(res.data.length).toBeGreaterThan(0);
+    expect(res.data[0]).toStrictEqual({
+      id: '58074804b2148f3b28ad759a',
+      key: 'firebase-cloud-messaging-key',
+      preferences: {
+        passwordChanged: true,
+        activated: true,
+        prescriptionExpiry: true,
+        measurementComment: true,
+        measurementReviewed: true,
+        message: true,
+        link: true,
+      },
+      updateTimestamp: new Date(1550577829354),
+    });
   });
 
   it('should find settings by id', async () => {
@@ -71,13 +97,32 @@ describe('Settings Service', () => {
 
   it('should update the notification settings for a user', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
-      .put(`/settings/${notificationData.userId}`)
+      .put(`/settings/${notificationData.userId}`, {
+        key: 'firebase-cloud-messaging-key',
+        preferences: {
+          password_changed: true,
+          activated: true,
+          prescription_expiry: true,
+          measurement_comment: true,
+          measurement_reviewed: true,
+          message: true,
+          link: true,
+        },
+      })
       .reply(200, settingsData);
 
-    const settings = await sdk.notifications.settings.update(
-      notificationData.userId,
-      settingsInput
-    );
+    const settings = await sdk.notifications.settings.update(notificationData.userId, {
+      key: 'firebase-cloud-messaging-key',
+      preferences: {
+        passwordChanged: true,
+        activated: true,
+        prescriptionExpiry: true,
+        measurementComment: true,
+        measurementReviewed: true,
+        message: true,
+        link: true,
+      },
+    });
 
     expect(settings.id).toBe(settingsId);
   });
