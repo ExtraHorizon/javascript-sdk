@@ -2,7 +2,6 @@ import { join } from 'path';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
 
 const { fflate, ...dependencies } = require('./package.json').dependencies
 
@@ -24,6 +23,5 @@ export default {
     }),
     typescript(),
     json(),
-    terser(),
   ],
 };

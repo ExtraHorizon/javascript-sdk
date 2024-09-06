@@ -26,10 +26,10 @@ export const newSchemaCreated: Partial<Schema> = {
   properties: {
     ppg: {
       type: 'array',
-      max: 2000,
+      maxItems: 2000,
       items: {
         type: 'number',
-        max: 255,
+        maximum: 255,
       },
     },
     location: {
@@ -37,13 +37,13 @@ export const newSchemaCreated: Partial<Schema> = {
       properties: {
         longitude: {
           type: 'number',
-          min: -180,
-          max: 180,
+          minimum: -180,
+          maximum: 180,
         },
         latitude: {
           type: 'number',
-          min: -90,
-          max: 90,
+          minimum: -90,
+          maximum: 90,
         },
       },
     },
@@ -171,13 +171,13 @@ export const schemaData = {
       properties: {
         longitude: {
           type: 'number',
-          min: -180,
-          max: 180,
+          minimum: -180,
+          maximum: 180,
         },
         latitude: {
           type: 'number',
-          min: -90,
-          max: 90,
+          minimum: -90,
+          maximum: 90,
         },
       },
     },

@@ -109,6 +109,7 @@ export interface ArrayConfiguration extends BaseConfiguration {
 export interface ObjectConfiguration extends BaseConfiguration {
   type?: 'object';
   properties?: Record<string, TypeConfiguration>;
+  additionalProperties?: TypeConfiguration;
   required?: string[];
 }
 
@@ -119,6 +120,7 @@ export interface StringConfiguration extends BaseConfiguration {
   enum?: string[];
   pattern?: string;
   format?: 'date-time';
+  const?: string;
 }
 
 export interface NumberConfiguration extends BaseConfiguration {
@@ -126,10 +128,13 @@ export interface NumberConfiguration extends BaseConfiguration {
   minimum?: number;
   maximum?: number;
   enum?: number[];
+  const?: string;
 }
 
 export interface BooleanConfiguration extends BaseConfiguration {
   type?: 'boolean';
+  enum?: boolean[];
+  const?: boolean;
 }
 
 export type TypeConfiguration =
@@ -272,8 +277,7 @@ export interface Schema {
   id: ObjectId;
   name: string;
   description: string;
-  // FIXME: type all possible property types
-  properties: Record<string, any>;
+  properties: Record<string, TypeConfiguration>;
   indexes: Index[];
   statuses: Record<string, Record<string, string>>;
   creationTransition: CreationTransition;
@@ -303,10 +307,7 @@ export interface SchemaInput {
   maximumLimit?: number;
 }
 
-export type UpdateSchemaInput = Pick<
-  Partial<SchemaInput>,
-  'name' | 'description' | 'defaultLimit' | 'maximumLimit'
->;
+export type UpdateSchemaInput = Partial<SchemaInput>;
 
 export type IndexFieldsName = string;
 
