@@ -820,7 +820,7 @@ export interface DataDocumentsService {
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     requestBody: {
-      userIds: Array<ObjectId>;
+      userIds?: Array<ObjectId>;
     },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
