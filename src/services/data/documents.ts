@@ -151,11 +151,13 @@ export default (
     },
 
     async unlinkGroups(schemaIdOrName, documentId, requestBody, options) {
+      const data = requestBody || {};
+
       return (
         await client.post(
           httpAuth,
           `/${schemaIdOrName}/documents/${documentId}/unlinkGroups`,
-          requestBody,
+          data,
           options
         )
       ).data;
@@ -173,11 +175,13 @@ export default (
     },
 
     async unlinkUsers(schemaIdOrName, documentId, requestBody, options) {
+      const data = requestBody || {};
+
       return (
         await client.post(
           httpAuth,
           `/${schemaIdOrName}/documents/${documentId}/unlinkUsers`,
-          requestBody,
+          data,
           options
         )
       ).data;

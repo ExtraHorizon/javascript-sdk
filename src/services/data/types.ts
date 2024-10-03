@@ -757,7 +757,7 @@ export interface DataDocumentsService {
    *
    * Specifying an **empty** `groupIds` array will have **no effect** on the document.
    *
-   * **Not** specifying the `groupIds` array will **unlink all** groups from the document.
+   * **Not** specifying the `groupIds` array or `requestBody` will **unlink all** groups from the document.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -770,7 +770,7 @@ export interface DataDocumentsService {
   unlinkGroups(
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
-    requestBody: {
+    requestBody?: {
       groupIds?: Array<ObjectId>;
     },
     options?: OptionsBase
@@ -805,7 +805,7 @@ export interface DataDocumentsService {
    *
    * Specifying an **empty** `userIds` array will have **no effect** on the document.
    *
-   * **Not** specifying the `userIds` array will **unlink all** users from the document.
+   * **Not** specifying the `userIds` array or `requestBody` will **unlink all** users from the document.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -820,7 +820,7 @@ export interface DataDocumentsService {
   unlinkUsers(
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
-    requestBody: {
+    requestBody?: {
       userIds?: Array<ObjectId>;
     },
     options?: OptionsBase
