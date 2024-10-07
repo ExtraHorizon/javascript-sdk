@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `exh.data.documents.unlinkAllUsers` and `unlinkAllGroups` methods to unlink all users or groups from a document
+
 ### Changed
 - RQL `contains` and `excludes` now have their different variations better separated in the type definitions
-- For both `exh.data.documents.unlinkGroups` and `unlinkUsers` the body can now be an empty object or not be provided at all
-  - Thanks to `tran-simon` for the pointing out the incorrect `unlinkUsers` type definition!
+- `exh.data.documents.unlinkUsers` and `unlinkGroups` now also accept an array of user or group ids directly rather than nested in a request body object
+  - Thanks to `tran-simon` for the pointing out the initially incorrect `unlinkUsers` type definition!
+
+### Deprecated
+- `exh.data.documents.unlinkUsers` usage with an object is deprecated in favor of an array of ids directly or `unlinkAllUsers` for unlinking all users
+- `exh.data.documents.unlinkGroups` usage with an object is deprecated in favor of an array of ids directly or `unlinkAllGroups` for unlinking all groups
 
 ## [8.4.1]
 

@@ -729,6 +729,7 @@ export interface DataDocumentsService {
     },
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
+
   /**
    * Link groups to a document
    *
@@ -750,14 +751,17 @@ export interface DataDocumentsService {
     },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
+   * @deprecated Use `unlinkGroups(schemaIdOrName, documentId, groupIds)` or `unlinkAllGroups(schemaIdOrName, documentId)` instead.
+   *
    * Unlink groups from a document
    *
    * Unlink the specified groups from a document
    *
    * Specifying an **empty** `groupIds` array will have **no effect** on the document.
    *
-   * **Not** specifying the `groupIds` array or `requestBody` will **unlink all** groups from the document.
+   * **Not** specifying the `groupIds` array will **unlink all** groups from the document.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -770,11 +774,43 @@ export interface DataDocumentsService {
   unlinkGroups(
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
-    requestBody?: {
+    requestBody: {
       groupIds?: Array<ObjectId>;
     },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
+  /**
+   * Unlink groups from a document
+   *
+   * Unlink the specified groups from a document
+   *
+   * Specifying an **empty** `groupIds` array will have **no effect** on the document.
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   */
+  unlinkGroups(
+    schemaIdOrName: ObjectId | string,
+    documentId: ObjectId,
+    groupIds: Array<ObjectId>,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
+
+  /**
+   * Unlink all groups from a document
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   */
+  unlinkAllGroups(
+    schemaIdOrName: ObjectId | string,
+    documentId: ObjectId,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
+
   /**
    * Link users to a document
    *
@@ -798,14 +834,17 @@ export interface DataDocumentsService {
     },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
+   * @deprecated Use `unlinkUsers(schemaIdOrName, documentId, userIds)` or `unlinkAllUsers(schemaIdOrName, documentId)` instead.
+   *
    * Unlink users from a document
    *
    * Unlink the specified users from a document.
    *
    * Specifying an **empty** `userIds` array will have **no effect** on the document.
    *
-   * **Not** specifying the `userIds` array or `requestBody` will **unlink all** users from the document.
+   * **Not** specifying the `userIds` array will **unlink all** users from the document.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -820,9 +859,44 @@ export interface DataDocumentsService {
   unlinkUsers(
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
-    requestBody?: {
+    requestBody: {
       userIds?: Array<ObjectId>;
     },
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
+
+  /**
+   * Unlink users from a document
+   *
+   * Unlink the specified users from a document.
+   *
+   * Specifying an **empty** `userIds` array will have **no effect** on the document.
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   *
+   * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
+   */
+  unlinkUsers(
+    schemaIdOrName: ObjectId | string,
+    documentId: ObjectId,
+    userIds: Array<ObjectId>,
+    options?: OptionsBase
+  ): Promise<AffectedRecords>;
+
+  /**
+   * Unlink all users from a document
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   *
+   * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
+   */
+  unlinkAllUsers(
+    schemaIdOrName: ObjectId | string,
+    documentId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
 }

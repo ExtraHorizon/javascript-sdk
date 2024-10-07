@@ -152,9 +152,23 @@ describe('Documents Service', () => {
   });
 
   describe('unlinkGroups', () => {
-    it('Unlinks specific groups from a document', async () => {
+    it('Unlinks specific groups from a document when supplying group ids', async () => {
       nock(`${host}${DATA_BASE}`)
-        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, {
+          groupIds: ['5e9fff9d90135a2a9a718e2f'],
+        })
+        .reply(200, { affectedRecords: 1 });
+
+      const response = await sdk.data.documents.unlinkGroups(schemaId, documentId, ['5e9fff9d90135a2a9a718e2f']);
+
+      expect(response.affectedRecords).toBe(1);
+    });
+
+    it('Unlinks specific groups from a document when supplying a request body w/ group ids', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, {
+          groupIds: ['5e9fff9d90135a2a9a718e2f'],
+        })
         .reply(200, { affectedRecords: 1 });
 
       const response = await sdk.data.documents.unlinkGroups(schemaId, documentId, {
@@ -173,15 +187,15 @@ describe('Documents Service', () => {
 
       expect(response.affectedRecords).toBe(1);
     });
+  });
 
-    it('Unlinks all groups from a document when no request body is supplied', async () => {
+  describe('unlinkAllGroups', () => {
+    it('Unlinks all groups from a document', async () => {
       nock(`${host}${DATA_BASE}`)
-        // Empty object needs to be supplied, even if the request body is not supplied by the user
-        // Although couldn't make the test fail (nock seems to implicitly convert undefined to `{}`) just here for completeness
         .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, {})
         .reply(200, { affectedRecords: 1 });
 
-      const response = await sdk.data.documents.unlinkGroups(schemaId, documentId);
+      const response = await sdk.data.documents.unlinkAllGroups(schemaId, documentId);
 
       expect(response.affectedRecords).toBe(1);
     });
@@ -198,7 +212,18 @@ describe('Documents Service', () => {
   });
 
   describe('unlinkUsers', () => {
-    it('Unlinks a specific user from a document', async () => {
+    it('Unlinks specific users from a document when supplying user ids', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkUsers`, {
+          userIds: ['5e9fff9d90135a2a9a718e2f'],
+        })
+        .reply(200, { affectedRecords: 1 });
+
+      const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, ['5e9fff9d90135a2a9a718e2f']);
+      expect(res.affectedRecords).toBe(1);
+    });
+
+    it('Unlinks specific users from a document when supplying a body with user ids', async () => {
       nock(`${host}${DATA_BASE}`)
         .post(`/${schemaId}/documents/${documentId}/unlinkUsers`, {
           userIds: ['5e9fff9d90135a2a9a718e2f'],
@@ -219,15 +244,15 @@ describe('Documents Service', () => {
       const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, {});
       expect(res.affectedRecords).toBe(1);
     });
+  });
 
-    it('Unlinks all users from a document when no request body is supplied', async () => {
+  describe('unlinkAllUsers', () => {
+    it('Unlinks all users from a document', async () => {
       nock(`${host}${DATA_BASE}`)
-        // Empty object needs to be supplied, even if the request body is not supplied by the user
-        // Although couldn't make the test fail (nock seems to implicitly convert undefined to `{}`) just here for completeness
         .post(`/${schemaId}/documents/${documentId}/unlinkUsers`, {})
         .reply(200, { affectedRecords: 1 });
 
-      const res = await sdk.data.documents.unlinkUsers(schemaId, documentId);
+      const res = await sdk.data.documents.unlinkAllUsers(schemaId, documentId);
       expect(res.affectedRecords).toBe(1);
     });
   });
