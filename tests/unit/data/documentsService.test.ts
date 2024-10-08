@@ -152,9 +152,23 @@ describe('Documents Service', () => {
   });
 
   describe('unlinkGroups', () => {
-    it('Unlinks specific groups from a document', async () => {
+    it('Unlinks specific groups from a document when supplying group ids', async () => {
       nock(`${host}${DATA_BASE}`)
-        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, {
+          groupIds: ['5e9fff9d90135a2a9a718e2f'],
+        })
+        .reply(200, { affectedRecords: 1 });
+
+      const response = await sdk.data.documents.unlinkGroups(schemaId, documentId, ['5e9fff9d90135a2a9a718e2f']);
+
+      expect(response.affectedRecords).toBe(1);
+    });
+
+    it('Unlinks specific groups from a document when supplying a request body w/ group ids', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, {
+          groupIds: ['5e9fff9d90135a2a9a718e2f'],
+        })
         .reply(200, { affectedRecords: 1 });
 
       const response = await sdk.data.documents.unlinkGroups(schemaId, documentId, {
@@ -164,12 +178,24 @@ describe('Documents Service', () => {
       expect(response.affectedRecords).toBe(1);
     });
 
-    it('Unlinks all groups from a document', async () => {
+    it('Unlinks all groups from a document when supplying an empty object', async () => {
       nock(`${host}${DATA_BASE}`)
-        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, {})
         .reply(200, { affectedRecords: 1 });
 
       const response = await sdk.data.documents.unlinkGroups(schemaId, documentId, {});
+
+      expect(response.affectedRecords).toBe(1);
+    });
+  });
+
+  describe('unlinkAllGroups', () => {
+    it('Unlinks all groups from a document', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkGroups`, {})
+        .reply(200, { affectedRecords: 1 });
+
+      const response = await sdk.data.documents.unlinkAllGroups(schemaId, documentId);
 
       expect(response.affectedRecords).toBe(1);
     });
@@ -185,14 +211,50 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should unlink users from a document', async () => {
-    nock(`${host}${DATA_BASE}`)
-      .post(`/${schemaId}/documents/${documentId}/unlinkUsers`)
-      .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, {
-      userIds: ['5e9fff9d90135a2a9a718e2f'],
+  describe('unlinkUsers', () => {
+    it('Unlinks specific users from a document when supplying user ids', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkUsers`, {
+          userIds: ['5e9fff9d90135a2a9a718e2f'],
+        })
+        .reply(200, { affectedRecords: 1 });
+
+      const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, ['5e9fff9d90135a2a9a718e2f']);
+      expect(res.affectedRecords).toBe(1);
     });
-    expect(res.affectedRecords).toBe(1);
+
+    it('Unlinks specific users from a document when supplying a body with user ids', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkUsers`, {
+          userIds: ['5e9fff9d90135a2a9a718e2f'],
+        })
+        .reply(200, { affectedRecords: 1 });
+
+      const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, {
+        userIds: ['5e9fff9d90135a2a9a718e2f'],
+      });
+      expect(res.affectedRecords).toBe(1);
+    });
+
+    it('Unlinks all users from a document when an empty object is supplied', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkUsers`, {})
+        .reply(200, { affectedRecords: 1 });
+
+      const res = await sdk.data.documents.unlinkUsers(schemaId, documentId, {});
+      expect(res.affectedRecords).toBe(1);
+    });
+  });
+
+  describe('unlinkAllUsers', () => {
+    it('Unlinks all users from a document', async () => {
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/unlinkUsers`, {})
+        .reply(200, { affectedRecords: 1 });
+
+      const res = await sdk.data.documents.unlinkAllUsers(schemaId, documentId);
+      expect(res.affectedRecords).toBe(1);
+    });
   });
 
   it('should return true if the document is not in a locked state', async () => {

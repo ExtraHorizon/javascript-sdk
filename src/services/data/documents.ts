@@ -150,7 +150,9 @@ export default (
       ).data;
     },
 
-    async unlinkGroups(schemaIdOrName, documentId, requestBody, options) {
+    async unlinkGroups(schemaIdOrName, documentId, data: Array<string> | { groupIds?: Array<string>; }, options) {
+      const requestBody = Array.isArray(data) ? { groupIds: data } : data;
+
       return (
         await client.post(
           httpAuth,
@@ -159,6 +161,10 @@ export default (
           options
         )
       ).data;
+    },
+
+    async unlinkAllGroups(schemaIdOrName, documentId, options) {
+      return await this.unlinkGroups(schemaIdOrName, documentId, {}, options); // Empty object to remove all groups
     },
 
     async linkUsers(schemaIdOrName, documentId, requestBody, options) {
@@ -172,7 +178,9 @@ export default (
       ).data;
     },
 
-    async unlinkUsers(schemaIdOrName, documentId, requestBody, options) {
+    async unlinkUsers(schemaIdOrName, documentId, data: Array<string> | { userIds?: Array<string>; }, options) {
+      const requestBody = Array.isArray(data) ? { userIds: data } : data;
+
       return (
         await client.post(
           httpAuth,
@@ -181,6 +189,10 @@ export default (
           options
         )
       ).data;
+    },
+
+    async unlinkAllUsers(schemaIdOrName, documentId, options) {
+      return await this.unlinkUsers(schemaIdOrName, documentId, {}, options); // Empty object to remove all users
     },
   };
 };
