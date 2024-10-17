@@ -249,13 +249,13 @@ export type TransitionAction =
   | TransitionActionDelay
   | TransitionActionMeasurementReviewedNotification;
 
-export interface TransitionNotifyAlgoQueueManagerAction {
+export interface TransitionActionNotifyAlgoQueueManager {
   type: 'notifyAlgoQueueManager';
   id: string;
   version: string;
 }
 
-export type TransitionAfterAction = TransitionNotifyAlgoQueueManagerAction | TransitionActionTask;
+export type TransitionAfterAction = TransitionActionNotifyAlgoQueueManager | TransitionActionTask;
 
 export interface CreationTransition {
   toStatus: string;
