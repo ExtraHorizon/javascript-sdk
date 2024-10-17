@@ -204,7 +204,8 @@ export interface TransitionActionRemoveItems {
 
 export interface TransitionActionTask {
   type: 'task';
-  functioName: string;
+  functionName: string;
+  priority?: number;
   data: Record<string, unknown>;
 }
 
@@ -248,11 +249,13 @@ export type TransitionAction =
   | TransitionActionDelay
   | TransitionActionMeasurementReviewedNotification;
 
-export interface TransitionAfterAction {
+export interface TransitionNotifyAlgoQueueManagerAction {
   type: 'notifyAlgoQueueManager';
   id: string;
   version: string;
 }
+
+export type TransitionAfterAction = TransitionNotifyAlgoQueueManagerAction | TransitionActionTask;
 
 export interface CreationTransition {
   toStatus: string;
