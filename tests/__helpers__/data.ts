@@ -86,7 +86,7 @@ export const newSchemaCreated: Partial<Schema> = {
     actions: [
       {
         type: 'task',
-        functioName: 'test',
+        functionName: 'test',
         data: {},
       },
     ],
