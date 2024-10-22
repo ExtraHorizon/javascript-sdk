@@ -715,7 +715,10 @@ export interface DataDocumentsService {
    * - | - | -
    * none | | Update your own documents
    * none | `staff enlistment`  | Update all the documents belonging to the group
-   * `UPDATE_DOCUMENTS` | `global` | Update all the documents
+   * `UPDATE_DOCUMENTS` | `global` | Transition all the documents
+   * `TRANSITION_DOCUMENTS` | `global` | Transition all the documents
+   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}` | `global` | Transition all the documents of the specified schema
+   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}:{TRANSITION_NAME}` | `global` | Transition all the documents of the specified schema with the specified transition name
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody
