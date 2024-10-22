@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `exh.data.documents.unlinkAllUsers` and `unlinkAllGroups` methods to unlink all users or groups from a document
 - Added `priority` field to the `TransitionActionTask` type
 - Added `TransitionActionTask` to the `AfterActions`
+- Added `TRANSITION_DOCUMENTS` permission to the `GlobalPermissionName` enum
+- Added `TRANSITION_DOCUMENTS` permission to the documentation of the transition document function
 
 ### Changed
 - RQL `contains` and `excludes` now have their different variations better separated in the type definitions
