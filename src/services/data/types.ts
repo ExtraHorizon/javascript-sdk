@@ -222,6 +222,7 @@ export interface TransitionActionLinkUserFromData {
   type: 'linkUserFromData';
   userIdField: string;
 }
+
 export interface TransitionActionLinkGroupFromData {
   type: 'linkGroupFromData';
   groupIdField: string;
@@ -232,8 +233,20 @@ export interface TransitionActionDelay {
   time: number;
 }
 
+/**
+ * @deprecated Legacy action, should not be used in new projects
+ */
 export interface TransitionActionMeasurementReviewedNotification {
   type: 'measurementReviewedNotification';
+}
+
+/**
+ * @deprecated Legacy action, the AlgoQueueManager does not exist anymore
+ */
+export interface TransitionActionNotifyAlgoQueueManager {
+  type: 'notifyAlgoQueueManager';
+  id: string;
+  version: string;
 }
 
 export type TransitionAction =
@@ -248,12 +261,6 @@ export type TransitionAction =
   | TransitionActionLinkGroupFromData
   | TransitionActionDelay
   | TransitionActionMeasurementReviewedNotification;
-
-export interface TransitionActionNotifyAlgoQueueManager {
-  type: 'notifyAlgoQueueManager';
-  id: string;
-  version: string;
-}
 
 export type TransitionAfterAction = TransitionActionNotifyAlgoQueueManager | TransitionActionTask;
 
