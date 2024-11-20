@@ -341,6 +341,16 @@ export interface Index {
 
 export type IndexInput = Pick<Index, 'fields' | 'options'>;
 
+export type TransitionDocumentInput = {
+  id: ObjectId;
+  name?: string;
+  data?: Record<string, unknown>;
+} | {
+  id?: ObjectId;
+  name: string;
+  data?: Record<string, unknown>;
+}
+
 export interface Document<CustomData = null, CustomStatus = null> {
   id: ObjectId;
   userIds: ObjectId[];
@@ -713,10 +723,19 @@ export interface DataDocumentsService {
     },
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
+
   /**
    * Transition a document
    *
    * Start a transition manually for the selected document where the conditions of a manual transition are met.
+   *
+   * Either the `id` or the `name` of a transition must be provided.
+   * If both are provided, they must match the same transition, otherwise a `ResourceUnknownError` will be thrown.
+   *
+   * If `name` is provided, multiple transitions could match.
+   * In this case, the first matching transition will be triggered:
+   * - The first transition with a `fromStatuses` matching the current status of the document
+   * - And all the transition its `conditions` are met
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -736,10 +755,7 @@ export interface DataDocumentsService {
   transition(
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
-    requestBody: {
-      id: ObjectId;
-      data?: Record<string, any>;
-    },
+    requestBody: TransitionDocumentInput,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
 

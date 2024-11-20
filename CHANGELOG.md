@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `TransitionActionTask` to the `AfterActions`
 - Added `TRANSITION_DOCUMENTS` permission to the `GlobalPermissionName` enum
 - Added `TRANSITION_DOCUMENTS` permission to the documentation of the transition document function
+- Added a `name` field to the `exh.data.documents.transition` body, allowing a transition to be triggered by its name rather then its id
 
 ### Changed
 - RQL `contains` and `excludes` now have their different variations better separated in the type definitions
