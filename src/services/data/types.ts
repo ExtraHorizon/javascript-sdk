@@ -62,32 +62,64 @@ export type JSONSchemaBoolean = {
   const: boolean;
 };
 
+export type RelationalAccessMode =
+  | 'creator'
+  | 'linkedUsers'
+  | 'linkedGroupStaff'
+  | 'linkedGroupPatients';
+
 /**
  * Specifies the conditions to be met in order to be able to create a document for a schema
  */
+export type CreateMode =
+  | 'permissionRequired'
+  | 'allUsers'
 
-export type CreateMode = 'default' | 'permissionRequired';
+  /** @deprecated use 'allUsers' instead */
+  | 'default';
 
 /**
  * Specifies the conditions to be met in order to be able to view a document for a schema
  */
-export type ReadMode = 'allUsers' | 'default' | 'enlistedInLinkedGroups';
+export type ReadMode =
+  | 'permissionRequired'
+  | 'allUsers'
+  | Array<RelationalAccessMode>
+
+  /** @deprecated use ['linkedUsers', 'linkedGroupStaff'] instead */
+  | 'default'
+
+  /** @deprecated use ['linkedGroupPatients', 'linkedGroupStaff'] instead */
+  | 'enlistedInLinkedGroups';
 
 /**
  * Specifies the conditions to be met in order to be able to update a document for a schema
  */
-
 export type UpdateMode =
+  | 'permissionRequired'
+  | Array<RelationalAccessMode>
+
+  /** @deprecated use ['linkedUsers', 'linkedGroupStaff'] instead */
   | 'default'
+
+  /** @deprecated use ['creator'] instead */
   | 'creatorOnly'
+
+  /** @deprecated use 'permissionRequired' instead */
   | 'disabled'
+
+  /** @deprecated use ['linkedGroupStaff'] instead */
   | 'linkedGroupsStaffOnly';
 
 /**
  * Specifies the conditions to be met in order to be able to delete a document for a schema
  */
+export type DeleteMode =
+  | 'permissionRequired'
+  | Array<RelationalAccessMode>
 
-export type DeleteMode = 'permissionRequired' | 'linkedUsersOnly';
+  /** @deprecated use ['linkedUsers','linkedGroupStaff'] instead */
+  | 'linkedUsersOnly';
 
 export type GroupSyncMode =
   | 'disabled'
