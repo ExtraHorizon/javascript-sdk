@@ -125,20 +125,44 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should transition a document', async () => {
-    nock(`${host}${DATA_BASE}`)
-      .post(`/${schemaId}/documents/${documentId}/transition`)
-      .reply(200, { affectedRecords: 1 });
-    const res = await sdk.data.documents.transition(schemaId, documentId, {
-      id: '5e9fff9d90135a2a9a718e2f',
-      data: {
-        location: {
-          x: 1,
-          y: 2,
+  describe('transition', () => {
+    it('Transitions a document by id', async () => {
+      const body = {
+        id: '5e9fff9d90135a2a9a718e2f',
+        data: {
+          location: {
+            x: 1,
+            y: 2,
+          },
         },
-      },
+      };
+
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/transition`, body)
+        .reply(200, { affectedRecords: 1 });
+
+      const res = await sdk.data.documents.transition(schemaId, documentId, body);
+      expect(res.affectedRecords).toBe(1);
     });
-    expect(res.affectedRecords).toBe(1);
+
+    it('Transitions a document by name', async () => {
+      const body = {
+        name: 'move',
+        data: {
+          location: {
+            x: 1,
+            y: 2,
+          },
+        },
+      };
+
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/transition`, body)
+        .reply(200, { affectedRecords: 1 });
+
+      const res = await sdk.data.documents.transition(schemaId, documentId, body);
+      expect(res.affectedRecords).toBe(1);
+    });
   });
 
   it('should link groups to a document', async () => {
