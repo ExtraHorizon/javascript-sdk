@@ -277,8 +277,6 @@ export interface TransitionActionMeasurementReviewedNotification {
  */
 export interface TransitionActionNotifyAlgoQueueManager {
   type: 'notifyAlgoQueueManager';
-  id: string;
-  version: string;
 }
 
 export type TransitionAction =
