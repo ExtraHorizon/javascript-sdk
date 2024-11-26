@@ -93,8 +93,6 @@ export const newSchemaCreated: Partial<Schema> = {
     afterActions: [
       {
         type: 'notifyAlgoQueueManager',
-        id: 'id',
-        version: 'version',
       },
     ],
   },
@@ -424,8 +422,6 @@ export const newTransition: TransitionInput = {
   afterActions: [
     {
       type: 'notifyAlgoQueueManager',
-      id: 'id',
-      version: 'version',
     },
   ],
   name: 'move',
