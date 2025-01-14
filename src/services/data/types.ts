@@ -1040,7 +1040,7 @@ export interface DataDocumentsService {
   /**
    * @deprecated Use `unlinkGroups(schemaIdOrName, documentId, groupIds)` or `unlinkAllGroups(schemaIdOrName, documentId)` instead.
    *
-   * Unlink groups from a document
+   * # Unlink groups from a document
    *
    * Unlink the specified groups from a document
    *
@@ -1050,7 +1050,10 @@ export interface DataDocumentsService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Unlink groups for all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Unlink groups for the documents of the specified schema
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of groupIds
@@ -1066,7 +1069,7 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Unlink groups from a document
+   * # Unlink groups from a document
    *
    * Unlink the specified groups from a document
    *
@@ -1074,7 +1077,14 @@ export interface DataDocumentsService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Unlink groups for all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Unlink groups for the documents of the specified schema
+   *
+   * # Interface
+   * @param schemaIdOrName The id or name of the targeted schema.
+   * @param documentId The id of the targeted document.
+   * @param groupIds list of groupIds
+   * @returns AffectedRecords
    */
   unlinkGroups(
     schemaIdOrName: ObjectId | string,
@@ -1084,11 +1094,17 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Unlink all groups from a document
+   * # Unlink all groups from a document
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Unlink groups for all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Unlink groups for the documents of the specified schema
+   *
+   * # Interface
+   * @param schemaIdOrName The id or name of the targeted schema.
+   * @param documentId The id of the targeted document.
+   * @returns AffectedRecords
    */
   unlinkAllGroups(
     schemaIdOrName: ObjectId | string,
