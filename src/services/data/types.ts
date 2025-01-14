@@ -728,7 +728,7 @@ export interface DataDocumentsService {
   ): FindAllIterator<Document<CustomData, CustomStatus>>;
 
   /**
-   * # Shortcut method to find a document by id
+   * # Find a document by id
    *
    * ## Access via permissions
    * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
@@ -777,7 +777,7 @@ export interface DataDocumentsService {
   ): Promise<Document<CustomData, CustomStatus> | undefined>;
 
   /**
-   * # Returns the first document that is found with the applied filter
+   * # Find the first document that matches the applied filter
    *
    * ## Access via permissions
    * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
@@ -981,26 +981,55 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Transition a document
+   * # Transition a document
    *
    * Start a transition manually for the selected document where the conditions of a manual transition are met.
    *
-   * Either the `id` or the `name` of a transition must be provided.
-   * If both are provided, they must match the same transition, otherwise a `ResourceUnknownError` will be thrown.
+   * Note: the `id` or `name` in the requestBody are the `id` or `name` of the transition.
    *
-   * If `name` is provided, multiple transitions could match.
-   * In this case, the first matching transition will be triggered:
-   * - The first transition with a `fromStatuses` matching the current status of the document
-   * - And all the transition its `conditions` are met
-   *
-   * Permission | Scope | Effect
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
    * - | - | -
-   * none | | Update your own documents
-   * none | `staff enlistment`  | Update all the documents belonging to the group
-   * `UPDATE_DOCUMENTS` | `global` | Transition all the documents
-   * `TRANSITION_DOCUMENTS` | `global` | Transition all the documents
-   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}` | `global` | Transition all the documents of the specified schema
-   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}:{TRANSITION_NAME}` | `global` | Transition all the documents of the specified schema with the specified transition name
+   * `UPDATE_DOCUMENTS` | `global` | Update any document
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `global` | Update any document of the specified schema
+   * `UPDATE_DOCUMENTS` | `staff_enlistment` | Update any document belonging to the group
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | Update any document of the specified schema belonging to the group
+   * `TRANSITION_DOCUMENTS` | `global` | Transition any document
+   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}` | `global` | Transition any document of the specified schema
+   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}:{TRANSITION_NAME}` | `global` | Transition any document of the specified schema with the specified transition name
+   * `TRANSITION_DOCUMENTS` | `staff_enlistment` | Transition any document belonging to the group
+   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | Transition any document of the specified schema belonging to the group
+   * `TRANSITION_DOCUMENTS:{SCHEMA_NAME}:{TRANSITION_NAME}` | `staff_enlistment` | Transition any document of the specified schema belonging to the group with the specified transition name
+   * <br>
+   *
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General updateMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * <br>
+   *
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational updateMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can update the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can update the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can update the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can update the document.
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"creatorOnly"` | Translates to `["creator"]` relational access mode
+   * `"disabled"` | Translates to the `"permissionRequired"` general access mode value
+   * `"linkedGroupsStaffOnly"` | Translates to `["linkedGroupStaff"]` relational access mode
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody
