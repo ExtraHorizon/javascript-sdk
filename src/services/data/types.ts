@@ -543,13 +543,31 @@ export interface DataDocumentsService {
     options?: OptionsBase
   ): Promise<boolean>;
   /**
-   * Create a document
+   * # Create a document
    *
-   * Permission | Scope | Effect
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
    * - | - | -
-   * none |  | Everyone can use this endpoint
+   * `CREATE_DOCUMENTS` | `global` | Create a document for any schema
+   * `CREATE_DOCUMENTS:{SCHEMA_NAME}` | `global` | Create a document for the specified schema
+   * <br>
    *
-   * `CREATE_DOCUMENTS` | `global` | When the schema.createMode is set to permissionRequired then this permission is required to make a group
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General createMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * `"allUsers"` | All users can create a document
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy createMode value | Description
+   * - | -
+   * `"default"` | Translates to the `"allUsers"` general access mode value
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param requestBody
    * @returns {Document} document
