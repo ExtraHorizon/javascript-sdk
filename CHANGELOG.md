@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected `functioName` field to `functionName` in the `TransitionActionTask` type
 - `exh.templates.findFirst`, `findById` and `findByName` now correctly state `undefined` can be returned
 - The `notifyAlgoQueueManager` transition action type no longer claims it has a `id` and `version` field
+- Transitions now correctly state `name` is optional and `id` is only a returned field.
 
 ### Added
 - Added `exh.data.documents.unlinkAllUsers` and `unlinkAllGroups` methods to unlink all users or groups from a document

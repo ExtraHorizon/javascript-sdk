@@ -305,13 +305,13 @@ export interface CreationTransition {
 export type StatusData = Record<string, string>;
 
 export type TransitionInput = CreationTransition & {
-  id?: ObjectId;
-  name: string;
+  name?: string;
   fromStatuses: string[];
 };
 
-export type Transition = TransitionInput &
-  Required<Pick<TransitionInput, 'id'>>;
+export type Transition = TransitionInput & {
+  id: ObjectId;
+};
 
 export interface Schema {
   id: ObjectId;
