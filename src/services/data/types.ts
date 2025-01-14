@@ -824,15 +824,49 @@ export interface DataDocumentsService {
   ): Promise<Document<CustomData, CustomStatus> | undefined>;
 
   /**
-   * Update a document
+   * # Update a document
    *
-   * **Partially** update the selected document. Use a `null` value to clear a field.
+   * **Partially** update the selected document, provide `null` as a value to clear a field.
+   * <br>
+   * <br>
    *
-   * Permission | Scope | Effect
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
    * - | - | -
-   * none | | Update your own documents
-   * none | `staff enlistment`  | Update all the documents belonging to the group
-   * `UPDATE_DOCUMENTS` | `global` | Update all the documents
+   * `UPDATE_DOCUMENTS` | `global` | Update any document
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `global` | Update any document of the specified schema
+   * `UPDATE_DOCUMENTS` | `staff_enlistment` | Update any document belonging to the group
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | Update any document of the specified schema belonging to the group
+   * <br>
+   *
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General updateMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * <br>
+   *
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational updateMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can update the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can update the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can update the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can update the document.
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"creatorOnly"` | Translates to `["creator"]` relational access mode
+   * `"disabled"` | Translates to the `"permissionRequired"` general access mode value
+   * `"linkedGroupsStaffOnly"` | Translates to `["linkedGroupStaff"]` relational access mode
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody Record<string, any>
@@ -844,22 +878,44 @@ export interface DataDocumentsService {
     requestBody: UpdateData,
     options?: OptionsWithRql
   ): Promise<AffectedRecords>;
+
   /**
-   * Delete a document
+   * # Delete a document
    *
-   * DeleteMode on schema is set to 'permissionRequired':
-   *
-   * Permission | Scope | Effect
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
    * - | - | -
-   * `DELETE_DOCUMENTS` | `global` | **Required** for this endpoint
+   * `DELETE_DOCUMENTS` | `global` | Delete any document
+   * `DELETE_DOCUMENTS:{SCHEMA_NAME}` | `global` | Delete any document of the specified schema
+   * `DELETE_DOCUMENTS` | `staff_enlistment` | Delete any document belonging to the group
+   * `DELETE_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | Delete any document of the specified schema belonging to the group
+   * <br>
    *
-   * DeleteMode on schema is set to 'linkedUsersOnly':
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General deleteMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * <br>
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | Delete the document if the userId is linked to the document
-   * none | `staff enlistment`  | Delete the document if the groupId is linked
-   * `DELETE_DOCUMENTS` | `global` | Delete the document
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational deleteMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can delete the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can delete the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can delete the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can delete the document.
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy deleteMode value | Description
+   * - | -
+   * `"linkedUsersOnly"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @returns AffectedRecords
@@ -869,6 +925,7 @@ export interface DataDocumentsService {
     documentId: ObjectId,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
+
   /**
    * Delete fields from a document
    *
