@@ -542,6 +542,7 @@ export interface DataDocumentsService {
     retryTimeInMs: number,
     options?: OptionsBase
   ): Promise<boolean>;
+
   /**
    * # Create a document
    *
@@ -582,30 +583,46 @@ export interface DataDocumentsService {
     requestBody: InputData,
     options?: OptionsWithRql & { gzip?: boolean; }
   ): Promise<Document<OutputData, CustomStatus>>;
+
   /**
-   * Request a list of documents
+   * # Request a list of documents
    *
-   * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
-   *
-   * Permission | Scope | Effect
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
    * - | - | -
-   * none | | See your own documents
-   * none | `staff enlistment` | See the documents belonging to the group (and your own documents)
-   * `VIEW_DOCUMENTS` | `global` | See any document
+   * `VIEW_DOCUMENTS` | `global` | View any document
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `global` | View any document of the specified schema
+   * `VIEW_DOCUMENTS` | `staff_enlistment` | View any document belonging to the group
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | View any document of the specified schema belonging to the group
+   * <br>
    *
-   * ReadMode on schema is set to 'allUsers':
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General readMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * `"allUsers"` | All users can view any document of the specified schema
+   * <br>
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | See any document
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational readMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can view the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can view the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can view the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can view the document.
+   * <br>
    *
-   * ReadMode on schema is set to 'enlistedInLinkedGroups':
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"enlistedInLinkedGroups"` | Translates to `["linkedGroupPatients","linkedGroupStaff"]` relational access mode
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | `patient enlistment` | See the documents belonging to the group
-   * none | `staff enlistment` | See the documents belonging to the group
-   * `VIEW_DOCUMENTS` | `global` | See any document
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @returns PagedResultWithPager<Document>
    */
@@ -613,32 +630,48 @@ export interface DataDocumentsService {
     schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): Promise<PagedResultWithPager<Document<CustomData, CustomStatus>>>;
+
   /**
-   * Request a list of all documents
+   * # Request a list of all documents
    *
    * Do not pass in an rql with limit operator!
    *
-   * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
-   *
-   * Permission | Scope | Effect
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
    * - | - | -
-   * none | | See your own documents
-   * none | `staff enlistment` | See the documents belonging to the group (and your own documents)
-   * `VIEW_DOCUMENTS` | `global` | See any document
+   * `VIEW_DOCUMENTS` | `global` | View any document
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `global` | View any document of the specified schema
+   * `VIEW_DOCUMENTS` | `staff_enlistment` | View any document belonging to the group
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | View any document of the specified schema belonging to the group
+   * <br>
    *
-   * ReadMode on schema is set to 'allUsers':
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General readMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * `"allUsers"` | All users can view any document of the specified schema
+   * <br>
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | See any document
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational readMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can view the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can view the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can view the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can view the document.
+   * <br>
    *
-   * ReadMode on schema is set to 'enlistedInLinkedGroups':
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"enlistedInLinkedGroups"` | Translates to `["linkedGroupPatients","linkedGroupStaff"]` relational access mode
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | `patient enlistment` | See the documents belonging to the group
-   * none | `staff enlistment` | See the documents belonging to the group
-   * `VIEW_DOCUMENTS` | `global` | See any document
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @returns Document[]
    */
@@ -646,30 +679,46 @@ export interface DataDocumentsService {
     schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): Promise<Document<CustomData, CustomStatus>[]>;
+
   /**
-   * Request a list of all documents and return a generator
+   * # Request a list of all documents and return a generator
    *
-   * ReadMode on schema is set to 'default' (or the property is not set at all on the schema):
-   *
-   * Permission | Scope | Effect
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
    * - | - | -
-   * none | | See your own documents
-   * none | `staff enlistment` | See the documents belonging to the group (and your own documents)
-   * `VIEW_DOCUMENTS` | `global` | See any document
+   * `VIEW_DOCUMENTS` | `global` | View any document
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `global` | View any document of the specified schema
+   * `VIEW_DOCUMENTS` | `staff_enlistment` | View any document belonging to the group
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | View any document of the specified schema belonging to the group
+   * <br>
    *
-   * ReadMode on schema is set to 'allUsers':
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General readMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * `"allUsers"` | All users can view any document of the specified schema
+   * <br>
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | | See any document
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational readMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can view the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can view the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can view the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can view the document.
+   * <br>
    *
-   * ReadMode on schema is set to 'enlistedInLinkedGroups':
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"enlistedInLinkedGroups"` | Translates to `["linkedGroupPatients","linkedGroupStaff"]` relational access mode
    *
-   * Permission | Scope | Effect
-   * - | - | -
-   * none | `patient enlistment` | See the documents belonging to the group
-   * none | `staff enlistment` | See the documents belonging to the group
-   * `VIEW_DOCUMENTS` | `global` | See any document
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @returns Document[]
    */
@@ -677,11 +726,46 @@ export interface DataDocumentsService {
     schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): FindAllIterator<Document<CustomData, CustomStatus>>;
+
   /**
-   * Shortcut method to find a document by id
+   * # Shortcut method to find a document by id
    *
-   * Same Permissions as the find() method
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
+   * - | - | -
+   * `VIEW_DOCUMENTS` | `global` | View any document
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `global` | View any document of the specified schema
+   * `VIEW_DOCUMENTS` | `staff_enlistment` | View any document belonging to the group
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | View any document of the specified schema belonging to the group
+   * <br>
+
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General readMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * `"allUsers"` | All users can view any document of the specified schema
+   * <br>
+
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational readMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can view the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can view the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can view the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can view the document.
+   * <br>
    *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"enlistedInLinkedGroups"` | Translates to `["linkedGroupPatients","linkedGroupStaff"]` relational access mode
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId the Id to search for
    * @returns {Document} document
@@ -691,10 +775,46 @@ export interface DataDocumentsService {
     documentId: ObjectId,
     options?: OptionsWithRql
   ): Promise<Document<CustomData, CustomStatus> | undefined>;
+
   /**
-   * Returns the first document that is found with the applied filter
+   * # Returns the first document that is found with the applied filter
    *
-   * Same Permissions as the find() method
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
+   * - | - | -
+   * `VIEW_DOCUMENTS` | `global` | View any document
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `global` | View any document of the specified schema
+   * `VIEW_DOCUMENTS` | `staff_enlistment` | View any document belonging to the group
+   * `VIEW_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | View any document of the specified schema belonging to the group
+   * <br>
+   *
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General readMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * `"allUsers"` | All users can view any document of the specified schema
+   * <br>
+   *
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational readMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can view the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can view the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can view the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can view the document.
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"enlistedInLinkedGroups"` | Translates to `["linkedGroupPatients","linkedGroupStaff"]` relational access mode
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @returns {Document} document
    */
@@ -702,6 +822,7 @@ export interface DataDocumentsService {
     schemaIdOrName: ObjectId | string,
     options?: OptionsWithRql
   ): Promise<Document<CustomData, CustomStatus> | undefined>;
+
   /**
    * Update a document
    *
