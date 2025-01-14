@@ -1113,15 +1113,18 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Link users to a document
+   * # Link users to a document
    *
    * Link the specified users to a document.
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Link users to all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Link users to all documents of the specified schema
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be added to the document.
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of userIds
@@ -1139,7 +1142,7 @@ export interface DataDocumentsService {
   /**
    * @deprecated Use `unlinkUsers(schemaIdOrName, documentId, userIds)` or `unlinkAllUsers(schemaIdOrName, documentId)` instead.
    *
-   * Unlink users from a document
+   * # Unlink users from a document
    *
    * Unlink the specified users from a document.
    *
@@ -1149,9 +1152,12 @@ export interface DataDocumentsService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Unlink users to all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Unlink users to all documents of the specified schema
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of userIds
@@ -1167,7 +1173,7 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Unlink users from a document
+   * # Unlink users from a document
    *
    * Unlink the specified users from a document.
    *
@@ -1175,9 +1181,17 @@ export interface DataDocumentsService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Unlink users to all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Unlink users to all documents of the specified schema
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
+   *
+   * # Interface
+   * @param schemaIdOrName The id or name of the targeted schema.
+   * @param documentId The id of the targeted document.
+   * @param userIds list of userIds
+   * @param requestBody list of userIds
+   * @returns AffectedRecords
    */
   unlinkUsers(
     schemaIdOrName: ObjectId | string,
@@ -1187,13 +1201,20 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Unlink all users from a document
+   * # Unlink all users from a document
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Unlink users to all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Unlink users to all documents of the specified schema
    *
    * Note: When GroupSyncMode.LINKED_USERS_PATIENT_ENLISTMENT is set for a document, all the groups where the specified user is enlisted as patient will also be removed from the document.
+   *
+   * # Interface
+   * @param schemaIdOrName The id or name of the targeted schema.
+   * @param documentId The id of the targeted document.
+   * @param requestBody list of userIds
+   * @returns AffectedRecords
    */
   unlinkAllUsers(
     schemaIdOrName: ObjectId | string,
