@@ -1045,13 +1045,16 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
-   * Link groups to a document
+   * # Link groups to a document
    *
    * Link the specified groups to a document.
    *
    * Permission | Scope | Effect
    * - | - | -
-   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | **Required** for this endpoint
+   * `UPDATE_ACCESS_TO_DOCUMENT` | `global` | Link groups to all documents
+   * `UPDATE_ACCESS_TO_DOCUMENT:{SCHEMA_NAME}` | `global` | Link groups to the documents of the specified schema
+   *
+   * # Interface
    * @param schemaIdOrName The id or name of the targeted schema.
    * @param documentId The id of the targeted document.
    * @param requestBody list of groupIds
