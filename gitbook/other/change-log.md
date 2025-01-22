@@ -9,6 +9,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.5.0]
+
+### Added
+- Data Service:
+  - Schema `createMode`, `readMode`, `updateMode` and `deleteMode` have been updated to accept multiple granular options, matching the revamped access mode changes in Data Service `1.4.0`
+  - Schema Transition Action `type: "task"` now supports the `priority` field
+  - Schema Transition `afterActions` now supports the `type: "task"` Action
+  - Access mode documentation has been revamped for the relevant `exh.data.documents.*` methods
+  - `exh.data.documents.transition` now accepts a `name` field the `requestBody`, allowing a Transition to be triggered by its `name`
+  - `exh.data.documents.unlinkAllUsers` and `unlinkAllGroups` methods added, to unlink all users or groups from a Document
+- `TRANSITION_DOCUMENTS` has been added as a supported permission
+
+### Changed
+- `exh.data.documents.unlinkUsers` and `unlinkGroups` now also accept an array of user or group ids directly
+  - Thanks to `tran-simon` for the pointing out the initially incorrect `unlinkUsers` type definition!
+- The RQL `contains` and `excludes` methods type definitions have been improved
+
+### Fixed
+- Data Service Schema Transition:
+  - Now correctly states `name` is optional and `id` is only a returned field.
+  - Action `type: "task"` now correctly types `functioName` as `functionName` 
+  - Action `type: "notifyAlgoQueueManager"` no longer claims it has an `id` and `version` field
+- `exh.templates.findFirst`, `findById` and `findByName` now correctly defines `undefined` as a return type
+
+### Deprecated
+- `exh.data.documents.unlinkUsers` usage with an object is deprecated in favor of an array of ids directly or `unlinkAllUsers` for unlinking all users
+- `exh.data.documents.unlinkGroups` usage with an object is deprecated in favor of an array of ids directly or `unlinkAllGroups` for unlinking all groups
+
 ## [8.4.1]
 
 ### Fixed
@@ -145,7 +173,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - The timestamps previously returned as strings are now converted to date objects in `exh.auth.authenticate`, `exh.auth.confirmMfa` and`exh.users.createAccount`.
   - Please consult the [Migration Guide](https://github.com/ExtraHorizon/javascript-sdk/blob/dev/MIGRATING_TO_V8.0.0.MD) for more information
 - New implementation of the hashing for oAuth1 signature generation
-  - This change is not expected to have any impact on the SDK usage
+    - This change is not expected to have any impact on the SDK usage
 
 ### Bug Fixes
 - In the `TokenDataOauth1` interface `updateTimeStamp` is changed to `updateTimestamp`
@@ -186,7 +214,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v7.5.1]
 
-### Added
+### Added 
 - Type support React Native form data
 
 ### Fixes
@@ -201,7 +229,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for File Service settings:
   - File Service [settings](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#settings) may now be managed using methods found in:
     - `exh.files.settings`
-
+    
 ## [v7.4.1]
 
 ### Fixes
@@ -220,7 +248,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [API Request Logs](https://docs.extrahorizon.com/extrahorizon/services/automation/task-service/api-functions#api-request-logs) produced during the execution of an API Function can be accessed using methods found in:
     - `exh.tasks.apiRequests.logs`
 
-
+  
 - A Function may now be directly executed as a task using the method:
   - `exh.tasks.functions.execute()`
 
@@ -232,7 +260,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `exh.tasks.logs`
 
 
-- Monitoring File Uploads
+- Monitoring File Uploads 
   - The SDK now supports [monitoring file uploads](https://docs.extrahorizon.com/extrahorizon/services/manage-data/file-service#monitoring-a-file-upload) in the browser using a callback function.
   ```js
   function uploadProgressCallback(event) {
@@ -353,7 +381,7 @@ const currentUser = await exh.users.me();
 
 ### Fixes
 - Running `yarn` on windows machines resulted in an error [issue #612](https://github.com/ExtraHorizon/javascript-sdk/issues/612)
-- Return type of `exh.auth.application.update` is now correctly typed as `AffectedRecords`
+- Return type of `exh.auth.application.update` is now correctly typed as `AffectedRecords` 
 
 ### Breaking changes
 
