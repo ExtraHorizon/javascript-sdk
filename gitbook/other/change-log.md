@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `exh.data.documents.transition` now accepts a `name` field the `requestBody`, allowing a Transition to be triggered by its `name`
   - `exh.data.documents.unlinkAllUsers` and `unlinkAllGroups` methods added, to unlink all users or groups from a Document
 - `TRANSITION_DOCUMENTS` has been added as a supported permission
+- `exh.events.create` now supports a `normalizeEventContent` option to disable normalization of event content
 
 ### Changed
 - `exh.data.documents.unlinkUsers` and `unlinkGroups` now also accept an array of user or group ids directly
