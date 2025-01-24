@@ -60,11 +60,48 @@ describe('Events Service', () => {
     expect(event.id).toBe(eventId);
   });
 
-  it('should create a new event', async () => {
-    nock(`${host}${EVENTS_BASE}`).post('/').reply(200, eventData);
+  describe('create()', () => {
+    it('Creates an event', async () => {
+      nock(`${host}${EVENTS_BASE}`).post('/').reply(200, eventData);
 
-    const event = await sdk.events.create(eventInput);
+      const event = await sdk.events.create(eventInput);
 
-    expect(event.id).toBe(eventData.id);
+      expect(event.id).toBe(eventData.id);
+    });
+
+    // WARNING: This is currently used by at least FibriCheck, we should not break it
+    it('Creates an event and allows to send camelCased content by setting "customRequestKeys"', async () => {
+      const data = {
+        type: 'MY_EVENT',
+        content: {
+          camelKey: 'value',
+        },
+      };
+
+      nock(`${host}${EVENTS_BASE}`)
+        .post('/', data)
+        .reply(200, eventData);
+
+      const event = await sdk.events.create(data, { customRequestKeys: ['content'] } as any);
+
+      expect(event.id).toBe(eventData.id);
+    });
+
+    it('Creates an event and allows to send camelCased content by disabling "normalizeEventContent"', async () => {
+      const data = {
+        type: 'MY_EVENT',
+        content: {
+          camelKey: 'value',
+        },
+      };
+
+      nock(`${host}${EVENTS_BASE}`)
+        .post('/', data)
+        .reply(200, eventData);
+
+      const event = await sdk.events.create(data, { normalizeEventContent: false });
+
+      expect(event.id).toBe(eventData.id);
+    });
   });
 });
