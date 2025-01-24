@@ -27,6 +27,6 @@ export default (client: HttpClient, httpAuth: HttpInstance): EventsService => ({
       requestOptions.customResponseKeys = ['content'];
     }
 
-    return (await client.post(httpAuth, '/', requestBody, options)).data;
+    return (await client.post(httpAuth, '/', requestBody, requestOptions)).data;
   },
 });
