@@ -71,7 +71,7 @@ export interface EventsService {
    * Creates an event
    *
    * **Note**: The `content` of the event will be normalized by default, i.e. all keys will be converted to snake_case.
-   * use `normalizeEventContent: false` to preserve camelCase keys.
+   * Use `normalizeEventContent: false` to preserve camelCase keys.
    *
    * Permission | Scope | Effect
    * - | - | -

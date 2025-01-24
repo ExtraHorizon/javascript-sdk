@@ -69,7 +69,7 @@ describe('Events Service', () => {
       expect(event.id).toBe(eventData.id);
     });
 
-    // WARNING: This is currently used by at least FibriCheck, we should not break it
+    // WARNING: This is currently used by at least FC, we should not break it
     it('Creates an event and allows to send camelCased content by setting "customRequestKeys"', async () => {
       const data = {
         type: 'MY_EVENT',
