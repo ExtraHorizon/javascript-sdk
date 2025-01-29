@@ -113,15 +113,18 @@ export interface RQLBuilder {
    * Allows combining results of 2 or more queries with the logical OR operator.
    */
   or: (...conditions: RQLString[]) => RQLBuilder;
+
   /**
-   * @description `contains(field)` only returns records having this field as property
+   * @description Only returns records having this field as property
    * @example
-   * await exh.data.documents.find(
-   *   schemaId,
-   *   { rql: rqlBuilder().contains('data.indicator').build()
+   * await exh.data.documents.find(schemaId, {
+   *   rql: rqlBuilder().contains('data.indicator').build()
    * });
    * @returns returns documents containing the `data.indicator` field
-   *
+   */
+  contains(field: string): RQLBuilder;
+
+  /**
    * @description Filters for objects where the specified property's value is an array and the array contains
    * any value that equals the provided value or satisfies the provided condition.
    * `contains(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is valid
@@ -132,34 +135,41 @@ export interface RQLBuilder {
    *         .contains(
    *              "data",
    *              rqlBuilder().gt("heartrate", "60").intermediate(),
-   *                rqlBuilder().lt("heartrate", "90").intermediate()
+   *              rqlBuilder().lt("heartrate", "90").intermediate()
    *          )
-   *          .build();
+   *          .build(),
    * });
    * @return Only returns documents with a data object containing `heartrate > 60` and `heartrate > 90`
    */
-  contains: (field: string, ...conditions: RQLString[]) => RQLBuilder;
+  contains(field: string, ...conditions: RQLString[]): RQLBuilder;
+
   /**
-   * @description `excludes(field)` only returns records not having this field as property
+   * @description Only returns records not having this field as property
    * @example
-   * await exh.data.documents.find(
-   *   schemaId,
-   *   { rql: rqlBuilder().excludes('data.indicator').build()
+   * await exh.data.documents.find(schemaId, {
+   *   rql: rqlBuilder().excludes('data.indicator').build()
    * });
    * @returns returns documents not containing the `data.indicator` field
-   *
+   */
+  excludes(field: string): RQLBuilder;
+
+  /**
    * @description Filters for objects where the specified property's value is an array and the array excludes
    * any value that equals the provided value or satisfies the provided condition.
    * `excludes(field, itemField > 30)` only returns records having a property `field` which have a prop `itemField` for which the condition is invalid
    * @example
    * await exh.data.documents.find(schemaId, {
    *   rql: rqlBuilder()
-   *     .excludes("data", rqlBuilder().gt("heartrate", "60").intermediate())
-   *     .build(),
+   *         .excludes(
+   *              "data",
+   *              rqlBuilder().gt("heartrate", "60").intermediate(),
+   *              rqlBuilder().lt("heartrate", "90").intermediate()
+   *          )
+   *          .build(),
    * });
-   * @return Only returns documents excluding documents where `data.heartrate > 60`
+   * @return Only returns documents excluding documents where `heartrate > 60` and `heartrate > 90`
    */
-  excludes: (field: string, ...conditions: RQLString[]) => RQLBuilder;
+  excludes(field: string, ...conditions: RQLString[]): RQLBuilder;
 
   /**
    * @description skipCount() Skips the record counting step of a request to increase performance.

@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.5.0]
+
+### Added
+- Data Service:
+  - Schema `createMode`, `readMode`, `updateMode` and `deleteMode` have been updated to accept multiple granular options, matching the revamped access mode changes in Data Service `1.4.0`
+  - Schema Transition Action `type: "task"` now supports the `priority` field
+  - Schema Transition `afterActions` now supports the `type: "task"` Action
+  - Access mode documentation has been revamped for the relevant `exh.data.documents.*` methods
+  - `exh.data.documents.transition` now accepts a `name` field the `requestBody`, allowing a Transition to be triggered by its `name`
+  - `exh.data.documents.unlinkAllUsers` and `unlinkAllGroups` methods added, to unlink all users or groups from a Document
+- `TRANSITION_DOCUMENTS` has been added as a supported permission
+- `exh.events.create` now supports a `normalizeEventContent` option to disable normalization of event content
+
+### Changed
+- `exh.data.documents.unlinkUsers` and `unlinkGroups` now also accept an array of user or group ids directly
+  - Thanks to `tran-simon` for the pointing out the initially incorrect `unlinkUsers` type definition!
+- The RQL `contains` and `excludes` methods type definitions have been improved
+
+### Fixed
+- Data Service Schema Transition:
+  - Now correctly states `name` is optional and `id` is only a returned field.
+  - Action `type: "task"` now correctly types `functioName` as `functionName` 
+  - Action `type: "notifyAlgoQueueManager"` no longer claims it has an `id` and `version` field
+- `exh.templates.findFirst`, `findById` and `findByName` now correctly defines `undefined` as a return type
+
+### Deprecated
+- `exh.data.documents.unlinkUsers` usage with an object is deprecated in favor of an array of ids directly or `unlinkAllUsers` for unlinking all users
+- `exh.data.documents.unlinkGroups` usage with an object is deprecated in favor of an array of ids directly or `unlinkAllGroups` for unlinking all groups
+
 ## [8.4.1]
 
 ### Fixed

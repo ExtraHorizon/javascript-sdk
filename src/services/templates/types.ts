@@ -106,23 +106,20 @@ export interface TemplatesService {
   /**
    * Find By Id
    * @param id the Id to search for
-   * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateOut>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateOut | undefined>;
   /**
    * Find By Name
    * @param name the name to search for
-   * @param rql an optional rql string
    * @returns the first element found
    */
-  findByName(name: string, options?: OptionsWithRql): Promise<TemplateOut>;
+  findByName(name: string, options?: OptionsWithRql): Promise<TemplateOut | undefined>;
   /**
    * Find First
-   * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<TemplateOut>;
+  findFirst(options?: OptionsWithRql): Promise<TemplateOut | undefined>;
   /**
    * Create a new template
    *

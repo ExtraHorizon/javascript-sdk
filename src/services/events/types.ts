@@ -33,6 +33,13 @@ export interface Version {
   patch: number;
 }
 
+export interface CreateEventOptions extends OptionsBase {
+  /**
+   * If set to `false`, the `content` of the event will not be normalized, i.e. camelCase keys will be preserved.
+   */
+  normalizeEventContent?: boolean;
+}
+
 export interface EventsService {
   /**
    * Returns a list of events
@@ -44,6 +51,7 @@ export interface EventsService {
    * @returns PagedResult<Event>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Event>>;
+
   /**
    * Find By Id
    * @param id the Id to search for
@@ -51,14 +59,19 @@ export interface EventsService {
    * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Event>;
+
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Event>;
+
   /**
    * Creates an event
+   *
+   * **Note**: The `content` of the event will be normalized by default, i.e. all keys will be converted to snake_case.
+   * Use `normalizeEventContent: false` to preserve camelCase keys.
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -66,7 +79,7 @@ export interface EventsService {
    * @param requestBody
    * @returns Event
    */
-  create(requestBody: CreateEvent, options?: OptionsBase): Promise<Event>;
+  create(requestBody: CreateEvent, options?: CreateEventOptions): Promise<Event>;
 }
 
 export interface SubscriptionsService {
@@ -80,6 +93,7 @@ export interface SubscriptionsService {
    * @returns PagedResult<Subscription>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Subscription>>;
+
   /**
    * Find By Id
    * @param id the Id to search for
@@ -87,6 +101,7 @@ export interface SubscriptionsService {
    * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Subscription>;
+
   /**
    * Find First
    * @param rql an optional rql string
