@@ -24,7 +24,7 @@ yarn add @extrahorizon/javascript-sdk
 
 ### Quick start
 
-Please see [authentication examples](v7/setup/broken-reference/) for more options.
+Please see [authentication examples](features/authentication.md) for more options.
 
 ```ts
 import { createOAuth2Client } from "@extrahorizon/javascript-sdk";
