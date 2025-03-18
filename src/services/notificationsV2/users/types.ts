@@ -1,4 +1,4 @@
-import { ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../../types';
+import { AffectedRecords, ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../../types';
 
 export interface NotificationV2UserUpsert {
   fcmToken: string;
@@ -25,9 +25,9 @@ export interface NotificationV2UserService {
    * # Interface
    * @param requestBody
    * @param options
-   * @returns NotificationV2User
+   * @returns AffectedRecords
    */
-  update(userId: ObjectId, requestBody: NotificationV2UserUpsert, options?: OptionsBase): Promise<NotificationV2User>;
+  update(userId: ObjectId, requestBody: NotificationV2UserUpsert, options?: OptionsBase): Promise<AffectedRecords>;
 
   /**
   * # Request a list of user notification settings
