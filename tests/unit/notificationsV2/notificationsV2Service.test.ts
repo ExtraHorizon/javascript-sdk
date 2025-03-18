@@ -1,8 +1,8 @@
 import nock from 'nock';
 import { createClient, rqlBuilder } from '../../../src';
 import { NOTIFICATIONS_V2_BASE } from '../../../src/constants';
-import { notificationV2Data } from '../../__helpers__/notificationV2';
-import { createPagedResponse } from '../../__helpers__/utils';
+import { notificationV2CreationData, notificationV2Data } from '../../__helpers__/notificationV2';
+import { createPagedResponse, randomHexString } from '../../__helpers__/utils';
 
 describe('NotificationsV2 Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -14,6 +14,18 @@ describe('NotificationsV2 Service', () => {
   const notifications = Array(250)
     .fill(null)
     .map(_ => notificationV2Data());
+
+  it('Creates a notification', async () => {
+    const notificationId = randomHexString();
+    const notification = notificationV2CreationData();
+
+    nock(`${host}${NOTIFICATIONS_V2_BASE}`)
+      .post('/')
+      .reply(200, { id: notificationId, ...notification });
+
+    const response = await sdk.notificationsV2.create(notification);
+    expect(response.id).toBe(notificationId);
+  });
 
   it('Finds notifications', async () => {
     nock(`${host}${NOTIFICATIONS_V2_BASE}`)
