@@ -70,7 +70,7 @@ export interface NotificationV2Service {
    * `VIEW_NOTIFICATIONS` | `global` | View all notifications
    *
    * # Interface
-   * @param targetUserId the Id to search for
+   * @param targetUserId the user id to search for
    * @returns PagedResultWithPager<NotificationV2<T>>
    */
   findByTargetUserId<T extends Record<string, string>>
