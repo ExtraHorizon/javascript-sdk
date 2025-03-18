@@ -20,11 +20,11 @@ describe('NotificationsV2 Users Service', () => {
     const data = notificationV2UserUpdateData();
 
     nock(`${host}${NOTIFICATIONS_V2_BASE}`)
-      .put(`/users/${userId}`)
-      .reply(200, { id: userId, ...data });
+      .put(`/users/${userId}`, { ...data })
+      .reply(200, { affectedRecords: 1 });
 
     const response = await sdk.notificationsV2.users.update(userId, data);
-    expect(response.id).toBe(userId);
+    expect(response).toStrictEqual({ affectedRecords: 1 });
   });
 
   it('Finds users', async () => {
