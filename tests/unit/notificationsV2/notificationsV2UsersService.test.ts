@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { createClient, rqlBuilder } from '../../../src';
 import { NOTIFICATIONS_V2_BASE } from '../../../src/constants';
-import { notificationV2UserCreationData, notificationV2UserData } from '../../__helpers__/notificationV2';
+import { notificationV2UserUpdateData, notificationV2UserData } from '../../__helpers__/notificationV2';
 import { createPagedResponse, randomHexString } from '../../__helpers__/utils';
 
 describe('NotificationsV2 Users Service', () => {
@@ -15,15 +15,15 @@ describe('NotificationsV2 Users Service', () => {
     .fill(null)
     .map(_ => notificationV2UserData());
 
-  it('Creates a user', async () => {
+  it('Updates a user', async () => {
     const userId = randomHexString();
-    const userCreationData = notificationV2UserCreationData();
+    const data = notificationV2UserUpdateData();
 
     nock(`${host}${NOTIFICATIONS_V2_BASE}`)
       .put(`/users/${userId}`)
-      .reply(200, { id: userId, ...userCreationData });
+      .reply(200, { id: userId, ...data });
 
-    const response = await sdk.notificationsV2.users.create(userId, userCreationData);
+    const response = await sdk.notificationsV2.users.update(userId, data);
     expect(response.id).toBe(userId);
   });
 
@@ -81,7 +81,7 @@ describe('NotificationsV2 Users Service', () => {
       .reply(200, createPagedResponse(users.filter(user => user.id === id)));
 
     const response = await sdk.notificationsV2.users.findByUserId(id);
-    expect(response.id).toBe(id);
+    expect(response?.id).toBe(id);
   });
 
   it('Finds the first user', async () => {
@@ -90,6 +90,6 @@ describe('NotificationsV2 Users Service', () => {
       .reply(200, createPagedResponse(users));
 
     const response = await sdk.notificationsV2.users.findFirst();
-    expect(response.id).toBe(users[0].id);
+    expect(response?.id).toBe(users[0].id);
   });
 });

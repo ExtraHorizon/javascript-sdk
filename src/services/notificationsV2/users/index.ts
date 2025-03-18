@@ -12,7 +12,7 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
   }
 
   return {
-    async create(userId, requestBody, options) {
+    async update(userId, requestBody, options) {
       const result = await client.put(httpWithAuth, `/users/${userId}`, requestBody, options);
       return result.data;
     },

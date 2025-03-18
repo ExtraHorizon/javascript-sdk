@@ -12,9 +12,9 @@ export interface NotificationV2User extends NotificationV2UserUpsert {
 
 export interface NotificationV2UserService {
   /**
-   * # Upsert a users notification settings
+   * # Update a user its notification settings
    *
-   * Creates a user settings object if non exists for the specified user id.
+   * Updates (or creates if non exists) a user its settings for the specified user id.
    *
    * ## Access via permissions
    * Permission | Scopes | Effect
@@ -27,7 +27,7 @@ export interface NotificationV2UserService {
    * @param options
    * @returns NotificationV2User
    */
-  create(userId: ObjectId, requestBody: NotificationV2UserUpsert, options?: OptionsBase): Promise<NotificationV2User>;
+  update(userId: ObjectId, requestBody: NotificationV2UserUpsert, options?: OptionsBase): Promise<NotificationV2User>;
 
   /**
   * # Request a list of user notification settings
