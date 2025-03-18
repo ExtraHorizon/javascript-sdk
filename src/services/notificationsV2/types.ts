@@ -1,18 +1,38 @@
 import { ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../types';
 
-export interface NotificationV2<T extends Record<string, string> = Record<string, string>> {
-  id: ObjectId;
-  creatorId: ObjectId;
-  targetUserId: ObjectId;
+export interface NotificationV2Creation<T extends Record<string, string> = Record<string, string>> {
+  targetUserId: string;
   title: string;
   body: string;
   data?: T;
+}
+
+export interface NotificationV2<T extends Record<string, string> = Record<string, string>> extends NotificationV2Creation<T> {
+  id: ObjectId;
+  creatorId: ObjectId;
   sent: boolean;
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
 
 export interface NotificationV2Service {
+  /**
+   * # Create a notification
+   *
+   * ## Access via permissions
+   * Permission | Scopes | Effect
+   * - | - | -
+   * `CREATE_NOTIFICATIONS` | `global` | Create notifications for any user
+   * `CREATE_NOTIFICATIONS` | `group` | Create notifications for any patient in group
+   * none | | Create notifications for yourself
+   *
+   * # Interface
+   * @param requestBody
+   * @param options
+   * @returns NotificationV2<T>
+   */
+  create<T extends Record<string, string>>(requestBody: NotificationV2Creation<T>, options?: OptionsBase): Promise<NotificationV2<T>>;
+
   /**
    * # Request a list of notifications
    *

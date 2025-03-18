@@ -6,12 +6,33 @@ import { NotificationV2, NotificationV2Service } from './types';
 
 export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV2Service => {
   async function find(options) {
-    const result = await client.get(httpWithAuth, `/${options?.rql || ''}`, options);
+    const result = await client.get(
+      httpWithAuth,
+      `/${options?.rql || ''}`,
+      {
+        ...options,
+        customResponseKeys: ['data.data'],
+      }
+    );
 
     return result.data;
   }
 
   return {
+    async create(requestBody, options) {
+      const result = await client.post(
+        httpWithAuth,
+        '/',
+        requestBody,
+        {
+          ...options,
+          customKeys: ['data'],
+        }
+      );
+
+      return result.data;
+    },
+
     async find<T extends Record<string, string>>(options) {
       const result = await find(options);
       return addPagersFn<NotificationV2<T>>(find, options, result);
