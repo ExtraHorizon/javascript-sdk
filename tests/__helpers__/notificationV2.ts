@@ -2,7 +2,7 @@ import { NotificationV2, NotificationV2Creation } from '../../src/services/notif
 import { NotificationV2User, NotificationV2UserUpsert } from '../../src/services/notificationsV2/users/types';
 import { randomHexString } from './utils';
 
-export const notificationV2UserCreationData = (overrides?: NotificationV2UserUpsert): NotificationV2UserUpsert => ({
+export const notificationV2UserUpdateData = (overrides?: NotificationV2UserUpsert): NotificationV2UserUpsert => ({
   fcmToken: randomHexString(),
   ...overrides,
 });
