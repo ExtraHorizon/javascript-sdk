@@ -7,6 +7,21 @@ export interface NotificationV2Creation<T extends Record<string, string> = Recor
   title: string;
   body: string;
   data?: T;
+
+  /**
+   * See https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
+   */
+  android?: any;
+
+  /**
+   * See https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#ApnsConfig
+   */
+  apns?: any;
+
+  /**
+   * See https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#WebpushConfig
+   */
+  webpush?: any;
 }
 
 export interface NotificationV2<T extends Record<string, string> = Record<string, string>> extends NotificationV2Creation<T> {
