@@ -981,6 +981,245 @@ export interface DataDocumentsService {
   ): Promise<AffectedRecords>;
 
   /**
+   * # Append an object to an array
+   *
+   * Append an object to an array field in the selected document.
+   *
+   * When the object is appended to the array, the object will automatically be assigned a unique `id`.
+   *
+   * ## Example
+   *
+   * For a schema with the name `daily-summary`, a document looking like:
+   *
+   * ```json
+   * {
+   *   "id": "5f7b1b3b1f7b4b0001f7b4b2",
+   *   "data": {
+   *    "userId": "67e66ef64f0ea8488aba8f2f",
+   *    "date": "2025-03-28",
+   *    "hourlySummaries": [
+   *      { "id": "6568d05351c0f5307421e196", "avg": 5, "max": 10, "min": 2 },
+   *      { "id": "67e66793ae59de5bba4b262f", "avg": 7, "max": 15, "min": 3 }
+   *    ]
+   *   }
+   * }
+   * ```
+   *
+   * Appending an item to the `hourlySummaries`, looking like:
+   *
+   * ```json
+   * {
+   *   "avg": 10,
+   *   "max": 20,
+   *   "min": 5
+   * }
+   * ```
+   *
+   * Would be done like:
+   *
+   * ```ts
+   * const documentId = '5f7b1b3b1f7b4b0001f7b4b2';
+   * const hourlySummary = { avg: 10, max: 20, min: 5 };
+   * await exh.data.documents.appendObjectToArray('daily-summary', documentId, 'hourlySummaries', hourlySummary);
+   * ```
+   *
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
+   * - | - | -
+   * `UPDATE_DOCUMENTS` | `global` | Update any document
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `global` | Update any document of the specified schema
+   * `UPDATE_DOCUMENTS` | `staff_enlistment` | Update any document belonging to the group
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | Update any document of the specified schema belonging to the group
+   * <br>
+   *
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General updateMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * <br>
+   *
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational updateMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can update the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can update the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can update the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can update the document.
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"creatorOnly"` | Translates to `["creator"]` relational access mode
+   * `"disabled"` | Translates to the `"permissionRequired"` general access mode value
+   * `"linkedGroupsStaffOnly"` | Translates to `["linkedGroupStaff"]` relational access mode
+   */
+  appendObjectToArray<UpdateData = Record<string, any>>(
+    schemaIdOrName: ObjectId | string,
+    documentId: ObjectId,
+    arrayField: string,
+    requestBody: UpdateData,
+    options?: OptionsBase,
+  ): Promise<UpdateData & { id: ObjectId; }>;
+
+  /**
+   * # Update an object in an array
+   *
+   * Update an object in an array field in the selected document.
+   *
+   * ## Example
+   *
+   * For a schema with the name `daily-summary`, a document looking like:
+   *
+   * ```json
+   * {
+   *   "id": "5f7b1b3b1f7b4b0001f7b4b2",
+   *   "data": {
+   *     "userId": "67e66ef64f0ea8488aba8f2f",
+   *     "date": "2025-03-28",
+   *     "hourlySummaries": [
+   *       { "id": "6568d05351c0f5307421e196", "avg": 5, "max": 10, "min": 2 },
+   *       { "id": "67e66793ae59de5bba4b262f", "avg": 7, "max": 15, "min": 3 }
+   *     ]
+   *   }
+   * }
+   * ```
+   *
+   * Updating the object with the id `67e66793ae59de5bba4b262f` in the `hourlySummaries` array would be done like:
+   *
+   * ```ts
+   * const documentId = '5f7b1b3b1f7b4b0001f7b4b2';
+   * const objectId = '67e66793ae59de5bba4b262f';
+   * const updateData = { avg: 8, max: 16, min: 4 };
+   * await exh.data.documents.updateObjectInArray('daily-summary', documentId, 'hourlySummaries', objectId, updateData);
+   * ```
+   *
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
+   * - | - | -
+   * `UPDATE_DOCUMENTS` | `global` | Update any document
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `global` | Update any document of the specified schema
+   * `UPDATE_DOCUMENTS` | `staff_enlistment` | Update any document belonging to the group
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | Update any document of the specified schema belonging to the group
+   * <br>
+   *
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General updateMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * <br>
+   *
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational updateMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can update the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can update the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can update the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can update the document.
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"creatorOnly"` | Translates to `["creator"]` relational access mode
+   * `"disabled"` | Translates to the `"permissionRequired"` general access mode value
+   * `"linkedGroupsStaffOnly"` | Translates to `["linkedGroupStaff"]` relational access mode
+   */
+  updateObjectInArray<UpdateData = Record<string, any>>(
+    schemaIdOrName: ObjectId | string,
+    documentId: ObjectId,
+    arrayField: string,
+    objectId: ObjectId,
+    requestBody: UpdateData,
+    options?: OptionsBase,
+  ): Promise<AffectedRecords>;
+
+  /**
+   * # Remove an object from an array
+   *
+   * Remove an object from an array field in the selected document.
+   *
+   * ## Example
+   *
+   * For a schema with the name `daily-summary`, a document looking like:
+   *
+   * ```json
+   * {
+   *   "id": "5f7b1b3b1f7b4b0001f7b4b2",
+   *   "data": {
+   *     "userId": "67e66ef64f0ea8488aba8f2f",
+   *     "date": "2025-03-28",
+   *     "hourlySummaries": [
+   *       { "id": "6568d05351c0f5307421e196", "avg": 5, "max": 10, "min": 2 },
+   *       { "id": "67e66793ae59de5bba4b262f", "avg": 7, "max": 15, "min": 3 }
+   *     ]
+   *   }
+   * }
+   * ```
+   *
+   * Removing the object with the id `67e66793ae59de5bba4b262f` from the `hourlySummaries` array would be done like:
+   *
+   * ```ts
+   * const documentId = '5f7b1b3b1f7b4b0001f7b4b2';
+   * const objectId = '67e66793ae59de5bba4b262f';
+   * await exh.data.documents.removeObjectFromArray('daily-summary', documentId, 'hourlySummaries', objectId);
+   * ```
+   *
+   * ## Access via permissions
+   * Regardless of how the access modes (described below) are set, a user is always able to perform an operation on a document if they are assigned a specific permission.  This permission can come from a global role of the user or a staff enlistment role the user has in the group of the document.
+   * Permission | Scopes | Effect
+   * - | - | -
+   * `UPDATE_DOCUMENTS` | `global` | Update any document
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `global` | Update any document of the specified schema
+   * `UPDATE_DOCUMENTS` | `staff_enlistment` | Update any document belonging to the group
+   * `UPDATE_DOCUMENTS:{SCHEMA_NAME}` | `staff_enlistment` | Update any document of the specified schema belonging to the group
+   * <br>
+   *
+   * ## General access mode values
+   * The general access mode values determine if a user requires permission to perform the action for the Schema. A general access mode value is provided as one of the following strings.
+   * General updateMode value | Description
+   * - | -
+   * `"permissionRequired"` | The permissions above apply
+   * <br>
+   *
+   * ## Relational access mode values
+   * Relational access mode values are supplied as an array. When multiple relational access mode values are supplied, a user adhering to any relation in this array is allowed to perform the action on the document.
+   * Relational updateMode value | Description
+   * - | -
+   * `["creator"]` | The user that created the document can update the document.
+   * `["linkedUsers"]` |  All users where their user id is in the list of userIds of the document can update the document.
+   * `["linkedGroupPatients"]` | All users that have a patient enlistment in a group that is in the list of groupIds of the document can update the document.
+   * `["linkedGroupStaff"]` | All users that have a staff enlistment in a group that is in the list of groupIds of the document can update the document.
+   * <br>
+   *
+   * ## Legacy access mode values
+   * Listed below are the deprecated values with their current equivalent
+   * Legacy updateMode value | Description
+   * - | -
+   * `"default"` | Translates to `["linkedUsers","linkedGroupStaff"]` relational access mode
+   * `"creatorOnly"` | Translates to `["creator"]` relational access mode
+   * `"disabled"` | Translates to the `"permissionRequired"` general access mode value
+   * `"linkedGroupsStaffOnly"` | Translates to `["linkedGroupStaff"]` relational access mode
+   */
+  removeObjectFromArray(
+    schemaIdOrName: ObjectId | string,
+    documentId: ObjectId,
+    arrayField: string,
+    objectId: ObjectId,
+    options?: OptionsBase,
+  ): Promise<AffectedRecords>;
+
+  /**
    * # Transition a document
    *
    * Start a transition manually for the selected document where the conditions of a manual transition are met.
