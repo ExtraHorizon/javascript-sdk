@@ -52,6 +52,22 @@ describe('App Store Service', () => {
     expect(res.status).toBeDefined();
   });
 
+  it('Completes a transaction for a user and application', async () => {
+    nock(`${host}${PAYMENTS_BASE}`)
+      .post('/appStore/completeTransaction')
+      .reply(200, appleReceipt);
+
+    const response = await sdk.payments.appStore.completeTransaction({
+      receiptData:
+        'ITqTCCE6UCAQExCzAJBgUrDgMCGgUAMIIDWQYJKoZIhvcNAQcBoIIDSgSCA0YxggNCM...',
+      transactionId: '1000000472106082',
+      userId: '682c8995fdc6f490c2fe17fd',
+      applicationId: '682c899a607f05f75053805f',
+    });
+
+    expect(response.status).toBeDefined();
+  });
+
   it('should verify the receipt of a transaction', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/appStore/verifyReceipt')

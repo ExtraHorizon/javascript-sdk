@@ -210,6 +210,14 @@ export interface TransactionCompletionDataSchema {
    * The id of the transition inside the receipt to complete
    */
   transactionId: string;
+  /**
+   * The id of the user to complete the transaction for (requires the `ASSUME_PAYMENT_ENTITY` permission)
+   */
+  userId?: ObjectId;
+  /**
+   * The id of the application to complete the transaction for (requires the `ASSUME_PAYMENT_ENTITY` permission)
+   */
+  applicationId?: ObjectId;
 }
 
 // The data can be found here: https://developer.apple.com/documentation/appstorereceipts/responsebody
@@ -402,6 +410,7 @@ export interface PaymentsAppStoreService {
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
+   * `ASSUME_PAYMENT_ENTITY` | `global` | Complete a transaction for another application or user
    * @param requestBody TransactionCompletionDataSchema
    * @returns AppleReceiptExampleSchema
    * A detailed description of the data can be found in the [official App Store documentation](https://developer.apple.com/documentation/appstorereceipts/responsebody).

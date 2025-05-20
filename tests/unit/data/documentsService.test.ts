@@ -125,6 +125,96 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
+  describe('appendObjectToArray', () => {
+    it('Appends an object to an array field in a document', async () => {
+      const data = {
+        avg: 10,
+        max: 20,
+        min: 5,
+      };
+
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/hourlySummaries/`, data)
+        .reply(200, { ...data, id: '5e9fff9d90135a2a9a718e2f' });
+
+      const response = await sdk.data.documents.appendObjectToArray(
+        schemaId,
+        documentId,
+        'hourlySummaries',
+        data
+      );
+
+      expect(response).toStrictEqual({
+        ...data,
+        id: '5e9fff9d90135a2a9a718e2f',
+      });
+    });
+
+    it('Does not try to normalize the response', async () => {
+      const data = { creationTimestamp: 1234567890 };
+
+      nock(`${host}${DATA_BASE}`)
+        .post(`/${schemaId}/documents/${documentId}/hourlySummaries/`, data)
+        .reply(200, { ...data, id: '5e9fff9d90135a2a9a718e2f' });
+
+      const response = await sdk.data.documents.appendObjectToArray(
+        schemaId,
+        documentId,
+        'hourlySummaries',
+        data
+      );
+
+      expect(response).toStrictEqual({
+        id: '5e9fff9d90135a2a9a718e2f',
+        ...data,
+      });
+    });
+  });
+
+  describe('updateObjectInArray', () => {
+    it('Updates an object in an array field in a document', async () => {
+      const objectId = '5e9fff9d90135a2a9a718e2f';
+      const data = {
+        avg: 15,
+        max: 25,
+        min: 10,
+      };
+
+      nock(`${host}${DATA_BASE}`)
+        .put(`/${schemaId}/documents/${documentId}/hourlySummaries/${objectId}`, data)
+        .reply(200, { affectedRecords: 1 });
+
+      const response = await sdk.data.documents.updateObjectInArray(
+        schemaId,
+        documentId,
+        'hourlySummaries',
+        objectId,
+        data
+      );
+
+      expect(response).toStrictEqual({ affectedRecords: 1 });
+    });
+  });
+
+  describe('removeObjectFromArray', () => {
+    it('Removes an object in an array field in a document', async () => {
+      const objectId = '5e9fff9d90135a2a9a718e2f';
+
+      nock(`${host}${DATA_BASE}`)
+        .delete(`/${schemaId}/documents/${documentId}/hourlySummaries/${objectId}`)
+        .reply(200, { affectedRecords: 1 });
+
+      const response = await sdk.data.documents.removeObjectFromArray(
+        schemaId,
+        documentId,
+        'hourlySummaries',
+        objectId
+      );
+
+      expect(response).toStrictEqual({ affectedRecords: 1 });
+    });
+  });
+
   describe('transition', () => {
     it('Transitions a document by id', async () => {
       const body = {
