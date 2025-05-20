@@ -126,6 +126,44 @@ export default (
       ).data;
     },
 
+    async appendObjectToArray(schemaIdOrName, documentId, arrayField, requestBody, options) {
+      return (
+        await client.post(
+          httpAuth,
+          `/${schemaIdOrName}/documents/${documentId}/${arrayField}/`,
+          requestBody,
+          {
+            ...options,
+            customKeys: ['*'],
+          }
+        )
+      ).data;
+    },
+
+    async updateObjectInArray(schemaIdOrName, documentId, arrayField, objectId, requestBody, options) {
+      return (
+        await client.put(
+          httpAuth,
+          `/${schemaIdOrName}/documents/${documentId}/${arrayField}/${objectId}`,
+          requestBody,
+          {
+            ...options,
+            customRequestKeys: ['*'],
+          }
+        )
+      ).data;
+    },
+
+    async removeObjectFromArray(schemaIdOrName, documentId, arrayField, objectId, options) {
+      return (
+        await client.delete(
+          httpAuth,
+          `/${schemaIdOrName}/documents/${documentId}/${arrayField}/${objectId}`,
+          options
+        )
+      ).data;
+    },
+
     async transition(schemaIdOrName, documentId, requestBody, options) {
       return (
         await client.post(

@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.6.0]
 
+### Added
+- Introduced methods to manage objects in arrays in the Data Service
+  - `exh.data.documents.appendObjectToArray`
+  - `exh.data.documents.updateObjectInArray`
+  - `exh.data.documents.removeObjectFromArray`
+
 ### Fixed
 - Bumped Axios version to `0.30` to fix vulnerability `CVE-2025-27152`
 
