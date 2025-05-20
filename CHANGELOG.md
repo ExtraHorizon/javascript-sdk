@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `exh.data.documents.removeObjectFromArray`
 
 ### Fixed
+- Added missing properties `userId` and `applicationId` for the method `sdk.payments.appStore.completeTransaction`
 - Bumped Axios version to `0.30` to fix vulnerability `CVE-2025-27152`
 
 ## [8.5.0]
