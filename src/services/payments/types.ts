@@ -211,11 +211,11 @@ export interface TransactionCompletionDataSchema {
    */
   transactionId: string;
   /**
-   * The id of the user to complete the transaction for requires the `ASSUME_PAYMENT_ENTITY` permission
+   * The id of the user to complete the transaction for (requires the `ASSUME_PAYMENT_ENTITY` permission)
    */
   userId?: ObjectId;
   /**
-   * The id of the application to complete the transaction for requires the `ASSUME_PAYMENT_ENTITY` permission
+   * The id of the application to complete the transaction for (requires the `ASSUME_PAYMENT_ENTITY` permission)
    */
   applicationId?: ObjectId;
 }
