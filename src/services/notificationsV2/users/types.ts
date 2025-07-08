@@ -136,22 +136,6 @@ export interface NotificationV2UserService {
   findAll(options?: OptionsWithRql): Promise<NotificationV2User[]>;
 
   /**
-  * # Request notification settings for a specific user
-  *
-  * This will only return a user notification settings object if the user has notification settings set up.
-  *
-  * ## Access via permissions
-  * Permission | Scopes | Effect
-  * - | - | -
-  * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notifications
-  *
-  * ## Interface
-  * @param userId the user id to search for
-  * @returns NotificationV2User | undefined
-  */
-  findByUserId(userId: ObjectId, options?: OptionsWithRql): Promise<NotificationV2User | undefined>;
-
-  /**
    * # Request the first user notification settings
    *
    * ## Access via permissions

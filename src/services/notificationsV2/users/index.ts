@@ -1,4 +1,3 @@
-import { rqlBuilder } from '../../../rql';
 import { AuthHttpClient } from '../../../types';
 import { addPagersFn, findAllGeneric } from '../../helpers';
 import { HttpClient } from '../../http-client';
@@ -44,13 +43,6 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
 
     async findAll(options) {
       return findAllGeneric<NotificationV2User>(find, options);
-    },
-
-    async findByUserId(userId, options) {
-      const rqlWithUserId = rqlBuilder(options?.rql).eq('id', userId).build();
-
-      const result = await find({ ...options, rql: rqlWithUserId });
-      return result.data[0];
     },
 
     async findFirst(options) {

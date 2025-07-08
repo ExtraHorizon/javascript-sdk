@@ -73,17 +73,6 @@ describe('NotificationsV2 Users Service', () => {
     expect(response).toHaveLength(100);
   });
 
-  it('Finds a user by id', async () => {
-    const { id } = users[100];
-
-    nock(`${host}${NOTIFICATIONS_V2_BASE}`)
-      .get(`/users/?eq(id,${id})`)
-      .reply(200, createPagedResponse(users.filter(user => user.id === id)));
-
-    const response = await sdk.notificationsV2.users.findByUserId(id);
-    expect(response?.id).toBe(id);
-  });
-
   it('Finds the first user', async () => {
     nock(`${host}${NOTIFICATIONS_V2_BASE}`)
       .get('/users/')
