@@ -1,11 +1,13 @@
 import { AffectedRecords, ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../../types';
 
 export interface NotificationV2UserUpsert {
+  /** @deprecated We recommend using `devices` instead */
   fcmToken: string;
 }
 
 export interface NotificationV2User extends NotificationV2UserUpsert {
   id: ObjectId;
+  devices?: NotificationV2UserDevice[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
