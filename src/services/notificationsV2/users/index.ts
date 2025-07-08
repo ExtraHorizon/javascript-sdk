@@ -1,4 +1,3 @@
-import { rqlBuilder } from '../../../rql';
 import { AuthHttpClient } from '../../../types';
 import { addPagersFn, findAllGeneric } from '../../helpers';
 import { HttpClient } from '../../http-client';
@@ -12,8 +11,28 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
   }
 
   return {
+    async getById(userId, options) {
+      const result = await client.get(httpWithAuth, `/users/${userId}`, options);
+      return result.data;
+    },
+
     async update(userId, requestBody, options) {
       const result = await client.put(httpWithAuth, `/users/${userId}`, requestBody, options);
+      return result.data;
+    },
+
+    async remove(userId, options) {
+      const result = await client.delete(httpWithAuth, `/users/${userId}`, options);
+      return result.data;
+    },
+
+    async addOrUpdateDevice(userId, deviceName, requestBody, options) {
+      const result = await client.put(httpWithAuth, `/users/${userId}/devices/${deviceName}`, requestBody, options);
+      return result.data;
+    },
+
+    async removeDevice(userId, deviceName, options) {
+      const result = await client.delete(httpWithAuth, `/users/${userId}/devices/${deviceName}`, options);
       return result.data;
     },
 
@@ -24,13 +43,6 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
 
     async findAll(options) {
       return findAllGeneric<NotificationV2User>(find, options);
-    },
-
-    async findByUserId(userId, options) {
-      const rqlWithUserId = rqlBuilder(options?.rql).eq('id', userId).build();
-
-      const result = await find({ ...options, rql: rqlWithUserId });
-      return result.data[0];
     },
 
     async findFirst(options) {
