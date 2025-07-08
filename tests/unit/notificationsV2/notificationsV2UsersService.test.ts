@@ -92,4 +92,59 @@ describe('NotificationsV2 Users Service', () => {
     const response = await sdk.notificationsV2.users.findFirst();
     expect(response?.id).toBe(users[0].id);
   });
+
+  it('Gets the notification settings for a specific user', async () => {
+    const userSetting = notificationV2UserData();
+    const responseBody = {
+      ...userSetting,
+      creationTimestamp: userSetting.creationTimestamp.toISOString(),
+      updateTimestamp: userSetting.updateTimestamp.toISOString(),
+    };
+
+    nock(`${host}${NOTIFICATIONS_V2_BASE}`)
+      .get(`/users/${userSetting.id}`)
+      .reply(200, responseBody);
+
+    const response = await sdk.notificationsV2.users.getById(userSetting.id);
+    expect(response).toStrictEqual(userSetting);
+  });
+
+  it('Deletes the notification settings for a specific user', async () => {
+    const userId = randomHexString();
+
+    nock(`${host}${NOTIFICATIONS_V2_BASE}`)
+      .delete(`/users/${userId}`)
+      .reply(200, { affectedRecords: 1 });
+
+    const response = await sdk.notificationsV2.users.remove(userId);
+    expect(response).toStrictEqual({ affectedRecords: 1 });
+  });
+
+  it('Adds or updates a device to a user its notification settings', async () => {
+    const userId = randomHexString();
+    const deviceName = 'test-device';
+    const deviceData = {
+      description: 'Test Device',
+      fcmToken: 'test-fcm-token',
+    };
+
+    nock(`${host}${NOTIFICATIONS_V2_BASE}`)
+      .put(`/users/${userId}/devices/${deviceName}`, deviceData)
+      .reply(200, { affectedRecords: 1 });
+
+    const response = await sdk.notificationsV2.users.addOrUpdateDevice(userId, deviceName, deviceData);
+    expect(response).toStrictEqual({ affectedRecords: 1 });
+  });
+
+  it('Removes a device from a user its notification settings', async () => {
+    const userId = randomHexString();
+    const deviceName = 'test-device';
+
+    nock(`${host}${NOTIFICATIONS_V2_BASE}`)
+      .delete(`/users/${userId}/devices/${deviceName}`)
+      .reply(200, { affectedRecords: 1 });
+
+    const response = await sdk.notificationsV2.users.removeDevice(userId, deviceName);
+    expect(response).toStrictEqual({ affectedRecords: 1 });
+  });
 });

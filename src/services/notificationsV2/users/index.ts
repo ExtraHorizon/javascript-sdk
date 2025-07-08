@@ -12,8 +12,28 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
   }
 
   return {
+    async getById(userId, options) {
+      const result = await client.get(httpWithAuth, `/users/${userId}`, options);
+      return result.data;
+    },
+
     async update(userId, requestBody, options) {
       const result = await client.put(httpWithAuth, `/users/${userId}`, requestBody, options);
+      return result.data;
+    },
+
+    async remove(userId, options) {
+      const result = await client.delete(httpWithAuth, `/users/${userId}`, options);
+      return result.data;
+    },
+
+    async addOrUpdateDevice(userId, deviceName, requestBody, options) {
+      const result = await client.put(httpWithAuth, `/users/${userId}/devices/${deviceName}`, requestBody, options);
+      return result.data;
+    },
+
+    async removeDevice(userId, deviceName, options) {
+      const result = await client.delete(httpWithAuth, `/users/${userId}/devices/${deviceName}`, options);
       return result.data;
     },
 
