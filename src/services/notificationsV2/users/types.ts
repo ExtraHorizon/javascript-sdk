@@ -1,18 +1,20 @@
 import { AffectedRecords, ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../../types';
 
 export interface NotificationV2UserUpsert {
+  /** @deprecated We recommend using `devices` instead */
   fcmToken: string;
 }
 
 export interface NotificationV2User extends NotificationV2UserUpsert {
   id: ObjectId;
+  devices?: NotificationV2UserDevice[];
   creationTimestamp: Date;
   updateTimestamp: Date;
 }
 
 export interface NotificationV2UserDeviceUpsert {
-  description?: string;
-  fcmToken?: string;
+  description?: string | null;
+  fcmToken?: string | null;
 }
 
 export interface NotificationV2UserDevice {
@@ -79,6 +81,8 @@ export interface NotificationV2UserService {
    * If the user does not have a device with the specified name, it will be created.
    *
    * If the user does not have user settings, it will be created.
+   *
+   * Setting `null` for `fcmToken` or `description` will remove the configured value.
    *
    * ## Access via permissions
    * Permission | Scopes | Effect
