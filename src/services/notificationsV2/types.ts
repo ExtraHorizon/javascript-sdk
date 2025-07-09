@@ -81,15 +81,15 @@ export interface NotificationV2Service {
   /**
    * # Create a notification
    *
-   * Creates a notification and, if FCM tokens are available for the target user, sends it to the user.
+   * A user's FCM token and their device's with an FCM token will be targeted for the notification
    *
-   * If an unusable FCM token is detected, the request will still succeed, but the token will be removed from the user's settings.
+   * If an unusable FCM token is detected, the request will succeed, however, the FCM token will be removed from the user's settings.
    * Any unusable FCM token errors will be included in the `errors` field of the response.
    *
-   * When sending to multiple devices, multiple errors may occur.
-   * If any `FirebaseConnectionError` is encountered, that error will be thrown.
-   * If no `FirebaseConnectionError` occurs but a `FirebaseInvalidPlatformDataError` is encountered, that error will be thrown instead.
-   * Both error types will include a `notificationId` and an `errors` field with details about any errors that occured.
+   * Multiple errors can occur at once when multiple devices are targeted and errors are thrown in this order:
+   * - `FirebaseConnectionError`
+   * - `FirebaseInvalidPlatformDataError`
+   * Both error types will include a `notificationId` and an `errors` field with details about any errors that occurred.
    *
    * ## Access via permissions
    * Permission | Scopes | Effect
