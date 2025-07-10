@@ -40,6 +40,7 @@ export interface NotificationV2UserService {
   getById(userId: ObjectId, options?: OptionsBase): Promise<NotificationV2User>;
 
   /**
+   * @deprecated We recommend using `devices` instead, managed by the `addOrUpdateDevice()` and `removeDevice()` methods.
    * # Update a user its notification settings
    *
    * Updates (or creates if non exists) a user its settings for the specified user id.
