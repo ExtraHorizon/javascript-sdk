@@ -3,7 +3,7 @@ import { ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../
 export * from './users/types';
 
 export interface NotificationV2Creation<T extends Record<string, string> = Record<string, string>> {
-  targetUserId: string;
+  targetUserId: ObjectId;
   title: string;
   body: string;
   data?: T;
@@ -27,26 +27,84 @@ export interface NotificationV2Creation<T extends Record<string, string> = Recor
 export interface NotificationV2<T extends Record<string, string> = Record<string, string>> extends NotificationV2Creation<T> {
   id: ObjectId;
   creatorId: ObjectId;
+
+  /**
+   * Indicates whether we tried to send the notification.
+   * Would be `false` if no devices with FCM tokens were found for the user.
+   * See `errors` for any errors that occurred.
+   */
   sent: boolean;
+
+  /**
+   * The errors that occurred while sending the notification, if any.
+   */
+  errors?: NotificationV2Error[];
+
   creationTimestamp: Date;
   updateTimestamp: Date;
+}
+
+export interface NotificationV2Error {
+  /**
+   * The name of the device for which the error occurred.
+   * If not set, the error occurred for the FCM token defined on the root of the user settings.
+   */
+  deviceName?: string;
+
+  exhError: {
+    code: string;
+    name: string;
+    message: string;
+  };
+
+  /**
+   * The error received from FCM, unchanged, if available.
+   * @example
+   * {
+   *   "error": {
+   *     "code": 403,
+   *     "message": "SenderId mismatch",
+   *     "status": "PERMISSION_DENIED",
+   *     "details": [
+   *       {
+   *         "@type": "type.googleapis.com/google.firebase.fcm.v1.FcmError",
+   *         "errorCode": "SENDER_ID_MISMATCH",
+   *       }
+   *     ]
+   *   }
+   * }
+   * */
+  fcmError?: any;
 }
 
 export interface NotificationV2Service {
   /**
    * # Create a notification
    *
+   * A user's FCM token and their device's with an FCM token will be targeted for the notification
+   *
+   * If an unusable FCM token is detected, the request will succeed, however, the FCM token will be removed from the user's settings.
+   * Any unusable FCM token errors will be included in the `errors` field of the response.
+   *
+   * Multiple errors can occur at once when multiple devices are targeted and errors are thrown in this order:
+   * - `FirebaseConnectionError`
+   * - `FirebaseInvalidPlatformDataError`
+   * Both error types will include a `notificationId` and an `errors` field with details about any errors that occurred.
+   *
    * ## Access via permissions
    * Permission | Scopes | Effect
    * - | - | -
    * `CREATE_NOTIFICATIONS` | `global` | Create notifications for any user
-   * `CREATE_NOTIFICATIONS` | `group` | Create notifications for any patient in group
+   * `CREATE_NOTIFICATIONS` | `group` | Create notifications for any patient in a group
    * none | | Create notifications for yourself
    *
    * # Interface
    * @param requestBody
    * @param options
    * @returns NotificationV2<T>
+   *
+   * @throws {FirebaseInvalidPlatformDataError} if FCM reports invalid values for `android`, `apns`, or `webpush`.
+   * @throws {FirebaseConnectionError} if FCM is unreachable or returns an unknown error.
    */
   create<T extends Record<string, string>>(requestBody: NotificationV2Creation<T>, options?: OptionsBase): Promise<NotificationV2<T>>;
 
