@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.7.0]
 
+### Added
+- Introduced `exh.notificationsV2` with methods for Notifications Service v2:
+  - `exh.notificationsV2.*` provides functionality to send and retrieve notifications
+  - `exh.notificationsV2.userSettings.*` offers management of user's devices
 
 ## [8.6.0]
 
