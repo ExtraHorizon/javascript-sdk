@@ -2,7 +2,7 @@ import { AffectedRecords, ObjectId, OptionsBase, OptionsWithRql, PagedResultWith
 
 export interface NotificationV2UserSettingsUpsert {
   /** @deprecated We recommend using `devices` instead */
-  fcmToken: string;
+  fcmToken: string | null;
 }
 
 export interface NotificationV2UserSettings extends NotificationV2UserSettingsUpsert {
