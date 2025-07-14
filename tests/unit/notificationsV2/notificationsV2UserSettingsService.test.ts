@@ -23,7 +23,7 @@ describe('NotificationsV2 Users Service', () => {
       .put(`/users/${userId}`, { ...data })
       .reply(200, { affectedRecords: 1 });
 
-    const response = await sdk.notificationsV2.users.update(userId, data);
+    const response = await sdk.notificationsV2.userSettings.update(userId, data);
     expect(response).toStrictEqual({ affectedRecords: 1 });
   });
 
@@ -35,7 +35,7 @@ describe('NotificationsV2 Users Service', () => {
     // Prove that we accept RQL
     const rql = rqlBuilder().limit(250).build();
 
-    const response = await sdk.notificationsV2.users.find({ rql });
+    const response = await sdk.notificationsV2.userSettings.find({ rql });
     expect(response.page.total).toBe(250);
   });
 
@@ -69,7 +69,7 @@ describe('NotificationsV2 Users Service', () => {
         }
       );
 
-    const response = await sdk.notificationsV2.users.findAll();
+    const response = await sdk.notificationsV2.userSettings.findAll();
     expect(response).toHaveLength(100);
   });
 
@@ -78,7 +78,7 @@ describe('NotificationsV2 Users Service', () => {
       .get('/users/')
       .reply(200, createPagedResponse(users));
 
-    const response = await sdk.notificationsV2.users.findFirst();
+    const response = await sdk.notificationsV2.userSettings.findFirst();
     expect(response?.id).toBe(users[0].id);
   });
 
@@ -94,7 +94,7 @@ describe('NotificationsV2 Users Service', () => {
       .get(`/users/${userSetting.id}`)
       .reply(200, responseBody);
 
-    const response = await sdk.notificationsV2.users.getById(userSetting.id);
+    const response = await sdk.notificationsV2.userSettings.getById(userSetting.id);
     expect(response).toStrictEqual(userSetting);
   });
 
@@ -105,7 +105,7 @@ describe('NotificationsV2 Users Service', () => {
       .delete(`/users/${userId}`)
       .reply(200, { affectedRecords: 1 });
 
-    const response = await sdk.notificationsV2.users.remove(userId);
+    const response = await sdk.notificationsV2.userSettings.remove(userId);
     expect(response).toStrictEqual({ affectedRecords: 1 });
   });
 
@@ -121,7 +121,7 @@ describe('NotificationsV2 Users Service', () => {
       .put(`/users/${userId}/devices/${deviceName}`, deviceData)
       .reply(200, { affectedRecords: 1 });
 
-    const response = await sdk.notificationsV2.users.addOrUpdateDevice(userId, deviceName, deviceData);
+    const response = await sdk.notificationsV2.userSettings.addOrUpdateDevice(userId, deviceName, deviceData);
     expect(response).toStrictEqual({ affectedRecords: 1 });
   });
 
@@ -133,7 +133,7 @@ describe('NotificationsV2 Users Service', () => {
       .delete(`/users/${userId}/devices/${deviceName}`)
       .reply(200, { affectedRecords: 1 });
 
-    const response = await sdk.notificationsV2.users.removeDevice(userId, deviceName);
+    const response = await sdk.notificationsV2.userSettings.removeDevice(userId, deviceName);
     expect(response).toStrictEqual({ affectedRecords: 1 });
   });
 });

@@ -1,9 +1,9 @@
 import { AuthHttpClient } from '../../../types';
 import { addPagersFn, findAllGeneric } from '../../helpers';
 import { HttpClient } from '../../http-client';
-import { NotificationV2User, NotificationV2UserService } from './types';
+import { NotificationV2UserSettings, NotificationV2UserSettingsService } from './types';
 
-export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV2UserService => {
+export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV2UserSettingsService => {
   async function find(options) {
     const result = await client.get(httpWithAuth, `/users/${options?.rql || ''}`, options);
 
@@ -38,11 +38,11 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
 
     async find(options) {
       const result = await find(options);
-      return addPagersFn<NotificationV2User>(find, options, result);
+      return addPagersFn<NotificationV2UserSettings>(find, options, result);
     },
 
     async findAll(options) {
-      return findAllGeneric<NotificationV2User>(find, options);
+      return findAllGeneric<NotificationV2UserSettings>(find, options);
     },
 
     async findFirst(options) {
