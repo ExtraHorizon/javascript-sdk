@@ -90,7 +90,7 @@ describe('NotificationsV2 Service', () => {
       .reply(200, createPagedResponse(notifications));
 
     const response = await sdk.notificationsV2.findFirst();
-    expect(response.id).toBe(notifications[0].id);
+    expect(response?.id).toBe(notifications[0].id);
   });
 
   it('Finds a notification by id', async () => {
@@ -101,6 +101,6 @@ describe('NotificationsV2 Service', () => {
       .reply(200, createPagedResponse(notifications.filter(notification => notification.id === id)));
 
     const response = await sdk.notificationsV2.findById(id);
-    expect(response.id).toBe(id);
+    expect(response?.id).toBe(id);
   });
 });

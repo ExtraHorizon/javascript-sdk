@@ -1,11 +1,11 @@
 import { AffectedRecords, ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../../types';
 
-export interface NotificationV2UserUpsert {
+export interface NotificationV2UserSettingsUpsert {
   /** @deprecated We recommend using `devices` instead */
   fcmToken: string;
 }
 
-export interface NotificationV2User extends NotificationV2UserUpsert {
+export interface NotificationV2UserSettings extends NotificationV2UserSettingsUpsert {
   id: ObjectId;
   devices?: NotificationV2UserDevice[];
   creationTimestamp: Date;
@@ -25,7 +25,7 @@ export interface NotificationV2UserDevice {
   updateTimestamp: Date;
 }
 
-export interface NotificationV2UserService {
+export interface NotificationV2UserSettingsService {
   /**
    * # Get the notification settings for a specific user
    *
@@ -37,7 +37,7 @@ export interface NotificationV2UserService {
    * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notifications
    * none | | View your own notification settings
    */
-  getById(userId: ObjectId, options?: OptionsBase): Promise<NotificationV2User>;
+  getById(userId: ObjectId, options?: OptionsBase): Promise<NotificationV2UserSettings>;
 
   /**
    * @deprecated We recommend using `devices` instead, managed by the `addOrUpdateDevice()` and `removeDevice()` methods.
@@ -56,7 +56,7 @@ export interface NotificationV2UserService {
    * @param options
    * @returns AffectedRecords
    */
-  update(userId: ObjectId, requestBody: NotificationV2UserUpsert, options?: OptionsBase): Promise<AffectedRecords>;
+  update(userId: ObjectId, requestBody: NotificationV2UserSettingsUpsert, options?: OptionsBase): Promise<AffectedRecords>;
 
   /**
    * # Delete the notification settings for a specific user
@@ -123,7 +123,7 @@ export interface NotificationV2UserService {
   * ## Interface
   * @returns PagedResultWithPager<NotificationV2User>
   */
-  find(options?: OptionsWithRql): Promise<PagedResultWithPager<NotificationV2User>>;
+  find(options?: OptionsWithRql): Promise<PagedResultWithPager<NotificationV2UserSettings>>;
 
   /**
   * # Request a list of user notification settings
@@ -138,7 +138,7 @@ export interface NotificationV2UserService {
   * ## Interface
   * @returns NotificationV2User[]
   */
-  findAll(options?: OptionsWithRql): Promise<NotificationV2User[]>;
+  findAll(options?: OptionsWithRql): Promise<NotificationV2UserSettings[]>;
 
   /**
    * # Request the first user notification settings
@@ -151,5 +151,5 @@ export interface NotificationV2UserService {
    * ## Interface
    * @returns NotificationV2User | undefined
    */
-  findFirst(options?: OptionsWithRql): Promise<NotificationV2User | undefined>;
+  findFirst(options?: OptionsWithRql): Promise<NotificationV2UserSettings | undefined>;
 }

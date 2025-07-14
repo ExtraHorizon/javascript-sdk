@@ -1,6 +1,6 @@
 import { ObjectId, OptionsBase, OptionsWithRql, PagedResultWithPager } from '../types';
 
-export * from './users/types';
+export * from './userSettings/types';
 
 export interface NotificationV2Creation<T extends Record<string, string> = Record<string, string>> {
   targetUserId: ObjectId;
