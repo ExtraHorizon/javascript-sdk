@@ -1,4 +1,4 @@
-import { MfaMethod } from './types';
+import { MfaMethod, NotificationV2Error } from './types';
 
 type Method =
   | 'get'
@@ -227,6 +227,18 @@ export class MissingPKCEVerifierError extends BadRequestError {}
 export class RefreshTokenUnknownError extends BadRequestError {}
 export class RefreshTokenExpiredError extends BadRequestError {}
 
+export class FirebaseInvalidPlatformDataError extends BadRequestError {
+  notificationId?: string;
+
+  errors?: NotificationV2Error[];
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.notificationId = apiError.response.notificationId;
+    this.errors = apiError.response.errors;
+  }
+}
+
 // 401 Unauthorized
 export class UnauthorizedError extends ApiError {}
 export class ApplicationNotAuthenticatedError extends UnauthorizedError {}
@@ -289,6 +301,18 @@ export class FieldFormatError extends ServerError {}
 // 502 Bad Gateway Server Error
 export class BadGatewayServerError extends ApiError {}
 export class StripeRequestError extends BadGatewayServerError {}
+
+export class FirebaseConnectionError extends BadGatewayServerError {
+  notificationId?: string;
+
+  errors?: NotificationV2Error[];
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.notificationId = apiError.response.notificationId;
+    this.errors = apiError.response.errors;
+  }
+}
 
 // 503 Service Unavailable Error
 export class ServiceUnavailableError extends ApiError {}
