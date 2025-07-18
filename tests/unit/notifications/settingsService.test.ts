@@ -1,16 +1,8 @@
 import nock from 'nock';
-import { AUTH_BASE, NOTIFICATIONS_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  rqlBuilder,
-  ParamsOauth2,
-} from '../../../src/index';
-import {
-  notificationData,
-  settingsData,
-} from '../../__helpers__/notification';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, NOTIFICATIONS_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {notificationData, settingsData,} from '../../__helpers__/notification';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Settings Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -18,10 +10,10 @@ describe('Settings Service', () => {
   const settingsId = settingsData.id;
   const settingsResponse = createPagedResponse(settingsData);
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
