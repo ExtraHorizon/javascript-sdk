@@ -1,23 +1,18 @@
 import nock from 'nock';
-import { AUTH_BASE, DISPATCHERS_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-} from '../../../src/index';
-import { dispatcherData } from '../../__helpers__/dispatcher';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, DISPATCHERS_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {dispatcherData} from '../../__helpers__/dispatcher';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Dispatchers Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const dispatcherId = dispatcherData.id;
   const dispatchersResponse = createPagedResponse(dispatcherData);
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
