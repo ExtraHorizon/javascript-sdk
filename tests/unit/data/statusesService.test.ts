@@ -1,16 +1,16 @@
 import nock from 'nock';
-import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { newSchemaCreated } from '../../__helpers__/data';
+import {AUTH_BASE, DATA_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {newSchemaCreated} from '../../__helpers__/data';
 
 describe('Statuses Service', () => {
   const schemaId = newSchemaCreated.id;
   const statusName = 'pending';
   const host = 'https://api.xxx.extrahorizon.io';
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

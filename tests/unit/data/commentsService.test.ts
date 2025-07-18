@@ -1,9 +1,9 @@
 import nock from 'nock';
-import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { rqlBuilder } from '../../../src/rql';
-import { newCommentCreated, commentData } from '../../__helpers__/data';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, DATA_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {rqlBuilder} from '../../../src/rql';
+import {commentData, newCommentCreated} from '../../__helpers__/data';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Comments Service', () => {
   const commentsListResponse = createPagedResponse(commentData);
@@ -11,10 +11,10 @@ describe('Comments Service', () => {
   const documentId = '2e9fff9d90135a2a9a718e2f';
   const commentId = commentData.id;
   const host = 'https://api.xxx.extrahorizon.io';
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

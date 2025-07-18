@@ -1,17 +1,17 @@
 import nock from 'nock';
-import { AUTH_BASE, DATA_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { transitionInput, newTransition } from '../../__helpers__/data';
+import {AUTH_BASE, DATA_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {newTransition, transitionInput} from '../../__helpers__/data';
 
 describe('Transitions Service', () => {
   const schemaId = '2e9fff9d90135a2a9a718e2f';
   const transitionId = '1e9fff9d90135a2a9a718e2f';
   const host = 'https://api.xxx.extrahorizon.io';
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
     try {
-      sdk = createClient({
+      sdk = createOAuth2Client({
         host,
         clientId: '',
       });
