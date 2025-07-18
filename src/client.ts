@@ -21,6 +21,7 @@ import {
   logsService,
   mailsService,
   notificationsService,
+  notificationsV2Service,
   paymentsService,
   profilesService,
   tasksService,
@@ -89,6 +90,11 @@ export interface Client<T extends ClientParams> {
    */
   notifications: ReturnType<typeof notificationsService>;
   /**
+   * A service that handles push notifications.
+   * @see https://swagger.extrahorizon.com/listing/?service=notifications-service&redirectToVersion=2
+   */
+  notificationsV2: ReturnType<typeof notificationsV2Service>;
+  /**
    * Service that provides event (publish/subscribe) functionality for other services.
    * @see https://swagger.extrahorizon.com/listing/?service=events-service&redirectToVersion=1
    */
@@ -108,10 +114,10 @@ export interface Client<T extends ClientParams> {
    * @see https://swagger.extrahorizon.com/listing/?service=auth-service&redirectToVersion=2
    */
   auth: T extends ParamsOauth1
-    ? ReturnType<typeof authService> & OAuth1HttpClient['extraAuthMethods']
-    : T extends ParamsOauth2
-    ? ReturnType<typeof authService> & OAuth2HttpClient['extraAuthMethods']
-    : ReturnType<typeof authService> & ProxyInstance['extraAuthMethods'];
+  ? ReturnType<typeof authService> & OAuth1HttpClient['extraAuthMethods']
+  : T extends ParamsOauth2
+  ? ReturnType<typeof authService> & OAuth2HttpClient['extraAuthMethods']
+  : ReturnType<typeof authService> & ProxyInstance['extraAuthMethods'];
 }
 
 /**
@@ -154,6 +160,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     localizations: localizationsService(httpWithAuth),
     profiles: profilesService(httpWithAuth),
     notifications: notificationsService(httpWithAuth),
+    notificationsV2: notificationsV2Service(httpWithAuth),
     events: eventsService(httpWithAuth),
     logs: logsService(httpWithAuth),
     auth: {
