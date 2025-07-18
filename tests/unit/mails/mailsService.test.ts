@@ -1,13 +1,8 @@
 import nock from 'nock';
-import { AUTH_BASE, MAIL_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  rqlBuilder,
-  ParamsOauth2,
-} from '../../../src/index';
-import { mailInput, mailData, queuedMailData } from '../../__helpers__/mail';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, MAIL_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {mailData, mailInput, queuedMailData} from '../../__helpers__/mail';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Mail Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -15,10 +10,10 @@ describe('Mail Service', () => {
   const mailsResponse = createPagedResponse(mailData);
   const queuedMailsResponse = createPagedResponse(queuedMailData);
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
