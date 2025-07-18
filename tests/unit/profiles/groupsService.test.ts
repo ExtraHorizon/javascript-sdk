@@ -1,17 +1,17 @@
 import nock from 'nock';
-import { AUTH_BASE, PROFILES_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { profileData, groupData, groupInput } from '../../__helpers__/profile';
+import {AUTH_BASE, PROFILES_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {groupData, groupInput, profileData} from '../../__helpers__/profile';
 
 describe('Groups Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const profileId = profileData.id;
   const { groupId } = groupData;
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

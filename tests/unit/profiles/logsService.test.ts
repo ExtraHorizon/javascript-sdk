@@ -1,8 +1,8 @@
 import nock from 'nock';
-import { AUTH_BASE, PROFILES_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { profileData, groupData, logData } from '../../__helpers__/profile';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, PROFILES_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {groupData, logData, profileData} from '../../__helpers__/profile';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Logs Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -10,10 +10,10 @@ describe('Logs Service', () => {
   const { groupId } = groupData;
   const logId = logData.id;
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

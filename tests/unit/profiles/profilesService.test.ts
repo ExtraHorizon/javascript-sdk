@@ -1,25 +1,18 @@
 import nock from 'nock';
-import { AUTH_BASE, PROFILES_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-  Comorbidities,
-  Impediments,
-} from '../../../src/index';
-import { profileData } from '../../__helpers__/profile';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, PROFILES_BASE} from '../../../src/constants';
+import {Comorbidities, createOAuth2Client, Impediments, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {profileData} from '../../__helpers__/profile';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Profiles Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const profileId = profileData.id;
   const profilesResponse = createPagedResponse(profileData);
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
@@ -94,7 +87,7 @@ describe('Profiles Service', () => {
   });
 
   it('should convert the custom fields to camel case if the normalizeCustomData is true on the client', async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
       normalizeCustomData: true,
@@ -132,7 +125,7 @@ describe('Profiles Service', () => {
   });
 
   it('should not convert the custom fields to camel case if the normalizeCustomData true on the client but set to false on the request', async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
       normalizeCustomData: true,
