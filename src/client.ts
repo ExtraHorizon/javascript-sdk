@@ -5,7 +5,7 @@ import {
   createProxyHttpClient,
 } from './http';
 import {
-  AuthHttpClient,
+  AuthHttpClient, HttpInstance,
   OAuth1HttpClient,
   OAuth2HttpClient,
   ProxyInstance,
@@ -120,9 +120,33 @@ export interface Client<T extends ClientParams> {
   : ReturnType<typeof authService> & ProxyInstance['extraAuthMethods'];
 }
 
+const services = (http: HttpInstance, httpWithAuth: AuthHttpClient) => ({
+  users: usersService(httpWithAuth, http),
+  data: dataService(httpWithAuth),
+  files: filesService(httpWithAuth),
+  tasks: tasksService(httpWithAuth),
+  templates: templatesService(httpWithAuth),
+  mails: mailsService(httpWithAuth),
+  configurations: configurationsService(httpWithAuth),
+  dispatchers: dispatchersService(httpWithAuth),
+  payments: paymentsService(httpWithAuth),
+  localizations: localizationsService(httpWithAuth),
+  profiles: profilesService(httpWithAuth),
+  notifications: notificationsService(httpWithAuth),
+  notificationsV2: notificationsV2Service(httpWithAuth),
+  events: eventsService(httpWithAuth),
+  logs: logsService(httpWithAuth),
+  auth: {
+    ...authService(httpWithAuth),
+    ...httpWithAuth.extraAuthMethods,
+  } as any,
+  raw: httpWithAuth,
+});
+
 /**
  * Create ExtraHorizon client.
  *
+ * @deprecated Please use `createOAuth1Client`, `createOAuth2Client` or `createProxyClient` instead
  * @example
  * const exh = createClient({
  *   host: 'xxx.extrahorizon.io',
@@ -147,28 +171,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     return createProxyHttpClient(http, config);
   })();
 
-  return {
-    users: usersService(httpWithAuth, http),
-    data: dataService(httpWithAuth),
-    files: filesService(httpWithAuth),
-    tasks: tasksService(httpWithAuth),
-    templates: templatesService(httpWithAuth),
-    mails: mailsService(httpWithAuth),
-    configurations: configurationsService(httpWithAuth),
-    dispatchers: dispatchersService(httpWithAuth),
-    payments: paymentsService(httpWithAuth),
-    localizations: localizationsService(httpWithAuth),
-    profiles: profilesService(httpWithAuth),
-    notifications: notificationsService(httpWithAuth),
-    notificationsV2: notificationsV2Service(httpWithAuth),
-    events: eventsService(httpWithAuth),
-    logs: logsService(httpWithAuth),
-    auth: {
-      ...authService(httpWithAuth),
-      ...httpWithAuth.extraAuthMethods,
-    } as any,
-    raw: httpWithAuth,
-  };
+  return services(http, httpWithAuth);
 }
 
 export type OAuth1Client = Client<ParamsOauth1>;
@@ -186,7 +189,13 @@ export type OAuth1Client = Client<ParamsOauth1>;
  *   password: 'string',
  * });
  */
-export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client => createClient(rawConfig);
+export const createOAuth1Client = (rawConfig: ParamsOauth1): OAuth1Client => {
+  const config = validateConfig(rawConfig);
+  const http = createHttpClient({ ...config, packageVersion });
+  const httpWithAuth = createOAuth1HttpClient(http, config);
+
+  return services(http, httpWithAuth);
+};
 
 export type OAuth2Client = Client<ParamsOauth2>;
 /**
@@ -202,7 +211,13 @@ export type OAuth2Client = Client<ParamsOauth2>;
  *   password: 'string',
  * });
  */
-export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client => createClient(rawConfig);
+export const createOAuth2Client = (rawConfig: ParamsOauth2): OAuth2Client => {
+  const config = validateConfig(rawConfig);
+  const http = createHttpClient({ ...config, packageVersion });
+  const httpWithAuth = createOAuth2HttpClient(http, config);
+
+  return services(http, httpWithAuth);
+};
 
 export type ProxyClient = Client<ParamsProxy>;
 /**
@@ -213,4 +228,10 @@ export type ProxyClient = Client<ParamsProxy>;
  *   host: 'apx.sandbox.extrahorizon.io',
  * });
  */
-export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient => createClient(rawConfig);
+export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient => {
+  const config = validateConfig(rawConfig);
+  const http = createHttpClient({ ...config, packageVersion });
+  const httpWithAuth = createProxyHttpClient(http, config);
+
+  return services(http, httpWithAuth);
+};
