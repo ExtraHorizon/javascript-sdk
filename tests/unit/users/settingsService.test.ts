@@ -1,10 +1,6 @@
 import nock from 'nock';
-import { USER_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-} from '../../../src/index';
+import {USER_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client,} from '../../../src/index';
 
 describe('Settings Service', () => {
   const host = 'https://api.xxx.extrahorizon.com';
@@ -21,10 +17,10 @@ describe('Settings Service', () => {
     enable_pin_code_forgot_password_requests: false,
   };
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
       accessToken: '',

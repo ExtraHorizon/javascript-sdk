@@ -1,22 +1,17 @@
 import nock from 'nock';
-import { AUTH_BASE, USER_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-} from '../../../src/index';
-import { permissionData, groupRoleData } from '../../__helpers__/user';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, USER_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {groupRoleData, permissionData} from '../../__helpers__/user';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Group Roles Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const groupId = '5bfbfc3146e0fb321rsa4b28';
   const roleId = '5bfbfc3146e0fb321rsa4b21';
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

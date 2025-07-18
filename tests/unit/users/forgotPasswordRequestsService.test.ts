@@ -1,12 +1,7 @@
 import nock from 'nock';
-import { USER_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-} from '../../../src/index';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {USER_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Forgot Password Requests Service', () => {
   const host = 'https://api.xxx.extrahorizon.com';
@@ -35,10 +30,10 @@ describe('Forgot Password Requests Service', () => {
     creationTimestamp: new Date(1510681308855),
   };
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
       accessToken: '',

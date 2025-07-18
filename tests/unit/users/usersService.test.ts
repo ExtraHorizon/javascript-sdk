@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { AUTH_BASE, USER_BASE } from '../../../src/constants';
+import {AUTH_BASE, USER_BASE} from '../../../src/constants';
 import {
   ActivationRequestLimitError,
   ActivationRequestTimeoutError,
@@ -13,12 +13,7 @@ import {
   ResourceUnknownError,
   TooManyFailedAttemptsError,
 } from '../../../src/errors';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-} from '../../../src/index';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
 import {
   newPasswordPolicy,
   newUserData,
@@ -27,7 +22,7 @@ import {
   updatedUserData,
   userData,
 } from '../../__helpers__/user';
-import { createPagedResponse, randomHexString } from '../../__helpers__/utils';
+import {createPagedResponse, randomHexString} from '../../__helpers__/utils';
 
 describe('Users Service', () => {
   const host = 'https://api.sandbox.extrahorizon.io';
@@ -39,10 +34,10 @@ describe('Users Service', () => {
   const newPassword = 'NewPass123';
   const hash = 'bced43a8ccb74868536ae8bc5a13a40385265038';
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
