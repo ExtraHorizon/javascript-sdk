@@ -1,29 +1,24 @@
 import nock from 'nock';
-import { AUTH_BASE, LOCALIZATIONS_BASE } from '../../../src/constants';
+import {AUTH_BASE, LOCALIZATIONS_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
 import {
-  Client,
-  createClient,
-  rqlBuilder,
-  ParamsOauth2,
-} from '../../../src/index';
-import {
-  localizationData,
   localizationCreatedResponse,
-  localizationUpdatedResponse,
+  localizationData,
   localizationInput,
   localizationRequest,
+  localizationUpdatedResponse,
 } from '../../__helpers__/localization';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Localizations Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const localizationKey = localizationData.key;
   const localizationResponse = createPagedResponse(localizationData);
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
