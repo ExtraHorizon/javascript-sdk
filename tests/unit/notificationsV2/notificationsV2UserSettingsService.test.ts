@@ -1,12 +1,12 @@
 import nock from 'nock';
-import { createClient, rqlBuilder } from '../../../src';
-import { NOTIFICATIONS_V2_BASE } from '../../../src/constants';
-import { notificationV2UserUpdateData, notificationV2UserData } from '../../__helpers__/notificationV2';
-import { createPagedResponse, randomHexString } from '../../__helpers__/utils';
+import {createOAuth2Client, rqlBuilder} from '../../../src';
+import {NOTIFICATIONS_V2_BASE} from '../../../src/constants';
+import {notificationV2UserData, notificationV2UserUpdateData} from '../../__helpers__/notificationV2';
+import {createPagedResponse, randomHexString} from '../../__helpers__/utils';
 
 describe('NotificationsV2 Users Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
-  const sdk = createClient({
+  const sdk = createOAuth2Client({
     host,
     clientId: '',
   });

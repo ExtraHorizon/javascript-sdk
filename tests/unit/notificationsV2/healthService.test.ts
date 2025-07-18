@@ -1,10 +1,10 @@
 import nock from 'nock';
-import { NOTIFICATIONS_V2_BASE } from '../../../src/constants';
-import { createClient } from '../../../src/index';
+import {NOTIFICATIONS_V2_BASE} from '../../../src/constants';
+import {createOAuth2Client} from '../../../src/index';
 
 describe('Health Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
-  const sdk = createClient({
+  const sdk = createOAuth2Client({
     host,
     clientId: '',
   });
