@@ -99,8 +99,8 @@ export interface ParamsOauth2Client extends ParamsBase {
 }
 
 export interface ParamsOauth2AccessToken extends ParamsOauth2Client {
-  refreshToken: string;
-  accessToken: string;
+  refreshToken?: string;
+  accessToken?: string;
 
   /**
    * Can be supplied just as it is returned by the different authentication methods and the `freshTokensCallback`.
