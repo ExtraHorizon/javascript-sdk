@@ -20,27 +20,25 @@ import {
 
 const TOKEN_ENDPOINT = `${AUTH_BASE}/oauth2/tokens`;
 
-export function createOAuth2HttpClient(
-  http: HttpInstance,
-  options: ParamsOauth2
-): OAuth2HttpClient {
-  let tokenData: Partial<TokenDataOauth2>;
+export function createOAuth2HttpClient(http: HttpInstance, options: ParamsOauth2): OAuth2HttpClient {
+  let tokenData: Partial<TokenDataOauth2> = {};
 
-  if ('refreshToken' in options && 'accessToken' in options) {
-    tokenData = {
-      refreshToken: options.refreshToken,
-      accessToken: options.accessToken,
-    };
+  if ('accessToken' in options) {
+    tokenData.accessToken = options.accessToken;
 
-    if (options.expiresIn != null) {
-      tokenData.expiresIn = options.expiresIn;
-    }
+    if ('refreshToken' in options) {
+      tokenData.refreshToken = options.refreshToken;
 
-    if (options.creationTimestamp) {
-      if (options.creationTimestamp instanceof Date) {
-        tokenData.creationTimestamp = options.creationTimestamp;
-      } else {
-        tokenData.creationTimestamp = new Date(options.creationTimestamp);
+      if (options.expiresIn != null) {
+        tokenData.expiresIn = options.expiresIn;
+      }
+
+      if (options.creationTimestamp) {
+        if (options.creationTimestamp instanceof Date) {
+          tokenData.creationTimestamp = options.creationTimestamp;
+        } else {
+          tokenData.creationTimestamp = new Date(options.creationTimestamp);
+        }
       }
     }
   }

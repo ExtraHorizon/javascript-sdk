@@ -94,4 +94,11 @@ describe('Auth - OAuth2', () => {
       expect(error).toBeInstanceOf(ResourceUnknownError);
     }
   });
+
+  it('should create an oAuth2 client with only an access token', () => {
+    sdk = createOAuth2Client({
+      host,
+      accessToken: '',
+    });
+  });
 });
