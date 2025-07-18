@@ -1,12 +1,12 @@
 import nock from 'nock';
-import { createClient, rqlBuilder } from '../../../../../src';
-import { TASKS_BASE } from '../../../../../src/constants';
-import { logLines } from '../../../../__helpers__/logs';
-import { randomHexString } from '../../../../__helpers__/utils';
+import {createOAuth2Client, rqlBuilder} from '../../../../../src';
+import {TASKS_BASE} from '../../../../../src/constants';
+import {logLines} from '../../../../__helpers__/logs';
+import {randomHexString} from '../../../../__helpers__/utils';
 
 describe('Tasks - API Requests - Logs', () => {
   const host = 'https://api.xxx.extrahorizon.com';
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });

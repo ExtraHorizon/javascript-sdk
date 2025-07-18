@@ -1,14 +1,11 @@
 import nock from 'nock';
-import { createClient } from '../../../../src';
-import { TASKS_BASE } from '../../../../src/constants';
-import {
-  scheduleCreation,
-  ScheduleDataType,
-} from '../../../__helpers__/schedules';
+import {createOAuth2Client} from '../../../../src';
+import {TASKS_BASE} from '../../../../src/constants';
+import {scheduleCreation, ScheduleDataType,} from '../../../__helpers__/schedules';
 
 describe('Tasks - Schedules - POST', () => {
   const host = 'https://api.xxx.extrahorizon.com';
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });

@@ -1,6 +1,6 @@
 import nock from 'nock';
-import { createClient } from '../../../../src';
-import { TASKS_BASE } from '../../../../src/constants';
+import {createOAuth2Client} from '../../../../src';
+import {TASKS_BASE} from '../../../../src/constants';
 import {
   directExecutionResponse,
   directExecutionResponseWithSnakeCasedCustomData,
@@ -12,7 +12,7 @@ describe('Tasks - Functions - Execute', () => {
   const host = 'https://api.xxx.extrahorizon.com';
   const functionName = 'test';
 
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });

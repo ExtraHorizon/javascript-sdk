@@ -1,20 +1,14 @@
 import nock from 'nock';
-import { createClient } from '../../../../src';
-import { TASKS_BASE } from '../../../../src/constants';
-import {
-  UsersResponse,
-  UserResponse,
-  randomUser,
-  User,
-  userData,
-} from '../../../__helpers__/api';
-import { randomHexString } from '../../../__helpers__/utils';
+import {createOAuth2Client} from '../../../../src';
+import {TASKS_BASE} from '../../../../src/constants';
+import {randomUser, User, userData, UserResponse, UsersResponse,} from '../../../__helpers__/api';
+import {randomHexString} from '../../../__helpers__/utils';
 
 describe('Tasks - Functions - API', () => {
   const host = 'https://api.xxx.extrahorizon.com';
   const functionName = 'test';
 
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });

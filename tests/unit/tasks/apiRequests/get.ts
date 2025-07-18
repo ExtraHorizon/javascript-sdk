@@ -1,11 +1,11 @@
 import nock from 'nock';
-import { createClient, rqlBuilder } from '../../../../src';
-import { TASKS_BASE } from '../../../../src/constants';
-import { apiRequests } from '../../../__helpers__/apiRequests';
+import {createOAuth2Client, rqlBuilder} from '../../../../src';
+import {TASKS_BASE} from '../../../../src/constants';
+import {apiRequests} from '../../../__helpers__/apiRequests';
 
 describe('Tasks - API Requests', () => {
   const host = 'https://api.xxx.extrahorizon.com';
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });

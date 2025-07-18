@@ -1,11 +1,11 @@
 import nock from 'nock';
-import { createClient } from '../../../../src';
-import { TASKS_BASE } from '../../../../src/constants';
-import { randomHexString } from '../../../__helpers__/utils';
+import {createOAuth2Client} from '../../../../src';
+import {TASKS_BASE} from '../../../../src/constants';
+import {randomHexString} from '../../../__helpers__/utils';
 
 describe('Tasks - Schedules - DELETE', () => {
   const host = 'https://api.xxx.extrahorizon.com';
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });
