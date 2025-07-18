@@ -1,10 +1,10 @@
-import { createClient } from '../../src';
-import { rqlBuilder } from '../../src/rql';
+import {createOAuth1Client} from '../../src';
 import { NoPermissionError } from '../../src/errors';
+import { rqlBuilder } from '../../src/rql';
 import { newSchemaInput } from '../__helpers__/data';
 
 describe('OAuth1 Password Flow', () => {
-  const sdk = createClient({
+  const sdk = createOAuth1Client({
     host: process.env.API_HOST,
     consumerKey: process.env.CONSUMER_KEY,
     consumerSecret: process.env.CONSUMER_SECRET,

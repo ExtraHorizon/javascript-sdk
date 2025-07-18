@@ -1,13 +1,13 @@
-import { Client, createClient, ParamsOauth1 } from '../../src';
-import { rqlBuilder } from '../../src/rql';
-import { NoPermissionError } from '../../src/errors';
-import { newSchemaInput } from '../__helpers__/data';
+import {Client, createOAuth1Client, ParamsOauth1} from '../../src';
+import {rqlBuilder} from '../../src/rql';
+import {NoPermissionError} from '../../src/errors';
+import {newSchemaInput} from '../__helpers__/data';
 
 describe('OAuth1 Token Flow', () => {
   let sdk: Client<ParamsOauth1>;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth1Client({
       host: process.env.API_HOST,
       consumerKey: process.env.CONSUMER_KEY,
       consumerSecret: process.env.CONSUMER_SECRET,
