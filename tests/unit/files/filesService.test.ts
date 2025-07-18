@@ -1,14 +1,9 @@
 import nock from 'nock';
 import * as fs from 'fs';
-import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-} from '../../../src/index';
-import { fileData } from '../../__helpers__/file';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, FILES_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {fileData} from '../../__helpers__/file';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 jest.mock('fs');
 
@@ -16,10 +11,10 @@ describe('Files Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const token = '5a0b2adc265ced65a8cab861';
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

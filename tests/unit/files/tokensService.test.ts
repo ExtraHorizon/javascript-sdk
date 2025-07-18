@@ -1,7 +1,7 @@
 import nock from 'nock';
-import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { TokenPermission } from '../../../src/services/files/types';
+import {AUTH_BASE, FILES_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {TokenPermission} from '../../../src/services/files/types';
 
 jest.mock('fs');
 
@@ -9,10 +9,10 @@ describe('Token Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const token = '5a0b2adc265ced65a8cab861';
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

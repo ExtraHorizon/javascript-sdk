@@ -1,10 +1,10 @@
 import nock from 'nock';
-import { createClient } from '../../../../src';
-import { FILES_BASE } from '../../../../src/constants';
+import {createOAuth2Client} from '../../../../src';
+import {FILES_BASE} from '../../../../src/constants';
 
 describe('Files - Settings - GET', () => {
   const host = 'https://api.xxx.extrahorizon.com';
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });
