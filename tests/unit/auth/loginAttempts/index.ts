@@ -1,14 +1,14 @@
 import nock from 'nock';
-import { AUTH_BASE } from '../../../../src/constants';
-import { createClient } from '../../../../src/index';
-import { rqlBuilder } from '../../../../src/rql';
-import { createPagedResponse } from '../../../__helpers__/utils';
-import { data } from './data.json';
+import {AUTH_BASE} from '../../../../src/constants';
+import {createOAuth2Client} from '../../../../src/index';
+import {rqlBuilder} from '../../../../src/rql';
+import {createPagedResponse} from '../../../__helpers__/utils';
+import {data} from './data.json';
 
 describe('Auth - OpenID Connect - Login Attempts', () => {
   const host = 'https://api.xxx.extrahorizon.com';
 
-  const sdk = createClient({
+  const sdk = createOAuth2Client({
     host,
     clientId: '',
   });

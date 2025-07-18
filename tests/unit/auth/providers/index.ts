@@ -1,11 +1,11 @@
 import nock from 'nock';
-import { createClient, rqlBuilder } from '../../../../src';
-import { AUTH_BASE } from '../../../../src/constants';
+import {createOAuth2Client, rqlBuilder} from '../../../../src';
+import {AUTH_BASE} from '../../../../src/constants';
 
 describe('Auth - OpenID Connect - Providers', () => {
   const host = 'https://api.xxx.extrahorizon.com';
 
-  const sdk = createClient({
+  const sdk = createOAuth2Client({
     host,
     clientId: '',
   });

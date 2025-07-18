@@ -1,12 +1,8 @@
 import nock from 'nock';
-import { AUTH_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2, rqlBuilder } from '../../../src/index';
-import {
-  applicationData,
-  newApplication,
-  newApplicationVersion,
-} from '../../__helpers__/auth';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE} from '../../../src/constants';
+import {Client, createOAuth2Client, ParamsOauth2, rqlBuilder} from '../../../src/index';
+import {applicationData, newApplication, newApplicationVersion,} from '../../__helpers__/auth';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Auth - Applications', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -14,7 +10,7 @@ describe('Auth - Applications', () => {
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

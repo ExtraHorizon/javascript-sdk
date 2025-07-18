@@ -1,14 +1,14 @@
 import nock from 'nock';
-import { AUTH_BASE } from '../../../src/constants';
-import { createClient } from '../../../src/index';
+import {AUTH_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
 
 describe('Auth - Health', () => {
   const host = 'https://api.xxx.extrahorizon.io';
 
-  let sdk: ReturnType<typeof createClient>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

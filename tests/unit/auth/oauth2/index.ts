@@ -1,17 +1,17 @@
 import nock from 'nock';
-import { AUTH_BASE } from '../../../../src/constants';
-import { ResourceUnknownError } from '../../../../src/errors';
-import { Client, createClient, ParamsOauth2 } from '../../../../src/index';
-import { authorizationData } from '../../../__helpers__/auth';
-import { createPagedResponse } from '../../../__helpers__/utils';
+import {AUTH_BASE} from '../../../../src/constants';
+import {ResourceUnknownError} from '../../../../src/errors';
+import {createOAuth2Client, OAuth2Client} from '../../../../src/index';
+import {authorizationData} from '../../../__helpers__/auth';
+import {createPagedResponse} from '../../../__helpers__/utils';
 
 describe('Auth - OAuth2', () => {
   const host = 'https://api.xxx.extrahorizon.io';
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
       requestLogger: value => value,
