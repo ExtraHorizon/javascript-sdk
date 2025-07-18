@@ -1,11 +1,11 @@
 import nock from 'nock';
-import { rqlBuilder, createClient } from '../../../src';
-import { LOGS_BASE } from '../../../src/constants';
-import { accessLogs } from '../../__helpers__/logs';
+import {createOAuth2Client, rqlBuilder} from '../../../src';
+import {LOGS_BASE} from '../../../src/constants';
+import {accessLogs} from '../../__helpers__/logs';
 
 describe('Logs - Access', () => {
   const host = 'https://api.xxx.extrahorizon.com';
-  const exh = createClient({
+  const exh = createOAuth2Client({
     host,
     clientId: '',
   });
