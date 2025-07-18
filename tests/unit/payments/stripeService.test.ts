@@ -1,13 +1,8 @@
 import nock from 'nock';
-import { AUTH_BASE, PAYMENTS_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import { PaymentIntentCreationSchemaSetupPaymentMethodReuse } from '../../../src/services/payments/types';
-import {
-  stripeUser,
-  stripePaymentMethod,
-  orderData,
-  paymentIntent,
-} from '../../__helpers__/payment';
+import {AUTH_BASE, PAYMENTS_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {PaymentIntentCreationSchemaSetupPaymentMethodReuse} from '../../../src/services/payments/types';
+import {orderData, paymentIntent, stripePaymentMethod, stripeUser,} from '../../__helpers__/payment';
 
 describe('Stripe Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
@@ -15,10 +10,10 @@ describe('Stripe Service', () => {
   const paymentMethodId = stripePaymentMethod.id;
   const orderId = orderData.id;
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });

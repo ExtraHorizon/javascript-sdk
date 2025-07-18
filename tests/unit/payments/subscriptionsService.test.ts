@@ -1,19 +1,16 @@
 import nock from 'nock';
-import { AUTH_BASE, PAYMENTS_BASE } from '../../../src/constants';
-import { Client, createClient, ParamsOauth2 } from '../../../src/index';
-import {
-  subscriptionEventData,
-  subscriptionEntitlementData,
-} from '../../__helpers__/payment';
-import { createPagedResponse } from '../../__helpers__/utils';
+import {AUTH_BASE, PAYMENTS_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client} from '../../../src/index';
+import {subscriptionEntitlementData, subscriptionEventData,} from '../../__helpers__/payment';
+import {createPagedResponse} from '../../__helpers__/utils';
 
 describe('Subscriptions Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
