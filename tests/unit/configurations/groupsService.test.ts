@@ -1,25 +1,16 @@
 import nock from 'nock';
-import { AUTH_BASE, CONFIGURATION_BASE } from '../../../src/constants';
-import {
-  Client,
-  createClient,
-  ParamsOauth2,
-  rqlBuilder,
-} from '../../../src/index';
-import {
-  customGroupConfigResponse,
-  groupConfigInput,
-  groupConfigResponse,
-} from '../../__helpers__/configuration';
+import {AUTH_BASE, CONFIGURATION_BASE} from '../../../src/constants';
+import {createOAuth2Client, OAuth2Client, rqlBuilder,} from '../../../src/index';
+import {customGroupConfigResponse, groupConfigInput, groupConfigResponse,} from '../../__helpers__/configuration';
 
 describe('Configuration: Groups Service', () => {
   const host = 'https://api.xxx.extrahorizon.io';
   const groupId = 'abcdef123456789abcdef123';
 
-  let sdk: Client<ParamsOauth2>;
+  let sdk: OAuth2Client;
 
   beforeAll(async () => {
-    sdk = createClient({
+    sdk = createOAuth2Client({
       host,
       clientId: '',
     });
