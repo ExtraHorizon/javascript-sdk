@@ -1,15 +1,5 @@
-import {
-  createHttpClient,
-  createOAuth1HttpClient,
-  createOAuth2HttpClient,
-  createProxyHttpClient,
-} from './http';
-import {
-  AuthHttpClient, HttpInstance,
-  OAuth1HttpClient,
-  OAuth2HttpClient,
-  ProxyInstance,
-} from './http/types';
+import { createHttpClient, createOAuth1HttpClient, createOAuth2HttpClient, createProxyHttpClient } from './http';
+import { AuthHttpClient, HttpInstance, OAuth1HttpClient, OAuth2HttpClient, ProxyInstance } from './http/types';
 import {
   authService,
   configurationsService,
@@ -143,37 +133,6 @@ const services = (http: HttpInstance, httpWithAuth: AuthHttpClient) => ({
   raw: httpWithAuth,
 });
 
-/**
- * Create ExtraHorizon client.
- *
- * @deprecated Please use `createOAuth1Client`, `createOAuth2Client` or `createProxyClient` instead
- * @example
- * const exh = createClient({
- *   host: 'xxx.extrahorizon.io',
- *   clientId: 'string',
- * });
- * await exh.auth.authenticate({
- *   username: 'string',
- *   password: 'string',
- * });
- */
-export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
-  const config = validateConfig(rawConfig);
-  const http = createHttpClient({ ...config, packageVersion });
-
-  const httpWithAuth = (() => {
-    if ('consumerKey' in config) {
-      return createOAuth1HttpClient(http, config);
-    }
-    if ('clientId' in config) {
-      return createOAuth2HttpClient(http, config);
-    }
-    return createProxyHttpClient(http, config);
-  })();
-
-  return services(http, httpWithAuth);
-}
-
 export type OAuth1Client = Client<ParamsOauth1>;
 /**
  * Create ExtraHorizon OAuth1 client.
@@ -235,3 +194,28 @@ export const createProxyClient = (rawConfig: ParamsProxy): ProxyClient => {
 
   return services(http, httpWithAuth);
 };
+
+/**
+ * Create ExtraHorizon client.
+ *
+ * @example
+ * const exh = createClient({
+ *   host: 'xxx.extrahorizon.io',
+ *   clientId: 'string',
+ * });
+ * await exh.auth.authenticate({
+ *   username: 'string',
+ *   password: 'string',
+ * });
+ */
+export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
+  if ('consumerKey' in rawConfig) {
+    return createOAuth1Client(rawConfig) as Client<T>;
+  }
+
+  if ('clientId' in rawConfig || 'accessToken' in rawConfig) {
+    return createOAuth2Client(rawConfig) as Client<T>;
+  }
+
+  return createProxyClient(rawConfig) as Client<T>;
+}

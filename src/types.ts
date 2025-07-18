@@ -98,12 +98,12 @@ export interface ParamsOauth2Client extends ParamsBase {
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 
-export interface ParamsOauth2AccessToken extends ParamsBase {
-  clientId?: string;
+export interface ParamsOauth2RefreshToken extends ParamsBase {
+  clientId: string;
   clientSecret?: string;
-  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
-  refreshToken?: string;
   accessToken?: string;
+  refreshToken: string;
+  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 
   /**
    * Can be supplied just as it is returned by the different authentication methods and the `freshTokensCallback`.
@@ -118,7 +118,11 @@ export interface ParamsOauth2AccessToken extends ParamsBase {
   creationTimestamp?: Date | string;
 }
 
-export type ParamsOauth2 = ParamsOauth2Client | ParamsOauth2AccessToken;
+export interface ParamsOauth2AccessToken extends ParamsBase {
+  accessToken?: string;
+}
+
+export type ParamsOauth2 = ParamsOauth2Client | ParamsOauth2RefreshToken | ParamsOauth2AccessToken;
 
 export type ParamsProxy = ParamsBase;
 
