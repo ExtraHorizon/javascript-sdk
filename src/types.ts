@@ -93,12 +93,15 @@ export interface ParamsOauth1Token extends ParamsOauth1Consumer {
 export type ParamsOauth1 = ParamsOauth1Consumer | ParamsOauth1Token;
 
 export interface ParamsOauth2Client extends ParamsBase {
-  clientId?: string;
+  clientId: string;
   clientSecret?: string;
   freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
 }
 
-export interface ParamsOauth2AccessToken extends ParamsOauth2Client {
+export interface ParamsOauth2AccessToken extends ParamsBase {
+  clientId?: string;
+  clientSecret?: string;
+  freshTokensCallback?: (tokenData: TokenDataOauth2) => void;
   refreshToken?: string;
   accessToken?: string;
 
