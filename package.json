@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "8.7.0",
+  "version": "8.7.1",
   "description": "This package serves as a JavaScript wrapper around all Extra Horizon cloud services.",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
@@ -35,7 +35,7 @@
     "axios": "0.30.0",
     "buffer": "6.0.3",
     "fflate": "0.8.2",
-    "form-data": "4.0.0",
+    "form-data": "4.0.4",
     "platform-specific": "1.1.0",
     "qs": "6.12.0",
     "typescript-json-decoder": "1.0.11"
