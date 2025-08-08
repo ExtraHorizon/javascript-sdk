@@ -70,6 +70,10 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
       config.headers['Content-Type'] = 'multipart/form-data';
     }
 
+    if (options.signal) {
+      config.signal = options.signal;
+    }
+
     const response = await client.post(httpAuth, '/', form, config);
     return response.data;
   },

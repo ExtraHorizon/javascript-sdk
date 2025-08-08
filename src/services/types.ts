@@ -75,6 +75,7 @@ export type OptionsBase = {
    * To enable this behaviour again, set to true.
    */
   normalizeCustomData?: boolean;
+  signal?: AbortSignal;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString; };
 export interface FileUploadOptions extends OptionsBase {
