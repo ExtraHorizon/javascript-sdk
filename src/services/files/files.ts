@@ -70,7 +70,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
       config.headers['Content-Type'] = 'multipart/form-data';
     }
 
-    if (options.signal) {
+    if (options?.signal) {
       config.signal = options.signal;
     }
 
