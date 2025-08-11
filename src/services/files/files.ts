@@ -26,15 +26,26 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
     const boundary = generateBoundary();
     const formData = createCustomFormData(text, boundary);
 
-    return (
-      await client.post(httpAuth, '/', formData, {
-        onUploadProgress: ({ loaded, total }) => options?.onUploadProgress({ loaded, total }),
-        headers: {
-          ...(options?.headers ? options.headers : {}),
-          'Content-Type': `multipart/form-data; boundary=${boundary}`,
-        },
-      })
-    ).data;
+    const config: HttpRequestConfig = {
+      headers: {},
+    };
+
+    if (options?.headers) {
+      config.headers = options.headers;
+    }
+
+    config.headers['Content-Type'] = `multipart/form-data; boundary=${boundary}`;
+
+    if (options?.onUploadProgress) {
+      config.onUploadProgress = ({ loaded, total }) => options.onUploadProgress({ loaded, total });
+    }
+
+    if (options?.signal) {
+      config.signal = options.signal;
+    }
+
+    const response = await client.post(httpAuth, '/', formData, config);
+    return response.data;
   },
 
   async create(fileName, fileData, options) {
@@ -68,6 +79,10 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
       config.headers = { ...config.headers, ...form.getHeaders() };
     } else {
       config.headers['Content-Type'] = 'multipart/form-data';
+    }
+
+    if (options?.signal) {
+      config.signal = options.signal;
     }
 
     const response = await client.post(httpAuth, '/', form, config);
