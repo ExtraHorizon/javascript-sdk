@@ -1,10 +1,11 @@
-import nock from 'nock';
 import * as fs from 'fs';
+import nock from 'nock';
 import { AUTH_BASE, FILES_BASE } from '../../../src/constants';
 import {
   Client,
   createClient,
   ParamsOauth2,
+  RequestAbortedError,
   rqlBuilder,
 } from '../../../src/index';
 import { fileData } from '../../__helpers__/file';
@@ -75,7 +76,7 @@ describe('Files Service', () => {
   });
 
   it('should add a new file', async () => {
-    jest.spyOn(fs, 'readFileSync').mockImplementation(() => ``);
+    jest.spyOn(fs, 'readFileSync').mockImplementation(() => '');
     const newFile = {
       name: 'testfile',
       file: fs.readFileSync('test'),
@@ -117,5 +118,30 @@ describe('Files Service', () => {
     const res = await sdk.files.getDetails(token);
 
     expect(res.name).toBe(fileData.name);
+  });
+
+  it('should allow the user to abort a request', async () => {
+    nock(`${host}${FILES_BASE}`)
+      .post('/')
+      .delay(2000)
+      .reply(200, fileData);
+
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 1000);
+
+    const newFile = {
+      name: 'testfile',
+      file: fs.readFileSync('test'),
+      extension: 'pdf',
+    };
+
+    const error = await sdk.files.create(
+      newFile.name,
+      newFile.file,
+      { signal: controller.signal }
+    )
+      .catch((e: Error) => e);
+
+    expect(error instanceof RequestAbortedError).toBe(true);
   });
 });
