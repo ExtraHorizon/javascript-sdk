@@ -6,7 +6,7 @@ The Extra Horizon SDK can be used on different platforms, each handling binary d
 
 In browsers the [File ](https://developer.mozilla.org/en-US/docs/Web/API/File)and [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) classes can be used for uploads.
 
-A download results in an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/ArrayBuffer).
+A download results in an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 ### File upload example
 
@@ -45,7 +45,7 @@ console.log(content); // Shows 'Hello, world!'
 
 Currently React Native provides limited support for binary data upload using `FormData`. As this is the basis for our file upload, for now only uploading from the file system is properly supported.
 
-A download results in an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/ArrayBuffer).
+A download results in an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 ### Upload example expo-file-system
 
@@ -168,4 +168,24 @@ const buffer = await new Promise((resolve, reject) => {
 const content = buffer.toString();
 
 console.log(content); // Shows 'Hello, world!'
+```
+
+### Abort request example
+
+```typescript
+const controller = new AbortController();
+const signal = controller.signal;
+     
+try {
+  await exh.files.create(file, { signal });
+} catch (error) {
+  if (error instanceof RequestAbortedError) {
+    console.log('File upload was cancelled, ignoring error');
+    return;
+  }
+  throw error; // Handle other errors
+}
+     
+// To cancel the upload, call:
+controller.abort();
 ```
