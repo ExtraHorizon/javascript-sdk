@@ -77,8 +77,33 @@ export type OptionsBase = {
   normalizeCustomData?: boolean;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString; };
+
 export interface FileUploadOptions extends OptionsBase {
-  onUploadProgress?: (progress: { loaded: number; total: number; }) => void;
+    onUploadProgress?: (progress: { loaded: number; total: number; }) => void;
+
+    /**
+     * AbortSignal to cancel the file upload.
+     *
+     * Example usage:
+     * ```typescript
+     * const controller = new AbortController();
+     * const signal = controller.signal;
+     *
+     * try {
+     *   await exh.files.create(file, { signal });
+     * } catch (error) {
+     *   if (error instanceof RequestAbortedError) {
+     *     console.log('File upload was cancelled, ignoring error');
+     *     return;
+     *   }
+     *   throw error; // Handle other errors
+     * }
+     *
+     * // To cancel the upload, call:
+     * controller.abort();
+     * ```
+     */
+    signal?: AbortSignal;
 }
 
 export type PagedResultWithPager<T> = PagedResult<T> & {
