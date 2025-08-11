@@ -492,3 +492,5 @@ export const ErrorClassMap = {
   2719: NoConfiguredPlayStoreProduct,
   2720: PlayStoreTransactionAlreadyLinked,
 };
+
+export class RequestAbortedError extends Error {}

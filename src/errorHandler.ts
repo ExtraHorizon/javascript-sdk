@@ -1,11 +1,11 @@
-import {
-  ApiError,
-  ErrorClassMap,
-  HttpError,
-  OAuth2ErrorClassMap,
-} from './errors';
+import axios from 'axios';
+import { ApiError, ErrorClassMap, OAuth2ErrorClassMap, RequestAbortedError } from './errors';
 
-export function typeReceivedError(error: HttpError) {
+export function typeReceivedError(error: any) {
+  if (axios.isCancel(error)) {
+    return new RequestAbortedError();
+  }
+
   const ErrorClass = ErrorClassMap[error?.response?.data?.code];
 
   if (ErrorClass) {
