@@ -75,11 +75,12 @@ export type OptionsBase = {
    * To enable this behaviour again, set to true.
    */
   normalizeCustomData?: boolean;
-  signal?: AbortSignal;
 };
 export type OptionsWithRql = OptionsBase & { rql?: RQLString; };
+
 export interface FileUploadOptions extends OptionsBase {
-  onUploadProgress?: (progress: { loaded: number; total: number; }) => void;
+    onUploadProgress?: (progress: { loaded: number; total: number; }) => void;
+    signal?: AbortSignal;
 }
 
 export type PagedResultWithPager<T> = PagedResult<T> & {
