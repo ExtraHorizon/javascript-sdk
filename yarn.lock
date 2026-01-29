@@ -577,8 +577,8 @@
 
 "@extrahorizon/eslint-config-base@^1.6.0":
   version "1.6.0"
-  resolved "https://npm.pkg.github.com/download/@extrahorizon/eslint-config-base/1.6.0/bc3dff2dfca9d77777b62122fee7fb6c8a97c666#bc3dff2dfca9d77777b62122fee7fb6c8a97c666"
-  integrity sha512-Uv+Fl0lLbD/JNrB6g61y4y6lgYXxggiae9pzxusPpT9rJzcHRIGvf80JQcHnUBAc38Hs12LEhRupuJQvBqKhrA==
+  resolved "https://registry.yarnpkg.com/@extrahorizon/eslint-config-base/-/eslint-config-base-1.6.0.tgz#4b19c43c7de76ac4f173a99d0d59c02395333c76"
+  integrity sha512-yDysSnreJyjeCNKKzxg+OrxPWnK+Evp7IniPEUjssUvbHu9Om0qo40P3//ob3+8FV85JpA1TjXVA6OFaUdU8xg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "~5.12.0"
     "@typescript-eslint/parser" "^5.12.0"
@@ -588,8 +588,8 @@
 
 "@extrahorizon/eslint-config-node@^1.6.0":
   version "1.6.0"
-  resolved "https://npm.pkg.github.com/download/@extrahorizon/eslint-config-node/1.6.0/b93a64ae889d3cd9abf94cb8a837894ae7a24876#b93a64ae889d3cd9abf94cb8a837894ae7a24876"
-  integrity sha512-ZVg+obKvu0t1d7VLPkvO+qzRuTyVYAs+LO+auuPQNoKcyxg9zk3upCTYwUF6jpg4uERPjn/l1scVWjdeL9EQ5g==
+  resolved "https://registry.yarnpkg.com/@extrahorizon/eslint-config-node/-/eslint-config-node-1.6.0.tgz#c3468a881b0d24e9aa606dd7f27dc443e87b8ba1"
+  integrity sha512-Ny5ES44rzCErMUv45MqcRNmpBKtEAPAOtthbZaeU5tJ96HRuGAUgawQMMlU3sZEJEpYRwpKcjRpMi/J+6e7okQ==
   dependencies:
     "@extrahorizon/eslint-config-base" "^1.6.0"
     eslint-plugin-jest "^26.4.5"
