@@ -28,6 +28,7 @@ import {
   templatesService,
   usersService,
 } from './services';
+import { templatesV2Service } from './services/templatesV2';
 import { ClientParams, ParamsOauth1, ParamsOauth2, ParamsProxy } from './types';
 import { validateConfig } from './utils';
 import { version as packageVersion } from './version';
@@ -39,6 +40,11 @@ export interface Client<T extends ClientParams> {
    * @see https://swagger.extrahorizon.com/listing/?service=templates-service&redirectToVersion=1
    */
   templates: ReturnType<typeof templatesService>;
+  /**
+   * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
+   * @see https://swagger.extrahorizon.com/listing/?service=templates-service&redirectToVersion=2
+   */
+  templatesV2: ReturnType<typeof templatesV2Service>;
   /**
    * Provides mail functionality for other services.
    * @see https://swagger.extrahorizon.com/listing/?service=mail-service&redirectToVersion=1
@@ -153,6 +159,7 @@ export function createClient<T extends ClientParams>(rawConfig: T): Client<T> {
     files: filesService(httpWithAuth),
     tasks: tasksService(httpWithAuth),
     templates: templatesService(httpWithAuth),
+    templatesV2: templatesV2Service(httpWithAuth),
     mails: mailsService(httpWithAuth),
     configurations: configurationsService(httpWithAuth),
     dispatchers: dispatchersService(httpWithAuth),
