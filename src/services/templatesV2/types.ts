@@ -144,7 +144,7 @@ export interface TemplatesV2Service {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_TEMPLATES` | `global` | **Required** for this endpoint
-   * @param templateIdOrName Id of the targeted template
+   * @param templateIdOrName Id or Name of the targeted template
    * @param requestBody TemplateIn
    * @returns TemplateV2Out
    * @throws {ResourceAlreadyExistsError}
