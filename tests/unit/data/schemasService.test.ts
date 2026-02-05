@@ -74,7 +74,7 @@ describe('Schemas Service', () => {
         data: Array(15).fill(schemaData),
       });
     const res = await sdk.data.schemas.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should find a schema by id', async () => {
@@ -181,7 +181,7 @@ describe('Schemas Service', () => {
 
     await schemas.next();
     const thirdPage = await schemas.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should request a list of all schemas with offset and throw error', async () => {
@@ -241,8 +241,8 @@ describe('Schemas Service', () => {
     const secondPage = await schemas.next();
     const thirdPage = await schemas.next();
     const previousPage = await schemas.previous();
-    expect(secondPage.data.length).toBe(20);
-    expect(thirdPage.data.length).toBe(5);
-    expect(previousPage.data.length).toBe(20);
+    expect(secondPage.data).toHaveLength(20);
+    expect(thirdPage.data).toHaveLength(5);
+    expect(previousPage.data).toHaveLength(20);
   });
 });

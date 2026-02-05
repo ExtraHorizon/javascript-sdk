@@ -177,7 +177,7 @@ describe('Users Service', () => {
 
     const result = await sdk.users.remove(userId);
 
-    expect(result).toEqual({ affectedRecords: 1 });
+    expect(result).toStrictEqual({ affectedRecords: 1 });
   });
 
   it('should add a patient enlistment to a user', async () => {
@@ -187,7 +187,7 @@ describe('Users Service', () => {
 
     const result = await sdk.users.addPatientEnlistment(userId, { groupId });
 
-    expect(result).toEqual({ affectedRecords: 1 });
+    expect(result).toStrictEqual({ affectedRecords: 1 });
   });
 
   it('should remove a patient enlistment from a user', async () => {
@@ -197,7 +197,7 @@ describe('Users Service', () => {
 
     const result = await sdk.users.removePatientEnlistment(userId, groupId);
 
-    expect(result).toEqual({ affectedRecords: 1 });
+    expect(result).toStrictEqual({ affectedRecords: 1 });
   });
 
   it('Updates a users password', async () => {
@@ -251,7 +251,7 @@ describe('Users Service', () => {
 
     const result = await sdk.users.isEmailAvailable(newEmail);
 
-    expect(result).toEqual({ emailAvailable: true });
+    expect(result).toStrictEqual({ emailAvailable: true });
   });
 
   it('should upload profile image', async () => {
@@ -266,7 +266,7 @@ describe('Users Service', () => {
 
   it('should get password policy', async () => {
     nock(`${host}${USER_BASE}`)
-      .get(`/password_policy`)
+      .get('/password_policy')
       .reply(200, passwordPolicy);
 
     const result = await sdk.users.passwordPolicy();
@@ -276,7 +276,7 @@ describe('Users Service', () => {
 
   it('should update password policy', async () => {
     nock(`${host}${USER_BASE}`)
-      .put(`/password_policy`)
+      .put('/password_policy')
       .reply(200, passwordPolicy);
 
     const result = await sdk.users.updatePasswordPolicy(newPasswordPolicy);

@@ -46,7 +46,7 @@ describe('Auth - OAuth2', () => {
       redirectUri: 'http://localhost',
     });
 
-    expect(createdResult.id).toEqual(authorizationData.id);
+    expect(createdResult.id).toStrictEqual(authorizationData.id);
   });
 
   it('should get authorizations', async () => {
@@ -57,7 +57,7 @@ describe('Auth - OAuth2', () => {
     const applications = await sdk.auth.oauth2.getAuthorizations();
 
     expect(applications.data).toBeDefined();
-    expect(applications.data[0].id).toEqual(authorizationData.id);
+    expect(applications.data[0].id).toStrictEqual(authorizationData.id);
   });
 
   it('should delete an authorization', async () => {
@@ -73,7 +73,7 @@ describe('Auth - OAuth2', () => {
       authorizationId
     );
 
-    expect(deleteResult.affectedRecords).toEqual(1);
+    expect(deleteResult.affectedRecords).toBe(1);
   });
 
   it('throws on deleting unknown authorization', async () => {

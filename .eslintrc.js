@@ -4,7 +4,7 @@ module.exports = {
   ],
   parserOptions: {
     project: './tsconfig.eslint.json'
-  },  
+  },
   plugins: [
     '@typescript-eslint',
   ],
@@ -13,5 +13,6 @@ module.exports = {
     "max-classes-per-file": 0,
     "import/no-extraneous-dependencies": ["error", { "devDependencies": ["tests/**/*.ts"] }],
     "max-len": ["error", { "code": 150, "ignoreComments": true }],
+    "jest/valid-title": 0, // TODO: fix the test titles and remove this lines
   }
 };

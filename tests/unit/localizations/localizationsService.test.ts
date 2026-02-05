@@ -68,7 +68,7 @@ describe('Localizations Service', () => {
 
     const localization = await sdk.localizations.findFirst();
 
-    expect(localization).toEqual(localizationResponse.data[0]);
+    expect(localization).toStrictEqual(localizationResponse.data[0]);
   });
 
   it('should create a new localization', async () => {

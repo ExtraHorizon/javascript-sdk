@@ -38,7 +38,7 @@ describe('Auth - Applications', () => {
 
     const mfaSettingResult = await sdk.auth.users.getMfaSetting(userId);
 
-    expect(mfaSettingResult.id).toEqual(mfaSetting.id);
+    expect(mfaSettingResult.id).toStrictEqual(mfaSetting.id);
   });
 
   it('should enable mfa for user', async () => {
@@ -50,7 +50,7 @@ describe('Auth - Applications', () => {
       presenceToken: 'test',
     });
 
-    expect(enableResult.affectedRecords).toEqual(1);
+    expect(enableResult.affectedRecords).toBe(1);
   });
 
   it('should disable mfa for user', async () => {
@@ -62,7 +62,7 @@ describe('Auth - Applications', () => {
       presenceToken: 'test',
     });
 
-    expect(enableResult.affectedRecords).toEqual(1);
+    expect(enableResult.affectedRecords).toBe(1);
   });
 
   it('should add mfa method for user', async () => {
@@ -77,7 +77,7 @@ describe('Auth - Applications', () => {
       tags: [],
     });
 
-    expect(addedMethod.id).toEqual('609b8ad0c0de01f7b1e8b54d');
+    expect(addedMethod.id).toBe('609b8ad0c0de01f7b1e8b54d');
   });
 
   it('Adds an MFA method for user with just the minimal required fields set', async () => {
@@ -107,7 +107,7 @@ describe('Auth - Applications', () => {
       { presenceToken: 'presenceToken', code: '123456' }
     );
 
-    expect(addedMethod.description).toEqual('description');
+    expect(addedMethod.description).toBe('description');
   });
 
   it('should remove mfa method for user', async () => {
@@ -121,6 +121,6 @@ describe('Auth - Applications', () => {
       { presenceToken: 'presenceToken' }
     );
 
-    expect(removedMfaMethod.affectedRecords).toEqual(1);
+    expect(removedMfaMethod.affectedRecords).toBe(1);
   });
 });

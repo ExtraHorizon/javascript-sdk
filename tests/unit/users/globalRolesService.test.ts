@@ -126,7 +126,7 @@ describe('Global Roles Service', () => {
       description: 'this is a new role',
     };
     nock(`${host}${USER_BASE}`)
-      .post(`/roles`)
+      .post('/roles')
       .reply(200, {
         ...newRole,
         id: roleId,

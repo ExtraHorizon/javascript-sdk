@@ -1,19 +1,19 @@
 import nock from 'nock';
-import { randomHexString } from '../../__helpers__/utils';
 import { createClient } from '../../../src';
 import {
   AUTH_BASE,
   CONFIGURATION_BASE,
   USER_BASE,
 } from '../../../src/constants';
+import { createHttpClient } from '../../../src/http';
+import { validateConfig } from '../../../src/utils';
 import { authenticationResponse } from '../../__helpers__/auth';
-import { newUserData, registerUserResponse } from '../../__helpers__/user';
 import {
   customGeneralConfigResponse,
   generalConfigResponse,
 } from '../../__helpers__/configuration';
-import { createHttpClient } from '../../../src/http';
-import { validateConfig } from '../../../src/utils';
+import { newUserData, registerUserResponse } from '../../__helpers__/user';
+import { randomHexString } from '../../__helpers__/utils';
 
 describe('HttpClient', () => {
   let exh;

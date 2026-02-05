@@ -11,7 +11,7 @@ describe('Files - Settings - PUT', () => {
 
   it('Updates the File Service Settings', async () => {
     nock(`${host}${FILES_BASE}`)
-      .put(`/settings`)
+      .put('/settings')
       .reply(200, { affectedRecords: 1 });
 
     const response = await exh.files.settings.update({

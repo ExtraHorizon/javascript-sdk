@@ -46,7 +46,7 @@ describe('Auth - Applications', () => {
       redirectUris: [],
     });
 
-    expect(createdResult.id).toEqual(newApplication.id);
+    expect(createdResult.id).toStrictEqual(newApplication.id);
   });
 
   describe('find', () => {
@@ -133,7 +133,7 @@ describe('Auth - Applications', () => {
       description: newApplication.description,
     });
 
-    expect(updatedResult.affectedRecords).toEqual(1);
+    expect(updatedResult.affectedRecords).toBe(1);
   });
 
   it('should delete an application version', async () => {
@@ -155,7 +155,7 @@ describe('Auth - Applications', () => {
       versionId
     );
 
-    expect(deleteResult.affectedRecords).toEqual(1);
+    expect(deleteResult.affectedRecords).toBe(1);
   });
 
   it('should create an application versions', async () => {
@@ -176,6 +176,6 @@ describe('Auth - Applications', () => {
       }
     );
 
-    expect(createdResult.id).toEqual(newApplicationVersion.id);
+    expect(createdResult.id).toStrictEqual(newApplicationVersion.id);
   });
 });

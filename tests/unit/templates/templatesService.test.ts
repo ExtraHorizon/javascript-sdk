@@ -71,7 +71,7 @@ describe('Template Service', () => {
         data: Array(15).fill(templateData),
       });
     const res = await sdk.templates.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all templates via iterator', async () => {
@@ -98,7 +98,7 @@ describe('Template Service', () => {
 
     await templates.next();
     const thirdPage = await templates.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should find a template by id', async () => {

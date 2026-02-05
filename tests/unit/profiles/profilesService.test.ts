@@ -190,7 +190,7 @@ describe('Profiles Service', () => {
         data: Array(15).fill(profileData),
       });
     const res = await sdk.profiles.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all profiles via iterator', async () => {
@@ -217,7 +217,7 @@ describe('Profiles Service', () => {
 
     await profiles.next();
     const thirdPage = await profiles.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should find a profile by id', async () => {
