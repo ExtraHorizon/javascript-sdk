@@ -1,5 +1,4 @@
 import { TEMPLATES_V2_BASE } from '../../constants';
-import { decamelizeRequestData } from '../../http/interceptors';
 import { AuthHttpClient } from '../../types';
 import httpClient from '../http-client';
 import health from './health';
