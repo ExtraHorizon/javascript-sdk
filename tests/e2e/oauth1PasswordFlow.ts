@@ -1,6 +1,6 @@
 import { createClient } from '../../src';
-import { rqlBuilder } from '../../src/rql';
 import { NoPermissionError } from '../../src/errors';
+import { rqlBuilder } from '../../src/rql';
 import { newSchemaInput } from '../__helpers__/data';
 
 describe('OAuth1 Password Flow', () => {

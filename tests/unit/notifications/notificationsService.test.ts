@@ -108,7 +108,7 @@ describe('Notifications Service', () => {
 
     await notifications.next();
     const thirdPage = await notifications.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should find a notification by id', async () => {
@@ -133,7 +133,7 @@ describe('Notifications Service', () => {
 
   it('should delete a notification', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
-      .delete(`/notifications`)
+      .delete('/notifications')
       .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.notifications.remove();
@@ -143,7 +143,7 @@ describe('Notifications Service', () => {
 
   it('should mark your notification(s) as viewed', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
-      .post(`/viewed`)
+      .post('/viewed')
       .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.notifications.markAsViewed();
@@ -153,7 +153,7 @@ describe('Notifications Service', () => {
 
   it('should retrieve the list of notification types', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
-      .get(`/types`)
+      .get('/types')
       .reply(200, notificationTypesResponse);
 
     const res = await sdk.notifications.getTypes();

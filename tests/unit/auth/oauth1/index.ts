@@ -66,7 +66,7 @@ describe('Auth - OAuth1', () => {
       .reply(200, ssoToken);
 
     const ssoTokenResult = await sdk.auth.oauth1.generateSsoToken();
-    expect(ssoTokenResult.ssoToken).toEqual(ssoToken.ssoToken);
+    expect(ssoTokenResult.ssoToken).toStrictEqual(ssoToken.ssoToken);
   });
 
   it('should consume a ssoToken', async () => {
@@ -80,7 +80,7 @@ describe('Auth - OAuth1', () => {
     const ssoTokenResult = await sdk.auth.oauth1.consumeSsoToken(
       'fakeSsoToken'
     );
-    expect(ssoTokenResult.token).toEqual(ssoResponse.token);
+    expect(ssoTokenResult.token).toStrictEqual(ssoResponse.token);
   });
 
   it('should get tokens', async () => {
@@ -100,7 +100,7 @@ describe('Auth - OAuth1', () => {
 
     const getTokensResult = await sdk.auth.oauth1.getTokens();
 
-    expect(getTokensResult.data[0].id).toEqual(token.id);
+    expect(getTokensResult.data[0].id).toStrictEqual(token.id);
   });
 
   it('should delete a token', async () => {
@@ -110,6 +110,6 @@ describe('Auth - OAuth1', () => {
 
     const getTokensResult = await sdk.auth.oauth1.removeToken('fakeId');
 
-    expect(getTokensResult.affectedRecords).toEqual(1);
+    expect(getTokensResult.affectedRecords).toBe(1);
   });
 });

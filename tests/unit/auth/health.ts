@@ -23,6 +23,6 @@ describe('Auth - Health', () => {
 
     const health = await sdk.auth.health();
 
-    expect(health).toEqual(true);
+    expect(health).toBe(true);
   });
 });

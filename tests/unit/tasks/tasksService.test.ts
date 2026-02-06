@@ -68,7 +68,7 @@ describe('Tasks Service', () => {
         data: Array(15).fill(taskData),
       });
     const res = await sdk.tasks.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all tasks via iterator', async () => {
@@ -95,7 +95,7 @@ describe('Tasks Service', () => {
 
     await tasks.next();
     const thirdPage = await tasks.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should find a task by id', async () => {

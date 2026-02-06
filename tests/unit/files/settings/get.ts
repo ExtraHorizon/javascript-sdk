@@ -16,7 +16,7 @@ describe('Files - Settings - GET', () => {
 
   it('Retrieves the File Service Settings', async () => {
     nock(`${host}${FILES_BASE}`)
-      .get(`/settings`)
+      .get('/settings')
       .reply(200, { ...settingsResponse });
 
     const settings = await exh.files.settings.get();

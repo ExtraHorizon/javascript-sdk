@@ -58,7 +58,7 @@ describe('Infrastructure Service', () => {
 
     try {
       const result = await sdk.data.health();
-      expect(result).toEqual({ all: 'good' });
+      expect(result).toStrictEqual({ all: 'good' });
       // eslint-disable-next-line no-empty
     } catch {}
   });

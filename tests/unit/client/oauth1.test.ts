@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { validateConfig } from '../../../src/utils';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import {
   AuthenticationError,
@@ -9,6 +8,7 @@ import {
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth1HttpClient } from '../../../src/http/oauth1';
 import { OAuth1HttpClient } from '../../../src/types';
+import { validateConfig } from '../../../src/utils';
 
 const mockParams = {
   host: 'https://api.test.com',
@@ -100,7 +100,7 @@ describe('OAuth1HttpClient', () => {
     expect(mfaError).toBeInstanceOf(MfaRequiredError);
 
     const mfaData = mfaError.mfa;
-    expect(mfaData).toEqual(mfaResponseData);
+    expect(mfaData).toStrictEqual(mfaResponseData);
 
     const mfaMethod = mfaData.methods[0];
     nock(mockParams.host)
@@ -136,7 +136,7 @@ describe('OAuth1HttpClient', () => {
 
     const loggedInResult = await httpWithAuth.get('/test');
     expect(loggedInResult.request.headers.authorization).toContain(
-      `MyReceivedToken`
+      'MyReceivedToken'
     );
 
     const result = httpWithAuth.extraAuthMethods.logout();
@@ -147,7 +147,7 @@ describe('OAuth1HttpClient', () => {
 
     const loggedOutResult = await httpWithAuth.get('/test');
     expect(loggedOutResult.request.headers.authorization).not.toContain(
-      `MyReceivedToken`
+      'MyReceivedToken'
     );
   });
 
@@ -192,7 +192,7 @@ describe('OAuth1HttpClient', () => {
     nock(mockParams.host).get('/test').reply(200);
 
     const result = await httpWithAuth.get('/test');
-    expect(result.request.headers.authorization).toContain(`MySuppliedToken`);
+    expect(result.request.headers.authorization).toContain('MySuppliedToken');
   });
 
   it('should authorize with valid token/tokenSecret/skipTokenCheck and get a userId', async () => {

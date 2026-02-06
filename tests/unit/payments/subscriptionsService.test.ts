@@ -65,7 +65,7 @@ describe('Subscriptions Service', () => {
         data: Array(15).fill(subscriptionEntitlementData),
       });
     const res = await sdk.payments.subscriptions.entitlements.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all subscription entitlements via iterator', async () => {
@@ -93,7 +93,7 @@ describe('Subscriptions Service', () => {
 
     await entitlements.next();
     const thirdPage = await entitlements.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should get a list of subscription events', async () => {
@@ -127,7 +127,7 @@ describe('Subscriptions Service', () => {
         data: Array(15).fill(subscriptionEventData),
       });
     const res = await sdk.payments.subscriptions.events.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all subscription events via iterator', async () => {
@@ -154,6 +154,6 @@ describe('Subscriptions Service', () => {
 
     await events.next();
     const thirdPage = await events.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 });

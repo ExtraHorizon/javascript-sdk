@@ -1,13 +1,13 @@
 import nock from 'nock';
-import { validateConfig } from '../../../src/utils';
 import { USER_BASE } from '../../../src/constants';
-import { createHttpClient } from '../../../src/http/client';
-import { createProxyHttpClient } from '../../../src/http';
-import { ParamsOauth2 } from '../../../src/types';
 import {
   OauthTokenError,
   UserNotAuthenticatedError,
 } from '../../../src/errors';
+import { createProxyHttpClient } from '../../../src/http';
+import { createHttpClient } from '../../../src/http/client';
+import { ParamsOauth2 } from '../../../src/types';
+import { validateConfig } from '../../../src/utils';
 
 const mockParams = {
   host: 'https://apx.test.com',
@@ -48,12 +48,12 @@ describe('ProxyHttpClient', () => {
   });
 
   it('should log out', async () => {
-    nock(mockParams.host).post(`/logout`).reply(200);
+    nock(mockParams.host).post('/logout').reply(200);
     await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(true);
   });
 
   it("shouldn't log out if function throws", async () => {
-    nock(mockParams.host).post(`/logout`).reply(401);
+    nock(mockParams.host).post('/logout').reply(401);
     await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(false);
   });
 
@@ -62,7 +62,7 @@ describe('ProxyHttpClient', () => {
 
     const userId = await httpWithAuth.userId;
 
-    expect(userId).toBe(undefined);
+    expect(userId).toBeUndefined();
   });
 
   it('throws on calls with missing jwt', async () => {

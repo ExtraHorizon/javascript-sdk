@@ -26,7 +26,7 @@
     "prepare": "yarn build && yarn lint",
     "test": "jest",
     "test:e2e": "jest tests/e2e",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src/** tests/** --ext .ts"
   },
   "files": [
     "build"

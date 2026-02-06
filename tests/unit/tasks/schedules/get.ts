@@ -27,7 +27,7 @@ describe('Tasks - Schedules - GET', () => {
 
   it('Retrieves the first Schedule', async () => {
     nock(`${host}${TASKS_BASE}`)
-      .get(`/schedules`)
+      .get('/schedules')
       .reply(200, { data: schedulesData });
 
     const schedule = await exh.tasks.schedules.findFirst();
@@ -36,7 +36,7 @@ describe('Tasks - Schedules - GET', () => {
 
   it('Lists Schedules using a user defined data type', async () => {
     nock(`${host}${TASKS_BASE}`)
-      .get(`/schedules`)
+      .get('/schedules')
       .reply(200, { data: schedulesData });
 
     const schedule = await exh.tasks.schedules.findFirst<ScheduleDataType>();

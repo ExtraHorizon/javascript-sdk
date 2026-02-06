@@ -1,6 +1,6 @@
 import nock from 'nock';
+import { createOAuth2Client } from '../../../src';
 import { AUTH_BASE } from '../../../src/constants';
-import { createOAuth2Client } from '../../../src/';
 import {
   ApiError,
   AuthenticationError,
@@ -399,7 +399,7 @@ describe('OAuth2HttpClient', () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, (_uri, data) => {
-        expect(data).toEqual({
+        expect(data).toStrictEqual({
           client_id: mockParams.clientId,
           grant_type: 'refresh_token',
           refresh_token: 'test',
@@ -652,6 +652,7 @@ describe('OAuth2HttpClient', () => {
     const data = { state: 'my-state-value' };
     const responseData = {
       authenticationUrl:
+      // eslint-disable-next-line max-len
         'https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=123456789-abcdefghijklw.apps.googleusercontent.com&scope=openid%20email%20profile&redirect_uri=https://api.dev.yourapp.com/callback',
     };
 
@@ -668,7 +669,7 @@ describe('OAuth2HttpClient', () => {
           providerName,
           data
         );
-      expect(result).toEqual(responseData);
+      expect(result).toStrictEqual(responseData);
     });
 
     it('should accept the data not to be set', async () => {
@@ -683,7 +684,7 @@ describe('OAuth2HttpClient', () => {
         await httpWithAuth.extraAuthMethods.generateOidcAuthenticationUrl(
           providerName
         );
-      expect(result).toEqual(responseData);
+      expect(result).toStrictEqual(responseData);
     });
 
     it('should throw when generating an OIDC authentication URL fails', async () => {

@@ -82,7 +82,7 @@ describe('recursiveMap function', () => {
         },
       ]
     );
-    expect(Array.isArray(result)).toEqual(true);
+    expect(Array.isArray(result)).toBe(true);
     expect(result[0].patient_enlistments[0].expiry_timestamp).toBe(
       '2018-11-26T13:59:13.289Z'
     );

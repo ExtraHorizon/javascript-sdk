@@ -67,7 +67,7 @@ describe('App Store Subscriptions Service', () => {
       });
     const res =
       await sdk.payments.appStoreSubscriptions.subscriptions.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all App Store subscriptions via iterator', async () => {
@@ -95,7 +95,7 @@ describe('App Store Subscriptions Service', () => {
 
     await subscriptions.next();
     const thirdPage = await subscriptions.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should get a list of configured App Store subscription products', async () => {
@@ -129,7 +129,7 @@ describe('App Store Subscriptions Service', () => {
         data: Array(15).fill(appStoreSubscriptionProduct),
       });
     const res = await sdk.payments.appStoreSubscriptions.products.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all App Store subscription products via iterator', async () => {
@@ -157,7 +157,7 @@ describe('App Store Subscriptions Service', () => {
 
     await products.next();
     const thirdPage = await products.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should create an App Store subscription product', async () => {

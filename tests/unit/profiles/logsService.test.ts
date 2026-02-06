@@ -77,7 +77,7 @@ describe('Logs Service', () => {
         data: Array(15).fill(logData),
       });
     const res = await sdk.profiles.logs.findAll(profileId, groupId);
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
   it('should request a list of all profile log entries via iterator', async () => {
@@ -104,7 +104,7 @@ describe('Logs Service', () => {
 
     await profileLogs.next();
     const thirdPage = await profileLogs.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
   it('should update a profile log entry', async () => {
