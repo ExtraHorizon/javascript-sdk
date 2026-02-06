@@ -11,7 +11,6 @@ export const templatesV2Service = (
 ): ReturnType<typeof health> & TemplatesV2Service => {
   const client = httpClient({
     basePath: TEMPLATES_V2_BASE,
-    transformRequestData: decamelizeRequestData,
   });
 
   return {
