@@ -1,3 +1,4 @@
+import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../helpers';
 import { HttpClient } from '../http-client';
@@ -46,6 +47,11 @@ export default (
     async findFirst(this: UsersService, options) {
       const res = await find(options);
       return res.data[0];
+    },
+
+    async findByEmail(email, options) {
+      const rqlWithEmail = rqlBuilder(options?.rql).eq('email', email).build();
+      return await this.findFirst({ ...options, rql: rqlWithEmail });
     },
 
     async removeUsers(rql, options) {

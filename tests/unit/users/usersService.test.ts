@@ -81,7 +81,17 @@ describe('Users Service', () => {
 
     const user = await sdk.users.findFirst();
 
-    expect(user.id);
+    expect(user?.id);
+  });
+
+  it('Finds a user by email', async () => {
+    nock(`${host}${USER_BASE}/`)
+      .get('/?eq(email,test%2540test%252Ecom)') // Double encoded
+      .reply(200, createPagedResponse(userData));
+
+    const user = await sdk.users.findByEmail('test@test.com');
+
+    expect(user?.id);
   });
 
   it('Gets user by id', async () => {

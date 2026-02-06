@@ -982,7 +982,19 @@ export interface UsersService {
    * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
    * `VIEW_USER` | `global` | See all fields of all users
    */
-  findFirst(options?: { rql?: RQLString; }): Promise<User | undefined>;
+  findFirst(options?: OptionsWithRql): Promise<User | undefined>;
+
+  /**
+   * Find a user by their email address
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
+   * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
+   * `VIEW_USER` | `global` | See all fields of all users
+   */
+  findByEmail(email: string, options?: OptionsWithRql): Promise<User | undefined>;
+
   /**
    * @deprecated
    * Delete a list of users

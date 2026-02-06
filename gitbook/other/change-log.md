@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.9.0]
 
+### Added
+- Added a `exh.users.findByEmail` method to find a user by their email address.
+
 ### Fixed
 - Corrected the types for the `findFirst` (based) methods to indicate they may return `undefined` when no results are found.
 
