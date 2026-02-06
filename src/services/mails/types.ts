@@ -13,7 +13,7 @@ import {
 
 export interface Mail {
   id: ObjectId;
-  creatorId: ObjectId;
+  creatorId?: ObjectId;
   awsMessageId?: ObjectId;
   subject: string;
   recipients: MailRecipients;
