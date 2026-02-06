@@ -8,23 +8,26 @@ import {
   PagedResult,
   OptionsBase,
   OptionsWithRql,
+  TimeZone,
 } from '../types';
 
 export interface Mail {
-  id?: ObjectId;
+  id: ObjectId;
   creatorId?: ObjectId;
   awsMessageId?: ObjectId;
-  subject?: string;
-  recipients?: MailRecipients;
+  subject: string;
+  recipients: MailRecipients;
   templateId?: ObjectId;
+  templateName?: string;
   replyTo?: MailAddressList;
-  from?: MailAddress;
+  from: MailAddress;
   body?: string;
   language?: LanguageCode;
+  timeZone?: TimeZone;
   content?: Record<string, any>;
-  views?: number;
-  creationTimestamp?: Date;
-  updateTimestamp?: Date;
+  views: number;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 export type PlainMailCreation = {
@@ -33,8 +36,10 @@ export type PlainMailCreation = {
 } & CommonMailCreationProperties;
 
 export type TemplateBasedMailCreation = {
-  templateId: ObjectId;
+  templateId?: ObjectId;
+  templateName?: string;
   language?: LanguageCode;
+  timeZone?: TimeZone;
   content: Record<string, any>;
 } & CommonMailCreationProperties;
 
@@ -58,9 +63,9 @@ export interface Attachment {
 }
 
 export interface QueuedMail {
-  id?: ObjectId;
-  status?: QueuedMailStatus;
-  from?: string;
+  id: ObjectId;
+  status: QueuedMailStatus;
+  from: string;
   to?: MailAddressList;
   cc?: MailAddressList;
   bcc?: MailAddressList;
@@ -73,14 +78,18 @@ export interface QueuedMail {
   textEncoding?: string;
   templateData?: {
     templateId?: ObjectId;
+    templateName?: string;
     credentials?: {
       serviceId?: ObjectId;
       applicationId?: ObjectId;
       userId?: ObjectId;
     };
     language?: LanguageCode;
+    timeZone?: string;
     content?: Record<string, any>;
   };
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
 export interface QueuedMailAttachment {
