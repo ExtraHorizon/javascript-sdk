@@ -41,7 +41,10 @@ export enum Results {
 }
 
 /**
- * IANA time zone identifier (e.g. "Europe/Brussels"). We aim to stay aligned with the official IANA time zone database. In practice, supported values closely match those returned by Intl.supportedValuesOf('timeZone') in JavaScript. For an overview of IANA time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+ * IANA time zone identifier (e.g. "Europe/Brussels").
+ * We aim to stay aligned with the official IANA time zone database.
+ * In practice, supported values closely match those returned by Intl.supportedValuesOf('timeZone') in JavaScript.
+ * For an overview of IANA time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
  */
 export type TimeZone = string;
 

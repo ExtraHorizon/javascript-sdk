@@ -7,12 +7,13 @@ import {
   AffectedRecords,
   PagedResult,
   OptionsBase,
-  OptionsWithRql, TimeZone,
+  OptionsWithRql,
+  TimeZone,
 } from '../types';
 
 export interface Mail {
   id: ObjectId;
-  creatorId?: ObjectId;
+  creatorId: ObjectId;
   awsMessageId?: ObjectId;
   subject: string;
   recipients: MailRecipients;
