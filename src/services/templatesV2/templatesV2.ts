@@ -89,23 +89,23 @@ export default (
     },
 
     async findAll(options) {
-      return findAllGeneric<TemplateV2>(this.find, options);
+      return findAllGeneric<TemplateV2>(find, options);
     },
 
-    async findById(this: TemplatesV2Service, id, options) {
-      const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-      const result = await this.find({ ...options, rql: rqlWithId });
+    async findById(templateId, options) {
+      const rqlWithId = rqlBuilder(options?.rql).eq('id', templateId).build();
+      const result = await find({ ...options, rql: rqlWithId });
       return result.data[0];
     },
 
-    async findByName(this: TemplatesV2Service, name, options?) {
+    async findByName(name, options?) {
       const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-      const result = await this.find({ ...options, rql: rqlWithName });
+      const result = await find({ ...options, rql: rqlWithName });
       return result.data[0];
     },
 
-    async findFirst(this: TemplatesV2Service, options) {
-      const result = await this.find(options);
+    async findFirst(options) {
+      const result = await find(options);
       return result.data[0];
     },
   };
