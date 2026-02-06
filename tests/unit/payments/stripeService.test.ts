@@ -39,7 +39,7 @@ describe('Stripe Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get the saved Stripe data for a user', async () => {
+  it('Gets the saved Stripe data for a user', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get(`/stripe/users/${userId}`)
       .reply(200, stripeUser);
@@ -49,7 +49,7 @@ describe('Stripe Service', () => {
     expect(user.id).toBe(userId);
   });
 
-  it('should save a payment method to a Stripe user', async () => {
+  it('Saves a payment method to a Stripe user', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post(`/stripe/users/${userId}/paymentMethods`)
       .reply(200, stripePaymentMethod);
@@ -62,7 +62,7 @@ describe('Stripe Service', () => {
     expect(paymentMethod.id).toBe(paymentMethodId);
   });
 
-  it('should add tags to a payment method', async () => {
+  it('Adds tags to a payment method', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post(`/stripe/users/${userId}/paymentMethods/${paymentMethodId}/addTags`)
       .reply(200, {
@@ -80,7 +80,7 @@ describe('Stripe Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove tags to a payment method', async () => {
+  it('Removes tags to a payment method', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post(
         `/stripe/users/${userId}/paymentMethods/${paymentMethodId}/removeTags`
@@ -100,7 +100,7 @@ describe('Stripe Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete a payment method', async () => {
+  it('Deletes a payment method', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .delete(`/stripe/users/${userId}/paymentMethods/${paymentMethodId}`)
       .reply(200, {
@@ -115,7 +115,7 @@ describe('Stripe Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should create an order linked to a Stripe payment intent', async () => {
+  it('Creates an order linked to a Stripe payment intent', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/stripe/paymentIntents')
       .reply(200, orderData);
@@ -125,7 +125,7 @@ describe('Stripe Service', () => {
     expect(order.id).toBe(orderId);
   });
 
-  it('should create a Stripe setup intent for capturing payment details without initial payment', async () => {
+  it('Creates a Stripe setup intent for capturing payment details without initial payment', async () => {
     nock(`${host}${PAYMENTS_BASE}`).post('/stripe/setupIntents').reply(200, {
       stripeClientSecret: 'secret',
     });
@@ -138,7 +138,7 @@ describe('Stripe Service', () => {
     expect(setupIntent.stripeClientSecret).toBe('secret');
   });
 
-  it("should receive incoming events from Stripe's webhook", async () => {
+  it('Receives incoming events from Stripe\'s webhook', async () => {
     nock(`${host}${PAYMENTS_BASE}`).post('/stripe/events').reply(200);
 
     const res = await sdk.payments.stripe.subscribeToEvents();

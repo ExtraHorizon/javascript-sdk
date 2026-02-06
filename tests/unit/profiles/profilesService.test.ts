@@ -40,7 +40,7 @@ describe('Profiles Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get a list of profiles', async () => {
+  it('Gets a list of profiles', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PROFILES_BASE}`).get('/').reply(200, profilesResponse);
 
@@ -49,7 +49,7 @@ describe('Profiles Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should not convert the custom fields to camel case', async () => {
+  it('Does not convert the custom fields to camel case', async () => {
     const profile = {
       id: profileId,
       custom_fields: {
@@ -68,7 +68,7 @@ describe('Profiles Service', () => {
     expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);
   });
 
-  it('should convert the custom fields to camel case if normalizeCustomData is true on the request', async () => {
+  it('Converts the custom fields to camel case if normalizeCustomData is true on the request', async () => {
     const profile = {
       id: profileId,
       custom_fields: {
@@ -93,7 +93,7 @@ describe('Profiles Service', () => {
     });
   });
 
-  it('should convert the custom fields to camel case if the normalizeCustomData is true on the client', async () => {
+  it('Converts the custom fields to camel case if the normalizeCustomData is true on the client', async () => {
     sdk = createClient({
       host,
       clientId: '',
@@ -131,7 +131,7 @@ describe('Profiles Service', () => {
     });
   });
 
-  it('should not convert the custom fields to camel case if the normalizeCustomData true on the client but set to false on the request', async () => {
+  it('Does not convert the custom fields to camel case if the normalizeCustomData true on the client but set to false on the request', async () => {
     sdk = createClient({
       host,
       clientId: '',
@@ -169,7 +169,7 @@ describe('Profiles Service', () => {
     expect(res.data[0].customFields).toStrictEqual(profile.custom_fields);
   });
 
-  it('should request a list of all profiles', async () => {
+  it('Requests a list of all profiles', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -193,7 +193,7 @@ describe('Profiles Service', () => {
     expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all profiles via iterator', async () => {
+  it('Requests a list of all profiles via iterator', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -220,7 +220,7 @@ describe('Profiles Service', () => {
     expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should find a profile by id', async () => {
+  it('Finds a profile by id', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get(`/?eq(id,${profileId})`)
       .reply(200, profilesResponse);
@@ -230,7 +230,7 @@ describe('Profiles Service', () => {
     expect(profile.id).toBe(profileId);
   });
 
-  it('should find the first profile', async () => {
+  it('Finds the first profile', async () => {
     nock(`${host}${PROFILES_BASE}`).get('/').reply(200, profilesResponse);
 
     const profile = await sdk.profiles.findFirst();
@@ -238,7 +238,7 @@ describe('Profiles Service', () => {
     expect(profile.id).toBe(profilesResponse.data[0].id);
   });
 
-  it('should create a new profile', async () => {
+  it('Creates a new profile', async () => {
     nock(`${host}${PROFILES_BASE}`).post('/').reply(200, profileData);
 
     const profile = await sdk.profiles.create({
@@ -252,7 +252,7 @@ describe('Profiles Service', () => {
     expect(profile.id).toBe(profileId);
   });
 
-  it('should update a profile', async () => {
+  it('Updates a profile', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PROFILES_BASE}`).put('/').reply(200, {
       affectedRecords: 1,
@@ -263,7 +263,7 @@ describe('Profiles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove a given field from all profile records', async () => {
+  it('Removes a given field from all profile records', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PROFILES_BASE}`).post('/remove_fields').reply(200, {
       affectedRecords: 1,
@@ -276,7 +276,7 @@ describe('Profiles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should retrieve a list of all the defined comorbidities', async () => {
+  it('Retrieves a list of all the defined comorbidities', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get('/comorbidities')
       .reply(200, createPagedResponse(Comorbidities.HEART_FAILURE));
@@ -286,7 +286,7 @@ describe('Profiles Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should retrieve a list of all the defined impediments', async () => {
+  it('Retrieves a list of all the defined impediments', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get('/impediments')
       .reply(200, createPagedResponse(Impediments.TREMOR));

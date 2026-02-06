@@ -38,7 +38,7 @@ describe('Orders Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get a list of orders', async () => {
+  it('Gets a list of orders', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PAYMENTS_BASE}`).get('/orders').reply(200, orderResponse);
 
@@ -47,7 +47,7 @@ describe('Orders Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find an order by id', async () => {
+  it('Finds an order by id', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get(`/orders?eq(id,${orderId})`)
       .reply(200, orderResponse);
@@ -57,7 +57,7 @@ describe('Orders Service', () => {
     expect(order.id).toBe(orderId);
   });
 
-  it('should find the first order', async () => {
+  it('Finds the first order', async () => {
     nock(`${host}${PAYMENTS_BASE}`).get('/orders').reply(200, orderResponse);
 
     const order = await sdk.payments.orders.findFirst();
@@ -65,7 +65,7 @@ describe('Orders Service', () => {
     expect(order.id).toBe(orderResponse.data[0].id);
   });
 
-  it('should create an order', async () => {
+  it('Creates an order', async () => {
     nock(`${host}${PAYMENTS_BASE}`).post('/orders').reply(200, orderData);
 
     const order = await sdk.payments.orders.create(newOrder);
@@ -73,7 +73,7 @@ describe('Orders Service', () => {
     expect(order.id).toBe(orderId);
   });
 
-  it('should update the status of an order', async () => {
+  it('Updates the status of an order', async () => {
     nock(`${host}${PAYMENTS_BASE}`).put(`/orders/${orderId}`).reply(200, {
       affectedRecords: 1,
     });
@@ -85,7 +85,7 @@ describe('Orders Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should add tags to an order', async () => {
+  it('Adds tags to an order', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PAYMENTS_BASE}`).post('/orders/addTags').reply(200, {
       affectedRecords: 1,
@@ -98,7 +98,7 @@ describe('Orders Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove tags from an order', async () => {
+  it('Removes tags from an order', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PAYMENTS_BASE}`).post('/orders/removeTags').reply(200, {
       affectedRecords: 1,

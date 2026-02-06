@@ -24,7 +24,7 @@ describe('Events - Health Service', () => {
     });
   });
 
-  it('should perform a health check', async () => {
+  it('Performs a health check', async () => {
     nock(`${host}${EVENTS_BASE}`).get('/health').reply(200);
 
     const serviceIsAvailable = await sdk.events.health();

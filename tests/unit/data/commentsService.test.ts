@@ -35,7 +35,7 @@ describe('Comments Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should create a comment', async () => {
+  it('Creates a comment', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, newCommentCreated);
@@ -45,7 +45,7 @@ describe('Comments Service', () => {
     expect(comment.id).toBe(newCommentCreated.id);
   });
 
-  it('should request a list of comments', async () => {
+  it('Requests a list of comments', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents/${documentId}/comments`)
@@ -54,7 +54,7 @@ describe('Comments Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find a comment by id', async () => {
+  it('Finds a comment by id', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents/${documentId}/comments?eq(id,${commentId})`)
       .reply(200, commentsListResponse);
@@ -68,7 +68,7 @@ describe('Comments Service', () => {
     expect(comment.id).toBe(commentId);
   });
 
-  it('should find the first comment', async () => {
+  it('Finds the first comment', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents/${documentId}/comments`)
       .reply(200, commentsListResponse);
@@ -78,7 +78,7 @@ describe('Comments Service', () => {
     expect(comment.id).toBe(commentId);
   });
 
-  it('should update a comment', async () => {
+  it('Updates a comment', async () => {
     nock(`${host}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });
@@ -93,7 +93,7 @@ describe('Comments Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete a comment', async () => {
+  it('Deletes a comment', async () => {
     nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}/comments/${commentId}`)
       .reply(200, { affectedRecords: 1 });

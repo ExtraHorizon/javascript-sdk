@@ -25,7 +25,7 @@ describe('Languages Service', () => {
     });
   });
 
-  it('should retrieve a list of all the defined languages', async () => {
+  it('Retrieves a list of all the defined languages', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get('/languages')
       .reply(200, createPagedResponse('NL'));

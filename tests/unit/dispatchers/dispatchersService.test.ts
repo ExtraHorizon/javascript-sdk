@@ -38,7 +38,7 @@ describe('Dispatchers Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should find a list of dispatchers', async () => {
+  it('Finds a list of dispatchers', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${DISPATCHERS_BASE}`).get('/').reply(200, dispatchersResponse);
 
@@ -47,14 +47,14 @@ describe('Dispatchers Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('Should not transform custom data in the listing response', async () => {
+  it('Does not transform custom data in the listing response', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).get('/').reply(200, dispatchersResponse);
 
     const response = await sdk.dispatchers.find();
     expect(response.data).toStrictEqual(dispatchersResponse.data);
   });
 
-  it('should find a dispatcher by id', async () => {
+  it('Finds a dispatcher by id', async () => {
     nock(`${host}${DISPATCHERS_BASE}`)
       .get(`/?eq(id,${dispatcherId})`)
       .reply(200, dispatchersResponse);
@@ -64,7 +64,7 @@ describe('Dispatchers Service', () => {
     expect(dispatcher.id).toBe(dispatcherId);
   });
 
-  it('should find the first dispatcher', async () => {
+  it('Finds the first dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).get('/').reply(200, dispatchersResponse);
 
     const dispatcher = await sdk.dispatchers.findFirst();
@@ -72,7 +72,7 @@ describe('Dispatchers Service', () => {
     expect(dispatcher.id).toBe(dispatcherId);
   });
 
-  it('should create a dispatcher', async () => {
+  it('Creates a dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
 
     const res = await sdk.dispatchers.create(dispatcherData);
@@ -80,14 +80,14 @@ describe('Dispatchers Service', () => {
     expect(res.id).toBe(dispatcherData.id);
   });
 
-  it('Should not transform custom data in the creation response', async () => {
+  it('Does not transform custom data in the creation response', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).post('/').reply(200, dispatcherData);
 
     const response = await sdk.dispatchers.create(dispatcherData);
     expect(response).toStrictEqual(dispatcherData);
   });
 
-  it('should update a dispatcher', async () => {
+  it('Updates a dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).put(`/${dispatcherId}`).reply(200, {
       affectedRecords: 1,
     });
@@ -97,7 +97,7 @@ describe('Dispatchers Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete a dispatcher', async () => {
+  it('Deletes a dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`).delete(`/${dispatcherId}`).reply(200, {
       affectedRecords: 1,
     });

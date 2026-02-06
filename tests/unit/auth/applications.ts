@@ -34,7 +34,7 @@ describe('Auth - Applications', () => {
     nock.cleanAll();
   });
 
-  it('should create an application', async () => {
+  it('Creates an application', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post('/applications')
       .reply(200, newApplication);
@@ -105,7 +105,7 @@ describe('Auth - Applications', () => {
     });
   });
 
-  it('should get applications', async () => {
+  it('Gets applications', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/applications')
       .reply(200, createPagedResponse(applicationData));
@@ -116,7 +116,7 @@ describe('Auth - Applications', () => {
     expect(applications.data[0].name).toBe(applicationData.name);
   });
 
-  it('should update an application', async () => {
+  it('Updates an application', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(host)
@@ -136,7 +136,7 @@ describe('Auth - Applications', () => {
     expect(updatedResult.affectedRecords).toBe(1);
   });
 
-  it('should delete an application version', async () => {
+  it('Deletes an application version', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     const versionId = '456';
@@ -158,7 +158,7 @@ describe('Auth - Applications', () => {
     expect(deleteResult.affectedRecords).toBe(1);
   });
 
-  it('should create an application versions', async () => {
+  it('Creates an application versions', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(host)

@@ -39,7 +39,7 @@ describe('Mail Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should check health', async () => {
+  it('Checks health', async () => {
     nock(`${host}${MAIL_BASE}`).get('/health').reply(200);
 
     const endpointIsAvailable = await sdk.mails.health();
@@ -47,7 +47,7 @@ describe('Mail Service', () => {
     expect(endpointIsAvailable).toBe(true);
   });
 
-  it('should retrieve a list of mails', async () => {
+  it('Retrieves a list of mails', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${MAIL_BASE}`).get(`/${rql}`).reply(200, mailsResponse);
 
@@ -56,7 +56,7 @@ describe('Mail Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find a mail by id', async () => {
+  it('Finds a mail by id', async () => {
     nock(`${host}${MAIL_BASE}`)
       .get(`/?eq(id,${mailId})`)
       .reply(200, mailsResponse);
@@ -66,7 +66,7 @@ describe('Mail Service', () => {
     expect(mail.id).toBe(mailId);
   });
 
-  it('should find the first mail', async () => {
+  it('Finds the first mail', async () => {
     nock(`${host}${MAIL_BASE}`).get('/').reply(200, mailsResponse);
 
     const mail = await sdk.mails.findFirst();
@@ -74,7 +74,7 @@ describe('Mail Service', () => {
     expect(mail.id).toBe(mailId);
   });
 
-  it('should send a mail', async () => {
+  it('Sends a mail', async () => {
     nock(`${host}${MAIL_BASE}`).post('/').reply(200, mailData);
 
     const mail = await sdk.mails.send(mailInput);
@@ -82,7 +82,7 @@ describe('Mail Service', () => {
     expect(mail.subject).toBe(mailData.subject);
   });
 
-  it('should register a mail being opened', async () => {
+  it('Registers a mail being opened', async () => {
     const trackingHash = 'abcdefg12345';
     nock(`${host}${MAIL_BASE}`).get(`/${trackingHash}/open`).reply(200, {
       affectedRecords: 1,
@@ -93,7 +93,7 @@ describe('Mail Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should retrieve the list of mails that are not sent yet', async () => {
+  it('Retrieves the list of mails that are not sent yet', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${MAIL_BASE}`)
       .get(`/queued${rql}`)

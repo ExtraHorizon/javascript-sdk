@@ -31,7 +31,7 @@ describe('Auth - Applications', () => {
     nock.cleanAll();
   });
 
-  it('should get mfa settings for user', async () => {
+  it('Gets mfa settings for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get(`/mfa/users/${userId}`)
       .reply(200, mfaSetting);
@@ -41,7 +41,7 @@ describe('Auth - Applications', () => {
     expect(mfaSettingResult.id).toStrictEqual(mfaSetting.id);
   });
 
-  it('should enable mfa for user', async () => {
+  it('Enables mfa for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/enable`)
       .reply(200, { affectedRecords: 1 });
@@ -53,7 +53,7 @@ describe('Auth - Applications', () => {
     expect(enableResult.affectedRecords).toBe(1);
   });
 
-  it('should disable mfa for user', async () => {
+  it('Disables mfa for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/disable`)
       .reply(200, { affectedRecords: 1 });
@@ -65,7 +65,7 @@ describe('Auth - Applications', () => {
     expect(enableResult.affectedRecords).toBe(1);
   });
 
-  it('should add mfa method for user', async () => {
+  it('Adds mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/methods`)
       .reply(200, mfaSetting.methods[0]);
@@ -94,7 +94,7 @@ describe('Auth - Applications', () => {
     expect(addedMethod.id).toStrictEqual(exampleMethod.id);
   });
 
-  it('should verify mfa method for user', async () => {
+  it('Verifies mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(
         `/mfa/users/${userId}/methods/${mfaSetting.methods[0].id}/verification/confirm`
@@ -110,7 +110,7 @@ describe('Auth - Applications', () => {
     expect(addedMethod.description).toBe('description');
   });
 
-  it('should remove mfa method for user', async () => {
+  it('Removes mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/methods/${mfaSetting.methods[0].id}/remove`)
       .reply(200, { affectedRecords: 1 });

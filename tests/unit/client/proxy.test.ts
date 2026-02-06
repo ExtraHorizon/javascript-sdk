@@ -31,7 +31,7 @@ describe('ProxyHttpClient', () => {
     });
   });
 
-  it('should authorize', async () => {
+  it('Authorizes', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, { id: 'mockId' });
 
     const { data: me } = await httpWithAuth.get(`${USER_BASE}/me`);
@@ -39,7 +39,7 @@ describe('ProxyHttpClient', () => {
     expect(me.id).toBe('mockId');
   });
 
-  it('should get userId', async () => {
+  it('Gets userId', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, { id: 'mockId' });
 
     const userId = await httpWithAuth.userId;
@@ -47,17 +47,17 @@ describe('ProxyHttpClient', () => {
     expect(userId).toBe('mockId');
   });
 
-  it('should log out', async () => {
+  it('Logs out', async () => {
     nock(mockParams.host).post('/logout').reply(200);
     await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(true);
   });
 
-  it("shouldn't log out if function throws", async () => {
+  it("Doesn't log out if function throws", async () => {
     nock(mockParams.host).post('/logout').reply(401);
     await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(false);
   });
 
-  it('should get userId but return undefined because server error', async () => {
+  it('Gets userId but return undefined because server error', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(500);
 
     const userId = await httpWithAuth.userId;
@@ -65,7 +65,7 @@ describe('ProxyHttpClient', () => {
     expect(userId).toBeUndefined();
   });
 
-  it('throws on calls with missing jwt', async () => {
+  it('Throws on calls with missing jwt', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, { code: 104 });
 
     try {
@@ -75,7 +75,7 @@ describe('ProxyHttpClient', () => {
     }
   });
 
-  it('throws on calls with expired token', async () => {
+  it('Throws on calls with expired token', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, { code: 108 });
 
     try {

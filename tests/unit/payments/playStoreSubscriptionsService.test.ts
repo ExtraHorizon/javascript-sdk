@@ -35,7 +35,7 @@ describe('Play Store Subscriptions Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get a list of Play Store subscriptions', async () => {
+  it('Gets a list of Play Store subscriptions', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/subscriptions/')
       .reply(200, createPagedResponse(playStoreSubscription));
@@ -45,7 +45,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all Play Store subscriptions', async () => {
+  it('Requests a list of all Play Store subscriptions', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/subscriptions/?limit(50)')
       .reply(200, {
@@ -70,7 +70,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all Play Store subscriptions via iterator', async () => {
+  it('Requests a list of all Play Store subscriptions via iterator', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/subscriptions/?limit(50)')
       .reply(200, {
@@ -98,7 +98,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should get a list of configured Play Store subscription products', async () => {
+  it('Gets a list of configured Play Store subscription products', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/subscriptions/products/')
       .reply(200, createPagedResponse(playStoreSubscriptionProduct));
@@ -108,7 +108,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all Play Store subscription products', async () => {
+  it('Requests a list of all Play Store subscription products', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/subscriptions/products/?limit(50)')
       .reply(200, {
@@ -132,7 +132,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all Play Store subscription products via iterator', async () => {
+  it('Requests a list of all Play Store subscription products via iterator', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/subscriptions/products/?limit(50)')
       .reply(200, {
@@ -160,7 +160,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should create an Play Store subscription product', async () => {
+  it('Creates an Play Store subscription product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/playStore/subscriptions/products')
       .reply(200, playStoreSubscriptionProduct);
@@ -177,7 +177,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(subscriptionProduct.id).toBe(playStoreSubscriptionProductId);
   });
 
-  it('should delete an Play Store subscription product', async () => {
+  it('Deletes an Play Store subscription product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .delete(
         `/playStore/subscriptions/products/${playStoreSubscriptionProductId}`
@@ -193,7 +193,7 @@ describe('Play Store Subscriptions Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should update an Play Store subscription product', async () => {
+  it('Updates an Play Store subscription product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .put(
         `/playStore/subscriptions/products/${playStoreSubscriptionProductId}`

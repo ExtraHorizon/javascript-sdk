@@ -32,7 +32,7 @@ describe('Groups Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should add a group enlistment to a profile', async () => {
+  it('Adds a group enlistment to a profile', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .post(`/${profileId}/groups`)
       .reply(200, groupData);
@@ -42,7 +42,7 @@ describe('Groups Service', () => {
     expect(group.patientId).toBe(groupData.patientId);
   });
 
-  it('should update a group enlistment on a profile', async () => {
+  it('Updates a group enlistment on a profile', async () => {
     const newGroupData = {
       ...groupData,
       patientId: 'newPatientId',
@@ -62,7 +62,7 @@ describe('Groups Service', () => {
     expect(group.patientId).toBe('newPatientId');
   });
 
-  it('should delete a group from a profile', async () => {
+  it('Deletes a group from a profile', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .delete(`/${profileId}/groups/${groupId}`)
       .reply(200, { affectedRecords: 1 });
@@ -72,7 +72,7 @@ describe('Groups Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove a field on a group enlistment object in a profile', async () => {
+  it('Removes a field on a group enlistment object in a profile', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .post(`/${profileId}/groups/${groupId}/remove_fields`)
       .reply(200, groupData);
