@@ -39,7 +39,7 @@ describe('Documents Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should create a document', async () => {
+  it('Creates a document', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents`)
       .reply(200, newDocumentCreated);
@@ -51,7 +51,7 @@ describe('Documents Service', () => {
     expect(document.id).toBe(newDocumentCreated.id);
   });
 
-  it('should create a document with gzip', async () => {
+  it('Creates a document with gzip', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents`)
       .reply(200, newDocumentCreated);
@@ -67,7 +67,7 @@ describe('Documents Service', () => {
     expect(document.id).toBe(newDocumentCreated.id);
   });
 
-  it('should request a list of documents', async () => {
+  it('Requests a list of documents', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents`)
       .reply(200, documentsListResponse);
@@ -75,7 +75,7 @@ describe('Documents Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find a document by id', async () => {
+  it('Finds a document by id', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, documentsListResponse);
@@ -85,7 +85,7 @@ describe('Documents Service', () => {
     expect(document.id).toBe(documentId);
   });
 
-  it('should find the first document', async () => {
+  it('Finds the first document', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents`)
       .reply(200, documentsListResponse);
@@ -95,7 +95,7 @@ describe('Documents Service', () => {
     expect(document.id).toBe(documentId);
   });
 
-  it('should update a document', async () => {
+  it('Updates a document', async () => {
     nock(`${host}${DATA_BASE}`)
       .put(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
@@ -107,7 +107,7 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete a document', async () => {
+  it('Deletes a document', async () => {
     nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/documents/${documentId}`)
       .reply(200, { affectedRecords: 1 });
@@ -115,7 +115,7 @@ describe('Documents Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a document', async () => {
+  it('Deletes fields from a document', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/deleteFields`)
       .reply(200, { affectedRecords: 1 });
@@ -255,7 +255,7 @@ describe('Documents Service', () => {
     });
   });
 
-  it('should link groups to a document', async () => {
+  it('Links groups to a document', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkGroups`)
       .reply(200, { affectedRecords: 1 });
@@ -315,7 +315,7 @@ describe('Documents Service', () => {
     });
   });
 
-  it('should link users to a document', async () => {
+  it('Links users to a document', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/documents/${documentId}/linkUsers`)
       .reply(200, { affectedRecords: 1 });
@@ -371,7 +371,7 @@ describe('Documents Service', () => {
     });
   });
 
-  it('should return true if the document is not in a locked state', async () => {
+  it('Returns true if the document is not in a locked state', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, lockedDocumentsListResponse);
@@ -389,7 +389,7 @@ describe('Documents Service', () => {
     expect(res).toBe(true);
   });
 
-  it('should throw if the document is in a locked state', async () => {
+  it('Throws if the document is in a locked state', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/${schemaId}/documents?eq(id,${documentId})`)
       .reply(200, lockedDocumentsListResponse);

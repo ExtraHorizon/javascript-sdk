@@ -38,7 +38,7 @@ describe('Actions Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should add an action to the dispatcher', async () => {
+  it('Adds an action to the dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`)
       .post(`/${dispatcherId}/actions`)
       .reply(200, mailAction);
@@ -51,7 +51,7 @@ describe('Actions Service', () => {
     expect(res.id).toBe(mailAction.id);
   });
 
-  it('Should not transform custom data in the creation response', async () => {
+  it('Does not transform custom data in the creation response', async () => {
     nock(`${host}${DISPATCHERS_BASE}`)
       .post(`/${dispatcherId}/actions`)
       .reply(200, taskAction);
@@ -63,7 +63,7 @@ describe('Actions Service', () => {
     expect(response).toStrictEqual(taskAction);
   });
 
-  it('should update an action for the specified dispatcher', async () => {
+  it('Updates an action for the specified dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`)
       .put(`/${dispatcherId}/actions/${actionId}`)
       .reply(200, {
@@ -79,7 +79,7 @@ describe('Actions Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete an action from the specified dispatcher', async () => {
+  it('Deletes an action from the specified dispatcher', async () => {
     nock(`${host}${DISPATCHERS_BASE}`)
       .delete(`/${dispatcherId}/actions/${actionId}`)
       .reply(200, {

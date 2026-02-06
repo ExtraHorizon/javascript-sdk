@@ -33,7 +33,7 @@ describe('Token Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should delete a token', async () => {
+  it('Deletes a token', async () => {
     const tokenToAccess = '5a0b2adc265ced65a8cab862';
     nock(`${host}${FILES_BASE}`)
       .delete(`/${token}/tokens/${tokenToAccess}`)
@@ -44,7 +44,7 @@ describe('Token Service', () => {
     expect(res).toBeUndefined();
   });
 
-  it('should generate a token for a file', async () => {
+  it('Generates a token for a file', async () => {
     const tokenData = {
       accessLevel: TokenPermission.FULL,
     };

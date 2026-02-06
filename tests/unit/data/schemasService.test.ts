@@ -41,19 +41,19 @@ describe('Schemas Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should create a schema', async () => {
+  it('Creates a schema', async () => {
     nock(`${host}${DATA_BASE}`).post('/').reply(200, newSchemaCreated);
     const schema = await sdk.data.schemas.create(newSchemaInput);
     expect(schema.creationTransition).toBeDefined();
   });
 
-  it('should request a list of schemas', async () => {
+  it('Requests a list of schemas', async () => {
     nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
     const res = await sdk.data.schemas.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all schemas', async () => {
+  it('Requests a list of all schemas', async () => {
     nock(`${host}${DATA_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -77,7 +77,7 @@ describe('Schemas Service', () => {
     expect(res).toHaveLength(65);
   });
 
-  it('should find a schema by id', async () => {
+  it('Finds a schema by id', async () => {
     nock(`${host}${DATA_BASE}`)
       .get(`/?eq(id,${schemaId})`)
       .reply(200, schemasListResponse);
@@ -87,7 +87,7 @@ describe('Schemas Service', () => {
     expect(schema.id).toBe(schemaId);
   });
 
-  it('should find a schema by name', async () => {
+  it('Finds a schema by name', async () => {
     const { name } = schemaData;
     const rql = rqlBuilder().eq('name', name).build();
 
@@ -98,7 +98,7 @@ describe('Schemas Service', () => {
     expect(schema.name).toBe(name);
   });
 
-  it('should find the first schema', async () => {
+  it('Finds the first schema', async () => {
     nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
 
     const schema = await sdk.data.schemas.findFirst();
@@ -106,7 +106,7 @@ describe('Schemas Service', () => {
     expect(schema.id).toBe(schemaId);
   });
 
-  it('should update a schema', async () => {
+  it('Updates a schema', async () => {
     const newSchemaData = { name: 'schemaA', description: 'schema desc' };
     nock(`${host}${DATA_BASE}`).put(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
@@ -115,7 +115,7 @@ describe('Schemas Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete a schema', async () => {
+  it('Deletes a schema', async () => {
     nock(`${host}${DATA_BASE}`).delete(`/${schemaId}`).reply(200, {
       affectedRecords: 1,
     });
@@ -123,7 +123,7 @@ describe('Schemas Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should disable a schema', async () => {
+  it('Disables a schema', async () => {
     nock(`${host}${DATA_BASE}`).post(`/${schemaId}/disable`).reply(200, {
       affectedRecords: 1,
     });
@@ -131,7 +131,7 @@ describe('Schemas Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should enable a schema', async () => {
+  it('Enables a schema', async () => {
     nock(`${host}${DATA_BASE}`).post(`/${schemaId}/enable`).reply(200, {
       affectedRecords: 1,
     });
@@ -139,7 +139,7 @@ describe('Schemas Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should find a transitionId by name given a schema', async () => {
+  it('Finds a transitionId by name given a schema', async () => {
     nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
     const {
       data: [schema],
@@ -148,7 +148,7 @@ describe('Schemas Service', () => {
     expect(transitionId).toBe('5e9fff9d84820a2a9a718e2f');
   });
 
-  it('should get a transition by name given a schema', async () => {
+  it('Gets a transition by name given a schema', async () => {
     nock(`${host}${DATA_BASE}`).get('/').reply(200, schemasListResponse);
     const {
       data: [schema],
@@ -157,7 +157,7 @@ describe('Schemas Service', () => {
     expect(transition.id).toBe('5e9fff9d84820a2a9a718e2f');
   });
 
-  it('should request a list of all schemas via iterator', async () => {
+  it('Requests a list of all schemas via iterator', async () => {
     nock(`${host}${DATA_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -184,7 +184,7 @@ describe('Schemas Service', () => {
     expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should request a list of all schemas with offset and throw error', async () => {
+  it('Requests a list of all schemas with offset and throw error', async () => {
     expect.assertions(1);
     try {
       nock(`${host}${DATA_BASE}`)
@@ -198,7 +198,7 @@ describe('Schemas Service', () => {
     }
   });
 
-  it('should request a list of schemas and use next / previous', async () => {
+  it('Requests a list of schemas and use next / previous', async () => {
     nock(`${host}${DATA_BASE}`)
       .get('/')
       .reply(200, {

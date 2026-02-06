@@ -31,7 +31,7 @@ describe('Group Roles Service', () => {
     });
   });
 
-  it('should retrieve a list of group permissions', async () => {
+  it('Retrieves a list of group permissions', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/groups/permissions')
       .reply(200, createPagedResponse(permissionData));
@@ -105,7 +105,7 @@ describe('Group Roles Service', () => {
     });
   });
 
-  it('should retrieve a list of group roles', async () => {
+  it('Retrieves a list of group roles', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${USER_BASE}`)
       .get(`/groups/${groupId}/roles${rql}`)
@@ -116,7 +116,7 @@ describe('Group Roles Service', () => {
     expect(roles.data.length).toBeGreaterThan(0);
   });
 
-  it('should add role to a group', async () => {
+  it('Adds role to a group', async () => {
     const newRole = {
       name: 'newRole',
       description: 'this is a new role',
@@ -135,7 +135,7 @@ describe('Group Roles Service', () => {
     expect(res.name).toBe(newRole.name);
   });
 
-  it('should update a group role', async () => {
+  it('Updates a group role', async () => {
     const newRoleData = {
       name: 'newRoleName',
       description: 'this is a new role description',
@@ -154,7 +154,7 @@ describe('Group Roles Service', () => {
     expect(res.name).toBe(newRoleData.name);
   });
 
-  it('should remove a role from a group', async () => {
+  it('Removes a role from a group', async () => {
     const rql = rqlBuilder().eq('id', roleId).build();
     nock(`${host}${USER_BASE}`)
       .delete(`/groups/${groupId}/roles${rql}`)
@@ -165,7 +165,7 @@ describe('Group Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should add permissions to group roles', async () => {
+  it('Adds permissions to group roles', async () => {
     const rql = rqlBuilder().build();
     const permissions = [];
     nock(`${host}${USER_BASE}`)
@@ -183,7 +183,7 @@ describe('Group Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove permissions from group roles', async () => {
+  it('Removes permissions from group roles', async () => {
     const rql = rqlBuilder().build();
     const permissions = [];
     nock(`${host}${USER_BASE}`)
@@ -197,7 +197,7 @@ describe('Group Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should assign roles to staff members of a group', async () => {
+  it('Assigns roles to staff members of a group', async () => {
     const rql = rqlBuilder().build();
     const roles = [];
     nock(`${host}${USER_BASE}`)
@@ -213,7 +213,7 @@ describe('Group Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove roles from staff members of a group', async () => {
+  it('Removes roles from staff members of a group', async () => {
     const rql = rqlBuilder().build();
     const roles = [];
     nock(`${host}${USER_BASE}`)
@@ -227,7 +227,7 @@ describe('Group Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should add users to staff', async () => {
+  it('Adds users to staff', async () => {
     const rql = rqlBuilder().build();
     const groups = [];
     nock(`${host}${USER_BASE}`)
@@ -239,7 +239,7 @@ describe('Group Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove users from staff', async () => {
+  it('Removes users from staff', async () => {
     const rql = rqlBuilder().build();
     const groups = [];
     nock(`${host}${USER_BASE}`)

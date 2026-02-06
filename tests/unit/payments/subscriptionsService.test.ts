@@ -34,7 +34,7 @@ describe('Subscriptions Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get a list of subscription entitlements', async () => {
+  it('Gets a list of subscription entitlements', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/entitlements/')
       .reply(200, createPagedResponse(subscriptionEntitlementData));
@@ -44,7 +44,7 @@ describe('Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all subscription entitlements', async () => {
+  it('Requests a list of all subscription entitlements', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/entitlements/?limit(50)')
       .reply(200, {
@@ -68,7 +68,7 @@ describe('Subscriptions Service', () => {
     expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all subscription entitlements via iterator', async () => {
+  it('Requests a list of all subscription entitlements via iterator', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/entitlements/?limit(50)')
       .reply(200, {
@@ -96,7 +96,7 @@ describe('Subscriptions Service', () => {
     expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should get a list of subscription events', async () => {
+  it('Gets a list of subscription events', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/events/')
       .reply(200, createPagedResponse(subscriptionEventData));
@@ -106,7 +106,7 @@ describe('Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all subscription events', async () => {
+  it('Requests a list of all subscription events', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/events/?limit(50)')
       .reply(200, {
@@ -130,7 +130,7 @@ describe('Subscriptions Service', () => {
     expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all subscription events via iterator', async () => {
+  it('Requests a list of all subscription events via iterator', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/subscriptions/events/?limit(50)')
       .reply(200, {

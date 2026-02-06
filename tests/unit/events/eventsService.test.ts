@@ -33,7 +33,7 @@ describe('Events Service', () => {
     });
   });
 
-  it('should get a list of events', async () => {
+  it('Gets a list of events', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${EVENTS_BASE}`).get(`/${rql}`).reply(200, eventsResponse);
 
@@ -42,7 +42,7 @@ describe('Events Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find an event by id', async () => {
+  it('Finds an event by id', async () => {
     nock(`${host}${EVENTS_BASE}`)
       .get(`/?eq(id,${eventId})`)
       .reply(200, eventsResponse);
@@ -52,7 +52,7 @@ describe('Events Service', () => {
     expect(event.id).toBe(eventId);
   });
 
-  it('should find the first event', async () => {
+  it('Finds the first event', async () => {
     nock(`${host}${EVENTS_BASE}`).get('/').reply(200, eventsResponse);
 
     const event = await sdk.events.findFirst();

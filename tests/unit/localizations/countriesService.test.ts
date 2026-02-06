@@ -25,7 +25,7 @@ describe('Countries Service', () => {
     });
   });
 
-  it('should retrieve a list of all the defined countries', async () => {
+  it('Retrieves a list of all the defined countries', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get('/countries')
       .reply(200, createPagedResponse('BE'));
@@ -35,7 +35,7 @@ describe('Countries Service', () => {
     expect(res.length).toBeGreaterThan(0);
   });
 
-  it('should retrieve a list of all the defined regions for the specified country code', async () => {
+  it('Retrieves a list of all the defined regions for the specified country code', async () => {
     const countryCode = 'BE';
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get(`/countries/${countryCode}/regions`)

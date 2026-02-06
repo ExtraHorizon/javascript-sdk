@@ -31,7 +31,7 @@ describe('Configuration: Staff Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should update a staff configuration for a group of a user', async () => {
+  it('Updates a staff configuration for a group of a user', async () => {
     nock(`${host}${CONFIGURATION_BASE}`)
       .put(`/users/${userId}/staffConfigurations/${groupId}`)
       .reply(200, {
@@ -47,7 +47,7 @@ describe('Configuration: Staff Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a staff configuration for a group of a user', async () => {
+  it('Deletes fields from a staff configuration for a group of a user', async () => {
     nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/users/${userId}/staffConfigurations/${groupId}/deleteFields`)
       .reply(200, {

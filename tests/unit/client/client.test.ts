@@ -30,7 +30,7 @@ describe('HttpClient', () => {
     });
   });
 
-  it('should create an http client', async () => {
+  it('Creates an http client', async () => {
     const http = createHttpClient({
       ...validateConfig({ host, clientId }),
       packageVersion: '',
@@ -38,7 +38,7 @@ describe('HttpClient', () => {
     expect(http).toBeDefined();
   });
 
-  it('should create an http client and makes a GET request', async () => {
+  it('Creates an http client and makes a GET request', async () => {
     nock(host).get('/test').reply(200, '');
 
     const http = createHttpClient({
@@ -53,7 +53,7 @@ describe('HttpClient', () => {
     expect(test.data).toBe('');
   });
 
-  it('Should transform dates in the response when authenticating a user', async () => {
+  it('Transforms dates in the response when authenticating a user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post('/oauth1/tokens')
       .reply(200, authenticationResponse);
@@ -70,7 +70,7 @@ describe('HttpClient', () => {
     });
   });
 
-  it('Should transform dates in the response when creating an account', async () => {
+  it('Transforms dates in the response when creating an account', async () => {
     nock(`${host}${USER_BASE}`)
       .post('/register')
       .reply(200, registerUserResponse);
@@ -84,7 +84,7 @@ describe('HttpClient', () => {
     });
   });
 
-  it('Should not transform custom data in get responses', async () => {
+  it('Does not transform custom data in get responses', async () => {
     // const customResponseKeys = ['data', 'userConfiguration', 'groupConfiguration', 'staffConfiguration', 'patientConfiguration'];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')
@@ -100,7 +100,7 @@ describe('HttpClient', () => {
     });
   });
 
-  it('Should transform custom data if normalizeCustomData is true on the request', async () => {
+  it('Transforms custom data if normalizeCustomData is true on the request', async () => {
     // const customResponseKeys = ['data', 'userConfiguration', 'groupConfiguration', 'staffConfiguration', 'patientConfiguration'];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')

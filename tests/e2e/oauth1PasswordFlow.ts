@@ -18,36 +18,36 @@ describe('OAuth1 Password Flow', () => {
   });
 
   // health service
-  it('should fetch users.health', async () => {
+  it('Fetches users.health', async () => {
     const res = await sdk.users.health();
     expect(res).toBe(true);
   });
 
   // users service
-  it('should fetch users.me', async () => {
+  it('Fetches users.me', async () => {
     const user = await sdk.users.me();
     expect(user.id).toBeDefined();
     expect(user.firstName).toBeDefined();
   });
 
-  it('should fetch users.find', async () => {
+  it('Fetches users.find', async () => {
     const res = await sdk.users.find();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   // group roles service
-  it('should fetch users.groupRoles.getPermissions', async () => {
+  it('Fetches users.groupRoles.getPermissions', async () => {
     const res = await sdk.users.groupRoles.getPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
   // global roles service
-  it('should fetch users.globalRoles.getPermissions', async () => {
+  it('Fetches users.globalRoles.getPermissions', async () => {
     const res = await sdk.users.globalRoles.getPermissions();
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should fetch users.globalRoles.get', async () => {
+  it('Fetches users.globalRoles.get', async () => {
     expect.assertions(1);
     const rql = rqlBuilder().limit(10).build();
     try {
@@ -59,14 +59,14 @@ describe('OAuth1 Password Flow', () => {
   });
 
   // auth service
-  it('should fetch auth.applications.get', async () => {
+  it('Fetches auth.applications.get', async () => {
     const rql = rqlBuilder().select('name').build();
     const res = await sdk.auth.applications.get({ rql });
     expect(res).toBeDefined();
   });
 
   // files service
-  it('should fetch files.find', async () => {
+  it('Fetches files.find', async () => {
     expect.assertions(1);
     const rql = rqlBuilder().select('name').build();
     try {
@@ -78,13 +78,13 @@ describe('OAuth1 Password Flow', () => {
   });
 
   // data infrastructure service
-  it('should fetch data.health', async () => {
+  it('Fetches data.health', async () => {
     const res = await sdk.data.health();
     expect(res).toBe(true);
   });
 
   // data schemas service
-  it('should fetch data.schemas.create', async () => {
+  it('Fetches data.schemas.create', async () => {
     try {
       const schema = await sdk.data.schemas.create(newSchemaInput);
       expect(schema.creationTransition).toBeDefined();
@@ -94,7 +94,7 @@ describe('OAuth1 Password Flow', () => {
   });
 
   // tasks service
-  it('should fetch tasks.find', async () => {
+  it('Fetches tasks.find', async () => {
     expect.assertions(1);
     try {
       const res = await sdk.tasks.find();

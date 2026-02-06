@@ -29,7 +29,7 @@ describe('Health Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should perform a health check', async () => {
+  it('Performs a health check', async () => {
     nock(`${host}${PAYMENTS_BASE}`).get('/health').reply(200);
 
     const serviceIsAvailable = await sdk.payments.health();

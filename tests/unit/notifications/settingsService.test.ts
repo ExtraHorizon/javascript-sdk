@@ -37,7 +37,7 @@ describe('Settings Service', () => {
     });
   });
 
-  it('should retrieve a list of notifications settings', async () => {
+  it('Retrieves a list of notifications settings', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get(`/settings${rql}`)
@@ -75,7 +75,7 @@ describe('Settings Service', () => {
     });
   });
 
-  it('should find settings by id', async () => {
+  it('Finds settings by id', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get(`/settings?eq(id,${settingsId})`)
       .reply(200, settingsResponse);
@@ -85,7 +85,7 @@ describe('Settings Service', () => {
     expect(settings.id).toBe(settingsId);
   });
 
-  it('should find the first settings', async () => {
+  it('Finds the first settings', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get('/settings')
       .reply(200, settingsResponse);
@@ -95,7 +95,7 @@ describe('Settings Service', () => {
     expect(settings.id).toBe(settingsId);
   });
 
-  it('should update the notification settings for a user', async () => {
+  it('Updates the notification settings for a user', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .put(`/settings/${notificationData.userId}`, {
         key: 'firebase-cloud-messaging-key',
@@ -127,7 +127,7 @@ describe('Settings Service', () => {
     expect(settings.id).toBe(settingsId);
   });
 
-  it('should delete the notifications settings for a user', async () => {
+  it('Deletes the notifications settings for a user', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .delete(`/settings/${notificationData.userId}`)
       .reply(200, { affectedRecords: 1 });

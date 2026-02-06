@@ -33,7 +33,7 @@ describe('Tasks - Functions - Execute', () => {
     expect(response).toBeDefined();
   });
 
-  it('Should not transform custom data in execution responses', async () => {
+  it('Does not transform custom data in execution responses', async () => {
     nock(`${host}${TASKS_BASE}`)
       .post(`/functions/${functionName}/execute`, {
         data: directExecutionResponseWithSnakeCasedCustomData.data,
@@ -54,7 +54,7 @@ describe('Tasks - Functions - Execute', () => {
     );
   });
 
-  it('Should transform Extra Horizon timestamps to date objects', async () => {
+  it('Transforms Extra Horizon timestamps to date objects', async () => {
     nock(`${host}${TASKS_BASE}`)
       .post(`/functions/${functionName}/execute`, {
         data: directExecutionResponseWithSnakeCasedCustomData.data,

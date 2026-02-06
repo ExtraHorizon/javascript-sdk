@@ -28,7 +28,7 @@ describe('Health Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get health', async () => {
+  it('Gets health', async () => {
     nock(`${host}${USER_BASE}`).get('/health').reply(200, '');
     const health = await sdk.users.health();
     expect(health).toBe(true);
