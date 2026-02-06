@@ -8,7 +8,7 @@ export const templateInput: TemplateIn = {
     fields: {
       shippingInfo: {
         type: 'object',
-        properties: {
+        fields: {
           firstName: {
             type: 'string',
           },

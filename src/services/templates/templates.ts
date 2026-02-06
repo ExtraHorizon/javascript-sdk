@@ -15,12 +15,16 @@ export default (
   },
 
   async find(options) {
-    return (
-      await client.get(httpAuth, `/${options?.rql || ''}`, {
+    const result = await client.get(
+      httpAuth,
+      `/${options?.rql || ''}`,
+      {
         ...options,
         customResponseKeys: ['data.schema.fields', 'data.fields'],
-      })
-    ).data;
+      }
+    );
+
+    return result.data;
   },
 
   async findAll(this: TemplatesService, options) {
@@ -47,84 +51,95 @@ export default (
   },
 
   async create(requestBody, options) {
-    return (
-      await client.post(httpAuth, '/', requestBody, {
+    const result = await client.post(
+      httpAuth,
+      '/',
+      requestBody,
+      {
         ...options,
         customKeys: ['schema.fields', 'fields'],
-      })
-    ).data;
+      }
+    );
+    return result.data;
   },
 
   async update(templateId, requestBody, options) {
-    return (
-      await client.put(httpAuth, `/${templateId}`, requestBody, {
+    const result = await client.put(
+      httpAuth,
+      `/${templateId}`,
+      requestBody,
+      {
         ...options,
         customKeys: ['schema.fields', 'fields'],
-      })
-    ).data;
+      }
+    );
+    return result.data;
   },
 
   async remove(templateId, options) {
-    return (await client.delete(httpAuth, `/${templateId}`, options)).data;
+    const result = await client.delete(
+      httpAuth,
+      `/${templateId}`,
+      options
+    );
+    return result.data;
   },
 
   async resolveAsPdf(templateId, requestBody, options) {
-    return (
-      await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/pdf`,
+      requestBody,
+      {
         ...options,
         customRequestKeys: ['content'],
         responseType: 'arraybuffer',
-      })
-    ).data;
+      }
+    );
+
+    return result.data;
   },
 
-  async resolveAsPdfUsingCode(
-    templateId,
-    localizationCode,
-    requestBody,
-    options
-  ) {
-    return (
-      await client.post(
-        httpAuth,
-        `/${templateId}/pdf/${localizationCode}`,
-        requestBody,
-        {
-          ...options,
-          customRequestKeys: ['content'],
-          responseType: 'arraybuffer',
-        }
-      )
-    ).data;
+  async resolveAsPdfUsingCode(templateId, localizationCode, requestBody, options) {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/pdf/${localizationCode}`,
+      requestBody,
+      {
+        ...options,
+        customRequestKeys: ['content'],
+        responseType: 'arraybuffer',
+      }
+    );
+    return result.data;
   },
 
   async resolveAsJson(templateId, requestBody, options) {
-    return (
-      await client.post(httpAuth, `/${templateId}/resolve`, requestBody, {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/resolve`,
+      requestBody,
+      {
         ...options,
         customRequestKeys: ['content'],
         customResponseKeys: ['*'],
-      })
-    ).data;
+      }
+    );
+    return result.data;
   },
 
-  async resolveAsJsonUsingCode(
-    templateId,
-    localizationCode,
-    requestBody,
-    options
-  ) {
-    return (
-      await client.post(
-        httpAuth,
-        `/${templateId}/resolve/${localizationCode}`,
-        requestBody,
-        {
-          ...options,
-          customRequestKeys: ['content'],
-          customResponseKeys: ['*'],
-        }
-      )
-    ).data;
+  async resolveAsJsonUsingCode(templateId, localizationCode, requestBody, options) {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/resolve/${localizationCode}`,
+      requestBody,
+      {
+        ...options,
+        customRequestKeys: ['content'],
+        customResponseKeys: ['*'],
+      }
+    );
+
+    return result.data;
   },
 });
