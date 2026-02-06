@@ -1,3 +1,4 @@
+import { TemplatesV2ErrorInfo } from './services/templatesV2/types';
 import { MfaMethod, NotificationV2Error } from './types';
 
 type Method =
@@ -202,6 +203,22 @@ export class FileTooLargeError extends BadRequestError {}
 export class InvalidTokenError extends BadRequestError {}
 export class LocalizationKeyMissingError extends BadRequestError {}
 export class TemplateFillingError extends BadRequestError {}
+export class TemplateSyntaxError extends BadRequestError {
+  syntaxError: TemplatesV2ErrorInfo;
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.syntaxError = apiError.response.syntaxError;
+  }
+}
+export class TemplateResolvingError extends BadRequestError {
+  resolveError: TemplatesV2ErrorInfo;
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.resolveError = apiError.response.resolveError;
+  }
+}
 export class MissingRequiredFieldsError extends BadRequestError {}
 export class InvalidCurrencyForProductPrice extends BadRequestError {}
 export class InvalidReceiptDataError extends BadRequestError {}
@@ -477,6 +494,8 @@ export const ErrorClassMap = {
   801: DefaultLocalizationMissingError,
   1002: LocalizationKeyMissingError,
   1003: TemplateFillingError,
+  1004: TemplateSyntaxError,
+  1005: TemplateResolvingError,
   2605: InvalidTokenError,
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,
