@@ -2,7 +2,7 @@ import { rqlBuilder } from '../../rql';
 import { AuthHttpClient } from '../../types';
 import { findAllGeneric, addPagersFn } from '../helpers';
 import { HttpClient } from '../http-client';
-import { TemplateV2Out, TemplatesV2Service } from './types';
+import { TemplateV2, TemplatesV2Service } from './types';
 
 export default (
   client: HttpClient,
@@ -85,11 +85,11 @@ export default (
 
     async find(options) {
       const result = await find(options);
-      return addPagersFn<TemplateV2Out>(find, options, result);
+      return addPagersFn<TemplateV2>(find, options, result);
     },
 
     async findAll(options) {
-      return findAllGeneric<TemplateV2Out>(this.find, options);
+      return findAllGeneric<TemplateV2>(this.find, options);
     },
 
     async findById(this: TemplatesV2Service, id, options) {

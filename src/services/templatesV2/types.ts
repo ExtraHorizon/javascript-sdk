@@ -8,17 +8,13 @@ import {
   OptionsBase,
 } from '../types';
 
-export interface TemplateV2Out {
-  id?: ObjectId;
-  name?: string;
-  description?: string;
-  properties?: Record<string, TypeConfiguration>;
-  outputs?: Record<string, string>;
-  creationTimestamp?: Date;
-  updateTimestamp?: Date;
+export interface TemplateV2 extends TemplateV2Creation {
+  id: ObjectId;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
-export interface TemplateV2In {
+export interface TemplateV2Creation {
   name: string;
   description?: string;
   properties?: Record<string, TypeConfiguration>;
@@ -83,9 +79,9 @@ export interface TemplatesV2Service {
    * - | - | -
    * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
    * @param rql Add filters to the requested list.
-   * @returns PagedResult<TemplateV2Out>
+   * @returns PagedResult<TemplateV2>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<TemplateV2Out>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<TemplateV2>>;
   /**
    * Request a list of all templates
    *
@@ -95,26 +91,26 @@ export interface TemplatesV2Service {
    * - | - | -
    * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
    * @param rql Add filters to the requested list.
-   * @returns TemplateV2Out[]
+   * @returns TemplateV2[]
    */
-  findAll(options?: OptionsWithRql): Promise<TemplateV2Out[]>;
+  findAll(options?: OptionsWithRql): Promise<TemplateV2[]>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateV2Out | undefined>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateV2 | undefined>;
   /**
    * Find By Name
    * @param name the name to search for
    * @returns the first element found
    */
-  findByName(name: string, options?: OptionsWithRql): Promise<TemplateV2Out | undefined>;
+  findByName(name: string, options?: OptionsWithRql): Promise<TemplateV2 | undefined>;
   /**
    * Find First
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<TemplateV2Out | undefined>;
+  findFirst(options?: OptionsWithRql): Promise<TemplateV2 | undefined>;
   /**
    * Create a new template
    *
@@ -122,11 +118,11 @@ export interface TemplatesV2Service {
    * - | - | -
    * `CREATE_TEMPLATES` | `global` | **Required** for this endpoint
    * @param requestBody TemplateIn
-   * @returns TemplateV2Out
+   * @returns TemplateV2
    * @throws {ResourceAlreadyExistsError}
    * @throws {TemplateSyntaxError}
    */
-  create(requestBody: TemplateV2In, options?: OptionsBase): Promise<TemplateV2Out>;
+  create(requestBody: TemplateV2Creation, options?: OptionsBase): Promise<TemplateV2>;
   /**
    * Update an existing template
    *
@@ -135,14 +131,14 @@ export interface TemplatesV2Service {
    * `UPDATE_TEMPLATES` | `global` | **Required** for this endpoint
    * @param templateIdOrName Id or Name of the targeted template
    * @param requestBody TemplateIn
-   * @returns TemplateV2Out
+   * @returns TemplateV2
    * @throws {ResourceAlreadyExistsError}
    * @throws {TemplateSyntaxError}
    * @throws {ResourceUnknownError}
    */
   update(
     templateIdOrName: string,
-    requestBody: Partial<TemplateV2In>,
+    requestBody: Partial<TemplateV2Creation>,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**

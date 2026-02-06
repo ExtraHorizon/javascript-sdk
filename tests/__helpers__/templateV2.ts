@@ -1,7 +1,7 @@
-import { TemplateV2In, TemplateV2Out } from '../../src/services/templatesV2/types';
+import { TemplateV2Creation, TemplateV2 } from '../../src/services/templatesV2/types';
 import { randomHexString } from './utils';
 
-export const generateTemplateInput = (): TemplateV2In => ({
+export const generateTemplateInput = (): TemplateV2Creation => ({
   name: randomHexString(),
   description: randomHexString(),
   properties: {
@@ -23,7 +23,7 @@ export const generateTemplateInput = (): TemplateV2In => ({
   },
 });
 
-export const generateTemplateOutput = (): TemplateV2Out => ({
+export const generateTemplateOutput = (): TemplateV2 => ({
   name: randomHexString(),
   description: randomHexString(),
   properties: {
