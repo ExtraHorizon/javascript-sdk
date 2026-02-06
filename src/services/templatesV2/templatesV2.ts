@@ -1,76 +1,112 @@
 import { rqlBuilder } from '../../rql';
-import type { HttpInstance } from '../../types';
-import { findAllIterator, findAllGeneric } from '../helpers';
+import { AuthHttpClient } from '../../types';
+import { findAllGeneric, addPagersFn } from '../helpers';
 import { HttpClient } from '../http-client';
 import { TemplateV2Out, TemplatesV2Service } from './types';
 
 export default (
   client: HttpClient,
-  httpAuth: HttpInstance
-): TemplatesV2Service => ({
-  async find(options) {
-    return (
-      await client.get(httpAuth, `/${options?.rql || ''}`, {
+  httpWithAuth: AuthHttpClient
+): TemplatesV2Service => {
+  async function find(options) {
+    const result = await client.get(
+      httpWithAuth,
+      `/${options?.rql || ''}`,
+      {
         ...options,
         customResponseKeys: ['data.properties'],
-      })
-    ).data;
-  },
+      }
+    );
 
-  async findAll(this: TemplatesV2Service, options) {
-    return findAllGeneric<TemplateV2Out>(this.find, options);
-  },
+    return result.data;
+  }
 
-  findAllIterator(this: TemplatesV2Service, options) {
-    return findAllIterator<TemplateV2Out>(this.find, options);
-  },
+  return {
+    async create(requestBody, options) {
+      const result = (
+        await client.post(
+          httpWithAuth,
+          '/',
+          requestBody,
+          {
+            ...options,
+            customKeys: ['properties'],
+          }
+        )
+      );
 
-  async findById(this: TemplatesV2Service, id, options) {
-    const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ ...options, rql: rqlWithId });
-    return res.data[0];
-  },
+      return result.data;
+    },
 
-  async findByName(this: TemplatesV2Service, name, options?) {
-    const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-    const res = await this.find({ ...options, rql: rqlWithName });
-    return res.data[0];
-  },
+    async update(templateId, requestBody, options) {
+      const result = (
+        await client.put(
+          httpWithAuth,
+          `/${templateId}`,
+          requestBody,
+          {
+            ...options,
+            customKeys: ['properties'],
+          }
+        )
+      );
 
-  async findFirst(this: TemplatesV2Service, options) {
-    const res = await this.find(options);
-    return res.data[0];
-  },
+      return result.data;
+    },
 
-  async create(requestBody, options) {
-    return (
-      await client.post(httpAuth, '/', requestBody, {
-        ...options,
-        customKeys: ['properties'],
-      })
-    ).data;
-  },
+    async remove(templateId, options) {
+      const result = (
+        await client.delete(
+          httpWithAuth,
+          `/${templateId}`,
+          options
+        )
+      );
 
-  async update(templateId, requestBody, options) {
-    return (
-      await client.put(httpAuth, `/${templateId}`, requestBody, {
-        ...options,
-        customKeys: ['properties'],
-      })
-    ).data;
-  },
+      return result.data;
+    },
 
-  async remove(templateId, options) {
-    return (await client.delete(httpAuth, `/${templateId}`, options)).data;
-  },
+    async resolve(templateId, requestBody, options) {
+      const result = (
+        await client.post(
+          httpWithAuth,
+          `/${templateId}/resolve`,
+          requestBody,
+          {
+            ...options,
+            customRequestKeys: ['data'],
+            customResponseKeys: ['*'],
+          }
+        )
+      );
 
-  async resolve(templateId, requestBody, options) {
-    return (
-      await client.post(httpAuth, `/${templateId}/resolve`, requestBody, {
-        ...options,
-        customRequestKeys: ['data'],
-        customResponseKeys: ['*'],
-      })
-    ).data;
-  },
-});
+      return result.data;
+    },
+
+    async find(options) {
+      const result = await find(options);
+      return addPagersFn<TemplateV2Out>(find, options, result);
+    },
+
+    async findAll(options) {
+      return findAllGeneric<TemplateV2Out>(this.find, options);
+    },
+
+    async findById(this: TemplatesV2Service, id, options) {
+      const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
+      const result = await this.find({ ...options, rql: rqlWithId });
+      return result.data[0];
+    },
+
+    async findByName(this: TemplatesV2Service, name, options?) {
+      const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
+      const result = await this.find({ ...options, rql: rqlWithName });
+      return result.data[0];
+    },
+
+    async findFirst(this: TemplatesV2Service, options) {
+      const result = await this.find(options);
+      return result.data[0];
+    },
+  };
+};

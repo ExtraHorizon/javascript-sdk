@@ -1,4 +1,3 @@
-import { FindAllIterator } from '../helpers';
 import {
   ObjectId,
   LanguageCode,
@@ -99,16 +98,6 @@ export interface TemplatesV2Service {
    * @returns TemplateV2Out[]
    */
   findAll(options?: OptionsWithRql): Promise<TemplateV2Out[]>;
-  /**
-   * Request a list of all templates
-   *
-   * Permission | Scope | Effect
-   * - | - | -
-   * `VIEW_TEMPLATES` | `global` | **Required** for this endpoint
-   * @param rql Add filters to the requested list.
-   * @returns TemplateV2Out[]
-   */
-  findAllIterator(options?: OptionsWithRql): FindAllIterator<TemplateV2Out>;
   /**
    * Find By Id
    * @param id the Id to search for
