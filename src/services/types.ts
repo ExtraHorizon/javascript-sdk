@@ -41,7 +41,7 @@ export enum Results {
 }
 
 /**
- * Supported timezones from [Java.time.zoneId](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneId.html#of-java.lang.String-)
+ * IANA time zone identifier (e.g. "Europe/Brussels"). We aim to stay aligned with the official IANA time zone database. In practice, supported values closely match those returned by Intl.supportedValuesOf('timeZone') in JavaScript. For an overview of IANA time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
  */
 export type TimeZone = string;
 
