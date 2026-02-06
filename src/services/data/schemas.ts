@@ -57,14 +57,12 @@ export default (
 
     async findById(this: DataSchemasService, id, options) {
       const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-      const res = await find({ ...options, rql: rqlWithId });
-      return res.data[0];
+      return await this.findFirst({ ...options, rql: rqlWithId });
     },
 
     async findByName(this: DataSchemasService, name, options) {
       const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-      const res = await find({ ...options, rql: rqlWithName });
-      return res.data[0];
+      return await this.findFirst({ ...options, rql: rqlWithName });
     },
 
     async findFirst(this: DataSchemasService, options) {

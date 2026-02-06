@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.9.0]
 
+### Fixed
+- Corrected the types for the `findFirst` (based) methods to indicate they may return `undefined` when no results are found.
+
 
 ## [8.8.2]
 

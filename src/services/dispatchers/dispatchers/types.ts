@@ -63,7 +63,7 @@ export interface DispatchersService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns The first element of the queried Dispatchers {@link Dispatcher}
    */
-  findFirst(options?: OptionsWithRql): Promise<Dispatcher>;
+  findFirst(options?: OptionsWithRql): Promise<Dispatcher | undefined>;
 
   /**
    * ## Create a Dispatcher

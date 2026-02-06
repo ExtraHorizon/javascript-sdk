@@ -22,7 +22,7 @@ export interface LogsService {
    * @param taskId {@link string} The id of the targeted task
    * @param options {@link OptionsWithRql} - Additional options for the request
    * @returns The first element of the queried task logs {@link LogLine}     */
-  findFirst(taskId: ObjectId, options?: OptionsWithRql): Promise<LogLine>;
+  findFirst(taskId: ObjectId, options?: OptionsWithRql): Promise<LogLine | undefined>;
 }
 
 export interface LogLine {

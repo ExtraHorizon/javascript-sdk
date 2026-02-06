@@ -19,12 +19,12 @@ export interface LogsAccessService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns The first element of the queried access logs {@link AccessLog}
    */
-  findFirst(options?: OptionsWithRql): Promise<AccessLog>;
+  findFirst(options?: OptionsWithRql): Promise<AccessLog | undefined>;
 }
 
 export interface AccessLog {
   /** The time of request receival */
-  timestamp: string;
+  timestamp: Date;
   /** The status code of the response for the request */
   httpStatus: number;
   /** The duration of the request in seconds */

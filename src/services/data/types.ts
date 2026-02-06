@@ -466,7 +466,7 @@ export interface DataCommentsService {
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<Comment>;
+  ): Promise<Comment | undefined>;
   /**
    * Find First
    * @param schemaIdOrName The id or name of the targeted schema.
@@ -477,7 +477,7 @@ export interface DataCommentsService {
     schemaIdOrName: ObjectId | string,
     documentId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<Comment>;
+  ): Promise<Comment | undefined>;
   /**
    * Update a comment
    *
@@ -1645,18 +1645,18 @@ export interface DataSchemasService {
    * @param id the Id to search for
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Schema>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Schema | undefined>;
   /**
    * Find By Name
    * @param name the name to search for
    * @returns the first element found
    */
-  findByName(name: string, options?: OptionsWithRql): Promise<Schema>;
+  findByName(name: string, options?: OptionsWithRql): Promise<Schema | undefined>;
   /**
    * Find First
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Schema>;
+  findFirst(options?: OptionsWithRql): Promise<Schema | undefined>;
   /**
    * Update a schema
    *

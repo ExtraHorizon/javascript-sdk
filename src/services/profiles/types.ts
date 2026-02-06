@@ -367,13 +367,13 @@ export interface ProfilesService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Profile>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Profile | undefined>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Profile>;
+  findFirst(options?: OptionsWithRql): Promise<Profile | undefined>;
   /**
    * Create a new profile
    *

@@ -525,7 +525,7 @@ export interface UsersGlobalRolesService {
    * - | - | -
    * `VIEW_ROLE` | `global` | **Required** for this endpoint
    */
-  findFirst(options?: OptionsWithRql): Promise<Role>;
+  findFirst(options?: OptionsWithRql): Promise<Role | undefined>;
 
   /**
    * Returns the first role with a specific id
@@ -534,7 +534,7 @@ export interface UsersGlobalRolesService {
    * - | - | -
    * `VIEW_ROLE` | `global` | **Required** for this endpoint
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Role>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Role | undefined>;
 
   /**
    * Returns the first role with a specific name
@@ -543,7 +543,7 @@ export interface UsersGlobalRolesService {
    * - | - | -
    * `VIEW_ROLE` | `global` | **Required** for this endpoint
    */
-  findByName(name: string, options?: OptionsWithRql): Promise<Role>;
+  findByName(name: string, options?: OptionsWithRql): Promise<Role | undefined>;
 
   /**
    * @deprecated Use `find` instead
@@ -690,7 +690,7 @@ export interface UsersGroupRolesService {
   findFirst(
     groupId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<GroupRole>;
+  ): Promise<GroupRole | undefined>;
 
   /**
    * Finds a group role by its id
@@ -704,7 +704,7 @@ export interface UsersGroupRolesService {
     groupId: ObjectId,
     roleId: ObjectId,
     options?: OptionsWithRql
-  ): Promise<GroupRole>;
+  ): Promise<GroupRole | undefined>;
 
   /**
    * Returns the first group role found by a specific name
@@ -718,7 +718,7 @@ export interface UsersGroupRolesService {
     groupId: ObjectId,
     roleName: string,
     options?: OptionsWithRql
-  ): Promise<GroupRole>;
+  ): Promise<GroupRole | undefined>;
 
   /**
    * @deprecated Use `find` instead
@@ -973,7 +973,16 @@ export interface UsersService {
    * @returns User[]
    */
   findAllIterator(options?: OptionsWithRql): FindAllIterator<User>;
-  findFirst(options?: { rql?: RQLString; }): Promise<User>;
+  /**
+   * Find the first user matching the rql query
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `patient enlistment` | See a limited set of fields of the staff members (of the groups where you are enlisted as a patient)
+   * none | `staff enlistment` | See a limited set of fields of all patients and staff members (of the groups where you are enlisted as staff member)
+   * `VIEW_USER` | `global` | See all fields of all users
+   */
+  findFirst(options?: { rql?: RQLString; }): Promise<User | undefined>;
   /**
    * @deprecated
    * Delete a list of users

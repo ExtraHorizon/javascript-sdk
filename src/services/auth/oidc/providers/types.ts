@@ -63,7 +63,7 @@ export interface OidcProviderService {
    * @returns The first element of the queried providers {@link OidcProvider}
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    */
-  findFirst(options?: OptionsWithRql): Promise<OidcProvider>;
+  findFirst(options?: OptionsWithRql): Promise<OidcProvider | undefined>;
 
   /**
    * ## Update an OpenID Connect provider

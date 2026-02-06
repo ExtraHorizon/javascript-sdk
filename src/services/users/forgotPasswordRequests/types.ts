@@ -17,7 +17,7 @@ export interface ForgotPasswordRequestsService {
    * - | - | -
    * `VIEW_FORGOT_PASSWORD_REQUESTS` | global | **Required** for this endpoint
    */
-  findFirst(options?: OptionsWithRql): Promise<ForgotPasswordRequest>;
+  findFirst(options?: OptionsWithRql): Promise<ForgotPasswordRequest | undefined>;
 
   /**
    * Find a forgot password request by its id
@@ -26,7 +26,7 @@ export interface ForgotPasswordRequestsService {
    * - | - | -
    * `VIEW_FORGOT_PASSWORD_REQUESTS` | global | **Required** for this endpoint
    */
-  findById(id: string, options?: OptionsWithRql): Promise<ForgotPasswordRequest>;
+  findById(id: string, options?: OptionsWithRql): Promise<ForgotPasswordRequest | undefined>;
 
   /**
    * Find a forgot password request for a user id
@@ -35,7 +35,7 @@ export interface ForgotPasswordRequestsService {
    * - | - | -
    * `VIEW_FORGOT_PASSWORD_REQUESTS` | global | **Required** for this endpoint
    */
-  findByUserId(userId: string, options?: OptionsWithRql): Promise<ForgotPasswordRequest>;
+  findByUserId(userId: string, options?: OptionsWithRql): Promise<ForgotPasswordRequest | undefined>;
 
   /**
    * Remove a forgot password request

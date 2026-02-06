@@ -15,8 +15,7 @@ export default (
 
   async findById(this: NotificationSettingsServices, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ ...options, rql: rqlWithId });
-    return res.data[0];
+    return await this.findFirst({ ...options, rql: rqlWithId });
   },
 
   async findFirst(this: NotificationSettingsServices, options) {

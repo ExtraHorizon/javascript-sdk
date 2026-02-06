@@ -23,5 +23,5 @@ export interface ApiRequestLogsService {
    * @param apiRequestId {@link string} The id of the targeted API Request
    * @param options {@link OptionsWithRql} - Additional options for the request
    * @returns The first element of the queried API Request logs {@link LogLine}     */
-  findFirst(apiRequestId: ObjectId, options?: OptionsWithRql): Promise<LogLine>;
+  findFirst(apiRequestId: ObjectId, options?: OptionsWithRql): Promise<LogLine | undefined>;
 }
