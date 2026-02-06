@@ -3,10 +3,9 @@ import {
   addPagersFn,
   findAllGeneric,
   findAllIterator,
-  FindAllIterator,
 } from '../../../helpers';
 import { HttpClient } from '../../../http-client';
-import { OptionsWithRql, PagedResultWithPager } from '../../../types';
+import { OptionsWithRql } from '../../../types';
 import { LoginAttempt, LoginAttemptsService } from './types';
 
 export default (
@@ -23,22 +22,20 @@ export default (
   }
 
   return {
-    async find(
-      options?: OptionsWithRql
-    ): Promise<PagedResultWithPager<LoginAttempt>> {
+    async find(options) {
       const result = await query(options);
       return addPagersFn<LoginAttempt>(query, options, result);
     },
 
-    async findAll(options?: OptionsWithRql): Promise<LoginAttempt[]> {
+    async findAll(options) {
       return findAllGeneric<LoginAttempt>(query, options);
     },
 
-    findAllIterator(options?: OptionsWithRql): FindAllIterator<LoginAttempt> {
+    findAllIterator(options) {
       return findAllIterator<LoginAttempt>(query, options);
     },
 
-    async findFirst(options?: OptionsWithRql): Promise<LoginAttempt> {
+    async findFirst(options) {
       const result = await query(options);
       return result.data[0];
     },

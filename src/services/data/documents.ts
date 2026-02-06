@@ -82,9 +82,7 @@ export default (
 
     async findById(this: DataDocumentsService, schemaIdOrName, documentId, options?) {
       const rqlWithId = rqlBuilder(options?.rql).eq('id', documentId).build();
-      const res = await this.find(schemaIdOrName, { ...options, rql: rqlWithId });
-
-      return res.data[0];
+      return await this.findFirst(schemaIdOrName, { ...options, rql: rqlWithId });
     },
 
     async findFirst(this: DataDocumentsService, schemaIdOrName, options) {

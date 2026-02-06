@@ -30,11 +30,7 @@ export default (
 
   async findById(this: DataCommentsService, id, schemaIdOrName, documentId, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find(schemaIdOrName, documentId, {
-      ...options,
-      rql: rqlWithId,
-    });
-    return res.data[0];
+    return await this.findFirst(schemaIdOrName, documentId, { ...options, rql: rqlWithId });
   },
 
   async findFirst(this: DataCommentsService, schemaIdOrName, documentId, options) {

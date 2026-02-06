@@ -117,13 +117,13 @@ export interface MailsService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Mail>;
+  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Mail | undefined>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Mail>;
+  findFirst(options?: OptionsWithRql): Promise<Mail | undefined>;
   /**
    * Send a mail
    *

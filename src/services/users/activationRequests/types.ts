@@ -17,7 +17,7 @@ export interface ActivationRequestsService {
    * - | - | -
    * `VIEW_ACTIVATION_REQUESTS` | global | **Required** for this endpoint
    */
-  findFirst(options?: OptionsWithRql): Promise<ActivationRequest>;
+  findFirst(options?: OptionsWithRql): Promise<ActivationRequest | undefined>;
 
   /**
    * Find an activation request by its id
@@ -26,7 +26,7 @@ export interface ActivationRequestsService {
    * - | - | -
    * `VIEW_ACTIVATION_REQUESTS` | global | **Required** for this endpoint
    */
-  findById(id: string, options?: OptionsWithRql): Promise<ActivationRequest>;
+  findById(id: string, options?: OptionsWithRql): Promise<ActivationRequest | undefined>;
 
   /**
    * Find an activation request for a user id
@@ -35,7 +35,7 @@ export interface ActivationRequestsService {
    * - | - | -
    * `VIEW_ACTIVATION_REQUESTS` | global | **Required** for this endpoint
    */
-  findByUserId(userId: string, options?: OptionsWithRql): Promise<ActivationRequest>;
+  findByUserId(userId: string, options?: OptionsWithRql): Promise<ActivationRequest | undefined>;
 
   /**
    * Remove an activation request

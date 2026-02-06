@@ -66,7 +66,7 @@ export interface TasksService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Task | undefined>;
 
   /**
    * Request a list of all tasks
@@ -97,7 +97,7 @@ export interface TasksService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Task>;
+  findFirst(options?: OptionsWithRql): Promise<Task | undefined>;
 
   /**
    * Create a task

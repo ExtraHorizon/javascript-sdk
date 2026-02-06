@@ -40,7 +40,7 @@ export default (
       return findAllIterator<OidcProvider>(query, options);
     },
 
-    async findFirst(options?: OptionsWithRql) {
+    async findFirst(options) {
       const result = await query(options);
       return result.data[0];
     },

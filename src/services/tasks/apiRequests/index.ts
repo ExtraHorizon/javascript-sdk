@@ -3,7 +3,6 @@ import {
   addPagersFn,
   findAllGeneric,
   findAllIterator,
-  FindAllIterator,
 } from '../../helpers';
 import { HttpClient } from '../../http-client';
 import { OptionsWithRql } from '../../types';
@@ -24,20 +23,20 @@ export default (
   }
 
   return {
-    async find(options?: OptionsWithRql) {
+    async find(options) {
       const result = await query(options);
       return addPagersFn<ApiRequest>(query, options, result);
     },
 
-    async findAll(options?: OptionsWithRql): Promise<ApiRequest[]> {
+    async findAll(options) {
       return findAllGeneric<ApiRequest>(query, options);
     },
 
-    findAllIterator(options?: OptionsWithRql): FindAllIterator<ApiRequest> {
+    findAllIterator(options) {
       return findAllIterator<ApiRequest>(query, options);
     },
 
-    async findFirst(options?: OptionsWithRql): Promise<ApiRequest> {
+    async findFirst(options) {
       const result = await query(options);
       return result.data[0];
     },
