@@ -17,32 +17,32 @@ export interface TemplateV2 extends TemplateV2Creation {
 export interface TemplateV2Creation {
   name: string;
   description?: string;
-  properties?: Record<string, TypeConfiguration>;
+  properties?: Record<string, TemplateV2TypeConfiguration>;
   outputs: Record<string, string>;
 }
 
-export type TypeConfiguration = ObjectConfiguration | ArrayConfiguration |
-    StringConfiguration | NumberConfiguration | BooleanConfiguration;
+export type TemplateV2TypeConfiguration = TemplateV2ObjectConfiguration | TemplateV2ArrayConfiguration |
+    TemplateV2StringConfiguration | TemplateV2NumberConfiguration | TemplateV2BooleanConfiguration;
 
-export interface ObjectConfiguration {
+export interface TemplateV2ObjectConfiguration {
   type: 'object';
-  properties: Record<string, TypeConfiguration>;
+  properties: Record<string, TemplateV2TypeConfiguration>;
 }
 
-export interface ArrayConfiguration {
+export interface TemplateV2ArrayConfiguration {
   type: 'array';
-  items: TypeConfiguration;
+  items: TemplateV2TypeConfiguration;
 }
 
-export interface StringConfiguration {
+export interface TemplateV2StringConfiguration {
   type: 'string';
 }
 
-export interface NumberConfiguration {
+export interface TemplateV2NumberConfiguration {
   type: 'number';
 }
 
-export interface BooleanConfiguration {
+export interface TemplateV2BooleanConfiguration {
   type: 'boolean';
 }
 
