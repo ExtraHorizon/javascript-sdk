@@ -21,8 +21,6 @@ export interface TemplateV2Creation {
   outputs: Record<string, string>;
 }
 
-export type TemplateV2ResolveOut = Record<string, string>;
-
 export type TypeConfiguration = ObjectConfiguration | ArrayConfiguration |
     StringConfiguration | NumberConfiguration | BooleanConfiguration;
 
@@ -48,7 +46,7 @@ export interface BooleanConfiguration {
   type: 'boolean';
 }
 
-export interface TemplateV2ResolveIn {
+export interface TemplateV2ResolveIn<T extends Record<string, any>> {
   /**
    * If not present (or empty) we will first check the configured language in the users-service. If that is not present it will default to 'EN'
    */
@@ -57,7 +55,7 @@ export interface TemplateV2ResolveIn {
    * If not present (or empty) we will first check the configured time_zone in the users-service. If that is not present it will default to 'UTC'
    */
   timeZone?: TimeZone;
-  data?: Record<string, any>;
+  data?: T;
 }
 
 export interface TemplatesV2ErrorInfo {
@@ -167,9 +165,12 @@ export interface TemplatesV2Service {
    * @throws {TemplateFillingError}
    * @throws {ResourceUnknownError}
    */
-  resolve(
+  resolve<
+      InputData = Record<string, any>,
+      Outputs = Record<string, string>
+  >(
       templateIdOrName: string,
-      requestBody: TemplateV2ResolveIn,
+      requestBody: TemplateV2ResolveIn<InputData>,
       options?: OptionsBase
-  ): Promise<TemplateV2ResolveOut>;
+  ): Promise<Outputs>;
 }
