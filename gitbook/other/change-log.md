@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added the `exh.tasks.functions` methods `find`, `getByName`, `update`, `enable`, `disable` and `remove`
 - Added a `exh.users.findByEmail` method to find a user by their email address.
 
+### Deprecated
+- `exh.tasks.schedules.delete` is deprecated in favor of `exh.tasks.schedules.remove`
+- `exh.auth.oidc.providers.delete` is deprecated in favor of `exh.auth.oidc.providers.remove`
+
 ### Fixed
 - Corrected the types for the `findFirst` (based) methods to indicate they may return `undefined` when no results are found.
 

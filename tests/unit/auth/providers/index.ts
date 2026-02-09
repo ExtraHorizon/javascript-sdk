@@ -85,6 +85,15 @@ describe('Auth - OpenID Connect - Providers', () => {
     expect(result).toMatchObject({ affectedRecords: 1 });
   });
 
+  it('Removes an OpenID Connect provider', async () => {
+    nock(`${host}${AUTH_BASE}`)
+      .delete(`/oidc/providers/${provider.id}`)
+      .reply(200, { affectedRecords: 1 });
+
+    const result = await sdk.auth.oidc.providers.remove(provider.id);
+    expect(result).toMatchObject({ affectedRecords: 1 });
+  });
+
   it('Enables an OpenID Connect provider', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/oidc/providers/${provider.id}/enable`)

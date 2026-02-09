@@ -72,12 +72,16 @@ export default (
       return data;
     },
 
-    async delete(providerId) {
+    async remove(providerId) {
       const { data } = await oidcClient.delete(
         httpWithAuth,
         `/oidc/providers/${providerId}`
       );
       return data;
+    },
+
+    delete(providerId) {
+      return this.remove(providerId);
     },
   };
 };

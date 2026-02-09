@@ -27,7 +27,7 @@ export default (
       return data;
     },
 
-    async delete(scheduleId, options) {
+    async remove(scheduleId, options) {
       const { data } = await client.delete(
         httpAuth,
         `/schedules/${scheduleId}`,
@@ -35,6 +35,10 @@ export default (
       );
 
       return data;
+    },
+
+    delete(scheduleId, options) {
+      return this.remove(scheduleId, options);
     },
 
     async find(options) {
