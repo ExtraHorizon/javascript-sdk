@@ -49,7 +49,7 @@ describe('Events Service', () => {
 
     const event = await sdk.events.findById(eventId);
 
-    expect(event.id).toBe(eventId);
+    expect(event?.id).toBe(eventId);
   });
 
   it('Finds the first event', async () => {
@@ -57,7 +57,7 @@ describe('Events Service', () => {
 
     const event = await sdk.events.findFirst();
 
-    expect(event.id).toBe(eventId);
+    expect(event?.id).toBe(eventId);
   });
 
   describe('create()', () => {
@@ -103,5 +103,11 @@ describe('Events Service', () => {
 
       expect(event.id).toBe(eventData.id);
     });
+  });
+
+  it('Performs a health check', async () => {
+    nock(`${host}${EVENTS_BASE}`).get('/health').reply(200);
+    const serviceIsAvailable = await sdk.events.health();
+    expect(serviceIsAvailable).toBe(true);
   });
 });

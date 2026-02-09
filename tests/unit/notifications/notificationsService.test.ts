@@ -160,4 +160,10 @@ describe('Notifications Service', () => {
 
     expect(res.data.length).toBeGreaterThan(0);
   });
+
+  it('Gets health', async () => {
+    nock(`${host}${NOTIFICATIONS_BASE}`).get('/health').reply(200, '');
+    const health = await sdk.notifications.health();
+    expect(health).toBe(true);
+  });
 });

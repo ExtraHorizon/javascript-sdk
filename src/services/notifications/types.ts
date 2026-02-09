@@ -219,6 +219,12 @@ export interface NotificationsService {
    * @returns PagedResult<NotifTypeDef>
    */
   getTypes(options?: OptionsBase): Promise<PagedResult<NotifTypeDef>>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }
 
 export interface NotificationSettingsServices {

@@ -58,5 +58,10 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
       const rqlWithNotificationId = rqlBuilder().eq('id', notificationId).build();
       return await this.findFirst({ ...options, rql: rqlWithNotificationId });
     },
+
+    async health() {
+      const result = await client.get(httpWithAuth, '/health');
+      return result.status === 200;
+    },
   };
 };

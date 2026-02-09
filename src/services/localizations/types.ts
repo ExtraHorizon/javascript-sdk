@@ -166,4 +166,10 @@ export interface LocalizationsService {
     requestBody: LocalizationRequest,
     options?: OptionsBase
   ): Promise<Record<string, MappedText>>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }

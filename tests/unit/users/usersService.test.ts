@@ -796,4 +796,12 @@ describe('Users Service', () => {
       await expect(promise).rejects.toBeInstanceOf(IncorrectPinCodeError);
     });
   });
+
+  describe('health', () => {
+    it('Gets health', async () => {
+      nock(`${host}${USER_BASE}`).get('/health').reply(200, '');
+      const health = await sdk.users.health();
+      expect(health).toBe(true);
+    });
+  });
 });

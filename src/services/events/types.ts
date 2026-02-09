@@ -80,6 +80,12 @@ export interface EventsService {
    * @returns Event
    */
   create(requestBody: CreateEvent, options?: CreateEventOptions): Promise<Event>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }
 
 export interface SubscriptionsService {

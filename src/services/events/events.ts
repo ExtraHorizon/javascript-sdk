@@ -28,4 +28,9 @@ export default (client: HttpClient, httpAuth: HttpInstance): EventsService => ({
 
     return (await client.post(httpAuth, '/', requestBody, requestOptions)).data;
   },
+
+  async health() {
+    const result = await client.get(httpAuth, '/health');
+    return result.status === 200;
+  },
 });

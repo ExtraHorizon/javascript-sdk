@@ -295,4 +295,10 @@ describe('Profiles Service', () => {
 
     expect(res.data.length).toBeGreaterThan(0);
   });
+
+  it('Performs a health check', async () => {
+    nock(`${host}${PROFILES_BASE}`).get('/health').reply(200);
+    const serviceIsAvailable = await sdk.profiles.health();
+    expect(serviceIsAvailable).toBe(true);
+  });
 });

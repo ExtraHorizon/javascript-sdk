@@ -108,5 +108,10 @@ export default (
       const result = await find(options);
       return result.data[0];
     },
+
+    async health() {
+      const result = await client.get(httpWithAuth, '/health');
+      return result.status === 200;
+    },
   };
 };

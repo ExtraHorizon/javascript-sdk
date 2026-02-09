@@ -212,8 +212,16 @@ describe('TemplatesV2 Service', () => {
         }]));
 
       const response = await sdk.templatesV2.findById(id);
-      expect(response.properties).toStrictEqual(properties);
-      expect(response.outputs).toStrictEqual(outputs);
+      expect(response?.properties).toStrictEqual(properties);
+      expect(response?.outputs).toStrictEqual(outputs);
+    });
+  });
+
+  describe('health', () => {
+    it('Requests a health check', async () => {
+      nock(`${host}${TEMPLATES_V2_BASE}`).get('/health').reply(200, '');
+      const health = await sdk.templatesV2.health();
+      expect(health).toBe(true);
     });
   });
 });

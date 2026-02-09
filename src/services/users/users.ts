@@ -322,5 +322,10 @@ export default (
 
       return data;
     },
+
+    async health() {
+      const result = await userClient.get(http, '/health');
+      return result.status === 200;
+    },
   };
 };
