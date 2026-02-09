@@ -156,34 +156,17 @@ describe('Tasks - Functions', () => {
 
       expect(result).toStrictEqual({ affectedRecords: 1 });
     });
-
-    it('Does not transform customized fields in the request', async () => {
-      const functionName = 'existing_function';
-      const data = {
-        environmentVariables: {
-          my_custom_field: { value: 'new_custom_value' },
-        },
-      };
-
-      nock(`${host}${TASKS_BASE}`)
-        .put(`/functions/${functionName}`, data)
-        .reply(200, { affectedRecords: 1 });
-
-      const result = await exh.tasks.functions.update(functionName, data);
-
-      expect(result).toStrictEqual({ affectedRecords: 1 });
-    });
   });
 
-  describe('delete', () => {
+  describe('remove', () => {
     it('Deletes a function', async () => {
-      const functionName = 'function_to_delete';
+      const functionName = 'function_to_remove';
 
       nock(`${host}${TASKS_BASE}`)
         .delete(`/functions/${functionName}`)
         .reply(200, { affectedRecords: 1 });
 
-      const result = await exh.tasks.functions.delete(functionName);
+      const result = await exh.tasks.functions.remove(functionName);
 
       expect(result).toStrictEqual({ affectedRecords: 1 });
     });

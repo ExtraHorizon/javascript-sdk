@@ -35,7 +35,7 @@ export default (
     return response.data;
   },
 
-  async delete(name, options) {
+  async remove(name, options) {
     const response = await client.delete(httpAuth, `/functions/${name}`, options);
     return response.data;
   },

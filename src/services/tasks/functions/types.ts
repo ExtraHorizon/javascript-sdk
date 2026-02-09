@@ -57,7 +57,7 @@ export interface FunctionsService {
    *
    * @throws {ResourceUnknownError} When no function with the specified name is found
    */
-  delete(name: string, options?: OptionsBase): Promise<AffectedRecords>;
+  remove(name: string, options?: OptionsBase): Promise<AffectedRecords>;
 
   /**
    * Enable a function by its name.

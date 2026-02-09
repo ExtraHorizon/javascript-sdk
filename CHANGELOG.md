@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.9.0]
 
 ### Added
-- Added the `exh.tasks.functions` methods `find`, `getByName`, `update`, `enable`, `disable` and `delete`
+- Added the `exh.tasks.functions` methods `find`, `getByName`, `update`, `enable`, `disable` and `remove`
 - Added a `exh.users.findByEmail` method to find a user by their email address.
 
 ### Fixed
