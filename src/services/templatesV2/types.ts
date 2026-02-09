@@ -173,4 +173,10 @@ export interface TemplatesV2Service {
       requestBody: TemplateV2ResolveIn<InputData>,
       options?: OptionsBase
   ): Promise<Outputs>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }

@@ -66,4 +66,9 @@ export default (
   async getImpediments(options) {
     return (await client.get(httpAuth, '/impediments', options)).data;
   },
+
+  async health() {
+    const result = await client.get(httpAuth, '/health');
+    return result.status === 200;
+  },
 });

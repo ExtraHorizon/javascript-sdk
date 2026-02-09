@@ -442,4 +442,10 @@ export interface ProfilesService {
    * @returns PagedResult<Impediments>
    */
   getImpediments(options?: OptionsBase): Promise<PagedResult<Impediments>>;
+
+  /**
+   * Perform a health check for profiles service
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }

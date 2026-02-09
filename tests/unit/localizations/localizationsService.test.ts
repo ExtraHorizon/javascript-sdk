@@ -58,7 +58,7 @@ describe('Localizations Service', () => {
 
     const localization = await sdk.localizations.findByKey(localizationKey);
 
-    expect(localization.key).toBe(localizationKey);
+    expect(localization?.key).toBe(localizationKey);
   });
 
   it('Finds the first localization', async () => {
@@ -119,5 +119,11 @@ describe('Localizations Service', () => {
     const res = await sdk.localizations.getByKeys(localizationRequest);
 
     expect(res).toBeTruthy();
+  });
+
+  it('Gets health', async () => {
+    nock(`${host}${LOCALIZATIONS_BASE}`).get('/health').reply(200, '');
+    const health = await sdk.localizations.health();
+    expect(health).toBe(true);
   });
 });

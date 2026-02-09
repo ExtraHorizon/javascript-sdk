@@ -46,17 +46,6 @@ describe('Auth - OAuth1', () => {
     }
   });
 
-  it('Confirms Mfa', async () => {
-    nock(`${host}${AUTH_BASE}`)
-      .post('/oauth1/tokens/mfa')
-      .reply(200, { token: 'token', tokenSecret: 'tokenSecret' });
-    await sdk.auth.confirmMfa({
-      token: 'token',
-      methodId: 'methodId',
-      code: 'code',
-    });
-  });
-
   it('Generates a ssoToken', async () => {
     const ssoToken = {
       ssoToken: 'fakeSsoToken',

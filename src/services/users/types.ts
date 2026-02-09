@@ -1434,4 +1434,10 @@ export interface UsersService {
   setEmailTemplates(
     templates: Partial<EmailTemplates>
   ): Promise<EmailTemplates>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }

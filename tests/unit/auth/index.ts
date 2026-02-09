@@ -2,7 +2,7 @@ import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
 import { createClient } from '../../../src/index';
 
-describe('Auth - Health', () => {
+describe('Auth - Root methods', () => {
   const host = 'https://api.xxx.extrahorizon.io';
 
   let sdk: ReturnType<typeof createClient>;

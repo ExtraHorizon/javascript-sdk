@@ -178,4 +178,10 @@ export interface NotificationV2Service {
    */
   findById<T extends Record<string, string>>
     (notificationId: ObjectId, options?: OptionsBase): Promise<NotificationV2<T> | undefined>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }

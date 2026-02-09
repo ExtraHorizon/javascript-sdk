@@ -77,5 +77,10 @@ export default (
     async getTypes(options) {
       return (await client.get(httpAuth, '/types', options)).data;
     },
+
+    async health() {
+      const result = await client.get(httpAuth, '/health');
+      return result.status === 200;
+    },
   };
 };
