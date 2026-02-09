@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added the `exh.tasks.functions` methods `find`, `getByName`, `update`, `enable`, `disable` and `remove`
 - Added a `exh.users.findByEmail` method to find a user by their email address.
+- Completed the `Task` type for changes made in TaskService 1.3.0 a while ago:
+  - Added the `retriedByTaskId`, `retryForTaskIds`, and `error` properties.
+  - Added the `retried` status.
 
 ### Deprecated
 - `exh.tasks.schedules.delete` is deprecated in favor of `exh.tasks.schedules.remove`
