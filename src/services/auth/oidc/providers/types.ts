@@ -97,6 +97,11 @@ export interface OidcProviderService {
    * @throws {@link ResourceUnknownError} when no provider is found for the specified providerId.
    * @throws {@link IllegalStateError} when the provider is enabled (Only disabled providers can be removed) or when there are still users linked to this provider.
    */
+  remove(providerId: string): Promise<AffectedRecords>;
+
+  /**
+   * @deprecated Use `remove` instead.
+   */
   delete(providerId: string): Promise<AffectedRecords>;
 
   /**

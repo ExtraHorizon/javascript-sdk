@@ -31,6 +31,11 @@ export interface SchedulesService {
    * @param scheduleId - The id of the schedule to delete
    * @param options - Additional options for the request
    */
+  remove(scheduleId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+
+  /**
+   * @deprecated Use `remove` instead.
+   */
   delete(scheduleId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 
   /**
