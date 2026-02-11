@@ -9,7 +9,11 @@ import {
   OptionsBase,
 } from '../types';
 
-export interface TemplateOut {
+// Legacy, before we exported these types with these names
+export type TemplateOut = Template;
+export type TemplateIn = TemplateCreation;
+
+export interface Template {
   id: ObjectId;
   name: string;
   description: string;
@@ -19,7 +23,7 @@ export interface TemplateOut {
   updateTimestamp: Date;
 }
 
-export interface TemplateIn {
+export interface TemplateCreation {
   name: string;
   description: string;
   schema: TemplateObjectConfiguration;
@@ -152,7 +156,7 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<TemplateOut>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<TemplateOut>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Template>>;
   /**
    * Request a list of all templates
    *
@@ -164,7 +168,7 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns TemplateOut[]
    */
-  findAll(options?: OptionsWithRql): Promise<TemplateOut[]>;
+  findAll(options?: OptionsWithRql): Promise<Template[]>;
   /**
    * Request a list of all templates
    *
@@ -174,24 +178,24 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns TemplateOut[]
    */
-  findAllIterator(options?: OptionsWithRql): FindAllIterator<TemplateOut>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Template>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateOut | undefined>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Template | undefined>;
   /**
    * Find By Name
    * @param name the name to search for
    * @returns the first element found
    */
-  findByName(name: string, options?: OptionsWithRql): Promise<TemplateOut | undefined>;
+  findByName(name: string, options?: OptionsWithRql): Promise<Template | undefined>;
   /**
    * Find First
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<TemplateOut | undefined>;
+  findFirst(options?: OptionsWithRql): Promise<Template | undefined>;
   /**
    * Create a new template
    *
@@ -201,7 +205,7 @@ export interface TemplatesService {
    * @param requestBody TemplateIn
    * @returns TemplateOut
    */
-  create(requestBody: TemplateIn, options?: OptionsBase): Promise<TemplateOut>;
+  create(requestBody: TemplateCreation, options?: OptionsBase): Promise<Template>;
   /**
    * Update an existing template
    *
@@ -215,9 +219,9 @@ export interface TemplatesService {
    */
   update(
     templateId: string,
-    requestBody: TemplateIn,
+    requestBody: TemplateCreation,
     options?: OptionsBase
-  ): Promise<TemplateOut>;
+  ): Promise<Template>;
   /**
    * Delete a template
    *

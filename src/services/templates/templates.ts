@@ -3,7 +3,7 @@ import type { HttpInstance } from '../../types';
 import { findAllIterator, findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
 import { ResultResponse, Results } from '../types';
-import type { TemplateOut, TemplatesService } from './types';
+import type { Template, TemplatesService } from './types';
 
 export default (
   client: HttpClient,
@@ -28,11 +28,11 @@ export default (
   },
 
   async findAll(this: TemplatesService, options) {
-    return findAllGeneric<TemplateOut>(this.find, options);
+    return findAllGeneric<Template>(this.find, options);
   },
 
   findAllIterator(this: TemplatesService, options) {
-    return findAllIterator<TemplateOut>(this.find, options);
+    return findAllIterator<Template>(this.find, options);
   },
 
   async findById(this: TemplatesService, id, options) {
