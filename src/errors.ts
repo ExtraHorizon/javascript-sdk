@@ -309,6 +309,7 @@ export class ActivationRequestTimeoutError extends ForbiddenError {}
 // 404 Not Found
 export class NotFoundError extends ApiError {}
 export class ResourceUnknownError extends NotFoundError {}
+export class ServiceNotFoundError extends NotFoundError {}
 export class NoConfiguredAppStoreProduct extends NotFoundError {}
 
 // 500 Server Error
@@ -492,6 +493,7 @@ export const ErrorClassMap = {
   414: StatusInUseError,
   415: LockedDocumentError,
   801: DefaultLocalizationMissingError,
+  903: ServiceNotFoundError,
   1002: LocalizationKeyMissingError,
   1003: TemplateFillingError,
   1004: TemplateSyntaxError,
