@@ -5,6 +5,7 @@ import {
   createClient,
   rqlBuilder,
   ParamsOauth2,
+  ServiceNotFoundError,
 } from '../../../src/index';
 import { templateData, templateInput } from '../../__helpers__/template';
 import { createPagedResponse } from '../../__helpers__/utils';
@@ -245,5 +246,16 @@ describe('Template Service', () => {
     );
 
     expect(res).toBeDefined();
+  });
+
+  it('Throws when the service is not deployed', async () => {
+    nock(`${host}${TEMPLATE_BASE}`).get('/health')
+      .reply(404, {
+        code: 903,
+        name: 'SERVICE_NOT_FOUND_EXCEPTION',
+        message: 'The requested service could not be found',
+      });
+
+    await expect(sdk.templates.health()).rejects.toThrow(ServiceNotFoundError);
   });
 });
