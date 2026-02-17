@@ -34,7 +34,7 @@ describe('TemplatesV2 Service', () => {
         snake_case: 'hello',
       };
 
-      const properties: TemplateV2Creation['properties'] = {
+      const inputs: TemplateV2Creation['inputs'] = {
         snake_case: { type: 'string' },
       };
 
@@ -44,12 +44,12 @@ describe('TemplatesV2 Service', () => {
         .post('/')
         .reply(200, {
           id: templateId,
-          properties,
+          inputs,
           outputs,
         });
 
-      const response = await sdk.templatesV2.create({ name: 'hello', properties, outputs });
-      expect(response.properties).toStrictEqual(properties);
+      const response = await sdk.templatesV2.create({ name: 'hello', inputs, outputs });
+      expect(response.inputs).toStrictEqual(inputs);
       expect(response.outputs).toStrictEqual(outputs);
     });
   });
@@ -199,7 +199,7 @@ describe('TemplatesV2 Service', () => {
         snake_case: 'hello',
       };
 
-      const properties: TemplateV2Creation['properties'] = {
+      const inputs: TemplateV2Creation['inputs'] = {
         snake_case: { type: 'string' },
       };
 
@@ -207,12 +207,12 @@ describe('TemplatesV2 Service', () => {
         .get(`/?eq(id,${id})`)
         .reply(200, createPagedResponse([{
           name: 'hello',
-          properties,
+          inputs,
           outputs,
         }]));
 
       const response = await sdk.templatesV2.findById(id);
-      expect(response?.properties).toStrictEqual(properties);
+      expect(response?.inputs).toStrictEqual(inputs);
       expect(response?.outputs).toStrictEqual(outputs);
     });
   });
