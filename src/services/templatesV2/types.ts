@@ -17,8 +17,15 @@ export interface TemplateV2 extends TemplateV2Creation {
 export interface TemplateV2Creation {
   name: string;
   description?: string;
-  properties?: Record<string, TemplateV2TypeConfiguration>;
+  inputs?: Record<string, TemplateV2TypeConfiguration>;
   outputs: Record<string, string>;
+}
+
+export interface TemplateV2Update {
+  name?: string;
+  description?: string | null;
+  inputs?: Record<string, TemplateV2TypeConfiguration> | null;
+  outputs?: Record<string, string>;
 }
 
 export type TemplateV2TypeConfiguration = TemplateV2ObjectConfiguration | TemplateV2ArrayConfiguration |
@@ -55,7 +62,7 @@ export interface TemplateV2ResolveIn<T extends Record<string, any>> {
    * If not present (or empty) we will first check the configured time_zone in the users-service. If that is not present it will default to 'UTC'
    */
   timeZone?: TimeZone;
-  data?: T;
+  inputs?: T;
 }
 
 export interface TemplatesV2ErrorInfo {
@@ -136,7 +143,7 @@ export interface TemplatesV2Service {
    */
   update(
     templateIdOrName: string,
-    requestBody: Partial<TemplateV2Creation>,
+    requestBody: TemplateV2Update,
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
