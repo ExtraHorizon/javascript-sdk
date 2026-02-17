@@ -47,6 +47,7 @@ export interface TemplateObjectConfiguration {
 
 export interface TemplateArrayConfiguration {
   type: 'array';
+  type_configuration: TemplateTypeConfiguration;
   options?: TemplateArrayOption[];
 }
 
