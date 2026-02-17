@@ -122,7 +122,7 @@ export interface TemplatesV2Service {
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_TEMPLATES` | `global` | **Required** for this endpoint
-   * @param requestBody TemplateIn
+   * @param requestBody TemplateV2Creation
    * @returns TemplateV2
    * @throws {ResourceAlreadyExistsError}
    * @throws {TemplateSyntaxError}
@@ -135,7 +135,7 @@ export interface TemplatesV2Service {
    * - | - | -
    * `UPDATE_TEMPLATES` | `global` | **Required** for this endpoint
    * @param templateIdOrName Id or Name of the targeted template
-   * @param requestBody TemplateIn
+   * @param requestBody TemplateV2Update
    * @returns TemplateV2
    * @throws {ResourceAlreadyExistsError}
    * @throws {TemplateSyntaxError}
