@@ -14,7 +14,7 @@ export default (
       `/${options?.rql || ''}`,
       {
         ...options,
-        customResponseKeys: ['data.properties', 'data.outputs'],
+        customResponseKeys: ['data.inputs', 'data.outputs'],
       }
     );
 
@@ -30,7 +30,7 @@ export default (
           requestBody,
           {
             ...options,
-            customKeys: ['properties', 'outputs'],
+            customKeys: ['inputs', 'outputs'],
           }
         )
       );
@@ -46,7 +46,7 @@ export default (
           requestBody,
           {
             ...options,
-            customKeys: ['properties', 'outputs'],
+            customKeys: ['inputs', 'outputs'],
           }
         )
       );
@@ -74,7 +74,7 @@ export default (
           requestBody,
           {
             ...options,
-            customRequestKeys: ['data'],
+            customRequestKeys: ['inputs'],
             customResponseKeys: ['*'],
           }
         )
