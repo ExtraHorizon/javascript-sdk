@@ -243,6 +243,7 @@ export class AuthorizationCodeExpiredError extends BadRequestError {}
 export class MissingPKCEVerifierError extends BadRequestError {}
 export class RefreshTokenUnknownError extends BadRequestError {}
 export class RefreshTokenExpiredError extends BadRequestError {}
+export class LambdaInvocationError extends BadRequestError {}
 
 export class FirebaseInvalidPlatformDataError extends BadRequestError {
   notificationId?: string;
@@ -498,6 +499,7 @@ export const ErrorClassMap = {
   1003: TemplateFillingError,
   1004: TemplateSyntaxError,
   1005: TemplateResolvingError,
+  1405: LambdaInvocationError,
   2605: InvalidTokenError,
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,
