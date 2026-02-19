@@ -154,7 +154,7 @@ function generateAuthHeader(oAuthData: OAuth1Parameters) {
 }
 
 // Same function used in the auth-service
-function getUrlInfoFromRequest(url: string) {
+export function getUrlInfoFromRequest(url: string) {
   const { protocol, host, pathname, search } = new URL(url);
 
   return {
