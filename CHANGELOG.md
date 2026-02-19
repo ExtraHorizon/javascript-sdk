@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected the types for the `findFirst` (based) methods to indicate they may return `undefined` when no results are found.
 - Corrected the types of the `schema` property in the `exh.templates.*`
 - Corrected the types of `exh.mails.*`
+- Bumped axios version to `0.30.3` to resolve warning about `CVE-2026-25639`
+- Bumped qs version to `6.14.2` to resolve warning about `CVE-2026-2391`
 
 
 ## [8.8.2]

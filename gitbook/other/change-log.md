@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Completed the `Task` type for changes made in TaskService 1.3.0 a while ago:
   - Added the `retriedByTaskId`, `retryForTaskIds`, and `error` properties.
   - Added the `retried` status.
+- Introduced `exh.templatesV2` with methods to manage and resolve V2 templates
+- Added `template_name` to `exh.mails.*` to allow sending mails with a V2 template by name
 
 ### Deprecated
 - `exh.tasks.schedules.delete` is deprecated in favor of `exh.tasks.schedules.remove`
@@ -24,6 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Corrected the types for the `findFirst` (based) methods to indicate they may return `undefined` when no results are found.
+- Corrected the types of the `schema` property in the `exh.templates.*`
+- Corrected the types of `exh.mails.*`
+- Bumped axios version to `0.30.3` to resolve warning about `CVE-2026-25639`
+- Bumped qs version to `6.14.2` to resolve warning about `CVE-2026-2391`
 
 ## [8.8.2]
 
