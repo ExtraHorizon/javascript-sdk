@@ -35,7 +35,7 @@ export interface FunctionsService {
    *
    * @throws {ResourceUnknownError} When no function with the specified name is found
    */
-  getByName(name: string, options?: OptionsBase): Promise<FunctionDetails>;
+  findByName(name: string, options?: OptionsBase): Promise<FunctionDetails>;
 
   /**
    * Update a function by its name.

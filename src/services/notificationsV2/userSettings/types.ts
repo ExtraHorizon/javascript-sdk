@@ -27,6 +27,8 @@ export interface NotificationV2UserDevice {
 
 export interface NotificationV2UserSettingsService {
   /**
+   * @deprecated Use findById instead.
+   *
    * # Get the notification settings for a specific user
    *
    * This will always return a notification settings object, even if the user does not have any notification settings set up.
@@ -152,4 +154,17 @@ export interface NotificationV2UserSettingsService {
    * @returns NotificationV2User | undefined
    */
   findFirst(options?: OptionsWithRql): Promise<NotificationV2UserSettings | undefined>;
+
+  /**
+   * # Get the notification settings for a specific user
+   *
+   * This will always return a notification settings object, even if the user does not have any notification settings set up.
+   *
+   * ## Access via permissions
+   * Permission | Scopes | Effect
+   * - | - | -
+   * `VIEW_NOTIFICATION_SETTINGS` | `global` | View all notifications
+   * none | | View your own notification settings
+   */
+  findById(userId: ObjectId, options?: OptionsBase): Promise<NotificationV2UserSettings>;
 }

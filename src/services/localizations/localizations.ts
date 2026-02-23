@@ -42,6 +42,15 @@ export default (
     ).data;
   },
 
+  async findByKeys(requestBody, options) {
+    return (
+      await client.post(httpAuth, '/request', requestBody, {
+        ...options,
+        customResponseKeys: ['*'],
+      })
+    ).data;
+  },
+
   async health() {
     const result = await client.get(httpAuth, '/health');
     return result.status === 200;

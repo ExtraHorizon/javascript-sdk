@@ -91,7 +91,7 @@ describe('Tasks - Functions', () => {
     });
   });
 
-  describe('getByName', () => {
+  describe('findByName', () => {
     it('Gets the function details by its name', async () => {
       const functionName = 'existing_function';
       const response = {
@@ -106,7 +106,7 @@ describe('Tasks - Functions', () => {
         .get(`/functions/${functionName}`)
         .reply(200, response);
 
-      const result = await exh.tasks.functions.getByName(functionName);
+      const result = await exh.tasks.functions.findByName(functionName);
 
       expect(result).toStrictEqual({
         ...response,
@@ -132,7 +132,7 @@ describe('Tasks - Functions', () => {
         .get(`/functions/${functionName}`)
         .reply(200, response);
 
-      const result = await exh.tasks.functions.getByName(functionName);
+      const result = await exh.tasks.functions.findByName(functionName);
 
       expect(result).toStrictEqual({
         ...response,

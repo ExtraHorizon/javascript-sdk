@@ -50,5 +50,9 @@ export default (client: HttpClient, httpWithAuth: AuthHttpClient): NotificationV
       return result.data[0];
     },
 
+    async findById(userId, options) {
+      const result = await client.get(httpWithAuth, `/users/${userId}`, options);
+      return result.data;
+    },
   };
 };

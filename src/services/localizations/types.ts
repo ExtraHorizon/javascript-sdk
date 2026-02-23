@@ -115,6 +115,22 @@ export interface LocalizationsService {
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Localization | undefined>;
+
+  /**
+   * Request localizations of multiple keys in a specific language
+   * The default language (EN) is always included in the response as a fallback in case there is no translation available for the specified language
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   * @param requestBody LocalizationRequest
+   * @returns Record<string, MappedText>
+   */
+  findByKeys(
+      requestBody: LocalizationRequest,
+      options?: OptionsBase
+  ): Promise<Record<string, MappedText>>;
+
   /**
    * Create new localizations
    *
@@ -153,6 +169,8 @@ export interface LocalizationsService {
    */
   remove(rql: RQLString, options?: OptionsBase): Promise<AffectedRecords>;
   /**
+   * @deprecated Use `findByKeys` instead.
+   *
    * Request localizations of multiple keys in a specific language
    * The default language (EN) is always included in the response as a fallback in case there is no translation available for the specified language
    *

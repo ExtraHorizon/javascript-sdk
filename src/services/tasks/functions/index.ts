@@ -19,7 +19,7 @@ export default (
     return response.data;
   },
 
-  async getByName(name, options) {
+  async findByName(name, options) {
     const response = await client.get(httpAuth, `/functions/${name}`, {
       ...options,
       customResponseKeys: ['environmentVariables'],
