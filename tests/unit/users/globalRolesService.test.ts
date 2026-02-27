@@ -33,7 +33,7 @@ describe('Global Roles Service', () => {
     });
   });
 
-  it('should retrieve a list of permissions', async () => {
+  it('Retrieves a list of permissions', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/permissions')
       .reply(200, createPagedResponse(permissionData));
@@ -109,7 +109,7 @@ describe('Global Roles Service', () => {
     });
   });
 
-  it('should retrieve a list of roles', async () => {
+  it('Retrieves a list of roles', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${USER_BASE}`)
       .get(`/roles${rql}`)
@@ -120,13 +120,13 @@ describe('Global Roles Service', () => {
     expect(roles.data.length).toBeGreaterThan(0);
   });
 
-  it('should create a role', async () => {
+  it('Creates a role', async () => {
     const newRole = {
       name: 'newRole',
       description: 'this is a new role',
     };
     nock(`${host}${USER_BASE}`)
-      .post(`/roles`)
+      .post('/roles')
       .reply(200, {
         ...newRole,
         id: roleId,
@@ -138,7 +138,7 @@ describe('Global Roles Service', () => {
     expect(res.name).toBe(newRole.name);
   });
 
-  it('should delete a role', async () => {
+  it('Deletes a role', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${USER_BASE}`).delete(`/roles${rql}`).reply(200, {
       affectedRecords: 1,
@@ -149,7 +149,7 @@ describe('Global Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should update a role', async () => {
+  it('Updates a role', async () => {
     const id = roleId;
     const requestBody = {
       name: 'newRoleName',
@@ -162,7 +162,7 @@ describe('Global Roles Service', () => {
     expect(res.id).toBe(roleData.id);
   });
 
-  it('should add permissions to a role', async () => {
+  it('Adds permissions to a role', async () => {
     const rql = rqlBuilder().limit(10).build();
     const requestBody = {
       permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
@@ -176,7 +176,7 @@ describe('Global Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove permissions from roles', async () => {
+  it('Removes permissions from roles', async () => {
     const rql = rqlBuilder().build();
     const requestBody = {
       permissions: [GlobalPermissionName.VIEW_PRESCRIPTIONS],
@@ -190,7 +190,7 @@ describe('Global Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should add roles to users', async () => {
+  it('Adds roles to users', async () => {
     const rql = rqlBuilder().build();
     const requestBody = {
       roles: [roleId],
@@ -204,7 +204,7 @@ describe('Global Roles Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove roles from users', async () => {
+  it('Removes roles from users', async () => {
     const rql = rqlBuilder().build();
     const requestBody = {
       roles: [roleId],

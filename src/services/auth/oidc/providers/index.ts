@@ -40,7 +40,7 @@ export default (
       return findAllIterator<OidcProvider>(query, options);
     },
 
-    async findFirst(options?: OptionsWithRql) {
+    async findFirst(options) {
       const result = await query(options);
       return result.data[0];
     },
@@ -72,12 +72,16 @@ export default (
       return data;
     },
 
-    async delete(providerId) {
+    async remove(providerId) {
       const { data } = await oidcClient.delete(
         httpWithAuth,
         `/oidc/providers/${providerId}`
       );
       return data;
+    },
+
+    delete(providerId) {
+      return this.remove(providerId);
     },
   };
 };

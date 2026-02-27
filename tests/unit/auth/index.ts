@@ -2,7 +2,7 @@ import nock from 'nock';
 import { AUTH_BASE } from '../../../src/constants';
 import { createClient } from '../../../src/index';
 
-describe('Auth - Health', () => {
+describe('Auth - Root methods', () => {
   const host = 'https://api.xxx.extrahorizon.io';
 
   let sdk: ReturnType<typeof createClient>;
@@ -18,11 +18,11 @@ describe('Auth - Health', () => {
     nock.cleanAll();
   });
 
-  it('should get health', async () => {
+  it('Gets health', async () => {
     nock(`${host}${AUTH_BASE}`).get('/health').reply(200);
 
     const health = await sdk.auth.health();
 
-    expect(health).toEqual(true);
+    expect(health).toBe(true);
   });
 });

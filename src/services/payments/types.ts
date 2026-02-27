@@ -678,13 +678,13 @@ export interface PaymentsOrdersService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<OrderSchema>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<OrderSchema | undefined>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<OrderSchema>;
+  findFirst(options?: OptionsWithRql): Promise<OrderSchema | undefined>;
   /**
    * Create an order
    * @param requestBody
@@ -796,13 +796,13 @@ export interface PaymentsProductsService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<ProductSchema>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<ProductSchema | undefined>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<ProductSchema>;
+  findFirst(options?: OptionsWithRql): Promise<ProductSchema | undefined>;
   /**
    * Add Tags to a Product
    *

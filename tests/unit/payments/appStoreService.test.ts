@@ -38,7 +38,7 @@ describe('App Store Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should complete a transaction', async () => {
+  it('Completes a transaction', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/appStore/completeTransaction')
       .reply(200, appleReceipt);
@@ -68,7 +68,7 @@ describe('App Store Service', () => {
     expect(response.status).toBeDefined();
   });
 
-  it('should verify the receipt of a transaction', async () => {
+  it('Verifies the receipt of a transaction', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/appStore/verifyReceipt')
       .reply(200, appleReceipt);
@@ -81,7 +81,7 @@ describe('App Store Service', () => {
     expect(res.status).toBeDefined();
   });
 
-  it('should processes an App Store server notification', async () => {
+  it('Processes an App Store server notification', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/appStore/processServerNotification')
       .reply(200);
@@ -93,7 +93,7 @@ describe('App Store Service', () => {
     expect(done).toBe(true);
   });
 
-  it('should get a list of notifications received from the App Store', async () => {
+  it('Gets a list of notifications received from the App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/receivedNotifications/')
       .reply(200, createPagedResponse(appStoreNotification));
@@ -103,7 +103,7 @@ describe('App Store Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should get a list of receipts received and verified by the App Store', async () => {
+  it('Gets a list of receipts received and verified by the App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/receivedReceipts/')
       .reply(200, createPagedResponse(appStoreReceipt));
@@ -113,7 +113,7 @@ describe('App Store Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should get a list of shared secrets with App Store', async () => {
+  it('Gets a list of shared secrets with App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/sharedSecrets/')
       .reply(200, createPagedResponse(appStoreSharedSecret));
@@ -123,7 +123,7 @@ describe('App Store Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should create a shared secret with App Store', async () => {
+  it('Creates a shared secret with App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/appStore/sharedSecrets')
       .reply(200, appStoreSharedSecret);
@@ -135,7 +135,7 @@ describe('App Store Service', () => {
     expect(res.id).toBeDefined();
   });
 
-  it('should remove a shared secret with App Store', async () => {
+  it('Removes a shared secret with App Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .delete('/appStore/sharedSecrets/sharedsecretid')
       .reply(200, { affectedRecords: 1 });

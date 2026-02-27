@@ -18,6 +18,7 @@ export enum TaskStatus {
   IN_PROGRESS = 'inProgress',
   COMPLETE = 'complete',
   FAILED = 'failed',
+  RETRIED = 'retried',
   CANCELED = 'canceled',
 }
 
@@ -42,6 +43,16 @@ export interface Task<DataType = any> {
   createdByApplicationId?: ObjectId;
   /** The Extra Horizon document id for the user who made the request */
   createdByUserId?: ObjectId;
+  /** Set for tasks in the `retried` status */
+  retriedByTaskId?: ObjectId;
+  /** Set for tasks that are being retried for other tasks */
+  retryForTaskIds?: ObjectId[];
+  /** Set for tasks in the `failed` status */
+  error?: {
+    type: 'runtime' | 'invocation';
+    name?: string;
+    message: string;
+  };
 }
 
 export type TaskInput = Pick<
@@ -66,7 +77,7 @@ export interface TasksService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Task>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Task | undefined>;
 
   /**
    * Request a list of all tasks
@@ -97,7 +108,7 @@ export interface TasksService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Task>;
+  findFirst(options?: OptionsWithRql): Promise<Task | undefined>;
 
   /**
    * Create a task

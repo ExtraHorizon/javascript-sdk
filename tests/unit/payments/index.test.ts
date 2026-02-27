@@ -1,9 +1,10 @@
 import nock from 'nock';
-import { AUTH_BASE, NOTIFICATIONS_BASE } from '../../../src/constants';
+import { AUTH_BASE, PAYMENTS_BASE } from '../../../src/constants';
 import { Client, createClient, ParamsOauth2 } from '../../../src/index';
 
-describe('Health Service', () => {
+describe('Payments Service - Root methods', () => {
   const host = 'https://api.xxx.extrahorizon.io';
+
   let sdk: Client<ParamsOauth2>;
 
   beforeAll(async () => {
@@ -28,9 +29,11 @@ describe('Health Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get health', async () => {
-    nock(`${host}${NOTIFICATIONS_BASE}`).get('/health').reply(200, '');
-    const health = await sdk.notifications.health();
-    expect(health).toBe(true);
+  it('Performs a health check', async () => {
+    nock(`${host}${PAYMENTS_BASE}`).get('/health').reply(200);
+
+    const serviceIsAvailable = await sdk.payments.health();
+
+    expect(serviceIsAvailable).toBe(true);
   });
 });

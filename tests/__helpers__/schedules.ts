@@ -3,7 +3,7 @@ import {
   ScheduleCreation,
 } from '../../src/services/tasks/schedules/types';
 
-export type ScheduleDataType = { firstName: string; lastName: string };
+export type ScheduleDataType = { firstName: string; lastName: string; };
 
 export const scheduleCreation: ScheduleCreation<ScheduleDataType> = {
   interval: 10000,

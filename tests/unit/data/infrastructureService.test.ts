@@ -28,13 +28,13 @@ describe('Infrastructure Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get health', async () => {
+  it('Gets health', async () => {
     nock(`${host}${DATA_BASE}`).get('/health').reply(200);
     const health = await sdk.data.health();
     expect(health).toBe(true);
   });
 
-  it('should retry on specific conditions and succeed', async () => {
+  it('Retries on specific conditions and succeed', async () => {
     expect.assertions(1);
     const mockToken = 'test';
     nock(`${host}${DATA_BASE}`)
@@ -58,12 +58,12 @@ describe('Infrastructure Service', () => {
 
     try {
       const result = await sdk.data.health();
-      expect(result).toEqual({ all: 'good' });
+      expect(result).toStrictEqual({ all: 'good' });
       // eslint-disable-next-line no-empty
     } catch {}
   });
 
-  it('should retry on specific conditions and fail', async () => {
+  it('Retries on specific conditions and fail', async () => {
     expect.assertions(1);
     const mockToken = 'health';
     nock(`${host}${DATA_BASE}`)

@@ -31,17 +31,17 @@ describe('Auth - Applications', () => {
     nock.cleanAll();
   });
 
-  it('should get mfa settings for user', async () => {
+  it('Gets mfa settings for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get(`/mfa/users/${userId}`)
       .reply(200, mfaSetting);
 
     const mfaSettingResult = await sdk.auth.users.getMfaSetting(userId);
 
-    expect(mfaSettingResult.id).toEqual(mfaSetting.id);
+    expect(mfaSettingResult.id).toStrictEqual(mfaSetting.id);
   });
 
-  it('should enable mfa for user', async () => {
+  it('Enables mfa for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/enable`)
       .reply(200, { affectedRecords: 1 });
@@ -50,10 +50,10 @@ describe('Auth - Applications', () => {
       presenceToken: 'test',
     });
 
-    expect(enableResult.affectedRecords).toEqual(1);
+    expect(enableResult.affectedRecords).toBe(1);
   });
 
-  it('should disable mfa for user', async () => {
+  it('Disables mfa for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/disable`)
       .reply(200, { affectedRecords: 1 });
@@ -62,10 +62,10 @@ describe('Auth - Applications', () => {
       presenceToken: 'test',
     });
 
-    expect(enableResult.affectedRecords).toEqual(1);
+    expect(enableResult.affectedRecords).toBe(1);
   });
 
-  it('should add mfa method for user', async () => {
+  it('Adds mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/methods`)
       .reply(200, mfaSetting.methods[0]);
@@ -77,7 +77,7 @@ describe('Auth - Applications', () => {
       tags: [],
     });
 
-    expect(addedMethod.id).toEqual('609b8ad0c0de01f7b1e8b54d');
+    expect(addedMethod.id).toBe('609b8ad0c0de01f7b1e8b54d');
   });
 
   it('Adds an MFA method for user with just the minimal required fields set', async () => {
@@ -94,7 +94,7 @@ describe('Auth - Applications', () => {
     expect(addedMethod.id).toStrictEqual(exampleMethod.id);
   });
 
-  it('should verify mfa method for user', async () => {
+  it('Verifies mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(
         `/mfa/users/${userId}/methods/${mfaSetting.methods[0].id}/verification/confirm`
@@ -107,10 +107,10 @@ describe('Auth - Applications', () => {
       { presenceToken: 'presenceToken', code: '123456' }
     );
 
-    expect(addedMethod.description).toEqual('description');
+    expect(addedMethod.description).toBe('description');
   });
 
-  it('should remove mfa method for user', async () => {
+  it('Removes mfa method for user', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post(`/mfa/users/${userId}/methods/${mfaSetting.methods[0].id}/remove`)
       .reply(200, { affectedRecords: 1 });
@@ -121,6 +121,6 @@ describe('Auth - Applications', () => {
       { presenceToken: 'presenceToken' }
     );
 
-    expect(removedMfaMethod.affectedRecords).toEqual(1);
+    expect(removedMfaMethod.affectedRecords).toBe(1);
   });
 });

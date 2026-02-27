@@ -43,7 +43,7 @@ export interface ApiRequestService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns The first element of the queried API Requests {@link ApiRequest}
    */
-  findFirst(options?: OptionsWithRql): Promise<ApiRequest>;
+  findFirst(options?: OptionsWithRql): Promise<ApiRequest | undefined>;
   logs: ApiRequestLogsService;
 }
 

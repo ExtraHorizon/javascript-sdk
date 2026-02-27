@@ -35,7 +35,7 @@ describe('App Store Subscriptions Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get a list of App Store subscriptions', async () => {
+  it('Gets a list of App Store subscriptions', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/')
       .reply(200, createPagedResponse(appStoreSubscription));
@@ -45,7 +45,7 @@ describe('App Store Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all App Store subscriptions', async () => {
+  it('Requests a list of all App Store subscriptions', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/?limit(50)')
       .reply(200, {
@@ -67,10 +67,10 @@ describe('App Store Subscriptions Service', () => {
       });
     const res =
       await sdk.payments.appStoreSubscriptions.subscriptions.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all App Store subscriptions via iterator', async () => {
+  it('Requests a list of all App Store subscriptions via iterator', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/?limit(50)')
       .reply(200, {
@@ -95,10 +95,10 @@ describe('App Store Subscriptions Service', () => {
 
     await subscriptions.next();
     const thirdPage = await subscriptions.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should get a list of configured App Store subscription products', async () => {
+  it('Gets a list of configured App Store subscription products', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/products/')
       .reply(200, createPagedResponse(appStoreSubscriptionProduct));
@@ -108,7 +108,7 @@ describe('App Store Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all App Store subscription products', async () => {
+  it('Requests a list of all App Store subscription products', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/products/?limit(50)')
       .reply(200, {
@@ -129,10 +129,10 @@ describe('App Store Subscriptions Service', () => {
         data: Array(15).fill(appStoreSubscriptionProduct),
       });
     const res = await sdk.payments.appStoreSubscriptions.products.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all App Store subscription products via iterator', async () => {
+  it('Requests a list of all App Store subscription products via iterator', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/appStore/subscriptions/products/?limit(50)')
       .reply(200, {
@@ -157,10 +157,10 @@ describe('App Store Subscriptions Service', () => {
 
     await products.next();
     const thirdPage = await products.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should create an App Store subscription product', async () => {
+  it('Creates an App Store subscription product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/appStore/subscriptions/products')
       .reply(200, appStoreSubscriptionProduct);
@@ -177,7 +177,7 @@ describe('App Store Subscriptions Service', () => {
     expect(subscriptionProduct.id).toBe(appStoreSubscriptionProductId);
   });
 
-  it('should delete an App Store subscription product', async () => {
+  it('Deletes an App Store subscription product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .delete(
         `/appStore/subscriptions/products/${appStoreSubscriptionProductId}`
@@ -193,7 +193,7 @@ describe('App Store Subscriptions Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should update an App Store subscription product', async () => {
+  it('Updates an App Store subscription product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .put(`/appStore/subscriptions/products/${appStoreSubscriptionProductId}`)
       .reply(200, {

@@ -41,7 +41,7 @@ export interface LoginAttemptsService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns The first element of the queried login attempts {@link LoginAttempt}
    */
-  findFirst(options?: OptionsWithRql): Promise<LoginAttempt>;
+  findFirst(options?: OptionsWithRql): Promise<LoginAttempt | undefined>;
 }
 
 export enum LoginAttemptStatus {

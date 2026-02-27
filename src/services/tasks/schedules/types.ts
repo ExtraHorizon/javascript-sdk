@@ -31,6 +31,11 @@ export interface SchedulesService {
    * @param scheduleId - The id of the schedule to delete
    * @param options - Additional options for the request
    */
+  remove(scheduleId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
+
+  /**
+   * @deprecated Use `remove` instead.
+   */
   delete(scheduleId: ObjectId, options?: OptionsBase): Promise<AffectedRecords>;
 
   /**
@@ -76,7 +81,7 @@ export interface SchedulesService {
    * @param options {@link OptionsWithRql} - Add filters to the requested list
    * @returns The first element of the queried Schedules {@link Schedule}
    */
-  findFirst<T>(options?: OptionsWithRql): Promise<Schedule<T>>;
+  findFirst<T>(options?: OptionsWithRql): Promise<Schedule<T> | undefined>;
 }
 
 export interface ScheduleCreation<T = Record<string, any>> {

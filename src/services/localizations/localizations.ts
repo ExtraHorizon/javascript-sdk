@@ -13,8 +13,7 @@ export default (
 
   async findByKey(this: LocalizationsService, key, options) {
     const rqlWithKey = rqlBuilder(options?.rql).eq('key', key).build();
-    const res = await this.find({ ...options, rql: rqlWithKey });
-    return res.data[0];
+    return await this.findFirst({ ...options, rql: rqlWithKey });
   },
 
   async findFirst(this: LocalizationsService, options) {
@@ -41,5 +40,10 @@ export default (
         customResponseKeys: ['*'],
       })
     ).data;
+  },
+
+  async health() {
+    const result = await client.get(httpAuth, '/health');
+    return result.status === 200;
   },
 });

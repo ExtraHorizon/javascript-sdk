@@ -50,8 +50,7 @@ export default (
 
     async findById(this: NotificationsService, id, options) {
       const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-      const res = await this.find({ ...options, rql: rqlWithId });
-      return res.data[0];
+      return await this.findFirst({ ...options, rql: rqlWithId });
     },
 
     async findFirst(this: NotificationsService, options) {
@@ -77,6 +76,11 @@ export default (
 
     async getTypes(options) {
       return (await client.get(httpAuth, '/types', options)).data;
+    },
+
+    async health() {
+      const result = await client.get(httpAuth, '/health');
+      return result.status === 200;
     },
   };
 };

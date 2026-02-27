@@ -39,7 +39,7 @@ describe('Configuration: Users Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should retrieve a user configuration', async () => {
+  it('Retrieves a user configuration', async () => {
     nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/users/${userId}`)
       .reply(200, userConfigResponse);
@@ -51,7 +51,7 @@ describe('Configuration: Users Service', () => {
     expect(res.patientConfigurations).toBeDefined();
   });
 
-  it('Should not transform custom data in the get response', async () => {
+  it('Does not transform custom data in the get response', async () => {
     //  const customResponseKeys = [ 'data', 'staffConfigurations.data', 'patientConfigurations.data' ];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/users/${userId}`)
@@ -65,7 +65,7 @@ describe('Configuration: Users Service', () => {
     });
   });
 
-  it('should update a user configuration', async () => {
+  it('Updates a user configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${CONFIGURATION_BASE}`).put(`/users/${userId}`).reply(200, {
       affectedRecords: 1,
@@ -84,7 +84,7 @@ describe('Configuration: Users Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a user configuration', async () => {
+  it('Deletes fields from a user configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/users/${userId}/deleteFields`)

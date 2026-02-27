@@ -60,6 +60,8 @@ jobs:
           git tag -a $VERSION_TAG -m "Tagging $VERSION_TAG"
           git push origin $VERSION_TAG
 
+      - name: Clear the repo its .npmrc to avoid issues with npm publish
+        run: rm .npmrc
 
       - name: Publish to the GitHub Packages registry
         run: yarn publish --new-version $VERSION_TAG --tag=$BRANCH_TAG

@@ -1,3 +1,4 @@
+import { TemplatesV2ErrorInfo } from './services/templatesV2/types';
 import { MfaMethod, NotificationV2Error } from './types';
 
 type Method =
@@ -202,6 +203,22 @@ export class FileTooLargeError extends BadRequestError {}
 export class InvalidTokenError extends BadRequestError {}
 export class LocalizationKeyMissingError extends BadRequestError {}
 export class TemplateFillingError extends BadRequestError {}
+export class TemplateSyntaxError extends BadRequestError {
+  syntaxError: TemplatesV2ErrorInfo;
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.syntaxError = apiError.response.syntaxError;
+  }
+}
+export class TemplateResolvingError extends BadRequestError {
+  resolveError: TemplatesV2ErrorInfo;
+
+  constructor(apiError: ApiError) {
+    super(apiError);
+    this.resolveError = apiError.response.resolveError;
+  }
+}
 export class MissingRequiredFieldsError extends BadRequestError {}
 export class InvalidCurrencyForProductPrice extends BadRequestError {}
 export class InvalidReceiptDataError extends BadRequestError {}
@@ -226,6 +243,7 @@ export class AuthorizationCodeExpiredError extends BadRequestError {}
 export class MissingPKCEVerifierError extends BadRequestError {}
 export class RefreshTokenUnknownError extends BadRequestError {}
 export class RefreshTokenExpiredError extends BadRequestError {}
+export class LambdaInvocationError extends BadRequestError {}
 
 export class FirebaseInvalidPlatformDataError extends BadRequestError {
   notificationId?: string;
@@ -292,6 +310,7 @@ export class ActivationRequestTimeoutError extends ForbiddenError {}
 // 404 Not Found
 export class NotFoundError extends ApiError {}
 export class ResourceUnknownError extends NotFoundError {}
+export class ServiceNotFoundError extends NotFoundError {}
 export class NoConfiguredAppStoreProduct extends NotFoundError {}
 
 // 500 Server Error
@@ -475,8 +494,12 @@ export const ErrorClassMap = {
   414: StatusInUseError,
   415: LockedDocumentError,
   801: DefaultLocalizationMissingError,
+  903: ServiceNotFoundError,
   1002: LocalizationKeyMissingError,
   1003: TemplateFillingError,
+  1004: TemplateSyntaxError,
+  1005: TemplateResolvingError,
+  1405: LambdaInvocationError,
   2605: InvalidTokenError,
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,

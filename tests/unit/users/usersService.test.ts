@@ -62,7 +62,7 @@ describe('Users Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get me', async () => {
+  it('Gets me', async () => {
     const mockToken = 'mockToken';
     nock(host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
@@ -74,17 +74,27 @@ describe('Users Service', () => {
     expect(user.id);
   });
 
-  it('should find the first user', async () => {
+  it('Finds the first user', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/')
       .reply(200, createPagedResponse(userData));
 
     const user = await sdk.users.findFirst();
 
-    expect(user.id);
+    expect(user?.id);
   });
 
-  it('should get user by id', async () => {
+  it('Finds a user by email', async () => {
+    nock(`${host}${USER_BASE}/`)
+      .get('/?eq(email,test%2540test%252Ecom)') // Double encoded
+      .reply(200, createPagedResponse(userData));
+
+    const user = await sdk.users.findByEmail('test@test.com');
+
+    expect(user?.id);
+  });
+
+  it('Gets user by id', async () => {
     nock(`${host}${USER_BASE}`).get(`/${userId}`).reply(200, userData);
 
     const user = await sdk.users.findById(userId);
@@ -92,7 +102,7 @@ describe('Users Service', () => {
     expect(user.id);
   });
 
-  it('throws on find user by unknown id', async () => {
+  it('Throws on find user by unknown id', async () => {
     expect.assertions(1);
     nock(`${host}${USER_BASE}`)
       .get(`/${userId}`)
@@ -105,7 +115,7 @@ describe('Users Service', () => {
     }
   });
 
-  it('should update a user', async () => {
+  it('Updates a user', async () => {
     const newData = {
       firstName: 'aaaaa',
       lastName: 'bbbbb',
@@ -124,7 +134,7 @@ describe('Users Service', () => {
     expect(user.lastName).toBe('bbbbb');
   });
 
-  it('should not update a user', async () => {
+  it('Does not update a user', async () => {
     nock(`${host}${USER_BASE}`)
       .put(`/${userId}`)
       .reply(404, resourceUnknownError);
@@ -136,7 +146,7 @@ describe('Users Service', () => {
     }
   });
 
-  it('should get users list', async () => {
+  it('Gets users list', async () => {
     const rql = rqlBuilder()
       .select(['firstName', 'id'])
       .sort('-firstName')
@@ -150,7 +160,7 @@ describe('Users Service', () => {
     expect(users.data.length).toBeGreaterThan(0);
   });
 
-  it('should get patients list', async () => {
+  it('Gets patients list', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/patients')
       .reply(200, createPagedResponse(userData));
@@ -160,7 +170,7 @@ describe('Users Service', () => {
     expect(patients.data.length).toBeGreaterThan(0);
   });
 
-  it('should get staff list', async () => {
+  it('Gets staff list', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/staff')
       .reply(200, createPagedResponse(userData));
@@ -170,34 +180,34 @@ describe('Users Service', () => {
     expect(staff.data.length).toBeGreaterThan(0);
   });
 
-  it('should remove a user', async () => {
+  it('Removes a user', async () => {
     nock(`${host}${USER_BASE}`)
       .delete(`/${userId}`)
       .reply(200, { affectedRecords: 1 });
 
     const result = await sdk.users.remove(userId);
 
-    expect(result).toEqual({ affectedRecords: 1 });
+    expect(result).toStrictEqual({ affectedRecords: 1 });
   });
 
-  it('should add a patient enlistment to a user', async () => {
+  it('Adds a patient enlistment to a user', async () => {
     nock(`${host}${USER_BASE}`)
       .post(`/${userId}/patient_enlistments`)
       .reply(200, { affectedRecords: 1 });
 
     const result = await sdk.users.addPatientEnlistment(userId, { groupId });
 
-    expect(result).toEqual({ affectedRecords: 1 });
+    expect(result).toStrictEqual({ affectedRecords: 1 });
   });
 
-  it('should remove a patient enlistment from a user', async () => {
+  it('Removes a patient enlistment from a user', async () => {
     nock(`${host}${USER_BASE}`)
       .delete(`/${userId}/patient_enlistments/${groupId}`)
       .reply(200, { affectedRecords: 1 });
 
     const result = await sdk.users.removePatientEnlistment(userId, groupId);
 
-    expect(result).toEqual({ affectedRecords: 1 });
+    expect(result).toStrictEqual({ affectedRecords: 1 });
   });
 
   it('Updates a users password', async () => {
@@ -210,7 +220,7 @@ describe('Users Service', () => {
     expect(result).toBe(true);
   });
 
-  it('should authenticate', async () => {
+  it('Authenticates', async () => {
     nock(`${host}${USER_BASE}`)
       .post('/authenticate')
       .reply(200, {
@@ -226,7 +236,7 @@ describe('Users Service', () => {
     expect(authenticatedUser.id).toBeDefined();
   });
 
-  it('should complete an email activation', async () => {
+  it('Completes an email activation', async () => {
     nock(`${host}${USER_BASE}`).post('/activation').reply(200);
 
     const result = await sdk.users.validateEmailActivation({ hash });
@@ -234,7 +244,7 @@ describe('Users Service', () => {
     expect(result).toBeDefined();
   });
 
-  it('should confirm the password for the user making the request', async () => {
+  it('Confirms the password for the user making the request', async () => {
     nock(`${host}${USER_BASE}`).post('/confirm_password').reply(200);
 
     const result = await sdk.users.confirmPassword({ password: newPassword });
@@ -242,7 +252,7 @@ describe('Users Service', () => {
     expect(result).toBeDefined();
   });
 
-  it('should check if email is available', async () => {
+  it('Checks if email is available', async () => {
     nock(`${host}${USER_BASE}`)
       .get(`/email_available?email=${newEmail}`)
       .reply(200, {
@@ -251,10 +261,10 @@ describe('Users Service', () => {
 
     const result = await sdk.users.isEmailAvailable(newEmail);
 
-    expect(result).toEqual({ emailAvailable: true });
+    expect(result).toStrictEqual({ emailAvailable: true });
   });
 
-  it('should upload profile image', async () => {
+  it('Uploads a profile image', async () => {
     nock(`${host}${USER_BASE}`)
       .put(`/${userId}/profile_image`)
       .reply(200, userData);
@@ -264,9 +274,9 @@ describe('Users Service', () => {
     expect(result).toBeDefined();
   });
 
-  it('should get password policy', async () => {
+  it('Gets password policy', async () => {
     nock(`${host}${USER_BASE}`)
-      .get(`/password_policy`)
+      .get('/password_policy')
       .reply(200, passwordPolicy);
 
     const result = await sdk.users.passwordPolicy();
@@ -274,9 +284,9 @@ describe('Users Service', () => {
     expect(result.minimumLength).toBeDefined();
   });
 
-  it('should update password policy', async () => {
+  it('Updates password policy', async () => {
     nock(`${host}${USER_BASE}`)
-      .put(`/password_policy`)
+      .put('/password_policy')
       .reply(200, passwordPolicy);
 
     const result = await sdk.users.updatePasswordPolicy(newPasswordPolicy);
@@ -784,6 +794,14 @@ describe('Users Service', () => {
         newPassword,
       });
       await expect(promise).rejects.toBeInstanceOf(IncorrectPinCodeError);
+    });
+  });
+
+  describe('health', () => {
+    it('Gets health', async () => {
+      nock(`${host}${USER_BASE}`).get('/health').reply(200, '');
+      const health = await sdk.users.health();
+      expect(health).toBe(true);
     });
   });
 });

@@ -41,7 +41,7 @@ describe('Files Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should list all files', async () => {
+  it('Lists all files', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${FILES_BASE}`)
       .get(`/${rql}`)
@@ -52,7 +52,7 @@ describe('Files Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find a file by name', async () => {
+  it('Finds a file by name', async () => {
     const { name } = fileData;
     const rql = rqlBuilder().eq('name', name).build();
 
@@ -65,7 +65,7 @@ describe('Files Service', () => {
     expect(file.name).toBe(name);
   });
 
-  it('should find the first file', async () => {
+  it('Finds the first file', async () => {
     nock(`${host}${FILES_BASE}`)
       .get('/')
       .reply(200, createPagedResponse(fileData));
@@ -75,7 +75,7 @@ describe('Files Service', () => {
     expect(file.name).toBe(fileData.name);
   });
 
-  it('should add a new file', async () => {
+  it('Adds a new file', async () => {
     jest.spyOn(fs, 'readFileSync').mockImplementation(() => '');
     const newFile = {
       name: 'testfile',
@@ -89,14 +89,14 @@ describe('Files Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('should add a new file from text', async () => {
+  it('Adds a new file from text', async () => {
     nock(`${host}${FILES_BASE}`).post('/').reply(200, fileData);
 
     const res = await sdk.files.createFromText('testfilestring');
     expect(res).toBeDefined();
   });
 
-  it('should delete a file', async () => {
+  it('Deletes a file', async () => {
     nock(`${host}${FILES_BASE}`).delete(`/${token}`).reply(200);
 
     const res = await sdk.files.remove(token);
@@ -104,7 +104,7 @@ describe('Files Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should retrieve a file', async () => {
+  it('Retrieves a file', async () => {
     nock(`${host}${FILES_BASE}`).get(`/${token}/file`).reply(200, 'some text');
 
     const res = await sdk.files.retrieve(token);
@@ -112,7 +112,7 @@ describe('Files Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('should get file details', async () => {
+  it('Gets file details', async () => {
     nock(`${host}${FILES_BASE}`).get(`/${token}/details`).reply(200, fileData);
 
     const res = await sdk.files.getDetails(token);
@@ -120,7 +120,7 @@ describe('Files Service', () => {
     expect(res.name).toBe(fileData.name);
   });
 
-  it('should allow the user to abort a request', async () => {
+  it('Allows the user to abort a request', async () => {
     nock(`${host}${FILES_BASE}`)
       .post('/')
       .delay(2000)

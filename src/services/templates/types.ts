@@ -1,5 +1,4 @@
 import { FindAllIterator } from '../../services/helpers';
-import { TypeConfiguration } from '../data/types';
 import {
   ObjectId,
   LanguageCode,
@@ -10,47 +9,125 @@ import {
   OptionsBase,
 } from '../types';
 
-export interface TemplateOut {
-  id?: ObjectId;
-  name?: string;
-  description?: string;
-  schema?: TemplateObjectConfiguration;
-  fields?: Record<string, string>;
-  creationTimestamp?: Date;
-  updateTimestamp?: Date;
+// Legacy, before we exported these types with these names
+export type TemplateOut = Template;
+export type TemplateIn = TemplateCreation;
+
+export interface Template {
+  id: ObjectId;
+  name: string;
+  description: string;
+  schema: TemplateObjectConfiguration;
+  fields: Record<string, string>;
+  creationTimestamp: Date;
+  updateTimestamp: Date;
 }
 
-export interface TemplateIn {
+export interface TemplateCreation {
   name: string;
   description: string;
   schema: TemplateObjectConfiguration;
   fields: Record<string, string>;
 }
 
+export type TemplateTypeConfiguration =
+    TemplateObjectConfiguration |
+    TemplateArrayConfiguration |
+    TemplateStringConfiguration |
+    TemplateNumberConfiguration |
+    TemplateBooleanConfiguration |
+    TemplateObjectIdConfiguration |
+    TemplateDateConfiguration;
+
 export interface TemplateObjectConfiguration {
-  type?: 'object';
-  options?: Array<ObjectOption>;
-  fields?: Record<string, TypeConfiguration>;
+  type: 'object';
+  fields?: Record<string, TemplateTypeConfiguration>;
+  options?: TemplateObjectOption[];
 }
 
-export type ObjectOption = ObjectMinBytesOption | ObjectMaxBytesOption;
-
-export interface ObjectMinBytesOption {
-  type?: ObjectMinBytesOptionType;
-  value: number;
+export interface TemplateArrayConfiguration {
+  type: 'array';
+  type_configuration: TemplateTypeConfiguration;
+  options?: TemplateArrayOption[];
 }
 
-export enum ObjectMinBytesOptionType {
-  MIN_BYTES = 'min_bytes',
+export interface TemplateStringConfiguration {
+  type: 'string';
+  options?: TemplateStringOption[];
 }
 
-export interface ObjectMaxBytesOption {
-  type?: ObjectMaxBytesOptionType;
-  value: number;
+export interface TemplateNumberConfiguration {
+  type: 'number';
+  options?: TemplateNumberOption[];
 }
 
-export enum ObjectMaxBytesOptionType {
-  MAX_BYTES = 'max_bytes',
+export interface TemplateBooleanConfiguration {
+  type: 'boolean';
+}
+
+export interface TemplateObjectIdConfiguration {
+  type: 'object_id';
+}
+
+export interface TemplateDateConfiguration {
+  type: 'date';
+  options?: TemplateDateOption[];
+}
+
+export type TemplateObjectOption =
+    TemplateObjectMinBytesOption |
+    TemplateObjectMaxBytesOption;
+
+export type TemplateObjectMinBytesOption = TemplateTypeOption<'min_bytes', number>;
+export type TemplateObjectMaxBytesOption = TemplateTypeOption<'max_bytes', number>;
+
+export type TemplateNumberOption =
+    TemplateNumberInOption |
+    TemplateNumberMaxOption |
+    TemplateNumberMaxSizeOption |
+    TemplateNumberMinOption |
+    TemplateNumberMinSizeOption |
+    TemplateNumberSizeOption;
+
+export type TemplateNumberInOption = TemplateTypeOption<'in', number[]>;
+export type TemplateNumberMaxOption = TemplateTypeOption<'max', number>;
+export type TemplateNumberMaxSizeOption = TemplateTypeOption<'max_size', number>;
+export type TemplateNumberMinOption = TemplateTypeOption<'min', number>;
+export type TemplateNumberMinSizeOption = TemplateTypeOption<'min_size', number>;
+export type TemplateNumberSizeOption = TemplateTypeOption<'size', number>;
+
+export type TemplateArrayOption =
+    TemplateArrayMaxSizeOption |
+    TemplateArrayMinSizeOption |
+    TemplateArraySizeOption;
+
+export type TemplateArrayMaxSizeOption = TemplateTypeOption<'max_size', number>;
+export type TemplateArrayMinSizeOption = TemplateTypeOption<'min_size', number>;
+export type TemplateArraySizeOption = TemplateTypeOption<'size', number>;
+
+export type TemplateStringOption =
+    TemplateStringInOption |
+    TemplateStringMaxSizeOption |
+    TemplateStringMinSizeOption |
+    TemplateStringRegexOption |
+    TemplateStringSizeOption;
+
+export type TemplateStringInOption = TemplateTypeOption<'in', string[]>;
+export type TemplateStringRegexOption = TemplateTypeOption<'regex', string>;
+export type TemplateStringMaxSizeOption = TemplateTypeOption<'max_size', number>;
+export type TemplateStringMinSizeOption = TemplateTypeOption<'min_size', number>;
+export type TemplateStringSizeOption = TemplateTypeOption<'size', number>;
+
+export type TemplateDateOption =
+    TemplateDateMaxOption |
+    TemplateDateMinOption;
+
+export type TemplateDateMaxOption = TemplateTypeOption<'max', number>;
+export type TemplateDateMinOption = TemplateTypeOption<'min', number>;
+
+interface TemplateTypeOption<T, V> {
+  type: T;
+  value: V;
 }
 
 export interface CreateFile {
@@ -80,7 +157,7 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<TemplateOut>
    */
-  find(options?: OptionsWithRql): Promise<PagedResult<TemplateOut>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Template>>;
   /**
    * Request a list of all templates
    *
@@ -92,7 +169,7 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns TemplateOut[]
    */
-  findAll(options?: OptionsWithRql): Promise<TemplateOut[]>;
+  findAll(options?: OptionsWithRql): Promise<Template[]>;
   /**
    * Request a list of all templates
    *
@@ -102,24 +179,24 @@ export interface TemplatesService {
    * @param rql Add filters to the requested list.
    * @returns TemplateOut[]
    */
-  findAllIterator(options?: OptionsWithRql): FindAllIterator<TemplateOut>;
+  findAllIterator(options?: OptionsWithRql): FindAllIterator<Template>;
   /**
    * Find By Id
    * @param id the Id to search for
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<TemplateOut | undefined>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Template | undefined>;
   /**
    * Find By Name
    * @param name the name to search for
    * @returns the first element found
    */
-  findByName(name: string, options?: OptionsWithRql): Promise<TemplateOut | undefined>;
+  findByName(name: string, options?: OptionsWithRql): Promise<Template | undefined>;
   /**
    * Find First
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<TemplateOut | undefined>;
+  findFirst(options?: OptionsWithRql): Promise<Template | undefined>;
   /**
    * Create a new template
    *
@@ -129,7 +206,7 @@ export interface TemplatesService {
    * @param requestBody TemplateIn
    * @returns TemplateOut
    */
-  create(requestBody: TemplateIn, options?: OptionsBase): Promise<TemplateOut>;
+  create(requestBody: TemplateCreation, options?: OptionsBase): Promise<Template>;
   /**
    * Update an existing template
    *
@@ -143,9 +220,9 @@ export interface TemplatesService {
    */
   update(
     templateId: string,
-    requestBody: TemplateIn,
+    requestBody: TemplateCreation,
     options?: OptionsBase
-  ): Promise<TemplateOut>;
+  ): Promise<Template>;
   /**
    * Delete a template
    *

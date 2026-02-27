@@ -31,7 +31,7 @@ describe('Configuration: Patients Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should update a patient configuration for a group of a user', async () => {
+  it('Updates a patient configuration for a group of a user', async () => {
     nock(`${host}${CONFIGURATION_BASE}`)
       .put(`/users/${userId}/patientConfigurations/${groupId}`)
       .reply(200, {
@@ -47,7 +47,7 @@ describe('Configuration: Patients Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a patient configuration for a group of a user', async () => {
+  it('Deletes fields from a patient configuration for a group of a user', async () => {
     nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/users/${userId}/patientConfigurations/${groupId}/deleteFields`)
       .reply(200, {
