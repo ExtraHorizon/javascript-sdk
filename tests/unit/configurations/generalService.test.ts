@@ -39,7 +39,7 @@ describe('Configuration: General Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get the general configuration', async () => {
+  it('Gets the general configuration', async () => {
     nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')
       .reply(200, generalConfigResponse);
@@ -52,7 +52,7 @@ describe('Configuration: General Service', () => {
     expect(res.patientConfiguration).toBeDefined();
   });
 
-  it('Should not transform custom data in the get response', async () => {
+  it('Does not transform custom data in the get response', async () => {
     // const customResponseKeys = ['data', 'userConfiguration', 'groupConfiguration', 'staffConfiguration', 'patientConfiguration'];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get('/general')
@@ -68,7 +68,7 @@ describe('Configuration: General Service', () => {
     });
   });
 
-  it('should update the general configuration', async () => {
+  it('Updates the general configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${CONFIGURATION_BASE}`).put('/general').reply(200, {
       affectedRecords: 1,
@@ -81,7 +81,7 @@ describe('Configuration: General Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from the general configuration', async () => {
+  it('Deletes fields from the general configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${CONFIGURATION_BASE}`)
       .post('/general/deleteFields')

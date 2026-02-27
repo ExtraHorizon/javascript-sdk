@@ -1,8 +1,8 @@
 import { HttpInstance } from '../../../http/types';
 import { addPagersFn, findAllGeneric, findAllIterator } from '../../helpers';
 import { HttpClient } from '../../http-client';
-import { ObjectId, OptionsBase, OptionsWithRql } from '../../types';
-import { Schedule, ScheduleCreation, SchedulesService } from './types';
+import { OptionsWithRql } from '../../types';
+import { SchedulesService } from './types';
 
 export default (
   client: HttpClient,
@@ -18,7 +18,7 @@ export default (
   }
 
   return {
-    async create(schedule: ScheduleCreation, options?: OptionsBase) {
+    async create(schedule, options) {
       const { data } = await client.post(httpAuth, '/schedules', schedule, {
         ...options,
         customKeys: ['data'],
@@ -27,7 +27,7 @@ export default (
       return data;
     },
 
-    async delete(scheduleId: ObjectId, options: OptionsBase) {
+    async remove(scheduleId, options) {
       const { data } = await client.delete(
         httpAuth,
         `/schedules/${scheduleId}`,
@@ -37,17 +37,21 @@ export default (
       return data;
     },
 
-    async find(options?: OptionsWithRql) {
+    delete(scheduleId, options) {
+      return this.remove(scheduleId, options);
+    },
+
+    async find(options) {
       const result = await query(options);
-      return addPagersFn<Schedule>(query, options, result);
+      return addPagersFn(query, options, result);
     },
 
-    async findAll(options?: OptionsWithRql) {
-      return findAllGeneric<Schedule>(query, options);
+    async findAll(options) {
+      return findAllGeneric(query, options);
     },
 
-    findAllIterator(options?: OptionsWithRql) {
-      return findAllIterator<Schedule>(query, options);
+    findAllIterator(options) {
+      return findAllIterator(query, options);
     },
 
     async findFirst(options?: OptionsWithRql) {

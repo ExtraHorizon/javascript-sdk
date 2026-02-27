@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { validateConfig } from '../../../src/utils';
 import { AUTH_BASE, USER_BASE } from '../../../src/constants';
 import {
   AuthenticationError,
@@ -9,6 +8,7 @@ import {
 import { createHttpClient } from '../../../src/http/client';
 import { createOAuth1HttpClient } from '../../../src/http/oauth1';
 import { OAuth1HttpClient } from '../../../src/types';
+import { validateConfig } from '../../../src/utils';
 
 const mockParams = {
   host: 'https://api.test.com',
@@ -45,7 +45,7 @@ describe('OAuth1HttpClient', () => {
     httpWithAuth = createOAuth1HttpClient(http, config);
   });
 
-  it('should accept token/tokenSecret during creation and be authenticated', async () => {
+  it('Accepts token/tokenSecret during creation and be authenticated', async () => {
     const localHttpWithAuth = createOAuth1HttpClient(http, {
       ...mockParams,
       token: 'MyDirectToken',
@@ -59,7 +59,7 @@ describe('OAuth1HttpClient', () => {
     expect(result.request.headers.authorization).toContain('MyDirectToken');
   });
 
-  it('should authorize', async () => {
+  it('Authorizes', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, tokenResponse);
@@ -73,7 +73,7 @@ describe('OAuth1HttpClient', () => {
     expect(result.request.headers.authorization).toContain('MyReceivedToken');
   });
 
-  it('should authorize with MFA', async () => {
+  it('Authorizes with MFA', async () => {
     const mfaResponseData = {
       token: '608c038a830f40d7fe028a3f05c85b84f9040d37',
       tokenExpiresIn: 900000,
@@ -100,7 +100,7 @@ describe('OAuth1HttpClient', () => {
     expect(mfaError).toBeInstanceOf(MfaRequiredError);
 
     const mfaData = mfaError.mfa;
-    expect(mfaData).toEqual(mfaResponseData);
+    expect(mfaData).toStrictEqual(mfaResponseData);
 
     const mfaMethod = mfaData.methods[0];
     nock(mockParams.host)
@@ -124,7 +124,7 @@ describe('OAuth1HttpClient', () => {
     expect(result.request.headers.authorization).toContain('MyReceivedToken');
   });
 
-  it('should authorize and logout', async () => {
+  it('Authorizes and logout', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth1/tokens`)
       .reply(200, tokenResponse);
@@ -136,7 +136,7 @@ describe('OAuth1HttpClient', () => {
 
     const loggedInResult = await httpWithAuth.get('/test');
     expect(loggedInResult.request.headers.authorization).toContain(
-      `MyReceivedToken`
+      'MyReceivedToken'
     );
 
     const result = httpWithAuth.extraAuthMethods.logout();
@@ -147,11 +147,11 @@ describe('OAuth1HttpClient', () => {
 
     const loggedOutResult = await httpWithAuth.get('/test');
     expect(loggedOutResult.request.headers.authorization).not.toContain(
-      `MyReceivedToken`
+      'MyReceivedToken'
     );
   });
 
-  it('throws on authorization with wrong password', async () => {
+  it('Throws on authorization with wrong password', async () => {
     expect.assertions(1);
     nock(mockParams.host).post(`${AUTH_BASE}/oauth1/tokens`).reply(400, {
       code: 106,
@@ -166,7 +166,7 @@ describe('OAuth1HttpClient', () => {
     }
   });
 
-  it('throws on authorization with unknown token', async () => {
+  it('Throws on authorization with unknown token', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, {
       code: 108,
       name: 'OAUTH_TOKEN_EXCEPTION',
@@ -180,7 +180,7 @@ describe('OAuth1HttpClient', () => {
     }
   });
 
-  it('should authorize with valid token/tokenSecret', async () => {
+  it('Authorizes with valid token/tokenSecret', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, userResponse);
 
     await httpWithAuth.extraAuthMethods.authenticate(authTokenData);
@@ -192,10 +192,10 @@ describe('OAuth1HttpClient', () => {
     nock(mockParams.host).get('/test').reply(200);
 
     const result = await httpWithAuth.get('/test');
-    expect(result.request.headers.authorization).toContain(`MySuppliedToken`);
+    expect(result.request.headers.authorization).toContain('MySuppliedToken');
   });
 
-  it('should authorize with valid token/tokenSecret/skipTokenCheck and get a userId', async () => {
+  it('Authorizes with valid token/tokenSecret/skipTokenCheck and get a userId', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, userResponse);
 
     await httpWithAuth.extraAuthMethods.authenticate({
@@ -207,7 +207,7 @@ describe('OAuth1HttpClient', () => {
     expect(userId).toBe(userResponse.id);
   });
 
-  it('throws on authorization with invalid token/tokenSecret', async () => {
+  it('Throws on authorization with invalid token/tokenSecret', async () => {
     expect.assertions(1);
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(400, {
       code: 108,

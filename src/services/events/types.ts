@@ -58,14 +58,14 @@ export interface EventsService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Event>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Event | undefined>;
 
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Event>;
+  findFirst(options?: OptionsWithRql): Promise<Event | undefined>;
 
   /**
    * Creates an event
@@ -80,6 +80,12 @@ export interface EventsService {
    * @returns Event
    */
   create(requestBody: CreateEvent, options?: CreateEventOptions): Promise<Event>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }
 
 export interface SubscriptionsService {
@@ -100,14 +106,14 @@ export interface SubscriptionsService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Subscription>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Subscription | undefined>;
 
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Subscription>;
+  findFirst(options?: OptionsWithRql): Promise<Subscription | undefined>;
 
   /**
    * @deprecated Should not be used, services manage subscriptions themselves

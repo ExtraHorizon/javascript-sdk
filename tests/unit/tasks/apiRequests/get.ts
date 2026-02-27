@@ -22,7 +22,7 @@ describe('Tasks - API Requests', () => {
 
   it('Retrieves the first API Request', async () => {
     nock(`${host}${TASKS_BASE}`)
-      .get(`/apiRequests`)
+      .get('/apiRequests')
       .reply(200, { data: apiRequests });
 
     const log = await exh.tasks.apiRequests.findFirst();

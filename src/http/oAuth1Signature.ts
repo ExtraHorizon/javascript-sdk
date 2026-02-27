@@ -154,14 +154,13 @@ function generateAuthHeader(oAuthData: OAuth1Parameters) {
 }
 
 // Same function used in the auth-service
-function getUrlInfoFromRequest(url: string) {
+export function getUrlInfoFromRequest(url: string) {
   const { protocol, host, pathname, search } = new URL(url);
 
   return {
     baseUrl: `${protocol}//${host}${pathname}`,
     searchParameters: qs.parse(
-      search.startsWith('?') ? search.slice(1) : search,
-      { decodeDotInKeys: false } // Without this oAuth1 signatures will break, opened an issue in qs: https://github.com/ljharb/qs/issues/500
+      search.startsWith('?') ? search.slice(1) : search
     ),
   };
 }

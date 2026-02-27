@@ -34,7 +34,7 @@ describe('Auth - Applications', () => {
     nock.cleanAll();
   });
 
-  it('should create an application', async () => {
+  it('Creates an application', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post('/applications')
       .reply(200, newApplication);
@@ -46,7 +46,7 @@ describe('Auth - Applications', () => {
       redirectUris: [],
     });
 
-    expect(createdResult.id).toEqual(newApplication.id);
+    expect(createdResult.id).toStrictEqual(newApplication.id);
   });
 
   describe('find', () => {
@@ -105,7 +105,7 @@ describe('Auth - Applications', () => {
     });
   });
 
-  it('should get applications', async () => {
+  it('Gets applications', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/applications')
       .reply(200, createPagedResponse(applicationData));
@@ -116,7 +116,7 @@ describe('Auth - Applications', () => {
     expect(applications.data[0].name).toBe(applicationData.name);
   });
 
-  it('should update an application', async () => {
+  it('Updates an application', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(host)
@@ -133,10 +133,10 @@ describe('Auth - Applications', () => {
       description: newApplication.description,
     });
 
-    expect(updatedResult.affectedRecords).toEqual(1);
+    expect(updatedResult.affectedRecords).toBe(1);
   });
 
-  it('should delete an application version', async () => {
+  it('Deletes an application version', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     const versionId = '456';
@@ -155,10 +155,10 @@ describe('Auth - Applications', () => {
       versionId
     );
 
-    expect(deleteResult.affectedRecords).toEqual(1);
+    expect(deleteResult.affectedRecords).toBe(1);
   });
 
-  it('should create an application versions', async () => {
+  it('Creates an application versions', async () => {
     const mockToken = 'mockToken';
     const applicationId = '123';
     nock(host)
@@ -176,6 +176,6 @@ describe('Auth - Applications', () => {
       }
     );
 
-    expect(createdResult.id).toEqual(newApplicationVersion.id);
+    expect(createdResult.id).toStrictEqual(newApplicationVersion.id);
   });
 });

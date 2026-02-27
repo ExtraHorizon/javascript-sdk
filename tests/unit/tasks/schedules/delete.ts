@@ -20,4 +20,15 @@ describe('Tasks - Schedules - DELETE', () => {
     const { affectedRecords } = await exh.tasks.schedules.delete(scheduleId);
     expect(affectedRecords).toBe(1);
   });
+
+  it('Removes a Schedule', async () => {
+    const scheduleId = randomHexString();
+
+    nock(`${host}${TASKS_BASE}`)
+      .delete(`/schedules/${scheduleId}`)
+      .reply(200, { affectedRecords: 1 });
+
+    const { affectedRecords } = await exh.tasks.schedules.remove(scheduleId);
+    expect(affectedRecords).toBe(1);
+  });
 });

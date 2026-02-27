@@ -38,7 +38,7 @@ describe('Tasks Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should view a list of tasks', async () => {
+  it('Views a list of tasks', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
@@ -47,7 +47,7 @@ describe('Tasks Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all tasks', async () => {
+  it('Requests a list of all tasks', async () => {
     nock(`${host}${TASKS_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -68,10 +68,10 @@ describe('Tasks Service', () => {
         data: Array(15).fill(taskData),
       });
     const res = await sdk.tasks.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all tasks via iterator', async () => {
+  it('Requests a list of all tasks via iterator', async () => {
     nock(`${host}${TASKS_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -95,10 +95,10 @@ describe('Tasks Service', () => {
 
     await tasks.next();
     const thirdPage = await tasks.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should find a task by id', async () => {
+  it('Finds a task by id', async () => {
     nock(`${host}${TASKS_BASE}`)
       .get(`/?eq(id,${taskId})`)
       .reply(200, tasksResponse);
@@ -108,7 +108,7 @@ describe('Tasks Service', () => {
     expect(task.id).toBe(taskId);
   });
 
-  it('should find the first task', async () => {
+  it('Finds the first task', async () => {
     nock(`${host}${TASKS_BASE}`).get('/').reply(200, tasksResponse);
 
     const task = await sdk.tasks.findFirst();
@@ -116,7 +116,7 @@ describe('Tasks Service', () => {
     expect(task.id).toBe(taskId);
   });
 
-  it('should create a task', async () => {
+  it('Creates a task', async () => {
     nock(`${host}${TASKS_BASE}`).post('/').reply(200, taskData);
 
     const task = await sdk.tasks.create({
@@ -127,7 +127,7 @@ describe('Tasks Service', () => {
     expect(task.functionName).toBeDefined();
   });
 
-  it('should cancel a task', async () => {
+  it('Cancels a task', async () => {
     nock(`${host}${TASKS_BASE}`).post(`/${taskId}/cancel`).reply(200, {
       affectedRecords: 1,
     });

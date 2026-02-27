@@ -35,7 +35,7 @@ describe('Play Store History Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should get a list of notifications received from the Play Store', async () => {
+  it('Gets a list of notifications received from the Play Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/history/notifications/')
       .reply(200, createPagedResponse(playStoreDeveloperNotificationSchema));
@@ -45,7 +45,7 @@ describe('Play Store History Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should get a list of received Play Store purchase receipts', async () => {
+  it('Gets a list of received Play Store purchase receipts', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/history/purchaseReceipts/')
       .reply(200, createPagedResponse(playStorePurchaseRecord));
@@ -55,7 +55,7 @@ describe('Play Store History Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should get a list of purchases info (SubscriptionPurchase) received and verified by the Play Store', async () => {
+  it('Gets a list of purchases info (SubscriptionPurchase) received and verified by the Play Store', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/playStore/history/purchaseInfos/')
       .reply(

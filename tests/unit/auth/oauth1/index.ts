@@ -28,7 +28,7 @@ describe('Auth - OAuth1', () => {
     nock.cleanAll();
   });
 
-  it('should get me', async () => {
+  it('Gets me', async () => {
     nock(`${host}${USER_BASE}`).get('/me').reply(200, userData);
 
     const me = await sdk.users.me();
@@ -36,7 +36,7 @@ describe('Auth - OAuth1', () => {
     expect(me.id).toBeDefined();
   });
 
-  it('should get me with error', async () => {
+  it('Gets me with error', async () => {
     expect.assertions(1);
     try {
       nock(`${host}${USER_BASE}`).get('/me').reply(400);
@@ -46,18 +46,7 @@ describe('Auth - OAuth1', () => {
     }
   });
 
-  it('should confirm Mfa', async () => {
-    nock(`${host}${AUTH_BASE}`)
-      .post('/oauth1/tokens/mfa')
-      .reply(200, { token: 'token', tokenSecret: 'tokenSecret' });
-    await sdk.auth.confirmMfa({
-      token: 'token',
-      methodId: 'methodId',
-      code: 'code',
-    });
-  });
-
-  it('should generate a ssoToken', async () => {
+  it('Generates a ssoToken', async () => {
     const ssoToken = {
       ssoToken: 'fakeSsoToken',
     };
@@ -66,10 +55,10 @@ describe('Auth - OAuth1', () => {
       .reply(200, ssoToken);
 
     const ssoTokenResult = await sdk.auth.oauth1.generateSsoToken();
-    expect(ssoTokenResult.ssoToken).toEqual(ssoToken.ssoToken);
+    expect(ssoTokenResult.ssoToken).toStrictEqual(ssoToken.ssoToken);
   });
 
-  it('should consume a ssoToken', async () => {
+  it('Consumes a ssoToken', async () => {
     const ssoResponse = {
       token: 'fakeToken',
     };
@@ -80,10 +69,10 @@ describe('Auth - OAuth1', () => {
     const ssoTokenResult = await sdk.auth.oauth1.consumeSsoToken(
       'fakeSsoToken'
     );
-    expect(ssoTokenResult.token).toEqual(ssoResponse.token);
+    expect(ssoTokenResult.token).toStrictEqual(ssoResponse.token);
   });
 
-  it('should get tokens', async () => {
+  it('Gets tokens', async () => {
     const token = {
       id: 'fakeId',
     };
@@ -100,16 +89,16 @@ describe('Auth - OAuth1', () => {
 
     const getTokensResult = await sdk.auth.oauth1.getTokens();
 
-    expect(getTokensResult.data[0].id).toEqual(token.id);
+    expect(getTokensResult.data[0].id).toStrictEqual(token.id);
   });
 
-  it('should delete a token', async () => {
+  it('Deletes a token', async () => {
     nock(`${host}${AUTH_BASE}`).delete('/oauth1/tokens/fakeId').reply(200, {
       affectedRecords: 1,
     });
 
     const getTokensResult = await sdk.auth.oauth1.removeToken('fakeId');
 
-    expect(getTokensResult.affectedRecords).toEqual(1);
+    expect(getTokensResult.affectedRecords).toBe(1);
   });
 });

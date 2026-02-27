@@ -35,7 +35,7 @@ describe('Transitions Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should update the creation transition', async () => {
+  it('Updates the creation transition', async () => {
     try {
       nock(`${host}${DATA_BASE}`)
         .put(`/${schemaId}/creationTransition`)
@@ -51,7 +51,7 @@ describe('Transitions Service', () => {
     }
   });
 
-  it('should create a transition', async () => {
+  it('Creates a transition', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/transitions`)
       .reply(200, { affectedRecords: 1 });
@@ -62,7 +62,7 @@ describe('Transitions Service', () => {
     expect(affectedRecords).toBe(1);
   });
 
-  it('should update a transition', async () => {
+  it('Updates a transition', async () => {
     nock(`${host}${DATA_BASE}`)
       .put(`/${schemaId}/transitions/${transitionId}`)
       .reply(200, { affectedRecords: 1 });
@@ -74,7 +74,7 @@ describe('Transitions Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete a transition', async () => {
+  it('Deletes a transition', async () => {
     nock(`${host}${DATA_BASE}`)
       .delete(`/${schemaId}/transitions/${transitionId}`)
       .reply(200, { affectedRecords: 1 });

@@ -27,8 +27,7 @@ export default (
 
   async findById(this: ProfilesService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ ...options, rql: rqlWithId });
-    return res.data[0];
+    return await this.findFirst({ ...options, rql: rqlWithId });
   },
 
   async findFirst(this: ProfilesService, options) {
@@ -66,5 +65,10 @@ export default (
 
   async getImpediments(options) {
     return (await client.get(httpAuth, '/impediments', options)).data;
+  },
+
+  async health() {
+    const result = await client.get(httpAuth, '/health');
+    return result.status === 200;
   },
 });

@@ -108,13 +108,13 @@ export interface LocalizationsService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findByKey(key: string, options?: OptionsWithRql): Promise<Localization>;
+  findByKey(key: string, options?: OptionsWithRql): Promise<Localization | undefined>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Localization>;
+  findFirst(options?: OptionsWithRql): Promise<Localization | undefined>;
   /**
    * Create new localizations
    *
@@ -166,4 +166,10 @@ export interface LocalizationsService {
     requestBody: LocalizationRequest,
     options?: OptionsBase
   ): Promise<Record<string, MappedText>>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }

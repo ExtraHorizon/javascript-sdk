@@ -30,7 +30,7 @@ describe('Play Store Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should complete a purchase', async () => {
+  it('Completes a purchase', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/playStore/completePurchase')
       .reply(200, { any: true });
@@ -44,7 +44,7 @@ describe('Play Store Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('should processes an Play Store developer notification', async () => {
+  it('Processes an Play Store developer notification', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .post('/playStore/processDeveloperNotification')
       .reply(200);

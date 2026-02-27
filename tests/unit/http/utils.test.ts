@@ -1,4 +1,4 @@
-import { camelizeKeys, decamelizeKeys } from '../../src/http/utils';
+import { camelizeKeys, decamelizeKeys } from '../../../src/http/utils';
 
 describe('http/utils', () => {
   describe('camelizeKeys', () => {

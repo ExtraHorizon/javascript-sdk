@@ -34,7 +34,7 @@ describe('Logs Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should create a profile log entry', async () => {
+  it('Creates a profile log entry', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .post(`/${profileId}/groups/${groupId}/logs`)
       .reply(200, logData);
@@ -46,7 +46,7 @@ describe('Logs Service', () => {
     expect(log.id).toBe(logId);
   });
 
-  it('should retrieve all profile log entries', async () => {
+  it('Retrieves all profile log entries', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get(`/${profileId}/groups/${groupId}/logs/`)
       .reply(200, createPagedResponse(logData));
@@ -56,7 +56,7 @@ describe('Logs Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all profile log entries', async () => {
+  it('Requests a list of all profile log entries', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get(`/${profileId}/groups/${groupId}/logs/?limit(50)`)
       .reply(200, {
@@ -77,10 +77,10 @@ describe('Logs Service', () => {
         data: Array(15).fill(logData),
       });
     const res = await sdk.profiles.logs.findAll(profileId, groupId);
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all profile log entries via iterator', async () => {
+  it('Requests a list of all profile log entries via iterator', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .get(`/${profileId}/groups/${groupId}/logs/?limit(50)`)
       .reply(200, {
@@ -104,10 +104,10 @@ describe('Logs Service', () => {
 
     await profileLogs.next();
     const thirdPage = await profileLogs.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should update a profile log entry', async () => {
+  it('Updates a profile log entry', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .put(`/${profileId}/groups/${groupId}/logs/${logId}`)
       .reply(200, logData);
@@ -119,7 +119,7 @@ describe('Logs Service', () => {
     expect(log.id).toBe(logId);
   });
 
-  it('should delete a profile log entry', async () => {
+  it('Deletes a profile log entry', async () => {
     nock(`${host}${PROFILES_BASE}`)
       .delete(`/${profileId}/groups/${groupId}/logs/${logId}`)
       .reply(200, { affectedRecords: 1 });

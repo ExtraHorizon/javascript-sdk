@@ -40,7 +40,7 @@ describe('Configuration: Groups Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should view a group configuration', async () => {
+  it('Views a group configuration', async () => {
     nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/groups/${groupId}`)
       .reply(200, groupConfigResponse);
@@ -52,7 +52,7 @@ describe('Configuration: Groups Service', () => {
     expect(res.patientConfiguration).toBeDefined();
   });
 
-  it('Should not transform custom data in the get response', async () => {
+  it('Does not transform custom data in the get response', async () => {
     //  const customResponseKeys = [ 'data', 'staffConfiguration', 'patientConfiguration' ];
     nock(`${host}${CONFIGURATION_BASE}`)
       .get(`/groups/${groupId}`)
@@ -66,7 +66,7 @@ describe('Configuration: Groups Service', () => {
     });
   });
 
-  it('should update a group configuration', async () => {
+  it('Updates a group configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${CONFIGURATION_BASE}`).put(`/groups/${groupId}`).reply(200, {
       affectedRecords: 1,
@@ -81,7 +81,7 @@ describe('Configuration: Groups Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete fields from a group configuration', async () => {
+  it('Deletes fields from a group configuration', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${CONFIGURATION_BASE}`)
       .post(`/groups/${groupId}/deleteFields`)

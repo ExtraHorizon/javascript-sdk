@@ -38,7 +38,7 @@ describe('Notifications Service', () => {
     });
   });
 
-  it('should create a new notification', async () => {
+  it('Creates a new notification', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`).post('/').reply(200, notificationData);
 
     const notification = await sdk.notifications.create(notificationInput);
@@ -46,7 +46,7 @@ describe('Notifications Service', () => {
     expect(notification.type).toBe(notificationData.type);
   });
 
-  it('should find a notification', async () => {
+  it('Finds a notification', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get('/notifications')
@@ -57,7 +57,7 @@ describe('Notifications Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find all notifications', async () => {
+  it('Finds all notifications', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get('/notifications?limit(50)')
@@ -84,7 +84,7 @@ describe('Notifications Service', () => {
     expect(res.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all notifications via iterator', async () => {
+  it('Requests a list of all notifications via iterator', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get('/notifications?limit(50)')
       .reply(200, {
@@ -108,10 +108,10 @@ describe('Notifications Service', () => {
 
     await notifications.next();
     const thirdPage = await notifications.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should find a notification by id', async () => {
+  it('Finds a notification by id', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get(`/notifications?eq(id,${notificationId})`)
       .reply(200, notificationResponse);
@@ -121,7 +121,7 @@ describe('Notifications Service', () => {
     expect(notification.id).toBe(notificationId);
   });
 
-  it('should find the first notification', async () => {
+  it('Finds the first notification', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
       .get('/notifications')
       .reply(200, notificationResponse);
@@ -131,9 +131,9 @@ describe('Notifications Service', () => {
     expect(notification.id).toBe(notificationId);
   });
 
-  it('should delete a notification', async () => {
+  it('Deletes a notification', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
-      .delete(`/notifications`)
+      .delete('/notifications')
       .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.notifications.remove();
@@ -141,9 +141,9 @@ describe('Notifications Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should mark your notification(s) as viewed', async () => {
+  it('Marks your notification(s) as viewed', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
-      .post(`/viewed`)
+      .post('/viewed')
       .reply(200, { affectedRecords: 1 });
 
     const res = await sdk.notifications.markAsViewed();
@@ -151,13 +151,19 @@ describe('Notifications Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should retrieve the list of notification types', async () => {
+  it('Retrieves the list of notification types', async () => {
     nock(`${host}${NOTIFICATIONS_BASE}`)
-      .get(`/types`)
+      .get('/types')
       .reply(200, notificationTypesResponse);
 
     const res = await sdk.notifications.getTypes();
 
     expect(res.data.length).toBeGreaterThan(0);
+  });
+
+  it('Gets health', async () => {
+    nock(`${host}${NOTIFICATIONS_BASE}`).get('/health').reply(200, '');
+    const health = await sdk.notifications.health();
+    expect(health).toBe(true);
   });
 });

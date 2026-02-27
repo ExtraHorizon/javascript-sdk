@@ -5,11 +5,11 @@ const permissionsObject = {
   bad: ['BAD_PERMISSION'],
 };
 describe('parseGlobalPermissions', () => {
-  it('should parse succesfully', async () => {
+  it('Parses successfully', async () => {
     expect(parseGlobalPermissions(permissionsObject.good)).toHaveLength(1);
   });
 
-  it('should parse with empty array and warning', async () => {
+  it('Parses with empty array and warning', async () => {
     jest.spyOn(global.console, 'warn');
     expect(parseGlobalPermissions(permissionsObject.bad)).toHaveLength(0);
     expect(console.warn).toBeCalled();

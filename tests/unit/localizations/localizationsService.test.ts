@@ -39,7 +39,7 @@ describe('Localizations Service', () => {
     });
   });
 
-  it('should get all possible localizations stored in this service', async () => {
+  it('Gets all possible localizations stored in this service', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get(`/${rql}`)
@@ -50,7 +50,7 @@ describe('Localizations Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find a localization by key', async () => {
+  it('Finds a localization by key', async () => {
     const rql = rqlBuilder().eq('key', localizationKey).build();
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get(`/${rql}`)
@@ -58,20 +58,20 @@ describe('Localizations Service', () => {
 
     const localization = await sdk.localizations.findByKey(localizationKey);
 
-    expect(localization.key).toBe(localizationKey);
+    expect(localization?.key).toBe(localizationKey);
   });
 
-  it('should find the first localization', async () => {
+  it('Finds the first localization', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .get('/')
       .reply(200, localizationResponse);
 
     const localization = await sdk.localizations.findFirst();
 
-    expect(localization).toEqual(localizationResponse.data[0]);
+    expect(localization).toStrictEqual(localizationResponse.data[0]);
   });
 
-  it('should create a new localization', async () => {
+  it('Creates a new localization', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .post('/')
       .reply(200, localizationCreatedResponse);
@@ -83,7 +83,7 @@ describe('Localizations Service', () => {
     expect(res.created).toBe(localizationCreatedResponse.created);
   });
 
-  it('should update an existing localization', async () => {
+  it('Updates an existing localization', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .put('/')
       .reply(200, localizationUpdatedResponse);
@@ -95,7 +95,7 @@ describe('Localizations Service', () => {
     expect(res.updated).toBe(localizationUpdatedResponse.updated);
   });
 
-  it('should delete a localization', async () => {
+  it('Deletes a localization', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .delete(`/${rql}`)
@@ -106,7 +106,7 @@ describe('Localizations Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should request localizations of multiple keys in a specific language', async () => {
+  it('Requests localizations of multiple keys in a specific language', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .post('/request')
       .reply(200, {
@@ -119,5 +119,11 @@ describe('Localizations Service', () => {
     const res = await sdk.localizations.getByKeys(localizationRequest);
 
     expect(res).toBeTruthy();
+  });
+
+  it('Gets health', async () => {
+    nock(`${host}${LOCALIZATIONS_BASE}`).get('/health').reply(200, '');
+    const health = await sdk.localizations.health();
+    expect(health).toBe(true);
   });
 });

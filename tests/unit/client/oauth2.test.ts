@@ -1,6 +1,6 @@
 import nock from 'nock';
+import { createOAuth2Client } from '../../../src';
 import { AUTH_BASE } from '../../../src/constants';
-import { createOAuth2Client } from '../../../src/';
 import {
   ApiError,
   AuthenticationError,
@@ -48,7 +48,7 @@ describe('OAuth2HttpClient', () => {
     httpWithAuth = createOAuth2HttpClient(http, config);
   });
 
-  it('should accept refreshToken/accessToken during creation and be authorized', async () => {
+  it('Accepts refreshToken/accessToken during creation and be authorized', async () => {
     const localHttpWithAuth = createOAuth2HttpClient(http, {
       ...mockParams,
       refreshToken: 'MyRefreshToken',
@@ -84,7 +84,7 @@ describe('OAuth2HttpClient', () => {
     );
   });
 
-  it('should authorize', async () => {
+  it('Authorizes', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, tokenCreationResponse);
@@ -107,7 +107,7 @@ describe('OAuth2HttpClient', () => {
     );
   });
 
-  it('should authorize and logout', async () => {
+  it('Authorizes and logout', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, tokenCreationResponse);
@@ -132,7 +132,7 @@ describe('OAuth2HttpClient', () => {
     expect(unauthenticatedResult.request.headers.authorization).toBeUndefined();
   });
 
-  it('throws on authorization with wrong password', async () => {
+  it('Throws on authorization with wrong password', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(400, {
@@ -394,12 +394,12 @@ describe('OAuth2HttpClient', () => {
     expect(error.exhError).toBeInstanceOf(RefreshTokenUnknownError);
   });
 
-  it('should authorize with a refreshToken', async () => {
+  it('Authorizes with a refreshToken', async () => {
     expect.assertions(2);
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
       .reply(200, (_uri, data) => {
-        expect(data).toEqual({
+        expect(data).toStrictEqual({
           client_id: mockParams.clientId,
           grant_type: 'refresh_token',
           refresh_token: 'test',
@@ -420,7 +420,7 @@ describe('OAuth2HttpClient', () => {
     );
   });
 
-  it('should authorize with MFA Enabled', async () => {
+  it('Authorizes with MFA Enabled', async () => {
     // Setup the MFA error to be thrown on login
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)
@@ -481,7 +481,7 @@ describe('OAuth2HttpClient', () => {
     );
   });
 
-  it('should authorize with a confidential application', async () => {
+  it('Authorizes with a confidential application', async () => {
     const confidentialConfig = validateConfig({
       ...mockParams,
       clientId: 'clientId',
@@ -555,7 +555,7 @@ describe('OAuth2HttpClient', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
   });
 
-  it('Should allow a user to determine if an error is an instance of an OAuth2 error', async () => {
+  it('Allows a user to determine if an error is an instance of an OAuth2 error', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
         grant_type: 'password',
@@ -585,7 +585,7 @@ describe('OAuth2HttpClient', () => {
     expect(error).toBeInstanceOf(ApiError);
   });
 
-  it('Should allow a user to determine if an Exh error is an instance of an error', async () => {
+  it('Allows a user to determine if an Exh error is an instance of an error', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
         grant_type: 'password',
@@ -616,7 +616,7 @@ describe('OAuth2HttpClient', () => {
     expect(error.exhError).toBeInstanceOf(ApiError);
   });
 
-  it('Should allow a user to receive an Exh error as a generic api error, when the received Exh error code has no error mapping', async () => {
+  it('Allows a user to receive an Exh error as a generic api error, when the received Exh error code has no error mapping', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`, {
         grant_type: 'password',
@@ -652,10 +652,11 @@ describe('OAuth2HttpClient', () => {
     const data = { state: 'my-state-value' };
     const responseData = {
       authenticationUrl:
+      // eslint-disable-next-line max-len
         'https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=123456789-abcdefghijklw.apps.googleusercontent.com&scope=openid%20email%20profile&redirect_uri=https://api.dev.yourapp.com/callback',
     };
 
-    it('should generate an OIDC authentication URL', async () => {
+    it('Generates an OIDC authentication URL', async () => {
       nock(mockParams.host)
         .post(
           `${AUTH_BASE}/oidc/providers/${providerName}/generateAuthenticationUrl`,
@@ -668,10 +669,10 @@ describe('OAuth2HttpClient', () => {
           providerName,
           data
         );
-      expect(result).toEqual(responseData);
+      expect(result).toStrictEqual(responseData);
     });
 
-    it('should accept the data not to be set', async () => {
+    it('Accepts the data not to be set', async () => {
       nock(mockParams.host)
         .post(
           `${AUTH_BASE}/oidc/providers/${providerName}/generateAuthenticationUrl`,
@@ -683,10 +684,10 @@ describe('OAuth2HttpClient', () => {
         await httpWithAuth.extraAuthMethods.generateOidcAuthenticationUrl(
           providerName
         );
-      expect(result).toEqual(responseData);
+      expect(result).toStrictEqual(responseData);
     });
 
-    it('should throw when generating an OIDC authentication URL fails', async () => {
+    it('Throws when generating an OIDC authentication URL fails', async () => {
       nock(mockParams.host)
         .post(
           `${AUTH_BASE}/oidc/providers/${providerName}/generateAuthenticationUrl`
@@ -724,7 +725,7 @@ describe('OAuth2HttpClient', () => {
       application_id: '507f191e810c19729de860ea',
     };
 
-    it('should authenticate with an OIDC provider', async () => {
+    it('Authenticates with an OIDC provider', async () => {
       nock(mockParams.host)
         .post(
           `${AUTH_BASE}/oidc/providers/${providerName}/oAuth2Login`,
@@ -747,7 +748,7 @@ describe('OAuth2HttpClient', () => {
       expect(nock.isDone()).toBe(true);
     });
 
-    it('should return the oAuth2 token', async () => {
+    it('Returns the oAuth2 token', async () => {
       nock(mockParams.host)
         .post(
           `${AUTH_BASE}/oidc/providers/${providerName}/oAuth2Login`,
@@ -770,7 +771,7 @@ describe('OAuth2HttpClient', () => {
       });
     });
 
-    it('should trigger the freshTokensCallback with the oAuth2 token', async () => {
+    it('Triggers the freshTokensCallback with the oAuth2 token', async () => {
       nock(mockParams.host)
         .post(
           `${AUTH_BASE}/oidc/providers/${providerName}/oAuth2Login`,

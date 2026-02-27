@@ -5,6 +5,7 @@ import {
   createClient,
   rqlBuilder,
   ParamsOauth2,
+  ServiceNotFoundError,
 } from '../../../src/index';
 import { templateData, templateInput } from '../../__helpers__/template';
 import { createPagedResponse } from '../../__helpers__/utils';
@@ -33,7 +34,7 @@ describe('Template Service', () => {
     });
   });
 
-  it('should perform a health check', async () => {
+  it('Performs a health check', async () => {
     nock(`${host}${TEMPLATE_BASE}`).get('/health').reply(200);
 
     const serviceIsAvailable = await sdk.templates.health();
@@ -41,7 +42,7 @@ describe('Template Service', () => {
     expect(serviceIsAvailable).toBe(true);
   });
 
-  it('should get all templates the service has to offer', async () => {
+  it('Gets all templates the service has to offer', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${TEMPLATE_BASE}`).get(`/${rql}`).reply(200, templateResponse);
 
@@ -50,7 +51,7 @@ describe('Template Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should request a list of all templates', async () => {
+  it('Requests a list of all templates', async () => {
     nock(`${host}${TEMPLATE_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -71,10 +72,10 @@ describe('Template Service', () => {
         data: Array(15).fill(templateData),
       });
     const res = await sdk.templates.findAll();
-    expect(res.length).toBe(65);
+    expect(res).toHaveLength(65);
   });
 
-  it('should request a list of all templates via iterator', async () => {
+  it('Requests a list of all templates via iterator', async () => {
     nock(`${host}${TEMPLATE_BASE}`)
       .get('/?limit(50)')
       .reply(200, {
@@ -98,10 +99,10 @@ describe('Template Service', () => {
 
     await templates.next();
     const thirdPage = await templates.next();
-    expect(thirdPage.value.data.length).toBe(5);
+    expect(thirdPage.value.data).toHaveLength(5);
   });
 
-  it('should find a template by id', async () => {
+  it('Finds a template by id', async () => {
     nock(`${host}${TEMPLATE_BASE}`)
       .get(`/?eq(id,${templateId})`)
       .reply(200, templateResponse);
@@ -111,7 +112,7 @@ describe('Template Service', () => {
     expect(template.id).toBe(templateId);
   });
 
-  it('should find a template by name', async () => {
+  it('Finds a template by name', async () => {
     const { name } = templateData;
     const rql = rqlBuilder().eq('name', name).build();
     nock(`${host}${TEMPLATE_BASE}`).get(`/${rql}`).reply(200, templateResponse);
@@ -121,7 +122,7 @@ describe('Template Service', () => {
     expect(template.name).toBe(name);
   });
 
-  it('should find the first template', async () => {
+  it('Finds the first template', async () => {
     nock(`${host}${TEMPLATE_BASE}`).get('/').reply(200, templateResponse);
 
     const template = await sdk.templates.findFirst();
@@ -129,7 +130,7 @@ describe('Template Service', () => {
     expect(template.id).toBe(templateId);
   });
 
-  it('should create a new template', async () => {
+  it('Creates a new template', async () => {
     nock(`${host}${TEMPLATE_BASE}`).post('/').reply(200, templateData);
 
     const template = await sdk.templates.create(templateInput);
@@ -137,7 +138,7 @@ describe('Template Service', () => {
     expect(template.name).toBe(templateData.name);
   });
 
-  it('should update an existing template', async () => {
+  it('Updates an existing template', async () => {
     nock(`${host}${TEMPLATE_BASE}`)
       .put(`/${templateId}`)
       .reply(200, templateData);
@@ -147,7 +148,7 @@ describe('Template Service', () => {
     expect(template.name).toBe(templateData.name);
   });
 
-  it('should delete a template', async () => {
+  it('Deletes a template', async () => {
     nock(`${host}${TEMPLATE_BASE}`)
       .delete(`/${templateId}`)
       .reply(200, { affectedRecords: 1 });
@@ -157,7 +158,7 @@ describe('Template Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should resolve a template as a pdf file', async () => {
+  it('Resolves a template as a pdf file', async () => {
     nock(`${host}${TEMPLATE_BASE}`)
       .post(`/${templateId}/pdf`)
       .reply(200, 'string');
@@ -176,7 +177,7 @@ describe('Template Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('should resolve a template with code as a pdf file', async () => {
+  it('Resolves a template with code as a pdf file', async () => {
     const localizationCode = 'EN';
     nock(`${host}${TEMPLATE_BASE}`)
       .post(`/${templateId}/pdf/${localizationCode}`)
@@ -200,7 +201,7 @@ describe('Template Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('should resolve a template as a json response', async () => {
+  it('Resolves a template as a json response', async () => {
     nock(`${host}${TEMPLATE_BASE}`).post(`/${templateId}/resolve`).reply(200, {
       subject: 'Order for Doe',
       body: 'Hey, John',
@@ -220,7 +221,7 @@ describe('Template Service', () => {
     expect(res).toBeDefined();
   });
 
-  it('should resolve a template with code as a json response', async () => {
+  it('Resolves a template with code as a json response', async () => {
     const localizationCode = 'EN';
     nock(`${host}${TEMPLATE_BASE}`)
       .post(`/${templateId}/resolve/${localizationCode}`)
@@ -245,5 +246,16 @@ describe('Template Service', () => {
     );
 
     expect(res).toBeDefined();
+  });
+
+  it('Throws when the service is not deployed', async () => {
+    nock(`${host}${TEMPLATE_BASE}`).get('/health')
+      .reply(404, {
+        code: 903,
+        name: 'SERVICE_NOT_FOUND_EXCEPTION',
+        message: 'The requested service could not be found',
+      });
+
+    await expect(sdk.templates.health()).rejects.toThrow(ServiceNotFoundError);
   });
 });

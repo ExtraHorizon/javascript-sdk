@@ -5,6 +5,7 @@ export const FILES_BASE = '/files/v1';
 export const TASKS_BASE = '/tasks/v1';
 export const CONFIGURATION_BASE = '/configurations/v2';
 export const TEMPLATE_BASE = '/templates/v1';
+export const TEMPLATES_V2_BASE = '/templates/v2';
 export const MAIL_BASE = '/mail/v1';
 export const DISPATCHERS_BASE = '/dispatchers/v1';
 export const PAYMENTS_BASE = '/payments/v1';

@@ -1,13 +1,13 @@
 import nock from 'nock';
-import { validateConfig } from '../../../src/utils';
 import { USER_BASE } from '../../../src/constants';
-import { createHttpClient } from '../../../src/http/client';
-import { createProxyHttpClient } from '../../../src/http';
-import { ParamsOauth2 } from '../../../src/types';
 import {
   OauthTokenError,
   UserNotAuthenticatedError,
 } from '../../../src/errors';
+import { createProxyHttpClient } from '../../../src/http';
+import { createHttpClient } from '../../../src/http/client';
+import { ParamsOauth2 } from '../../../src/types';
+import { validateConfig } from '../../../src/utils';
 
 const mockParams = {
   host: 'https://apx.test.com',
@@ -31,7 +31,7 @@ describe('ProxyHttpClient', () => {
     });
   });
 
-  it('should authorize', async () => {
+  it('Authorizes', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, { id: 'mockId' });
 
     const { data: me } = await httpWithAuth.get(`${USER_BASE}/me`);
@@ -39,7 +39,7 @@ describe('ProxyHttpClient', () => {
     expect(me.id).toBe('mockId');
   });
 
-  it('should get userId', async () => {
+  it('Gets userId', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(200, { id: 'mockId' });
 
     const userId = await httpWithAuth.userId;
@@ -47,25 +47,25 @@ describe('ProxyHttpClient', () => {
     expect(userId).toBe('mockId');
   });
 
-  it('should log out', async () => {
-    nock(mockParams.host).post(`/logout`).reply(200);
+  it('Logs out', async () => {
+    nock(mockParams.host).post('/logout').reply(200);
     await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(true);
   });
 
-  it("shouldn't log out if function throws", async () => {
-    nock(mockParams.host).post(`/logout`).reply(401);
+  it("Doesn't log out if function throws", async () => {
+    nock(mockParams.host).post('/logout').reply(401);
     await expect(httpWithAuth.extraAuthMethods.logout()).resolves.toBe(false);
   });
 
-  it('should get userId but return undefined because server error', async () => {
+  it('Gets userId but return undefined because server error', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(500);
 
     const userId = await httpWithAuth.userId;
 
-    expect(userId).toBe(undefined);
+    expect(userId).toBeUndefined();
   });
 
-  it('throws on calls with missing jwt', async () => {
+  it('Throws on calls with missing jwt', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, { code: 104 });
 
     try {
@@ -75,7 +75,7 @@ describe('ProxyHttpClient', () => {
     }
   });
 
-  it('throws on calls with expired token', async () => {
+  it('Throws on calls with expired token', async () => {
     nock(mockParams.host).get(`${USER_BASE}/me`).reply(401, { code: 108 });
 
     try {

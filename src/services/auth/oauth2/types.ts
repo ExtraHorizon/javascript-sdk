@@ -70,7 +70,7 @@ export interface AuthOauth2TokenService {
    * none | | Can only see a list of OAuth2 tokens for this account
    * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
    */
-  findFirst(options?: OptionsWithRql): Promise<OAuth2Token>;
+  findFirst(options?: OptionsWithRql): Promise<OAuth2Token | undefined>;
 
   /**
    * Get an oAuth2 token by its id
@@ -80,7 +80,7 @@ export interface AuthOauth2TokenService {
    * none | | Can only see a list of OAuth2 tokens for this account
    * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
    */
-  findById(id: string, options?: OptionsWithRql): Promise<OAuth2Token>;
+  findById(id: string, options?: OptionsWithRql): Promise<OAuth2Token | undefined>;
 
   /**
    * Remove an oAuth2 token

@@ -38,7 +38,7 @@ describe('Products Service', () => {
     nock.enableNetConnect();
   });
 
-  it('should create a product', async () => {
+  it('Creates a product', async () => {
     nock(`${host}${PAYMENTS_BASE}`).post('/products').reply(200, productData);
 
     const productSchema = await sdk.payments.products.create(newProductData);
@@ -46,7 +46,7 @@ describe('Products Service', () => {
     expect(productSchema.id).toBe(productId);
   });
 
-  it('should get a list of products', async () => {
+  it('Gets a list of products', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/products')
@@ -57,7 +57,7 @@ describe('Products Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find a product by id', async () => {
+  it('Finds a product by id', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get(`/products?eq(id,${productId})`)
       .reply(200, productResponse);
@@ -67,7 +67,7 @@ describe('Products Service', () => {
     expect(product.id).toBe(productId);
   });
 
-  it('should find the first product', async () => {
+  it('Finds the first product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .get('/products')
       .reply(200, productResponse);
@@ -77,7 +77,7 @@ describe('Products Service', () => {
     expect(product.id).toBe(productResponse.data[0].id);
   });
 
-  it('should add tags to a product', async () => {
+  it('Adds tags to a product', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PAYMENTS_BASE}`).post('/products/addTags').reply(200, {
       affectedRecords: 1,
@@ -90,7 +90,7 @@ describe('Products Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should remove tags to a product', async () => {
+  it('Removes tags to a product', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${PAYMENTS_BASE}`).post('/products/removeTags').reply(200, {
       affectedRecords: 1,
@@ -103,7 +103,7 @@ describe('Products Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should update a product', async () => {
+  it('Updates a product', async () => {
     nock(`${host}${PAYMENTS_BASE}`).put(`/products/${productId}`).reply(200, {
       affectedRecords: 1,
     });
@@ -113,7 +113,7 @@ describe('Products Service', () => {
     expect(res.affectedRecords).toBe(1);
   });
 
-  it('should delete a product', async () => {
+  it('Deletes a product', async () => {
     nock(`${host}${PAYMENTS_BASE}`)
       .delete(`/products/${productId}`)
       .reply(200, {

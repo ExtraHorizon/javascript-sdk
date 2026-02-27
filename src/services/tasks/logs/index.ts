@@ -1,7 +1,7 @@
 import { HttpInstance } from '../../../http/types';
 import { HttpClient } from '../../http-client';
 import { ObjectId, OptionsWithRql } from '../../types';
-import { LogsService, LogLine } from './types';
+import { LogsService } from './types';
 
 export default (
   client: HttpClient,
@@ -17,15 +17,12 @@ export default (
   }
 
   return {
-    async find(taskId: ObjectId, options?: OptionsWithRql): Promise<LogLine[]> {
+    async find(taskId, options) {
       const { data } = await query(taskId, options);
       return data;
     },
 
-    async findFirst(
-      taskId: ObjectId,
-      options?: OptionsWithRql
-    ): Promise<LogLine> {
+    async findFirst(taskId, options) {
       const result = await query(taskId, options);
       return result.data[0];
     },

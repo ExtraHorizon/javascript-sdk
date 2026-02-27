@@ -3,7 +3,7 @@ import type { HttpInstance } from '../../types';
 import { findAllIterator, findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
 import { ResultResponse, Results } from '../types';
-import type { TemplateOut, TemplatesService } from './types';
+import type { Template, TemplatesService } from './types';
 
 export default (
   client: HttpClient,
@@ -15,32 +15,34 @@ export default (
   },
 
   async find(options) {
-    return (
-      await client.get(httpAuth, `/${options?.rql || ''}`, {
+    const result = await client.get(
+      httpAuth,
+      `/${options?.rql || ''}`,
+      {
         ...options,
         customResponseKeys: ['data.schema.fields', 'data.fields'],
-      })
-    ).data;
+      }
+    );
+
+    return result.data;
   },
 
   async findAll(this: TemplatesService, options) {
-    return findAllGeneric<TemplateOut>(this.find, options);
+    return findAllGeneric<Template>(this.find, options);
   },
 
   findAllIterator(this: TemplatesService, options) {
-    return findAllIterator<TemplateOut>(this.find, options);
+    return findAllIterator<Template>(this.find, options);
   },
 
   async findById(this: TemplatesService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ ...options, rql: rqlWithId });
-    return res.data[0];
+    return await this.findFirst({ ...options, rql: rqlWithId });
   },
 
   async findByName(this: TemplatesService, name, options?) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-    const res = await this.find({ ...options, rql: rqlWithName });
-    return res.data[0];
+    return await this.findFirst({ ...options, rql: rqlWithName });
   },
 
   async findFirst(this: TemplatesService, options) {
@@ -49,84 +51,95 @@ export default (
   },
 
   async create(requestBody, options) {
-    return (
-      await client.post(httpAuth, '/', requestBody, {
+    const result = await client.post(
+      httpAuth,
+      '/',
+      requestBody,
+      {
         ...options,
         customKeys: ['schema.fields', 'fields'],
-      })
-    ).data;
+      }
+    );
+    return result.data;
   },
 
   async update(templateId, requestBody, options) {
-    return (
-      await client.put(httpAuth, `/${templateId}`, requestBody, {
+    const result = await client.put(
+      httpAuth,
+      `/${templateId}`,
+      requestBody,
+      {
         ...options,
         customKeys: ['schema.fields', 'fields'],
-      })
-    ).data;
+      }
+    );
+    return result.data;
   },
 
   async remove(templateId, options) {
-    return (await client.delete(httpAuth, `/${templateId}`, options)).data;
+    const result = await client.delete(
+      httpAuth,
+      `/${templateId}`,
+      options
+    );
+    return result.data;
   },
 
   async resolveAsPdf(templateId, requestBody, options) {
-    return (
-      await client.post(httpAuth, `/${templateId}/pdf`, requestBody, {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/pdf`,
+      requestBody,
+      {
         ...options,
         customRequestKeys: ['content'],
         responseType: 'arraybuffer',
-      })
-    ).data;
+      }
+    );
+
+    return result.data;
   },
 
-  async resolveAsPdfUsingCode(
-    templateId,
-    localizationCode,
-    requestBody,
-    options
-  ) {
-    return (
-      await client.post(
-        httpAuth,
-        `/${templateId}/pdf/${localizationCode}`,
-        requestBody,
-        {
-          ...options,
-          customRequestKeys: ['content'],
-          responseType: 'arraybuffer',
-        }
-      )
-    ).data;
+  async resolveAsPdfUsingCode(templateId, localizationCode, requestBody, options) {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/pdf/${localizationCode}`,
+      requestBody,
+      {
+        ...options,
+        customRequestKeys: ['content'],
+        responseType: 'arraybuffer',
+      }
+    );
+    return result.data;
   },
 
   async resolveAsJson(templateId, requestBody, options) {
-    return (
-      await client.post(httpAuth, `/${templateId}/resolve`, requestBody, {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/resolve`,
+      requestBody,
+      {
         ...options,
         customRequestKeys: ['content'],
         customResponseKeys: ['*'],
-      })
-    ).data;
+      }
+    );
+    return result.data;
   },
 
-  async resolveAsJsonUsingCode(
-    templateId,
-    localizationCode,
-    requestBody,
-    options
-  ) {
-    return (
-      await client.post(
-        httpAuth,
-        `/${templateId}/resolve/${localizationCode}`,
-        requestBody,
-        {
-          ...options,
-          customRequestKeys: ['content'],
-          customResponseKeys: ['*'],
-        }
-      )
-    ).data;
+  async resolveAsJsonUsingCode(templateId, localizationCode, requestBody, options) {
+    const result = await client.post(
+      httpAuth,
+      `/${templateId}/resolve/${localizationCode}`,
+      requestBody,
+      {
+        ...options,
+        customRequestKeys: ['content'],
+        customResponseKeys: ['*'],
+      }
+    );
+
+    return result.data;
   },
 });

@@ -11,18 +11,21 @@ export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
   },
 
   async find(options) {
-    return (
-      await client.get(httpAuth, `/${options?.rql || ''}`, {
+    const result = await client.get(
+      httpAuth,
+      `/${options?.rql || ''}`,
+      {
         ...options,
         customResponseKeys: ['data.content'],
-      })
-    ).data;
+      }
+    );
+
+    return result.data;
   },
 
   async findById(this: MailsService, id, options) {
     const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
-    const res = await this.find({ ...options, rql: rqlWithId });
-    return res.data[0];
+    return await this.findFirst({ ...options, rql: rqlWithId });
   },
 
   async findFirst(this: MailsService, options) {
@@ -31,24 +34,39 @@ export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
   },
 
   async send(requestBody, options) {
-    return (
-      await client.post(httpAuth, '/', requestBody, {
+    const result = await client.post(
+      httpAuth,
+      '/',
+      requestBody,
+      {
         ...options,
         customKeys: ['content'],
-      })
-    ).data;
+      }
+    );
+
+    return result.data;
   },
 
   async track(trackingHash, options) {
-    return (await client.get(httpAuth, `/${trackingHash}/open`, options)).data;
+    const result = await client.get(
+      httpAuth,
+      `/${trackingHash}/open`,
+      options
+    );
+
+    return result.data;
   },
 
   async findOutbound(options) {
-    return (
-      await client.get(httpAuth, `/queued${options?.rql || ''}`, {
+    const result = await client.get(
+      httpAuth,
+      `/queued${options?.rql || ''}`,
+      {
         ...options,
         customResponseKeys: ['data.templateData.content'],
-      })
-    ).data;
+      }
+    );
+
+    return result.data;
   },
 });

@@ -66,7 +66,7 @@ export interface AuthApplicationsService {
    * */
   findFirst(
     options?: OptionsWithRql
-  ): Promise<OAuth1Application | OAuth2Application>;
+  ): Promise<(OAuth1Application | OAuth2Application) | undefined>;
 
   /**
    * ## Get an application by its id
@@ -87,7 +87,7 @@ export interface AuthApplicationsService {
   findById(
     id: ObjectId,
     options?: OptionsWithRql
-  ): Promise<OAuth1Application | OAuth2Application>;
+  ): Promise<(OAuth1Application | OAuth2Application) | undefined>;
 
   /**
    * ## Get an application by its name
@@ -108,7 +108,7 @@ export interface AuthApplicationsService {
   findByName(
     name: string,
     options?: OptionsWithRql
-  ): Promise<OAuth1Application | OAuth2Application>;
+  ): Promise<(OAuth1Application | OAuth2Application) | undefined>;
 
   /**
    * @deprecated Use `find` instead

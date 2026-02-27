@@ -13,8 +13,7 @@ export default (client: HttpClient, httpAuth: HttpInstance): FilesService => ({
 
   async findByName(this: FilesService, name, options) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
-    const res = await this.find({ ...options, rql: rqlWithName });
-    return res.data[0];
+    return await this.findFirst({ ...options, rql: rqlWithName });
   },
 
   async findFirst(this: FilesService, options) {

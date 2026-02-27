@@ -1,6 +1,6 @@
 {
   "name": "@extrahorizon/javascript-sdk",
-  "version": "8.8.1",
+  "version": "8.9.0",
   "description": "This package serves as a JavaScript wrapper around all Extra Horizon cloud services.",
   "main": "build/index.cjs.js",
   "types": "build/types/index.d.ts",
@@ -26,18 +26,18 @@
     "prepare": "yarn build && yarn lint",
     "test": "jest",
     "test:e2e": "jest tests/e2e",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src/** tests/** --ext .ts"
   },
   "files": [
     "build"
   ],
   "dependencies": {
-    "axios": "0.30.2",
+    "axios": "0.30.3",
     "buffer": "6.0.3",
     "fflate": "0.8.2",
     "form-data": "4.0.4",
     "platform-specific": "1.1.0",
-    "qs": "6.12.0",
+    "qs": "6.14.2",
     "typescript-json-decoder": "1.0.11"
   },
   "devDependencies": {

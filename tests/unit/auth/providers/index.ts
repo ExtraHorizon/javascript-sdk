@@ -45,7 +45,7 @@ describe('Auth - OpenID Connect - Providers', () => {
     };
 
     nock(`${host}${AUTH_BASE}`)
-      .post(`/oidc/providers`, data)
+      .post('/oidc/providers', data)
       .reply(200, providerResponse);
 
     const result = await sdk.auth.oidc.providers.create(data);
@@ -56,7 +56,7 @@ describe('Auth - OpenID Connect - Providers', () => {
     const rql = rqlBuilder().eq('name', 'google').build();
 
     nock(`${host}${AUTH_BASE}`)
-      .get(`/oidc/providers?eq(name,google)`)
+      .get('/oidc/providers?eq(name,google)')
       .reply(200, {
         data: [providerResponse, providerResponse, providerResponse],
       });
@@ -82,6 +82,15 @@ describe('Auth - OpenID Connect - Providers', () => {
       .reply(200, { affectedRecords: 1 });
 
     const result = await sdk.auth.oidc.providers.delete(provider.id);
+    expect(result).toMatchObject({ affectedRecords: 1 });
+  });
+
+  it('Removes an OpenID Connect provider', async () => {
+    nock(`${host}${AUTH_BASE}`)
+      .delete(`/oidc/providers/${provider.id}`)
+      .reply(200, { affectedRecords: 1 });
+
+    const result = await sdk.auth.oidc.providers.remove(provider.id);
     expect(result).toMatchObject({ affectedRecords: 1 });
   });
 

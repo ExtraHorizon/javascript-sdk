@@ -17,7 +17,7 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
     nock.cleanAll();
   });
 
-  it('should allow querying login attempts with rql', async () => {
+  it('Allows querying login attempts with rql', async () => {
     const rql = rqlBuilder()
       .eq('providerSubjectId', '101009890263471329416')
       .build();
@@ -27,10 +27,10 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
       .reply(200, createPagedResponse(data));
 
     const loginAttemptsPager = await sdk.auth.oidc.loginAttempts.find({ rql });
-    expect(loginAttemptsPager.data.length).toEqual(data.length);
+    expect(loginAttemptsPager.data).toHaveLength(data.length);
   });
 
-  it('should allow login attempts results to be iterated with a pager', async () => {
+  it('Allows login attempts results to be iterated with a pager', async () => {
     const firstPageRql = rqlBuilder().limit(5).build();
     const secondPageRql = rqlBuilder().limit(5, 5).build();
 
@@ -48,7 +48,7 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
       rql: firstPageRql,
     });
     const firstPageResultIds = firstPageResult.data.map(({ id }) => id);
-    expect(firstPageResultIds).toEqual(firstPageIds);
+    expect(firstPageResultIds).toStrictEqual(firstPageIds);
 
     nock(`${host}${AUTH_BASE}`)
       .get(`/oidc/loginAttempts${secondPageRql}`)
@@ -56,7 +56,7 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
 
     const secondPageResult = await firstPageResult.next();
     const secondPageResultIds = secondPageResult.data.map(({ id }) => id);
-    expect(secondPageResultIds).toEqual(secondPageIds);
+    expect(secondPageResultIds).toStrictEqual(secondPageIds);
 
     nock(`${host}${AUTH_BASE}`)
       .get(`/oidc/loginAttempts${firstPageRql}`)
@@ -64,10 +64,10 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
 
     const previousPageResult = await secondPageResult.previous();
     const previousPageIds = previousPageResult.data.map(({ id }) => id);
-    expect(previousPageIds).toEqual(firstPageIds);
+    expect(previousPageIds).toStrictEqual(firstPageIds);
   });
 
-  it('should allow querying all login attempts', async () => {
+  it('Allows querying all login attempts', async () => {
     // Limit is restricted to 50
     const rql = rqlBuilder().limit(50).build();
 
@@ -76,23 +76,23 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
       .reply(200, createPagedResponse(data));
 
     const loginAttempts = await sdk.auth.oidc.loginAttempts.findAll();
-    expect(loginAttempts.length).toEqual(data.length);
+    expect(loginAttempts).toHaveLength(data.length);
   });
 
-  it('should find the first login attempt', async () => {
+  it('Finds the first login attempt', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/oidc/loginAttempts')
       .reply(200, createPagedResponse(data));
 
     const loginAttempt = await sdk.auth.oidc.loginAttempts.findFirst();
-    expect(loginAttempt).toEqual({
+    expect(loginAttempt).toStrictEqual({
       ...data[0],
       updateTimestamp: new Date(data[0].updateTimestamp),
       creationTimestamp: new Date(data[0].creationTimestamp),
     });
   });
 
-  it('throws an error if a limit is provided to the findAll method', async () => {
+  it('Throws an error if a limit is provided to the findAll method', async () => {
     // Limit is restricted to 50
     const rql = rqlBuilder().limit(50).build();
 
@@ -103,7 +103,7 @@ describe('Auth - OpenID Connect - Login Attempts', () => {
     const findAllError = await sdk.auth.oidc.loginAttempts
       .findAll({ rql })
       .catch(error => error);
-    expect(findAllError).toEqual(
+    expect(findAllError).toStrictEqual(
       Error('Do not pass in limit operator with findAll')
     );
   });

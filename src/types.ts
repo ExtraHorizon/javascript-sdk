@@ -10,6 +10,7 @@ export * from './services/tasks/types';
 export * from './services/users/types';
 export * from './services/mails/types';
 export * from './services/templates/types';
+export * from './services/templatesV2/types';
 export * from './services/configurations/types';
 export * from './services/dispatchers/types';
 export * from './services/payments/types';

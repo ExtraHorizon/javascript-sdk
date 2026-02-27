@@ -63,7 +63,7 @@ export interface OidcProviderService {
    * @returns The first element of the queried providers {@link OidcProvider}
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    */
-  findFirst(options?: OptionsWithRql): Promise<OidcProvider>;
+  findFirst(options?: OptionsWithRql): Promise<OidcProvider | undefined>;
 
   /**
    * ## Update an OpenID Connect provider
@@ -96,6 +96,11 @@ export interface OidcProviderService {
    * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
    * @throws {@link ResourceUnknownError} when no provider is found for the specified providerId.
    * @throws {@link IllegalStateError} when the provider is enabled (Only disabled providers can be removed) or when there are still users linked to this provider.
+   */
+  remove(providerId: string): Promise<AffectedRecords>;
+
+  /**
+   * @deprecated Use `remove` instead.
    */
   delete(providerId: string): Promise<AffectedRecords>;
 

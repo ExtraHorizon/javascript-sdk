@@ -103,4 +103,10 @@ describe('NotificationsV2 Service', () => {
     const response = await sdk.notificationsV2.findById(id);
     expect(response?.id).toBe(id);
   });
+
+  it('Requests a health check', async () => {
+    nock(`${host}${NOTIFICATIONS_V2_BASE}`).get('/health').reply(200, '');
+    const health = await sdk.notificationsV2.health();
+    expect(health).toBe(true);
+  });
 });

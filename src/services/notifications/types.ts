@@ -183,13 +183,13 @@ export interface NotificationsService {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<Notification>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Notification | undefined>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<Notification>;
+  findFirst(options?: OptionsWithRql): Promise<Notification | undefined>;
   /**
    * Delete notification(s)
    *
@@ -219,6 +219,12 @@ export interface NotificationsService {
    * @returns PagedResult<NotifTypeDef>
    */
   getTypes(options?: OptionsBase): Promise<PagedResult<NotifTypeDef>>;
+
+  /**
+   * Perform a health check
+   * @returns {boolean} success
+   */
+  health(): Promise<boolean>;
 }
 
 export interface NotificationSettingsServices {
@@ -239,13 +245,13 @@ export interface NotificationSettingsServices {
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById(id: ObjectId, options?: OptionsWithRql): Promise<NotificationSettings>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<NotificationSettings | undefined>;
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findFirst(options?: OptionsWithRql): Promise<NotificationSettings>;
+  findFirst(options?: OptionsWithRql): Promise<NotificationSettings | undefined>;
   /**
    * Update the notification settings for a user
    *

@@ -33,7 +33,7 @@ describe('Subscriptions Service', () => {
     });
   });
 
-  it('should get a list of subscriptions', async () => {
+  it('Gets a list of subscriptions', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${EVENTS_BASE}`)
       .get(`/subscriptions${rql}`)
@@ -44,7 +44,7 @@ describe('Subscriptions Service', () => {
     expect(res.data.length).toBeGreaterThan(0);
   });
 
-  it('should find an subscription by id', async () => {
+  it('Finds an subscription by id', async () => {
     nock(`${host}${EVENTS_BASE}`)
       .get(`/subscriptions?eq(id,${subscriptionId})`)
       .reply(200, subscriptionsResponse);
@@ -56,7 +56,7 @@ describe('Subscriptions Service', () => {
     expect(subscription.id).toBe(subscriptionId);
   });
 
-  it('should find the first subscription', async () => {
+  it('Finds the first subscription', async () => {
     nock(`${host}${EVENTS_BASE}`)
       .get('/subscriptions')
       .reply(200, subscriptionsResponse);
@@ -66,7 +66,7 @@ describe('Subscriptions Service', () => {
     expect(subscription.id).toBe(subscriptionId);
   });
 
-  it('should create a new subscription', async () => {
+  it('Creates a new subscription', async () => {
     nock(`${host}${EVENTS_BASE}`)
       .post('/subscriptions')
       .reply(200, subscriptionsData);

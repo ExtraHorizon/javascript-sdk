@@ -33,7 +33,7 @@ describe('Auth - OAuth2', () => {
     nock.cleanAll();
   });
 
-  it('should create an authorization', async () => {
+  it('Creates an authorization', async () => {
     nock(`${host}${AUTH_BASE}`)
       .post('/oauth2/authorizations')
       .reply(200, authorizationData);
@@ -46,10 +46,10 @@ describe('Auth - OAuth2', () => {
       redirectUri: 'http://localhost',
     });
 
-    expect(createdResult.id).toEqual(authorizationData.id);
+    expect(createdResult.id).toStrictEqual(authorizationData.id);
   });
 
-  it('should get authorizations', async () => {
+  it('Gets authorizations', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/authorizations')
       .reply(200, createPagedResponse(authorizationData));
@@ -57,10 +57,10 @@ describe('Auth - OAuth2', () => {
     const applications = await sdk.auth.oauth2.getAuthorizations();
 
     expect(applications.data).toBeDefined();
-    expect(applications.data[0].id).toEqual(authorizationData.id);
+    expect(applications.data[0].id).toStrictEqual(authorizationData.id);
   });
 
-  it('should delete an authorization', async () => {
+  it('Deletes an authorization', async () => {
     const authorizationId = '123';
 
     nock(`${host}${AUTH_BASE}`)
@@ -73,10 +73,10 @@ describe('Auth - OAuth2', () => {
       authorizationId
     );
 
-    expect(deleteResult.affectedRecords).toEqual(1);
+    expect(deleteResult.affectedRecords).toBe(1);
   });
 
-  it('throws on deleting unknown authorization', async () => {
+  it('Throws on deleting unknown authorization', async () => {
     const authorizationId = '123';
     expect.assertions(1);
 
