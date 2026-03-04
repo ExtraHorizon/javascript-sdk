@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.9.1]
 
+### Fixed
+- exh.users.updatePasswordPolicy now correctly accepts a partial `PasswordPolicy` object.
+- `VerificationSettings` is now exported
+- `ForgotPasswordRequest` is now exported
+- `ActivationRequest` is now exported
+
 ## [8.9.0]
 
 ### Added

@@ -11,6 +11,10 @@ import {
   PagedResultWithPager,
 } from '../types';
 
+export { VerificationSettings } from './settings/types';
+export { ActivationRequest } from './activationRequests/types';
+export { ForgotPasswordRequest } from './forgotPasswordRequests/types';
+
 export interface UserData {
   id: string;
   firstName: string;
@@ -1395,7 +1399,7 @@ export interface UsersService {
    */
   passwordPolicy(options?: OptionsBase): Promise<PasswordPolicy>;
   /**
-   * Update the current pasword policy
+   * Update the current password policy
    *
    * Permission | Scope | Effect
    * - | - | -
@@ -1403,7 +1407,7 @@ export interface UsersService {
    * @returns {PasswordPolicy} PasswordPolicy
    */
   updatePasswordPolicy(
-    requestBody: PasswordPolicy,
+    requestBody: Partial<PasswordPolicy>,
     options?: OptionsBase
   ): Promise<PasswordPolicy>;
 
