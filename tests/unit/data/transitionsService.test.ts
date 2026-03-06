@@ -54,12 +54,14 @@ describe('Transitions Service', () => {
   it('Creates a transition', async () => {
     nock(`${host}${DATA_BASE}`)
       .post(`/${schemaId}/transitions`)
-      .reply(200, { affectedRecords: 1 });
-    const { affectedRecords } = await sdk.data.transitions.create(
+      .reply(200, { ...newTransition, id: transitionId });
+
+    const transition = await sdk.data.transitions.create(
       schemaId,
       newTransition
     );
-    expect(affectedRecords).toBe(1);
+
+    expect(transition).toMatchObject({ ...newTransition, id: transitionId });
   });
 
   it('Updates a transition', async () => {

@@ -1794,7 +1794,7 @@ export interface DataTransitionsService {
     schemaIdOrName: ObjectId | string,
     requestBody: TransitionInput,
     options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  ): Promise<Transition>;
   /**
    * Update a transition
    *
