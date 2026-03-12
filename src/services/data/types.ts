@@ -1740,7 +1740,7 @@ export interface DataStatusesService {
   update(
     schemaIdOrName: ObjectId | string,
     name: string,
-    requestBody: StatusData,
+    requestBody: { data: StatusData; },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
