@@ -164,8 +164,6 @@ export interface PasswordPolicy {
   lowerCaseRequired: boolean;
   symbolRequired: boolean;
   numberRequired: boolean;
-  pattern?: string;
-  messageFormat?: string;
 }
 
 export enum GlobalPermissionName {
