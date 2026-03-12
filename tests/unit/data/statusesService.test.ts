@@ -46,9 +46,11 @@ describe('Statuses Service', () => {
         affectedRecords: 1,
       });
     const res = await sdk.data.statuses.update(schemaId, statusName, {
-      additionalProp1: 'string',
-      additionalProp2: 'string',
-      additionalProp3: 'string',
+      data: {
+        additionalProp1: 'string',
+        additionalProp2: 'string',
+        additionalProp3: 'string',
+      },
     });
     expect(res.affectedRecords).toBe(1);
   });

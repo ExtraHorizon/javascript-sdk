@@ -11,6 +11,10 @@ import {
   PagedResultWithPager,
 } from '../types';
 
+export { VerificationSettings } from './settings/types';
+export { ActivationRequest } from './activationRequests/types';
+export { ForgotPasswordRequest } from './forgotPasswordRequests/types';
+
 export interface UserData {
   id: string;
   firstName: string;
@@ -153,6 +157,7 @@ export interface GlobalPermission {
   name?: GlobalPermissionName | string;
   description?: string;
 }
+
 export interface PasswordPolicy {
   minimumLength: number;
   maximumLength: number;
@@ -162,6 +167,15 @@ export interface PasswordPolicy {
   numberRequired: boolean;
   pattern?: string;
   messageFormat?: string;
+}
+
+export interface PasswordPolicyUpdate {
+  minimumLength?: number;
+  maximumLength?: number;
+  upperCaseRequired?: boolean;
+  lowerCaseRequired?: boolean;
+  symbolRequired?: boolean;
+  numberRequired?: boolean;
 }
 
 export enum GlobalPermissionName {
@@ -1395,17 +1409,16 @@ export interface UsersService {
    */
   passwordPolicy(options?: OptionsBase): Promise<PasswordPolicy>;
   /**
-   * Update the current pasword policy
+   * Update the current password policy
    *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_PASSWORD_POLICY` | `global` | Update password policy
-   * @returns {PasswordPolicy} PasswordPolicy
    */
   updatePasswordPolicy(
-    requestBody: PasswordPolicy,
+    requestBody: PasswordPolicyUpdate,
     options?: OptionsBase
-  ): Promise<PasswordPolicy>;
+  ): Promise<PasswordPolicyUpdate>;
 
   /**
    * ## Retrieve a list of email templates
