@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `exh.users.updatePasswordPolicy` now correctly accepts a partial `PasswordPolicy` object.
-- Removed the incorrect properties `pattern` and `messageFormat` from the `PasswordPolicy` type.
 - The type of the request body for `exh.data.statuses.update` now correctly includes the `data` property.
 - The return type of `sdk.data.transitions.create` is correctly typed as `Transition` rather than `AffectedRecords`.
 - The `VerificationSettings` type is now exported
