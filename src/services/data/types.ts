@@ -1740,7 +1740,9 @@ export interface DataStatusesService {
   update(
     schemaIdOrName: ObjectId | string,
     name: string,
-    requestBody: StatusData,
+    requestBody: {
+      data: StatusData;
+    },
     options?: OptionsBase
   ): Promise<AffectedRecords>;
   /**
@@ -1794,7 +1796,7 @@ export interface DataTransitionsService {
     schemaIdOrName: ObjectId | string,
     requestBody: TransitionInput,
     options?: OptionsBase
-  ): Promise<AffectedRecords>;
+  ): Promise<Transition>;
   /**
    * Update a transition
    *
