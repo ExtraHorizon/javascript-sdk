@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `exh.users.updatePasswordPolicy` now correctly accepts a partial `PasswordPolicy` object.
+- The type of the request body for `exh.data.statuses.update` now correctly includes the `data` property.
 - The `VerificationSettings` type is now exported
 - The `ForgotPasswordRequest` type is now exported
 - The `ActivationRequest` type is now exported
