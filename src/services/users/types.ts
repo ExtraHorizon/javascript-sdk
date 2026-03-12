@@ -157,6 +157,7 @@ export interface GlobalPermission {
   name?: GlobalPermissionName | string;
   description?: string;
 }
+
 export interface PasswordPolicy {
   minimumLength: number;
   maximumLength: number;
@@ -166,6 +167,15 @@ export interface PasswordPolicy {
   numberRequired: boolean;
   pattern?: string;
   messageFormat?: string;
+}
+
+export interface PasswordPolicyUpdate {
+  minimumLength?: number;
+  maximumLength?: number;
+  upperCaseRequired?: boolean;
+  lowerCaseRequired?: boolean;
+  symbolRequired?: boolean;
+  numberRequired?: boolean;
 }
 
 export enum GlobalPermissionName {
@@ -1404,12 +1414,11 @@ export interface UsersService {
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_PASSWORD_POLICY` | `global` | Update password policy
-   * @returns {PasswordPolicy} PasswordPolicy
    */
   updatePasswordPolicy(
-    requestBody: Partial<PasswordPolicy>,
+    requestBody: PasswordPolicyUpdate,
     options?: OptionsBase
-  ): Promise<PasswordPolicy>;
+  ): Promise<PasswordPolicyUpdate>;
 
   /**
    * ## Retrieve a list of email templates
