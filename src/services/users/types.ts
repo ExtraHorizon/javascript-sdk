@@ -1491,12 +1491,14 @@ export interface UsersService {
    *
    * **Notes:**
    * - This operation works as an update and will only update the templates that are provided
+   * - id fields are deprecated and will be removed in a future release, it is recommended to use the name fields instead
+   * - name and id fields are mutually exclusive, e.g., setting `activation_email_template_name` will remove `activation_email_template_id` and vice versa
    * @param templates {@link EmailTemplatesUpdate} - A partial list of email templates to update
    * @returns A list of email templates {@link EmailTemplates}
    */
   setEmailTemplates(
     templates: Partial<EmailTemplates>
-  ): Promise<EmailTemplates>;
+  ): Promise<Partial<EmailTemplates>>;
 
   /**
    * Perform a health check
