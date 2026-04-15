@@ -1481,7 +1481,7 @@ export interface UsersService {
    * @param options {@link OptionsBase} - Add options to the request
    * @returns A list of email templates {@link EmailTemplates}
    */
-  getEmailTemplates(options?: OptionsBase): Promise<EmailTemplates>;
+  getEmailTemplates(options?: OptionsBase): Promise<Partial<EmailTemplates>>;
 
   /**
    * ## Set the list of email templates
