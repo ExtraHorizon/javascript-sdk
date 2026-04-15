@@ -473,28 +473,52 @@ export interface UserRoles {
 }
 
 export interface EmailTemplates {
-  /** Template id used by the User Service for the account activation email. */
+  /**
+   * Template id used by the User Service for the account activation email.
+   * @deprecated activationEmailTemplateId is deprecated in favor of activationEmailTemplateName
+  */
   activationEmailTemplateId: string;
 
-  /** Template id used by the User Service for the account reactivation email. */
+  /**
+   * Template id used by the User Service for the account reactivation email.
+   * @deprecated reactivationEmailTemplateId is deprecated in favor of reactivationEmailTemplateName
+   */
   reactivationEmailTemplateId: string;
 
-  /** Template id used by the User Service for the password reset email. */
+  /**
+   * Template id used by the User Service for the password reset email.
+   * @deprecated passwordResetEmailTemplateId is deprecated in favor of passwordResetEmailTemplateName
+   */
   passwordResetEmailTemplateId: string;
 
-  /** Template id used by the User Service for the OIDC unlink email. */
+  /**
+   * Template id used by the User Service for the OIDC unlink email.
+   * @deprecated oidcUnlinkEmailTemplateId is deprecated in favor of oidcUnlinkEmailTemplateName
+   */
   oidcUnlinkEmailTemplateId: string;
 
-  /** Template id used by the User Service for the OIDC unlink pin code email. */
+  /**
+   * Template id used by the User Service for the OIDC unlink pin code email.
+   * @deprecated oidcUnlinkPinEmailTemplateId is deprecated in favor of oidcUnlinkPinEmailTemplateName
+   */
   oidcUnlinkPinEmailTemplateId: string;
 
-  /** Template id used by the User Service for the account activation pin code email. */
+  /**
+   * Template id used by the User Service for the account activation pin code email.
+   * @deprecated activationPinEmailTemplateId is deprecated in favor of activationPinEmailTemplateName
+   */
   activationPinEmailTemplateId: string;
 
-  /** Template id used by the User Service for the account reactivation pin code email. */
+  /**
+   * Template id used by the User Service for the account reactivation pin code email.
+   * @deprecated reactivationPinEmailTemplateId is deprecated in favor of reactivationPinEmailTemplateName
+   */
   reactivationPinEmailTemplateId: string;
 
-  /** Template id used by the User Service for the password reset pin code email. */
+  /**
+   * Template id used by the User Service for the password reset pin code email.
+   * @deprecated passwordResetPinEmailTemplateId is deprecated in favor of passwordResetPinEmailTemplateName
+   */
   passwordResetPinEmailTemplateId: string;
 }
 
