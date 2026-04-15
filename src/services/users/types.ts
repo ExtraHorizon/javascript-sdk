@@ -480,10 +480,18 @@ export interface EmailTemplates {
   activationEmailTemplateId: string;
 
   /**
+   * Template name used by the User Service for the account activation email.
+  */
+  activationEmailTemplateName: string;
+
+  /**
    * Template id used by the User Service for the account reactivation email.
    * @deprecated reactivationEmailTemplateId is deprecated in favor of reactivationEmailTemplateName
    */
   reactivationEmailTemplateId: string;
+
+  /** Template name used by the User Service for the account reactivation email. */
+  reactivationEmailTemplateName: string;
 
   /**
    * Template id used by the User Service for the password reset email.
@@ -491,11 +499,17 @@ export interface EmailTemplates {
    */
   passwordResetEmailTemplateId: string;
 
+  /** Template name used by the User Service for the password reset email. */
+  passwordResetEmailTemplateName: string;
+
   /**
    * Template id used by the User Service for the OIDC unlink email.
    * @deprecated oidcUnlinkEmailTemplateId is deprecated in favor of oidcUnlinkEmailTemplateName
    */
   oidcUnlinkEmailTemplateId: string;
+
+  /** Template name used by the User Service for the OIDC unlink email. */
+  oidcUnlinkEmailTemplateName: string;
 
   /**
    * Template id used by the User Service for the OIDC unlink pin code email.
@@ -503,11 +517,17 @@ export interface EmailTemplates {
    */
   oidcUnlinkPinEmailTemplateId: string;
 
+  /** Template name used by the User Service for the OIDC unlink pin code email. */
+  oidcUnlinkPinEmailTemplateName: string;
+
   /**
    * Template id used by the User Service for the account activation pin code email.
    * @deprecated activationPinEmailTemplateId is deprecated in favor of activationPinEmailTemplateName
    */
   activationPinEmailTemplateId: string;
+
+  /** Template name used by the User Service for the account activation pin code email. */
+  activationPinEmailTemplateName: string;
 
   /**
    * Template id used by the User Service for the account reactivation pin code email.
@@ -515,11 +535,17 @@ export interface EmailTemplates {
    */
   reactivationPinEmailTemplateId: string;
 
+  /** Template name used by the User Service for the account reactivation pin code email. */
+  reactivationPinEmailTemplateName: string;
+
   /**
    * Template id used by the User Service for the password reset pin code email.
    * @deprecated passwordResetPinEmailTemplateId is deprecated in favor of passwordResetPinEmailTemplateName
    */
   passwordResetPinEmailTemplateId: string;
+
+  /** Template name used by the User Service for the password reset pin code email. */
+  passwordResetPinEmailTemplateName: string;
 }
 
 export interface PasswordResetRequestData {
