@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.10.0]
 
+### Added
+- Added support for setting `email_templates` by `_name` fields
+
+### Deprecated
+- Deprecated setting `email_templates` by `_id` fields
+
 ## [8.9.1]
 
 ### Fixed
