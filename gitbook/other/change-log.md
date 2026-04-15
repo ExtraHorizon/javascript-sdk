@@ -12,10 +12,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.10.0]
 
 ### Added
-- Added support for setting `email_templates` by `_name` fields
+- `exh.users.getEmailTemplates` and `exh.users.setEmailTemplates` now support `_name` variants
+  - `activationEmailTemplateName`
+  - `reactivationEmailTemplateName`
+  - `passwordResetEmailTemplateName`
+  - `oidcUnlinkEmailTemplateName`
+  - `oidcUnlinkPinEmailTemplateName`
+  - `activationPinEmailTemplateName`
+  - `reactivationPinEmailTemplateName`
+  - `passwordResetPinEmailTemplateName`
 
 ### Deprecated
-- Deprecated setting `email_templates` by `_id` fields
+- `exh.users.getEmailTemplates` and `exh.users.setEmailTemplates` deprecates `_id` in favour of `_name` variants
+  - `activationEmailTemplateId`
+  - `reactivationEmailTemplateId` 
+  - `passwordResetEmailTemplateId`
+  - `oidcUnlinkEmailTemplateId`
+  - `oidcUnlinkPinEmailTemplateId`
+  - `activationPinEmailTemplateId`
+  - `reactivationPinEmailTemplateId`
+  - `passwordResetPinEmailTemplateId`
+
 
 ## [8.9.1]
 
