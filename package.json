@@ -32,7 +32,7 @@
     "build"
   ],
   "dependencies": {
-    "axios": "0.30.3",
+    "axios": "0.31.0",
     "buffer": "6.0.3",
     "fflate": "0.8.2",
     "form-data": "4.0.4",
