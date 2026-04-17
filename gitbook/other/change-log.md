@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.10.0]
 
+### Fixed
+- The following vulnerabilities were resolved, but not applicable:
+  - Bumped Axios version to resolve `CVE-2026-40175` and `CVE-2025-62718`
+  - Bumped brace-expansion version to resolve `CVE-2026-33750`
+  - Bumped picomatch version to resolve `CVE-2026-33672` and `CVE-2026-33671`
+  - Bumped flatted version to resolve `CVE-2026-33228` and `CVE-2026-32141`
+
 ### Added
 - `exh.users.getEmailTemplates` and `exh.users.setEmailTemplates` now support `_name` variants
   - `activationEmailTemplateName`
