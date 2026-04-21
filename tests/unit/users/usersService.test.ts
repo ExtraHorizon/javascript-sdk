@@ -297,24 +297,24 @@ describe('Users Service', () => {
   it('Gets the email template configuration', async () => {
     const data = {
       activationEmailTemplateId: randomHexString(24),
-      reactivationEmailTemplateId: randomHexString(24),
+      reactivationEmailTemplateName: randomHexString(24),
       passwordResetEmailTemplateId: randomHexString(24),
-      oidcUnlinkEmailTemplateId: randomHexString(24),
+      oidcUnlinkEmailTemplateName: randomHexString(24),
       oidcUnlinkPinEmailTemplateId: randomHexString(24),
-      activationPinEmailTemplateId: randomHexString(24),
+      activationPinEmailTemplateName: randomHexString(24),
       reactivationPinEmailTemplateId: randomHexString(24),
-      passwordResetPinEmailTemplateId: randomHexString(24),
+      passwordResetPinEmailTemplateName: randomHexString(24),
     };
 
     const snakeCasedData = {
       activation_email_template_id: data.activationEmailTemplateId,
-      reactivation_email_template_id: data.reactivationEmailTemplateId,
+      reactivation_email_template_name: data.reactivationEmailTemplateName,
       password_reset_email_template_id: data.passwordResetEmailTemplateId,
-      oidc_unlink_email_template_id: data.oidcUnlinkEmailTemplateId,
+      oidc_unlink_email_template_name: data.oidcUnlinkEmailTemplateName,
       oidc_unlink_pin_email_template_id: data.oidcUnlinkPinEmailTemplateId,
-      activation_pin_email_template_id: data.activationPinEmailTemplateId,
+      activation_pin_email_template_name: data.activationPinEmailTemplateName,
       reactivation_pin_email_template_id: data.reactivationPinEmailTemplateId,
-      password_reset_pin_email_template_id: data.passwordResetPinEmailTemplateId,
+      password_reset_pin_email_template_name: data.passwordResetPinEmailTemplateName,
     };
 
     nock(`${host}${USER_BASE}`)
@@ -327,24 +327,24 @@ describe('Users Service', () => {
 
   it('Sets the email template configuration', async () => {
     const data = {
-      activationEmailTemplateId: randomHexString(24),
+      activationEmailTemplateName: randomHexString(24),
       reactivationEmailTemplateId: randomHexString(24),
-      passwordResetEmailTemplateId: randomHexString(24),
+      passwordResetEmailTemplateName: randomHexString(24),
       oidcUnlinkEmailTemplateId: randomHexString(24),
-      oidcUnlinkPinEmailTemplateId: randomHexString(24),
+      oidcUnlinkPinEmailTemplateName: randomHexString(24),
       activationPinEmailTemplateId: randomHexString(24),
-      reactivationPinEmailTemplateId: randomHexString(24),
+      reactivationPinEmailTemplateName: randomHexString(24),
       passwordResetPinEmailTemplateId: randomHexString(24),
     };
 
     const snakeCasedData = {
-      activation_email_template_id: data.activationEmailTemplateId,
+      activation_email_template_name: data.activationEmailTemplateName,
       reactivation_email_template_id: data.reactivationEmailTemplateId,
-      password_reset_email_template_id: data.passwordResetEmailTemplateId,
+      password_reset_email_template_name: data.passwordResetEmailTemplateName,
       oidc_unlink_email_template_id: data.oidcUnlinkEmailTemplateId,
-      oidc_unlink_pin_email_template_id: data.oidcUnlinkPinEmailTemplateId,
+      oidc_unlink_pin_email_template_name: data.oidcUnlinkPinEmailTemplateName,
       activation_pin_email_template_id: data.activationPinEmailTemplateId,
-      reactivation_pin_email_template_id: data.reactivationPinEmailTemplateId,
+      reactivation_pin_email_template_name: data.reactivationPinEmailTemplateName,
       password_reset_pin_email_template_id: data.passwordResetPinEmailTemplateId,
     };
 

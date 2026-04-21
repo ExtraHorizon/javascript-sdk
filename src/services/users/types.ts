@@ -473,29 +473,79 @@ export interface UserRoles {
 }
 
 export interface EmailTemplates {
-  /** Template id used by the User Service for the account activation email. */
+  /**
+   * Template id used by the User Service for the account activation email.
+   * @deprecated activationEmailTemplateId is deprecated in favor of activationEmailTemplateName
+  */
   activationEmailTemplateId: string;
 
-  /** Template id used by the User Service for the account reactivation email. */
+  /**
+   * Template name used by the User Service for the account activation email.
+  */
+  activationEmailTemplateName: string;
+
+  /**
+   * Template id used by the User Service for the account reactivation email.
+   * @deprecated reactivationEmailTemplateId is deprecated in favor of reactivationEmailTemplateName
+   */
   reactivationEmailTemplateId: string;
 
-  /** Template id used by the User Service for the password reset email. */
+  /** Template name used by the User Service for the account reactivation email. */
+  reactivationEmailTemplateName: string;
+
+  /**
+   * Template id used by the User Service for the password reset email.
+   * @deprecated passwordResetEmailTemplateId is deprecated in favor of passwordResetEmailTemplateName
+   */
   passwordResetEmailTemplateId: string;
 
-  /** Template id used by the User Service for the OIDC unlink email. */
+  /** Template name used by the User Service for the password reset email. */
+  passwordResetEmailTemplateName: string;
+
+  /**
+   * Template id used by the User Service for the OIDC unlink email.
+   * @deprecated oidcUnlinkEmailTemplateId is deprecated in favor of oidcUnlinkEmailTemplateName
+   */
   oidcUnlinkEmailTemplateId: string;
 
-  /** Template id used by the User Service for the OIDC unlink pin code email. */
+  /** Template name used by the User Service for the OIDC unlink email. */
+  oidcUnlinkEmailTemplateName: string;
+
+  /**
+   * Template id used by the User Service for the OIDC unlink pin code email.
+   * @deprecated oidcUnlinkPinEmailTemplateId is deprecated in favor of oidcUnlinkPinEmailTemplateName
+   */
   oidcUnlinkPinEmailTemplateId: string;
 
-  /** Template id used by the User Service for the account activation pin code email. */
+  /** Template name used by the User Service for the OIDC unlink pin code email. */
+  oidcUnlinkPinEmailTemplateName: string;
+
+  /**
+   * Template id used by the User Service for the account activation pin code email.
+   * @deprecated activationPinEmailTemplateId is deprecated in favor of activationPinEmailTemplateName
+   */
   activationPinEmailTemplateId: string;
 
-  /** Template id used by the User Service for the account reactivation pin code email. */
+  /** Template name used by the User Service for the account activation pin code email. */
+  activationPinEmailTemplateName: string;
+
+  /**
+   * Template id used by the User Service for the account reactivation pin code email.
+   * @deprecated reactivationPinEmailTemplateId is deprecated in favor of reactivationPinEmailTemplateName
+   */
   reactivationPinEmailTemplateId: string;
 
-  /** Template id used by the User Service for the password reset pin code email. */
+  /** Template name used by the User Service for the account reactivation pin code email. */
+  reactivationPinEmailTemplateName: string;
+
+  /**
+   * Template id used by the User Service for the password reset pin code email.
+   * @deprecated passwordResetPinEmailTemplateId is deprecated in favor of passwordResetPinEmailTemplateName
+   */
   passwordResetPinEmailTemplateId: string;
+
+  /** Template name used by the User Service for the password reset pin code email. */
+  passwordResetPinEmailTemplateName: string;
 }
 
 export interface PasswordResetRequestData {
@@ -1060,14 +1110,14 @@ export interface UsersService {
    * An email is send to the new email address with a token and instructions to reactivate the account.
    * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
    *
-   * By default the email send to the user is the email template configured by `reactivationEmailTemplateId`.
+   * By default the email send to the user is the email template configured by `reactivationEmailTemplateName`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
    * The hash should be used within 60 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
    * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
-   * Then the email send to the user is the email template configured by `reactivationPinEmailTemplateId`.
+   * Then the email send to the user is the email template configured by `reactivationPinEmailTemplateName`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
    * The pin code should be used within 15 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
@@ -1130,14 +1180,14 @@ export interface UsersService {
    * An email is send to the supplied email address with a token and instructions to activate the account.
    * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
    *
-   * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
+   * By default the email send to the user is the email template configured by `activationEmailTemplateName`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
    * The hash should be used within 60 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
    * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
-   * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
+   * Then the email send to the user is the email template configured by `activationPinEmailTemplateName`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
    * The pin code should be used within 15 minutes, otherwise `exh.users.requestEmailActivation` should be used to request a new email.
    *
@@ -1192,7 +1242,7 @@ export interface UsersService {
    * An email is send to the supplied email address with a token and instructions to activate the account.
    * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
    *
-   * The email send to the user is the email template configured by `activationEmailTemplateId`.
+   * The email send to the user is the email template configured by `activationEmailTemplateName`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
    * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
@@ -1202,7 +1252,7 @@ export interface UsersService {
    *
    * @throws {EmailUnknownError}
    * @throws {AlreadyActivatedError}
-   * @throws {IllegalStateError} Attempting to use `activationEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {IllegalStateError} Attempting to use `activationEmailTemplateName` while not configured. See `exh.users.setEmailTemplates`.
    * @throws {ActivationRequestLimitError} The maximum allowed consecutive activation requests is reached
    * @throws {ActivationRequestTimeoutError} Activation request too short after the previous one
    */
@@ -1217,14 +1267,14 @@ export interface UsersService {
    * An email is send to the supplied email address with a token and instructions to activate the account.
    * The token should be used to complete the account activation via `exh.users.validateEmailActivation`.
    *
-   * By default the email send to the user is the email template configured by `activationEmailTemplateId`.
+   * By default the email send to the user is the email template configured by `activationEmailTemplateName`.
    * The template receives a 40 hexadecimal character hash in the `content.activation_hash` variable.
    * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeActivationRequests` verification setting.
    * To use the pin code mode, the `activationMode` field can be set to `pin_code`.
-   * Then the email send to the user is the email template configured by `activationPinEmailTemplateId`.
+   * Then the email send to the user is the email template configured by `activationPinEmailTemplateName`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
    * The pin code should be used within 15 minutes, otherwise this method should be called again to request a new email.
    *
@@ -1234,7 +1284,7 @@ export interface UsersService {
    *
    * @throws {EmailUnknownError}
    * @throws {AlreadyActivatedError}
-   * @throws {IllegalStateError} Attempting to use either `activationEmailTemplateId` or `activationPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {IllegalStateError} Attempting to use either `activationEmailTemplateName` or `activationPinEmailTemplateName` while not configured. See `exh.users.setEmailTemplates`.
    * @throws {ActivationRequestLimitError} The maximum allowed consecutive activation requests is reached
    * @throws {ActivationRequestTimeoutError} Activation request too short after the previous one
    */
@@ -1268,7 +1318,7 @@ export interface UsersService {
    * An email is send to the targeted user with a token and instructions to reset their password.
    * The token should be used to complete the password reset via `exh.users.validatePasswordReset`.
    *
-   * The email send to the user is the email template configured by `passwordResetEmailTemplateId`.
+   * The email send to the user is the email template configured by `passwordResetEmailTemplateName`.
    * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
    * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
@@ -1278,7 +1328,7 @@ export interface UsersService {
    *
    * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
-   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateId` or `passwordResetPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateName` or `passwordResetPinEmailTemplateName` while not configured. See `exh.users.setEmailTemplates`.
    * @throws {ForgotPasswordRequestLimitError} The maximum allowed consecutive forgot password requests is reached
    * @throws {ForgotPasswordRequestTimeoutError} Forgot password request too short after the previous one
    */
@@ -1290,14 +1340,14 @@ export interface UsersService {
    * An email is send to the targeted user with a token and instructions to reset their password.
    * The token should be used to complete the password reset via `exh.users.validatePasswordReset`.
    *
-   * By default the email send to the user is the email template configured by `passwordResetEmailTemplateId`.
+   * By default the email send to the user is the email template configured by `passwordResetEmailTemplateName`.
    * The template receives a 40 hexadecimal character hash in the `content.reset_hash` variable.
    * The hash should be used within 60 minutes, otherwise this method should be called again to request a new email.
    *
    * If enabled, a pin code can be used rather than a hash.
    * The pin code mode must be enabled by the `enablePinCodeForgotPasswordRequests` verification setting.
    * To use the pin code mode, the `mode` field can be set to `pin_code`.
-   * Then the email send to the user is the email template configured by `passwordResetPinEmailTemplateId`.
+   * Then the email send to the user is the email template configured by `passwordResetPinEmailTemplateName`.
    * The pin code template receives a 8 digit pin code in the `content.pin_code` variable.
    * The pin code should be used within 15 minutes, otherwise this method should be called again to request a new email.
    *
@@ -1307,7 +1357,7 @@ export interface UsersService {
    *
    * @throws {EmailUnknownError}
    * @throws {NotActivatedError}
-   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateId` or `passwordResetPinEmailTemplateId` while not configured. See `exh.users.setEmailTemplates`.
+   * @throws {IllegalStateError} Attempting to use either `passwordResetEmailTemplateName` or `passwordResetPinEmailTemplateName` while not configured. See `exh.users.setEmailTemplates`.
    * @throws {DisabledForOidcUsersError}
    * @throws {PinCodesNotEnabledError} Pin codes are not enabled, please check the verification settings
    * @throws {ForgotPasswordRequestLimitError} The maximum allowed consecutive forgot password requests is reached
@@ -1431,7 +1481,7 @@ export interface UsersService {
    * @param options {@link OptionsBase} - Add options to the request
    * @returns A list of email templates {@link EmailTemplates}
    */
-  getEmailTemplates(options?: OptionsBase): Promise<EmailTemplates>;
+  getEmailTemplates(options?: OptionsBase): Promise<Partial<EmailTemplates>>;
 
   /**
    * ## Set the list of email templates
@@ -1441,12 +1491,14 @@ export interface UsersService {
    *
    * **Notes:**
    * - This operation works as an update and will only update the templates that are provided
-   * @param templates {@link EmailTemplatesUpdate} - A partial list of email templates to update
+   * - id fields are deprecated and will be removed in a future release, it is recommended to use the name fields instead
+   * - name and id fields are mutually exclusive, e.g., setting `activation_email_template_name` will remove `activation_email_template_id` and vice versa
+   * @param templates {@link EmailTemplates} - A partial list of email templates to update
    * @returns A list of email templates {@link EmailTemplates}
    */
   setEmailTemplates(
     templates: Partial<EmailTemplates>
-  ): Promise<EmailTemplates>;
+  ): Promise<Partial<EmailTemplates>>;
 
   /**
    * Perform a health check
