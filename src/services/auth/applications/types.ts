@@ -49,6 +49,26 @@ export interface AuthApplicationsService {
   ): Promise<PagedResult<OAuth1Application | OAuth2Application>>;
 
   /**
+   * ## Get a list of applications
+   * Provides a list of applications currently registered in the cluster.
+   *
+   * Every logged-in user is able to retrieve a limited set of fields (only `name`, `description`, `logo` and `type`).
+   *
+   * #### Global Permissions
+   * `VIEW_APPLICATIONS` - Returns all applications fields
+   *
+   * #### Function details
+   * @param options {@link OptionsWithRql} additional options with rql that can be set for your request to the cluster.
+   *
+   * @returns Provides a list of applications currently registered in the cluster.
+   *
+   * @throws {@link NoPermissionError} when the user doesn't have the required permissions to execute the function.
+   * */
+  findAll(
+    options?: OptionsWithRql
+  ): Promise<(OAuth1Application | OAuth2Application)[]>;
+
+  /**
    * ## Get the first application found
    * Gets the first application from the paginated list of applications currently registered in the cluster.
    *

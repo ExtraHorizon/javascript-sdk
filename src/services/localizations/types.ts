@@ -63,17 +63,17 @@ export interface CountriesService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   * @returns PagedResult<string>
    */
   getCountries(options?: OptionsBase): Promise<string[]>;
+
   /**
    * Retrieve a list of all the defined regions for the specified country code
    *
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
+   *
    * @param country The country code (as defined in ISO 3166-1)
-   * @returns PagedResult<string>
    * @throws {ResourceUnknownError}
    */
   getRegions(country: string, options?: OptionsBase): Promise<string[]>;
@@ -86,7 +86,6 @@ export interface LanguagesService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   * @returns PagedResult<SupportedLanguageCodes>
    */
   getLanguages(options?: OptionsBase): Promise<string[]>;
 }
@@ -98,60 +97,73 @@ export interface LocalizationsService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<Localization>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Localization>>;
+
+  /**
+   * Returns all possible localizations stored in this service
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<Localization[]>;
+
   /**
    * Find By Key
-   * @param key the key to search for
-   * @param rql an optional rql string
-   * @returns the first element found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
    */
   findByKey(key: string, options?: OptionsWithRql): Promise<Localization | undefined>;
+
   /**
    * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
    */
   findFirst(options?: OptionsWithRql): Promise<Localization | undefined>;
+
   /**
    * Create new localizations
    *
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_LOCALIZATIONS` | global | **Required** for this endpoint
-   * @param requestBody BulkLocalization
-   * @returns BulkCreationResponse
+   *
    * @throws {DefaultLocalizationMissingError}
    */
   create(
     requestBody: BulkLocalization,
     options?: OptionsBase
   ): Promise<BulkCreationResponse>;
+
   /**
    * Update localizations
    *
    * Permission | Scope | Effect
    * - | - | -
    * `UPDATE_LOCALIZATIONS` | global | **Required** for this endpoint
-   * @param requestBody BulkLocalization
-   * @returns BulkUpdateResponse
    */
   update(
     requestBody: BulkLocalization,
     options?: OptionsBase
   ): Promise<BulkUpdateResponse>;
+
   /**
    * Delete localizations
    *
    * Permission | Scope | Effect
    * - | - | -
    * `DELETE_LOCALIZATIONS` | global | **Required** for this endpoint
+   *
    * @param rql Add filters to the requested list, **required**.
-   * @returns AffectedRecords
    */
   remove(rql: RQLString, options?: OptionsBase): Promise<AffectedRecords>;
+
   /**
    * Request localizations of multiple keys in a specific language
    * The default language (EN) is always included in the response as a fallback in case there is no translation available for the specified language
@@ -159,8 +171,6 @@ export interface LocalizationsService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Everyone can use this endpoint
-   * @param requestBody LocalizationRequest
-   * @returns Record<string, MappedText>
    */
   getByKeys(
     requestBody: LocalizationRequest,
@@ -169,7 +179,6 @@ export interface LocalizationsService {
 
   /**
    * Perform a health check
-   * @returns {boolean} success
    */
   health(): Promise<boolean>;
 }

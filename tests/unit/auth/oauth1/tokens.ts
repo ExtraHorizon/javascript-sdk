@@ -65,6 +65,20 @@ describe('exh.auth.oauth1.tokens', () => {
     expect(result).toStrictEqual(token);
   });
 
+  it('Finds all tokens', async () => {
+    nock(`${host}${AUTH_BASE}`)
+      .get('/oauth1/tokens?limit(50)')
+      .reply(200, createPagedResponse([tokenResponse], { total: 2, offset: 0, limit: 1 }));
+
+    nock(`${host}${AUTH_BASE}`)
+      .get('/oauth1/tokens?limit(1,1)')
+      .reply(200, createPagedResponse([tokenResponse], { total: 2, offset: 1, limit: 1 }));
+
+    const result = await sdk.auth.oauth1.tokens.findAll();
+
+    expect(result).toStrictEqual([token, token]);
+  });
+
   it('Removes a token', async () => {
     nock(`${host}${AUTH_BASE}`)
       .delete('/oauth1/tokens/5bfbfc3146e0fb321rsa4b28')

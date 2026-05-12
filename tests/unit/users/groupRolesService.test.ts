@@ -63,6 +63,23 @@ describe('Group Roles Service', () => {
     });
   });
 
+  describe('findAll', () => {
+    it('Returns all roles of a group', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get(`/groups/${groupId}/roles?limit(50)`)
+        .reply(200, createPagedResponse([groupRoleData], { total: 2, offset: 0, limit: 1 }));
+
+      nock(`${host}${USER_BASE}`)
+        .get(`/groups/${groupId}/roles?limit(1,1)`)
+        .reply(200, createPagedResponse([groupRoleData], { total: 2, offset: 1, limit: 1 }));
+
+      const result = await sdk.users.groupRoles.findAll(groupId);
+
+      expect(result[0].name).toStrictEqual(groupRoleData.name);
+      expect(result[1].name).toStrictEqual(groupRoleData.name);
+    });
+  });
+
   describe('findFirst', () => {
     it('Returns the first role found', async () => {
       const rql = rqlBuilder().eq('name', groupRoleData.name).build();

@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../../rql';
 import { HttpInstance } from '../../../types';
+import { findAllGeneric } from '../../helpers';
 import { HttpClient } from '../../http-client';
 import { ForgotPasswordRequestsService } from './types';
 
@@ -26,6 +27,10 @@ export const forgotPasswordRequestsService = (
   async findByUserId(userId, options) {
     const rql = rqlBuilder(options?.rql).eq('user_id', userId).build();
     return await this.findFirst({ ...options, rql });
+  },
+
+  async findAll(options) {
+    return await findAllGeneric(this.find, options);
   },
 
   async remove(id, options) {

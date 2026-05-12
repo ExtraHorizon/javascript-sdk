@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
+import { findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
 import type { UsersGroupRolesService } from './types';
 
@@ -35,6 +36,11 @@ export default (
   async findByName(groupId, roleName, options?) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', roleName).build();
     return await this.findFirst(groupId, { ...options, rql: rqlWithName });
+  },
+
+  async findAll(groupId, options) {
+    // Inner function is needed since this.find requires a groupId parameter, but findAllGeneric only passes options
+    return await findAllGeneric(innerOptions => this.find(groupId, innerOptions), options);
   },
 
   async get(groupId, options) {

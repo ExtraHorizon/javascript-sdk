@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../rql';
 import type { HttpInstance, HttpRequestConfig } from '../../types';
+import { findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
 import type { EventsService } from './types';
 
@@ -16,6 +17,10 @@ export default (client: HttpClient, httpAuth: HttpInstance): EventsService => ({
   async findFirst(this: EventsService, options) {
     const res = await this.find(options);
     return res.data[0];
+  },
+
+  async findAll(options) {
+    return await findAllGeneric(this.find, options);
   },
 
   async create(requestBody, options) {

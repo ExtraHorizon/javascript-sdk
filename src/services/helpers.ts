@@ -42,7 +42,7 @@ export async function* findAllIterator<T>(
 
 export async function findAllGeneric<T>(
   find: (options: OptionsWithRql) => PagedResult<T> | Promise<PagedResult<T>>,
-  options: OptionsWithRql,
+  options: OptionsWithRql | undefined,
   level = 1
 ): Promise<T[]> {
   if (level === 1 && options?.rql && options.rql.includes('limit(')) {

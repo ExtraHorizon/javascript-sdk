@@ -67,6 +67,23 @@ describe('Global Roles Service', () => {
     });
   });
 
+  describe('findAll', () => {
+    it('Returns all roles', async () => {
+      nock(`${host}${USER_BASE}`)
+        .get('/roles?limit(50)')
+        .reply(200, createPagedResponse([roleData], { total: 2, offset: 0, limit: 1 }));
+
+      nock(`${host}${USER_BASE}`)
+        .get('/roles?limit(1,1)')
+        .reply(200, createPagedResponse([roleData], { total: 2, offset: 1, limit: 1 }));
+
+      const result = await sdk.users.globalRoles.findAll();
+
+      expect(result[0].name).toBe(roleData.name);
+      expect(result[1].name).toBe(roleData.name);
+    });
+  });
+
   describe('findFirst', () => {
     it('Returns the first role found', async () => {
       const rql = rqlBuilder().eq('name', roleData.name).build();
