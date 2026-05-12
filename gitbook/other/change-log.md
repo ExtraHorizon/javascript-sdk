@@ -12,8 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.11.0]
 
 ### Fixed
-- The following vulnerabilities were resolved, but not applicable:
-  - Bumped Axios version to resolve `CVE-2026-42033`, `CVE-2026-42034`, `CVE-2026-42035`, `CVE-2026-42036`, `CVE-2026-42038`, `CVE-2026-42039`, `CVE-2026-42040`, `CVE-2026-42041`, `CVE-2026-42042` and `CVE-2026-42043`
+- Bumped Axios version to resolve vulnerabilities (vulnerable code was not in use): `CVE-2026-42033`, `CVE-2026-42034`, `CVE-2026-42035`, `CVE-2026-42036`, `CVE-2026-42038`, `CVE-2026-42039`, `CVE-2026-42040`, `CVE-2026-42041`, `CVE-2026-42042` and `CVE-2026-42043`
 
 ## [8.10.0]
 
