@@ -11,6 +11,15 @@ export interface ForgotPasswordRequestsService {
   find(options?: OptionsWithRql): Promise<PagedResult<ForgotPasswordRequest>>;
 
   /**
+   * Retrieve a list of forgot password requests
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_FORGOT_PASSWORD_REQUESTS` | global | **Required** for this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<ForgotPasswordRequest[]>;
+
+  /**
    * Find a forgot password request
    *
    * Permission | Scope | Effect

@@ -62,6 +62,16 @@ export interface AuthOauth1TokenService {
   find(options?: OptionsWithRql): Promise<PagedResult<OAuth1Token>>;
 
   /**
+   * Get a list of OAuth1 tokens
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth1 tokens for this account
+   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth1 tokens for any account
+   */
+  findAll(options?: OptionsWithRql): Promise<OAuth1Token[]>;
+
+  /**
    * Get the first OAuth1 token found
    *
    * Permission | Scope | Effect

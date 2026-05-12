@@ -60,6 +60,20 @@ describe('Events Service', () => {
     expect(event?.id).toBe(eventId);
   });
 
+  it('Finds all events', async () => {
+    nock(`${host}${EVENTS_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, createPagedResponse([eventData], { total: 2, offset: 0, limit: 1 }));
+
+    nock(`${host}${EVENTS_BASE}`)
+      .get('/?limit(1,1)')
+      .reply(200, createPagedResponse([eventData], { total: 2, offset: 1, limit: 1 }));
+
+    const events = await sdk.events.findAll();
+
+    expect(events).toStrictEqual([eventData, eventData]);
+  });
+
   describe('create()', () => {
     it('Creates an event', async () => {
       nock(`${host}${EVENTS_BASE}`).post('/').reply(200, eventData);

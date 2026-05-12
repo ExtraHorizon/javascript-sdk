@@ -105,6 +105,25 @@ describe('Auth - Applications', () => {
     });
   });
 
+  describe('findAll', () => {
+    it('Finds all applications matching the RQL query', async () => {
+      const rql = rqlBuilder().eq('name', applicationData.name).build();
+
+      nock(`${host}${AUTH_BASE}`)
+        .get(`/applications${rql}&limit(50)`)
+        .reply(200, createPagedResponse([applicationData], { total: 2, offset: 0, limit: 1 }));
+
+      nock(`${host}${AUTH_BASE}`)
+        .get(`/applications${rql}&limit(1,1)`)
+        .reply(200, createPagedResponse([applicationData], { total: 2, offset: 1, limit: 1 }));
+
+      const applications = await sdk.auth.applications.findAll({ rql });
+
+      expect(applications[0].name).toBe(applicationData.name);
+      expect(applications[1].name).toBe(applicationData.name);
+    });
+  });
+
   it('Gets applications', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/applications')

@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
+import { findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
 import type { LocalizationsService } from './types';
 
@@ -19,6 +20,10 @@ export default (
   async findFirst(this: LocalizationsService, options) {
     const res = await this.find(options);
     return res.data[0];
+  },
+
+  async findAll(options) {
+    return await findAllGeneric(this.find, options);
   },
 
   async create(requestBody, options) {

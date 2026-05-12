@@ -57,6 +57,20 @@ describe('Forgot Password Requests Service', () => {
     expect(result).toStrictEqual(createPagedResponse(exampleForgotPasswordRequest));
   });
 
+  it('Returns all forgot password requests', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/forgot_password_requests/?limit(50)')
+      .reply(200, createPagedResponse([exampleForgotPasswordRequestResponse], { total: 2, offset: 0, limit: 1 }));
+
+    nock(`${host}${USER_BASE}`)
+      .get('/forgot_password_requests/?limit(1,1)')
+      .reply(200, createPagedResponse([exampleForgotPasswordRequestResponse], { total: 2, offset: 1, limit: 1 }));
+
+    const result = await sdk.users.forgotPasswordRequests.findAll();
+
+    expect(result).toStrictEqual([exampleForgotPasswordRequest, exampleForgotPasswordRequest]);
+  });
+
   it('Returns a single password reset request', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/forgot_password_requests/?eq(user_id,64a4278da7b5c90d6975cab2)')

@@ -57,6 +57,20 @@ describe('Activation Requests Service', () => {
     expect(result).toStrictEqual(createPagedResponse(exampleActivationRequest));
   });
 
+  it('Returns all activation requests', async () => {
+    nock(`${host}${USER_BASE}`)
+      .get('/activation_requests/?limit(50)')
+      .reply(200, createPagedResponse([exampleActivationRequestResponse], { total: 2, offset: 0, limit: 1 }));
+
+    nock(`${host}${USER_BASE}`)
+      .get('/activation_requests/?limit(1,1)')
+      .reply(200, createPagedResponse([exampleActivationRequestResponse], { total: 2, offset: 1, limit: 1 }));
+
+    const result = await sdk.users.activationRequests.findAll();
+
+    expect(result).toStrictEqual([exampleActivationRequest, exampleActivationRequest]);
+  });
+
   it('Returns a single activation request', async () => {
     nock(`${host}${USER_BASE}`)
       .get('/activation_requests/?eq(user_id,64a4278da7b5c90d6975cab2)')

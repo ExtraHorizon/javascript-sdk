@@ -110,6 +110,7 @@ export interface MailsService {
    * @returns {boolean} success
    */
   health(options?: OptionsBase): Promise<boolean>;
+
   /**
    * Retrieve a list of mails
    *
@@ -119,20 +120,34 @@ export interface MailsService {
    * @param rql Add filters to the requested list.
    * @returns PagedResult<Mail>
    */
-  find: (options?: OptionsWithRql) => Promise<PagedResult<Mail>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Mail>>;
+
+  /**
+   * Retrieve a list of mails
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_MAILS` | `global` | **Required** for this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Mail>
+   */
+  findAll(options?: OptionsWithRql): Promise<Mail[]>;
+
   /**
    * Find By Id
    * @param id the Id to search for
    * @param rql an optional rql string
    * @returns the first element found
    */
-  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Mail | undefined>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Mail | undefined>;
+
   /**
    * Find First
    * @param rql an optional rql string
    * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Mail | undefined>;
+
   /**
    * Send a mail
    *
@@ -149,6 +164,7 @@ export interface MailsService {
     requestBody: PlainMailCreation | TemplateBasedMailCreation,
     options?: OptionsBase
   ): Promise<Mail>;
+
   /**
    * Register a mail being opened
    *
@@ -159,6 +175,7 @@ export interface MailsService {
    * @returns AffectedRecords
    */
   track(trackingHash: string, options?: OptionsBase): Promise<AffectedRecords>;
+
   /**
    * Retrieve the list of mails that are not sent yet
    *

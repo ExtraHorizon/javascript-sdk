@@ -62,6 +62,18 @@ export interface FilesService {
    * @returns PagedResult<FileDetails>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<FileDetails>>;
+
+  /**
+   * List all files
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_FILES` | `global` | **Required** for this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<FileDetails>
+   */
+  findAll(options?: OptionsWithRql): Promise<FileDetails[]>;
+
   /**
    * Find By Name
    * @param name the name to search for

@@ -102,6 +102,18 @@ export interface LocalizationsService {
    * @returns PagedResult<Localization>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Localization>>;
+
+  /**
+   * Returns all possible localizations stored in this service
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Everyone can use this endpoint
+   * @param rql Add filters to the requested list.
+   * @returns PagedResult<Localization>
+   */
+  findAll(options?: OptionsWithRql): Promise<Localization[]>;
+
   /**
    * Find By Key
    * @param key the key to search for
