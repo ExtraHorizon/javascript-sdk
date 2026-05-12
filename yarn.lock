@@ -1382,10 +1382,10 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
-axios@0.31.0:
-  version "0.31.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.31.0.tgz#cd2c9a365d12e4324398834b06abc0d8af767ba6"
-  integrity sha512-HGIUj/P74co3rSLBV9SHz9LMgCmrXFEtkfMcC5r6bS5j3dBHUcAje2tS4fmU6WM20kuhvUX04XE58594dpgi1g==
+axios@0.32.0:
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.32.0.tgz#7859220c955272a72df8c0789ebd1219aba6d1d9"
+  integrity sha512-sGQArzERW2SI8IRkjuJ5y91Sm9QjiRq4Ay4kOLqpbBt5CeKDNq4g6nirJdyD+palK3yEDXnJiVXsesX66AjwyA==
   dependencies:
     follow-redirects "^1.15.4"
     form-data "^4.0.4"
