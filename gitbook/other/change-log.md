@@ -9,6 +9,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.11.0]
+
+### Added
+- Added the `findAll` methods for listing endpoints missing them
+
+### Fixed
+- Bumped Axios version to resolve vulnerabilities (vulnerable code was not in use): `CVE-2026-42033`, `CVE-2026-42034`, `CVE-2026-42035`, `CVE-2026-42036`, `CVE-2026-42038`, `CVE-2026-42039`, `CVE-2026-42040`, `CVE-2026-42041`, `CVE-2026-42042` and `CVE-2026-42043`
+
 ## [8.10.0]
 
 ### Fixed

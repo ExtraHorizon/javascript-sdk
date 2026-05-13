@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../../rql';
 import type { HttpInstance } from '../../../types';
+import { findAllGeneric } from '../../helpers';
 import { HttpClient } from '../../http-client';
 import type { AuthApplicationsService } from '../types';
 
@@ -35,6 +36,10 @@ export default (
   async findByName(name, options?) {
     const rqlWithName = rqlBuilder(options?.rql).eq('name', name).build();
     return await this.findFirst({ ...options, rql: rqlWithName });
+  },
+
+  async findAll(options) {
+    return await findAllGeneric(this.find, options);
   },
 
   async get(options) {

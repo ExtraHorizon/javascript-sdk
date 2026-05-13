@@ -66,6 +66,20 @@ describe('Subscriptions Service', () => {
     expect(subscription.id).toBe(subscriptionId);
   });
 
+  it('Finds all subscriptions', async () => {
+    nock(`${host}${EVENTS_BASE}`)
+      .get('/subscriptions?limit(50)')
+      .reply(200, createPagedResponse(subscriptionsData, { total: 2, offset: 0, limit: 1 }));
+
+    nock(`${host}${EVENTS_BASE}`)
+      .get('/subscriptions?limit(1,1)')
+      .reply(200, createPagedResponse(subscriptionsData, { total: 2, offset: 1, limit: 1 }));
+
+    const subscriptions = await sdk.events.subscriptions.findAll();
+
+    expect(subscriptions).toStrictEqual([subscriptionsData, subscriptionsData]);
+  });
+
   it('Creates a new subscription', async () => {
     nock(`${host}${EVENTS_BASE}`)
       .post('/subscriptions')

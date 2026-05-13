@@ -58,23 +58,36 @@ export interface FilesService {
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_FILES` | `global` | **Required** for this endpoint
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<FileDetails>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<FileDetails>>;
+
+  /**
+   * List all files
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_FILES` | `global` | **Required** for this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<FileDetails[]>;
+
   /**
    * Find By Name
-   * @param name the name to search for
-   * @param rql an optional rql string
-   * @returns the first element found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_FILES` | `global` | **Required** for this endpoint
    */
   findByName(name: string, options?: OptionsWithRql): Promise<FileDetails | undefined>;
+
   /**
    * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_FILES` | `global` | **Required** for this endpoint
    */
   findFirst(options?: OptionsWithRql): Promise<FileDetails | undefined>;
+
   /**
    * ## Add a new file from a plain text source
    *

@@ -110,29 +110,43 @@ export interface MailsService {
    * @returns {boolean} success
    */
   health(options?: OptionsBase): Promise<boolean>;
+
   /**
    * Retrieve a list of mails
    *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<Mail>
    */
-  find: (options?: OptionsWithRql) => Promise<PagedResult<Mail>>;
+  find(options?: OptionsWithRql): Promise<PagedResult<Mail>>;
+
+  /**
+   * Retrieve a list of mails
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_MAILS` | `global` | **Required** for this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<Mail[]>;
+
   /**
    * Find By Id
-   * @param id the Id to search for
-   * @param rql an optional rql string
-   * @returns the first element found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_MAILS` | `global` | **Required** for this endpoint
    */
-  findById: (id: ObjectId, options?: OptionsWithRql) => Promise<Mail | undefined>;
+  findById(id: ObjectId, options?: OptionsWithRql): Promise<Mail | undefined>;
+
   /**
    * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_MAILS` | `global` | **Required** for this endpoint
    */
   findFirst(options?: OptionsWithRql): Promise<Mail | undefined>;
+
   /**
    * Send a mail
    *
@@ -141,32 +155,28 @@ export interface MailsService {
    * none | | Send mails to your own email address
    * none | `staff enlistment` | Send any mail to your patients or send a template mail based on pre-configured allowed templates to any email address.
    * `SEND_MAILS` | `global` | Send mails to any email address
-   * @param requestBody mail creation data
-   * @returns Mail
    * @throws {NotActivatedError}
    */
   send(
     requestBody: PlainMailCreation | TemplateBasedMailCreation,
     options?: OptionsBase
   ): Promise<Mail>;
+
   /**
    * Register a mail being opened
    *
    * Permission | Scope | Effect
    * - | - | -
    * none |  | Everyone can use this endpoint
-   * @param trackingHash
-   * @returns AffectedRecords
    */
   track(trackingHash: string, options?: OptionsBase): Promise<AffectedRecords>;
+
   /**
    * Retrieve the list of mails that are not sent yet
    *
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_MAILS` | `global` | **Required** for this endpoint
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<QueuedMail>
    */
   findOutbound(options?: OptionsWithRql): Promise<PagedResult<QueuedMail>>;
 }

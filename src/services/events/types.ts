@@ -47,23 +47,25 @@ export interface EventsService {
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_EVENTS` | `global` | **Required** for this endpoint
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<Event>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Event>>;
 
   /**
+   * Returns a list of events
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_EVENTS` | `global` | **Required** for this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<Event[]>;
+
+  /**
    * Find By Id
-   * @param id the Id to search for
-   * @param rql an optional rql string
-   * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Event | undefined>;
 
   /**
    * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Event | undefined>;
 
@@ -76,14 +78,11 @@ export interface EventsService {
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_EVENTS` | `global` | **Required** for this endpoint
-   * @param requestBody
-   * @returns Event
    */
   create(requestBody: CreateEvent, options?: CreateEventOptions): Promise<Event>;
 
   /**
    * Perform a health check
-   * @returns {boolean} success
    */
   health(): Promise<boolean>;
 }
@@ -95,23 +94,25 @@ export interface SubscriptionsService {
    * Permission | Scope | Effect
    * - | - | -
    * `VIEW_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
-   * @param rql Add filters to the requested list.
-   * @returns PagedResult<Subscription>
    */
   find(options?: OptionsWithRql): Promise<PagedResult<Subscription>>;
 
   /**
+   * Returns a list of event subscriptions
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<Subscription[]>;
+
+  /**
    * Find By Id
-   * @param id the Id to search for
-   * @param rql an optional rql string
-   * @returns the first element found
    */
   findById(id: ObjectId, options?: OptionsWithRql): Promise<Subscription | undefined>;
 
   /**
    * Find First
-   * @param rql an optional rql string
-   * @returns the first element found
    */
   findFirst(options?: OptionsWithRql): Promise<Subscription | undefined>;
 
@@ -123,8 +124,6 @@ export interface SubscriptionsService {
    * Permission | Scope | Effect
    * - | - | -
    * `CREATE_SUBSCRIPTIONS` | `global` | **Required** for this endpoint
-   * @param requestBody
-   * @returns Subscription
    */
   create(
     requestBody: CreateSubscription,
