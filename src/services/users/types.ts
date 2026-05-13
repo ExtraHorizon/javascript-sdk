@@ -583,6 +583,15 @@ export interface UsersGlobalRolesService {
   find(options?: OptionsWithRql): Promise<PagedResult<Role>>;
 
   /**
+   * Retrieve a list of roles
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ROLE` | `global` | **Required** for this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<Role[]>;
+
+  /**
    * Returns the first role found
    *
    * Permission | Scope | Effect
@@ -742,6 +751,19 @@ export interface UsersGroupRolesService {
     groupId: ObjectId,
     options?: OptionsWithRql
   ): Promise<PagedResult<GroupRole>>;
+
+  /**
+   * Retrieve a list of group roles
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | `staff enlistment` | View the roles for the group
+   * `VIEW_GROUP` | `global` | View any group its roles
+   */
+  findAll(
+    groupId: ObjectId,
+    options?: OptionsWithRql
+  ): Promise<GroupRole[]>;
 
   /**
    * Returns the first group role found

@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../rql';
 import type { HttpInstance } from '../../types';
+import { findAllGeneric } from '../helpers';
 import { HttpClient } from '../http-client';
 import { ResultResponse, Results } from '../types';
 import { MailsService } from './types';
@@ -31,6 +32,10 @@ export default (client: HttpClient, httpAuth: HttpInstance): MailsService => ({
   async findFirst(this: MailsService, options) {
     const res = await this.find(options);
     return res.data[0];
+  },
+
+  async findAll(options) {
+    return await findAllGeneric(this.find, options);
   },
 
   async send(requestBody, options) {

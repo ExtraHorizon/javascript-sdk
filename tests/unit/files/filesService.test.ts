@@ -41,7 +41,7 @@ describe('Files Service', () => {
     nock.enableNetConnect();
   });
 
-  it('Lists all files', async () => {
+  it('Lists files', async () => {
     const rql = rqlBuilder().build();
     nock(`${host}${FILES_BASE}`)
       .get(`/${rql}`)
@@ -73,6 +73,20 @@ describe('Files Service', () => {
     const file = await sdk.files.findFirst();
 
     expect(file.name).toBe(fileData.name);
+  });
+
+  it('Lists all files', async () => {
+    nock(`${host}${FILES_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, createPagedResponse([fileData], { total: 2, offset: 0, limit: 1 }));
+
+    nock(`${host}${FILES_BASE}`)
+      .get('/?limit(1,1)')
+      .reply(200, createPagedResponse([fileData], { total: 2, offset: 1, limit: 1 }));
+
+    const files = await sdk.files.findAll();
+
+    expect(files).toStrictEqual([fileData, fileData]);
   });
 
   it('Adds a new file', async () => {

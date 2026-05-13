@@ -1,5 +1,6 @@
 import { rqlBuilder } from '../../../rql';
 import type { HttpInstance } from '../../../types';
+import { findAllGeneric } from '../../helpers';
 import { HttpClient } from '../../http-client';
 import type { AuthOauth1Service, AuthOauth1TokenService } from './types';
 
@@ -56,6 +57,10 @@ function createTokenService(client: HttpClient, httpWithAuth: HttpInstance): Aut
     async findById(id, options) {
       const rqlWithId = rqlBuilder(options?.rql).eq('id', id).build();
       return await this.findFirst({ ...options, rql: rqlWithId });
+    },
+
+    async findAll(options) {
+      return await findAllGeneric(this.find, options);
     },
 
     async remove(tokenId) {

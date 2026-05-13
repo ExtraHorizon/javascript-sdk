@@ -11,6 +11,15 @@ export interface ActivationRequestsService {
   find(options?: OptionsWithRql): Promise<PagedResult<ActivationRequest>>;
 
   /**
+   * Retrieve a list of activation requests
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * `VIEW_ACTIVATION_REQUESTS` | global | **Required** for this endpoint
+   */
+  findAll(options?: OptionsWithRql): Promise<ActivationRequest[]>;
+
+  /**
    * Find an activation request
    *
    * Permission | Scope | Effect

@@ -71,6 +71,20 @@ describe('Localizations Service', () => {
     expect(localization).toStrictEqual(localizationResponse.data[0]);
   });
 
+  it('Finds all localizations', async () => {
+    nock(`${host}${LOCALIZATIONS_BASE}`)
+      .get('/?limit(50)')
+      .reply(200, createPagedResponse([localizationData], { total: 2, offset: 0, limit: 1 }));
+
+    nock(`${host}${LOCALIZATIONS_BASE}`)
+      .get('/?limit(1,1)')
+      .reply(200, createPagedResponse([localizationData], { total: 2, offset: 1, limit: 1 }));
+
+    const localizations = await sdk.localizations.findAll();
+
+    expect(localizations).toStrictEqual([localizationData, localizationData]);
+  });
+
   it('Creates a new localization', async () => {
     nock(`${host}${LOCALIZATIONS_BASE}`)
       .post('/')
