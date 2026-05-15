@@ -58,5 +58,21 @@ describe('Helpers', () => {
         shouldRetry: true,
       });
     });
+
+    it('Throws when limit is already set in the RQL', async () => {
+      const options: OptionsWithRql = {
+        rql: rqlBuilder().limit(10).build(),
+      };
+
+      await expect(findAllGeneric(findMock, options)).rejects.toThrow('Do not pass in limit operator with findAll');
+    });
+
+    it('Throws when skipCount is set in the RQL', async () => {
+      const options: OptionsWithRql = {
+        rql: rqlBuilder().skipCount().build(),
+      };
+
+      await expect(findAllGeneric(findMock, options)).rejects.toThrow('Do not pass in skipCount operator with findAll');
+    });
   });
 });

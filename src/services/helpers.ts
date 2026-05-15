@@ -45,8 +45,14 @@ export async function findAllGeneric<T>(
   options: OptionsWithRql | undefined,
   level = 1
 ): Promise<T[]> {
-  if (level === 1 && options?.rql && options.rql.includes('limit(')) {
-    throw new Error('Do not pass in limit operator with findAll');
+  if (level === 1 && options?.rql) {
+    if (options.rql.includes('limit(')) {
+      throw new Error('Do not pass in limit operator with findAll');
+    }
+
+    if (options.rql.includes('skipCount(')) {
+      throw new Error('Do not pass in skipCount operator with findAll');
+    }
   }
 
   // return async options => {
