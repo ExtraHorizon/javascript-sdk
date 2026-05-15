@@ -53,6 +53,7 @@ export async function findAllGeneric<T>(
   // Extra check is needed because this function is call recursively with updated RQL
   // But on the first run, we need to set the limit to the max to optimize
   const result: PagedResult<T> = await find({
+    ...options,
     rql:
       options?.rql && options.rql.includes('limit(') ?
         options.rql :
@@ -71,6 +72,7 @@ export async function findAllGeneric<T>(
       ...(await findAllGeneric(
         find,
         {
+          ...options,
           rql: rqlBuilder(options?.rql)
             .limit(result.page.limit, result.page.offset + result.page.limit)
             .build(),
@@ -90,6 +92,7 @@ export function addPagersFn<T>(
 
   async function previous() {
     result = await find({
+      ...options,
       rql: rqlBuilder(options?.rql)
         .limit(
           result.page.limit,
@@ -102,6 +105,7 @@ export function addPagersFn<T>(
 
   async function next() {
     result = await find({
+      ...options,
       rql: rqlBuilder(options?.rql)
         .limit(
           result.page.limit,
