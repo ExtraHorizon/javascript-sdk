@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.12.0]
 
-### Added 
-- The error type `ServiceUnreachableError` to support deprecated services
+### Added
+- Added the error type `ServiceUnreachableError` to support detecting services that are no longer running
 
 ### Fixed
 - Options are now correctly passed to the `findAll` method
+- An error is now correctly thrown when providing the `skipCount` RQL operator to the `findAll` method
 
 ### Deprecated
 - `exh.templates.*`
