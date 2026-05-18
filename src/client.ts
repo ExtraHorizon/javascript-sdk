@@ -87,7 +87,7 @@ export interface Client<T extends ClientParams> {
    */
   localizations: ReturnType<typeof localizationsService>;
   /**
-   * @deprecated Use `data` with a custom profiles schema instead.
+   * @deprecated Use the `data` service with a custom schema instead.
    * Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
    * @see https://swagger.extrahorizon.com/listing/?service=profiles-service&redirectToVersion=1
    */
