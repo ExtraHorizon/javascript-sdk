@@ -36,6 +36,7 @@ import { version as packageVersion } from './version';
 export interface Client<T extends ClientParams> {
   raw: AuthHttpClient;
   /**
+   * @deprecated Use `templatesV2` instead.
    * The template service manages templates used to build emails. It can be used to retrieve, create, update or delete templates as well as resolving them.
    * @see https://swagger.extrahorizon.com/listing/?service=templates-service&redirectToVersion=1
    */
@@ -86,11 +87,13 @@ export interface Client<T extends ClientParams> {
    */
   localizations: ReturnType<typeof localizationsService>;
   /**
+   * @deprecated Use the `data` service with a custom schema instead.
    * Storage service of profiles. A profile is a separate object on its own, comprising medical information like medication and medical history, as well as technical information, like what phone a user is using.
    * @see https://swagger.extrahorizon.com/listing/?service=profiles-service&redirectToVersion=1
    */
   profiles: ReturnType<typeof profilesService>;
   /**
+   * @deprecated Use `notificationsV2` instead.
    * A service that handles push notifications.
    * @see https://swagger.extrahorizon.com/listing/?service=notifications-service&redirectToVersion=1
    */

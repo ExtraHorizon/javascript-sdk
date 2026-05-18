@@ -9,6 +9,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.12.0]
+
+### Added
+- Added the error type `ServiceUnreachableError` to support detecting services that are no longer running
+
+### Fixed
+- Options are now correctly passed to the `findAll` method
+- An error is now correctly thrown when providing the `skipCount` RQL operator to the `findAll` method
+
+### Deprecated
+- `exh.templates.*`
+  - The templates service has been deprecated in favor of the templates service V2
+- `exh.profiles.*`
+  - The profiles service has been deprecated in favor of using a custom schema in the data service
+- `exh.notifications.*`
+  - The notifications service has been deprecated in favor of the notifications service V2
+
 ## [8.11.0]
 
 ### Added
