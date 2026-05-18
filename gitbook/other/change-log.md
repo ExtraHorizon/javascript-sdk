@@ -11,6 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.12.0]
 
+### Added
+- The error type `ServiceUnreachableError` to support deprecated services
+
+### Fixed
+- Options are now correctly passed to the `findAll` method
+
+### Deprecated
+- `exh.templates.*`
+  - The templates service has been deprecated in favor of the templates service V2
+- `exh.profiles.*`
+  - The profiles service has been deprecated in favor of using a custom schema in the data service
+- `exh.notifications.*`
+  - The notifications service has been deprecated in favor of the notifications service V2
+
 ## [8.11.0]
 
 ### Added
