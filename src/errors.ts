@@ -335,6 +335,7 @@ export class FirebaseConnectionError extends BadGatewayServerError {
 
 // 503 Service Unavailable Error
 export class ServiceUnavailableError extends ApiError {}
+export class ServiceUnreachableError extends ServiceUnavailableError {}
 export class OidcIdTokenError extends ServiceUnavailableError {}
 
 // OAuth2Login Errors
@@ -429,6 +430,7 @@ export const OAuth2ErrorClassMap = {
 
 export const ErrorClassMap = {
   1: ServerError,
+  4: ServiceUnreachableError,
   10: NoPermissionError,
   11: RemoveFieldError,
   12: IDFormatError,

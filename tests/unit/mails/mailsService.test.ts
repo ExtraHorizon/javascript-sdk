@@ -77,13 +77,15 @@ describe('Mail Service', () => {
   it('Finds all mails', async () => {
     nock(`${host}${MAIL_BASE}`)
       .get('/?limit(50)')
+      .matchHeader('X-Custom-Header', 'value')
       .reply(200, createPagedResponse([mailData], { total: 2, offset: 0, limit: 1 }));
 
     nock(`${host}${MAIL_BASE}`)
       .get('/?limit(1,1)')
+      .matchHeader('X-Custom-Header', 'value')
       .reply(200, createPagedResponse([mailData], { total: 2, offset: 1, limit: 1 }));
 
-    const mails = await sdk.mails.findAll();
+    const mails = await sdk.mails.findAll({ headers: { 'X-Custom-Header': 'value' } });
 
     expect(mails[0].id).toBe(mailId);
     expect(mails[1].id).toBe(mailId);
