@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.12.1]
 
 ### Fixed
-- Bumped qs version to resolve `CVE-2026-8723`
+- Bumped qs version to resolve `CVE-2026-8723` (vulnerable code was not in use)
 
 ## [8.12.0]
 
