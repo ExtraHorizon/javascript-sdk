@@ -103,6 +103,10 @@ export interface RecoveryCodesMethod {
   tags: string[];
   verified: boolean;
   type: 'recoveryCodes';
+  /**
+   * @deprecated `codes` will be removed in a future version.
+   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   */
   codes: string[];
   updateTimestamp: Date;
   creationTimestamp: Date;
@@ -114,7 +118,11 @@ export interface TotpMethod {
   tags: string[];
   verified: boolean;
   type: 'totp';
-  secret: string;
+  /**
+   * @deprecated `accessToken` will be removed in a future version.
+   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   */
+  secret?: string;
   updateTimestamp: Date;
   creationTimestamp: Date;
 }
