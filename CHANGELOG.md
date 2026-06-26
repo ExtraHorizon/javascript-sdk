@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.13.0]
 
+### Added
+- Added the `exh.auth.oauth2.refreshToken.find*` methods to retrieve refresh tokens
+- Added the `exh.auth.oauth2.refreshToken.remove` method to delete a refresh token
+
 ### Fixed
 - The following methods are now correctly typed
   - `exh.auth.oauth1.consumeSsoToken`
