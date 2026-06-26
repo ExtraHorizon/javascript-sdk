@@ -116,9 +116,7 @@ export interface OAuth2Authorization {
   clientId: string;
   authorizationCode: string;
   state: string;
-  /** The timestamp when the authorization was last updated */
   updateTimestamp?: Date;
-  /** The timestamp when the authorization was created */
   creationTimestamp?: Date;
 }
 
@@ -127,7 +125,11 @@ export interface OAuth2Token {
   applicationId: string;
   userId: string;
   refreshTokenId: string;
-  accessToken: string;
+  /**
+   * @deprecated `accessToken` will be removed in a future version.
+   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   */
+  accessToken?: string;
   expiryTimestamp: Date;
   updateTimestamp: Date;
   creationTimestamp: Date;
