@@ -7,6 +7,7 @@ import {
 
 export interface AuthOauth2Service {
   tokens: AuthOauth2TokenService;
+  refreshTokens: OAuth2RefreshTokenService;
 
   /**
    * Create an OAuth2 authorization
@@ -102,7 +103,7 @@ export interface AuthOauth2TokenService {
   remove(id: string): Promise<AffectedRecords>;
 }
 
-export interface AuthOauth2RefreshTokenService {
+export interface OAuth2RefreshTokenService {
   /**
    * # Get a list of OAuth2 refresh tokens
    *
@@ -166,7 +167,7 @@ export interface AuthOauth2RefreshTokenService {
    * @param id the refresh token id
    * @returns AffectedRecords
    */
-  remove(id: string): Promise<AffectedRecords>;
+  remove(id: string, options: OptionsBase): Promise<AffectedRecords>;
 }
 
 export interface OAuth2AuthorizationCreation {
