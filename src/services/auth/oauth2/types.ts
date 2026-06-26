@@ -105,19 +105,32 @@ export interface AuthOauth2TokenService {
 export interface OAuth2AuthorizationCreation {
   responseType: string;
   clientId: string;
-  redirectUri: string;
-  state: string;
-  scope: string;
+  redirectUri?: string;
+  state?: string;
+  codeChallengeMethod?: string;
+  codeChallenge?: string;
 }
 
 export interface OAuth2Authorization {
   id: string;
-  userId: string;
   clientId: string;
-  authorizationCode: string;
-  state: string;
-  updateTimestamp?: Date;
-  creationTimestamp?: Date;
+  userId: string;
+  redirectUri: string;
+  state?: string;
+  codeChallengeMethod?: string;
+  /**
+   * @deprecated `codeChallenge` will be removed in a future version.
+   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   */
+  codeChallenge?: string;
+  /**
+   * @deprecated `authorizationCode` will be removed in a future version.
+   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   */
+  authorizationCode?: string;
+  expiryTimestamp: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 
 export interface OAuth2Token {
