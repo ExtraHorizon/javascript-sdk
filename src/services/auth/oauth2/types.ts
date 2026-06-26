@@ -22,7 +22,7 @@ export interface AuthOauth2Service {
   createAuthorization(
     data: OAuth2AuthorizationCreation,
     options?: OptionsBase
-  ): Promise<OAuth2Authorization>;
+  ): Promise<OAuth2AuthorizationCreationResponse>;
 
   /**
    * Get a list of OAuth2 Authorizations
@@ -105,21 +105,44 @@ export interface AuthOauth2TokenService {
 export interface OAuth2AuthorizationCreation {
   responseType: string;
   clientId: string;
+  redirectUri?: string;
+  state?: string;
+  codeChallengeMethod?: string;
+  codeChallenge?: string;
+}
+
+export interface OAuth2AuthorizationCreationResponse {
+  id: string;
+  clientId: string;
+  userId: string;
   redirectUri: string;
-  state: string;
-  scope: string;
+  state?: string;
+  codeChallengeMethod?: string;
+  codeChallenge?: string;
+  authorizationCode: string;
+  expiryTimestamp: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 
 export interface OAuth2Authorization {
   id: string;
-  userId: string;
   clientId: string;
-  authorizationCode: string;
-  state: string;
-  /** The timestamp when the authorization was last updated */
-  updateTimestamp?: Date;
-  /** The timestamp when the authorization was created */
-  creationTimestamp?: Date;
+  userId: string;
+  redirectUri: string;
+  state?: string;
+  codeChallengeMethod?: string;
+  /**
+   @deprecated `codeChallenge` will be removed from responses returned by listing endpoints in a future version.
+   */
+  codeChallenge?: string;
+  /**
+   * @deprecated `authorizationCode` will be removed from responses returned by listing endpoints in a future version.
+   */
+  authorizationCode?: string;
+  expiryTimestamp: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 
 export interface OAuth2Token {
@@ -127,7 +150,10 @@ export interface OAuth2Token {
   applicationId: string;
   userId: string;
   refreshTokenId: string;
-  accessToken: string;
+  /**
+   * @deprecated `accessToken` will be removed from responses returned by listing endpoints in a future version.
+   */
+  accessToken?: string;
   expiryTimestamp: Date;
   updateTimestamp: Date;
   creationTimestamp: Date;
