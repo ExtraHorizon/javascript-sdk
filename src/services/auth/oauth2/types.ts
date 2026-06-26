@@ -200,13 +200,11 @@ export interface OAuth2Authorization {
   state?: string;
   codeChallengeMethod?: string;
   /**
-   * @deprecated `codeChallenge` will be removed in a future version.
-   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   @deprecated `codeChallenge` will be removed from responses returned by listing endpoints in a future version.
    */
   codeChallenge?: string;
   /**
-   * @deprecated `authorizationCode` will be removed in a future version.
-   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   * @deprecated `authorizationCode` will be removed from responses returned by listing endpoints in a future version.
    */
   authorizationCode?: string;
   expiryTimestamp: Date;
@@ -220,8 +218,7 @@ export interface OAuth2Token {
   userId: string;
   refreshTokenId: string;
   /**
-   * @deprecated `accessToken` will be removed in a future version.
-   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   * @deprecated `accessToken` will be removed from responses returned by listing endpoints in a future version.
    */
   accessToken?: string;
   expiryTimestamp: Date;

@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `exh.auth.oauth2.getAuthorizations`
 
 ### Deprecated
-- Following the introduction of the `showSecretValues` setting in the Authentication Service, the following fields are deprecated and will be removed in a future release:
+- The following fields will be removed from responses returned by listing endpoints in a future version:
   - The `exh.auth.oauth1.find*` methods deprecate the `tokenSecret` field
   - The `exh.auth.oauth2.find*` methods deprecate the `accessToken` field
   - The `exh.auth.oauth2.getAuthorizations` method deprecates the `codeChallenge` and  `authorizationCode` fields
