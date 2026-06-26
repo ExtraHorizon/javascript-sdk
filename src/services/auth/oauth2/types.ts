@@ -22,7 +22,7 @@ export interface AuthOauth2Service {
   createAuthorization(
     data: OAuth2AuthorizationCreation,
     options?: OptionsBase
-  ): Promise<OAuth2Authorization>;
+  ): Promise<OAuth2AuthorizationCreationResponse>;
 
   /**
    * Get a list of OAuth2 Authorizations
@@ -109,6 +109,20 @@ export interface OAuth2AuthorizationCreation {
   state?: string;
   codeChallengeMethod?: string;
   codeChallenge?: string;
+}
+
+export interface OAuth2AuthorizationCreationResponse {
+  id: string;
+  clientId: string;
+  userId: string;
+  redirectUri: string;
+  state?: string;
+  codeChallengeMethod?: string;
+  codeChallenge?: string;
+  authorizationCode: string;
+  expiryTimestamp: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
 }
 
 export interface OAuth2Authorization {
