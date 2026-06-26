@@ -129,8 +129,7 @@ export interface OAuth1Token {
   userId: string;
   token: string;
   /**
-   * @deprecated `tokenSecret` will be removed in a future version.
-   * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
+   * @deprecated `tokenSecret` will be removed from responses returned by listing endpoints in a future version.
    */
   tokenSecret?: string;
   updateTimestamp: Date;
