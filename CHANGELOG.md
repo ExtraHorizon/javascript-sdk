@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.13.0]
 
+### Fixed
+- The following methods are now correctly typed
+  - `exh.auth.oauth1.consumeSsoToken`
+  - `exh.auth.oauth2.createAuthorization`
+  - `exh.auth.oauth2.getAuthorizations`
+
+### Deprecated
+- Following the introduction of the `showSecretValues` setting in the Authentication Service, the following fields are deprecated and will be removed in a future release:
+  - The `exh.auth.oauth1.find*` methods deprecate the `tokenSecret` field
+  - The `exh.auth.oauth2.find*` methods deprecate the `accessToken` field
+  - The `exh.auth.oauth2.getAuthorizations` method deprecates the `codeChallenge` and  `authorizationCode` fields
+  - The `exh.auth.users.getMfaSetting` method deprecates the TOTP `secret` and recovery codes `codes` fields
+
 ## [8.12.1]
 
 ### Fixed
