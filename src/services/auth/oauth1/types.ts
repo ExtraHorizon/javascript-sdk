@@ -23,7 +23,7 @@ export interface AuthOauth1Service {
    * @throws {ApplicationNotAuthenticatedError}
    * @throws {ResourceUnknownError}
    */
-  consumeSsoToken(ssoToken: string): Promise<TokenDataOauth1>;
+  consumeSsoToken(ssoToken: string): Promise<ConsumeSSOTokenResponse>;
 
   /**
    * @deprecated Use `exh.auth.oauth1.tokens.find` instead
@@ -112,7 +112,7 @@ export interface SsoToken {
   updateTimestamp: Date;
 }
 
-export interface TokenDataOauth1 {
+export interface ConsumeSSOTokenResponse {
   id: string;
   applicationId: string;
   userId: string;
@@ -123,10 +123,17 @@ export interface TokenDataOauth1 {
   creationTimestamp: Date;
 }
 
-export interface OAuth1Token extends Omit<TokenDataOauth1, 'tokenSecret'> {
+export interface OAuth1Token {
+  id: string;
+  applicationId: string;
+  userId: string;
+  token: string;
   /**
    * @deprecated `tokenSecret` will be removed in a future version.
    * This field is no longer returned when `showSecretValues` is disabled in authentication service settings.
    */
   tokenSecret?: string;
+  updateTimestamp: Date;
+  lastUsedTimestamp: Date;
+  creationTimestamp: Date;
 }
