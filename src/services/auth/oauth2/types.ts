@@ -30,6 +30,7 @@ export interface AuthOauth2Service {
    *
    * Permission | Scope | Effect
    * - | - | -
+   * none | | Can only see a list of OAuth2 authorizations for this account
    * VIEW_AUTHORIZATIONS | global | **Required** for this endpoint
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
    */
@@ -42,6 +43,7 @@ export interface AuthOauth2Service {
    *
    * Permission | Scope | Effect
    * - | - | -
+   * none | | Can only delete OAuth2 authorizations for this account
    * DELETE_AUTHORIZATIONS | global | **Required** for this endpoint
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/delete_oauth2_authorizations__authorizationId_
    * @throws {ResourceUnknownError}
@@ -98,6 +100,7 @@ export interface AuthOauth2TokenService {
    *
    * Permission | Scope | Effect
    * - | - | -
+   * none | | Can only delete OAuth2 tokens for this account
    * DELETE_AUTHORIZATIONS | | Required for this endpoint
    */
   remove(id: string): Promise<AffectedRecords>;
@@ -162,6 +165,7 @@ export interface OAuth2RefreshTokenService {
    *
    * Permission | Scope | Effect
    * - | - | -
+   * none | | Can only delete OAuth2 refresh tokens for this account
    * DELETE_OAUTH2_REFRESH_TOKEN or DELETE_AUTHORIZATIONS | global | Required for this endpoint
    * Using DELETE_AUTHORIZATIONS for this endpoint is deprecated; use DELETE_OAUTH2_REFRESH_TOKEN instead
    * @param id the refresh token id
