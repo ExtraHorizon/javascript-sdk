@@ -13,13 +13,20 @@ describe('OAuth2 Refresh Tokens', () => {
     tokenSecret: '',
   });
 
-  const refreshToken = {
+  const refreshTokenResponse = {
     id: '6a420d13278e74437dac51b8',
     applicationId: '6a420d2c3ff2290a376e7cf6',
     userId: '6a420d376faa458591f17503',
-    expiryTimestamp: new Date('2026-06-29T06:31:30.430Z'),
-    updateTimestamp: new Date('2026-06-29T06:15:31.303Z'),
-    creationTimestamp: new Date('2026-06-29T06:15:31.303Z'),
+    expiryTimestamp: '2026-06-29T06:31:30.430Z',
+    updateTimestamp: '2026-06-29T06:15:31.303Z',
+    creationTimestamp: '2026-06-29T06:15:31.303Z',
+  };
+
+  const refreshToken = {
+    ...refreshTokenResponse,
+    expiryTimestamp: new Date(refreshTokenResponse.expiryTimestamp),
+    updateTimestamp: new Date(refreshTokenResponse.updateTimestamp),
+    creationTimestamp: new Date(refreshTokenResponse.creationTimestamp),
   };
 
   afterEach(() => {
@@ -29,7 +36,7 @@ describe('OAuth2 Refresh Tokens', () => {
   it('Finds tokens', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/refreshTokens')
-      .reply(200, createPagedResponse([refreshToken, refreshToken]));
+      .reply(200, createPagedResponse([refreshTokenResponse, refreshTokenResponse]));
 
     const response = await exh.auth.oauth2.refreshTokens.find();
     expect(response.data).toStrictEqual([refreshToken, refreshToken]);
@@ -38,11 +45,11 @@ describe('OAuth2 Refresh Tokens', () => {
   it('Finds all tokens', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/refreshTokens?limit(50)')
-      .reply(200, createPagedResponse([refreshToken], { total: 2, offset: 0, limit: 1 }));
+      .reply(200, createPagedResponse([refreshTokenResponse], { total: 2, offset: 0, limit: 1 }));
 
     nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/refreshTokens?limit(1,1)')
-      .reply(200, createPagedResponse([refreshToken], { total: 2, offset: 1, limit: 1 }));
+      .reply(200, createPagedResponse([refreshTokenResponse], { total: 2, offset: 1, limit: 1 }));
 
     const response = await exh.auth.oauth2.refreshTokens.findAll();
     expect(response).toStrictEqual([refreshToken, refreshToken]);
@@ -51,7 +58,7 @@ describe('OAuth2 Refresh Tokens', () => {
   it('Find the first token', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/refreshTokens?eq(userId,6a420d376faa458591f17503)')
-      .reply(200, createPagedResponse([refreshToken, refreshToken]));
+      .reply(200, createPagedResponse([refreshTokenResponse, refreshTokenResponse]));
 
     const response = await exh.auth.oauth2.refreshTokens.findFirst({
       rql: rqlBuilder().eq('userId', '6a420d376faa458591f17503').build(),
@@ -63,7 +70,7 @@ describe('OAuth2 Refresh Tokens', () => {
   it('Finds a token by its id', async () => {
     nock(`${host}${AUTH_BASE}`)
       .get('/oauth2/refreshTokens?eq(id,6a420d13278e74437dac51b8)')
-      .reply(200, createPagedResponse(refreshToken));
+      .reply(200, createPagedResponse(refreshTokenResponse));
 
     const response = await exh.auth.oauth2.refreshTokens.findById('6a420d13278e74437dac51b8');
     expect(response).toStrictEqual(refreshToken);

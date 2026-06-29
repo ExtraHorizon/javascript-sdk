@@ -91,7 +91,7 @@ function createRefreshTokenService(client: HttpClient, httpWithAuth: HttpInstanc
     },
 
     async findAll(options) {
-      return await findAllGeneric(this.find, options);
+      return await findAllGeneric(find, options);
     },
 
     async findFirst(options) {
