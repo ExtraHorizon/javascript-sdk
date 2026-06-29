@@ -7,6 +7,7 @@ import {
 
 export interface AuthOauth2Service {
   tokens: AuthOauth2TokenService;
+  refreshTokens: OAuth2RefreshTokenService;
 
   /**
    * Create an OAuth2 authorization
@@ -102,6 +103,73 @@ export interface AuthOauth2TokenService {
   remove(id: string): Promise<AffectedRecords>;
 }
 
+export interface OAuth2RefreshTokenService {
+  /**
+   * # Get a list of OAuth2 refresh tokens
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth2 refresh tokens for this account
+   * VIEW_OAUTH2_REFRESH_TOKENS or VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 refresh tokens for any account
+   * Using VIEW_AUTHORIZATIONS for this endpoint is deprecated; use VIEW_OAUTH2_REFRESH_TOKENS instead
+   * @param options.rql Add filters to the requested list
+   * @returns PagedResult<OAuth2RefreshToken>
+   */
+  find(options?: OptionsWithRql): Promise<PagedResult<OAuth2RefreshToken>>;
+
+  /**
+   * Get a list of OAuth2 refresh tokens
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth2 refresh tokens for this account
+   * VIEW_OAUTH2_REFRESH_TOKENS or VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 refresh tokens for any account
+   * Using VIEW_AUTHORIZATIONS for this endpoint is deprecated; use VIEW_OAUTH2_REFRESH_TOKENS instead
+   * @param options.rql Add filters to the requested list
+   * @returns OAuth2RefreshToken[]
+   */
+  findAll(options?: OptionsWithRql): Promise<OAuth2RefreshToken[]>;
+
+  /**
+   * Get the first OAuth2 refresh token found
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth2 refresh tokens for this account
+   * VIEW_OAUTH2_REFRESH_TOKENS or VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 refresh tokens for any account
+   * Using VIEW_AUTHORIZATIONS for this endpoint is deprecated; use VIEW_OAUTH2_REFRESH_TOKENS instead
+   * @param options.rql Add filters to the requested list
+   * @returns {Promise<OAuth2RefreshToken | undefined>}
+   */
+  findFirst(options?: OptionsWithRql): Promise<OAuth2RefreshToken | undefined>;
+
+  /**
+   * Get an oAuth2 refresh token by its id
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * none | | Can only see a list of OAuth2 refresh tokens for this account
+   * VIEW_OAUTH2_REFRESH_TOKENS or VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 refresh tokens for any account
+   * Using VIEW_AUTHORIZATIONS for this endpoint is deprecated; use VIEW_OAUTH2_REFRESH_TOKENS instead
+   * @param id the refresh token id
+   * @param options.rql Add filters to the requested list
+   * @returns {Promise<OAuth2RefreshToken | undefined>}
+   */
+  findById(id: string, options?: OptionsWithRql): Promise<OAuth2RefreshToken | undefined>;
+
+  /**
+   * Delete an oAuth2 refresh token
+   *
+   * Permission | Scope | Effect
+   * - | - | -
+   * DELETE_OAUTH2_REFRESH_TOKEN or DELETE_AUTHORIZATIONS | global | Required for this endpoint
+   * Using DELETE_AUTHORIZATIONS for this endpoint is deprecated; use DELETE_OAUTH2_REFRESH_TOKEN instead
+   * @param id the refresh token id
+   * @returns AffectedRecords
+   */
+  remove(id: string, options?: OptionsBase): Promise<AffectedRecords>;
+}
+
 export interface OAuth2AuthorizationCreation {
   responseType: string;
   clientId: string;
@@ -154,6 +222,15 @@ export interface OAuth2Token {
    * @deprecated `accessToken` will be removed from responses returned by listing endpoints in a future version.
    */
   accessToken?: string;
+  expiryTimestamp: Date;
+  updateTimestamp: Date;
+  creationTimestamp: Date;
+}
+
+export interface OAuth2RefreshToken {
+  id: string;
+  applicationId: string;
+  userId: string;
   expiryTimestamp: Date;
   updateTimestamp: Date;
   creationTimestamp: Date;
