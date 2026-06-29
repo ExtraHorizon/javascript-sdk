@@ -139,7 +139,7 @@ export interface OAuth2RefreshTokenService {
    * VIEW_OAUTH2_REFRESH_TOKENS or VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 refresh tokens for any account
    * Using VIEW_AUTHORIZATIONS for this endpoint is deprecated; use VIEW_OAUTH2_REFRESH_TOKENS instead
    * @param options.rql Add filters to the requested list
-   * @returns {Promise<OAuth2RefreshToken | undefined>
+   * @returns {Promise<OAuth2RefreshToken | undefined>}
    */
   findFirst(options?: OptionsWithRql): Promise<OAuth2RefreshToken | undefined>;
 
@@ -153,7 +153,7 @@ export interface OAuth2RefreshTokenService {
    * Using VIEW_AUTHORIZATIONS for this endpoint is deprecated; use VIEW_OAUTH2_REFRESH_TOKENS instead
    * @param id the refresh token id
    * @param options.rql Add filters to the requested list
-   * @returns {Promise<OAuth2RefreshToken | undefined>
+   * @returns {Promise<OAuth2RefreshToken | undefined>}
    */
   findById(id: string, options?: OptionsWithRql): Promise<OAuth2RefreshToken | undefined>;
 
@@ -163,11 +163,11 @@ export interface OAuth2RefreshTokenService {
    * Permission | Scope | Effect
    * - | - | -
    * DELETE_OAUTH2_REFRESH_TOKEN or DELETE_AUTHORIZATIONS | global | Required for this endpoint
-   * Using DELETE_AUTHORIZATIONS for this endpoint is deprecated; use VIEW_OAUTH2_REFRESH_TOKENS instead
+   * Using DELETE_AUTHORIZATIONS for this endpoint is deprecated; use DELETE_OAUTH2_REFRESH_TOKEN instead
    * @param id the refresh token id
    * @returns AffectedRecords
    */
-  remove(id: string, options: OptionsBase): Promise<AffectedRecords>;
+  remove(id: string, options?: OptionsBase): Promise<AffectedRecords>;
 }
 
 export interface OAuth2AuthorizationCreation {
