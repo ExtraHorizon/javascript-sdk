@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `exh.auth.oauth1.consumeSsoToken`
   - `exh.auth.oauth2.createAuthorization`
   - `exh.auth.oauth2.getAuthorizations`
+  - `exh.auth.oauth2.deleteAuthorizations`
+  - `exh.auth.oauth2.find*`
+  - `exh.auth.oauth2.remove`
 
 ### Deprecated
 - The following fields will be removed from responses returned by listing endpoints in a future version:
