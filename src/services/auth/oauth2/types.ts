@@ -31,7 +31,7 @@ export interface AuthOauth2Service {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only see a list of OAuth2 authorizations for this account
-   * VIEW_AUTHORIZATIONS | global | **Required** for this endpoint
+   * VIEW_AUTHORIZATIONS | global | See any authorizations belonging to any user
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
    */
   getAuthorizations(
@@ -44,7 +44,7 @@ export interface AuthOauth2Service {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only delete OAuth2 authorizations for this account
-   * DELETE_AUTHORIZATIONS | global | **Required** for this endpoint
+   * DELETE_AUTHORIZATIONS | global | Delete any authorizations belonging to any user
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/delete_oauth2_authorizations__authorizationId_
    * @throws {ResourceUnknownError}
    */
@@ -61,7 +61,7 @@ export interface AuthOauth2TokenService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only see a list of OAuth2 tokens for this account
-   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
+   * VIEW_AUTHORIZATIONS | global | See any OAuth2 tokens belonging to any user
    */
   find(options?: OptionsWithRql): Promise<PagedResult<OAuth2Token>>;
 
@@ -71,7 +71,7 @@ export interface AuthOauth2TokenService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only see a list of OAuth2 tokens for this account
-   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
+   * VIEW_AUTHORIZATIONS | global | See any OAuth2 tokens belonging to any user
    */
   findAll(options?: OptionsWithRql): Promise<OAuth2Token[]>;
 
@@ -81,7 +81,7 @@ export interface AuthOauth2TokenService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only see a list of OAuth2 tokens for this account
-   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
+   * VIEW_AUTHORIZATIONS | global | See any OAuth2 tokens belonging to any user
    */
   findFirst(options?: OptionsWithRql): Promise<OAuth2Token | undefined>;
 
@@ -91,7 +91,7 @@ export interface AuthOauth2TokenService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only see a list of OAuth2 tokens for this account
-   * VIEW_AUTHORIZATIONS | global | Can see a list of OAuth2 tokens for any account
+   * VIEW_AUTHORIZATIONS | global | See any OAuth2 tokens belonging to any user
    */
   findById(id: string, options?: OptionsWithRql): Promise<OAuth2Token | undefined>;
 
@@ -101,7 +101,7 @@ export interface AuthOauth2TokenService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only delete OAuth2 tokens for this account
-   * DELETE_AUTHORIZATIONS | | Required for this endpoint
+   * DELETE_AUTHORIZATIONS | global | Delete any OAuth2 tokens belonging to any user
    */
   remove(id: string): Promise<AffectedRecords>;
 }
@@ -166,7 +166,7 @@ export interface OAuth2RefreshTokenService {
    * Permission | Scope | Effect
    * - | - | -
    * none | | Can only delete OAuth2 refresh tokens for this account
-   * DELETE_OAUTH2_REFRESH_TOKEN or DELETE_AUTHORIZATIONS | global | Required for this endpoint
+   * DELETE_OAUTH2_REFRESH_TOKEN or DELETE_AUTHORIZATIONS | global | Delete any OAuth2 refresh tokens belonging to any user
    * Using DELETE_AUTHORIZATIONS for this endpoint is deprecated; use DELETE_OAUTH2_REFRESH_TOKEN instead
    * @param id the refresh token id
    * @returns AffectedRecords
