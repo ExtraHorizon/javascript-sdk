@@ -19,7 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `exh.auth.oauth2.deleteAuthorizations`
   - `exh.auth.oauth2.find*`
   - `exh.auth.oauth2.remove`
-
+- Bumped form-data version to resolve `CVE-2026-12143` (vulnerable code was not in use)
+ 
 ### Deprecated
 - The following fields will be removed from responses returned by listing endpoints in a future version:
   - The `exh.auth.oauth1.find*` methods deprecate the `tokenSecret` field
