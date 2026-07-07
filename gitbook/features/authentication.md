@@ -284,7 +284,7 @@ const exh = createClient({
 });
 ```
 
-![Refresh](../assets/refresh.webp)
+![Refresh](../.gitbook/assets/refresh.webp)
 
 ### Creating applications
 
