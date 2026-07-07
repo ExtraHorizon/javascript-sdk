@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.13.0]
+
+### Added
+- Added the `exh.auth.oauth2.refreshTokens.find*` methods to retrieve refresh tokens
+- Added the `exh.auth.oauth2.refreshTokens.remove` method to delete a refresh token
+
+### Fixed
+- The following methods are now correctly typed
+  - `exh.auth.oauth1.consumeSsoToken`
+  - `exh.auth.oauth2.createAuthorization`
+  - `exh.auth.oauth2.getAuthorizations`
+  - `exh.auth.oauth2.deleteAuthorizations`
+  - `exh.auth.oauth2.find*`
+  - `exh.auth.oauth2.remove`
+- Bumped form-data version to resolve `CVE-2026-12143` (vulnerable code was not in use)
+ 
+### Deprecated
+- The following fields will be removed from responses returned by listing endpoints in a future version:
+  - The `exh.auth.oauth1.find*` methods deprecate the `tokenSecret` field
+  - The `exh.auth.oauth2.find*` methods deprecate the `accessToken` field
+  - The `exh.auth.oauth2.getAuthorizations` method deprecates the `codeChallenge` and  `authorizationCode` fields
+  - The `exh.auth.users.getMfaSetting` method deprecates the TOTP `secret` and recovery codes `codes` fields
+
 ## [8.12.1]
 
 ### Fixed

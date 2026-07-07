@@ -42,7 +42,6 @@ describe('Auth - OAuth2', () => {
       responseType: 'code',
       clientId: '507f191e810c19729de860ea',
       state: '',
-      scope: '',
       redirectUri: 'http://localhost',
     });
 
