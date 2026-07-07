@@ -103,7 +103,10 @@ export interface RecoveryCodesMethod {
   tags: string[];
   verified: boolean;
   type: 'recoveryCodes';
-  codes: string[];
+  /**
+   * @deprecated `codes` will be removed from responses returned by listing endpoints in a future version.
+   */
+  codes?: string[];
   updateTimestamp: Date;
   creationTimestamp: Date;
 }
@@ -114,7 +117,10 @@ export interface TotpMethod {
   tags: string[];
   verified: boolean;
   type: 'totp';
-  secret: string;
+  /**
+   * @deprecated `secret` will be removed from responses returned by listing endpoints in a future version.
+   */
+  secret?: string;
   updateTimestamp: Date;
   creationTimestamp: Date;
 }
