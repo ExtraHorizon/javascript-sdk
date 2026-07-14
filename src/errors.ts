@@ -173,6 +173,7 @@ export class OAuth2LoginError extends ApiError {
 export class BodyFormatError extends ApiError {}
 export class BadRequestError extends ApiError {}
 export class ResourceAlreadyExistsError extends BadRequestError {}
+export class InvalidRqlError extends BadRequestError {}
 export class IllegalArgumentError extends BadRequestError {}
 export class ApplicationUnknownError extends BadRequestError {}
 export class CallbackNotValidError extends BadRequestError {}
