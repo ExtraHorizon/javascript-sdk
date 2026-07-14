@@ -440,6 +440,7 @@ export const ErrorClassMap = {
   15: FieldFormatError,
   16: ResourceUnknownError,
   17: ResourceAlreadyExistsError,
+  19: InvalidRqlError,
   22: BodyFormatError,
   26: IllegalArgumentError,
   27: IllegalStateError,
