@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.14.0]
 
+### Added
+- Added the `exh.auth.oauth2.authorizations.create` method to create an authorization
+- Added the `exh.auth.oauth2.authorizations.find*` methods to retrieve authorizations
+- Added the `exh.auth.oauth2.authorizations.remove` method to delete an authorization
+- Added the error type `InvalidRqlError` to support detecting invalid RQL
+
+### Fixed
+- The permissions documentation for the `exh.mails.send` has been updated
+
+### Deprecated
+The following methods have been deprecated in favor of the new `exh.auth.oauth2.authorizations.*` methods:
+- `exh.auth.oauth2.createAuthorization`
+- `exh.auth.oauth2.getAuthorizations`
+- `exh.auth.oauth2.deleteAuthorization`
+
 ## [8.13.0]
 
 ### Added
