@@ -2,6 +2,7 @@ import { rqlBuilder } from '../../../rql';
 import { HttpInstance, OAuth2RefreshToken, OAuth2RefreshTokenService } from '../../../types';
 import { addPagersFn, findAllGeneric } from '../../helpers';
 import { HttpClient } from '../../http-client';
+import authorizations from './authorizations';
 import type { AuthOauth2Service, AuthOauth2TokenService } from './types';
 
 export default (
@@ -10,6 +11,7 @@ export default (
 ): AuthOauth2Service => ({
   tokens: createTokenService(client, httpWithAuth),
   refreshTokens: createRefreshTokenService(client, httpWithAuth),
+  authorizations: authorizations(client, httpWithAuth),
 
   async createAuthorization(data, options) {
     return (

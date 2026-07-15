@@ -4,10 +4,12 @@ import {
   OptionsWithRql,
   PagedResult,
 } from '../../types';
+import { OAuth2AuthorizationsService } from './authorizations/types';
 
 export interface AuthOauth2Service {
   tokens: AuthOauth2TokenService;
   refreshTokens: OAuth2RefreshTokenService;
+  authorizations: OAuth2AuthorizationsService;
 
   /**
    * Create an OAuth2 authorization
@@ -19,6 +21,7 @@ export interface AuthOauth2Service {
    * @throws {ApplicationUnknownError}
    * @throws {CallbackNotValidError}
    * @throws {UnsupportedResponseTypeError}
+   * @deprecated - Will be removed in a future version, please use `auth.oauth2.authorizations.create` instead
    */
   createAuthorization(
     data: OAuth2AuthorizationCreation,
@@ -33,6 +36,7 @@ export interface AuthOauth2Service {
    * none | | Can only see a list of OAuth2 authorizations for this account
    * VIEW_AUTHORIZATIONS | global | See any authorizations belonging to any user
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/get_oauth2_authorizations
+   * @deprecated - Will be removed in a future version, please use `auth.oauth2.authorizations.find*` instead
    */
   getAuthorizations(
     options?: OptionsWithRql
@@ -47,6 +51,7 @@ export interface AuthOauth2Service {
    * DELETE_AUTHORIZATIONS | global | Delete any authorizations belonging to any user
    * @see https://swagger.extrahorizon.com/swagger-ui/?url=https://swagger.extrahorizon.com/auth-service/2.0.4-dev/openapi.yaml#/OAuth2/delete_oauth2_authorizations__authorizationId_
    * @throws {ResourceUnknownError}
+   * @deprecated - Will be removed in a future version, please use `auth.oauth2.authorizations.remove` instead
    */
   deleteAuthorization(
     authorizationId: string,
@@ -179,7 +184,7 @@ export interface OAuth2AuthorizationCreation {
   clientId: string;
   redirectUri?: string;
   state?: string;
-  codeChallengeMethod?: string;
+  codeChallengeMethod?: PKCECodeMethods;
   codeChallenge?: string;
 }
 
@@ -189,7 +194,7 @@ export interface OAuth2AuthorizationCreationResponse {
   userId: string;
   redirectUri: string;
   state?: string;
-  codeChallengeMethod?: string;
+  codeChallengeMethod?: PKCECodeMethods;
   codeChallenge?: string;
   authorizationCode: string;
   expiryTimestamp: Date;
@@ -203,7 +208,7 @@ export interface OAuth2Authorization {
   userId: string;
   redirectUri: string;
   state?: string;
-  codeChallengeMethod?: string;
+  codeChallengeMethod?: PKCECodeMethods;
   /**
    @deprecated `codeChallenge` will be removed from responses returned by listing endpoints in a future version.
    */
@@ -238,4 +243,9 @@ export interface OAuth2RefreshToken {
   expiryTimestamp: Date;
   updateTimestamp: Date;
   creationTimestamp: Date;
+}
+
+export enum PKCECodeMethods {
+  PLAIN = 'plain',
+  S256 = 'S256',
 }
