@@ -8,7 +8,12 @@ import { OAuth2AuthorizationsService } from './types';
 
 export default (client: HttpClient, httpWithAuth: HttpInstance): OAuth2AuthorizationsService => {
   async function find(options: OptionsWithRql) {
-    const result = await client.get(httpWithAuth, `/oauth2/authorizations${options?.rql || ''}`);
+    const result = await client.get(
+      httpWithAuth,
+      `/oauth2/authorizations${options?.rql || ''}`,
+      options
+    );
+
     return result.data;
   }
 
@@ -39,7 +44,7 @@ export default (client: HttpClient, httpWithAuth: HttpInstance): OAuth2Authoriza
     },
 
     async findById(authorizationId, options) {
-      const rql = rqlBuilder().eq('id', authorizationId).build();
+      const rql = rqlBuilder(options?.rql).eq('id', authorizationId).build();
       return await this.findFirst({ ...options, rql });
     },
 

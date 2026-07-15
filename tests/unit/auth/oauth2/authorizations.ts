@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { createOAuth1Client, rqlBuilder } from '../../../../src';
+import { createOAuth1Client, PKCECodeMethods, rqlBuilder } from '../../../../src';
 import { AUTH_BASE } from '../../../../src/constants';
 import { createPagedResponse } from '../../../__helpers__/utils';
 
@@ -36,6 +36,22 @@ describe('OAuth2 Authorizations', () => {
 
   afterEach(() => {
     nock.cleanAll();
+  });
+
+  it('Creates an authorization', async () => {
+    nock(`${host}${AUTH_BASE}`)
+      .post('/oauth2/authorizations')
+      .reply(200, authorization);
+
+    const response = await exh.auth.oauth2.authorizations.create({
+      clientId: authorization.clientId,
+      redirectUri: authorization.redirectUri,
+      codeChallenge: authorization.codeChallenge,
+      codeChallengeMethod: PKCECodeMethods.S256,
+      responseType: 'code',
+    });
+
+    expect(response).toStrictEqual(authorization);
   });
 
   it('Finds authorizations', async () => {

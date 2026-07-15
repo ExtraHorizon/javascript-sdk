@@ -180,7 +180,7 @@ export interface OAuth2RefreshTokenService {
 }
 
 export interface OAuth2AuthorizationCreation {
-  responseType: string;
+  responseType: 'code';
   clientId: string;
   redirectUri?: string;
   state?: string;
