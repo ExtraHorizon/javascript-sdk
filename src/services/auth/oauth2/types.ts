@@ -8,6 +8,10 @@ import { AuthOauth2TokenService } from './accessTokens/types';
 import { OAuth2AuthorizationsService } from './authorizations/types';
 import { OAuth2RefreshTokenService } from './refreshTokens/types';
 
+export * from './accessTokens/types';
+export * from './authorizations/types';
+export * from './refreshTokens/types';
+
 export interface AuthOauth2Service {
   tokens: AuthOauth2TokenService;
   refreshTokens: OAuth2RefreshTokenService;
