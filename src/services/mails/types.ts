@@ -152,7 +152,6 @@ export interface MailsService {
    *
    * Permission | Scope | Effect
    * - | - | -
-   * none | | Send mails to your own email address
    * none | `staff enlistment` | Send any mail to your patients or send a template mail based on pre-configured allowed templates to any email address.
    * `SEND_MAILS` | `global` | Send mails to any email address
    * @throws {NotActivatedError}
