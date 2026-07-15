@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added the error type `InvalidRqlError` to support detecting invalid RQL
 
 ### Fixed
-- The permissions documentation `exh.mails.send` has been updated
+- The permissions documentation for `exh.mails.send` has been updated
 
 ### Deprecated
 The following methods have been deprecated in favor of the new `exh.auth.oauth2.authorizations.*` methods:
