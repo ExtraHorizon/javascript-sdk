@@ -173,6 +173,7 @@ export class OAuth2LoginError extends ApiError {
 export class BodyFormatError extends ApiError {}
 export class BadRequestError extends ApiError {}
 export class ResourceAlreadyExistsError extends BadRequestError {}
+export class InvalidRqlError extends BadRequestError {}
 export class IllegalArgumentError extends BadRequestError {}
 export class ApplicationUnknownError extends BadRequestError {}
 export class CallbackNotValidError extends BadRequestError {}
@@ -439,6 +440,7 @@ export const ErrorClassMap = {
   15: FieldFormatError,
   16: ResourceUnknownError,
   17: ResourceAlreadyExistsError,
+  19: InvalidRqlError,
   22: BodyFormatError,
   26: IllegalArgumentError,
   27: IllegalStateError,
