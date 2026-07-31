@@ -244,7 +244,18 @@ export class AuthorizationCodeExpiredError extends BadRequestError {}
 export class MissingPKCEVerifierError extends BadRequestError {}
 export class RefreshTokenUnknownError extends BadRequestError {}
 export class RefreshTokenExpiredError extends BadRequestError {}
+export class InvalidFunctionCodeError extends BadRequestError {}
+export class InvalidFunctionParameterError extends BadRequestError {}
+export class ConcurrentExecutionLimitError extends BadRequestError {}
+export class TimeLimitExceedsDirectExecutionMaximumError extends BadRequestError {}
 export class LambdaInvocationError extends BadRequestError {}
+export class LambdaRuntimeError extends BadRequestError {}
+export class InvalidFunctionNameError extends BadRequestError {}
+export class NoTaskLogsFoundError extends BadRequestError {}
+export class InvalidApiFunctionResultError extends BadRequestError {}
+export class TimeLimitExceedsApiFunctionMaximumError extends BadRequestError {}
+export class ConcurrentApiFunctionLimitError extends BadRequestError {}
+export class NoApiRequestLogsFoundError extends BadRequestError {}
 
 export class FirebaseInvalidPlatformDataError extends BadRequestError {
   notificationId?: string;
@@ -503,7 +514,18 @@ export const ErrorClassMap = {
   1003: TemplateFillingError,
   1004: TemplateSyntaxError,
   1005: TemplateResolvingError,
+  1401: InvalidFunctionCodeError,
+  1402: InvalidFunctionParameterError,
+  1403: ConcurrentExecutionLimitError,
+  1404: TimeLimitExceedsDirectExecutionMaximumError,
   1405: LambdaInvocationError,
+  1406: LambdaRuntimeError,
+  1407: InvalidFunctionNameError,
+  1408: NoTaskLogsFoundError,
+  1409: InvalidApiFunctionResultError,
+  1411: TimeLimitExceedsApiFunctionMaximumError,
+  1412: ConcurrentApiFunctionLimitError,
+  1413: NoApiRequestLogsFoundError,
   2605: InvalidTokenError,
   2606: UnauthorizedTokenError,
   2607: TokenNotDeleteableError,
