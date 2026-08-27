@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [8.14.2]
 
+### Fixed
+- OAuth2 token refreshes are now shared between parallel requests
+
 ## [8.14.1]
 
 ### Fixed

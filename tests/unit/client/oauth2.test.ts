@@ -219,6 +219,48 @@ describe('OAuth2HttpClient', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
   });
 
+  it('Does not try to refresh multiple times in parallel', async () => {
+    const refreshToken = 'refresh token';
+    const newToken = 'new access token';
+
+    const sdk = createOAuth2Client({
+      ...mockParams,
+      accessToken: 'initial token',
+      refreshToken,
+      expiresIn: 5 * 60, // 5 minutes
+      creationTimestamp: new Date(Date.now() - 6 * 60 * 1000), // 6 minutes ago
+    });
+
+    // Setup the refresh call the SDK is about to make
+    const refreshBody = {
+      client_id: 'my-client-id',
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    };
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`, refreshBody)
+      .reply(200, { access_token: newToken })
+      // This second refresh call should not be hit because the SDK should only refresh once
+      .post(`${AUTH_BASE}/oauth2/tokens`, refreshBody)
+      .reply(400, {
+        error: 'invalid_grant',
+        description: 'The refresh token is unknown',
+        exh_error: {
+          name: 'REFRESH_TOKEN_UNKNOWN_EXCEPTION',
+          description: 'The refresh token is unknown',
+          code: 119,
+        },
+      });
+
+    // Response for the parallel, actual calls
+    nock(mockParams.host).get('/test').times(2).reply(200, {});
+
+    const [result1, result2] = await Promise.all([sdk.raw.get('test'), sdk.raw.get('test')]);
+
+    expect(result1.request.headers.authorization).toBe(`Bearer ${newToken}`);
+    expect(result2.request.headers.authorization).toBe(`Bearer ${newToken}`);
+  });
+
   it('Accepts the token data exposed by the freshTokensCallback even if converted to json and back', async () => {
     const initialToken = 'initial token';
     const expiresIn = -1; // Tell the SDK the token is expired
