@@ -25,7 +25,7 @@ export function createOAuth2HttpClient(
   options: ParamsOauth2
 ): OAuth2HttpClient {
   let tokenData: Partial<TokenDataOauth2>;
-  let refreshingTokensPromise: Promise<TokenDataOauth2>;
+  let refreshingTokensPromise: Promise<TokenDataOauth2> | null = null;
 
   if ('refreshToken' in options && 'accessToken' in options) {
     tokenData = {
