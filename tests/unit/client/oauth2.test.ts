@@ -219,6 +219,40 @@ describe('OAuth2HttpClient', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
   });
 
+  it('Handles proactive token refresh failure gracefully', async () => {
+    // Regression test
+    // Previously, the retry interceptor expected the shape of a standard Axios error.
+    // The proactive token refresh produces an already processed ExhError.
+    // This test ensures that the retry interceptor handles non axios errors gracefully as well.
+
+    // Setup the SDK for proactive token refreshing with an access token that is expired
+    const sdk = createOAuth2Client({
+      ...mockParams,
+      refreshToken: 'refresh token',
+      accessToken: 'initial token',
+      expiresIn: 5 * 60, // 5 minutes
+      creationTimestamp: new Date(Date.now() - 6 * 60 * 1000), // 6 minutes ago
+    });
+
+    // Setup the refresh call to fail
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(400, {
+        error: 'invalid_grant',
+        description: 'The refresh token is unknown',
+        exh_error: {
+          name: 'REFRESH_TOKEN_UNKNOWN_EXCEPTION',
+          description: 'The refresh token is unknown',
+          code: 119,
+        },
+      });
+
+    // Make a call and expect it to fail gracefully with the correct error
+    const error = await sdk.raw.get('test').catch(e => e);
+    expect(error).toBeInstanceOf(InvalidGrantError);
+    expect(error.exhError).toBeInstanceOf(RefreshTokenUnknownError);
+  });
+
   it('Does not try to refresh multiple times in parallel', async () => {
     const refreshToken = 'refresh token';
     const newToken = 'new access token';
