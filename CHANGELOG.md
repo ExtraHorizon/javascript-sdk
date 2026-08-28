@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - OAuth2 token refreshes are now shared between parallel requests
+- Response transformations are no longer applied twice to retried requests
 
 ## [8.14.1]
 

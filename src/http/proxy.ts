@@ -49,12 +49,12 @@ export function createProxyHttpClient(
     );
   }
 
-  httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
-  httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
-
   httpWithAuth.interceptors.response.use(camelizeResponseData);
   httpWithAuth.interceptors.response.use(transformResponseData);
   httpWithAuth.interceptors.response.use(transformKeysResponseData);
+
+  httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
+  httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
 
   async function logout(): Promise<boolean> {
     try {

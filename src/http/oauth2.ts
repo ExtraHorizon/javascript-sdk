@@ -108,6 +108,10 @@ export function createOAuth2HttpClient(
     };
   });
 
+  httpWithAuth.interceptors.response.use(camelizeResponseData);
+  httpWithAuth.interceptors.response.use(transformResponseData);
+  httpWithAuth.interceptors.response.use(transformKeysResponseData);
+
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
 
   // If we receive a expired/unknown access token error, refresh the tokens
@@ -132,10 +136,6 @@ export function createOAuth2HttpClient(
   });
 
   httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
-
-  httpWithAuth.interceptors.response.use(camelizeResponseData);
-  httpWithAuth.interceptors.response.use(transformResponseData);
-  httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
   /**
    * - Adds a creationTimestamp to the token
