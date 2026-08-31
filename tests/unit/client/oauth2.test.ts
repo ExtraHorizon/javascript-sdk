@@ -371,6 +371,40 @@ describe('OAuth2HttpClient', () => {
     expect(result.request.headers.authorization).toBe(`Bearer ${newToken}`);
   });
 
+  it('Does not apply transformation interceptors twice on a retry after a token refresh', async () => {
+    // Regression test.
+    // Response transformation interceptors must run before retry interceptors.
+    // Otherwise, they process a retried response twice: once during the retried request,
+    // then again when the response passes through interceptors still listed after the retry interceptor.
+    // This previously affected the date transformation interceptor: the first pass converted
+    // timestamps to Date objects, while the second pass incorrectly transformed them again into empty objects.
+
+    const sdk = createOAuth2Client({
+      ...mockParams,
+      accessToken: 'initial token',
+      refreshToken: 'refresh token',
+    });
+
+    nock(mockParams.host)
+      .get('/users/v1/me')
+      .reply(400, {
+        code: 118,
+        name: 'ACCESS_TOKEN_EXPIRED_EXCEPTION',
+        description: 'The access token is expired',
+      });
+
+    nock(mockParams.host)
+      .post(`${AUTH_BASE}/oauth2/tokens`)
+      .reply(200, { access_token: 'new token' });
+
+    nock(mockParams.host)
+      .get('/users/v1/me')
+      .reply(200, { creation_timestamp: 1232131 });
+
+    const result = await sdk.users.me();
+    expect(result).toStrictEqual({ creationTimestamp: new Date(1232131) });
+  });
+
   it('Throws if the automatic refresh fails after an "access token expired" error', async () => {
     nock(mockParams.host)
       .post(`${AUTH_BASE}/oauth2/tokens`)

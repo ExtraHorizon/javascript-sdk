@@ -50,12 +50,12 @@ export function createHttpClient({
     );
   }
 
-  http.interceptors.response.use(null, retryInterceptor(http));
-  http.interceptors.response.use(null, typeReceivedErrorsInterceptor);
-
   http.interceptors.response.use(camelizeResponseData);
   http.interceptors.response.use(transformResponseData);
   http.interceptors.response.use(transformKeysResponseData);
+
+  http.interceptors.response.use(null, retryInterceptor(http));
+  http.interceptors.response.use(null, typeReceivedErrorsInterceptor);
 
   return http;
 }
