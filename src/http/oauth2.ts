@@ -25,6 +25,7 @@ export function createOAuth2HttpClient(
   options: ParamsOauth2
 ): OAuth2HttpClient {
   let tokenData: Partial<TokenDataOauth2>;
+  let refreshingTokensPromise: Promise<TokenDataOauth2> | null = null;
 
   if ('refreshToken' in options && 'accessToken' in options) {
     tokenData = {
@@ -94,7 +95,7 @@ export function createOAuth2HttpClient(
       // Refresh 10 seconds before the token is about to expire.
       // This is to prevent being just too late with a refresh of the token due to latencies
       if (Date.now() > expireTime - 10 * 1000) {
-        await authenticate({ refreshToken: tokenData.refreshToken });
+        await refreshTokens();
       }
     }
 
@@ -106,6 +107,10 @@ export function createOAuth2HttpClient(
       },
     };
   });
+
+  httpWithAuth.interceptors.response.use(camelizeResponseData);
+  httpWithAuth.interceptors.response.use(transformResponseData);
+  httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
   httpWithAuth.interceptors.response.use(null, retryInterceptor(httpWithAuth));
 
@@ -123,7 +128,7 @@ export function createOAuth2HttpClient(
       !originalRequest.isRetryWithRefreshedTokens
     ) {
       originalRequest.isRetryWithRefreshedTokens = true;
-      await authenticate({ refreshToken: tokenData.refreshToken });
+      await refreshTokens();
       return httpWithAuth(originalRequest);
     }
 
@@ -131,10 +136,6 @@ export function createOAuth2HttpClient(
   });
 
   httpWithAuth.interceptors.response.use(null, typeReceivedErrorsInterceptor);
-
-  httpWithAuth.interceptors.response.use(camelizeResponseData);
-  httpWithAuth.interceptors.response.use(transformResponseData);
-  httpWithAuth.interceptors.response.use(transformKeysResponseData);
 
   /**
    * - Adds a creationTimestamp to the token
@@ -178,6 +179,20 @@ export function createOAuth2HttpClient(
     );
 
     return await dateAndSetTokenData(tokenResult.data);
+  }
+
+  async function refreshTokens(): Promise<TokenDataOauth2> {
+    if (refreshingTokensPromise) {
+      return refreshingTokensPromise;
+    }
+
+    refreshingTokensPromise = authenticate({ refreshToken: tokenData.refreshToken });
+
+    try {
+      return await refreshingTokensPromise;
+    } finally {
+      refreshingTokensPromise = null;
+    }
   }
 
   async function confirmMfa({
