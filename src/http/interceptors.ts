@@ -13,12 +13,15 @@ import {
 
 export const retryInterceptor =
   (axios: AxiosInstance) => async (error: HttpResponseError): Promise<unknown> => {
+    if (!error || !error.isAxiosError || !error.config) {
+      throw error;
+    }
+
     const { config } = error;
     const { retry } = config;
 
     // tries includes the initial try. So 5 tries equals 4 retries
     if (
-      error?.isAxiosError &&
       retry?.tries > retry?.current &&
       retry?.retryCondition(error)
     ) {
