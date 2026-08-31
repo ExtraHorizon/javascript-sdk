@@ -12,8 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.14.2]
 
 ### Fixed
-- OAuth2 token refreshes are now shared between parallel requests
+- OAuth2 token refreshes are now shared between parallel requests, no longer invalidating each other
 - Response transformations are no longer applied twice to retried requests
+- Retry handling no longer masks internally generated errors as `TypeError: Cannot destructure property 'retry' of 'config' as it is undefined`
 
 ## [8.14.1]
 
