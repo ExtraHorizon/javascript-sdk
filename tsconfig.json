@@ -18,7 +18,8 @@
     },
     "resolveJsonModule": true,
     "strictFunctionTypes": false,
-    "noStrictGenericChecks": true
+    "noStrictGenericChecks": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"]
 }
