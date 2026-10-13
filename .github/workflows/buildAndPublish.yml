@@ -7,7 +7,6 @@ on:
     branches:
       - master
       - dev
-      - feature/*
 
 jobs:
   build-and-publish:
