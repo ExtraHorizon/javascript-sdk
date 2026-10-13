@@ -217,7 +217,7 @@ describe('rql string builder', () => {
 
   it('Throws an error on parsing invalid RQL to rqlString', async () => {
     expect(() => {
-      rqlParser('or((like(name,btfit))');
+      rqlParser('!@#$%^&*()');
     }).toThrowError();
   });
 
