@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - The RQL builder now correctly accepts more special character usage in already constructed RQL strings
+- Exported the missing types for the Log Service
 
 ## [8.14.4]
 
