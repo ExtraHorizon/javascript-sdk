@@ -4,7 +4,7 @@ import type {
   ApiService,
   FunctionsService,
   HttpInstance,
-  LogsService,
+  TaskLogsService,
   SchedulesService,
 } from '../../types';
 import httpClient from '../http-client';
@@ -22,7 +22,7 @@ export const tasksService = (
   schedules: SchedulesService;
   functions: FunctionsService;
   api: ApiService;
-  logs: LogsService;
+  logs: TaskLogsService;
   apiRequests: ApiRequestService;
 } => {
   const client = httpClient({
