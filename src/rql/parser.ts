@@ -187,15 +187,14 @@ export default function parse(
     // performance guard
     // convert slash delimited text to arrays
     query = query.replace(
-      /[\+\*\$\-:\w%\._]*\/[\+\*\$\-:\w%\._\/]*/g,
+      /[^()=<>!&|,\/]*\/[^()=<>!&|,]*/g,
       slashed => `(${slashed.replace(/\//g, ',')})`
     );
   }
 
   // convert FIQL to normalized call syntax form
   query = query.replace(
-    /(\([\+\*\$\-:\w%\._,]+\)|[\+\*\$\-:\w%\._]*|)([<>!]?=(?:[\w]*=)?|>|<)(\([\+\*\$\-:\w%\._,]+\)|[\+\*\$\-:\w%\._]*|)/g,
-    // <---------       property        -----------><------  operator -----><----------------   value ------------------>
+    /(\([^()=<>!&|]+\)|[^()=<>!&|,]*|)([<>!]?=(?:[\w]*=)?|>|<)(\([^()=<>!&|]+\)|[^()=<>!&|,]*|)/g,
     (_t, property, operator, value) => {
       if (operator.length < 3) {
         if (!operatorMap[operator]) {
@@ -214,8 +213,7 @@ export default function parse(
   }
 
   const leftoverCharacters = query.replace(
-    /(\))|([&\|,])?([\+\*\$\-:\w%\._]*)(\(?)/g,
-    //   <-closedParan->|<-delim-- propertyOrValue -----(> |
+    /(\))|([&\|,])?([^()=<>!&|,]*)(\(?)/g,
     (_t, closedParan, delim, propertyOrValue, openParan) => {
       if (delim) {
         if (delim === '&') {
@@ -258,10 +256,6 @@ export default function parse(
       return '';
     }
   );
-
-  if (term.parent) {
-    throw new URIError('Opening paranthesis without a closing paranthesis');
-  }
 
   if (leftoverCharacters) {
     // any extra characters left over from the replace indicates invalid syntax

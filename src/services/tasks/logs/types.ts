@@ -1,6 +1,6 @@
 import { ObjectId, OptionsWithRql } from '../../types';
 
-export interface LogsService {
+export interface TaskLogsService {
   /**
    * ## Retrieve a list of logs for a task
    *

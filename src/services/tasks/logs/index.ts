@@ -1,12 +1,12 @@
 import { HttpInstance } from '../../../http/types';
 import { HttpClient } from '../../http-client';
 import { ObjectId, OptionsWithRql } from '../../types';
-import { LogsService } from './types';
+import { TaskLogsService } from './types';
 
 export default (
   client: HttpClient,
   httpWithAuth: HttpInstance
-): LogsService => {
+): TaskLogsService => {
   async function query(taskId: ObjectId, options: OptionsWithRql) {
     const { data } = await client.get(
       httpWithAuth,
