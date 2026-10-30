@@ -15,6 +15,7 @@ export * from './services/configurations/types';
 export * from './services/dispatchers/types';
 export * from './services/payments/types';
 export * from './services/localizations/types';
+export * from './services/logs/types';
 export * from './services/profiles/types';
 export * from './services/notifications/types';
 export * from './services/notificationsV2/types';
